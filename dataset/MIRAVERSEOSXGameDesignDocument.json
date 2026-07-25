@@ -1,0 +1,17 @@
+{
+	"name": "MIRAVERSEOSXGameDesignDocument",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "miraverseblob",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Excel",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation"
+			}
+		},
+		"schema": []
+	}
+}
