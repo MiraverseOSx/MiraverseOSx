@@ -1,0 +1,25 @@
+{
+	"name": "miraversecosmosdb",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "CosmosDbmiraverse",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "CosmosDbSqlApiCollection",
+		"schema": {
+			"type": "object",
+			"properties": {
+				"type": {
+					"type": "string"
+				},
+				"message": {
+					"type": "string"
+				}
+			}
+		},
+		"typeProperties": {
+			"collectionName": "mosdb"
+		}
+	}
+}
