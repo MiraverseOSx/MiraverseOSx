@@ -27,7 +27,57 @@
 						"type": "CosmosDbSqlApiSink",
 						"writeBehavior": "insert"
 					},
-					"enableStaging": false
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "MIRAVERSEOSX — World Lore Database",
+									"type": "Int16"
+								},
+								"sink": {
+									"path": "$['id']"
+								}
+							},
+							{
+								"source": {
+									"name": "title",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['title']"
+								}
+							},
+							{
+								"source": {
+									"name": "category",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['category']"
+								}
+							},
+							{
+								"source": {
+									"name": "content_text",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['content_text']"
+								}
+							},
+							{
+								"source": {
+									"name": "metadata_json",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['metadata_json']"
+								}
+							}
+						]
+					}
 				},
 				"inputs": [
 					{
