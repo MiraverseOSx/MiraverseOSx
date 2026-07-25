@@ -1,0 +1,15 @@
+{
+	"name": "miraverse-datafactory",
+	"properties": {
+		"trustModeClaimForMi": {
+			"value": "Disabled",
+			"editable": true
+		}
+	},
+	"location": "eastus",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "bb63ab86-348a-4da8-ace2-a24e9cde7e52",
+		"tenantId": "c20972b0-8927-431d-8c26-40ec09a813c5"
+	}
+}
