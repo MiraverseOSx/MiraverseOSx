@@ -4,7 +4,7 @@ import { useOSStore } from '../store/useOSStore';
 import { APPS } from '../apps/registry';
 
 export default function Dock() {
-  const addWindow = useOSStore((s) => s.addWindow);
+  const toggleApp = useOSStore((s) => s.toggleApp);
   const windows = useOSStore((s) => s.windows);
   const openIds = new Set(windows.map((w) => w.id));
 
@@ -16,7 +16,7 @@ export default function Dock() {
           return (
             <motion.button
               key={app.id}
-              onClick={() => addWindow(app)}
+              onClick={() => toggleApp(app)}
               whileHover={{ scale: 1.35, y: -8 }}
               whileTap={{ scale: 1.1 }}
               transition={{ type: 'spring', stiffness: 400, damping: 20 }}
