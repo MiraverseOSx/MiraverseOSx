@@ -13,8 +13,105 @@ export const useOSStore = create((set) => ({
   activeWindowId: null,
   wallpaper: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=2072&auto=format&fit=crop',
 
+  // ------------------------------------------------------------------
+  // Gameplay State Lane (Independent from Window OS State)
+  // ------------------------------------------------------------------
+  gameplay: {
+    sessions: {},
+    activeGameId: null,
+    player: {
+      level: 1,
+      credits: 500,
+      xp: 0,
+      completedQuests: [],
+      hackedNodes: 0,
+    },
+  },
+
+  startSession: (gameId, initialState = {}) =>
+    set((state) => ({
+      gameplay: {
+        ...state.gameplay,
+        activeGameId: gameId,
+        sessions: {
+          ...state.gameplay.sessions,
+          [gameId]: state.gameplay.sessions[gameId] || {
+            startedAt: Date.now(),
+            score: 0,
+            ...initialState,
+          },
+        },
+      },
+    })),
+
+  updateSession: (gameId, sessionData) =>
+    set((state) => ({
+      gameplay: {
+        ...state.gameplay,
+        sessions: {
+          ...state.gameplay.sessions,
+          [gameId]: {
+            ...(state.gameplay.sessions[gameId] || {}),
+            ...sessionData,
+            updatedAt: Date.now(),
+          },
+        },
+      },
+    })),
+
+  endSession: (gameId) =>
+    set((state) => ({
+      gameplay: {
+        ...state.gameplay,
+        activeGameId: state.gameplay.activeGameId === gameId ? null : state.gameplay.activeGameId,
+      },
+    })),
+
+  addCredits: (amount) =>
+    set((state) => ({
+      gameplay: {
+        ...state.gameplay,
+        player: {
+          ...state.gameplay.player,
+          credits: Math.max(0, state.gameplay.player.credits + amount),
+        },
+      },
+    })),
+
+  addXP: (amount) =>
+    set((state) => {
+      const newXP = state.gameplay.player.xp + amount;
+      const newLevel = Math.floor(newXP / 100) + 1;
+      return {
+        gameplay: {
+          ...state.gameplay,
+          player: {
+            ...state.gameplay.player,
+            xp: newXP,
+            level: newLevel,
+          },
+        },
+      };
+    }),
+
+  completeQuest: (questId) =>
+    set((state) => {
+      if (state.gameplay.player.completedQuests.includes(questId)) return state;
+      return {
+        gameplay: {
+          ...state.gameplay,
+          player: {
+            ...state.gameplay.player,
+            completedQuests: [...state.gameplay.player.completedQuests, questId],
+          },
+        },
+      };
+    }),
+
+  // ------------------------------------------------------------------
+  // Window Management & OS Controls
+  // ------------------------------------------------------------------
   addWindow: (app) => set((state) => {
-    // If the app already has a window, just focus/restore it.
     const existing = state.windows.find((w) => w.id === app.id);
     if (existing) {
       const maxZ = Math.max(0, ...state.windows.map((w) => w.zIndex));
@@ -31,11 +128,11 @@ export const useOSStore = create((set) => ({
       contentKey: app.contentKey,
       ...app,
       id: app.id || Math.random().toString(36).substr(2, 9),
-      zIndex: state.windows.length + 10, // Start with a buffer
+      zIndex: state.windows.length + 10,
       isMinimized: false,
       isMaximized: false,
       position: app.position || spawnPosition(state.windows.length),
-      size: app.size || { width: 640, height: 440 },
+      size: app.size || { width: 680, height: 480 },
     };
     return {
       windows: [...state.windows, newWindow],
@@ -46,7 +143,6 @@ export const useOSStore = create((set) => ({
   toggleApp: (app) => set((state) => {
     const existing = state.windows.find((w) => w.id === app.id);
     if (existing) {
-      // If the app is open and currently active, pressing its button closes it
       if (state.activeWindowId === app.id && !existing.isMinimized) {
         const remaining = state.windows.filter((w) => w.id !== app.id);
         return {
@@ -55,7 +151,6 @@ export const useOSStore = create((set) => ({
             remaining.slice().sort((a, b) => b.zIndex - a.zIndex)[0]?.id || null,
         };
       }
-      // If it's minimized or behind another window, focus & unminimize it
       const maxZ = Math.max(0, ...state.windows.map((w) => w.zIndex));
       return {
         windows: state.windows.map((w) =>
@@ -65,7 +160,6 @@ export const useOSStore = create((set) => ({
       };
     }
 
-    // App is not open yet, create and open it
     const newWindow = {
       title: app.title,
       contentKey: app.contentKey,
@@ -75,7 +169,7 @@ export const useOSStore = create((set) => ({
       isMinimized: false,
       isMaximized: false,
       position: app.position || spawnPosition(state.windows.length),
-      size: app.size || { width: 640, height: 440 },
+      size: app.size || { width: 680, height: 480 },
     };
     return {
       windows: [...state.windows, newWindow],
@@ -117,7 +211,6 @@ export const useOSStore = create((set) => ({
     ),
   })),
 
-  // Persist a window's position after the user drags it.
   moveWindow: (id, position) => set((state) => ({
     windows: state.windows.map((w) =>
       w.id === id ? { ...w, position } : w

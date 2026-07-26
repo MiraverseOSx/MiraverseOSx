@@ -1,0 +1,29 @@
+export const GAMES_CATALOG = [
+  {
+    id: 'netrunner',
+    title: 'Netrunner Hacking',
+    category: 'Cyberpunk Puzzle',
+    difficulty: 'Medium',
+    reward: '250 Credits + 50 XP',
+    icon: '⚡',
+    description: 'Bypass corporate firewalls, exploit vulnerable security nodes, and siphon credits from the Digital Sprawl.',
+  },
+  {
+    id: 'quests',
+    title: 'Faction Quest Runner',
+    category: 'Interactive RPG',
+    difficulty: 'Variable',
+    reward: 'Reputation & Lore Unlocks',
+    icon: '⚔️',
+    description: 'Engage in diplomatic, stealth, or combat narrative missions with Commander Halvorn, Drift, Sable, and ORACLE-9.',
+  },
+  {
+    id: 'voidrift',
+    title: 'Void Rift Survival',
+    category: 'Arcade Reaction',
+    difficulty: 'Hard',
+    reward: 'Void Shards & 100 XP',
+    icon: '🌌',
+    description: 'Balance dimensional stability against chaotic Void surges before the reality anchor collapses.',
+  },
+];

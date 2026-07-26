@@ -1,5 +1,4 @@
 import { databases } from '../appwrite';
-import gameDevDoc from '../data/gameDevDoc.json';
 
 // ================================================================
 // MIRAVERSEOSX | Database Engine loaded from miraverse_azure.sql
@@ -56,6 +55,7 @@ export const NPCS = [
 
 export const APPS = [
   { id: 'files', title: 'Files', category: 'Utility', dev: 'FAC002', version: '1.0.0', primary: 'File system & lore archive explorer', lore: 'System file explorer for browsing documents, logs, and database records.' },
+  { id: 'gamehub', title: 'Game Hub', category: 'Gaming', dev: 'FAC006', version: '1.2.0', primary: 'Interactive mini-games & quest engine', lore: 'Game launcher for Netrunner hacking, Faction quests, and Void Rift challenges.' },
   { id: 'terminal', title: 'Terminal', category: 'Intelligence', dev: 'FAC006', version: '2.1.0', primary: 'Command line interface & live SQL query shell', lore: 'Monochrome terminal interface for executing database commands and scripts.' },
   { id: 'browser', title: 'Browser', category: 'Navigation', dev: 'FAC002', version: '4.2.1', primary: 'Miraverse Web Portal & regional web browser', lore: 'Browser for viewing live net portals across the Miraverse.' },
   { id: 'settings', title: 'Settings', category: 'Utility', dev: 'FAC005', version: '3.0.0', primary: 'System preferences & DB statistics monitor', lore: 'System control panel and database status reader.' },
@@ -93,17 +93,6 @@ export const miraverseDb = {
   getNPCs: () => NPCS,
   getLoreEntries: () => LORE_ENTRIES,
   getEvents: () => EVENTS,
-  getGDD: () => gameDevDoc,
-  getGDDSections: () => gameDevDoc.sections || [],
-
-  searchGDD: (query) => {
-    const q = query.toLowerCase();
-    return (gameDevDoc.sections || []).filter(
-      (s) =>
-        s.title.toLowerCase().includes(q) ||
-        (s.content || []).some((c) => c.toLowerCase().includes(q))
-    );
-  },
 
   searchLore: (query) => {
     const q = query.toLowerCase();
