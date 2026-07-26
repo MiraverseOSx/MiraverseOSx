@@ -1,13 +1,20 @@
 import { Folder, Terminal, Globe, Settings, Info } from 'lucide-react';
+import { miraverseDb } from '../db/miraverseDb';
 
-// Single source of truth for launchable apps. Used by both the Dock and the
-// desktop icons. `contentKey` maps to a body component in ./contents.js.
-export const APPS = [
-  { id: 'files', title: 'Files', icon: Folder, contentKey: 'files' },
-  { id: 'terminal', title: 'Terminal', icon: Terminal, contentKey: 'terminal' },
-  { id: 'browser', title: 'Browser', icon: Globe, contentKey: 'browser' },
-  { id: 'settings', title: 'Settings', icon: Settings, contentKey: 'settings' },
-  { id: 'about', title: 'About', icon: Info, contentKey: 'about' },
-];
+// Icon mapping per app ID
+const ICON_MAP = {
+  files: Folder,
+  terminal: Terminal,
+  browser: Globe,
+  settings: Settings,
+  about: Info,
+};
+
+// Populate launchable APPS list dynamically from miraverseDb
+export const APPS = miraverseDb.getApps().map((app) => ({
+  ...app,
+  icon: ICON_MAP[app.id] || Folder,
+  contentKey: app.id,
+}));
 
 export const getApp = (id) => APPS.find((a) => a.id === id);

@@ -4,7 +4,11 @@ Requirements: pip install openpyxl
 Usage: python miraverse_importer.py
 Output: miraverse.db (ready to embed in game backend)
 """
-import sqlite3, re, os
+import sqlite3, re, os, sys
+
+# Windows consoles default to cp1252, which can't encode the status output below.
+if hasattr(sys.stdout, 'reconfigure'):
+    sys.stdout.reconfigure(encoding='utf-8', errors='replace')
 
 try:
     import openpyxl  # type: ignore[import-not-found]
@@ -56,6 +60,12 @@ ALL_FK_COLS = set(col for cols in FK_MAP.values() for col in cols)
 TABLE_ORDER = ['Regions','Houses','Factions','NPCs','Careers',
                'Modules','Apps','Lore_Entries','Events','Dashboard']
 
+def is_ref_col(col_name):
+    """Reference columns hold IDs, so 'NONE'/'N/A' there means NULL. Prose columns
+    (Role_Class, Era, Primary_Resource) legitimately contain 'Unknown' as content."""
+    if not col_name: return False
+    return col_name in ALL_FK_COLS or col_name.lower().endswith(('_id', '_ids'))
+
 def sanitize_col(name):
     if not name: return '_col'
     return re.sub(r'[^a-zA-Z0-9_]', '_', str(name).strip())
@@ -84,8 +94,9 @@ def infer_type(col_name, samples):
         break
     return 'TEXT'
 
-def coerce(value, dtype, col_name=None):
-    if col_name in ALL_FK_COLS:
+def coerce(value, dtype, col_name=None, is_pk=False):
+    # Never null a primary key -- a bad PK should surface, not vanish.
+    if is_ref_col(col_name) and not is_pk:
         if value is None or str(value).strip().upper() in FK_SENTINELS:
             return None
     if value is None: return None
@@ -105,8 +116,24 @@ for sheet_name in wb.sheetnames:
     ws = wb[sheet_name]
     all_rows = list(ws.iter_rows(values_only=True))
     if sheet_name == 'Dashboard':
-        kv = [(str(r[c] or ''), str(r[c+1] or ''))
-              for r in all_rows for c in range(len(r)-1) if r[c]]
+        # Walk each row left-to-right pairing key->value. Consuming a cell as a value
+        # stops it being re-read as the next key (which produced ('20','') junk rows).
+        kv, seen_keys = [], {}
+        for r in all_rows:
+            c = 0
+            while c < len(r) - 1:
+                key, val = r[c], r[c+1]
+                if key is None or str(key).strip() == '' or val is None or str(val).strip() == '':
+                    c += 1
+                    continue
+                key = str(key).strip()
+                if key in seen_keys:            # Key is PRIMARY KEY; disambiguate
+                    seen_keys[key] += 1         # instead of losing the row silently
+                    key = f'{key} ({seen_keys[key]})'
+                else:
+                    seen_keys[key] = 0
+                kv.append((key, str(val).strip()))
+                c += 2
         sheet_data['Dashboard'] = {'headers':['Key','Value'],'types':['TEXT','TEXT'],'rows':kv}
         continue
     if len(all_rows) < 2: continue
@@ -126,7 +153,7 @@ for sheet_name in wb.sheetnames:
     for row in data_rows:
         if all(c is None for c in row): continue
         padded = list(row) + [None]*(len(headers)-len(row))
-        parsed_rows.append(tuple(coerce(padded[i], col_types[i], headers[i])
+        parsed_rows.append(tuple(coerce(padded[i], col_types[i], headers[i], i == 0)
                                  for i in range(len(headers))))
     sheet_data[sheet_name] = {'headers':headers,'types':col_types,'rows':parsed_rows}
 
@@ -178,6 +205,21 @@ for idx, tbl, col in [
 con.commit()
 con.execute('PRAGMA foreign_keys = ON')
 violations = con.execute('PRAGMA foreign_key_check').fetchall()
+
+# The workbook's Dashboard sheet is empty, so derive build metrics from what was
+# actually imported rather than leaving the table with zero rows.
+if not cur.execute('SELECT COUNT(*) FROM "Dashboard"').fetchone()[0]:
+    content_tables = [t for t in ordered if t in sheet_data and t != 'Dashboard']
+    metrics = [('Total Rows Imported', str(total)),
+               ('Content Tables', str(len(content_tables))),
+               ('FK Violations', str(len(violations)))]
+    for tbl in content_tables:
+        n = cur.execute(f'SELECT COUNT(*) FROM "{tbl}"').fetchone()[0]
+        metrics.append((f'{tbl} Count', str(n)))
+    cur.executemany('INSERT OR REPLACE INTO "Dashboard" ("Key","Value") VALUES (?,?)', metrics)
+    print(f'   Dashboard sheet empty — generated {len(metrics)} derived metrics')
+
+con.commit()
 con.close()
 
 print(f"✅ miraverse.db ready — {total} rows, {len(violations)} FK violations")
