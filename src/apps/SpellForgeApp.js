@@ -38,6 +38,8 @@ export default function SpellForgeApp() {
   const addForgedSpell = useOSStore((s) => s.addForgedSpell);
   const addCredits = useOSStore((s) => s.addCredits);
   const addXP = useOSStore((s) => s.addXP);
+  const incrementAppRank = useOSStore((s) => s.incrementAppRank);
+  const weaverRank = player.appRanks?.weaver || 1;
 
   const [activeTab, setActiveTab] = useState('forge'); // 'forge' | 'defense'
   const [selectedElement, setSelectedElement] = useState(null);
@@ -81,6 +83,7 @@ export default function SpellForgeApp() {
 
     if (match) {
       addForgedSpell(match.result);
+      incrementAppRank('weaver');
       setLog((prev) => [
         `✅ Spell Created: [${match.result}] (${match.desc})`,
         `Successfully aligned ${selectedElement} and ${selectedUtility} protocols within the Veil.`,
@@ -128,9 +131,12 @@ export default function SpellForgeApp() {
       {/* Sidebar Navigation */}
       <div className="w-48 border-r border-white/10 bg-slate-900/60 p-4 flex flex-col justify-between">
         <div className="space-y-4">
-          <div className="flex items-center gap-2">
-            <span className="text-lg">✨</span>
-            <span className="font-bold text-sm text-cyan-400">SpellForge</span>
+          <div className="flex flex-col">
+            <div className="flex items-center gap-2">
+              <span className="text-lg">✨</span>
+              <span className="font-bold text-sm text-cyan-400">SpellForge</span>
+            </div>
+            <span className="text-[10px] text-white/50 mt-0.5">Weaver Rank: <span className="font-bold text-cyan-300">Lv. {weaverRank}</span></span>
           </div>
 
           <div className="space-y-1">

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useOSStore } from '../store/useOSStore';
 
 const MEDICAL_CONDITIONS = {
@@ -25,6 +25,13 @@ export default function AuraPassportApp() {
   const clearConditions = useOSStore((s) => s.clearConditions);
   const decryptLineage = useOSStore((s) => s.decryptLineage);
   const addCredits = useOSStore((s) => s.addCredits);
+  const advanceStarterPhase = useOSStore((s) => s.advanceStarterPhase);
+
+  const clearanceRank = player.appRanks?.clearance || 1;
+
+  useEffect(() => {
+    advanceStarterPhase(2);
+  }, [advanceStarterPhase]);
 
   const [activeTab, setActiveTab] = useState('identity'); // 'identity' | 'aura' | 'medical' | 'reputation' | 'lineage'
   const [decryptInput, setDecryptInput] = useState('');
@@ -60,9 +67,12 @@ export default function AuraPassportApp() {
     <div className="flex h-full w-full bg-slate-950 text-white font-sans text-xs select-none">
       {/* Sidebar Navigation */}
       <div className="w-48 border-r border-white/10 bg-slate-900/60 p-4 space-y-1">
-        <div className="flex items-center gap-2 mb-4">
-          <span className="text-lg">🪪</span>
-          <span className="font-bold text-sm text-cyan-400">Aura Passport</span>
+        <div className="flex flex-col mb-4">
+          <div className="flex items-center gap-2">
+            <span className="text-lg">🪪</span>
+            <span className="font-bold text-sm text-cyan-400">Aura Passport</span>
+          </div>
+          <span className="text-[10px] text-white/50 mt-0.5">Clearance Rank: <span className="font-bold text-emerald-400">Lv. {clearanceRank}</span></span>
         </div>
 
         <button

@@ -11,6 +11,7 @@ export default function CommsApp() {
 
   const addCredits = useOSStore((s) => s.addCredits);
   const addXP = useOSStore((s) => s.addXP);
+  const advanceStarterPhase = useOSStore((s) => s.advanceStarterPhase);
 
   // Initial GDD Starter Emails
   const [emails, setEmails] = useState([
@@ -150,6 +151,7 @@ Dean of Students`,
         if (m.id === mailId && m.attachment && !m.attachment.claimed) {
           addCredits(m.attachment.amount);
           addXP(m.attachment.amount / 2);
+          advanceStarterPhase();
           const updatedMail = { ...m, attachment: { ...m.attachment, claimed: true } };
           setSelectedMail(updatedMail);
           return updatedMail;

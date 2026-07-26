@@ -45,6 +45,15 @@ export const useOSStore = create((set) => ({
         dga: { rankIndex: 0, xp: 0 },
         gov: { rankIndex: 0, xp: 0 },
       },
+      starterPhase: 0,
+      appRanks: {
+        explorer: 1,
+        weaver: 1,
+        investigator: 1,
+        research: 1,
+        influence: 1,
+        clearance: 1,
+      },
     },
   },
 
@@ -263,6 +272,49 @@ export const useOSStore = create((set) => ({
             careers: {
               ...state.gameplay.player.careers,
               [track]: { rankIndex: newRankIndex, xp: newXP },
+            },
+          },
+        },
+      };
+    }),
+
+  advanceStarterPhase: (targetPhase) =>
+    set((state) => {
+      const current = state.gameplay.player.starterPhase || 0;
+      const nextPhase = targetPhase !== undefined ? targetPhase : Math.min(5, current + 1);
+      if (nextPhase <= current) return state;
+      return {
+        gameplay: {
+          ...state.gameplay,
+          player: {
+            ...state.gameplay.player,
+            starterPhase: nextPhase,
+            credits: state.gameplay.player.credits + 100,
+            xp: state.gameplay.player.xp + 50,
+          },
+        },
+      };
+    }),
+
+  incrementAppRank: (appName) =>
+    set((state) => {
+      const currentRanks = state.gameplay.player.appRanks || {
+        explorer: 1,
+        weaver: 1,
+        investigator: 1,
+        research: 1,
+        influence: 1,
+        clearance: 1,
+      };
+      const newRank = (currentRanks[appName] || 1) + 1;
+      return {
+        gameplay: {
+          ...state.gameplay,
+          player: {
+            ...state.gameplay.player,
+            appRanks: {
+              ...currentRanks,
+              [appName]: newRank,
             },
           },
         },
