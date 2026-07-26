@@ -26,4 +26,13 @@ export const GAMES_CATALOG = [
     icon: '🌌',
     description: 'Balance dimensional stability against chaotic Void surges before the reality anchor collapses.',
   },
+  {
+    id: 'jobs',
+    title: 'Notice Board & Careers',
+    category: 'Student Job Center',
+    difficulty: 'Easy',
+    reward: 'Skills, Career XP & Credits',
+    icon: '📋',
+    description: 'Accept student task boards and start job shifts for Faith Medical, DGA, or Governmental Offices to level up your professional skills.',
+  },
 ];

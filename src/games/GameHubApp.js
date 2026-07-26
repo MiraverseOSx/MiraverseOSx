@@ -8,6 +8,11 @@ export default function GameHubApp() {
   const addCredits = useOSStore((s) => s.addCredits);
   const addXP = useOSStore((s) => s.addXP);
   const completeQuest = useOSStore((s) => s.completeQuest);
+  const incrementHackedNodes = useOSStore((s) => s.incrementHackedNodes);
+  const damageAura = useOSStore((s) => s.damageAura);
+  const addCondition = useOSStore((s) => s.addCondition);
+  const addSkillXP = useOSStore((s) => s.addSkillXP);
+  const addCareerXP = useOSStore((s) => s.addCareerXP);
 
   // ------------------------------------------------------------------
   // Mini Game 1: Netrunner Hacking
@@ -34,6 +39,7 @@ export default function GameHubApp() {
         );
         addCredits(node.reward);
         addXP(node.reward / 2);
+        incrementHackedNodes();
         setLog((prev) => [
           `✅ Breach successful on [${node.name}]! +${node.reward} Credits, +${node.reward / 2} XP`,
           ...prev,
@@ -99,7 +105,7 @@ export default function GameHubApp() {
         choices: [
           { text: 'Use stealth via sewage conduits', reward: { credits: 200, xp: 80 } },
           { text: 'Bribe an Imperial guard officer', reward: { credits: 100, xp: 40 } },
-          { text: 'Hack the security terminal directly', reward: { credits: 300, xp: 120 } },
+          { text: 'Hack the security terminal directly (High Risk)', reward: { credits: 300, xp: 120 }, damage: 15, condition: 'Veilwilt' },
         ],
       },
       {
@@ -110,7 +116,29 @@ export default function GameHubApp() {
         desc: 'Decode a pre-Collapse data stream intercepted near the Void Rift.',
         choices: [
           { text: 'Run frequency synthesis algorithm', reward: { credits: 250, xp: 100 } },
-          { text: 'Channel Void energy resonance', reward: { credits: 400, xp: 150 } },
+          { text: 'Channel Void energy resonance (Heavy Veil strain)', reward: { credits: 400, xp: 150 }, damage: 25, condition: 'Riftspine Fracture' },
+        ],
+      },
+      {
+        id: 'Q03',
+        title: 'Faith Medical Investigation',
+        npc: 'Dr. Sharon (Faith Medical)',
+        region: 'Aureline Medical Sector',
+        desc: 'Review the clinical telemetry of a patient affected by AETHERCORE rifts and stabilize their flow.',
+        choices: [
+          { text: 'Apply warm-essence diagnostics', reward: { credits: 250, xp: 90 } },
+          { text: 'Perform manual aura realignment (High element strain)', reward: { credits: 350, xp: 130 }, damage: 20, condition: 'Sunspire Burn Fever' },
+        ],
+      },
+      {
+        id: 'Q04',
+        title: 'DGA Security Sweep',
+        npc: 'Agent Vance (DGA)',
+        region: 'Campus Gate',
+        desc: 'Scan student profiles at the gate for unauthorized Seraphima signatures or Lightborn indicators.',
+        choices: [
+          { text: 'Use standard civic scanning protocols', reward: { credits: 150, xp: 60 } },
+          { text: 'Bypass firewall and decrypt lineage markers', reward: { credits: 300, xp: 120 } },
         ],
       },
     ];
@@ -124,7 +152,17 @@ export default function GameHubApp() {
       addCredits(choice.reward.credits);
       addXP(choice.reward.xp);
       completeQuest(currentQuest.id);
-      setResult(`Mission Complete! Gained ₡${choice.reward.credits} Credits and +${choice.reward.xp} XP.`);
+
+      let msg = `Mission Complete! Gained ₡${choice.reward.credits} Credits and +${choice.reward.xp} XP.`;
+      if (choice.damage) {
+        damageAura(choice.damage);
+        msg += ` Sustained ${choice.damage} Aura damage.`;
+      }
+      if (choice.condition) {
+        addCondition(choice.condition);
+        msg += ` Contracted [${choice.condition}] due to strain.`;
+      }
+      setResult(msg);
     };
 
     return (
@@ -208,6 +246,8 @@ export default function GameHubApp() {
       const rewardCredits = timer * 10;
       addCredits(rewardCredits);
       addXP(timer * 5);
+      damageAura(30);
+      addCondition('Riftspine Fracture');
       setStability(70);
       setTimer(0);
       setGameOver(false);
@@ -269,6 +309,237 @@ export default function GameHubApp() {
     );
   };
 
+  // ------------------------------------------------------------------
+  // Mini Game 4: Notice Board & Careers Hub
+  // ------------------------------------------------------------------
+  const JobsBoardGame = () => {
+    const [activeSection, setActiveSection] = useState('board'); // 'board' | 'careers' | 'skills'
+    const [progressing, setProgressing] = useState(null); // { type: 'task'|'shift', id: string, name: string }
+    const [actionProgress, setActionProgress] = useState(0);
+    const [log, setLog] = useState(['Job & Skills dashboard initialized. Select a task or shift...']);
+
+    const tasks = [
+      { id: 'T01', title: 'Clear digital clutter in Undervault', skill: 'Programming', reward: 50, skillXP: 30, xp: 20, desc: 'Requires standard terminal cleaning protocols.' },
+      { id: 'T02', title: 'Deliver botanical remedies to Faith Hospital', skill: 'Communication', reward: 80, skillXP: 45, xp: 30, desc: 'Sort and package warm-essence diagnostics.' },
+      { id: 'T03', title: 'Stabilize SpellForge conduit leakage', skill: 'Spellcasting', reward: 120, skillXP: 60, xp: 45, desc: 'Requires alignment check in the elements compass.' }
+    ];
+
+    const careerTracks = {
+      medical: {
+        name: 'Faith Medical Group',
+        ranks: ['Patient Volunteer', 'Clinic Assistant', 'Aura Technician', 'Diagnostic Intern', 'Research Associate', 'Veil Recovery Specialist'],
+        shifts: { id: 'medical_shift', title: 'Volunteer at Clinic Intake', reward: 100, careerXP: 30, xp: 25 }
+      },
+      dga: {
+        name: 'DGA Careers',
+        ranks: ['Observer', 'Cadet Asset', 'Junior Operative', 'Field Operative', 'Containment Specialist', 'Strategic Agent'],
+        shifts: { id: 'dga_shift', title: 'Monitor DGA Node Logs', reward: 120, careerXP: 35, xp: 30 }
+      },
+      gov: {
+        name: 'Governmental Careers',
+        ranks: ['Civic Clerk', 'Policy Aide', 'Regional Liaison', 'Public Systems Analyst', 'Diplomatic Officer', 'Royal Administrative Attaché'],
+        shifts: { id: 'gov_shift', title: 'Sort Regional Archive Files', reward: 90, careerXP: 25, xp: 20 }
+      }
+    };
+
+    const handleStartAction = (type, item, key = null) => {
+      if (progressing) return;
+      setProgressing({ type, id: item.id || key, name: item.title });
+      setActionProgress(0);
+
+      const interval = setInterval(() => {
+        setActionProgress((prev) => {
+          if (prev >= 100) {
+            clearInterval(interval);
+            finishAction(type, item, key);
+            return 100;
+          }
+          return prev + 20;
+        });
+      }, 400);
+    };
+
+    const finishAction = (type, item, key) => {
+      setProgressing(null);
+      if (type === 'task') {
+        addCredits(item.reward);
+        addXP(item.xp);
+        addSkillXP(item.skill, item.skillXP);
+        setLog((prev) => [
+          `\u2705 Task Completed: [${item.title}]. Received ₡${item.reward} Credits, +${item.xp} XP, and +${item.skillXP} ${item.skill} XP!`,
+          ...prev
+        ]);
+      } else if (type === 'shift') {
+        addCredits(item.reward);
+        addXP(item.xp);
+        addCareerXP(key, item.careerXP);
+        const rankList = careerTracks[key].ranks;
+        const currentRankIdx = player.careers[key]?.rankIndex || 0;
+        const nextRank = rankList[currentRankIdx + 1];
+        const nextXP = (player.careers[key]?.xp || 0) + item.careerXP;
+        
+        let promoMsg = '';
+        if (nextXP >= 100 && currentRankIdx < rankList.length - 1) {
+          promoMsg = ` \uD83C\uDF89 PROMOTED to Rank [${nextRank}]!`;
+        }
+
+        setLog((prev) => [
+          `💼 Shift Complete: [${item.title}]. Gained ₡${item.reward} Credits, +${item.xp} XP, and +${item.careerXP} Career XP for ${careerTracks[key].name}.${promoMsg}`,
+          ...prev
+        ]);
+      }
+    };
+
+    return (
+      <div className="flex h-full w-full bg-slate-950 text-white font-mono text-xs select-none">
+        {/* Sidebar Nav */}
+        <div className="w-48 border-r border-white/10 bg-slate-900/60 p-4 space-y-1 shrink-0">
+          <button
+            onClick={() => setActiveSection('board')}
+            className={`flex w-full items-center gap-2 rounded-lg px-3 py-2 text-left transition ${
+              activeSection === 'board' ? 'bg-white/15 text-white font-semibold' : 'text-white/70 hover:bg-white/10'
+            }`}
+          >
+            <span>📋 Notice Board</span>
+          </button>
+          <button
+            onClick={() => setActiveSection('careers')}
+            className={`flex w-full items-center gap-2 rounded-lg px-3 py-2 text-left transition ${
+              activeSection === 'careers' ? 'bg-white/15 text-white font-semibold' : 'text-white/70 hover:bg-white/10'
+            }`}
+          >
+            <span>💼 Job Center</span>
+          </button>
+          <button
+            onClick={() => setActiveSection('skills')}
+            className={`flex w-full items-center gap-2 rounded-lg px-3 py-2 text-left transition ${
+              activeSection === 'skills' ? 'bg-white/15 text-white font-semibold' : 'text-white/70 hover:bg-white/10'
+            }`}
+          >
+            <span>📈 Skills Grid</span>
+          </button>
+        </div>
+
+        {/* Main Section */}
+        <div className="flex flex-1 flex-col overflow-hidden">
+          <div className="flex-1 overflow-auto p-5 space-y-4">
+            {progressing && (
+              <div className="rounded-xl border border-cyan-500/30 bg-cyan-500/5 p-4 text-center space-y-2 animate-pulse">
+                <div className="font-bold text-cyan-300">Working: {progressing.name} ({actionProgress}%)</div>
+                <div className="h-2 w-full rounded bg-white/10 overflow-hidden max-w-sm mx-auto">
+                  <div className="h-full bg-cyan-500 transition-all duration-300" style={{ width: `${actionProgress}%` }} />
+                </div>
+              </div>
+            )}
+
+            {activeSection === 'board' && !progressing && (
+              <div className="space-y-3">
+                <div>
+                  <h2 className="text-sm font-bold text-cyan-400">Notice Board Bulletin</h2>
+                  <p className="text-[10px] text-white/50">Accept micro-tasks to hone your academic skills.</p>
+                </div>
+                <div className="space-y-2">
+                  {tasks.map((task) => (
+                    <div key={task.id} className="rounded-xl border border-white/10 bg-white/5 p-3 flex items-center justify-between">
+                      <div className="space-y-1">
+                        <div className="font-bold text-white">{task.title}</div>
+                        <div className="text-[10px] text-white/40">{task.desc}</div>
+                        <div className="text-[9px] text-cyan-300">Gains: +{task.skillXP} {task.skill} XP | +₡{task.reward} Credits</div>
+                      </div>
+                      <button
+                        onClick={() => handleStartAction('task', task)}
+                        className="rounded bg-cyan-500 px-3 py-1 text-[10px] font-bold text-black hover:bg-cyan-400"
+                      >
+                        Accept
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {activeSection === 'careers' && !progressing && (
+              <div className="space-y-4">
+                <div>
+                  <h2 className="text-sm font-bold text-cyan-400">Student Placement Careers</h2>
+                  <p className="text-[10px] text-white/50">Work shifts to gain professional rank promotions.</p>
+                </div>
+
+                <div className="space-y-3">
+                  {Object.entries(careerTracks).map(([key, value]) => {
+                    const currentRankIdx = player.careers[key]?.rankIndex || 0;
+                    const currentRank = value.ranks[currentRankIdx];
+                    const currentXP = player.careers[key]?.xp || 0;
+                    return (
+                      <div key={key} className="rounded-xl border border-white/10 bg-white/5 p-4 space-y-3">
+                        <div className="flex justify-between items-start">
+                          <div>
+                            <div className="font-bold text-sm text-cyan-300">{value.name}</div>
+                            <div className="text-[10px] text-white/60">Rank: <span className="font-bold text-white">{currentRank}</span> (Level {currentRankIdx + 1})</div>
+                          </div>
+                          <span className="text-[10px] text-white/40">XP: {currentXP} / 100</span>
+                        </div>
+
+                        <div className="h-1.5 w-full rounded bg-white/5 overflow-hidden">
+                          <div className="h-full bg-cyan-500" style={{ width: `${currentXP}%` }} />
+                        </div>
+
+                        <div className="flex justify-between items-center pt-2 border-t border-white/5">
+                          <div className="text-[9px] text-emerald-400">Shift Shift: +{value.shifts.careerXP} Career XP | +₡{value.shifts.reward} Credits</div>
+                          <button
+                            onClick={() => handleStartAction('shift', value.shifts, key)}
+                            className="rounded bg-cyan-500 px-3 py-1 text-[10px] font-bold text-black hover:bg-cyan-400"
+                          >
+                            Work Shift
+                          </button>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
+
+            {activeSection === 'skills' && !progressing && (
+              <div className="space-y-3">
+                <div>
+                  <h2 className="text-sm font-bold text-cyan-400">Academic Skill Register</h2>
+                  <p className="text-[10px] text-white/50">Your current proficiency levels across the 9 core subjects.</p>
+                </div>
+
+                <div className="grid grid-cols-2 gap-3">
+                  {Object.entries(player.skills).map(([name, data]) => {
+                    const nextLevelXP = data.level * 150;
+                    const pct = (data.xp / nextLevelXP) * 100;
+                    return (
+                      <div key={name} className="rounded-xl border border-white/10 bg-white/5 p-3 space-y-1.5">
+                        <div className="flex justify-between font-bold text-white">
+                          <span>{name}</span>
+                          <span className="text-cyan-300">Lv. {data.level}</span>
+                        </div>
+                        <div className="h-1.5 w-full rounded bg-white/5 overflow-hidden">
+                          <div className="h-full bg-cyan-500" style={{ width: `${pct}%` }} />
+                        </div>
+                        <div className="text-[8px] text-white/40 text-right">XP: {data.xp} / {nextLevelXP}</div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* Console footer logs */}
+          <div className="h-28 border-t border-white/10 bg-black/40 p-4 font-mono text-[9px] text-green-400 overflow-auto flex flex-col-reverse gap-1 select-text shrink-0">
+            {log.map((entry, idx) => (
+              <div key={idx}>{entry}</div>
+            ))}
+          </div>
+        </div>
+      </div>
+    );
+  };
+
   return (
     <div className="flex h-full w-full flex-col bg-slate-950 text-white">
       {/* Player Header Bar */}
@@ -292,6 +563,7 @@ export default function GameHubApp() {
           {selectedGame === 'netrunner' && <NetrunnerGame />}
           {selectedGame === 'quests' && <QuestRunnerGame />}
           {selectedGame === 'voidrift' && <VoidRiftGame />}
+          {selectedGame === 'jobs' && <JobsBoardGame />}
         </div>
       ) : (
         <div className="flex-1 overflow-auto p-6">

@@ -38,7 +38,7 @@ const FACTION_BY_ID = indexBy(factions, 'Faction_ID');
 const NPC_BY_ID = indexBy(npcs, 'NPC_ID');
 const CAREER_BY_ID = indexBy(careers, 'Career_ID');
 const MODULE_BY_ID = indexBy(modules, 'Module_ID');
-const APP_BY_ID = indexBy(apps, 'App_ID');
+const APP_BY_ID = indexBy(gameApps, 'App_ID');
 const LORE_BY_ID = indexBy(lore, 'Lore_ID');
 const EVENT_BY_ID = indexBy(events, 'Event_ID');
 
@@ -64,7 +64,7 @@ export const eventsInRegion = (regionId) => where(events, 'Region_ID', regionId)
 export const eventsForFaction = (factionId) => where(events, 'Faction_ID', factionId);
 export const loreForRegion = (regionId) => where(lore, 'Region_ID', regionId);
 export const loreForFaction = (factionId) => where(lore, 'Faction_ID', factionId);
-export const appsByFaction = (factionId) => where(apps, 'Developer_Faction_ID', factionId);
+export const appsByFaction = (factionId) => where(gameApps, 'Developer_Faction_ID', factionId);
 export const careersInRegion = (regionId) => where(careers, 'Starting_Region_ID', regionId);
 export const modulesByTier = (tier) => modules.filter((m) => m.Tier === tier);
 

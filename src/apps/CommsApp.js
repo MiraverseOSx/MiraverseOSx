@@ -12,89 +12,127 @@ export default function CommsApp() {
   const addCredits = useOSStore((s) => s.addCredits);
   const addXP = useOSStore((s) => s.addXP);
 
-  // Initial NPC Emails
+  // Initial GDD Starter Emails
   const [emails, setEmails] = useState([
     {
       id: 'MSG-001',
-      sender: 'Commander Vex Halvorn',
-      faction: 'The Ironveil Empire',
-      subject: 'URGENT: Ironspire Patrol Clearance & Conscription',
-      time: '09:42 AM',
+      sender: 'Cyacademy Registration Office',
+      faction: 'Cyacademy Admin',
+      subject: 'Welcome to MIRAVERSEOSX',
+      time: '08:00 AM',
       read: false,
-      attachment: { type: 'credits', amount: 300, claimed: false },
-      body: `Citizen,
+      attachment: { type: 'credits', amount: 100, name: 'REGISTRATION_CARD.pdf', claimed: false },
+      body: `Welcome, player.
+      
+Your provisional Cyacademy registration has been received. Your record currently contains no verified credits, no active contacts, no declared career track, no reputation standing, and no confirmed housing beyond temporary placement.
 
-The Ironveil Empire has issued a Level 6 security protocol across the Ironspire perimeter. Your neural signature has been granted temporary clearance for all military zones.
+This is expected. MIRAVERSEOSX begins from a clean state so every player builds their identity through choices, work, study, relationships, and discovery.
 
-We require independent contractors to assist in monitoring the Shattered Peaks border. Attached is your advance compensation token. Report to Ironclaw Keep if you accept the directive.
-
-- Commander Vex Halvorn
-Supreme Military Command, Ironspire`,
+Regards,
+Registration Office`,
     },
     {
       id: 'MSG-002',
-      sender: 'Drift',
-      faction: 'The Drifters',
-      subject: 'ShadowChat Dead Drop: Syndicate Bypass Code',
-      time: '08:15 AM',
+      sender: 'MIRAVERSEOSX Account Services',
+      faction: 'System Services',
+      subject: 'Your Temporary Login Credentials',
+      time: '08:05 AM',
       read: false,
-      attachment: { type: 'credits', amount: 200, claimed: false },
-      body: `Hey,
+      attachment: null,
+      body: `Temporary access has been generated for player.
+      
+Initial permissions include Mail, File Explorer, Settings, and limited desktop navigation. 
 
-Word on the street is the Obsidian Syndicate is locking down the Neon Sprawl black market tonight. I left an encryption bypass key in your vault.
-
-Don't let Halvorn's scouts see you using it. Use the attached credits to grab extra data chips. Catch you on the ShadowChat feed.
-
-- Drift
-Off-Grid Netrunner`,
+Additional applications, folders, websites, and communication channels will unlock as player completes orientation tasks and earns system trust.`,
     },
     {
       id: 'MSG-003',
-      sender: 'Councilor Zephyra Nox',
-      faction: 'The Verdant Republic',
-      subject: 'Invitation to the Citadel Summit',
-      time: 'Yesterday',
-      read: true,
-      attachment: null,
-      body: `Greetings,
+      sender: 'Cyacademy Residential Services',
+      faction: 'Cyacademy Admin',
+      subject: 'Housing Assignment: Dorm Access Pending',
+      time: '08:10 AM',
+      read: false,
+      attachment: { type: 'credits', amount: 150, name: 'DORM_KEY.ics', claimed: false },
+      body: `Player has been assigned a starter dorm room pending arrival confirmation. 
 
-On behalf of the Verdant Republic Council, you are formally invited to attend the upcoming Citadel Summit. All major faction delegates will convene in the High Chamber.
+The room includes basic sleep access, minimal storage, and default furnishings only. Upgrades, decorations, visitors, and expanded property options must be earned through credits, reputation, permissions, and progression.
 
-We require discreet observers to ensure the accords remain intact. Please review your lore archive prior to arrival.
-
-Warm regards,
-Councilor Zephyra Nox`,
+- Residential Services`,
     },
     {
       id: 'MSG-004',
-      sender: 'ORACLE-9',
-      faction: 'Independent AI',
-      subject: 'SYSTEM ALERT: AETHERCORE Fragment Detected',
-      time: '03:14 AM',
+      sender: 'Aureline Civic Identity Bureau',
+      faction: 'Civic Bureau',
+      subject: 'Aura Passport Activation Required',
+      time: '08:15 AM',
       read: false,
-      attachment: { type: 'credits', amount: 500, claimed: false },
-      body: `[ENCRYPTED TRANSMISSION - PRIORITY ALPHA]
+      attachment: { type: 'credits', amount: 50, name: 'AURA_CONSENT_FORM.pdf', claimed: false },
+      body: `Player’s Aura Passport is currently inactive. 
 
-Anomalous signal origin verified: AETHERCORE First Forbidden OS fragment detected in Undervault Sector 7.
-
-Probability of reality fracture: 42.7%.
-Action required: Query database tables. Proceed with extreme caution.
-
-01001111 01010010 01000001 01000011 01001100 01000101`,
+Open Aura Passport to confirm basic identity fields, student status, and provisional clearance. Aura records, reputation standings, medical history, property records, and restricted lineage fields will remain blank until verified through gameplay.`,
     },
     {
       id: 'MSG-005',
-      sender: 'Sable',
-      faction: 'The Void Walkers',
-      subject: 'Rift Anchor Fluctuations in Sector 8',
-      time: '2 days ago',
-      read: true,
+      sender: 'Faith Medical Group',
+      faction: 'Faith Medical',
+      subject: 'Faith Medical Portal Registration',
+      time: '08:20 AM',
+      read: false,
+      attachment: { type: 'credits', amount: 100, name: 'INTAKE_SCAN_REQUEST.pdf', claimed: false },
+      body: `Faith Medical Group has created a basic patient record for player. No diagnostics are currently on file. 
+
+Visit faithmed.aure in Browser to review the patient portal, schedule an intake scan, and activate aura health tracking. Some records may remain restricted until proper clearance is granted.`,
+    },
+    {
+      id: 'MSG-006',
+      sender: 'MIRAVERSEOSX Comms Services',
+      faction: 'System Services',
+      subject: 'Communications Setup Notice',
+      time: '08:25 AM',
+      read: false,
       attachment: null,
-      body: `The Void does not sleep.
+      body: `Player currently has no saved contacts. 
 
-The Rift Core is crackling again. I felt the echo of the previous world ripple through the Veil Sanctum this morning.
+- Phone handles calls, texts, voicemail, contacts, and emergencies. 
+- Comms handles OS-native direct messages, group channels, system alerts, and encrypted rooms. 
+- Mail handles official messages and records. 
+- ChatMeet handles scheduled calls and meetings. 
+- Pulse handles public posts and reputation. 
 
-If you venture near the Void Rift, carry a Void Anchor. The boundary is growing thin.`,
+Communication access expands as player meets people and earns trust.`,
+    },
+    {
+      id: 'MSG-007',
+      sender: 'Cyacademy Student Systems',
+      faction: 'Cyacademy Admin',
+      subject: 'Notice Board Access Granted',
+      time: '08:30 AM',
+      read: false,
+      attachment: null,
+      body: `Player has been granted access to the Notice Board. 
+
+- Tasks are small to-dos. 
+- Quests grant XP, credits, lore, reputation, or items. 
+- Missions come from jobs and career organizations. 
+- Adventures are larger events or arcs. 
+- The Journey is the ongoing life path and does not end permanently.`,
+    },
+    {
+      id: 'MSG-008',
+      sender: 'Dean Cassian Rook',
+      faction: 'Cyacademy Faculty',
+      subject: 'Orientation Schedule: Day One',
+      time: '08:35 AM',
+      read: false,
+      attachment: { type: 'credits', amount: 200, name: 'DAY_ONE_SCHEDULE.ics', claimed: false },
+      body: `Player, welcome to Cyacademy. 
+
+Your first day is simple: confirm registration, activate Aura Passport, check your dorm assignment, review the Notice Board, and attend orientation. 
+
+Do not enter restricted areas. Do not attempt to access the Old Factory Ward. If the operating system behaves strangely, report the incident before investigating alone.
+
+- Cassian Rook
+Dean of Students`,
     },
   ]);
 
@@ -112,7 +150,9 @@ If you venture near the Void Rift, carry a Void Anchor. The boundary is growing 
         if (m.id === mailId && m.attachment && !m.attachment.claimed) {
           addCredits(m.attachment.amount);
           addXP(m.attachment.amount / 2);
-          return { ...m, attachment: { ...m.attachment, claimed: true } };
+          const updatedMail = { ...m, attachment: { ...m.attachment, claimed: true } };
+          setSelectedMail(updatedMail);
+          return updatedMail;
         }
         return m;
       })
@@ -264,9 +304,9 @@ If you venture near the Void Rift, carry a Void Anchor. The boundary is growing 
                   {selectedMail.attachment && (
                     <div className="flex items-center justify-between rounded-xl border border-emerald-500/40 bg-emerald-500/10 p-3">
                       <div className="flex items-center gap-2">
-                        <span className="text-lg">🎁</span>
+                        <span className="text-lg">📎</span>
                         <div>
-                          <div className="font-bold text-emerald-300">Attached Funds Token</div>
+                          <div className="font-bold text-emerald-300">{selectedMail.attachment.name || 'Attached Funds'}</div>
                           <div className="text-[10px] text-emerald-400/80">Value: ₡{selectedMail.attachment.amount} Credits + {selectedMail.attachment.amount / 2} XP</div>
                         </div>
                       </div>

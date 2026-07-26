@@ -25,6 +25,26 @@ export const useOSStore = create((set) => ({
       xp: 0,
       completedQuests: [],
       hackedNodes: 0,
+      auraHealth: 100,
+      conditions: ['Veilwilt'],
+      forgedSpells: [],
+      lineageDecrypted: false,
+      skills: {
+        Programming: { level: 1, xp: 0 },
+        Networking: { level: 1, xp: 0 },
+        Spellcasting: { level: 1, xp: 0 },
+        Engineering: { level: 1, xp: 0 },
+        Communication: { level: 1, xp: 0 },
+        Creativity: { level: 1, xp: 0 },
+        Research: { level: 1, xp: 0 },
+        CyberSecurity: { level: 1, xp: 0 },
+        Cryptography: { level: 1, xp: 0 },
+      },
+      careers: {
+        medical: { rankIndex: 0, xp: 0 },
+        dga: { rankIndex: 0, xp: 0 },
+        gov: { rankIndex: 0, xp: 0 },
+      },
     },
   },
 
@@ -103,6 +123,147 @@ export const useOSStore = create((set) => ({
           player: {
             ...state.gameplay.player,
             completedQuests: [...state.gameplay.player.completedQuests, questId],
+          },
+        },
+      };
+    }),
+
+  incrementHackedNodes: () =>
+    set((state) => ({
+      gameplay: {
+        ...state.gameplay,
+        player: {
+          ...state.gameplay.player,
+          hackedNodes: state.gameplay.player.hackedNodes + 1,
+        },
+      },
+    })),
+
+  damageAura: (amount) =>
+    set((state) => ({
+      gameplay: {
+        ...state.gameplay,
+        player: {
+          ...state.gameplay.player,
+          auraHealth: Math.max(0, state.gameplay.player.auraHealth - amount),
+        },
+      },
+    })),
+
+  healAura: (amount) =>
+    set((state) => ({
+      gameplay: {
+        ...state.gameplay,
+        player: {
+          ...state.gameplay.player,
+          auraHealth: Math.min(100, state.gameplay.player.auraHealth + amount),
+        },
+      },
+    })),
+
+  addCondition: (name) =>
+    set((state) => {
+      if (state.gameplay.player.conditions.includes(name)) return state;
+      return {
+        gameplay: {
+          ...state.gameplay,
+          player: {
+            ...state.gameplay.player,
+            conditions: [...state.gameplay.player.conditions, name],
+          },
+        },
+      };
+    }),
+
+  removeCondition: (name) =>
+    set((state) => ({
+      gameplay: {
+        ...state.gameplay,
+        player: {
+          ...state.gameplay.player,
+          conditions: state.gameplay.player.conditions.filter((c) => c !== name),
+        },
+      },
+    })),
+
+  clearConditions: () =>
+    set((state) => ({
+      gameplay: {
+        ...state.gameplay,
+        player: {
+          ...state.gameplay.player,
+          conditions: [],
+        },
+      },
+    })),
+
+  addForgedSpell: (name) =>
+    set((state) => {
+      if (state.gameplay.player.forgedSpells.includes(name)) return state;
+      return {
+        gameplay: {
+          ...state.gameplay,
+          player: {
+            ...state.gameplay.player,
+            forgedSpells: [...state.gameplay.player.forgedSpells, name],
+          },
+        },
+      };
+    }),
+
+  decryptLineage: () =>
+    set((state) => ({
+      gameplay: {
+        ...state.gameplay,
+        player: {
+          ...state.gameplay.player,
+          lineageDecrypted: true,
+        },
+      },
+    })),
+
+  addSkillXP: (skillName, amount) =>
+    set((state) => {
+      const current = state.gameplay.player.skills[skillName] || { level: 1, xp: 0 };
+      let newXP = current.xp + amount;
+      const nextLevelXP = current.level * 150;
+      let newLevel = current.level;
+      if (newXP >= nextLevelXP) {
+        newXP -= nextLevelXP;
+        newLevel += 1;
+      }
+      return {
+        gameplay: {
+          ...state.gameplay,
+          player: {
+            ...state.gameplay.player,
+            skills: {
+              ...state.gameplay.player.skills,
+              [skillName]: { level: newLevel, xp: newXP },
+            },
+          },
+        },
+      };
+    }),
+
+  addCareerXP: (track, amount) =>
+    set((state) => {
+      const current = state.gameplay.player.careers[track] || { rankIndex: 0, xp: 0 };
+      let newXP = current.xp + amount;
+      let newRankIndex = current.rankIndex;
+      if (newXP >= 100) {
+        newXP -= 100;
+        newRankIndex = Math.min(5, current.rankIndex + 1);
+      }
+      return {
+        gameplay: {
+          ...state.gameplay,
+          player: {
+            ...state.gameplay.player,
+            careers: {
+              ...state.gameplay.player.careers,
+              [track]: { rankIndex: newRankIndex, xp: newXP },
+            },
           },
         },
       };

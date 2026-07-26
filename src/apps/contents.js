@@ -3,6 +3,8 @@ import { miraverseDb } from '../db/miraverseDb';
 import { useOSStore } from '../store/useOSStore';
 import GameHubApp from '../games/GameHubApp';
 import CommsApp from './CommsApp';
+import SpellForgeApp from './SpellForgeApp';
+import AuraPassportApp from './AuraPassportApp';
 
 const Panel = ({ children }) => (
   <div className="h-full w-full overflow-auto p-6 text-sm leading-relaxed text-white/80">
@@ -321,11 +323,11 @@ const About = () => (
     <div className="space-y-4">
       <h2 className="text-lg font-semibold text-white">MiraverseOSx</h2>
       <p className="text-white/70">
-        A web-based macOS environment directly referencing the <code className="text-cyan-300">miraverse_azure.sql</code> database.
+        A web-based macOS environment directly referencing the <code className="text-cyan-300">miraverse.db</code> SQLite database.
       </p>
       <div className="rounded-lg border border-white/10 bg-black/40 p-4 text-xs space-y-1">
         <div><span className="text-white/50">OS Version:</span> 0.1.0</div>
-        <div><span className="text-white/50">Database File:</span> miraverse_azure.sql (Integrated)</div>
+        <div><span className="text-white/50">Database File:</span> miraverse.db (Integrated)</div>
         <div><span className="text-white/50">Appwrite Cloud Sync:</span> Active Bridge</div>
       </div>
     </div>
@@ -336,6 +338,8 @@ export const CONTENTS = {
   files: Files,
   comms: CommsApp,
   gamehub: GameHubApp,
+  spellforge: SpellForgeApp,
+  passport: AuraPassportApp,
   terminal: TerminalApp,
   browser: Browser,
   settings: SettingsApp,
