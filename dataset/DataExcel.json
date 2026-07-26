@@ -1,0 +1,26 @@
+{
+	"name": "DataExcel",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "miraverseblob",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Excel",
+		"typeProperties": {
+			"sheetName": "Lore_Entries",
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "MIRAVERSEOSX Game Design Document.xlsx",
+				"container": "miraverseosx-data"
+			},
+			"firstRowAsHeader": true
+		},
+		"schema": [
+			{
+				"name": "MIRAVERSEOSX — World Lore Database",
+				"type": "String"
+			}
+		]
+	}
+}
