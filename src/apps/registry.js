@@ -1,9 +1,10 @@
-import { Folder, Gamepad2, Terminal, Globe, Settings, Info } from 'lucide-react';
+import { Folder, Mail, Gamepad2, Terminal, Globe, Settings, Info } from 'lucide-react';
 import { miraverseDb } from '../db/miraverseDb';
 
 // Icon mapping per app ID
 const ICON_MAP = {
   files: Folder,
+  comms: Mail,
   gamehub: Gamepad2,
   terminal: Terminal,
   browser: Globe,

@@ -55,6 +55,7 @@ export const NPCS = [
 
 export const APPS = [
   { id: 'files', title: 'Files', category: 'Utility', dev: 'FAC002', version: '1.0.0', primary: 'File system & lore archive explorer', lore: 'System file explorer for browsing documents, logs, and database records.' },
+  { id: 'comms', title: 'Comms', category: 'Communication', dev: 'FAC006', version: '2.9.7', primary: 'Encrypted email portal & ShadowChat feed', lore: 'Communication portal for receiving NPC transmissions and Drifter mesh chat.' },
   { id: 'gamehub', title: 'Game Hub', category: 'Gaming', dev: 'FAC006', version: '1.2.0', primary: 'Interactive mini-games & quest engine', lore: 'Game launcher for Netrunner hacking, Faction quests, and Void Rift challenges.' },
   { id: 'terminal', title: 'Terminal', category: 'Intelligence', dev: 'FAC006', version: '2.1.0', primary: 'Command line interface & live SQL query shell', lore: 'Monochrome terminal interface for executing database commands and scripts.' },
   { id: 'browser', title: 'Browser', category: 'Navigation', dev: 'FAC002', version: '4.2.1', primary: 'Miraverse Web Portal & regional web browser', lore: 'Browser for viewing live net portals across the Miraverse.' },

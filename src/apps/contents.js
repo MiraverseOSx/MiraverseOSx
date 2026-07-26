@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { miraverseDb } from '../db/miraverseDb';
 import { useOSStore } from '../store/useOSStore';
 import GameHubApp from '../games/GameHubApp';
+import CommsApp from './CommsApp';
 
 const Panel = ({ children }) => (
   <div className="h-full w-full overflow-auto p-6 text-sm leading-relaxed text-white/80">
@@ -333,6 +334,7 @@ const About = () => (
 
 export const CONTENTS = {
   files: Files,
+  comms: CommsApp,
   gamehub: GameHubApp,
   terminal: TerminalApp,
   browser: Browser,
