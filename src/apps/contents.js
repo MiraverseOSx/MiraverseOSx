@@ -180,13 +180,13 @@ const TerminalApp = () => {
         </pre>
       ))}
       <div className="mt-2 flex items-center gap-2">
-        <span className="text-cyan-400">guest@miraverse:~$</span>
+        <span className="text-[#B47CD8] font-bold text-sm tracking-wide">miraverse@osx:~$</span>
         <input
           type="text"
           value={input}
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={handleCommand}
-          className="flex-1 bg-transparent text-green-400 outline-none"
+          className="flex-1 bg-transparent text-[#C788F0] font-mono text-xs outline-none"
           autoFocus
           placeholder="Type SQL or CLI command..."
         />
@@ -315,25 +315,6 @@ const SettingsApp = () => {
   );
 };
 
-// ----------------------------------------------------------------------
-// About App
-// ----------------------------------------------------------------------
-const About = () => (
-  <Panel>
-    <div className="space-y-4">
-      <h2 className="text-lg font-semibold text-white">MiraverseOSx</h2>
-      <p className="text-white/70">
-        A web-based macOS environment directly referencing the <code className="text-cyan-300">miraverse.db</code> SQLite database.
-      </p>
-      <div className="rounded-lg border border-white/10 bg-black/40 p-4 text-xs space-y-1">
-        <div><span className="text-white/50">OS Version:</span> 0.1.0</div>
-        <div><span className="text-white/50">Database File:</span> miraverse.db (Integrated)</div>
-        <div><span className="text-white/50">Appwrite Cloud Sync:</span> Active Bridge</div>
-      </div>
-    </div>
-  </Panel>
-);
-
 export const CONTENTS = {
   files: Files,
   comms: CommsApp,
@@ -343,7 +324,6 @@ export const CONTENTS = {
   terminal: TerminalApp,
   browser: Browser,
   settings: SettingsApp,
-  about: About,
 };
 
 export const getContent = (key) => CONTENTS[key] || (() => <Panel>Nothing here yet.</Panel>);

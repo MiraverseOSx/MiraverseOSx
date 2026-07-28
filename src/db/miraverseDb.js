@@ -17,7 +17,7 @@ import {
 // MIRAVERSEOSX | Database Engine rewired from SQLite data exports
 // ================================================================
 
-// Shell APPS - The 9 launchable OS desktop utilities
+// Shell APPS - The 8 launchable OS desktop utilities
 export const APPS = [
   { id: 'files', title: 'Files', category: 'Utility', dev: 'FAC002', version: '1.0.0', primary: 'File system & lore archive explorer', lore: 'System file explorer for browsing documents, logs, and database records.' },
   { id: 'comms', title: 'Comms', category: 'Communication', dev: 'FAC006', version: '2.9.7', primary: 'Encrypted email portal & ShadowChat feed', lore: 'Communication portal for receiving NPC transmissions and Drifter mesh chat.' },
@@ -26,8 +26,7 @@ export const APPS = [
   { id: 'passport', title: 'Aura Passport', category: 'Utility/Identity', dev: 'FAC002', version: '1.1.0', primary: 'Student profile, aura status, and medical registry', lore: 'Displays student clearance, active aura networks, Faith Medical records, and lineage clearance.' },
   { id: 'terminal', title: 'Terminal', category: 'Intelligence', dev: 'FAC006', version: '2.1.0', primary: 'Command line interface & live SQL query shell', lore: 'Monochrome terminal interface for executing database commands and scripts.' },
   { id: 'browser', title: 'Browser', category: 'Navigation', dev: 'FAC002', version: '4.2.1', primary: 'Miraverse Web Portal & regional web browser', lore: 'Browser for viewing live net portals across the Miraverse.' },
-  { id: 'settings', title: 'Settings', category: 'Utility', dev: 'FAC005', version: '3.0.0', primary: 'System preferences & DB statistics monitor', lore: 'System control panel and database status reader.' },
-  { id: 'about', title: 'About', category: 'Social', dev: 'FAC002', version: '0.1.0', primary: 'MiraverseOSx system specifications & build info', lore: 'System architecture & version information.' }
+  { id: 'settings', title: 'Settings', category: 'Utility', dev: 'FAC005', version: '3.0.0', primary: 'System preferences & DB statistics monitor', lore: 'System control panel and database status reader.' }
 ];
 
 export const REGIONS = realRegions.map((r) => {

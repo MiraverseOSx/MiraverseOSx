@@ -1,4 +1,4 @@
-import { Folder, Mail, Gamepad2, Terminal, Globe, Settings, Info, Sparkles, UserCheck } from 'lucide-react';
+import { Folder, Mail, Gamepad2, Terminal, Globe, Settings, Sparkles, UserCheck } from 'lucide-react';
 import { miraverseDb } from '../db/miraverseDb';
 
 // Icon mapping per app ID
@@ -11,7 +11,6 @@ const ICON_MAP = {
   terminal: Terminal,
   browser: Globe,
   settings: Settings,
-  about: Info,
 };
 
 // Populate launchable APPS list dynamically from miraverseDb
