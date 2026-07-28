@@ -38,6 +38,7 @@ export default function SpellForgeApp() {
   const addForgedSpell = useOSStore((s) => s.addForgedSpell);
   const addCredits = useOSStore((s) => s.addCredits);
   const addXP = useOSStore((s) => s.addXP);
+  const purgePrismCorruption = useOSStore((s) => s.purgePrismCorruption);
   const incrementAppRank = useOSStore((s) => s.incrementAppRank);
   const weaverRank = player.appRanks?.weaver || 1;
 
@@ -110,6 +111,7 @@ export default function SpellForgeApp() {
       addCredits(threat.reward);
       addXP(threat.reward / 2);
       healAura(10);
+      purgePrismCorruption(2.5);
       setLog((prev) => [
         `✨ Cleanse Successful! [${threat.name}] purged. +₡${threat.reward} Credits, +${threat.reward / 2} XP, Aura restored.`,
         ...prev

@@ -1,4 +1,3 @@
-import { databases } from '../appwrite';
 import {
   regions as realRegions,
   houses as realHouses,
@@ -17,7 +16,6 @@ import {
 // MIRAVERSEOSX | Database Engine rewired from SQLite data exports
 // ================================================================
 
-// Shell APPS - The 8 launchable OS desktop utilities
 export const APPS = [
   { id: 'files', title: 'Files', category: 'Utility', dev: 'FAC002', version: '1.0.0', primary: 'File system & lore archive explorer', lore: 'System file explorer for browsing documents, logs, and database records.' },
   { id: 'comms', title: 'Comms', category: 'Communication', dev: 'FAC006', version: '2.9.7', primary: 'Encrypted email portal & ShadowChat feed', lore: 'Communication portal for receiving NPC transmissions and Drifter mesh chat.' },
@@ -186,7 +184,7 @@ export const miraverseDb = {
         realApps.length +
         LORE_ENTRIES.length +
         EVENTS.length,
-      appwriteStatus: databases ? 'Connected' : 'Offline Mode',
+      appwriteStatus: 'Offline Mode (Local JSON DB)',
     };
   },
 };

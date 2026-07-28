@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useOSStore } from '../store/useOSStore';
 import { APPS } from '../apps/registry';
 import Window from './Window';
 import PhoneWidget from './PhoneWidget';
 import SparklesCanvas from './SparklesCanvas';
-import { Search, Mic, Power, Settings, Wifi } from 'lucide-react';
+import BulletinWidget from './BulletinWidget';
+import { Search, Mic, Power, Settings, LayoutGrid, Wifi } from 'lucide-react';
 
 const formatClock = (date) =>
   date.toLocaleTimeString([], {
@@ -24,6 +25,8 @@ const formatDate = (date) =>
 export default function Desktop() {
   const [now, setNow] = useState(() => new Date());
   const [searchQuery, setSearchQuery] = useState('');
+  const [isLauncherOpen, setIsLauncherOpen] = useState(true);
+
   const windows = useOSStore((s) => s.windows);
   const toggleApp = useOSStore((s) => s.toggleApp);
   const clearActive = useOSStore((s) => s.clearActive);
@@ -33,11 +36,19 @@ export default function Desktop() {
     return () => clearInterval(id);
   }, []);
 
+  const handleLaunchApp = (app) => {
+    toggleApp(app);
+    setIsLauncherOpen(false);
+  };
+
   return (
     <div
       className="relative h-screen w-screen overflow-hidden bg-marble-y2k flex flex-col justify-between"
       onMouseDown={(e) => {
-        if (e.target === e.currentTarget) clearActive();
+        if (e.target === e.currentTarget) {
+          clearActive();
+          setIsLauncherOpen(false);
+        }
       }}
     >
       {/* ------------------------------------------------------------------ */}
@@ -96,59 +107,85 @@ export default function Desktop() {
       </div>
 
       {/* ------------------------------------------------------------------ */}
-      {/* CONNECTED START PANEL UNIT (App Drawer + Bottom Taskbar Base)      */}
+      {/* CONNECTED COLLAPSIBLE START PANEL UNIT                             */}
       {/* ------------------------------------------------------------------ */}
-      <div className="absolute left-0 bottom-0 z-20 flex flex-col items-stretch w-44 rounded-tr-2xl border-t border-r border-white/60 bg-[#E9DFFC] shadow-2xl overflow-hidden">
-        {/* App Tiles Grid matching mockup */}
-        <div className="p-3 space-y-3 max-h-[380px] overflow-auto">
-          <div className="grid grid-cols-2 gap-3">
-            {APPS.map((app, idx) => {
-              const Icon = app.icon;
-              return (
-                <button
-                  key={app.id}
-                  onClick={() => toggleApp(app)}
-                  className={`flex h-16 w-16 flex-col items-center justify-center rounded-xl transition shadow-sm ${
-                    idx === 1
-                      ? 'bg-[#FFD4E5] border border-pink-300' // Pink heart Notepad tile matching mockup
-                      : 'bg-[#DCD0F9] border border-purple-200 hover:bg-[#D4C5FA]'
-                  }`}
-                  title={app.title}
-                >
-                  <Icon size={22} className="text-purple-950" />
-                  <span className="mt-1 text-[9px] font-semibold text-purple-950 truncate max-w-[50px]">
-                    {app.title}
-                  </span>
-                </button>
-              );
-            })}
-          </div>
-        </div>
+      <div className="absolute left-0 bottom-0 z-30 flex flex-col items-stretch w-44 rounded-tr-2xl border-t border-r border-white/60 bg-[#E9DFFC] shadow-2xl overflow-hidden">
+        {/* Collapsible Vertical App Grid Drawer */}
+        <AnimatePresence>
+          {isLauncherOpen && (
+            <motion.div
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: 'auto', opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
+              transition={{ duration: 0.25, ease: 'easeInOut' }}
+              className="overflow-hidden"
+            >
+              <div className="p-3 space-y-3 max-h-[380px] overflow-auto">
+                <div className="grid grid-cols-2 gap-3">
+                  {APPS.map((app, idx) => {
+                    const Icon = app.icon;
+                    return (
+                      <button
+                        key={app.id}
+                        onClick={() => handleLaunchApp(app)}
+                        className={`flex h-16 w-16 flex-col items-center justify-center rounded-xl transition shadow-sm ${
+                          idx === 0
+                            ? 'bg-[#FFD4E5] border border-pink-300' // Pink tile for Bulletin Node matching mockup
+                            : 'bg-[#DCD0F9] border border-purple-200 hover:bg-[#D4C5FA]'
+                        }`}
+                        title={app.title}
+                      >
+                        <Icon size={22} className="text-purple-950" />
+                        <span className="mt-1 text-[9px] font-semibold text-purple-950 truncate max-w-[50px]">
+                          {app.title}
+                        </span>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
 
-        {/* Integrated Bottom Power & Settings Base matching mockup */}
-        <div className="flex h-14 items-center justify-around bg-[#DCD0F9] border-t border-white/50 px-4 shrink-0">
+        {/* Integrated Bottom Launcher Control Strip (Start Button + Power & Settings) */}
+        <div className="flex h-14 items-center justify-around bg-[#DCD0F9] border-t border-white/50 px-3 shrink-0">
+          <button
+            onClick={() => setIsLauncherOpen((prev) => !prev)}
+            className={`p-2 rounded-xl transition ${
+              isLauncherOpen ? 'bg-purple-950 text-white' : 'text-slate-800 hover:text-black hover:bg-white/40'
+            }`}
+            title={isLauncherOpen ? 'Put Down App Launcher' : 'Bring Up App Launcher'}
+          >
+            <LayoutGrid size={20} />
+          </button>
+
           <button
             onClick={() => alert('Power options')}
-            className="text-slate-800 hover:text-black transition"
+            className="text-slate-800 hover:text-black transition p-1.5"
             title="Power"
           >
-            <Power size={22} />
+            <Power size={20} />
           </button>
+          
           <button
-            onClick={() => toggleApp({ id: 'settings', title: 'Settings', contentKey: 'settings' })}
-            className="text-slate-800 hover:text-black transition"
+            onClick={() => handleLaunchApp({ id: 'settings', title: 'Settings', contentKey: 'settings' })}
+            className="text-slate-800 hover:text-black transition p-1.5"
             title="Settings"
           >
-            <Settings size={22} />
+            <Settings size={20} />
           </button>
         </div>
       </div>
 
       {/* ------------------------------------------------------------------ */}
-      {/* DESKTOP BODY CANVAS (Floating Windows, Phone Widget)               */}
+      {/* DESKTOP BODY CANVAS (Persistent Bulletin Widget, Windows, Phone)   */}
       {/* ------------------------------------------------------------------ */}
-      <div className="relative flex-1 flex items-center justify-between px-6 py-4">
-        {/* Center Canvas: Floating Windows */}
+      <div className="relative flex-1 flex items-center justify-center px-52 py-2">
+        {/* Persistent Cyacademy Bulletin Node Glass Desktop Widget */}
+        <BulletinWidget />
+
+        {/* Center Canvas: Floating OS Windows */}
         <AnimatePresence>
           {windows
             .filter((w) => !w.isMinimized)
@@ -164,11 +201,26 @@ export default function Desktop() {
       </div>
 
       {/* ------------------------------------------------------------------ */}
-      {/* BOTTOM TASKBAR (Center Strip, Status Clock Pill)                   */}
+      {/* BOTTOM TASKBAR (Center Strip, Window Tabs, Status Clock Pill)      */}
       {/* ------------------------------------------------------------------ */}
       <div className="relative z-10 flex h-14 w-full items-center">
-        {/* Center Mauve Taskbar Strip matching mockup */}
-        <div className="flex-1 h-full bg-[#DECFCF] border-t border-white/40 ml-44" />
+        {/* Center Mauve Taskbar Strip with Open Window Tabs */}
+        <div className="flex-1 h-full bg-[#DECFCF] border-t border-white/40 ml-44 flex items-center px-4 gap-2 overflow-x-auto">
+          {windows.map((win) => (
+            <button
+              key={win.id}
+              onClick={() => useOSStore.getState().focusWindow(win.id)}
+              className={`flex items-center gap-2 rounded-xl px-3.5 py-1.5 text-xs font-semibold transition shadow-sm border ${
+                win.id === useOSStore.getState().activeWindowId && !win.isMinimized
+                  ? 'bg-purple-950 text-white border-purple-900'
+                  : 'bg-white/70 text-slate-800 border-white/80 hover:bg-white'
+              }`}
+            >
+              <span className="truncate max-w-[100px]">{win.title}</span>
+              {win.isMinimized && <span className="text-[10px] text-amber-600 font-bold">•</span>}
+            </button>
+          ))}
+        </div>
 
         {/* Right White Status Pill matching mockup (clock 00:00, date 00/00/0000, wifi) */}
         <div className="absolute right-4 bottom-2 rounded-full bg-white/95 px-5 py-1.5 shadow-md border border-white flex items-center gap-3 text-xs font-serif-y2k text-slate-900 z-30">

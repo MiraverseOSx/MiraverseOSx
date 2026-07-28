@@ -1,10 +1,10 @@
 import { create } from 'zustand';
 
-const MENU_BAR_HEIGHT = 32;
+const MENU_BAR_HEIGHT = 70;
 
 // Cascade new windows so they don't stack perfectly on top of each other.
 const spawnPosition = (count) => ({
-  x: 120 + (count % 6) * 32,
+  x: 140 + (count % 6) * 32,
   y: MENU_BAR_HEIGHT + 32 + (count % 6) * 32,
 });
 
@@ -14,11 +14,13 @@ export const useOSStore = create((set) => ({
   wallpaper: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=2072&auto=format&fit=crop',
 
   // ------------------------------------------------------------------
-  // Gameplay State Lane (Independent from Window OS State)
+  // Gameplay State Lane (Cross-App Progression & Mechanics)
   // ------------------------------------------------------------------
   gameplay: {
     sessions: {},
     activeGameId: null,
+    prismCorruptionLevel: 14.8,
+    claimedComms: [],
     player: {
       level: 1,
       credits: 500,
@@ -122,6 +124,33 @@ export const useOSStore = create((set) => ({
         },
       };
     }),
+
+  claimCommsAttachment: (commId, credits, xp) =>
+    set((state) => {
+      if (state.gameplay.claimedComms.includes(commId)) return state;
+      const newXP = state.gameplay.player.xp + (xp || 50);
+      const newLevel = Math.floor(newXP / 100) + 1;
+      return {
+        gameplay: {
+          ...state.gameplay,
+          claimedComms: [...state.gameplay.claimedComms, commId],
+          player: {
+            ...state.gameplay.player,
+            credits: state.gameplay.player.credits + (credits || 100),
+            xp: newXP,
+            level: newLevel,
+          },
+        },
+      };
+    }),
+
+  purgePrismCorruption: (amount) =>
+    set((state) => ({
+      gameplay: {
+        ...state.gameplay,
+        prismCorruptionLevel: Math.max(2.0, Number((state.gameplay.prismCorruptionLevel - amount).toFixed(1))),
+      },
+    })),
 
   completeQuest: (questId) =>
     set((state) => {
@@ -325,9 +354,9 @@ export const useOSStore = create((set) => ({
   // Window Management & OS Controls
   // ------------------------------------------------------------------
   addWindow: (app) => set((state) => {
+    const maxZ = Math.max(100, ...state.windows.map((w) => w.zIndex || 100));
     const existing = state.windows.find((w) => w.id === app.id);
     if (existing) {
-      const maxZ = Math.max(0, ...state.windows.map((w) => w.zIndex));
       return {
         windows: state.windows.map((w) =>
           w.id === app.id ? { ...w, zIndex: maxZ + 1, isMinimized: false } : w
@@ -341,7 +370,7 @@ export const useOSStore = create((set) => ({
       contentKey: app.contentKey,
       ...app,
       id: app.id || Math.random().toString(36).substr(2, 9),
-      zIndex: state.windows.length + 10,
+      zIndex: maxZ + 1,
       isMinimized: false,
       isMaximized: false,
       position: app.position || spawnPosition(state.windows.length),
@@ -354,17 +383,17 @@ export const useOSStore = create((set) => ({
   }),
 
   toggleApp: (app) => set((state) => {
+    const maxZ = Math.max(100, ...state.windows.map((w) => w.zIndex || 100));
     const existing = state.windows.find((w) => w.id === app.id);
     if (existing) {
       if (state.activeWindowId === app.id && !existing.isMinimized) {
-        const remaining = state.windows.filter((w) => w.id !== app.id);
         return {
-          windows: remaining,
-          activeWindowId:
-            remaining.slice().sort((a, b) => b.zIndex - a.zIndex)[0]?.id || null,
+          windows: state.windows.map((w) =>
+            w.id === app.id ? { ...w, isMinimized: true } : w
+          ),
+          activeWindowId: state.windows.filter((w) => w.id !== app.id && !w.isMinimized).sort((a, b) => b.zIndex - a.zIndex)[0]?.id || null,
         };
       }
-      const maxZ = Math.max(0, ...state.windows.map((w) => w.zIndex));
       return {
         windows: state.windows.map((w) =>
           w.id === app.id ? { ...w, zIndex: maxZ + 1, isMinimized: false } : w
@@ -378,7 +407,7 @@ export const useOSStore = create((set) => ({
       contentKey: app.contentKey,
       ...app,
       id: app.id || Math.random().toString(36).substr(2, 9),
-      zIndex: state.windows.length + 10,
+      zIndex: maxZ + 1,
       isMinimized: false,
       isMaximized: false,
       position: app.position || spawnPosition(state.windows.length),
@@ -402,7 +431,7 @@ export const useOSStore = create((set) => ({
   }),
 
   focusWindow: (id) => set((state) => {
-    const maxZ = Math.max(0, ...state.windows.map((w) => w.zIndex));
+    const maxZ = Math.max(100, ...state.windows.map((w) => w.zIndex || 100));
     return {
       windows: state.windows.map((w) =>
         w.id === id ? { ...w, zIndex: maxZ + 1, isMinimized: false } : w

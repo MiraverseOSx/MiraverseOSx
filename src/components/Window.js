@@ -20,28 +20,41 @@ export default function Window({ win }) {
     if (win.isMaximized) return;
     if (e.target.closest('button')) return;
 
+    focusWindow(win.id);
     const startX = e.clientX;
     const startY = e.clientY;
     const initialX = win.position.x;
     const initialY = win.position.y;
+    const targetElement = e.currentTarget;
+
+    try {
+      targetElement.setPointerCapture(e.pointerId);
+    } catch (err) {
+      // Fallback
+    }
 
     const handlePointerMove = (moveEvent) => {
       const deltaX = moveEvent.clientX - startX;
       const deltaY = moveEvent.clientY - startY;
 
-      const newX = Math.max(0, Math.min(window.innerWidth - 100, initialX + deltaX));
-      const newY = Math.max(MENU_BAR_HEIGHT, Math.min(window.innerHeight - 100, initialY + deltaY));
+      const newX = Math.max(0, Math.min(window.innerWidth - 120, initialX + deltaX));
+      const newY = Math.max(MENU_BAR_HEIGHT, Math.min(window.innerHeight - 80, initialY + deltaY));
 
       moveWindow(win.id, { x: newX, y: newY });
     };
 
-    const handlePointerUp = () => {
-      window.removeEventListener('pointermove', handlePointerMove);
-      window.removeEventListener('pointerup', handlePointerUp);
+    const handlePointerUp = (upEvent) => {
+      try {
+        targetElement.releasePointerCapture(upEvent.pointerId);
+      } catch (err) {
+        // Fallback
+      }
+      targetElement.removeEventListener('pointermove', handlePointerMove);
+      targetElement.removeEventListener('pointerup', handlePointerUp);
     };
 
-    window.addEventListener('pointermove', handlePointerMove);
-    window.addEventListener('pointerup', handlePointerUp);
+    targetElement.addEventListener('pointermove', handlePointerMove);
+    targetElement.addEventListener('pointerup', handlePointerUp);
   };
 
   const maximizedStyle = {
@@ -59,10 +72,10 @@ export default function Window({ win }) {
 
   return (
     <motion.div
-      initial={{ scale: 0.95, opacity: 0 }}
-      animate={{ scale: 1, opacity: 1 }}
-      exit={{ scale: 0.95, opacity: 0 }}
-      transition={{ duration: 0.15 }}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.08 }}
       className="absolute flex flex-col overflow-hidden rounded-xl border border-white/40 bg-[#F4F2F9] y2k-window-shadow select-none"
       style={{ ...(win.isMaximized ? maximizedStyle : normalStyle), zIndex: win.zIndex }}
       onMouseDown={() => focusWindow(win.id)}
@@ -116,22 +129,6 @@ export default function Window({ win }) {
       {/* Main Content Body */}
       <div className="min-h-0 flex-1 select-text bg-[#FAFAFC] text-slate-800">
         <Body />
-      </div>
-
-      {/* Y2K Window Action Bar matching mockup (pencil, camera, emoji, trash) */}
-      <div className="flex h-7 shrink-0 items-center justify-between border-t border-slate-200 bg-[#ECE9F5] px-3 text-slate-500 text-xs">
-        <div className="flex items-center gap-3">
-          <button className="hover:text-slate-800" title="Edit">✏️</button>
-          <button className="hover:text-slate-800" title="Attach Photo">📷</button>
-          <button className="hover:text-slate-800" title="Emoji">😊</button>
-        </div>
-        <button
-          onClick={() => closeWindow(win.id)}
-          className="hover:text-red-600"
-          title="Delete / Close"
-        >
-          🗑️
-        </button>
       </div>
     </motion.div>
   );
