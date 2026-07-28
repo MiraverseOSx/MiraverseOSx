@@ -146,6 +146,8 @@ const TerminalApp = () => {
     } else if (cmd.toLowerCase().startsWith('lore search ')) {
       const q = cmd.substring(12);
       const results = miraverseDb.searchLore(q);
+      useOSStore.getState().addSkillXP('Research', 15);
+      useOSStore.getState().addSkillXP('Programming', 15);
       newHistory.push({
         type: 'res',
         text: `Found ${results.length} Lore Entries matching "${q}":\n` +
@@ -153,6 +155,8 @@ const TerminalApp = () => {
       });
     } else {
       const res = miraverseDb.executeSQL(cmd);
+      useOSStore.getState().addSkillXP('Programming', 15);
+      useOSStore.getState().addSkillXP('Cryptography', 15);
       if (res.rows) {
         const formatted = res.rows
           .map((r) => ` • [${r.id}] ${r.title || r.name} | ${r.type || r.role || r.category || ''}`)

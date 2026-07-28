@@ -2,7 +2,6 @@ import { create } from 'zustand';
 
 const MENU_BAR_HEIGHT = 70;
 
-// Cascade new windows so they don't stack perfectly on top of each other.
 const spawnPosition = (count) => ({
   x: 140 + (count % 6) * 32,
   y: MENU_BAR_HEIGHT + 32 + (count % 6) * 32,
@@ -21,6 +20,8 @@ export const useOSStore = create((set) => ({
     activeGameId: null,
     prismCorruptionLevel: 14.8,
     claimedComms: [],
+    timeSegmentIndex: 2, // 0: Morning, 1: Afternoon, 2: Evening, 3: Night
+    timeCycleCount: 28,
     player: {
       level: 1,
       credits: 500,
@@ -31,6 +32,13 @@ export const useOSStore = create((set) => ({
       conditions: ['Veilwilt'],
       forgedSpells: [],
       lineageDecrypted: false,
+      npcVectors: {
+        voss: { trust: 80, rivalry: 10, sync: 90, corruption: 15 },
+        riven: { trust: 65, rivalry: 45, sync: 70, corruption: 5 },
+        sissi: { trust: 40, rivalry: 80, sync: 35, corruption: 20 },
+        odd: { trust: 95, rivalry: 5, sync: 85, corruption: 0 },
+        mara: { trust: 75, rivalry: 30, sync: 60, corruption: 25 },
+      },
       skills: {
         Programming: { level: 1, xp: 0 },
         Networking: { level: 1, xp: 0 },
@@ -58,6 +66,66 @@ export const useOSStore = create((set) => ({
       },
     },
   },
+
+  advanceTime: () =>
+    set((state) => {
+      const nextIndex = (state.gameplay.timeSegmentIndex + 1) % 4;
+      const isNight = nextIndex === 3;
+      const nextCycle = nextIndex === 0 ? state.gameplay.timeCycleCount + 1 : state.gameplay.timeCycleCount;
+      const newCorruption = isNight
+        ? Number((state.gameplay.prismCorruptionLevel + 5.0).toFixed(1))
+        : state.gameplay.prismCorruptionLevel;
+      const newAura = isNight
+        ? Math.max(20, state.gameplay.player.auraHealth - 5)
+        : state.gameplay.player.auraHealth;
+
+      return {
+        gameplay: {
+          ...state.gameplay,
+          timeSegmentIndex: nextIndex,
+          timeCycleCount: nextCycle,
+          prismCorruptionLevel: newCorruption,
+          player: {
+            ...state.gameplay.player,
+            auraHealth: newAura,
+          },
+        },
+      };
+    }),
+
+  restInDorm: () =>
+    set((state) => ({
+      gameplay: {
+        ...state.gameplay,
+        timeSegmentIndex: 0, // Morning
+        timeCycleCount: state.gameplay.timeCycleCount + 1,
+        player: {
+          ...state.gameplay.player,
+          auraHealth: 100,
+        },
+      },
+    })),
+
+  updateNPCVector: (npcId, vectorName, delta) =>
+    set((state) => {
+      const current = state.gameplay.player.npcVectors[npcId] || { trust: 50, rivalry: 0, sync: 50, corruption: 0 };
+      const val = Math.max(0, Math.min(100, (current[vectorName] || 0) + delta));
+      return {
+        gameplay: {
+          ...state.gameplay,
+          player: {
+            ...state.gameplay.player,
+            npcVectors: {
+              ...state.gameplay.player.npcVectors,
+              [npcId]: {
+                ...current,
+                [vectorName]: val,
+              },
+            },
+          },
+        },
+      };
+    }),
 
   startSession: (gameId, initialState = {}) =>
     set((state) => ({

@@ -1,5 +1,5 @@
 import React from 'react';
-import { motion } from 'framer-motion';
+import { motion, useDragControls } from 'framer-motion';
 import { useOSStore } from '../store/useOSStore';
 import { getContent } from '../apps/contents';
 
@@ -10,51 +10,18 @@ export default function Window({ win }) {
   const closeWindow = useOSStore((s) => s.closeWindow);
   const toggleMinimize = useOSStore((s) => s.toggleMinimize);
   const toggleMaximize = useOSStore((s) => s.toggleMaximize);
-  const moveWindow = useOSStore((s) => s.moveWindow);
   const activeWindowId = useOSStore((s) => s.activeWindowId);
+
+  const dragControls = useDragControls();
 
   const Body = getContent(win.contentKey);
   const isActive = activeWindowId === win.id;
 
-  const handlePointerDown = (e) => {
+  const startDrag = (e) => {
     if (win.isMaximized) return;
     if (e.target.closest('button')) return;
-
     focusWindow(win.id);
-    const startX = e.clientX;
-    const startY = e.clientY;
-    const initialX = win.position.x;
-    const initialY = win.position.y;
-    const targetElement = e.currentTarget;
-
-    try {
-      targetElement.setPointerCapture(e.pointerId);
-    } catch (err) {
-      // Fallback
-    }
-
-    const handlePointerMove = (moveEvent) => {
-      const deltaX = moveEvent.clientX - startX;
-      const deltaY = moveEvent.clientY - startY;
-
-      const newX = Math.max(0, Math.min(window.innerWidth - 120, initialX + deltaX));
-      const newY = Math.max(MENU_BAR_HEIGHT, Math.min(window.innerHeight - 80, initialY + deltaY));
-
-      moveWindow(win.id, { x: newX, y: newY });
-    };
-
-    const handlePointerUp = (upEvent) => {
-      try {
-        targetElement.releasePointerCapture(upEvent.pointerId);
-      } catch (err) {
-        // Fallback
-      }
-      targetElement.removeEventListener('pointermove', handlePointerMove);
-      targetElement.removeEventListener('pointerup', handlePointerUp);
-    };
-
-    targetElement.addEventListener('pointermove', handlePointerMove);
-    targetElement.addEventListener('pointerup', handlePointerUp);
+    dragControls.start(e);
   };
 
   const maximizedStyle = {
@@ -72,6 +39,11 @@ export default function Window({ win }) {
 
   return (
     <motion.div
+      drag={!win.isMaximized}
+      dragControls={dragControls}
+      dragListener={false}
+      dragMomentum={false}
+      dragElastic={0}
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
@@ -86,7 +58,7 @@ export default function Window({ win }) {
           isActive ? 'bg-[#9DA9CB] text-white' : 'bg-[#B4BDD6] text-white/80'
         }`}
         style={{ cursor: win.isMaximized ? 'default' : 'grab' }}
-        onPointerDown={handlePointerDown}
+        onPointerDown={startDrag}
         onDoubleClick={() => toggleMaximize(win.id)}
       >
         <span className="font-semibold text-xs tracking-wide">{win.title}</span>

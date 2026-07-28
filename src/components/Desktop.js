@@ -63,7 +63,7 @@ export default function Desktop() {
       </div>
 
       {/* ------------------------------------------------------------------ */}
-      {/* LAYER 1: FALLING GLITTER SPARKLES (Above Watermark, Below Windows) */}
+      {/* LAYER 1: FALLING GLITTER SPARKLES & STARS                           */}
       {/* ------------------------------------------------------------------ */}
       <SparklesCanvas />
 
@@ -71,11 +71,11 @@ export default function Desktop() {
       {/* TOP HEADER BAR (Profile Banner, "PLAYERNAME", Top Search Bar)       */}
       {/* ------------------------------------------------------------------ */}
       <div className="relative z-[9999] flex items-center justify-between px-6 pt-4">
-        {/* Left Section: Lavender Profile Banner & PLAYERNAME Pill */}
+        {/* Left Section: Rich Plum Profile Banner & PLAYERNAME Pill */}
         <div className="flex items-center gap-6">
-          {/* Lavender Avatar Banner Badge matching mockup */}
+          {/* Rich Plum Avatar Banner Badge matching mockup */}
           <div className="relative flex flex-col items-center">
-            <div className="w-24 h-28 bg-[#DED2F9] rounded-b-3xl shadow-md flex items-center justify-center border-b-2 border-white/50">
+            <div className="w-24 h-28 bg-[#4A2054] rounded-b-3xl shadow-md flex items-center justify-center border-b-2 border-pink-300/50">
               <div className="w-16 h-16 rounded-full bg-white shadow-inner border-2 border-white flex items-center justify-center overflow-hidden p-1">
                 <img src="/logo_icon.png" alt="Miraverse Logo" className="w-full h-full object-contain" />
               </div>
@@ -91,17 +91,17 @@ export default function Desktop() {
         </div>
 
         {/* Right Section: Sleek Rounded Search Bar matching mockup */}
-        <div className="w-96">
-          <div className="relative flex items-center rounded-full border border-slate-700 bg-white/40 px-4 py-2 shadow-sm backdrop-blur-md">
-            <Search size={16} className="text-slate-700 mr-2" />
+        <div className="w-80">
+          <div className="relative flex items-center rounded-full border border-pink-300/40 bg-white/50 px-4 py-2 shadow-sm backdrop-blur-md">
+            <Search size={16} className="text-slate-800 mr-2" />
             <input
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder=""
-              className="flex-1 bg-transparent text-xs text-slate-800 outline-none font-medium"
+              className="flex-1 bg-transparent text-xs text-slate-900 outline-none font-medium"
             />
-            <Mic size={16} className="text-slate-700 ml-2 cursor-pointer hover:text-black" />
+            <Mic size={16} className="text-slate-800 ml-2 cursor-pointer hover:text-black" />
           </div>
         </div>
       </div>
@@ -109,7 +109,7 @@ export default function Desktop() {
       {/* ------------------------------------------------------------------ */}
       {/* CONNECTED COLLAPSIBLE START PANEL UNIT                             */}
       {/* ------------------------------------------------------------------ */}
-      <div className="absolute left-0 bottom-0 z-30 flex flex-col items-stretch w-44 rounded-tr-2xl border-t border-r border-white/60 bg-[#E9DFFC] shadow-2xl overflow-hidden">
+      <div className="absolute left-0 bottom-0 z-30 flex flex-col items-stretch w-44 rounded-tr-2xl border-t border-r border-pink-300/40 bg-[#3B1D45]/90 backdrop-blur-xl shadow-2xl overflow-hidden">
         {/* Collapsible Vertical App Grid Drawer */}
         <AnimatePresence>
           {isLauncherOpen && (
@@ -131,12 +131,12 @@ export default function Desktop() {
                         className={`flex h-16 w-16 flex-col items-center justify-center rounded-xl transition shadow-sm ${
                           idx === 0
                             ? 'bg-[#FFD4E5] border border-pink-300' // Pink tile for Bulletin Node matching mockup
-                            : 'bg-[#DCD0F9] border border-purple-200 hover:bg-[#D4C5FA]'
+                            : 'bg-[#5B2C6F]/80 border border-pink-300/30 hover:bg-[#6C3483]/90 text-white'
                         }`}
                         title={app.title}
                       >
-                        <Icon size={22} className="text-purple-950" />
-                        <span className="mt-1 text-[9px] font-semibold text-purple-950 truncate max-w-[50px]">
+                        <Icon size={22} className={idx === 0 ? 'text-purple-950' : 'text-pink-100'} />
+                        <span className={`mt-1 text-[9px] font-semibold truncate max-w-[50px] ${idx === 0 ? 'text-purple-950' : 'text-pink-100'}`}>
                           {app.title}
                         </span>
                       </button>
@@ -149,7 +149,7 @@ export default function Desktop() {
         </AnimatePresence>
 
         {/* Integrated Bottom Launcher Control Strip (Start Button + Power & Settings) */}
-        <div className="flex h-14 items-center justify-around bg-[#DCD0F9] border-t border-white/50 px-3 shrink-0">
+        <div className="flex h-14 items-center justify-around bg-[#4A2054]/90 border-t border-pink-300/30 px-3 shrink-0">
           <button
             onClick={() => setIsLauncherOpen((prev) => !prev)}
             className={`p-2 rounded-xl transition ${
@@ -194,10 +194,10 @@ export default function Desktop() {
             ))}
         </AnimatePresence>
 
-        {/* Right Side: Smartphone Companion Widget matching mockup */}
-        <div className="z-10 absolute right-8 top-1/2 -translate-y-1/2">
+        {/* Right Side: Draggable Smartphone Companion Widget matching mockup */}
+        <motion.div drag dragMomentum={false} className="z-10 absolute right-8 top-1/2 -translate-y-1/2 cursor-grab active:cursor-grabbing">
           <PhoneWidget />
-        </div>
+        </motion.div>
       </div>
 
       {/* ------------------------------------------------------------------ */}

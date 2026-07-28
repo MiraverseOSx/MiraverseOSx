@@ -18,8 +18,8 @@ export default function SparklesCanvas() {
     };
     window.addEventListener('resize', handleResize);
 
-    const colors = ['#FFFFFF', '#DCD0F9', '#AEE7EC', '#FFD4E5', '#F5E6FF'];
-    const numSparkles = 65;
+    const colors = ['#FFFFFF', '#F5EEF8', '#E8DAEF', '#FADBD8', '#EBDEF0', '#D5F5E3'];
+    const numSparkles = 95;
 
     // Helper to draw a 4-point star sparkle ✨
     const drawStar = (cx, cy, outerRadius, innerRadius, color, alpha) => {
@@ -45,23 +45,23 @@ export default function SparklesCanvas() {
       ctx.fillStyle = color;
       ctx.globalAlpha = alpha;
       ctx.shadowColor = color;
-      ctx.shadowBlur = 8;
+      ctx.shadowBlur = 10;
       ctx.fill();
       ctx.restore();
     };
 
-    // Initialize particles
+    // Initialize particles (Snowy blur motes & stars)
     const particles = Array.from({ length: numSparkles }).map(() => ({
       x: Math.random() * width,
       y: Math.random() * height,
-      size: Math.random() * 4 + 2,
-      speedY: Math.random() * 0.6 + 0.3,
-      swayAmp: Math.random() * 0.8 + 0.2,
-      swayFreq: Math.random() * 0.02 + 0.01,
+      size: Math.random() * 4 + 1.5,
+      speedY: Math.random() * 0.9 + 0.4,
+      swayAmp: Math.random() * 1.2 + 0.3,
+      swayFreq: Math.random() * 0.025 + 0.01,
       phase: Math.random() * Math.PI * 2,
-      baseOpacity: Math.random() * 0.5 + 0.4,
+      baseOpacity: Math.random() * 0.6 + 0.3,
       twinkleSpeed: Math.random() * 0.03 + 0.01,
-      type: Math.random() > 0.3 ? 'star' : 'circle',
+      type: Math.random() > 0.4 ? 'star' : 'snow',
       color: colors[Math.floor(Math.random() * colors.length)],
     }));
 

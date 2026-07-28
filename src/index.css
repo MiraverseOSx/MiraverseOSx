@@ -11,7 +11,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
   overflow: hidden;
   user-select: none;
-  background-color: #B0EFF3;
+  background-color: #070514;
 }
 
 @font-face {
@@ -26,9 +26,9 @@ body {
   font-style: italic;
 }
 
-/* Y2K Soft Mint Marble Background */
+/* Dark Cosmic Starry Background */
 .bg-marble-y2k {
-  background: radial-gradient(circle at 20% 20%, #D8FAFD 0%, #AEE7EC 40%, #B8EBF0 70%, #9DDCE2 100%);
+  background: radial-gradient(ellipse at top left, #23164A 0%, #110B2C 45%, #08051C 75%, #040310 100%), radial-gradient(ellipse at bottom right, #351654 0%, #0F0927 60%, #050312 100%);
   background-attachment: fixed;
 }
 

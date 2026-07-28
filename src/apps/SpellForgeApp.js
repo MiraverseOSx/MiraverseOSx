@@ -85,8 +85,10 @@ export default function SpellForgeApp() {
     if (match) {
       addForgedSpell(match.result);
       incrementAppRank('weaver');
+      useOSStore.getState().addSkillXP('Spellcasting', 25);
+      useOSStore.getState().addSkillXP('Engineering', 25);
       setLog((prev) => [
-        `✅ Spell Created: [${match.result}] (${match.desc})`,
+        `✅ Spell Created: [${match.result}] (${match.desc}) (+25 Spellcasting XP, +25 Engineering XP)`,
         `Successfully aligned ${selectedElement} and ${selectedUtility} protocols within the Veil.`,
         ...prev
       ]);

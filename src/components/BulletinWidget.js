@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
+import { motion, useDragControls } from 'framer-motion';
 import { useOSStore } from '../store/useOSStore';
-import { GripHorizontal, Sparkles, AlertTriangle, ShieldCheck, Share2, Award, Zap, Database, CheckCircle2, Scan } from 'lucide-react';
+import { GripHorizontal, Sparkles, ShieldCheck, Share2, Award, Zap, Database, CheckCircle2, Scan } from 'lucide-react';
+import { CAMPUS_ANNOUNCEMENTS, DGA_OPS_BULLETINS, LORE_ECHOES } from '../data/bulletinData';
 
 export default function BulletinWidget() {
-  const [pos, setPos] = useState({ x: 0, y: 0 });
-  const [isDragging, setIsDragging] = useState(false);
   const [isGlitched, setIsGlitched] = useState(false);
   const [isScanning, setIsScanning] = useState(false);
   const [checkedIn, setCheckedIn] = useState(false);
@@ -12,45 +12,15 @@ export default function BulletinWidget() {
   const [terminalFeedback, setTerminalFeedback] = useState('');
   const [isMinimized, setIsMinimized] = useState(false);
 
+  const dragControls = useDragControls();
+
   const addCredits = useOSStore((s) => s.addCredits);
   const addXP = useOSStore((s) => s.addXP);
   const prismCorruptionLevel = useOSStore((s) => s.gameplay.prismCorruptionLevel);
 
-  const handlePointerDown = (e) => {
+  const startDrag = (e) => {
     if (e.target.closest('button')) return;
-    const startX = e.clientX;
-    const startY = e.clientY;
-    const initialX = pos.x;
-    const initialY = pos.y;
-    const targetElement = e.currentTarget;
-
-    try {
-      targetElement.setPointerCapture(e.pointerId);
-    } catch (err) {
-      // Fallback
-    }
-
-    setIsDragging(true);
-
-    const handlePointerMove = (moveEvent) => {
-      const newX = initialX + (moveEvent.clientX - startX);
-      const newY = initialY + (moveEvent.clientY - startY);
-      setPos({ x: newX, y: newY });
-    };
-
-    const handlePointerUp = (upEvent) => {
-      try {
-        targetElement.releasePointerCapture(upEvent.pointerId);
-      } catch (err) {
-        // Fallback
-      }
-      setIsDragging(false);
-      targetElement.removeEventListener('pointermove', handlePointerMove);
-      targetElement.removeEventListener('pointerup', handlePointerUp);
-    };
-
-    targetElement.addEventListener('pointermove', handlePointerMove);
-    targetElement.addEventListener('pointerup', handlePointerUp);
+    dragControls.start(e);
   };
 
   const triggerGlitch = () => {
@@ -92,14 +62,13 @@ export default function BulletinWidget() {
   };
 
   return (
-    <div
-      style={{
-        transform: `translate3d(${pos.x}px, ${pos.y}px, 0)`,
-        willChange: 'transform',
-      }}
-      className={`relative z-20 w-full max-w-4xl rounded-3xl border-2 transition-shadow duration-200 select-none overflow-hidden ${
-        isDragging ? 'shadow-2xl opacity-95' : 'shadow-[0_20px_50px_rgba(157,140,210,0.35)]'
-      } ${
+    <motion.div
+      drag
+      dragControls={dragControls}
+      dragListener={false}
+      dragMomentum={false}
+      dragElastic={0}
+      className={`relative z-20 w-full max-w-4xl rounded-3xl border-2 transition-shadow duration-200 select-none overflow-hidden shadow-[0_20px_50px_rgba(157,140,210,0.35)] ${
         isGlitched
           ? 'border-pink-500 bg-pink-950/90 text-white filter invert contrast-200 hue-rotate-180 animate-pulse'
           : 'border-purple-300/80 bg-white/85 text-slate-900 backdrop-blur-xl'
@@ -122,7 +91,7 @@ export default function BulletinWidget() {
       {/* HEADER DRAG BAR                                                    */}
       {/* ------------------------------------------------------------------ */}
       <div
-        onPointerDown={handlePointerDown}
+        onPointerDown={startDrag}
         className="relative z-10 flex items-center justify-between border-b border-purple-200/60 bg-[#ECE5F9]/90 px-4 py-2.5 cursor-grab active:cursor-grabbing"
       >
         <div className="flex items-center gap-2.5 font-bold text-purple-950 tracking-wider text-xs">
@@ -182,23 +151,17 @@ export default function BulletinWidget() {
                 </div>
 
                 <div className="grid grid-cols-2 gap-2.5 pt-1">
-                  {/* Class Updates */}
-                  <div className="rounded-xl border border-purple-200 bg-white/95 p-2.5 space-y-1 shadow-sm">
-                    <div className="font-bold text-purple-950 text-[11px] flex items-center gap-1">
-                      <Award size={12} className="text-purple-600" /> Class Updates
+                  {/* Campus Announcements from bulletinData.js */}
+                  {CAMPUS_ANNOUNCEMENTS.map((item) => (
+                    <div key={item.id} className="rounded-xl border border-purple-200 bg-white/95 p-2.5 space-y-1 shadow-sm">
+                      <div className="font-bold text-purple-950 text-[11px] flex items-center gap-1">
+                        <Award size={12} className="text-purple-600 shrink-0" />
+                        <span className="truncate">{item.title}</span>
+                      </div>
+                      <div className="text-slate-800 font-semibold text-[10px] line-clamp-2">{item.body}</div>
+                      <div className="text-slate-500 text-[9px] truncate">{item.author} • {item.date}</div>
                     </div>
-                    <div className="text-slate-800 font-semibold text-[10px]">Syntax HW: Quantum Recursion</div>
-                    <div className="text-slate-500 text-[9px]">Lab 4 Open until 22:00</div>
-                  </div>
-
-                  {/* Clubs & Social */}
-                  <div className="rounded-xl border border-purple-200 bg-white/95 p-2.5 space-y-1 shadow-sm">
-                    <div className="font-bold text-purple-950 text-[11px] flex items-center gap-1">
-                      <Sparkles size={12} className="text-violet-600" /> Clubs & Social
-                    </div>
-                    <div className="text-slate-800 font-semibold text-[10px]">Netrunner Art Club @ 19:00</div>
-                    <div className="text-slate-500 text-[9px]">Robotics Build</div>
-                  </div>
+                  ))}
                 </div>
 
                 {/* Pulse Trending Bar */}
@@ -225,22 +188,19 @@ export default function BulletinWidget() {
                   </span>
                 </div>
 
-                {/* DGA Alerts */}
-                <div className="rounded-xl border border-red-200 bg-red-50/95 p-2.5 space-y-1 shadow-sm">
-                  <div className="font-bold text-red-700 text-xs flex items-center gap-1.5">
-                    <AlertTriangle size={13} className="text-red-500" /> DGA Alerts
-                  </div>
-                  <div className="text-red-900 font-bold text-[11px]">⚠️ Perimeter Breach Alert</div>
-                  <div className="text-red-700/80 text-[10px]">Patrol Route: Sector 7 Subnet</div>
-                </div>
-
-                {/* Career Tasks */}
-                <div className="rounded-xl border border-emerald-200 bg-white/95 p-2.5 space-y-1 shadow-sm">
-                  <div className="font-bold text-emerald-950 text-xs flex items-center gap-1.5">
-                    <ShieldCheck size={13} className="text-emerald-600" /> Career Tasks
-                  </div>
-                  <div className="text-slate-800 font-semibold text-[11px]">Faith Medical Intake Clearance</div>
-                  <div className="text-slate-500 text-[10px]">Archive Scan: Mireth Records</div>
+                {/* DGA Ops from bulletinData.js */}
+                <div className="space-y-2">
+                  {DGA_OPS_BULLETINS.map((op) => (
+                    <div key={op.id} className="rounded-xl border border-emerald-200 bg-white/95 p-2.5 space-y-1 shadow-sm">
+                      <div className="font-bold text-emerald-950 text-xs flex items-center justify-between">
+                        <span className="flex items-center gap-1">
+                          <ShieldCheck size={13} className="text-emerald-600 shrink-0" /> {op.title}
+                        </span>
+                        <span className="text-[9px] font-bold text-emerald-700">{op.reward}</span>
+                      </div>
+                      <div className="text-slate-700 text-[10px]">{op.desc}</div>
+                    </div>
+                  ))}
                 </div>
 
                 {/* PRISM Activity */}
@@ -266,40 +226,41 @@ export default function BulletinWidget() {
                 <div className="flex items-center justify-between border-b border-pink-200 pb-1.5 font-bold text-pink-950 text-xs">
                   <span className="flex items-center gap-1.5">
                     <span className="h-2 w-2 rounded-full bg-pink-500" />
-                    SIGNALS & LORE
+                    SIGNALS & LORE ECHOES
                   </span>
                   <span className="rounded-full bg-pink-200/80 px-2 py-0.5 text-[9px] text-pink-800 font-semibold">
-                    Tall Column
+                    Tall Notice
                   </span>
                 </div>
 
-                {/* City Anomalies */}
-                <div className="rounded-xl border border-amber-200 bg-amber-50/95 p-3 space-y-1 shadow-sm">
-                  <div className="font-bold text-amber-900 text-xs flex items-center gap-1.5">
-                    <Zap size={13} className="text-amber-600" /> City Anomalies
-                  </div>
-                  <div className="text-slate-800 font-semibold text-[11px]">Glassline Flicker in Sprawl</div>
-                  <div className="text-slate-600 text-[10px]">Sub-Aureline Frequency Hum</div>
-                </div>
+                {/* Lore Echoes from bulletinData.js */}
+                <div className="space-y-2 flex-1 overflow-auto my-1">
+                  {LORE_ECHOES.map((echo) => (
+                    <div key={echo.id} className="rounded-xl border border-pink-200 bg-white/95 p-2.5 space-y-1 shadow-sm">
+                      <div className="font-bold text-pink-950 text-[10px]">{echo.source}</div>
+                      <div className="text-slate-700 italic text-[10px]">{echo.text}</div>
+                    </div>
+                  ))}
 
-                {/* Aethercore Echoes (Redacted Text) */}
-                <div className="rounded-xl border border-pink-200 bg-white/95 p-3 space-y-1.5 shadow-sm">
-                  <div className="font-bold text-pink-950 text-xs flex items-center gap-1.5">
-                    <Share2 size={13} className="text-pink-600" /> Aethercore Echoes
+                  {/* Aethercore Echoes (Redacted Text) */}
+                  <div className="rounded-xl border border-pink-200 bg-white/95 p-2.5 space-y-1.5 shadow-sm">
+                    <div className="font-bold text-pink-950 text-xs flex items-center gap-1.5">
+                      <Share2 size={13} className="text-pink-600" /> Aethercore Echoes
+                    </div>
+                    <div className="text-purple-900 font-semibold font-mono text-[10px]">Fragment #07: "Protocol Unread"</div>
+                    <div className="rounded-lg bg-slate-900 p-2 font-mono text-pink-400 text-[10px] tracking-widest text-center shadow-inner">
+                      [ ████████████████ ]
+                    </div>
                   </div>
-                  <div className="text-purple-900 font-semibold font-mono text-[11px]">Fragment #07: "Protocol Unread"</div>
-                  <div className="rounded-lg bg-slate-900 p-2 font-mono text-pink-400 text-[10px] tracking-widest text-center shadow-inner">
-                    [ ████████████████ ]
-                  </div>
-                </div>
 
-                {/* Lineage Keys */}
-                <div className="rounded-xl border border-purple-200 bg-white/95 p-3 space-y-1 shadow-sm">
-                  <div className="font-bold text-purple-950 text-xs flex items-center gap-1.5">
-                    <Award size={13} className="text-amber-500" /> Lineage Keys
+                  {/* Lineage Keys */}
+                  <div className="rounded-xl border border-purple-200 bg-white/95 p-2.5 space-y-1 shadow-sm">
+                    <div className="font-bold text-purple-950 text-xs flex items-center gap-1.5">
+                      <Award size={13} className="text-amber-500" /> Lineage Keys
+                    </div>
+                    <div className="text-slate-800 font-semibold text-[10px]">Celestial Glyph Activated</div>
+                    <div className="text-purple-800 font-bold text-[9px]">Mark: "Seraphima Lineage"</div>
                   </div>
-                  <div className="text-slate-800 font-semibold text-[11px]">Celestial Glyph Activated</div>
-                  <div className="text-purple-800 font-bold text-[10px]">Mark: "Seraphima Lineage"</div>
                 </div>
               </div>
             </div>
@@ -325,42 +286,44 @@ export default function BulletinWidget() {
                   </>
                 ) : (
                   <>
-                    <Scan size={14} className="text-emerald-700" /> [ CHECK IN ]
+                    <Database size={14} className="text-emerald-700" /> Daily Attendance Stamp (+100 ₡)
                   </>
                 )}
               </button>
 
               <button
-                onClick={handleSyncSquad}
-                className="flex items-center gap-1.5 rounded-xl border border-cyan-300 bg-cyan-100/90 px-3.5 py-1.5 font-bold text-cyan-950 hover:bg-cyan-200 transition shadow-sm"
-              >
-                <Zap size={14} className="text-cyan-700" /> [ SYNC SQUAD ]
-              </button>
-
-              <button
                 onClick={triggerGlitch}
-                className="flex items-center gap-1.5 rounded-xl border border-pink-400 bg-pink-500/20 px-3.5 py-1.5 font-bold text-pink-950 hover:bg-pink-500/40 transition shadow-sm animate-pulse"
+                className="flex items-center gap-1 rounded-xl border border-purple-300 bg-purple-100/90 px-3 py-1.5 font-bold text-purple-950 hover:bg-purple-200 transition shadow-sm"
               >
-                <Sparkles size={14} className="text-pink-600" /> [ SCAN VEIL ]
+                <Zap size={14} className="text-purple-600" /> Veil Frequency Scan
               </button>
 
               <button
-                onClick={handlePulseShare}
-                className="flex items-center gap-1.5 rounded-xl border border-purple-300 bg-purple-100/90 px-3.5 py-1.5 font-bold text-purple-950 hover:bg-purple-200 transition shadow-sm"
+                onClick={handleSyncSquad}
+                className="flex items-center gap-1 rounded-xl border border-purple-300 bg-purple-100/90 px-3 py-1.5 font-bold text-purple-950 hover:bg-purple-200 transition shadow-sm"
               >
-                <Share2 size={14} className="text-purple-700" /> [ PULSE SHARE ]
+                <ShieldCheck size={14} className="text-purple-600" /> Sync Squad
               </button>
             </div>
 
-            <button
-              onClick={handleArchiveLogs}
-              className="flex items-center gap-1.5 rounded-xl border border-amber-300 bg-amber-100/90 px-3.5 py-1.5 font-bold text-amber-950 hover:bg-amber-200 transition shadow-sm text-xs"
-            >
-              <Database size={14} className="text-amber-700" /> [ ARCHIVE LOGS ]
-            </button>
+            <div className="flex items-center gap-2">
+              <button
+                onClick={handlePulseShare}
+                className="flex items-center gap-1 rounded-xl border border-purple-200 bg-white/80 px-2.5 py-1 text-[11px] font-semibold text-slate-700 hover:bg-white transition"
+              >
+                <Share2 size={13} className="text-purple-600" /> Share Pulse
+              </button>
+
+              <button
+                onClick={handleArchiveLogs}
+                className="flex items-center gap-1 rounded-xl border border-purple-200 bg-white/80 px-2.5 py-1 text-[11px] font-semibold text-slate-700 hover:bg-white transition"
+              >
+                <Database size={13} className="text-purple-600" /> Archive Logs
+              </button>
+            </div>
           </div>
         </div>
       )}
-    </div>
+    </motion.div>
   );
 }
