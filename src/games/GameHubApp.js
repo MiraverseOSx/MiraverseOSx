@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useOSStore } from '../store/useOSStore';
-import { GAMES_CATALOG } from './index';
+import { GAMES_CATALOG } from './games';
 
 export default function GameHubApp() {
   const [selectedGame, setSelectedGame] = useState(null);

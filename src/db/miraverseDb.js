@@ -10,7 +10,7 @@ import {
   getHouse,
   getRegion,
   getNpc
-} from '../data';
+} from '../data/data';
 
 // ================================================================
 // MIRAVERSEOSX | Database Engine rewired from SQLite data exports
