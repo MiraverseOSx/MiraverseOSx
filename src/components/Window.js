@@ -13,9 +13,13 @@ export default function Window({ win }) {
   const activeWindowId = useOSStore((s) => s.activeWindowId);
 
   const dragControls = useDragControls();
-
   const Body = getContent(win.contentKey);
   const isActive = activeWindowId === win.id;
+
+  // Comms App has its own native SVG window design (M:\comms window.svg) — render directly without OS window wrapper!
+  if (win.contentKey === 'comms') {
+    return <Body win={win} />;
+  }
 
   const startDrag = (e) => {
     if (win.isMaximized) return;

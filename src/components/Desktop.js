@@ -185,10 +185,20 @@ export default function Desktop() {
         {/* Persistent Cyacademy Bulletin Node Glass Desktop Widget */}
         <BulletinWidget />
 
-        {/* Center Canvas: Floating OS Windows */}
+        {/* Comms Window SVG Asset — draggable directly on desktop, no window wrapper */}
+        <motion.div
+          drag
+          dragMomentum={false}
+          className="z-20 absolute cursor-grab active:cursor-grabbing"
+          style={{ left: 160, top: 60 }}
+        >
+          <img src="/comms_window.svg" alt="Comms" draggable={false} style={{ width: 739, height: 355, display: 'block' }} />
+        </motion.div>
+
+        {/* Center Canvas: Floating OS Windows (comms excluded — it's a desktop asset) */}
         <AnimatePresence>
           {windows
-            .filter((w) => !w.isMinimized)
+            .filter((w) => !w.isMinimized && w.contentKey !== 'comms')
             .map((win) => (
               <Window key={win.id} win={win} />
             ))}
