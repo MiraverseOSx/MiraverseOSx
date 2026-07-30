@@ -54,7 +54,20 @@ export default function Desktop() {
       </div>
       <SparklesCanvas />
 
-      <header className="relative z-30 mx-6 mt-5 flex h-14 items-center justify-between border-y border-white/80 bg-white/55 px-5 shadow-[0_10px_35px_rgba(43,55,98,.09)] backdrop-blur-xl">
+      <header
+        className="relative z-30 mx-6 mt-5 flex h-14 cursor-pointer touch-manipulation items-center justify-between border-y border-white/80 bg-white/55 px-5 shadow-[0_10px_35px_rgba(43,55,98,.09)] backdrop-blur-xl transition-colors hover:bg-white/70"
+        onClick={() => launch(APPS.find((app) => app.id === 'comms'))}
+        onKeyDown={(event) => {
+          if (event.key === 'Enter' || event.key === ' ') {
+            event.preventDefault();
+            launch(APPS.find((app) => app.id === 'comms'));
+          }
+        }}
+        role="button"
+        tabIndex={0}
+        aria-label="Open Comms"
+        title="Open Comms"
+      >
         <div className="flex items-center gap-4">
           <div className="grid h-8 w-8 place-items-center border border-[#bcc6ea] bg-[#17213f] text-[#e5e2ff]"><Sparkles size={14} /></div>
           <div>
@@ -109,14 +122,14 @@ export default function Desktop() {
                   </div>
                 </Panel>
                 <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-                  <Panel className="p-5"><div className="flex items-center justify-between"><p className="text-[9px] font-bold tracking-[.19em] text-slate-500">ENCRYPTED COMMS</p><Mail size={15} className="text-[#626db3]" /></div><div className="mt-5 border-l-2 border-[#8b82d1] pl-3"><p className="text-xs font-bold text-[#26305b]">Voss / secure line</p><p className="mt-1 text-xs text-slate-600">Do not broadcast this.</p><button onClick={() => launch(APPS.find((app) => app.id === 'comms'))} className="mt-3 text-[10px] font-bold tracking-wider text-[#5952a1] hover:text-[#242e60]">OPEN TRANSMISSION!’</button></div></Panel>
+                  <Panel className="p-5"><div className="flex items-center justify-between"><p className="text-[9px] font-bold tracking-[.19em] text-slate-500">ENCRYPTED COMMS</p><Mail size={15} className="text-[#626db3]" /></div><div className="mt-5 border-l-2 border-[#8b82d1] pl-3"><p className="text-xs font-bold text-[#26305b]">Voss / secure line</p><p className="mt-1 text-xs text-slate-600">Do not broadcast this.</p><button onClick={() => launch(APPS.find((app) => app.id === 'comms'))} className="mt-3 text-[10px] font-bold tracking-wider text-[#5952a1] hover:text-[#242e60]">OPEN TRANSMISSION!ï¿½</button></div></Panel>
                   <Panel className="p-5"><div className="flex items-center justify-between"><p className="text-[9px] font-bold tracking-[.19em] text-slate-500">TODAY'S RITUALS</p><CalendarDays size={15} className="text-[#626db3]" /></div><div className="mt-4 space-y-3 text-xs"><div className="flex justify-between border-b border-slate-200 pb-2"><span>Orientation archive</span><span className="font-mono text-slate-500">20:00</span></div><div className="flex justify-between"><span>Veil observance</span><span className="font-mono text-slate-500">22:30</span></div></div></Panel>
                 </div>
               </div>
               <div className="flex min-w-0 flex-col gap-4">
                 <Panel className="p-5"><div className="flex items-center justify-between"><p className="text-[9px] font-bold tracking-[.19em] text-slate-500">PLAYER RECORD</p><ShieldCheck size={16} className="text-[#606ab2]" /></div><p className="mt-5 font-serif-y2k text-2xl font-bold text-[#202851]">PLAYERNAME</p><div className="mt-4 grid grid-cols-2 gap-3 text-xs"><div className="border-t border-slate-200 pt-2"><p className="text-[9px] uppercase tracking-wider text-slate-500">Level</p><p className="mt-1 font-mono font-bold">{player.level}</p></div><div className="border-t border-slate-200 pt-2"><p className="text-[9px] uppercase tracking-wider text-slate-500">Credits</p><p className="mt-1 font-mono font-bold">{player.credits}</p></div></div></Panel>
                 <Panel className="p-5"><p className="text-[9px] font-bold tracking-[.19em] text-slate-500">VEIL CONDITION</p><div className="mt-4 flex items-end justify-between"><div><p className="font-serif-y2k text-2xl font-bold text-[#202851]">Flicker</p><p className="mt-1 text-[11px] text-slate-600">PRISM activity detected</p></div><p className="font-mono text-xl text-[#6a62ac]">{corruption}%</p></div><div className="mt-4 h-1 bg-[#e4e2f1]"><div className="h-full bg-[#7270bb]" style={{ width: corruption + '%' }} /></div></Panel>
-                <Panel className="p-5"><p className="text-[9px] font-bold tracking-[.19em] text-slate-500">CASE NOTE</p><p className="mt-3 text-xs leading-relaxed text-slate-600">The network has started using names that do not exist in the public archive.</p><button className="mt-4 text-[10px] font-bold tracking-wider text-[#5952a1]">VIEW EVIDENCE!’</button></Panel>
+                <Panel className="p-5"><p className="text-[9px] font-bold tracking-[.19em] text-slate-500">CASE NOTE</p><p className="mt-3 text-xs leading-relaxed text-slate-600">The network has started using names that do not exist in the public archive.</p><button className="mt-4 text-[10px] font-bold tracking-wider text-[#5952a1]">VIEW EVIDENCE!ï¿½</button></Panel>
               </div>
             </motion.section>
           )}

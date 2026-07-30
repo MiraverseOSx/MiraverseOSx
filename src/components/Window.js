@@ -98,7 +98,7 @@ export default function Window({ win }) {
       </div>
 
       {/* Main Content Body */}
-      <div className="min-h-0 flex-1 select-text bg-[#FAFAFC] text-slate-800">
+      <div className="min-h-0 flex-1 overflow-hidden select-text bg-[#FAFAFC] text-slate-800">
         <Body />
       </div>
     </motion.div>
