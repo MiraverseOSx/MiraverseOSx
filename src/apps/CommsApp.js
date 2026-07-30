@@ -2,56 +2,11 @@ import React from 'react';
 
 export default function CommsApp() {
   return (
-    <div className="flex h-full w-full bg-[#180A18] items-center justify-center p-2 select-none overflow-hidden font-sans">
-      <div className="relative w-full max-w-[739px] aspect-[739/355] rounded-xl shadow-xl overflow-hidden">
-        <svg
-          width="100%"
-          height="100%"
-          viewBox="0 0 739 355"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-          xmlnsXlink="http://www.w3.org/1999/xlink"
-          className="w-full h-full"
-        >
-          <g filter="url(#filter0_d_12_50)">
-            <g clipPath="url(#clip0_12_50)">
-              <rect width="731" height="347" transform="translate(4)" fill="#240724" fillOpacity="0.278431"/>
-              <path d="M191 10H698V266H191V10Z" fill="#D9D9D9"/>
-              <rect x="198" y="288" width="493" height="30" fill="#D9D9D9"/>
-              <path d="M209 304H203V302H209V296H211V302H217V304H211V310H209V304Z" fill="#1F1F1F"/>
-              <path d="M674.5 302C674.917 302 675.271 301.854 675.563 301.563C675.854 301.271 676 300.917 676 300.5C676 300.083 675.854 299.729 675.563 299.438C675.271 299.146 674.917 299 674.5 299C674.083 299 673.729 299.146 673.438 299.438C673.146 299.729 673 300.083 673 300.5C673 300.917 673.146 301.271 673.438 301.563C673.729 301.854 674.083 302 674.5 302ZM667.5 302C667.917 302 668.271 301.854 668.563 301.563C668.854 301.271 669 300.917 669 300.5C669 300.083 668.854 299.729 668.563 299.438C668.271 299.146 667.917 299 667.5 299C667.083 299 666.729 299.146 666.438 299.438C666.146 299.729 666 300.083 666 300.5C666 300.917 666.146 301.271 666.438 301.563C666.729 301.854 667.083 302 667.5 302ZM674.088 307.538C675.013 306.896 675.683 306.05 676.1 305H674.45C674.083 305.617 673.596 306.104 672.988 306.463C672.379 306.821 671.717 307 671 307C670.283 307 669.621 306.821 669.013 306.463C668.404 306.104 667.917 305.617 667.55 305H665.9C666.317 306.05 666.988 306.896 667.913 307.538C668.838 308.179 669.867 308.5 671 308.5C672.133 308.5 673.163 308.179 674.088 307.538ZM667.1 312.213C665.883 311.688 664.825 310.975 663.925 310.075C663.025 309.175 662.313 308.117 661.788 306.9C661.263 305.683 661 304.383 661 303C661 301.617 661.263 300.317 661.788 299.1C662.313 297.883 663.025 296.825 663.925 295.925C664.825 295.025 665.883 294.313 667.1 293.788C668.317 293.263 669.617 293 671 293C672.383 293 673.683 293.263 674.9 293.788C676.117 294.313 677.175 295.025 678.075 295.925C678.975 296.825 679.688 297.883 680.213 299.1C680.738 300.317 681 301.617 681 303C681 304.383 680.738 305.683 680.213 306.9C679.688 308.117 678.975 309.175 678.075 310.075C677.175 310.975 676.117 311.688 674.9 312.213C673.683 312.738 672.383 313 671 313C669.617 313 668.317 312.738 667.1 312.213ZM676.675 308.675C678.225 307.125 679 305.233 679 303C679 300.767 678.225 298.875 676.675 297.325C675.125 295.775 673.233 295 671 295C668.767 295 666.875 295.775 665.325 297.325C663.775 298.875 663 300.767 663 303C663 305.233 663.775 307.125 665.325 308.675C666.875 310.225 668.767 311 671 311C673.233 311 675.125 310.225 676.675 308.675Z" fill="#1F1F1F"/>
-              <line x1="191.488" y1="34.5" x2="697.512" y2="34.5" stroke="black" strokeWidth="3"/>
-              <line x1="177.024" y1="347.001" x2="177.024" y2="3.05176e-05" stroke="#4626A4" strokeWidth="4"/>
-              <line x1="179.076" y1="300.25" x2="3.97112" y2="300.25" stroke="black" strokeWidth="4"/>
-              <line x1="179.105" y1="2" x2="3.99999" y2="2" stroke="black" strokeWidth="4"/>
-              <line x1="179.105" y1="349" x2="3.99999" y2="349" stroke="black" strokeWidth="4"/>
-              <line x1="2" y1="347.001" x2="2" y2="3.05176e-05" stroke="#4626A4" strokeWidth="4"/>
-              <path d="M179.105 69.5L3.99999 69.5" stroke="black" strokeWidth="4"/>
-              <line x1="179.105" y1="36" x2="3.99999" y2="36" stroke="black" strokeWidth="4"/>
-
-              {/* Vector COMMS Header Title */}
-              <text x="205" y="27" fill="#673AB7" fontSize="20" fontFamily="serif" fontWeight="900" letterSpacing="1">
-                COMMS
-              </text>
-            </g>
-          </g>
-          <defs>
-            <filter id="filter0_d_12_50" x="0" y="0" width="739" height="355" filterUnits="userSpaceOnUse" colorInterpolationFilters="sRGB">
-              <feFlood floodOpacity="0" result="BackgroundImageFix"/>
-              <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
-              <feOffset dy="4"/>
-              <feGaussianBlur stdDeviation="2"/>
-              <feComposite in2="hardAlpha" operator="out"/>
-              <feColorMatrix type="matrix" values="0 0 0 0 0.726932 0 0 0 0 0.817308 0 0 0 0 0.809776 0 0 0 1 0"/>
-              <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_12_50"/>
-              <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_12_50" result="shape"/>
-            </filter>
-            <clipPath id="clip0_12_50">
-              <rect width="731" height="347" fill="white" transform="translate(4)"/>
-            </clipPath>
-          </defs>
-        </svg>
-      </div>
-    </div>
+    <img
+      src="/comms_window.svg"
+      alt="Comms"
+      draggable={false}
+      className="block h-full w-full object-contain select-none"
+    />
   );
 }

@@ -16,11 +16,6 @@ export default function Window({ win }) {
   const Body = getContent(win.contentKey);
   const isActive = activeWindowId === win.id;
 
-  // Comms App has its own native SVG window design (M:\comms window.svg) — render directly without OS window wrapper!
-  if (win.contentKey === 'comms') {
-    return <Body win={win} />;
-  }
-
   const startDrag = (e) => {
     if (win.isMaximized) return;
     if (e.target.closest('button')) return;
@@ -109,3 +104,4 @@ export default function Window({ win }) {
     </motion.div>
   );
 }
+
