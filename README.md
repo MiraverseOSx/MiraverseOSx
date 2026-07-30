@@ -1,70 +1,317 @@
-# Getting Started with Create React App
+# Agent Evaluation Project: MAI
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Evaluate your Microsoft Foundry AI agent locally with pytest-powered testing. This project provides a complete evaluation framework for assessing agent quality, performance, and accuracy using built-in and custom evaluators.
 
-## Available Scripts
+## Overview
 
-In the project directory, you can run:
+This evaluation project enables you to:
 
-### `npm start`
+- **Run your agent evaluations locally**
+- **Measure quality metrics** such as coherence, relevance, etc
+- **Create custom evaluators** tailored to your specific requirements
+- **Run evaluations in parallel** for faster feedback
+- **Submit results to Microsoft Foundry** for centralized tracking and comparison
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+---
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Table of Contents
 
-### `npm test`
+- [Prerequisites](#prerequisites)
+- [Quick Start](#quick-start)
+- [Project Structure](#project-structure)
+- [Configuration](#configuration)
+- [Running Evaluations](#running-evaluations)
+- [Working with Test Data](#working-with-test-data)
+- [Built-in Evaluators](#built-in-evaluators)
+- [Custom Evaluators](#custom-evaluators)
+- [Viewing Results](#viewing-results)
+- [Debugging Evaluators](#debug-evaluators)
+- [Submitting to Microsoft Foundry](#submitting-to-microsoft-foundry)
+- [Troubleshooting](#troubleshooting)
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+---
 
-### `npm run build`
+## Prerequisites
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Before you begin, ensure you have the following installed and configured:
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+| Requirement | Description |
+|-------------|-------------|
+| **Python 3.10+** | Python interpreter |
+| **VS Code** | Visual Studio Code with the [Python extension](https://marketplace.visualstudio.com/items?itemName=ms-python.python) |
+| **Foundry Toolkit** | [Foundry Toolkit for VS Code](https://marketplace.visualstudio.com/items?itemName=ms-windows-ai-studio.windows-ai-studio) |
+| **Azure CLI** | Installed and authenticated via `az login` |
+| **Azure subscription** | With access to Azure AI services and Microsoft Foundry |
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+---
 
-### `npm run eject`
+## Quick Start
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+### Step 1: Set Up Python Environment
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+1. Use the one-line command below to create Python environment and install dependencies.
+   - Windows
+     ```powershell
+     python -m venv .venv; .\.venv\Scripts\activate; pip install uv; uv pip install -r requirements.txt --prerelease=allow
+     ```
+   - MacOS / Linux
+     ```bash
+     python3 -m venv .venv && source .venv/bin/activate && pip install uv && uv pip install -r requirements.txt --prerelease=allow
+     ```
+2. Select the Python environment in VS Code: Open the Command Palette (`Ctrl+Shift+P` or `Cmd+Shift+P`), run `Python: Select Interpreter`, and select the new created environment.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+### Step 2: Configure Environment Variables
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+Open the `.env` file and verify your configuration.
 
-## Learn More
+### Step 3: Run Your First Evaluation
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+1. Open the **Testing** panel in VS Code (click the flask icon in the Activity Bar)
+2. Click the ▶️ button next to `test_MAI.py` to run all tests
+3. View results in the Test Results panel
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+---
 
-### Code Splitting
+## Project Structure
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+```
+MAI-eval/
+├── test_MAI.py    # Main evaluation test file
+├── evaluators.py                  # Custom evaluators definitions (prompt templates and code graders)
+├── data.jsonl                     # Test dataset (queries and expected outputs)
+├── requirements.txt               # Python package dependencies
+├── .env                           # Environment variables (API keys, endpoints)
+├── pytest.ini                     # Pytest configuration (parallelization, caching)
+├── test-results/                  # Local evaluation results (auto-generated)
+└── .vscode/
+    └── settings.json              # VS Code workspace settings for pytest
+```
 
-### Analyzing the Bundle Size
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+## Configuration
 
-### Making a Progressive Web App
+### Environment Variables
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+The `.env` file contains critical configuration for connecting to Azure services:
 
-### Advanced Configuration
+| Variable | Description |
+|----------|-------------|
+| `FOUNDRY_PROJECT_ENDPOINT` | Microsoft Foundry project endpoint where your agent is hosted |
+| `AZURE_OPENAI_ENDPOINT` | Azure OpenAI endpoint for the judge model |
+| `AZURE_OPENAI_DEPLOYMENT_NAME` | Azure OpenAI deployment name for the judge model |
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+### Pytest Configuration
 
-### Deployment
+The `pytest.ini` file controls test execution behavior:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+```ini
+[pytest]
+# Enable parallel execution
+addopts = -n 4
+```
 
-### `npm run build` fails to minify
+To run tests sequentially instead, modify `addopts` to remove `-n 4`.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+---
+
+## Running Evaluations
+
+### Using the VS Code Testing Panel
+
+1. **Open Testing Panel**: Click the flask icon in the Activity Bar (left sidebar)
+2. **Discover Tests**: VS Code automatically discovers tests in `test_MAI.py`
+3. **Run All Tests**: Click ▶️ next to the test file name
+4. **Run Single Test**: Click ▶️ next to an individual test method
+5. **View Output**: Click on a completed test to see detailed results
+
+### Using the Terminal
+
+```bash
+# Run all tests
+pytest
+
+# Run a specific test
+pytest test_MAI.py::Test_MAI::test_coherence
+
+# Run tests with verbose output
+pytest -v
+
+# Run tests sequentially (disable parallel)
+pytest -n 0
+```
+
+---
+
+## Working with Test Data
+
+### Test Data Format
+
+The `data.jsonl` file contains your test cases in JSON Lines format. Each line represents one test query:
+
+```json
+{"id": "query1", "query": "What is the weather in Seattle?"}
+{"id": "query2", "query": "Book a meeting for tomorrow", "ground_truth": "Meeting scheduled"}
+```
+
+| Field | Required | Description |
+|-------|----------|-------------|
+| `id` | Yes | Unique identifier for the test case |
+| `query` | Yes | The input query to send to your agent |
+| `ground_truth` | No | Expected response (required for some built-in evaluators) |
+
+### Generate Test Cases with GitHub Copilot
+
+Foundry Toolkit provides CodeLens integration to help you generate test data:
+
+1. Open `data.jsonl` in VS Code
+2. Click **"✨ Generate Test Cases with Copilot"** at the top of the file
+3. Copilot will analyze your agent and suggest relevant test cases
+4. Review and customize the generated data as needed
+
+---
+
+## Built-in Evaluators
+
+This project includes several pre-configured evaluators through `BuiltInEvaluatorConfig`. To see the complete list of available built-in evaluators, hover over `BuiltInEvaluatorConfig` in your test file—VS Code's IntelliSense will display all supported evaluator options along with their descriptions.
+
+## Custom Evaluators
+
+Create evaluators tailored to your specific requirements using prompts or code.
+
+### Custom Prompt Evaluator
+
+Define an LLM-based evaluator using a natural language prompt:
+
+```python
+from pytest_agent_evals import CustomPromptEvaluatorConfig
+
+custom_prompt = """
+You are evaluating whether the agent's response is professional and courteous.
+Score from 1 (unprofessional) to 5 (highly professional).
+
+Query: 
+Response: 
+
+Output JSON only: {"result": <score>, "reason": "<explanation>"}
+"""
+
+@evals.evaluator(CustomPromptEvaluatorConfig(
+    name="professionalism",
+    prompt=custom_prompt,
+    threshold=3
+))
+def test_professionalism(self, evaluator_results: EvaluatorResults):
+    assert evaluator_results.professionalism.result == "pass"
+```
+
+### Custom Code Evaluator
+
+Implement evaluation logic in Python for deterministic checks:
+
+```python
+from pytest_agent_evals import CustomCodeEvaluatorConfig
+
+def check_response_length(sample: dict, item: dict) -> float:
+    """Check if response meets minimum length requirements."""
+    response = sample.get("output_text", "")
+    min_length = 50
+    return 1.0 if len(response) >= min_length else 0.0
+
+@evals.evaluator(CustomCodeEvaluatorConfig(
+    name="response_length",
+    grader=check_response_length,
+    threshold=0.5
+))
+def test_response_length(self, evaluator_results: EvaluatorResults):
+    assert evaluator_results.response_length.result == "pass"
+```
+
+### Add or Update Custom Evaluators with GitHub Copilot
+
+1. Open `test_MAI.py` in VS Code
+2. Look for the **"+ Add Custom Evaluator with Copilot"** CodeLens (above the test class) and the **"✨ Update Custom Evaluator with Copilot"** CodeLens (above the test function)
+3. Describe your evaluation criteria in natural language
+4. Copilot generates the evaluator code for you
+
+---
+
+## Viewing Results
+
+### Local Results
+
+After running evaluations, results are saved to the `test-results/` folder:
+
+- **JSON Results**: Detailed metrics and scores for each test case
+- **Test Output**: Console output from pytest showing pass/fail status
+
+### Accessing Results in VS Code
+
+1. **Testing Panel**: Click on any test to view its output in the bottom panel
+2. **Foundry Toolkit Panel**: Navigate to **FOUNDRY TOOLKIT** > **Local Evaluation Results** to browse saved results
+3. **File Explorer**: Open files in `test-results/` directly
+
+### Results Schema
+
+```json
+{
+  "rows": [
+    {"inputs.query": "...", "outputs.coherence": 4, "outputs.relevance": 5}
+  ]
+}
+```
+
+---
+
+## Debugging Evaluators
+
+When some test cases failed, you can debug the specific case by clicking the "Debug Test" icon next to an individual test case in Test Explorer. By setting breakpoints in your test function (as well as the custom code evaluator function), you can see the intermediate states.
+
+---
+
+## Submitting to Microsoft Foundry
+
+Upload your local evaluation results to Microsoft Foundry for centralized tracking, comparison, and collaboration.
+
+### How to Submit
+
+1. Open the **Foundry Toolkit** panel in VS Code
+2. Navigate to your evaluation results under **Local Evaluation Results**
+3. Click **"Submit Evaluation to Foundry"**
+4. Confirm the target project and model deployment
+5. View your results in the Foundry portal
+
+### Benefits of Foundry Submission
+
+- **Centralized Dashboard**: Track evaluation history across all team members
+- **Version Comparison**: Compare results across different agent versions
+- **Collaboration**: Share evaluation insights with your team
+- **Audit Trail**: Maintain records for compliance and quality assurance
+
+---
+
+## Troubleshooting
+
+### Common Issues
+
+| Issue | Solution |
+|-------|----------|
+| **Tests not discovered** | Ensure `pytest` is configured in VS Code settings and the Python environment is activated |
+| **Authentication errors** | Run `az login` to authenticate with Azure CLI |
+| **Model deployment not found** | Verify `AZURE_OPENAI_DEPLOYMENT_NAME` matches your deployment in Azure Portal |
+| **Agent not found** | Confirm the agent exists in your Foundry project at `FOUNDRY_PROJECT_ENDPOINT` |
+| **Timeout errors** | Increase timeout in pytest.ini or reduce parallel workers with `-n 2` |
+
+### Debugging Tips
+
+1. **Check Python Environment**: Verify the correct environment is activated
+2. **Validate .env File**: Ensure all variables are set correctly
+3. **Review Logs**: Check the Output panel in VS Code for detailed error messages
+4. **Run Verbose Mode**: Execute `pytest -v --tb=long` for detailed tracebacks
+
+### Getting Help
+
+- **Foundry Toolkit Documentation**: [View Docs](https://aka.ms/AIToolkit/doc/eval)
+- **GitHub Issues**: Report bugs at the [Foundry Toolkit repository](https://github.com/microsoft/vscode-ai-toolkit)
+
+---
