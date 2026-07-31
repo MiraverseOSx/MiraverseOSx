@@ -14,6 +14,7 @@ export const APPS = [
   { id: 'terminal', title: 'Terminal', category: 'Intelligence', dev: 'FAC006', version: '2.1.0', primary: 'Command line interface & live SQL query shell', lore: 'Monochrome terminal interface for executing database commands and scripts.' },
   { id: 'browser', title: 'Browser', category: 'Navigation', dev: 'FAC002', version: '4.2.1', primary: 'Miraverse Web Portal & regional web browser', lore: 'Browser for viewing live net portals across the Miraverse.' },
   { id: 'settings', title: 'Settings', category: 'Utility', dev: 'FAC005', version: '3.0.0', primary: 'System preferences & DB statistics monitor', lore: 'System control panel and database status reader.' }
+  ,{ id: 'gamedoc', title: 'Game Doc', category: 'Docs', dev: 'FAC002', version: '1.0.0', primary: 'Read the Game Design Document sections', lore: 'Browse extracted sections from the design doc with search.' }
 ];
 
 export const REGIONS = [];

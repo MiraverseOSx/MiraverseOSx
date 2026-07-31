@@ -18,8 +18,9 @@ export default function SparklesCanvas() {
     };
     window.addEventListener('resize', handleResize);
 
-    const colors = ['#FFFFFF', '#F5EEF8', '#E8DAEF', '#FADBD8', '#EBDEF0', '#D5F5E3'];
-    const numSparkles = 95;
+    // Palette tuned to your existing background accents (lavender/indigo + warm pastels)
+    const colors = ['#FFFFFF', '#EDE9FE', '#DDD6FE', '#C7D2FE', '#FCE7F3', '#E0E7FF', '#F5F3FF'];
+    const numSparkles = 140;
 
     // Helper to draw a 4-point star sparkle ✨
     const drawStar = (cx, cy, outerRadius, innerRadius, color, alpha) => {

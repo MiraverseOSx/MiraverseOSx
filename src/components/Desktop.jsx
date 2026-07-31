@@ -8,6 +8,7 @@ import { useOSStore } from '../store/useOSStore';
 import { APPS } from '../apps/registry';
 import Window from './Window';
 import SparklesCanvas from './SparklesCanvas';
+import { useOSStore as useStore } from '../store/useOSStore';
 
 const formatClock = (date) => date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false });
 const formatDate = (date) => date.toLocaleDateString([], { month: 'short', day: 'numeric', year: 'numeric' });
@@ -29,6 +30,8 @@ export default function Desktop() {
   const clearActive = useOSStore((s) => s.clearActive);
   const player = useOSStore((s) => s.gameplay.player);
   const corruption = useOSStore((s) => s.gameplay.prismCorruptionLevel);
+  const advanceTime = useOSStore((s) => s.advanceTime);
+  const restInDorm = useOSStore((s) => s.restInDorm);
 
   useEffect(() => {
     const id = setInterval(() => setNow(new Date()), 1000);
@@ -78,7 +81,7 @@ export default function Desktop() {
         <aside className="hidden w-44 shrink-0 border-r border-slate-300/75 pr-4 lg:block">
           <p className="mb-3 text-[9px] font-bold tracking-[.2em] text-slate-500">WORKSPACE</p>
           <nav className="space-y-1">
-            <button className="flex w-full items-center gap-3 border-l-2 border-[#5b63aa] bg-white/60 px-3 py-2.5 text-left text-xs font-semibold text-[#222d58]"><FileSearch size={15} /> Caseboard</button>
+            <button onClick={() => launch({ id: 'board', title: 'Notice Board', contentKey: 'board' })} className="flex w-full items-center gap-3 border-l-2 border-[#5b63aa] bg-white/60 px-3 py-2.5 text-left text-xs font-semibold text-[#222d58]"><FileSearch size={15} /> Notice Board</button>
             <button onClick={() => launch(APPS.find((app) => app.id === 'comms'))} className="flex w-full items-center gap-3 border-l-2 border-transparent px-3 py-2.5 text-left text-xs text-slate-600 hover:bg-white/55"><Mail size={15} /> Comms</button>
             <button className="flex w-full items-center gap-3 border-l-2 border-transparent px-3 py-2.5 text-left text-xs text-slate-600 hover:bg-white/55"><CalendarDays size={15} /> Schedule</button>
             <button className="flex w-full items-center gap-3 border-l-2 border-transparent px-3 py-2.5 text-left text-xs text-slate-600 hover:bg-white/55"><Gem size={15} /> Personal archive</button>
@@ -134,7 +137,13 @@ export default function Desktop() {
           <AnimatePresence>{isLauncherOpen && <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 8 }} className="absolute bottom-12 left-0 grid w-[340px] grid-cols-4 gap-px border border-[#bec6e1] bg-[#bec6e1] p-px shadow-xl"><div className="col-span-4 bg-[#eef0f9] px-3 py-2 text-[9px] font-bold tracking-[.18em] text-[#4b568e]">APPLICATION ARCHIVE</div>{APPS.map((app) => { const Icon = app.icon; return <button key={app.id} onClick={() => launch(app)} className="flex min-h-20 flex-col items-start gap-2 bg-white px-3 py-3 text-left text-[10px] font-semibold text-slate-700 hover:bg-[#f0f0fb]"><Icon size={16} className="text-[#5f67ab]" /><span>{app.title}</span></button>; })}</motion.div>}</AnimatePresence>
           <button onClick={() => setIsLauncherOpen((open) => !open)} className="flex items-center gap-2 border-r border-slate-300 pr-4 text-[10px] font-bold tracking-[.14em] text-[#26315c]"><LayoutGrid size={16} /> ARCHIVE</button>
         </div>
-        <div className="flex items-center gap-2"><div className="hidden w-64 items-center border border-slate-300 bg-white/65 px-3 py-1.5 sm:flex"><Search size={13} className="mr-2 text-slate-500" /><input value={searchQuery} onChange={(event) => setSearchQuery(event.target.value)} placeholder="Search archive" className="w-full bg-transparent text-xs outline-none placeholder:text-slate-400" /></div><button onClick={() => setIsSanctuary((active) => !active)} className={'flex items-center gap-2 px-3 py-1.5 text-[10px] font-bold tracking-[.12em] transition ' + (isSanctuary ? 'bg-[#28325f] text-white' : 'text-[#4e5792] hover:bg-[#ecebf7]')}><Moon size={14} /> SANCTUARY</button><button onClick={() => launch({ id: 'settings', title: 'Settings', contentKey: 'settings' })} className="p-2 text-slate-500 hover:text-[#293360]"><Settings size={16} /></button><button onClick={() => alert('Power options')} className="p-2 text-slate-500 hover:text-[#293360]"><Power size={16} /></button></div>
+        <div className="flex items-center gap-2"><div className="hidden w-64 items-center border border-slate-300 bg-white/65 px-3 py-1.5 sm:flex"><Search size={13} className="mr-2 text-slate-500" /><input value={searchQuery} onChange={(event) => setSearchQuery(event.target.value)} placeholder="Search archive" className="w-full bg-transparent text-xs outline-none placeholder:text-slate-400" /></div>
+          <button onClick={() => advanceTime()} className="px-3 py-1.5 text-[10px] font-bold tracking-[.12em] text-[#4e5792] hover:bg-[#ecebf7]">Advance Time</button>
+          <button onClick={() => restInDorm()} className="px-3 py-1.5 text-[10px] font-bold tracking-[.12em] text-[#4e5792] hover:bg-[#ecebf7]">Sleep</button>
+          <button onClick={() => setIsSanctuary((active) => !active)} className={'flex items-center gap-2 px-3 py-1.5 text-[10px] font-bold tracking-[.12em] transition ' + (isSanctuary ? 'bg-[#28325f] text-white' : 'text-[#4e5792] hover:bg-[#ecebf7]')}><Moon size={14} /> SANCTUARY</button>
+          <button onClick={() => launch({ id: 'settings', title: 'Settings', contentKey: 'settings' })} className="p-2 text-slate-500 hover:text-[#293360]"><Settings size={16} /></button>
+          <button onClick={() => alert('Power options')} className="p-2 text-slate-500 hover:text-[#293360]"><Power size={16} /></button>
+        </div>
       </div>
     </main>
   );

@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Mail, MessageSquare, Send, Hash, UserCircle2, Paperclip } from 'lucide-react';
-import { INITIAL_EMAILS, INITIAL_SHADOWCHAT_FEED } from '../data/commsData';
+import { useCommsStore } from '../store/useCommsStore';
 import { useOSStore } from '../store/useOSStore';
 
 const EMAIL_FOLDERS = [
@@ -8,17 +8,13 @@ const EMAIL_FOLDERS = [
   { id: 'alerts', label: 'Alerts' },
 ];
 
-const CHANNELS = [
-  { id: 'secure-relay', name: 'secure-relay', team: 'Ops' },
-  { id: 'briefings', name: 'briefings', team: 'Faculty' },
-  { id: 'dga-ops', name: 'dga-ops', team: 'Agency' },
-];
-
-const DIRECT_CONTACTS = [
-  { id: 'dm:voss', name: 'Dr. Voss' },
-  { id: 'dm:riven', name: 'Riven' },
-  { id: 'dm:odd', name: 'Odd' },
-];
+const useComms = () => ({
+  channels: useCommsStore((s) => s.channels),
+  directs: useCommsStore((s) => s.directs),
+  messages: useCommsStore((s) => s.messages),
+  addChatMessage: useCommsStore((s) => s.addChatMessage),
+  emails: useCommsStore((s) => s.emails),
+});
 
 export default function CommsApp() {
   const [mode, setMode] = useState('channels'); // 'channels' | 'email'
@@ -33,8 +29,9 @@ export default function CommsApp() {
   const claimCommsAttachment = useOSStore((s) => s.claimCommsAttachment);
 
   // Email datasource
+  const { emails: storeEmails, channels, directs, messages, addChatMessage } = useComms();
   const emails = useMemo(() => {
-    let list = INITIAL_EMAILS;
+    let list = storeEmails;
     if (folder === 'alerts') {
       list = list.filter((m) => /alert|notice|security|orientation|setup|activation/i.test(m.subject) || /System|Services|Dean|Medical|Bureau|Security/i.test(m.sender));
     }
@@ -43,7 +40,7 @@ export default function CommsApp() {
       list = list.filter((m) => m.subject.toLowerCase().includes(q) || m.sender.toLowerCase().includes(q) || (m.body || '').toLowerCase().includes(q));
     }
     return list;
-  }, [folder, search]);
+  }, [storeEmails, folder, search]);
 
   const selectedMessage = useMemo(() => emails.find((m) => m.id === selectedMessageId) || null, [emails, selectedMessageId]);
   const attachmentClaimed = selectedMessage?.attachment && claimedComms.includes(selectedMessage.id);
@@ -59,23 +56,12 @@ export default function CommsApp() {
   };
 
   // Channels datasource (local state per channel)
-  const [channelMessages, setChannelMessages] = useState(() => ({
-    'secure-relay': INITIAL_SHADOWCHAT_FEED,
-    briefings: [
-      { id: 'b-1', user: 'Dean Rook', team: 'Faculty', text: 'Orientation block begins at 20:00 sharp.', time: '08:40 AM' },
-    ],
-    'dga-ops': [
-      { id: 'd-1', user: 'Mara Quell', team: 'Agency', text: 'Ops window: verify Sector 7 nodes. Squad of four.', time: '09:10 AM' },
-    ],
-    'dm:voss': [ { id: 'dmv-1', user: 'Dr. Voss', team: 'Direct', text: 'Keep your relay sanitized. Report any PRISM anomalies immediately.', time: '09:22 AM' } ],
-    'dm:riven': [ { id: 'dmr-1', user: 'Riven', team: 'Direct', text: 'Got a shortcut to the factory? Meet near Block C stairs.', time: '09:05 AM' } ],
-    'dm:odd': [ { id: 'dmo-1', user: 'Odd', team: 'Direct', text: 'Heard a rumor: cafeteria pie heals +5 aura. Scientific.', time: '08:55 AM' } ],
-  }));
+  // use persisted messages from the store
 
   const sendChat = () => {
     if (!chatDraft.trim()) return;
     const entry = { id: Date.now(), user: 'You', team: 'Student', text: chatDraft, time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) };
-    setChannelMessages((s) => ({ ...s, [channelId]: [...(s[channelId] || []), entry] }));
+    addChatMessage(channelId, entry);
     setChatDraft('');
   };
 
@@ -187,7 +173,7 @@ export default function CommsApp() {
             <div>
               <div className="text-[10px] font-bold tracking-[.2em] text-slate-600 mb-2">CHANNELS</div>
               <div className="space-y-1">
-                {CHANNELS.map((c) => (
+                {channels.map((c) => (
                   <button key={c.id} onClick={() => setChannelId(c.id)} className={`flex w-full items-center gap-2 rounded px-2 py-1.5 text-left text-[12px] ${channelId === c.id ? 'bg-[#e9ebf6] text-[#1d2650] font-semibold' : 'hover:bg-[#f2f3fb] text-slate-600'}`}>
                     <Hash size={13} className="text-[#5f6ab0]" /> {c.name}
                   </button>
@@ -198,7 +184,7 @@ export default function CommsApp() {
             <div>
               <div className="text-[10px] font-bold tracking-[.2em] text-slate-600 mb-2">DIRECT MESSAGES</div>
               <div className="space-y-1">
-                {DIRECT_CONTACTS.map((d) => (
+                {directs.map((d) => (
                   <button key={d.id} onClick={() => setChannelId(d.id)} className={`flex w-full items-center gap-2 rounded px-2 py-1.5 text-left text-[12px] ${channelId === d.id ? 'bg-[#e9ebf6] text-[#1d2650] font-semibold' : 'hover:bg-[#f2f3fb] text-slate-600'}`}>
                     <UserCircle2 size={13} className="text-[#6b74b5]" /> {d.name}
                   </button>
@@ -214,7 +200,7 @@ export default function CommsApp() {
             </div>
             <div className="min-h-0 flex-1 overflow-auto p-3">
               <div className="mx-auto max-w-3xl space-y-2">
-                {(channelMessages[channelId] || []).map((m) => (
+                {(messages[channelId] || []).map((m) => (
                   <div key={m.id} className="max-w-[85%] rounded-lg border border-slate-300/70 bg-white/70 px-3 py-2">
                     <div className="mb-0.5 flex items-center justify-between text-[11px] text-slate-600">
                       <span className="font-semibold text-[#1c2650]">{m.user}</span>

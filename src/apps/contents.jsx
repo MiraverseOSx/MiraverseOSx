@@ -5,6 +5,8 @@ import GameHubApp from '../games/GameHubApp';
 import CommsApp from './CommsApp';
 import SpellForgeApp from './SpellForgeApp';
 import AuraPassportApp from './AuraPassportApp';
+import NoticeBoardApp from './NoticeBoardApp';
+import GameDocApp from './GameDocApp';
 
 const Panel = ({ children }) => (
   <div className="h-full w-full overflow-auto p-6 text-sm leading-relaxed text-white/80">
@@ -18,6 +20,8 @@ const Panel = ({ children }) => (
 const Files = () => {
   const [activeFolder, setActiveFolder] = useState('lore');
   const [selectedItem, setSelectedItem] = useState(null);
+  const addSkillXP = useOSStore((s) => s.addSkillXP);
+  const incrementAppRank = useOSStore((s) => s.incrementAppRank);
 
   const folders = [
     { id: 'lore', label: 'Lore Archive', icon: '📜', data: miraverseDb.getLoreEntries() },
@@ -64,7 +68,11 @@ const Files = () => {
             {currentFolder.data.map((item) => (
               <div
                 key={item.id}
-                onClick={() => setSelectedItem(item)}
+                onClick={() => {
+                  setSelectedItem(item);
+                  addSkillXP('Research', 10);
+                  incrementAppRank('research');
+                }}
                 className={`cursor-pointer flex flex-col rounded-xl border p-3 transition ${
                   selectedItem?.id === item.id
                     ? 'border-cyan-400/50 bg-cyan-500/20'
@@ -198,8 +206,13 @@ const TerminalApp = () => {
 // Browser App: Simulated In-Game Database Portals
 // ----------------------------------------------------------------------
 const Browser = () => {
-  const [url] = useState('https://miraverse.os/factions');
+  const [url] = useState('https://miraverse.os/portal');
   const lore = miraverseDb.getLoreEntries();
+  const player = useOSStore((s) => s.gameplay.player);
+  const [scheduled, setScheduled] = useState(false);
+  const healAura = useOSStore((s) => s.healAura);
+  const removeCondition = useOSStore((s) => s.removeCondition);
+  const addCareerXP = useOSStore((s) => s.addCareerXP);
 
   return (
     <div className="flex h-full w-full flex-col bg-slate-950 text-white">
@@ -220,6 +233,27 @@ const Browser = () => {
           <div>
             <h3 className="mb-3 font-semibold text-sm text-white">Factions Directory</h3>
             <div className="text-xs text-white/60">World directory trimmed for now.</div>
+          </div>
+
+          {/* Faith Medical Portal (browser-based intake) */}
+          <div className="rounded-lg border border-white/10 bg-white/5 p-3">
+            <div className="mb-2 flex items-center justify-between">
+              <h3 className="font-semibold text-sm text-white">Faith Medical Portal</h3>
+              <span className="text-[10px] text-cyan-300/80">Aura: {player.auraHealth}%</span>
+            </div>
+            <div className="text-xs text-white/70">Intake Status: {scheduled ? 'Scheduled' : 'Not scheduled'}</div>
+            <div className="mt-2 flex gap-2">
+              <button onClick={() => setScheduled(true)} className="rounded bg-cyan-500/20 px-3 py-1.5 text-[11px] font-semibold text-cyan-200 hover:bg-cyan-500/30">Schedule Intake Scan</button>
+              <button
+                onClick={() => { if (!scheduled) return; healAura(20); removeCondition('Veilwilt'); addCareerXP('medical', 60); }}
+                className={`rounded px-3 py-1.5 text-[11px] font-semibold ${scheduled ? 'bg-emerald-400/20 text-emerald-200 hover:bg-emerald-400/30' : 'bg-white/10 text-white/30'}`}
+              >
+                Complete Intake
+              </button>
+            </div>
+            {player.conditions.length > 0 && (
+              <div className="mt-3 text-[11px] text-white/70">Conditions: {player.conditions.join(', ')}</div>
+            )}
           </div>
 
           <div>
@@ -311,6 +345,8 @@ export const CONTENTS = {
   terminal: TerminalApp,
   browser: Browser,
   settings: SettingsApp,
+  board: NoticeBoardApp,
+  gamedoc: GameDocApp,
 };
 
 export const getContent = (key) => CONTENTS[key] || (() => <Panel>Nothing here yet.</Panel>);
