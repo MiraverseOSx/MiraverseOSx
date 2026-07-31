@@ -314,37 +314,57 @@ export default function GameHubApp() {
   // ------------------------------------------------------------------
   const JobsBoardGame = () => {
     const [activeSection, setActiveSection] = useState('board'); // 'board' | 'careers' | 'skills'
-    const [progressing, setProgressing] = useState(null); // { type: 'task'|'shift', id: string, name: string }
+    const [progressing, setProgressing] = useState(null); // { type, id, name, key }
     const [actionProgress, setActionProgress] = useState(0);
     const [log, setLog] = useState(['Job & Skills dashboard initialized. Select a task or shift...']);
+    const [cooldowns, setCooldowns] = useState({ medical: 0, dga: 0, gov: 0 });
+    const [taskCooldowns, setTaskCooldowns] = useState({});
+    const [promoPopup, setPromoPopup] = useState(null); // { trackName, rankName }
+    const [now, setNow] = useState(() => Date.now());
+
+    // 1-second tick for live cooldown countdowns
+    useEffect(() => {
+      const interval = setInterval(() => setNow(Date.now()), 1000);
+      return () => clearInterval(interval);
+    }, []);
+
+    // Auto-dismiss promotion popup after 3s
+    useEffect(() => {
+      if (!promoPopup) return;
+      const t = setTimeout(() => setPromoPopup(null), 3000);
+      return () => clearTimeout(t);
+    }, [promoPopup]);
+
+    const SHIFT_COOLDOWN_MS = 60_000;
+    const TASK_COOLDOWN_MS  = 5_000;
 
     const tasks = [
-      { id: 'T01', title: 'Clear digital clutter in Undervault', skill: 'Programming', reward: 50, skillXP: 30, xp: 20, desc: 'Requires standard terminal cleaning protocols.' },
-      { id: 'T02', title: 'Deliver botanical remedies to Faith Hospital', skill: 'Communication', reward: 80, skillXP: 45, xp: 30, desc: 'Sort and package warm-essence diagnostics.' },
-      { id: 'T03', title: 'Stabilize SpellForge conduit leakage', skill: 'Spellcasting', reward: 120, skillXP: 60, xp: 45, desc: 'Requires alignment check in the elements compass.' }
+      { id: 'T01', title: 'Clear digital clutter in Undervault',          skill: 'Programming',   reward: 50,  skillXP: 30, xp: 20, desc: 'Requires standard terminal cleaning protocols.' },
+      { id: 'T02', title: 'Deliver botanical remedies to Faith Hospital',  skill: 'Communication', reward: 80,  skillXP: 45, xp: 30, desc: 'Sort and package warm-essence diagnostics.' },
+      { id: 'T03', title: 'Stabilize SpellForge conduit leakage',          skill: 'Spellcasting',  reward: 120, skillXP: 60, xp: 45, desc: 'Requires alignment check in the elements compass.' },
     ];
 
     const careerTracks = {
       medical: {
         name: 'Faith Medical Group',
         ranks: ['Patient Volunteer', 'Clinic Assistant', 'Aura Technician', 'Diagnostic Intern', 'Research Associate', 'Veil Recovery Specialist'],
-        shifts: { id: 'medical_shift', title: 'Volunteer at Clinic Intake', reward: 100, careerXP: 30, xp: 25 }
+        shifts: { id: 'medical_shift', title: 'Volunteer at Clinic Intake',   reward: 100, careerXP: 30, xp: 25 },
       },
       dga: {
         name: 'DGA Careers',
         ranks: ['Observer', 'Cadet Asset', 'Junior Operative', 'Field Operative', 'Containment Specialist', 'Strategic Agent'],
-        shifts: { id: 'dga_shift', title: 'Monitor DGA Node Logs', reward: 120, careerXP: 35, xp: 30 }
+        shifts: { id: 'dga_shift',     title: 'Monitor DGA Node Logs',         reward: 120, careerXP: 35, xp: 30 },
       },
       gov: {
         name: 'Governmental Careers',
         ranks: ['Civic Clerk', 'Policy Aide', 'Regional Liaison', 'Public Systems Analyst', 'Diplomatic Officer', 'Royal Administrative Attaché'],
-        shifts: { id: 'gov_shift', title: 'Sort Regional Archive Files', reward: 90, careerXP: 25, xp: 20 }
-      }
+        shifts: { id: 'gov_shift',     title: 'Sort Regional Archive Files',   reward: 90,  careerXP: 25, xp: 20 },
+      },
     };
 
     const handleStartAction = (type, item, key = null) => {
       if (progressing) return;
-      setProgressing({ type, id: item.id || key, name: item.title });
+      setProgressing({ type, id: item.id || key, name: item.title, key });
       setActionProgress(0);
 
       const interval = setInterval(() => {
@@ -361,77 +381,124 @@ export default function GameHubApp() {
 
     const finishAction = (type, item, key) => {
       setProgressing(null);
+      setActionProgress(0);
+
       if (type === 'task') {
         addCredits(item.reward);
         addXP(item.xp);
         addSkillXP(item.skill, item.skillXP);
+        setTaskCooldowns((prev) => ({ ...prev, [item.id]: Date.now() + TASK_COOLDOWN_MS }));
         setLog((prev) => [
-          `\u2705 Task Completed: [${item.title}]. Received ₡${item.reward} Credits, +${item.xp} XP, and +${item.skillXP} ${item.skill} XP!`,
-          ...prev
+          `\u2705 Task Completed: [${item.title}]. Received \u20a1${item.reward} Credits, +${item.xp} XP, and +${item.skillXP} ${item.skill} XP!`,
+          ...prev,
         ]);
       } else if (type === 'shift') {
         addCredits(item.reward);
         addXP(item.xp);
         addCareerXP(key, item.careerXP);
-        const rankList = careerTracks[key].ranks;
+        setCooldowns((prev) => ({ ...prev, [key]: Date.now() + SHIFT_COOLDOWN_MS }));
+
+        const rankList       = careerTracks[key].ranks;
         const currentRankIdx = player.careers[key]?.rankIndex || 0;
-        const nextRank = rankList[currentRankIdx + 1];
-        const nextXP = (player.careers[key]?.xp || 0) + item.careerXP;
-        
-        let promoMsg = '';
+        const nextXP         = (player.careers[key]?.xp || 0) + item.careerXP;
+        let promoMsg         = '';
+
         if (nextXP >= 100 && currentRankIdx < rankList.length - 1) {
-          promoMsg = ` \uD83C\uDF89 PROMOTED to Rank [${nextRank}]!`;
+          const newRank = rankList[currentRankIdx + 1];
+          promoMsg = ` \uD83C\uDF89 PROMOTED to Rank [${newRank}]!`;
+          setPromoPopup({ trackName: careerTracks[key].name, rankName: newRank });
         }
 
         setLog((prev) => [
-          `💼 Shift Complete: [${item.title}]. Gained ₡${item.reward} Credits, +${item.xp} XP, and +${item.careerXP} Career XP for ${careerTracks[key].name}.${promoMsg}`,
-          ...prev
+          `\uD83D\uDCBC Shift Complete: [${item.title}]. Gained \u20a1${item.reward} Credits, +${item.xp} XP, and +${item.careerXP} Career XP for ${careerTracks[key].name}.${promoMsg}`,
+          ...prev,
         ]);
       }
     };
 
+    // SVG ring constants
+    const RING_R      = 30;
+    const RING_C      = 2 * Math.PI * RING_R; // circumference
+
     return (
-      <div className="flex h-full w-full bg-slate-950 text-white font-mono text-xs select-none">
-        {/* Sidebar Nav */}
+      <div className="flex h-full w-full bg-slate-950 text-white font-mono text-xs select-none relative">
+
+        {/* ── Promotion Popup ── */}
+        {promoPopup && (
+          <div
+            className="absolute inset-0 z-50 flex items-center justify-center bg-black/60"
+            onClick={() => setPromoPopup(null)}
+          >
+            <div className="border border-white/20 bg-slate-900 rounded-xl p-8 text-center space-y-2 w-72">
+              <div className="text-[10px] uppercase tracking-widest text-white/40">Rank Promotion</div>
+              <div className="text-white/50 text-[10px]">{promoPopup.trackName}</div>
+              <div className="text-cyan-400 font-bold text-base">{promoPopup.rankName}</div>
+              <div className="text-[9px] text-white/25 pt-2">Click anywhere to dismiss</div>
+            </div>
+          </div>
+        )}
+
+        {/* ── Sidebar Nav ── */}
         <div className="w-48 border-r border-white/10 bg-slate-900/60 p-4 space-y-1 shrink-0">
-          <button
-            onClick={() => setActiveSection('board')}
-            className={`flex w-full items-center gap-2 rounded-lg px-3 py-2 text-left transition ${
-              activeSection === 'board' ? 'bg-white/15 text-white font-semibold' : 'text-white/70 hover:bg-white/10'
-            }`}
-          >
-            <span>📋 Notice Board</span>
-          </button>
-          <button
-            onClick={() => setActiveSection('careers')}
-            className={`flex w-full items-center gap-2 rounded-lg px-3 py-2 text-left transition ${
-              activeSection === 'careers' ? 'bg-white/15 text-white font-semibold' : 'text-white/70 hover:bg-white/10'
-            }`}
-          >
-            <span>💼 Job Center</span>
-          </button>
-          <button
-            onClick={() => setActiveSection('skills')}
-            className={`flex w-full items-center gap-2 rounded-lg px-3 py-2 text-left transition ${
-              activeSection === 'skills' ? 'bg-white/15 text-white font-semibold' : 'text-white/70 hover:bg-white/10'
-            }`}
-          >
-            <span>📈 Skills Grid</span>
-          </button>
+          {[
+            { key: 'board',   label: '📋 Notice Board' },
+            { key: 'careers', label: '💼 Job Center'    },
+            { key: 'skills',  label: '📈 Skills Grid'   },
+          ].map(({ key, label }) => (
+            <button
+              key={key}
+              onClick={() => setActiveSection(key)}
+              className={`flex w-full items-center gap-2 rounded-lg px-3 py-2 text-left transition ${
+                activeSection === key
+                  ? 'bg-white/15 text-white font-semibold'
+                  : 'text-white/70 hover:bg-white/10'
+              }`}
+            >
+              {label}
+            </button>
+          ))}
         </div>
 
-        {/* Main Section */}
+        {/* ── Main Panel ── */}
         <div className="flex flex-1 flex-col overflow-hidden">
           <div className="flex-1 overflow-auto p-5 space-y-4">
+
+            {/* Active task / shift — SVG ring */}
             {progressing && (
-              <div className="rounded-xl border border-cyan-500/30 bg-cyan-500/5 p-4 text-center space-y-2 animate-pulse">
-                <div className="font-bold text-cyan-300">Working: {progressing.name} ({actionProgress}%)</div>
-                <div className="h-2 w-full rounded bg-white/10 overflow-hidden max-w-sm mx-auto">
-                  <div className="h-full bg-cyan-500 transition-all duration-300" style={{ width: `${actionProgress}%` }} />
+              <div className="rounded-xl border border-white/10 bg-white/5 p-4 flex items-center gap-5">
+                <svg
+                  width="72" height="72" viewBox="0 0 80 80"
+                  className="shrink-0"
+                  style={{ transform: 'rotate(-90deg)' }}
+                >
+                  {/* track */}
+                  <circle
+                    cx="40" cy="40" r={RING_R}
+                    fill="none"
+                    stroke="rgba(255,255,255,0.08)"
+                    strokeWidth="6"
+                  />
+                  {/* progress */}
+                  <circle
+                    cx="40" cy="40" r={RING_R}
+                    fill="none"
+                    stroke="#22d3ee"
+                    strokeWidth="6"
+                    strokeLinecap="butt"
+                    strokeDasharray={RING_C}
+                    strokeDashoffset={RING_C - (actionProgress / 100) * RING_C}
+                    style={{ transition: 'stroke-dashoffset 0.35s linear' }}
+                  />
+                </svg>
+                <div className="space-y-1">
+                  <div className="text-[9px] uppercase tracking-widest text-white/30">In Progress</div>
+                  <div className="font-bold text-white">{progressing.name}</div>
+                  <div className="text-cyan-400">{actionProgress}% complete</div>
                 </div>
               </div>
             )}
 
+            {/* ── Notice Board ── */}
             {activeSection === 'board' && !progressing && (
               <div className="space-y-3">
                 <div>
@@ -439,43 +506,63 @@ export default function GameHubApp() {
                   <p className="text-[10px] text-white/50">Accept micro-tasks to hone your academic skills.</p>
                 </div>
                 <div className="space-y-2">
-                  {tasks.map((task) => (
-                    <div key={task.id} className="rounded-xl border border-white/10 bg-white/5 p-3 flex items-center justify-between">
-                      <div className="space-y-1">
-                        <div className="font-bold text-white">{task.title}</div>
-                        <div className="text-[10px] text-white/40">{task.desc}</div>
-                        <div className="text-[9px] text-cyan-300">Gains: +{task.skillXP} {task.skill} XP | +₡{task.reward} Credits</div>
-                      </div>
-                      <button
-                        onClick={() => handleStartAction('task', task)}
-                        className="rounded bg-cyan-500 px-3 py-1 text-[10px] font-bold text-black hover:bg-cyan-400"
+                  {tasks.map((task) => {
+                    const until      = taskCooldowns[task.id] || 0;
+                    const onCooldown = until > now;
+                    const secsLeft   = onCooldown ? Math.ceil((until - now) / 1000) : 0;
+                    return (
+                      <div
+                        key={task.id}
+                        className="rounded-xl border border-white/10 bg-white/5 p-3 flex items-center justify-between"
                       >
-                        Accept
-                      </button>
-                    </div>
-                  ))}
+                        <div className="space-y-1">
+                          <div className="font-bold text-white">{task.title}</div>
+                          <div className="text-[10px] text-white/40">{task.desc}</div>
+                          <div className="text-[9px] text-cyan-300">
+                            Gains: +{task.skillXP} {task.skill} XP | +\u20a1{task.reward} Credits
+                          </div>
+                        </div>
+                        <button
+                          disabled={onCooldown}
+                          onClick={() => !onCooldown && handleStartAction('task', task)}
+                          className={`rounded px-3 py-1 text-[10px] font-bold transition min-w-[52px] text-center ${
+                            onCooldown
+                              ? 'bg-white/5 border border-white/10 text-white/30 cursor-not-allowed'
+                              : 'bg-cyan-500 text-black hover:bg-cyan-400'
+                          }`}
+                        >
+                          {onCooldown ? `${secsLeft}s` : 'Accept'}
+                        </button>
+                      </div>
+                    );
+                  })}
                 </div>
               </div>
             )}
 
+            {/* ── Careers ── */}
             {activeSection === 'careers' && !progressing && (
               <div className="space-y-4">
                 <div>
                   <h2 className="text-sm font-bold text-cyan-400">Student Placement Careers</h2>
                   <p className="text-[10px] text-white/50">Work shifts to gain professional rank promotions.</p>
                 </div>
-
                 <div className="space-y-3">
                   {Object.entries(careerTracks).map(([key, value]) => {
                     const currentRankIdx = player.careers[key]?.rankIndex || 0;
-                    const currentRank = value.ranks[currentRankIdx];
-                    const currentXP = player.careers[key]?.xp || 0;
+                    const currentRank    = value.ranks[currentRankIdx];
+                    const currentXP      = player.careers[key]?.xp || 0;
+                    const until          = cooldowns[key] || 0;
+                    const onCooldown     = until > now;
+                    const secsLeft       = onCooldown ? Math.ceil((until - now) / 1000) : 0;
                     return (
                       <div key={key} className="rounded-xl border border-white/10 bg-white/5 p-4 space-y-3">
                         <div className="flex justify-between items-start">
                           <div>
                             <div className="font-bold text-sm text-cyan-300">{value.name}</div>
-                            <div className="text-[10px] text-white/60">Rank: <span className="font-bold text-white">{currentRank}</span> (Level {currentRankIdx + 1})</div>
+                            <div className="text-[10px] text-white/60">
+                              Rank: <span className="font-bold text-white">{currentRank}</span> (Level {currentRankIdx + 1})
+                            </div>
                           </div>
                           <span className="text-[10px] text-white/40">XP: {currentXP} / 100</span>
                         </div>
@@ -485,12 +572,19 @@ export default function GameHubApp() {
                         </div>
 
                         <div className="flex justify-between items-center pt-2 border-t border-white/5">
-                          <div className="text-[9px] text-emerald-400">Shift Shift: +{value.shifts.careerXP} Career XP | +₡{value.shifts.reward} Credits</div>
+                          <div className="text-[9px] text-emerald-400">
+                            Shift: +{value.shifts.careerXP} Career XP | +\u20a1{value.shifts.reward} Credits
+                          </div>
                           <button
-                            onClick={() => handleStartAction('shift', value.shifts, key)}
-                            className="rounded bg-cyan-500 px-3 py-1 text-[10px] font-bold text-black hover:bg-cyan-400"
+                            disabled={onCooldown}
+                            onClick={() => !onCooldown && handleStartAction('shift', value.shifts, key)}
+                            className={`rounded px-3 py-1 text-[10px] font-bold transition min-w-[90px] text-center ${
+                              onCooldown
+                                ? 'bg-white/5 border border-white/10 text-white/30 cursor-not-allowed'
+                                : 'bg-cyan-500 text-black hover:bg-cyan-400'
+                            }`}
                           >
-                            Work Shift
+                            {onCooldown ? `Ready in ${secsLeft}s` : 'Work Shift'}
                           </button>
                         </div>
                       </div>
@@ -500,17 +594,17 @@ export default function GameHubApp() {
               </div>
             )}
 
+            {/* ── Skills Grid ── */}
             {activeSection === 'skills' && !progressing && (
               <div className="space-y-3">
                 <div>
                   <h2 className="text-sm font-bold text-cyan-400">Academic Skill Register</h2>
                   <p className="text-[10px] text-white/50">Your current proficiency levels across the 9 core subjects.</p>
                 </div>
-
                 <div className="grid grid-cols-2 gap-3">
                   {Object.entries(player.skills).map(([name, data]) => {
                     const nextLevelXP = data.level * 150;
-                    const pct = (data.xp / nextLevelXP) * 100;
+                    const pct         = (data.xp / nextLevelXP) * 100;
                     return (
                       <div key={name} className="rounded-xl border border-white/10 bg-white/5 p-3 space-y-1.5">
                         <div className="flex justify-between font-bold text-white">

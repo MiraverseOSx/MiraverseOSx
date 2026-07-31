@@ -21,10 +21,6 @@ const Files = () => {
 
   const folders = [
     { id: 'lore', label: 'Lore Archive', icon: '📜', data: miraverseDb.getLoreEntries() },
-    { id: 'factions', label: 'Factions', icon: '🏛️', data: miraverseDb.getFactions() },
-    { id: 'regions', label: 'Regions', icon: '🗺️', data: miraverseDb.getRegions() },
-    { id: 'npcs', label: 'NPCs', icon: '👤', data: miraverseDb.getNPCs() },
-    { id: 'houses', label: 'Houses', icon: '🏰', data: miraverseDb.getHouses() },
   ];
 
   const currentFolder = folders.find((f) => f.id === activeFolder);
@@ -85,7 +81,6 @@ const Files = () => {
                 <div className="mt-2 flex items-center justify-between text-[10px] text-cyan-300/70">
                   <span>{item.id}</span>
                   {item.era && <span>{item.era}</span>}
-                  {item.danger && <span>Level {item.danger}</span>}
                 </div>
               </div>
             ))}
@@ -204,7 +199,6 @@ const TerminalApp = () => {
 // ----------------------------------------------------------------------
 const Browser = () => {
   const [url] = useState('https://miraverse.os/factions');
-  const factions = miraverseDb.getFactions();
   const lore = miraverseDb.getLoreEntries();
 
   return (
@@ -225,18 +219,7 @@ const Browser = () => {
 
           <div>
             <h3 className="mb-3 font-semibold text-sm text-white">Factions Directory</h3>
-            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-              {factions.map((f) => (
-                <div key={f.id} className="rounded-xl border border-white/10 bg-white/5 p-4">
-                  <div className="flex items-center justify-between">
-                    <span className="font-semibold text-cyan-300">{f.name}</span>
-                    <span className="text-[10px] text-white/50">{f.type}</span>
-                  </div>
-                  <p className="mt-2 text-xs text-white/70">{f.ideology}</p>
-                  <div className="mt-3 text-[11px] text-white/40">Leader: {f.leader} | HQ: {f.hq}</div>
-                </div>
-              ))}
-            </div>
+            <div className="text-xs text-white/60">World directory trimmed for now.</div>
           </div>
 
           <div>

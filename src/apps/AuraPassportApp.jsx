@@ -95,11 +95,7 @@ export default function AuraPassportApp() {
                   className="absolute inset-0 w-full h-full rounded-2xl overflow-hidden border border-purple-200 bg-white shadow-xl flex items-center justify-center"
                   style={{ backfaceVisibility: 'hidden' }}
                 >
-                  <img
-                    src="/front_id_card.svg"
-                    alt="Front ID Card"
-                    className="w-full h-full object-cover"
-                  />
+                  <img src="/front_id_card.svg" alt="Front ID Card" className="w-full h-full object-cover" />
                 </div>
 
                 {/* Back Side */}
@@ -110,11 +106,7 @@ export default function AuraPassportApp() {
                     transform: 'rotateY(180deg)',
                   }}
                 >
-                  <img
-                    src="/back_id_card.svg"
-                    alt="Back ID Card"
-                    className="w-full h-full object-cover"
-                  />
+                  <img src="/back_id_card.svg" alt="Back ID Card" className="w-full h-full object-cover" />
                 </div>
               </div>
             </div>

@@ -7,29 +7,21 @@
 // rather than throwing: several columns are legitimately null, e.g. ORACLE-9 (NPC001)
 // has no faction, region, or house.
 
-import appsJson from './Apps.json';
-import careersJson from './Careers.json';
-import dashboardJson from './Dashboard.json';
-import eventsJson from './Events.json';
-import factionsJson from './Factions.json';
-import housesJson from './Houses.json';
-import loreJson from './Lore_Entries.json';
-import modulesJson from './Modules.json';
-import npcsJson from './NPCs.json';
-import regionsJson from './Regions.json';
+// Legacy data aggregator. Most JSON tables have been removed from the bundle.
+// This stub remains only to avoid breaking imports; replace with feature-scoped stores.
+const empty = [];
 
-export const regions = regionsJson;
-export const houses = housesJson;
-export const factions = factionsJson;
-export const npcs = npcsJson;
-export const careers = careersJson;
-export const modules = modulesJson;
-// "gameApps" are in-world apps from the design doc -- distinct from APPS in
-// src/apps/registry.js, which are the launchable windows of the OS shell.
-export const gameApps = appsJson;
-export const lore = loreJson;
-export const events = eventsJson;
+export const regions = empty;
+export const houses = empty;
+export const factions = empty;
+export const npcs = empty;
+export const careers = empty;
+export const modules = empty;
+export const gameApps = empty;
+export const lore = empty;
+export const events = empty;
 
+// Small helpers for DB-like joins
 const indexBy = (rows, key) => new Map(rows.map((row) => [row[key], row]));
 
 const REGION_BY_ID = indexBy(regions, 'Region_ID');

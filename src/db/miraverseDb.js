@@ -1,16 +1,5 @@
-import {
-  regions as realRegions,
-  houses as realHouses,
-  factions as realFactions,
-  npcs as realNpcs,
-  gameApps as realApps,
-  lore as realLore,
-  events as realEvents,
-  getFaction,
-  getHouse,
-  getRegion,
-  getNpc
-} from '../data/data';
+// Minimal in-memory DB for the OS apps. World data has been removed from the bundle.
+// If needed later, we can lazy-load an external data pack.
 
 // ================================================================
 // MIRAVERSEOSX | Database Engine rewired from SQLite data exports
@@ -27,69 +16,13 @@ export const APPS = [
   { id: 'settings', title: 'Settings', category: 'Utility', dev: 'FAC005', version: '3.0.0', primary: 'System preferences & DB statistics monitor', lore: 'System control panel and database status reader.' }
 ];
 
-export const REGIONS = realRegions.map((r) => {
-  const factionObj = getFaction(r.Controlling_Faction_ID);
-  const houseObj = getHouse(r.Primary_House_ID);
-  return {
-    id: r.Region_ID,
-    name: r.Region_Name,
-    type: r.Biome_Type,
-    climate: r.Climate,
-    faction: factionObj ? factionObj.Faction_Name : 'Independent',
-    house: houseObj ? houseObj.House_Name : 'None',
-    pop: r.Population_Approx,
-    danger: r.Danger_Level,
-    resources: Array.isArray(r.Key_Resources) ? r.Key_Resources.join('; ') : (r.Key_Resources || ''),
-    hub: r.Fast_Travel_Hub,
-    unlock: r.Unlock_Method,
-    lore: r.Lore_Notes,
-  };
-});
+export const REGIONS = [];
 
-export const HOUSES = realHouses.map((h) => {
-  return {
-    id: h.House_ID,
-    name: h.House_Name,
-    motto: h.Motto,
-    region: h.Region_ID,
-    allegiance: h.Allegiance,
-    resource: h.Primary_Resource,
-    seat: h.Seat_of_Power,
-    prestige: h.Prestige_Level,
-    lore: h.Lore_Notes,
-  };
-});
+export const HOUSES = [];
 
-export const FACTIONS = realFactions.map((f) => {
-  const leaderObj = getNpc(f.Leader_NPC_ID);
-  const hqObj = getRegion(f.HQ_Region_ID);
-  return {
-    id: f.Faction_ID,
-    name: f.Faction_Name,
-    type: f.Faction_Type,
-    leader: leaderObj ? leaderObj.Name : 'Unknown',
-    hq: hqObj ? hqObj.Region_Name : 'Unknown',
-    ideology: f.Ideology,
-    perks: Array.isArray(f.Member_Perks) ? f.Member_Perks.join('; ') : (f.Member_Perks || ''),
-    quests: f.Questline_Count,
-    lore: f.Lore_Notes,
-  };
-});
+export const FACTIONS = [];
 
-export const BASE_NPCS = realNpcs.map((n) => {
-  const factionObj = getFaction(n.Faction_ID);
-  const regionObj = getRegion(n.Region_ID);
-  return {
-    id: n.NPC_ID,
-    name: n.Name,
-    role: n.Role_Class,
-    faction: factionObj ? factionObj.Faction_Name : 'Independent',
-    region: regionObj ? regionObj.Region_Name : 'Digital Sprawl',
-    traits: Array.isArray(n.Personality_Traits) ? n.Personality_Traits.join('; ') : (n.Personality_Traits || ''),
-    skill: n.Signature_Skill,
-    lore: n.Notes_Lore_JSON?.lore || n.Notes_Lore_JSON || '',
-  };
-});
+export const BASE_NPCS = [];
 
 const SECTION_5C_NPCS = [
   { id: 'NPC_AELITA', name: 'Aelita', role: 'Digital-Born Student', faction: 'Cyacademy Core', region: 'Aethercore', traits: 'Gentle; Intelligent; Artistic', skill: 'Veil Sense', lore: 'Digital-born student and Veil-sensitive mystery lead. Senses Veil distortions before anyone else. Trust unlocks memory fragments, AETHERCORE clues, and PRISM warnings.' },
@@ -119,32 +52,11 @@ const SECTION_5C_NPCS = [
   { id: 'NPC_DEX', name: 'Dex Orion', role: 'Robotics Engineer', faction: 'Robotics Club', region: 'Engineering Lab', traits: 'Practical; Sarcastic; Sentimental', skill: 'Hardware Upgrade', lore: 'Unlocks hardware upgrades, drone companions, and factory traversal tools.' },
 ];
 
-export const NPCS = [...BASE_NPCS, ...SECTION_5C_NPCS];
+export const NPCS = [...SECTION_5C_NPCS];
 
-export const LORE_ENTRIES = realLore.map((l) => {
-  return {
-    id: l.Lore_ID,
-    title: l.Title,
-    type: l.Lore_Type,
-    era: l.Era,
-    tags: Array.isArray(l.Tags) ? l.Tags.join('; ') : (l.Tags || ''),
-    summary: l.Full_Text_Summary,
-  };
-});
+export const LORE_ENTRIES = [];
 
-export const EVENTS = realEvents.map((e) => {
-  const regionObj = getRegion(e.Region_ID);
-  const factionObj = getFaction(e.Faction_ID);
-  return {
-    id: e.Event_ID,
-    name: e.Event_Name,
-    type: e.Event_Type,
-    region: regionObj ? regionObj.Region_Name : 'Unknown',
-    faction: factionObj ? factionObj.Faction_Name : 'Unknown',
-    duration: e.Duration_Hours,
-    lore: e.Lore_Notes,
-  };
-});
+export const EVENTS = [];
 
 // Helper Query API
 export const miraverseDb = {
@@ -184,16 +96,7 @@ export const miraverseDb = {
       return { table: 'NPCs', count: NPCS.length, rows: NPCS };
     }
     if (clean.includes('from apps') || clean === 'apps') {
-      const mappedApps = realApps.map((a) => ({
-        id: a.App_ID,
-        title: a.App_Name,
-        category: a.App_Category,
-        dev: a.Developer_Faction_ID,
-        version: a.Version,
-        primary: a.Primary_Function,
-        lore: a.Lore_Notes
-      }));
-      return { table: 'Apps', count: mappedApps.length, rows: mappedApps };
+      return { table: 'Apps', count: APPS.length, rows: APPS };
     }
     if (clean.includes('from lore') || clean.includes('from lore_entries') || clean === 'lore') {
       return { table: 'Lore_Entries', count: LORE_ENTRIES.length, rows: LORE_ENTRIES };
@@ -206,14 +109,7 @@ export const miraverseDb = {
     return {
       message: 'Database connection online (miraverse.db via static JSON)',
       tables: ['Regions', 'Houses', 'Factions', 'NPCs', 'Apps', 'Lore_Entries', 'Events'],
-      totalRecords:
-        REGIONS.length +
-        HOUSES.length +
-        FACTIONS.length +
-        NPCS.length +
-        realApps.length +
-        LORE_ENTRIES.length +
-        EVENTS.length,
+      totalRecords: REGIONS.length + HOUSES.length + FACTIONS.length + NPCS.length + APPS.length + LORE_ENTRIES.length + EVENTS.length,
       appwriteStatus: 'Offline Mode (Local JSON DB)',
     };
   },

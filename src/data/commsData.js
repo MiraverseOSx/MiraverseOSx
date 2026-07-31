@@ -1,4 +1,4 @@
-// Initial Comms emails & feed extracted from CommsApp.js
+// Minimal seed data for Comms. Keep this lean and tailored to Comms only.
 export const INITIAL_EMAILS = [
   {
     id: 'MSG-001',
