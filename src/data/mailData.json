@@ -1,0 +1,82 @@
+[
+  {
+    "id": "MSG-001",
+    "sender": "Cyacademy Registration Office",
+    "faction": "Cyacademy Admin",
+    "subject": "Welcome to MIRAVERSEOSX",
+    "time": "08:00 AM",
+    "read": false,
+    "attachment": { "type": "credits", "amount": 100, "name": "REGISTRATION_CARD.pdf", "claimed": false },
+    "body": "Welcome, player.\n\nYour provisional Cyacademy registration has been received..."
+  },
+  {
+    "id": "MSG-002",
+    "sender": "MIRAVERSEOSX Account Services",
+    "faction": "System Services",
+    "subject": "Your Temporary Login Credentials",
+    "time": "08:05 AM",
+    "read": false,
+    "attachment": null,
+    "body": "Temporary access has been generated for player..."
+  },
+  {
+    "id": "MSG-003",
+    "sender": "Cyacademy Residential Services",
+    "faction": "Cyacademy Admin",
+    "subject": "Housing Assignment: Dorm Access Pending",
+    "time": "08:10 AM",
+    "read": false,
+    "attachment": { "type": "credits", "amount": 150, "name": "DORM_KEY.ics", "claimed": false },
+    "body": "Player has been assigned a starter dorm room..."
+  },
+  {
+    "id": "MSG-004",
+    "sender": "Aureline Civic Identity Bureau",
+    "faction": "Civic Bureau",
+    "subject": "Aura Passport Activation Required",
+    "time": "08:15 AM",
+    "read": false,
+    "attachment": { "type": "credits", "amount": 50, "name": "AURA_CONSENT_FORM.pdf", "claimed": false },
+    "body": "Player’s Aura Passport is currently inactive..."
+  },
+  {
+    "id": "MSG-005",
+    "sender": "Faith Medical Group",
+    "faction": "Faith Medical",
+    "subject": "Faith Medical Portal Registration",
+    "time": "08:20 AM",
+    "read": false,
+    "attachment": { "type": "credits", "amount": 100, "name": "INTAKE_SCAN_REQUEST.pdf", "claimed": false },
+    "body": "Faith Medical Group has created a basic patient record for player..."
+  },
+  {
+    "id": "MSG-006",
+    "sender": "MIRAVERSEOSX Comms Services",
+    "faction": "System Services",
+    "subject": "Communications Setup Notice",
+    "time": "08:25 AM",
+    "read": false,
+    "attachment": null,
+    "body": "Player currently has no saved contacts..."
+  },
+  {
+    "id": "MSG-007",
+    "sender": "Cyacademy Student Systems",
+    "faction": "Cyacademy Admin",
+    "subject": "Notice Board Access Granted",
+    "time": "08:30 AM",
+    "read": false,
+    "attachment": null,
+    "body": "Player has been granted access to the Notice Board..."
+  },
+  {
+    "id": "MSG-008",
+    "sender": "Dean Cassian Rook",
+    "faction": "Cyacademy Faculty",
+    "subject": "Orientation Schedule: Day One",
+    "time": "08:35 AM",
+    "read": false,
+    "attachment": { "type": "credits", "amount": 200, "name": "DAY_ONE_SCHEDULE.ics", "claimed": false },
+    "body": "Player, welcome to Cyacademy..."
+  }
+]

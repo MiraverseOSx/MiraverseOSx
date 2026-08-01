@@ -13,8 +13,10 @@ export const APPS = [
   { id: 'passport', title: 'Aura Passport', category: 'Utility/Identity', dev: 'FAC002', version: '1.1.0', primary: 'Student profile, aura status, and medical registry', lore: 'Displays student clearance, active aura networks, Faith Medical records, and lineage clearance.' },
   { id: 'terminal', title: 'Terminal', category: 'Intelligence', dev: 'FAC006', version: '2.1.0', primary: 'Command line interface & live SQL query shell', lore: 'Monochrome terminal interface for executing database commands and scripts.' },
   { id: 'browser', title: 'Browser', category: 'Navigation', dev: 'FAC002', version: '4.2.1', primary: 'Miraverse Web Portal & regional web browser', lore: 'Browser for viewing live net portals across the Miraverse.' },
-  { id: 'settings', title: 'Settings', category: 'Utility', dev: 'FAC005', version: '3.0.0', primary: 'System preferences & DB statistics monitor', lore: 'System control panel and database status reader.' }
-  ,{ id: 'gamedoc', title: 'Game Doc', category: 'Docs', dev: 'FAC002', version: '1.0.0', primary: 'Read the Game Design Document sections', lore: 'Browse extracted sections from the design doc with search.' }
+  { id: 'settings', title: 'Settings', category: 'Utility', dev: 'FAC005', version: '3.0.0', primary: 'System preferences & DB statistics monitor', lore: 'System control panel and database status reader.' },
+  { id: 'gamedoc', title: 'Game Doc', category: 'Docs', dev: 'FAC002', version: '1.0.0', primary: 'Read the Game Design Document sections', lore: 'Browse extracted sections from the design doc with search.' },
+  { id: 'mail', title: 'Mail', category: 'Communication', dev: 'FAC002', version: '5.2.0', primary: 'Formal email system with interactive form attachments', lore: 'APP 5B — Official mail client for school notices, onboarding forms, and job offers.' },
+  { id: 'chatmeet', title: 'ChatMeet', category: 'Communication', dev: 'FAC006', version: '5.3.0', primary: 'Scheduled video calls and class meetings suite', lore: 'APP 5C — Event-driven meeting room for orientation calls, lectures, and DGA briefings.' }
 ];
 
 export const REGIONS = [];

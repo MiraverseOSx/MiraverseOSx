@@ -205,73 +205,7 @@ const TerminalApp = () => {
 // ----------------------------------------------------------------------
 // Browser App: Simulated In-Game Database Portals
 // ----------------------------------------------------------------------
-const Browser = () => {
-  const [url] = useState('https://miraverse.os/portal');
-  const lore = miraverseDb.getLoreEntries();
-  const player = useOSStore((s) => s.gameplay.player);
-  const [scheduled, setScheduled] = useState(false);
-  const healAura = useOSStore((s) => s.healAura);
-  const removeCondition = useOSStore((s) => s.removeCondition);
-  const addCareerXP = useOSStore((s) => s.addCareerXP);
-
-  return (
-    <div className="flex h-full w-full flex-col bg-slate-950 text-white">
-      {/* Address bar */}
-      <div className="flex items-center gap-2 border-b border-white/10 bg-slate-900 px-4 py-2">
-        <div className="flex-1 rounded-full bg-black/40 px-4 py-1 text-xs text-cyan-300">
-          🔒 {url}
-        </div>
-      </div>
-
-      <Panel>
-        <div className="space-y-6">
-          <div>
-            <h2 className="text-xl font-bold text-cyan-400">Miraverse World Network</h2>
-            <p className="text-xs text-white/60">Live database directory fed by miraverse_azure.sql</p>
-          </div>
-
-          <div>
-            <h3 className="mb-3 font-semibold text-sm text-white">Factions Directory</h3>
-            <div className="text-xs text-white/60">World directory trimmed for now.</div>
-          </div>
-
-          {/* Faith Medical Portal (browser-based intake) */}
-          <div className="rounded-lg border border-white/10 bg-white/5 p-3">
-            <div className="mb-2 flex items-center justify-between">
-              <h3 className="font-semibold text-sm text-white">Faith Medical Portal</h3>
-              <span className="text-[10px] text-cyan-300/80">Aura: {player.auraHealth}%</span>
-            </div>
-            <div className="text-xs text-white/70">Intake Status: {scheduled ? 'Scheduled' : 'Not scheduled'}</div>
-            <div className="mt-2 flex gap-2">
-              <button onClick={() => setScheduled(true)} className="rounded bg-cyan-500/20 px-3 py-1.5 text-[11px] font-semibold text-cyan-200 hover:bg-cyan-500/30">Schedule Intake Scan</button>
-              <button
-                onClick={() => { if (!scheduled) return; healAura(20); removeCondition('Veilwilt'); addCareerXP('medical', 60); }}
-                className={`rounded px-3 py-1.5 text-[11px] font-semibold ${scheduled ? 'bg-emerald-400/20 text-emerald-200 hover:bg-emerald-400/30' : 'bg-white/10 text-white/30'}`}
-              >
-                Complete Intake
-              </button>
-            </div>
-            {player.conditions.length > 0 && (
-              <div className="mt-3 text-[11px] text-white/70">Conditions: {player.conditions.join(', ')}</div>
-            )}
-          </div>
-
-          <div>
-            <h3 className="mb-3 font-semibold text-sm text-white">Latest World Lore</h3>
-            <div className="space-y-2">
-              {lore.slice(0, 4).map((l) => (
-                <div key={l.id} className="rounded-lg border border-white/10 bg-white/5 p-3">
-                  <div className="font-medium text-xs text-cyan-200">{l.title}</div>
-                  <div className="mt-1 text-xs text-white/70">{l.summary}</div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </Panel>
-    </div>
-  );
-};
+import BrowserApp from './BrowserApp';
 
 // ----------------------------------------------------------------------
 // Settings App: Database Metrics & Control
@@ -336,14 +270,19 @@ const SettingsApp = () => {
   );
 };
 
+import MailApp from './MailApp';
+import ChatMeetApp from './ChatMeetApp';
+
 export const CONTENTS = {
   files: Files,
   comms: CommsApp,
+  mail: MailApp,
+  chatmeet: ChatMeetApp,
   gamehub: GameHubApp,
   spellforge: SpellForgeApp,
   passport: AuraPassportApp,
   terminal: TerminalApp,
-  browser: Browser,
+  browser: BrowserApp,
   settings: SettingsApp,
   board: NoticeBoardApp,
   gamedoc: GameDocApp,

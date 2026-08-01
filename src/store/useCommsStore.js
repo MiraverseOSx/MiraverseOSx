@@ -1,13 +1,14 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import { INITIAL_EMAILS, INITIAL_SHADOWCHAT_FEED } from '../data/commsData';
+import mailData from '../data/mailData.json';
+import { INITIAL_SHADOWCHAT_FEED } from '../data/commsData';
 
 // Normalized Comms data with local persistence
 export const useCommsStore = create(
   persist(
     (set, get) => ({
       // Email
-      emails: INITIAL_EMAILS,
+      emails: mailData,
 
       // Channels and Directs
       channels: [
@@ -37,6 +38,12 @@ export const useCommsStore = create(
       addChatMessage: (key, entry) => {
         const current = get().messages[key] || [];
         set({ messages: { ...get().messages, [key]: [...current, entry] } });
+      },
+
+      // Add a new email to the store
+      addEmail: (email) => {
+        const current = get().emails || [];
+        set({ emails: [...current, email] });
       },
 
       // Future: add addEmail, markRead, delete, etc.

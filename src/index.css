@@ -68,3 +68,7 @@ body {
 ::-webkit-scrollbar-thumb:hover {
   background: rgba(140, 120, 180, 0.5);
 }
+.winter { background: linear-gradient(135deg, #1e3a8a, #0f172a); }
+.spring { background: linear-gradient(135deg, #15803d, #064e3b); }
+.summer { background: linear-gradient(135deg, #b45309, #7c2d12); }
+.fall { background: linear-gradient(135deg, #c2410c, #7f1d1d); }

@@ -56,6 +56,25 @@ export const useOSStore = create((set) => ({
         gov: { rankIndex: 0, xp: 0 },
       },
       starterPhase: 0,
+      houseAffiliation: null,
+      dormComfort: 50,
+      starterCompletedLoops: [],
+      currentMonthIndex: 2, // Default: March (Early Spring / Founding Day)
+      dailyRewardLastClaimed: 0,
+      worldEvents: [
+        { id: 'EVT-MAR6', name: 'Founding Day Protocol (March 6)', monthReq: 'March', active: true, desc: 'Unlocks Orynvell archives, coronation lore, ceremonial quests, and hidden AETHERCORE records.', reward: 'Orynvell Key + 500 Credits' },
+        { id: 'EVT-FLUX', name: 'Aura Flux Outbreak', monthReq: 'July', active: true, desc: 'Faith Medical diagnostic emergency. Triage student aura profiles and collect recovery materials.', reward: 'Faith Medical Commendation + 300 XP' },
+        { id: 'EVT-HACK', name: 'Cyacademy Netrunner Hackathon', monthReq: 'All', active: true, desc: 'Competitive coding event with Credit prizes, Programming XP, and rare exploit tools.', reward: '400 Credits + Rare Exploit' },
+        { id: 'EVT-LEAK', name: 'Purge Archive Leak', monthReq: 'November', active: true, desc: 'Lightborn genealogy history leak. Encrypted files appear in Central Library archives.', reward: 'Lineage Fragment #09' },
+        { id: 'EVT-EXCH', name: 'Regional Exchange Week', monthReq: 'September', active: true, desc: 'Delegates from Fross, Lumia, Marlowe, Brisland, and Kaji visit Cyacademy.', reward: 'Regional Reputation Boost' }
+      ],
+      activities: [
+        { id: 'J01', category: 'Journey', title: 'Lightborn Inheritance Revelation', desc: 'Investigate pre-Collapse archives to uncover your lineage.', status: 'IN_PROGRESS', reward: 'Lineage Decrypted + 500 XP' },
+        { id: 'A01', category: 'Adventures', title: 'Void Rift Surge Containment', desc: 'Stabilize dimensional anchors near the Digital Sprawl during the Void event.', status: 'AVAILABLE', reward: '300 Credits + Aura Shield' },
+        { id: 'Q01', category: 'Quests', title: 'The Ironspire Intel Heist', desc: 'Retrieve classified deployment schedules from Commander Halvorn.', status: 'AVAILABLE', reward: '200 Credits + 80 XP' },
+        { id: 'T01', category: 'Tasks', title: 'Clear Digital Clutter in Undervault', desc: 'Standard terminal cleaning and file sorting.', status: 'AVAILABLE', reward: '50 Credits + 30 Programming XP' },
+        { id: 'M01', category: 'Missions', title: 'Faith Medical Volunteer Intake Shift', desc: 'Assist Dr. Sharon with aura diagnostics at Aureline Medical.', status: 'AVAILABLE', reward: '100 Credits + Career XP' }
+      ],
       appRanks: {
         explorer: 1,
         weaver: 1,
@@ -392,6 +411,94 @@ export const useOSStore = create((set) => ({
         },
       };
     }),
+
+  setHouseAffiliation: (house) =>
+    set((state) => ({
+      gameplay: {
+        ...state.gameplay,
+        player: {
+          ...state.gameplay.player,
+          houseAffiliation: house,
+        },
+      },
+    })),
+
+  completeStarterLoop: (loopId) =>
+    set((state) => {
+      const current = state.gameplay.player.starterCompletedLoops || [];
+      if (current.includes(loopId)) return state;
+      return {
+        gameplay: {
+          ...state.gameplay,
+          player: {
+            ...state.gameplay.player,
+            starterCompletedLoops: [...current, loopId],
+            xp: state.gameplay.player.xp + 25,
+            credits: state.gameplay.player.credits + 50,
+          },
+        },
+      };
+    }),
+
+  updateActivityStatus: (activityId, status) =>
+    set((state) => ({
+      gameplay: {
+        ...state.gameplay,
+        player: {
+          ...state.gameplay.player,
+          activities: state.gameplay.player.activities.map((act) =>
+            act.id === activityId ? { ...act, status } : act
+          ),
+        },
+      },
+    })),
+
+  setMonth: (monthIndex) =>
+    set((state) => ({
+      gameplay: {
+        ...state.gameplay,
+        player: {
+          ...state.gameplay.player,
+          currentMonthIndex: (monthIndex + 12) % 12,
+        },
+      },
+    })),
+
+  advanceMonth: () =>
+    set((state) => ({
+      gameplay: {
+        ...state.gameplay,
+        player: {
+          ...state.gameplay.player,
+          currentMonthIndex: ((state.gameplay.player.currentMonthIndex || 0) + 1) % 12,
+        },
+      },
+    })),
+
+  claimDailyReward: () =>
+    set((state) => ({
+      gameplay: {
+        ...state.gameplay,
+        player: {
+          ...state.gameplay.player,
+          credits: state.gameplay.player.credits + 200,
+          xp: state.gameplay.player.xp + 100,
+          dailyRewardLastClaimed: Date.now(),
+        },
+      },
+    })),
+
+  joinWorldEvent: (eventId) =>
+    set((state) => ({
+      gameplay: {
+        ...state.gameplay,
+        player: {
+          ...state.gameplay.player,
+          credits: state.gameplay.player.credits + 300,
+          xp: state.gameplay.player.xp + 150,
+        },
+      },
+    })),
 
   incrementAppRank: (appName) =>
     set((state) => {

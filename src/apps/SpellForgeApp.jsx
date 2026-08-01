@@ -18,6 +18,13 @@ const MODULES = {
     { id: 'Pulse', name: 'Pulse', desc: 'Emits a localized electromagnetic wave to disrupt hardware.' },
     { id: 'Null', name: 'Null', desc: 'Erases files or variables permanently from the heap.' },
     { id: 'Compression', name: 'Compression', desc: 'Reduces data payload size for rapid transmission.' }
+  ],
+  runes: [
+    { id: 'Overclock', name: 'Overclock Rune', desc: 'Doubles spell efficacy (+100% reward) but adds +10 Veil strain.' },
+    { id: 'Stabilize', name: 'Stabilize Rune', desc: 'Guarantees alignment success and restores +10 Aura Health.' },
+    { id: 'Echo', name: 'Echo Rune', desc: 'Casts spell across multiple nodes simultaneously.' },
+    { id: 'Amplify', name: 'Amplify Rune', desc: 'Grants +50% additional Spellcasting & Engineering XP.' },
+    { id: 'Invert', name: 'Invert Rune', desc: 'Reverses elemental polarity for unconventional vulnerabilities.' }
   ]
 };
 
@@ -45,9 +52,11 @@ export default function SpellForgeApp() {
   const [activeTab, setActiveTab] = useState('forge'); // 'forge' | 'defense'
   const [selectedElement, setSelectedElement] = useState(null);
   const [selectedUtility, setSelectedUtility] = useState(null);
+  const [selectedRune, setSelectedRune] = useState(null);
   const [forging, setForging] = useState(false);
   const [forgeProgress, setForgeProgress] = useState(0);
-  const [log, setLog] = useState(['SpellForge v1.0 online. Load components to code a spell...']);
+  const [veilStrain, setVeilStrain] = useState(15);
+  const [log, setLog] = useState(['SpellForge v2.0 Matrix initialized. Select Element, Utility, and Modifier Rune...']);
 
   const [threats, setThreats] = useState([
     { id: 'T1', name: 'Trojan.Lockscreen', type: 'Ransomware', status: 'ACTIVE', vulnerability: 'Seal Lock', reward: 300 },
@@ -82,14 +91,25 @@ export default function SpellForgeApp() {
         (r.inputs[0] === inputs[1] && r.inputs[1] === inputs[0])
     );
 
-    if (match) {
-      addForgedSpell(match.result);
+    let xpBonus = selectedRune === 'Amplify' ? 40 : 25;
+    let strainIncrease = selectedRune === 'Overclock' ? 20 : 10;
+    setVeilStrain((prev) => Math.min(100, prev + strainIncrease));
+
+    if (selectedRune === 'Stabilize') {
+      healAura(10);
+    } else if (selectedRune === 'Overclock') {
+      damageAura(10);
+    }
+
+    if (match || selectedRune === 'Stabilize') {
+      const spellName = match ? match.result : `${selectedElement} ${selectedUtility}`;
+      addForgedSpell(spellName);
       incrementAppRank('weaver');
-      useOSStore.getState().addSkillXP('Spellcasting', 25);
-      useOSStore.getState().addSkillXP('Engineering', 25);
+      useOSStore.getState().addSkillXP('Spellcasting', xpBonus);
+      useOSStore.getState().addSkillXP('Engineering', xpBonus);
       setLog((prev) => [
-        `✅ Spell Created: [${match.result}] (${match.desc}) (+25 Spellcasting XP, +25 Engineering XP)`,
-        `Successfully aligned ${selectedElement} and ${selectedUtility} protocols within the Veil.`,
+        `✅ Spell Created: [${spellName}] (${match ? match.desc : 'Stabilized Protocol'}) (+${xpBonus} Spellcasting & Engineering XP)`,
+        `Rune Modifier [${selectedRune || 'None'}] applied. Veil Strain now at ${Math.min(100, veilStrain + strainIncrease)}%.`,
         ...prev
       ]);
     } else {
@@ -103,6 +123,7 @@ export default function SpellForgeApp() {
     }
     setSelectedElement(null);
     setSelectedUtility(null);
+    setSelectedRune(null);
   };
 
   const handleCleanse = (threat, spellName) => {
@@ -166,15 +187,32 @@ export default function SpellForgeApp() {
           </div>
         </div>
 
-        <div className="rounded-xl border border-white/10 bg-black/40 p-3 space-y-1">
-          <div className="flex justify-between">
-            <span className="text-white/40">Aura Health:</span>
-            <span className={player.auraHealth < 30 ? 'text-red-400 font-bold' : 'text-emerald-400'}>
-              {player.auraHealth}%
-            </span>
+        <div className="rounded-xl border border-white/10 bg-black/40 p-3 space-y-2">
+          <div className="space-y-1">
+            <div className="flex justify-between text-[10px]">
+              <span className="text-white/40">Aura Health:</span>
+              <span className={player.auraHealth < 30 ? 'text-red-400 font-bold' : 'text-emerald-400'}>
+                {player.auraHealth}%
+              </span>
+            </div>
+            <div className="h-1.5 w-full rounded bg-white/10 overflow-hidden">
+              <div className="h-full bg-cyan-500 transition-all duration-300" style={{ width: `${player.auraHealth}%` }} />
+            </div>
           </div>
-          <div className="h-1.5 w-full rounded bg-white/10 overflow-hidden">
-            <div className="h-full bg-cyan-500 transition-all duration-300" style={{ width: `${player.auraHealth}%` }} />
+
+          <div className="space-y-1 pt-1 border-t border-white/5">
+            <div className="flex justify-between text-[10px]">
+              <span className="text-amber-300/70">Veil Strain:</span>
+              <span className={veilStrain > 70 ? 'text-red-400 font-bold animate-pulse' : 'text-amber-300'}>
+                {veilStrain}%
+              </span>
+            </div>
+            <div className="h-1.5 w-full rounded bg-white/10 overflow-hidden">
+              <div
+                className={`h-full transition-all duration-300 ${veilStrain > 70 ? 'bg-red-500' : 'bg-amber-400'}`}
+                style={{ width: `${veilStrain}%` }}
+              />
+            </div>
           </div>
         </div>
       </div>
@@ -188,12 +226,12 @@ export default function SpellForgeApp() {
               <p className="text-white/60 text-[11px] mt-0.5">Combine one elemental module and one utility module to forge a spell protocol into the Veil.</p>
             </div>
 
-            {/* Selector Grid */}
-            <div className="grid grid-cols-2 gap-4">
+            {/* 3-Slot Selector Grid */}
+            <div className="grid grid-cols-3 gap-3">
               {/* Elements Column */}
               <div className="space-y-2">
                 <span className="font-semibold text-white/50 text-[10px] uppercase">1. Select Element Module</span>
-                <div className="space-y-1.5">
+                <div className="space-y-1.5 max-h-[280px] overflow-auto pr-1">
                   {MODULES.elements.map((el) => (
                     <button
                       key={el.id}
@@ -206,7 +244,7 @@ export default function SpellForgeApp() {
                       }`}
                     >
                       <div className="font-medium text-white">{el.name}</div>
-                      <div className="text-[10px] text-white/40 mt-0.5">Origin: {el.region} | {el.desc}</div>
+                      <div className="text-[10px] text-white/40 mt-0.5">{el.desc}</div>
                     </button>
                   ))}
                 </div>
@@ -215,7 +253,7 @@ export default function SpellForgeApp() {
               {/* Utilities Column */}
               <div className="space-y-2">
                 <span className="font-semibold text-white/50 text-[10px] uppercase">2. Select Utility Module</span>
-                <div className="space-y-1.5 max-h-[300px] overflow-auto pr-1">
+                <div className="space-y-1.5 max-h-[280px] overflow-auto pr-1">
                   {MODULES.utilities.map((ut) => (
                     <button
                       key={ut.id}
@@ -233,6 +271,31 @@ export default function SpellForgeApp() {
                   ))}
                 </div>
               </div>
+
+              {/* Modifier Runes Column */}
+              <div className="space-y-2">
+                <span className="font-semibold text-amber-300/70 text-[10px] uppercase">3. Modifier Rune (Optional)</span>
+                <div className="space-y-1.5 max-h-[280px] overflow-auto pr-1">
+                  {MODULES.runes.map((rune) => (
+                    <button
+                      key={rune.id}
+                      onClick={() => setSelectedRune(selectedRune === rune.id ? null : rune.id)}
+                      disabled={forging}
+                      className={`w-full text-left p-2.5 rounded-xl border transition ${
+                        selectedRune === rune.id
+                          ? 'border-amber-400 bg-amber-500/15'
+                          : 'border-white/5 bg-white/5 hover:border-amber-300/30'
+                      }`}
+                    >
+                      <div className="font-medium text-amber-300 flex items-center justify-between">
+                        <span>{rune.name}</span>
+                        {selectedRune === rune.id && <span className="text-[9px] bg-amber-400 text-black font-bold px-1.5 rounded">LOADED</span>}
+                      </div>
+                      <div className="text-[10px] text-white/40 mt-0.5">{rune.desc}</div>
+                    </button>
+                  ))}
+                </div>
+              </div>
             </div>
 
             {/* Forge Button & Progress */}
@@ -246,20 +309,26 @@ export default function SpellForgeApp() {
                 </div>
               ) : (
                 <div className="flex items-center gap-6 w-full justify-between">
-                  <div className="text-xs">
-                    <span className="text-white/50">Combined: </span>
+                  <div className="text-xs space-x-1">
+                    <span className="text-white/50">Matrix: </span>
                     <span className="font-bold text-cyan-300">{selectedElement || '---'}</span>
                     <span className="text-white/50"> + </span>
                     <span className="font-bold text-cyan-300">{selectedUtility || '---'}</span>
+                    {selectedRune && (
+                      <>
+                        <span className="text-white/50"> + </span>
+                        <span className="font-bold text-amber-300">[{selectedRune}]</span>
+                      </>
+                    )}
                   </div>
                   <button
                     onClick={handleForge}
                     disabled={!selectedElement || !selectedUtility}
                     className={`rounded-lg px-6 py-2 font-bold text-black transition ${
-                      selectedElement && selectedUtility ? 'bg-cyan-400 hover:bg-cyan-300' : 'bg-white/10 text-white/40'
+                      selectedElement && selectedUtility ? 'bg-cyan-400 hover:bg-cyan-300 shadow-md' : 'bg-white/10 text-white/40'
                     }`}
                   >
-                    🔨 Forge Spell
+                    🔨 Forge 3-Slot Protocol
                   </button>
                 </div>
               )}

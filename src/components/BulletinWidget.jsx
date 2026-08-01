@@ -18,6 +18,10 @@ export default function BulletinWidget() {
   const addXP = useOSStore((s) => s.addXP);
   const prismCorruptionLevel = useOSStore((s) => s.gameplay.prismCorruptionLevel);
 
+  const worldEvents = useOSStore((s) => s.gameplay.player.worldEvents || []);
+  const currentMonthIndex = useOSStore((s) => s.gameplay.player.currentMonthIndex || 0);
+  const joinWorldEvent = useOSStore((s) => s.joinWorldEvent);
+
   const startDrag = (e) => {
     if (e.target.closest('button')) return;
     dragControls.start(e);
@@ -131,6 +135,70 @@ export default function BulletinWidget() {
               <span className="text-purple-400 text-[10px] ml-2 shrink-0">STAMP: 28.07</span>
             </div>
           )}
+
+          {/* ------------------------------------------------------------------ */}
+          {/* SECTION 6.3 — 5-TIER ACTIVITY REGISTRY BAR                         */}
+          {/* ------------------------------------------------------------------ */}
+          <div className="rounded-xl border border-purple-200 bg-white/90 p-2.5 shadow-sm space-y-2">
+            <div className="flex items-center justify-between">
+              <span className="font-bold text-purple-950 text-xs flex items-center gap-1.5">
+                <Database size={13} className="text-purple-600" /> Section 6.3 — Activity Registry
+              </span>
+              <span className="text-[10px] text-slate-500 font-mono">5 Progression Categories Active</span>
+            </div>
+            <div className="grid grid-cols-5 gap-1.5 text-center text-[10px] font-bold">
+              <div className="rounded-lg bg-purple-100 p-1.5 border border-purple-200 text-purple-900">
+                🌟 Journey
+                <div className="text-[9px] font-normal text-purple-700 font-mono">Life & Lineage</div>
+              </div>
+              <div className="rounded-lg bg-cyan-100 p-1.5 border border-cyan-200 text-cyan-900">
+                🛡️ Adventures
+                <div className="text-[9px] font-normal text-cyan-700 font-mono">Regional Arcs</div>
+              </div>
+              <div className="rounded-lg bg-amber-100 p-1.5 border border-amber-200 text-amber-900">
+                ⚔️ Quests
+                <div className="text-[9px] font-normal text-amber-700 font-mono">NPC & Lore</div>
+              </div>
+              <div className="rounded-lg bg-blue-100 p-1.5 border border-blue-200 text-blue-900">
+                📋 Tasks
+                <div className="text-[9px] font-normal text-blue-700 font-mono">Daily Board</div>
+              </div>
+              <div className="rounded-lg bg-emerald-100 p-1.5 border border-emerald-200 text-emerald-900">
+                💼 Missions
+                <div className="text-[9px] font-normal text-emerald-700 font-mono">Job & Careers</div>
+              </div>
+            </div>
+          </div>
+
+          {/* DYNAMIC WORLD EVENTS SECTION */}
+          <div className="rounded-2xl border border-amber-300 bg-amber-50/80 p-3.5 space-y-2">
+            <div className="flex justify-between items-center border-b border-amber-200 pb-1 font-bold text-amber-950 text-xs">
+              <span className="flex items-center gap-1.5">
+                <Sparkles size={14} className="text-amber-600 animate-spin" /> DYNAMIC WORLD EVENTS & STORY BIBLE EVENTS
+              </span>
+              <span className="text-[10px] font-mono text-amber-800 bg-amber-200/80 px-2 py-0.5 rounded">
+                Section 15 — Live Seasonal Events
+              </span>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-2 pt-1">
+              {worldEvents.map((evt) => (
+                <div key={evt.id} className="rounded-xl border border-amber-200 bg-white/95 p-2.5 space-y-1 shadow-sm">
+                  <div className="flex justify-between items-start">
+                    <span className="font-bold text-amber-950 text-xs">{evt.name}</span>
+                    <span className="text-[9px] bg-amber-400/20 text-amber-800 px-2 py-0.5 rounded font-mono font-bold">{evt.reward}</span>
+                  </div>
+                  <p className="text-[10px] text-slate-600 leading-snug">{evt.desc}</p>
+                  <button
+                    onClick={() => joinWorldEvent(evt.id)}
+                    className="mt-1.5 w-full rounded-lg bg-amber-400 py-1 text-[10px] font-bold text-black hover:bg-amber-300 transition"
+                  >
+                    Participate in Event (+300 Credits, +150 XP)
+                  </button>
+                </div>
+              ))}
+            </div>
+          </div>
 
           {/* ------------------------------------------------------------------ */}
           {/* ASYMMETRIC BULLETIN GRID LAYOUT (MATCHING REFERENCE MOCKUP IMAGE)   */}

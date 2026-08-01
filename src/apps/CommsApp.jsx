@@ -105,7 +105,7 @@ export default function CommsApp() {
               {EMAIL_FOLDERS.map((f) => (
                 <button key={f.id} onClick={() => setFolder(f.id)} className={`flex w-full items-center justify-between rounded px-2 py-1.5 text-left text-[12px] ${folder === f.id ? 'bg-[#e9ebf6] text-[#1d2650] font-semibold' : 'hover:bg-[#f2f3fb] text-slate-600'}`}>
                   <span>{f.label}</span>
-                  <span className="text-[10px] text-slate-400">{f.id === 'inbox' ? INITIAL_EMAILS.length : INITIAL_EMAILS.filter((m) => /alert|notice/i.test(m.subject)).length}</span>
+                  <span className="text-[10px] text-slate-400">{f.id === 'inbox' ? storeEmails.length : storeEmails.filter((m) => /alert|notice/i.test(m.subject)).length}</span>
                 </button>
               ))}
             </div>
