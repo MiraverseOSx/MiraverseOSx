@@ -1,5 +1,7 @@
 import React from 'react';
 import { useOSStore } from '../store/useOSStore';
+import Button from '../components/ui/button';
+import { Card, CardBody, CardHeader } from '../components/ui/card';
 
 const TASKS = [
   { id: 't-identity', text: 'Complete registration & activate Aura Passport', reward: { xp: 50, credits: 50 }, phase: 1 },
@@ -37,11 +39,13 @@ export default function NoticeBoardApp() {
         <div className="mb-3 text-[11px] font-bold tracking-[.16em] text-slate-600">TASKS & MISSIONS</div>
         <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
           {available.map((task) => (
-            <div key={task.id} className="rounded-xl border border-slate-200 bg-white p-3">
-              <div className="text-[12px] font-semibold text-[#1a224a]">{task.text}</div>
-              <div className="mt-2 text-[11px] text-slate-600">Rewards: +{task.reward.xp} XP, +₡{task.reward.credits}</div>
-              <button onClick={() => complete(task)} className="mt-3 rounded bg-[#1e2a55] px-3 py-1.5 text-[12px] font-semibold text-white hover:opacity-95">Complete</button>
-            </div>
+            <Card key={task.id}>
+              <CardHeader className="text-[12px] font-semibold text-[#1a224a]">{task.text}</CardHeader>
+              <CardBody>
+                <div className="text-[11px] text-slate-600">Rewards: +{task.reward.xp} XP, +₡{task.reward.credits}</div>
+                <Button onClick={() => complete(task)} className="mt-3" size="sm">Complete</Button>
+              </CardBody>
+            </Card>
           ))}
         </div>
       </div>

@@ -7,13 +7,11 @@ const ICON_MAP = {
   comms: Mail,
   mail: FileText,
   chatmeet: Video,
-  gamehub: Gamepad2,
   spellforge: Sparkles,
   passport: UserCheck,
   terminal: Terminal,
   browser: Globe,
   settings: Settings,
-  gamedoc: BookOpen,
 };
 
 // Populate launchable APPS list dynamically from miraverseDb

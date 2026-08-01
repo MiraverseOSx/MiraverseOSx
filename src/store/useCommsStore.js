@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import mailData from '../data/mailData.json';
+import mailData from '../data/emails.json';
 import { INITIAL_SHADOWCHAT_FEED } from '../data/commsData';
 
 // Normalized Comms data with local persistence

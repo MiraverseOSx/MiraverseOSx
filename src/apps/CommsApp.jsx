@@ -2,6 +2,8 @@ import { useEffect, useMemo, useState } from 'react';
 import { Mail, MessageSquare, Send, Hash, UserCircle2, Paperclip } from 'lucide-react';
 import { useCommsStore } from '../store/useCommsStore';
 import { useOSStore } from '../store/useOSStore';
+import Button from '../components/ui/button';
+import Input from '../components/ui/input';
 
 const EMAIL_FOLDERS = [
   { id: 'inbox', label: 'Inbox' },
@@ -74,18 +76,18 @@ export default function CommsApp() {
       {/* Top toolbar */}
       <div className="flex items-center justify-between border-b border-slate-300/70 bg-white/70 px-3 py-2 backdrop-blur-sm">
         <div className="flex items-center gap-2 text-[11px] font-bold tracking-[.14em]">
-          <button onClick={() => setMode('email')} className={`flex items-center gap-1.5 rounded px-2 py-1 ${mode === 'email' ? 'bg-[#162241] text-white' : 'text-[#3c4779] hover:bg-[#ecedf6]'}`}>
+          <Button onClick={() => setMode('email')} size="sm" variant={mode==='email' ? 'solid' : 'ghost'} className="flex items-center gap-1.5">
             <Mail size={14} /> EMAIL
-          </button>
-          <button onClick={() => setMode('channels')} className={`flex items-center gap-1.5 rounded px-2 py-1 ${mode === 'channels' ? 'bg-[#162241] text-white' : 'text-[#3c4779] hover:bg-[#ecedf6]'}`}>
+          </Button>
+          <Button onClick={() => setMode('channels')} size="sm" variant={mode==='channels' ? 'solid' : 'ghost'} className="flex items-center gap-1.5">
             <MessageSquare size={14} /> CHANNELS
-          </button>
+          </Button>
         </div>
         {mode === 'email' ? (
           <div className="flex items-center gap-2">
             <div className="flex items-center rounded-full border border-slate-300 bg-white/75 px-3 py-1 text-[12px]">
               <span className="mr-2 text-slate-500">⌕</span>
-              <input value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Search mail" className="w-48 bg-transparent outline-none placeholder:text-slate-400" />
+              <Input value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Search mail" className="w-48 bg-transparent" />
             </div>
           </div>
         ) : (
@@ -145,7 +147,7 @@ export default function CommsApp() {
                     <div className="text-[13px] font-bold text-[#1b254d]">{selectedMessage.subject}</div>
                     <div className="mt-0.5 text-[12px] text-slate-600">{selectedMessage.sender} · {selectedMessage.time}</div>
                   </div>
-                  <button onClick={() => setSelectedMessageId(null)} className="rounded px-2 py-1 text-[12px] text-slate-600 hover:bg-[#eceff9]">Close</button>
+                  <Button onClick={() => setSelectedMessageId(null)} size="sm" variant="ghost">Close</Button>
                 </div>
                 <div className="mt-3 min-h-0 flex-1 overflow-auto whitespace-pre-line text-[13px] leading-relaxed text-[#243064]">
                   {selectedMessage.body}
@@ -153,14 +155,14 @@ export default function CommsApp() {
                 {selectedMessage.attachment && (
                   <div className="mt-3 flex items-center justify-between rounded-lg border border-slate-300/70 bg-white/60 px-3 py-2 text-[12px]">
                     <div className="flex items-center gap-2 text-slate-700"><Paperclip size={14} className="text-[#7280c9]" /> {selectedMessage.attachment.name}</div>
-                    <button onClick={claimAttachment} disabled={attachmentClaimed} className={`rounded px-2 py-1 font-semibold ${attachmentClaimed ? 'bg-slate-200 text-slate-500' : 'bg-[#1e2a55] text-white hover:opacity-95'}`}>
+                    <Button onClick={claimAttachment} disabled={attachmentClaimed} size="sm" variant={attachmentClaimed? 'ghost':'solid'}>
                       {attachmentClaimed ? 'Claimed' : `Claim +₡${selectedMessage.attachment.amount}`}
-                    </button>
+                    </Button>
                   </div>
                 )}
                 <form onSubmit={(e) => { e.preventDefault(); sendEmail(); }} className="mt-3 flex items-center gap-2">
-                  <input value={draft} onChange={(e) => setDraft(e.target.value)} placeholder="Write a reply…" className="flex-1 rounded border border-slate-300 bg-white px-3 py-2 text-[12px] outline-none focus:border-[#8c97d6]" />
-                  <button type="submit" className="flex items-center gap-1 rounded bg-[#1e2a55] px-3 py-2 text-[12px] font-semibold text-white hover:opacity-95"><Send size={14} /> Send</button>
+                  <Input value={draft} onChange={(e) => setDraft(e.target.value)} placeholder="Write a reply…" className="flex-1" />
+                  <Button type="submit" className="flex items-center gap-1"><Send size={14} /> Send</Button>
                 </form>
               </div>
             )}
@@ -213,8 +215,8 @@ export default function CommsApp() {
             </div>
             <form onSubmit={(e) => { e.preventDefault(); sendChat(); }} className="border-t border-slate-300/70 bg-white/60 p-3">
               <div className="mx-auto flex max-w-3xl items-center gap-2">
-                <input value={chatDraft} onChange={(e) => setChatDraft(e.target.value)} placeholder={channelId.startsWith('dm:') ? 'Message @direct' : 'Message #channel'} className="flex-1 rounded border border-slate-300 bg-white px-3 py-2 text-[12px] outline-none focus:border-[#8c97d6]" />
-                <button type="submit" className="flex items-center gap-1 rounded bg-[#1e2a55] px-3 py-2 text-[12px] font-semibold text-white hover:opacity-95"><Send size={14} /> Send</button>
+                <Input value={chatDraft} onChange={(e) => setChatDraft(e.target.value)} placeholder={channelId.startsWith('dm:') ? 'Message @direct' : 'Message #channel'} className="flex-1" />
+                <Button type="submit" className="flex items-center gap-1"><Send size={14} /> Send</Button>
               </div>
             </form>
           </div>

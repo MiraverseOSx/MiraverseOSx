@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { useOSStore } from '../store/useOSStore';
+import Button from '../components/ui/button';
+import { Card } from '../components/ui/card';
 
 const MODULES = {
   elements: [
@@ -233,7 +235,7 @@ export default function SpellForgeApp() {
                 <span className="font-semibold text-white/50 text-[10px] uppercase">1. Select Element Module</span>
                 <div className="space-y-1.5 max-h-[280px] overflow-auto pr-1">
                   {MODULES.elements.map((el) => (
-                    <button
+                    <Button
                       key={el.id}
                       onClick={() => setSelectedElement(el.id)}
                       disabled={forging}
@@ -245,7 +247,7 @@ export default function SpellForgeApp() {
                     >
                       <div className="font-medium text-white">{el.name}</div>
                       <div className="text-[10px] text-white/40 mt-0.5">{el.desc}</div>
-                    </button>
+                    </Button>
                   ))}
                 </div>
               </div>
@@ -255,7 +257,7 @@ export default function SpellForgeApp() {
                 <span className="font-semibold text-white/50 text-[10px] uppercase">2. Select Utility Module</span>
                 <div className="space-y-1.5 max-h-[280px] overflow-auto pr-1">
                   {MODULES.utilities.map((ut) => (
-                    <button
+                    <Button
                       key={ut.id}
                       onClick={() => setSelectedUtility(ut.id)}
                       disabled={forging}
@@ -267,7 +269,7 @@ export default function SpellForgeApp() {
                     >
                       <div className="font-medium text-white">{ut.name}</div>
                       <div className="text-[10px] text-white/40 mt-0.5">{ut.desc}</div>
-                    </button>
+                    </Button>
                   ))}
                 </div>
               </div>
@@ -277,7 +279,7 @@ export default function SpellForgeApp() {
                 <span className="font-semibold text-amber-300/70 text-[10px] uppercase">3. Modifier Rune (Optional)</span>
                 <div className="space-y-1.5 max-h-[280px] overflow-auto pr-1">
                   {MODULES.runes.map((rune) => (
-                    <button
+                    <Button
                       key={rune.id}
                       onClick={() => setSelectedRune(selectedRune === rune.id ? null : rune.id)}
                       disabled={forging}
@@ -292,7 +294,7 @@ export default function SpellForgeApp() {
                         {selectedRune === rune.id && <span className="text-[9px] bg-amber-400 text-black font-bold px-1.5 rounded">LOADED</span>}
                       </div>
                       <div className="text-[10px] text-white/40 mt-0.5">{rune.desc}</div>
-                    </button>
+                    </Button>
                   ))}
                 </div>
               </div>
@@ -321,15 +323,9 @@ export default function SpellForgeApp() {
                       </>
                     )}
                   </div>
-                  <button
-                    onClick={handleForge}
-                    disabled={!selectedElement || !selectedUtility}
-                    className={`rounded-lg px-6 py-2 font-bold text-black transition ${
-                      selectedElement && selectedUtility ? 'bg-cyan-400 hover:bg-cyan-300 shadow-md' : 'bg-white/10 text-white/40'
-                    }`}
-                  >
+                  <Button onClick={handleForge} disabled={!selectedElement || !selectedUtility} className={`px-6 py-2 font-bold ${selectedElement && selectedUtility ? '' : 'opacity-60'}`}>
                     🔨 Forge 3-Slot Protocol
-                  </button>
+                  </Button>
                 </div>
               )}
             </div>
@@ -363,13 +359,13 @@ export default function SpellForgeApp() {
                     ) : (
                       <div className="flex flex-wrap gap-1 max-w-[200px]">
                         {player.forgedSpells.map((spell) => (
-                          <button
+                          <Button
                             key={spell}
                             onClick={() => handleCleanse(threat, spell)}
                             className="bg-red-500/20 text-red-300 border border-red-500/40 rounded px-2.5 py-1 hover:bg-red-500 hover:text-black font-semibold text-[10px] transition"
                           >
                             Use {spell}
-                          </button>
+                          </Button>
                         ))}
                       </div>
                     )}

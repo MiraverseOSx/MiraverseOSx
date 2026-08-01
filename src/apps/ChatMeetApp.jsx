@@ -4,6 +4,8 @@ import {
   Video, Mic, MicOff, VideoOff, Users, Calendar, Clock, CheckCircle2,
   MessageSquare, ShieldCheck, Play, PhoneOff, Award, Sparkles
 } from 'lucide-react';
+import Button from '../components/ui/button';
+import Input from '../components/ui/input';
 
 const SCHEDULED_MEETINGS = [
   {
@@ -97,12 +99,9 @@ export default function ChatMeetApp() {
               </div>
             </div>
 
-            <button
-              onClick={() => setActiveMeetingId(null)}
-              className="rounded-lg bg-red-500/20 text-red-300 border border-red-500/40 px-3 py-1.5 font-bold hover:bg-red-500 hover:text-black transition flex items-center gap-1"
-            >
+            <Button onClick={() => setActiveMeetingId(null)} size="sm" className="flex items-center gap-1 bg-red-500/20 text-red-300 border border-red-500/40 hover:bg-red-500 hover:text-black">
               <PhoneOff size={14} /> Leave Meeting
-            </button>
+            </Button>
           </div>
 
           {/* Video Grid & Chat Area */}
@@ -142,38 +141,26 @@ export default function ChatMeetApp() {
               </div>
 
               <form onSubmit={handleSendMessage} className="p-3 border-t border-white/10 flex gap-2">
-                <input
+                <Input
                   type="text"
                   value={newMessage}
                   onChange={(e) => setNewMessage(e.target.value)}
                   placeholder="Send a chat message..."
-                  className="flex-1 rounded-lg bg-black/60 border border-white/15 px-3 py-1.5 text-xs text-cyan-300 outline-none"
+                  className="flex-1 bg-black/60 text-cyan-300"
                 />
-                <button type="submit" className="rounded-lg bg-cyan-500 px-3 py-1.5 font-bold text-xs text-black hover:bg-cyan-400">
-                  Send
-                </button>
+                <Button type="submit" size="sm">Send</Button>
               </form>
             </div>
           </div>
 
           {/* Bottom Call Controls Toolbar */}
           <div className="bg-slate-900 border-t border-white/10 p-3 flex justify-center items-center gap-4 shrink-0">
-            <button
-              onClick={() => setMicMuted((prev) => !prev)}
-              className={`p-3 rounded-full border transition ${
-                micMuted ? 'border-red-500 bg-red-500/20 text-red-400' : 'border-white/20 bg-white/10 text-white'
-              }`}
-            >
+            <Button onClick={() => setMicMuted((prev) => !prev)} size="sm" className={`p-3 rounded-full ${micMuted ? 'border-red-500 bg-red-500/20 text-red-400' : 'border-white/20 bg-white/10 text-white'}`}>
               {micMuted ? <MicOff size={18} /> : <Mic size={18} />}
-            </button>
-            <button
-              onClick={() => setVideoOff((prev) => !prev)}
-              className={`p-3 rounded-full border transition ${
-                videoOff ? 'border-red-500 bg-red-500/20 text-red-400' : 'border-white/20 bg-white/10 text-white'
-              }`}
-            >
+            </Button>
+            <Button onClick={() => setVideoOff((prev) => !prev)} size="sm" className={`p-3 rounded-full ${videoOff ? 'border-red-500 bg-red-500/20 text-red-400' : 'border-white/20 bg-white/10 text-white'}`}>
               {videoOff ? <VideoOff size={18} /> : <Video size={18} />}
-            </button>
+            </Button>
           </div>
         </div>
       ) : (
@@ -207,12 +194,9 @@ export default function ChatMeetApp() {
                     <p className="text-xs text-white/70 leading-relaxed max-w-xl">{m.desc}</p>
                   </div>
 
-                  <button
-                    onClick={() => handleJoinMeeting(m.id)}
-                    className="rounded-xl bg-cyan-500 px-5 py-2.5 font-bold text-xs text-black hover:bg-cyan-400 transition flex items-center gap-1.5 shrink-0 shadow-md"
-                  >
+                  <Button onClick={() => handleJoinMeeting(m.id)} className="px-5 py-2.5 flex items-center gap-1.5 shrink-0 shadow-md">
                     <Play size={14} /> Join Call (+50 Credits, +25 XP)
-                  </button>
+                  </Button>
                 </div>
               ))}
             </div>

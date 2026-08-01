@@ -1,3 +1,6 @@
+import typography from '@tailwindcss/typography';
+import forms from '@tailwindcss/forms';
+import containerQueries from '@tailwindcss/container-queries';
 /** @type {import('tailwindcss').Config} */
 export default {
   content: [
@@ -6,15 +9,22 @@ export default {
   ],
   theme: {
     extend: {
+      // Design tokens (semantic colors via CSS variables)
+      // Usage example: text-[--text-primary] bg-[--surface]
       colors: {
         os: {
-          primary: '#1a1a2e',
-          secondary: '#16213e',
-          accent: '#0f3460',
-          text: '#e94560',
+          primary: 'var(--color-primary)',
+          secondary: 'var(--color-secondary)',
+          accent: 'var(--color-accent)',
+          text: 'var(--color-text)',
+          surface: 'var(--color-surface)'
         }
       },
     },
   },
-  plugins: [],
+  plugins: [
+    typography,
+    forms,
+    containerQueries,
+  ],
 };

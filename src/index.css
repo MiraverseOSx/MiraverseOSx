@@ -14,6 +14,31 @@ body {
   background-color: #070514;
 }
 
+/* Theme tokens with CSS variables */
+:root {
+  --color-primary: #1a1a2e;
+  --color-secondary: #16213e;
+  --color-accent: #0f3460;
+  --color-text: #eaeaf2;
+  --color-surface: #0b0a16;
+}
+
+[data-theme="neon"] {
+  --color-primary: #0f1020;
+  --color-secondary: #131536;
+  --color-accent: #00e5ff;
+  --color-text: #e6f9ff;
+  --color-surface: #070a1a;
+}
+
+[data-theme="warm"] {
+  --color-primary: #1f0f0a;
+  --color-secondary: #2d1410;
+  --color-accent: #ffb86b;
+  --color-text: #ffeedd;
+  --color-surface: #120a07;
+}
+
 @font-face {
   font-family: 'Libertinus Math';
   src: url('./fonts/LibertinusMath-Regular.ttf') format('truetype');
@@ -50,10 +75,10 @@ body {
   box-shadow: 0 16px 40px -8px rgba(80, 90, 120, 0.35), 0 6px 16px rgba(0, 0, 0, 0.1);
 }
 
-/* Custom scrollbars */
+/* Glass-adaptive smooth scrollbars */
 ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  width: 5px;
+  height: 5px;
 }
 
 ::-webkit-scrollbar-track {
@@ -61,14 +86,32 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(140, 120, 180, 0.3);
-  border-radius: 4px;
+  background: rgba(140, 120, 180, 0.35);
+  border-radius: 9999px;
+  backdrop-filter: blur(4px);
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(140, 120, 180, 0.5);
+  background: rgba(140, 120, 180, 0.6);
 }
-.winter { background: linear-gradient(135deg, #1e3a8a, #0f172a); }
-.spring { background: linear-gradient(135deg, #15803d, #064e3b); }
-.summer { background: linear-gradient(135deg, #b45309, #7c2d12); }
-.fall { background: linear-gradient(135deg, #c2410c, #7f1d1d); }
+
+/* Smooth season background transitions */
+.season-transition {
+  transition: background 1000ms ease-in-out, color 500ms ease-in-out;
+}
+
+.winter {
+  background: radial-gradient(circle at 50% 0%, rgba(30, 58, 138, 0.35), transparent 70%), #eef0f7;
+}
+
+.spring {
+  background: radial-gradient(circle at 50% 0%, rgba(21, 128, 61, 0.30), transparent 70%), #eef0f7;
+}
+
+.summer {
+  background: radial-gradient(circle at 50% 0%, rgba(180, 83, 9, 0.30), transparent 70%), #eef0f7;
+}
+
+.fall {
+  background: radial-gradient(circle at 50% 0%, rgba(194, 65, 12, 0.35), transparent 70%), #eef0f7;
+}

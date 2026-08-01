@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useOSStore } from '../store/useOSStore';
 import { Shield, Zap, Sparkles, AlertTriangle, CheckCircle2, Flame, RefreshCw, Cpu } from 'lucide-react';
+import Button from '../components/ui/button';
 
 export default function CyberDeckApp() {
   const [enemyHealth, setEnemyHealth] = useState(150);
@@ -84,12 +85,9 @@ export default function CyberDeckApp() {
           </div>
         </div>
 
-        <button
-          onClick={handleResetBattle}
-          className="flex items-center gap-1 px-2.5 py-1 rounded bg-white/10 hover:bg-white/20 text-[10px] font-bold text-cyan-200 transition"
-        >
+        <Button onClick={handleResetBattle} size="sm" className="flex items-center gap-1 px-2.5 py-1 bg-white/10 hover:bg-white/20 text-[10px] font-bold text-cyan-200">
           <RefreshCw size={12} /> Reset Battle
-        </button>
+        </Button>
       </div>
 
       {/* Battle Canvas: Enemy vs Player Health Gauges */}
@@ -161,16 +159,13 @@ export default function CyberDeckApp() {
         {turn === 'victory' ? (
           <div className="rounded-xl bg-emerald-950/60 border border-emerald-400/40 p-3 text-center text-emerald-300 font-bold text-xs space-y-1">
             <div className="flex items-center justify-center gap-1"><CheckCircle2 size={16} /> BATTLE VICTORY!</div>
-            <button
-              onClick={handleResetBattle}
-              className="mt-1 px-4 py-1 rounded bg-emerald-500 text-slate-950 font-bold text-xs hover:bg-emerald-400 transition"
-            >
+            <Button onClick={handleResetBattle} size="sm" className="mt-1 px-4 py-1 bg-emerald-500 text-slate-950 font-bold text-xs hover:bg-emerald-400">
               Start Next Battle
-            </button>
+            </Button>
           </div>
         ) : (
           <div className="grid grid-cols-3 gap-2">
-            <button
+            <Button
               onClick={() => handlePlayerAttack('Thermal Flare', 50)}
               disabled={turn !== 'player'}
               className="rounded-lg border border-amber-500/40 bg-amber-500/10 p-2 hover:bg-amber-500/30 transition text-left disabled:opacity-50"
@@ -179,9 +174,9 @@ export default function CyberDeckApp() {
                 <Flame size={12} /> Thermal Flare
               </div>
               <div className="text-[8px] text-amber-200/70">50 Dmg • Overload Core</div>
-            </button>
+            </Button>
 
-            <button
+            <Button
               onClick={() => handlePlayerAttack('Reflect Shield', 35, 0, true)}
               disabled={turn !== 'player'}
               className="rounded-lg border border-cyan-500/40 bg-cyan-500/10 p-2 hover:bg-cyan-500/30 transition text-left disabled:opacity-50"
@@ -190,9 +185,9 @@ export default function CyberDeckApp() {
                 <Shield size={12} /> Reflect Shield
               </div>
               <div className="text-[8px] text-cyan-200/70">35 Dmg • Block Next Hit</div>
-            </button>
+            </Button>
 
-            <button
+            <Button
               onClick={() => handlePlayerAttack('Seal Lock', 25, 15)}
               disabled={turn !== 'player'}
               className="rounded-lg border border-violet-500/40 bg-violet-500/10 p-2 hover:bg-violet-500/30 transition text-left disabled:opacity-50"
@@ -201,7 +196,7 @@ export default function CyberDeckApp() {
                 <Sparkles size={12} /> Seal Lock
               </div>
               <div className="text-[8px] text-violet-200/70">25 Dmg • Restores +15 Aura</div>
-            </button>
+            </Button>
           </div>
         )}
       </div>

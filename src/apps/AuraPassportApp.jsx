@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useOSStore } from '../store/useOSStore';
 import { Code, Network, Sparkles, Cpu, MessageSquare, Palette, Search, ShieldAlert, Key } from 'lucide-react';
+import Button from '../components/ui/button';
 
 const SKILL_ICONS = {
   Programming: Code,
@@ -60,36 +61,15 @@ export default function AuraPassportApp() {
         </div>
 
         <div className="flex items-center gap-2">
-          <button
-            onClick={() => setActiveTab('passport')}
-            className={`rounded-xl px-4 py-2 text-xs font-bold transition shadow-sm ${
-              activeTab === 'passport'
-                ? 'bg-purple-950 text-white'
-                : 'bg-purple-100/80 text-purple-950 hover:bg-purple-200'
-            }`}
-          >
+          <Button onClick={() => setActiveTab('passport')} size="sm" className={activeTab==='passport' ? '' : 'bg-purple-100/80 text-purple-950 hover:bg-purple-200'}>
             💳 Passport ID Card
-          </button>
-          <button
-            onClick={() => setActiveTab('skills')}
-            className={`rounded-xl px-4 py-2 text-xs font-bold transition shadow-sm ${
-              activeTab === 'skills'
-                ? 'bg-purple-950 text-white'
-                : 'bg-purple-100/80 text-purple-950 hover:bg-purple-200'
-            }`}
-          >
+          </Button>
+          <Button onClick={() => setActiveTab('skills')} size="sm" className={activeTab==='skills' ? '' : 'bg-purple-100/80 text-purple-950 hover:bg-purple-200'}>
             🧠 17.2 Core Skills Matrix
-          </button>
-          <button
-            onClick={() => setActiveTab('onboarding')}
-            className={`rounded-xl px-4 py-2 text-xs font-bold transition shadow-sm ${
-              activeTab === 'onboarding'
-                ? 'bg-purple-950 text-white'
-                : 'bg-purple-100/80 text-purple-950 hover:bg-purple-200'
-            }`}
-          >
+          </Button>
+          <Button onClick={() => setActiveTab('onboarding')} size="sm" className={activeTab==='onboarding' ? '' : 'bg-purple-100/80 text-purple-950 hover:bg-purple-200'}>
             🚀 Starter Loop (Phase {player.starterPhase || 0}/5)
-          </button>
+          </Button>
         </div>
       </div>
 
@@ -99,12 +79,9 @@ export default function AuraPassportApp() {
       {activeTab === 'passport' && (
         <>
           <div className="flex flex-col items-center justify-center my-2">
-            <button
-              onClick={() => setIsFlipped((prev) => !prev)}
-              className="mb-3 rounded-xl border border-purple-300 bg-purple-100/80 px-4 py-1.5 text-xs font-bold text-purple-950 hover:bg-purple-200 transition shadow-sm"
-            >
+            <Button onClick={() => setIsFlipped((prev) => !prev)} size="sm" className="mb-3 border border-purple-300 bg-purple-100/80 text-purple-950 hover:bg-purple-200">
               🔄 Flip ID Card
-            </button>
+            </Button>
 
             <div
               className="relative w-[420px] h-[260px] cursor-pointer group"
@@ -305,12 +282,9 @@ export default function AuraPassportApp() {
                     </div>
 
                     {isCurrent && (
-                      <button
-                        onClick={() => advanceStarterPhase()}
-                        className="mt-2 w-full rounded-lg bg-purple-950 text-white font-bold text-xs py-2 hover:bg-purple-900 transition shadow"
-                      >
+                      <Button onClick={() => advanceStarterPhase()} className="mt-2 w-full">
                         Advance to Phase {sp.phase + 1} (+100 Credits, +50 XP)
-                      </button>
+                      </Button>
                     )}
                   </div>
                 );
@@ -330,7 +304,7 @@ export default function AuraPassportApp() {
               {houses.map((h) => {
                 const isSelected = player.houseAffiliation === h.name;
                 return (
-                  <button
+                  <Button
                     key={h.name}
                     onClick={() => setHouseAffiliation(h.name)}
                     className={`rounded-xl border p-3 text-left transition space-y-1 bg-gradient-to-br ${h.color} ${
@@ -339,7 +313,7 @@ export default function AuraPassportApp() {
                   >
                     <div className="font-bold text-purple-950 text-xs">{h.name}</div>
                     <div className="text-[10px] text-slate-600 leading-snug">{h.desc}</div>
-                  </button>
+                  </Button>
                 );
               })}
             </div>
@@ -359,7 +333,7 @@ export default function AuraPassportApp() {
               ].map((loop) => {
                 const isDone = (player.starterCompletedLoops || []).includes(loop.id);
                 return (
-                  <button
+                  <Button
                     key={loop.id}
                     onClick={() => completeStarterLoop(loop.id)}
                     className={`rounded-lg p-2.5 border text-left text-[11px] transition flex items-center justify-between ${
@@ -370,7 +344,7 @@ export default function AuraPassportApp() {
                   >
                     <span>{loop.label}</span>
                     <span className="text-[10px]">{isDone ? '✔' : '＋ Log'}</span>
-                  </button>
+                  </Button>
                 );
               })}
             </div>

@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
 import { miraverseDb } from '../db/miraverseDb';
 import { useOSStore } from '../store/useOSStore';
-import GameHubApp from '../games/GameHubApp';
 import CommsApp from './CommsApp';
 import SpellForgeApp from './SpellForgeApp';
 import AuraPassportApp from './AuraPassportApp';
 import NoticeBoardApp from './NoticeBoardApp';
-import GameDocApp from './GameDocApp';
+ 
 
 const Panel = ({ children }) => (
   <div className="h-full w-full overflow-auto p-6 text-sm leading-relaxed text-white/80">
@@ -278,14 +277,12 @@ export const CONTENTS = {
   comms: CommsApp,
   mail: MailApp,
   chatmeet: ChatMeetApp,
-  gamehub: GameHubApp,
   spellforge: SpellForgeApp,
   passport: AuraPassportApp,
   terminal: TerminalApp,
   browser: BrowserApp,
   settings: SettingsApp,
   board: NoticeBoardApp,
-  gamedoc: GameDocApp,
 };
 
 export const getContent = (key) => CONTENTS[key] || (() => <Panel>Nothing here yet.</Panel>);

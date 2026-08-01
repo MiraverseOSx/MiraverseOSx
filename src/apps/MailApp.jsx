@@ -2,6 +2,9 @@ import React, { useState, useMemo } from 'react';
 import { Mail, Send, Paperclip, Search, Folder, AlertCircle } from 'lucide-react';
 import { useCommsStore } from '../store/useCommsStore';
 import { useOSStore } from '../store/useOSStore';
+import Button from '../components/ui/button';
+import Input from '../components/ui/input';
+import { Card, CardBody, CardHeader } from '../components/ui/card';
 
 export default function MailApp() {
   // State
@@ -11,11 +14,9 @@ export default function MailApp() {
   const [draft, setDraft] = useState('');
 
   // Store access
-  const { emails: storeEmails, addChatMessage, addEmail } = useCommsStore((s) => ({
-    emails: s.emails,
-    addChatMessage: s.addChatMessage,
-    addEmail: s.addEmail,
-  }));
+  const storeEmails = useCommsStore((s) => s.emails);
+  const addChatMessage = useCommsStore((s) => s.addChatMessage);
+  const addEmail = useCommsStore((s) => s.addEmail);
   const claimCommsAttachment = useOSStore((s) => s.claimCommsAttachment);
 
   // Filtered emails based on folder and search
@@ -75,11 +76,11 @@ export default function MailApp() {
         <div className="flex items-center gap-2">
           <div className="flex items-center rounded-full border border-slate-600 bg-[#111122]/60 px-3 py-1 text-sm">
             <Search size={14} className="mr-2 text-slate-400" />
-            <input
+            <Input
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Search mail"
-              className="w-48 bg-transparent outline-none placeholder:text-slate-400 text-sm"
+              className="w-48 bg-transparent"
             />
           </div>
         </div>
@@ -112,17 +113,13 @@ export default function MailApp() {
           </div>
           <div className="h-full overflow-auto p-2">
             {emails.map((m) => (
-              <button
-                key={m.id}
-                onClick={() => setSelectedId(m.id)}
-                className={`mb-1 w-full rounded-lg border px-3 py-2 text-left transition ${selectedId === m.id ? 'border-[#5a5ac5] bg-[#1e1e3a]' : 'border-slate-800/80 bg-[#0a0a15] hover:bg-[#111127]'}`}
-              >
+              <Card key={m.id} className={`mb-1 px-3 py-2 ${selectedId===m.id? 'outline outline-1 outline-[#5a5ac5] bg-[#1e1e3a]' : 'bg-[#0a0a15]'}`} onClick={() => setSelectedId(m.id)}>
                 <div className="flex items-center justify-between">
                   <p className="truncate text-sm font-semibold text-[#c5c9ff]">{m.subject}</p>
                   <span className="ml-2 shrink-0 text-xs text-slate-500">{m.time}</span>
                 </div>
                 <p className="truncate text-xs text-slate-400">{m.sender}</p>
-              </button>
+              </Card>
             ))}
             {!emails.length && <div className="p-3 text-center text-sm text-slate-500">No messages</div>}
           </div>
@@ -132,43 +129,39 @@ export default function MailApp() {
         <div className="flex min-w-0 flex-1 flex-col overflow-hidden">
           {/* Reader */}
           {selected && (
-            <div className="m-4 flex-1 overflow-auto rounded-xl border border-slate-700/70 bg-[#0a0a1a]/60 p-4 text-sm text-slate-300">
+            <Card className="m-4 flex-1 overflow-auto bg-[#0a0a1a]/60 p-4 text-sm text-slate-300">
               <div className="flex items-start justify-between mb-2">
                 <div>
                   <div className="text-base font-bold text-[#c5c9ff]">{selected.subject}</div>
                   <div className="mt-0.5 text-xs text-slate-400">{selected.sender} · {selected.time}</div>
                 </div>
-                <button onClick={() => setSelectedId(null)} className="rounded px-2 py-1 text-xs text-slate-400 hover:bg-[#111122]">Close</button>
+                <Button onClick={() => setSelectedId(null)} size="sm" variant="ghost">Close</Button>
               </div>
               <div className="whitespace-pre-line mb-4">{selected.body}</div>
               {selected.attachment && (
-                <div className="mt-3 flex items-center justify-between rounded-lg border border-slate-700/70 bg-[#111122]/60 px-3 py-2 text-xs">
+                <Card className="mt-3 flex items-center justify-between bg-[#111122]/60 px-3 py-2 text-xs">
                   <div className="flex items-center gap-2 text-slate-400">
                     <Paperclip size={14} className="text-[#7280c9]" /> {selected.attachment.name}
                   </div>
-                  <button
-                    onClick={claimAttachment}
-                    disabled={attachmentClaimed}
-                    className={`rounded px-2 py-1 font-semibold ${attachmentClaimed ? 'bg-slate-700 text-slate-500' : 'bg-[#1e2a55] text-white hover:opacity-95'}`}
-                  >
+                  <Button onClick={claimAttachment} disabled={attachmentClaimed} size="sm" variant={attachmentClaimed? 'ghost' : 'solid'}>
                     {attachmentClaimed ? 'Claimed' : `Claim +₡${selected.attachment.amount}`}
-                  </button>
-                </div>
+                  </Button>
+                </Card>
               )}
-            </div>
+            </Card>
           )}
 
           {/* Compose area */}
           <form onSubmit={(e) => { e.preventDefault(); sendMail(); }} className="border-t border-slate-700/70 bg-[#111122]/60 p-3 flex items-center gap-2">
-            <input
+            <Input
               value={draft}
               onChange={(e) => setDraft(e.target.value)}
               placeholder="Write a reply…"
-              className="flex-1 rounded border border-slate-600 bg-[#0a0a15] px-3 py-2 text-sm outline-none focus:border-[#5a5ac5] text-slate-300"
+              className="flex-1 bg-[#0a0a15] text-slate-300"
             />
-            <button type="submit" className="flex items-center gap-1 rounded bg-[#1e2a55] px-3 py-2 text-sm font-semibold text-white hover:opacity-95">
+            <Button type="submit" className="flex items-center gap-1">
               <Send size={14} /> Send
-            </button>
+            </Button>
           </form>
         </div>
       </div>

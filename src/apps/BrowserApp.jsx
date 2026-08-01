@@ -7,6 +7,8 @@ import {
   Building, ChevronLeft, ChevronRight, RotateCw, Lock, Sparkles, CheckCircle2,
   LogIn, UserCheck, AlertTriangle, Key, ArrowRight, ExternalLink
 } from 'lucide-react';
+import Button from '../components/ui/button';
+import Input from '../components/ui/input';
 
 const PORTALS = {
   'faithmed.aure': {
@@ -259,7 +261,7 @@ export default function BrowserApp() {
         {/* Address & Search Bar */}
         <form onSubmit={handleSearchSubmit} className="flex-1 flex items-center gap-2 rounded-full bg-black/60 border border-white/15 px-3 py-1 text-xs focus-within:border-cyan-400">
           <Lock size={12} className="text-emerald-400 shrink-0" />
-          <input
+          <Input
             type="text"
             value={searchQuery || inputUrl}
             onChange={(e) => {
@@ -267,11 +269,11 @@ export default function BrowserApp() {
               setSearchQuery(e.target.value);
             }}
             placeholder="Search Miraverse or enter domain (faithmed.aure, cyacademy.aure, dga.gov.aure, library.aure)..."
-            className="w-full bg-transparent text-cyan-300 outline-none placeholder:text-white/30 text-xs"
+            className="w-full bg-transparent text-cyan-300 placeholder:text-white/30 text-xs"
           />
-          <button type="submit" className="text-white/50 hover:text-cyan-400">
+          <Button type="submit" variant="ghost" className="text-white/50 hover:text-cyan-400">
             <Search size={14} />
-          </button>
+          </Button>
         </form>
 
         {/* Bookmarks Bar */}
@@ -306,19 +308,19 @@ export default function BrowserApp() {
 
             {/* Search Box */}
             <form onSubmit={handleSearchSubmit} className="relative max-w-xl mx-auto">
-              <input
+              <Input
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Search people, archives, faithmed, cyacademy, dga, library..."
-                className="w-full rounded-2xl border border-cyan-500/40 bg-black/80 px-5 py-3 text-sm text-cyan-300 outline-none focus:border-cyan-400 shadow-[0_0_20px_rgba(34,211,238,0.15)]"
+                className="w-full rounded-2xl border border-cyan-500/40 bg-black/80 px-5 py-3 text-sm text-cyan-300 focus:border-cyan-400 shadow-[0_0_20px_rgba(34,211,238,0.15)]"
               />
-              <button
+              <Button
                 type="submit"
-                className="absolute right-2 top-2 rounded-xl bg-cyan-500 px-4 py-1.5 font-bold text-xs text-black hover:bg-cyan-400 transition"
+                className="absolute right-2 top-2 rounded-xl bg-cyan-500 px-4 py-1.5 font-bold text-xs text-black hover:bg-cyan-400"
               >
                 Search
-              </button>
+              </Button>
             </form>
 
             {/* Portals Grid */}
@@ -1047,6 +1049,6 @@ export default function BrowserApp() {
           </div>
         )}
       </div>
-    </div>
+    </GlassContainer>
   );
 }
