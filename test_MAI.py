@@ -18,11 +18,20 @@ load_dotenv()
 # We use standard AOAI environment variables for the evaluator
 EVAL_ENDPOINT = os.getenv("AZURE_OPENAI_ENDPOINT")
 EVAL_DEPLOYMENT = os.getenv("AZURE_OPENAI_DEPLOYMENT_NAME")
+EVAL_KEY = os.getenv("AZURE_OPENAI_API_KEY")
 
 # Configuration for the Agent
 # The endpoint for the Foundry Project where the agent is hosted
 PROJECT_ENDPOINT = os.getenv("FOUNDRY_PROJECT_ENDPOINT")
 
+judge_kwargs = {
+    "deployment_name": EVAL_DEPLOYMENT,
+    "endpoint": EVAL_ENDPOINT
+}
+if EVAL_KEY:
+    judge_kwargs["api_key"] = EVAL_KEY
+
+judge_config = AzureOpenAIModelConfig(**judge_kwargs)
 
 
 # --- Tests ---
@@ -31,7 +40,7 @@ PROJECT_ENDPOINT = os.getenv("FOUNDRY_PROJECT_ENDPOINT")
 # We use decorators to configure the agent, dataset, and judge model.
 
 @evals.dataset("data.jsonl")  # Specifies the input dataset file (JSONL format)
-@evals.judge_model(AzureOpenAIModelConfig(deployment_name=EVAL_DEPLOYMENT, endpoint=EVAL_ENDPOINT)) # Configures the LLM used for "Judge" evaluators
+@evals.judge_model(judge_config) # Configures the LLM used for "Judge" evaluators
 @evals.agent(FoundryAgentConfig(agent_name="MAI", project_endpoint=PROJECT_ENDPOINT)) # Links this test class to the Foundry agent
 class Test_MAI:
     """
@@ -46,6 +55,3 @@ class Test_MAI:
         """
         # Assert that the result is pass
         assert evaluator_results.fluency.result == "pass"
-
-
-

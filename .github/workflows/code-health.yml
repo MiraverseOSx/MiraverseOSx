@@ -12,6 +12,7 @@ permissions:
   contents: read
   security-events: write
   pull-requests: write
+  id-token: write
 
 jobs:
   health-and-lint:
@@ -33,11 +34,25 @@ jobs:
           python-version: '3.10'
           cache: 'pip'
 
+      - name: Set up Java 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
       - name: Install Dependencies
         run: |
           npm ci
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
           pip install pytest
+
+      - name: Azure Login (OIDC)
+        uses: azure/login@v2
+        continue-on-error: true
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
       - name: Run ESLint (Code Errors & Style)
         run: npm run lint --if-present
@@ -47,6 +62,13 @@ jobs:
         continue-on-error: true
 
       - name: Run Python Tests
+        env:
+          AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+          AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+          AZURE_OPENAI_ENDPOINT: ${{ secrets.AZURE_OPENAI_ENDPOINT }}
+          AZURE_OPENAI_DEPLOYMENT_NAME: ${{ secrets.AZURE_OPENAI_DEPLOYMENT_NAME }}
+          FOUNDRY_PROJECT_ENDPOINT: ${{ secrets.FOUNDRY_PROJECT_ENDPOINT }}
+          AZURE_OPENAI_API_KEY: ${{ secrets.AZURE_OPENAI_API_KEY }}
         run: pytest
         continue-on-error: true
 
