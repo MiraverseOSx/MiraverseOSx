@@ -1,11 +1,27 @@
-import React, { useState } from 'react';
+import React, { useState, lazy, Suspense } from 'react';
 import { miraverseDb } from '../db/miraverseDb';
 import { useOSStore } from '../store/useOSStore';
-import CommsApp from './CommsApp';
-import SpellForgeApp from './SpellForgeApp';
-import AuraPassportApp from './AuraPassportApp';
-import NoticeBoardApp from './NoticeBoardApp';
- 
+
+// Lazy load app modules for code splitting and fast initial bundle loading
+const CommsApp = lazy(() => import('./CommsApp'));
+const SpellForgeApp = lazy(() => import('./SpellForgeApp'));
+const AuraPassportApp = lazy(() => import('./AuraPassportApp'));
+const NoticeBoardApp = lazy(() => import('./NoticeBoardApp'));
+const BrowserApp = lazy(() => import('./BrowserApp'));
+const MailApp = lazy(() => import('./MailApp'));
+const ChatMeetApp = lazy(() => import('./ChatMeetApp'));
+
+// Sleek loading fallback for lazy-loaded apps
+const AppLoadingFallback = ({ name = 'App' }) => (
+  <div className="flex h-full w-full flex-col items-center justify-center bg-black/60 p-6 text-center text-white/80">
+    <div className="relative mb-3 flex items-center justify-center">
+      <div className="h-10 w-10 animate-spin rounded-full border-2 border-cyan-500/20 border-t-cyan-400" />
+      <span className="absolute text-xs font-mono text-cyan-300">OS</span>
+    </div>
+    <div className="text-xs font-medium tracking-wider text-cyan-200 uppercase">Loading {name}...</div>
+    <div className="mt-1 text-[11px] text-white/40 font-mono">Initializing module memory space</div>
+  </div>
+);
 
 const Panel = ({ children }) => (
   <div className="h-full w-full overflow-auto p-6 text-sm leading-relaxed text-white/80">
@@ -118,8 +134,8 @@ const Files = () => {
 const TerminalApp = () => {
   const [input, setInput] = useState('');
   const [history, setHistory] = useState([
-    { type: 'sys', text: 'MiraverseOSx Terminal [Database Engine v0.1.0]' },
-    { type: 'sys', text: 'Connected to miraverse_azure.sql (Local & Appwrite Bridge)' },
+    { type: 'sys', text: 'MiraverseOSx Terminal [Native Engine v2.0.0]' },
+    { type: 'sys', text: 'Connected to Native World Authority' },
     { type: 'sys', text: 'Type "help" or "SELECT * FROM Factions" to query database.\n' },
   ]);
 
@@ -202,11 +218,6 @@ const TerminalApp = () => {
 };
 
 // ----------------------------------------------------------------------
-// Browser App: Simulated In-Game Database Portals
-// ----------------------------------------------------------------------
-import BrowserApp from './BrowserApp';
-
-// ----------------------------------------------------------------------
 // Settings App: Database Metrics & Control
 // ----------------------------------------------------------------------
 const SettingsApp = () => {
@@ -269,20 +280,24 @@ const SettingsApp = () => {
   );
 };
 
-import MailApp from './MailApp';
-import ChatMeetApp from './ChatMeetApp';
+// Wrap lazy components in Suspense for dynamic import safety
+const withSuspense = (Component, name) => (props) => (
+  <Suspense fallback={<AppLoadingFallback name={name} />}>
+    <Component {...props} />
+  </Suspense>
+);
 
 export const CONTENTS = {
   files: Files,
-  comms: CommsApp,
-  mail: MailApp,
-  chatmeet: ChatMeetApp,
-  spellforge: SpellForgeApp,
-  passport: AuraPassportApp,
+  comms: withSuspense(CommsApp, 'Comms'),
+  mail: withSuspense(MailApp, 'Mail'),
+  chatmeet: withSuspense(ChatMeetApp, 'ChatMeet'),
+  spellforge: withSuspense(SpellForgeApp, 'SpellForge'),
+  passport: withSuspense(AuraPassportApp, 'Aura Passport'),
   terminal: TerminalApp,
-  browser: BrowserApp,
+  browser: withSuspense(BrowserApp, 'Browser'),
   settings: SettingsApp,
-  board: NoticeBoardApp,
+  board: withSuspense(NoticeBoardApp, 'Notice Board'),
 };
 
 export const getContent = (key) => CONTENTS[key] || (() => <Panel>Nothing here yet.</Panel>);
