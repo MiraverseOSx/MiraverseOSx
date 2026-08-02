@@ -6,6 +6,7 @@ import {
   Search, Settings, ShieldCheck, Sparkles, Wifi, LogOut
 } from 'lucide-react';
 import { useOSStore } from '../store/useOSStore';
+import { useWorldStore } from '../store/useWorldStore';
 import { APPS } from '../apps/registry';
 import Window from './Window';
 import SparklesCanvas from './SparklesCanvas';
@@ -63,6 +64,11 @@ export default function Desktop() {
   useEffect(() => {
     const id = setInterval(() => setNow(new Date()), 1000);
     return () => clearInterval(id);
+  }, []);
+
+  // Sync with Express World API backend
+  useEffect(() => {
+    useWorldStore.getState().syncWorldData();
   }, []);
 
   // Tick every real second
