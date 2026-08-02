@@ -23,10 +23,15 @@ jobs:
     runs-on: ubuntu-latest
     name: Build and Deploy Job
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           submodules: false
           lfs: false
+          persist-credentials: false
+
+      - name: Clear Git Extra Header
+        run: git config --local --unset-all http.https://github.com/.extraheader || true
+
       - name: Build And Deploy
         id: builddeploy
         uses: Azure/static-web-apps-deploy@v1
@@ -37,7 +42,7 @@ jobs:
           ###### Repository/Build Configurations - These values can be configured to match your app requirements. ######
           app_location: "/" # App source code path
           api_location: "" # Api source code path - optional
-          output_location: "build" # Built app content directory - optional
+          output_location: "dist" # Built app content directory (Vite uses dist)
           ###### End of Repository/Build Configurations ######
 
   close_pull_request_job:
