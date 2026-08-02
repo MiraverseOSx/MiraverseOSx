@@ -1,0 +1,63 @@
+name: Code Health & Error Checking
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+  schedule:
+    - cron: '0 8 * * 1' # Runs weekly on Mondays at 08:00 UTC
+
+permissions:
+  contents: read
+  security-events: write
+  pull-requests: write
+
+jobs:
+  health-and-lint:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+          cache: 'pip'
+
+      - name: Install Dependencies
+        run: |
+          npm ci
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+          pip install pytest
+
+      - name: Run ESLint (Code Errors & Style)
+        run: npm run lint --if-present
+
+      - name: Run Node Component Tests & Coverage
+        run: npm run test -- --run --coverage --watchAll=false
+        continue-on-error: true
+
+      - name: Run Python Tests
+        run: pytest
+        continue-on-error: true
+
+      - name: Run CodeScan Analysis
+        uses: codescan-io/codescan-scanner-action@5b2e8c5683ef6a5adc8fa3b7950bb07debccce12
+        with:
+          login: ${{ secrets.CODESCAN_AUTH_TOKEN }}
+          organization: ${{ secrets.CODESCAN_ORGANIZATION_KEY }}
+          projectKey: ${{ secrets.CODESCAN_PROJECT_KEY }}
+
+      - name: Upload SARIF Results to GitHub Security
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: codescan.sarif
