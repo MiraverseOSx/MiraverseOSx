@@ -238,9 +238,9 @@ export default function BrowserApp() {
   const results = getSearchResults();
 
   return (
-    <GlassContainer className="flex h-full w-full flex-col bg-slate-950 font-sans text-xs text-white select-none overflow-hidden">
+    <GlassContainer className="flex h-full w-full flex-col bg-gradient-to-b from-[#F6F7FB] to-[#EFF1F7] font-sans text-xs text-[#162241] select-none overflow-hidden">
       {/* ── Browser Top Navigation Bar ── */}
-      <div className="flex items-center gap-3 border-b border-white/10 bg-slate-900 px-4 py-2 shrink-0">
+      <div className="flex items-center gap-3 border-b border-slate-300/80 bg-white/70 px-4 py-2 shrink-0">
         <div className="flex items-center gap-1">
           <button
             onClick={() => setCurrentView('home')}
@@ -259,8 +259,8 @@ export default function BrowserApp() {
         </div>
 
         {/* Address & Search Bar */}
-        <form onSubmit={handleSearchSubmit} className="flex-1 flex items-center gap-2 rounded-full bg-black/60 border border-white/15 px-3 py-1 text-xs focus-within:border-cyan-400">
-          <Lock size={12} className="text-emerald-400 shrink-0" />
+        <form onSubmit={handleSearchSubmit} className="flex-1 flex items-center gap-2 rounded-full bg-white border border-slate-300 px-3 py-1 text-xs focus-within:border-[#5f6ab0]">
+          <Lock size={12} className="text-emerald-600 shrink-0" />
           <Input
             type="text"
             value={searchQuery || inputUrl}
@@ -269,9 +269,9 @@ export default function BrowserApp() {
               setSearchQuery(e.target.value);
             }}
             placeholder="Search Miraverse or enter domain (faithmed.aure, cyacademy.aure, dga.gov.aure, library.aure)..."
-            className="w-full bg-transparent text-cyan-300 placeholder:text-white/30 text-xs"
+            className="w-full bg-transparent text-[#1d2650] placeholder:text-slate-400 text-xs"
           />
-          <Button type="submit" variant="ghost" className="text-white/50 hover:text-cyan-400">
+          <Button type="submit" variant="ghost" className="text-slate-500 hover:text-[#1d2650]">
             <Search size={14} />
           </Button>
         </form>

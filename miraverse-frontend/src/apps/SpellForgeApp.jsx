@@ -154,232 +154,176 @@ export default function SpellForgeApp() {
   };
 
   return (
-    <div className="flex h-full w-full bg-slate-950 text-white font-sans text-xs select-none">
+    <div className="flex h-full w-full bg-gradient-to-b from-[#F6F7FB] to-[#EFF1F7] text-[#162241] font-sans text-xs select-none">
       {/* Sidebar Navigation */}
-      <div className="w-48 border-r border-white/10 bg-slate-900/60 p-4 flex flex-col justify-between">
+      <div className="w-48 border-r border-slate-300/80 bg-white/60 p-4 flex flex-col justify-between">
         <div className="space-y-4">
           <div className="flex flex-col">
             <div className="flex items-center gap-2">
               <span className="text-lg">✨</span>
-              <span className="font-bold text-sm text-cyan-400">SpellForge</span>
+              <span className="font-bold text-sm text-[#1d2650]">SpellForge</span>
             </div>
-            <span className="text-[10px] text-white/50 mt-0.5">Weaver Rank: <span className="font-bold text-cyan-300">Lv. {weaverRank}</span></span>
+            <span className="text-[10px] text-slate-500 mt-0.5">Weaver Rank: <span className="font-bold text-[#3b4785]">Lv. {weaverRank}</span></span>
           </div>
 
           <div className="space-y-1">
             <button
               onClick={() => setActiveTab('forge')}
-              className={`flex w-full items-center gap-2 rounded-lg px-3 py-2 text-left transition ${
-                activeTab === 'forge' ? 'bg-white/15 text-white font-semibold' : 'text-white/70 hover:bg-white/10'
+              className={`w-full text-left px-3 py-2 rounded-lg text-xs font-semibold transition ${
+                activeTab === 'forge' ? 'bg-[#e9ebf6] text-[#1d2650]' : 'text-slate-600 hover:bg-[#f2f3fb]'
               }`}
             >
-              <span>🔨 Spell Weaver</span>
+              🔮 Spell Weaver
             </button>
             <button
               onClick={() => setActiveTab('defense')}
-              className={`flex w-full items-center justify-between rounded-lg px-3 py-2 text-left transition ${
-                activeTab === 'defense' ? 'bg-white/15 text-white font-semibold' : 'text-white/70 hover:bg-white/10'
+              className={`w-full text-left px-3 py-2 rounded-lg text-xs font-semibold transition ${
+                activeTab === 'defense' ? 'bg-[#e9ebf6] text-[#1d2650]' : 'text-slate-600 hover:bg-[#f2f3fb]'
               }`}
             >
-              <span>⚔️ Digital Defense</span>
-              <span className="rounded bg-red-500/20 px-1.5 py-0.5 text-[9px] font-bold text-red-300">
-                {threats.filter((t) => t.status === 'ACTIVE').length}
-              </span>
+              🛡️ Defense Matrix ({threats.filter((t) => t.status === 'ACTIVE').length})
             </button>
           </div>
         </div>
 
-        <div className="rounded-xl border border-white/10 bg-black/40 p-3 space-y-2">
-          <div className="space-y-1">
-            <div className="flex justify-between text-[10px]">
-              <span className="text-white/40">Aura Health:</span>
-              <span className={player.auraHealth < 30 ? 'text-red-400 font-bold' : 'text-emerald-400'}>
-                {player.auraHealth}%
-              </span>
-            </div>
-            <div className="h-1.5 w-full rounded bg-white/10 overflow-hidden">
-              <div className="h-full bg-cyan-500 transition-all duration-300" style={{ width: `${player.auraHealth}%` }} />
-            </div>
+        {/* Veil Strain Indicator */}
+        <div className="space-y-1 rounded-lg border border-slate-300/80 bg-white/80 p-2.5">
+          <div className="flex justify-between text-[10px] text-slate-500">
+            <span>Veil Strain:</span>
+            <span className="font-bold text-indigo-700">{veilStrain}%</span>
           </div>
-
-          <div className="space-y-1 pt-1 border-t border-white/5">
-            <div className="flex justify-between text-[10px]">
-              <span className="text-amber-300/70">Veil Strain:</span>
-              <span className={veilStrain > 70 ? 'text-red-400 font-bold animate-pulse' : 'text-amber-300'}>
-                {veilStrain}%
-              </span>
-            </div>
-            <div className="h-1.5 w-full rounded bg-white/10 overflow-hidden">
-              <div
-                className={`h-full transition-all duration-300 ${veilStrain > 70 ? 'bg-red-500' : 'bg-amber-400'}`}
-                style={{ width: `${veilStrain}%` }}
-              />
-            </div>
+          <div className="w-full bg-slate-200 h-1.5 rounded-full overflow-hidden">
+            <div className="bg-[#5f6ab0] h-full transition-all" style={{ width: `${veilStrain}%` }} />
           </div>
         </div>
       </div>
 
-      {/* Main Panel */}
-      <div className="flex flex-1 flex-col overflow-hidden">
-        {activeTab === 'forge' && (
-          <div className="flex-1 overflow-auto p-6 space-y-6">
-            <div>
-              <h2 className="text-base font-semibold text-white">Weave Spell Code</h2>
-              <p className="text-white/60 text-[11px] mt-0.5">Combine one elemental module and one utility module to forge a spell protocol into the Veil.</p>
-            </div>
-
-            {/* 3-Slot Selector Grid */}
+      {/* Main Workspace */}
+      <div className="flex-1 p-4 flex flex-col justify-between overflow-auto bg-[#FAFAFC]">
+        {activeTab === 'forge' ? (
+          <div className="space-y-4">
             <div className="grid grid-cols-3 gap-3">
-              {/* Elements Column */}
+              {/* Elements Selection */}
               <div className="space-y-2">
-                <span className="font-semibold text-white/50 text-[10px] uppercase">1. Select Element Module</span>
-                <div className="space-y-1.5 max-h-[280px] overflow-auto pr-1">
+                <div className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">1. Element Module</div>
+                <div className="space-y-1">
                   {MODULES.elements.map((el) => (
-                    <Button
+                    <button
                       key={el.id}
                       onClick={() => setSelectedElement(el.id)}
-                      disabled={forging}
-                      className={`w-full text-left p-2.5 rounded-xl border transition ${
-                        selectedElement === el.id
-                          ? 'border-cyan-400 bg-cyan-500/10'
-                          : 'border-white/5 bg-white/5 hover:border-white/20'
+                      className={`w-full text-left p-2 rounded-lg border text-xs transition ${
+                        selectedElement === el.id ? 'border-[#8c97d6] bg-[#eef0fb] font-semibold text-[#1d2650]' : 'border-slate-200 bg-white hover:bg-[#f7f7fd] text-slate-700'
                       }`}
                     >
-                      <div className="font-medium text-white">{el.name}</div>
-                      <div className="text-[10px] text-white/40 mt-0.5">{el.desc}</div>
-                    </Button>
+                      <div className="font-bold">{el.name}</div>
+                      <div className="text-[10px] text-slate-500 line-clamp-1">{el.desc}</div>
+                    </button>
                   ))}
                 </div>
               </div>
 
-              {/* Utilities Column */}
+              {/* Utilities Selection */}
               <div className="space-y-2">
-                <span className="font-semibold text-white/50 text-[10px] uppercase">2. Select Utility Module</span>
-                <div className="space-y-1.5 max-h-[280px] overflow-auto pr-1">
+                <div className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">2. Utility Protocol</div>
+                <div className="space-y-1 max-h-60 overflow-auto pr-1">
                   {MODULES.utilities.map((ut) => (
-                    <Button
+                    <button
                       key={ut.id}
                       onClick={() => setSelectedUtility(ut.id)}
-                      disabled={forging}
-                      className={`w-full text-left p-2.5 rounded-xl border transition ${
-                        selectedUtility === ut.id
-                          ? 'border-cyan-400 bg-cyan-500/10'
-                          : 'border-white/5 bg-white/5 hover:border-white/20'
+                      className={`w-full text-left p-2 rounded-lg border text-xs transition ${
+                        selectedUtility === ut.id ? 'border-[#8c97d6] bg-[#eef0fb] font-semibold text-[#1d2650]' : 'border-slate-200 bg-white hover:bg-[#f7f7fd] text-slate-700'
                       }`}
                     >
-                      <div className="font-medium text-white">{ut.name}</div>
-                      <div className="text-[10px] text-white/40 mt-0.5">{ut.desc}</div>
-                    </Button>
+                      <div className="font-bold">{ut.name}</div>
+                      <div className="text-[10px] text-slate-500 line-clamp-1">{ut.desc}</div>
+                    </button>
                   ))}
                 </div>
               </div>
 
-              {/* Modifier Runes Column */}
+              {/* Runes Selection */}
               <div className="space-y-2">
-                <span className="font-semibold text-amber-300/70 text-[10px] uppercase">3. Modifier Rune (Optional)</span>
-                <div className="space-y-1.5 max-h-[280px] overflow-auto pr-1">
-                  {MODULES.runes.map((rune) => (
-                    <Button
-                      key={rune.id}
-                      onClick={() => setSelectedRune(selectedRune === rune.id ? null : rune.id)}
-                      disabled={forging}
-                      className={`w-full text-left p-2.5 rounded-xl border transition ${
-                        selectedRune === rune.id
-                          ? 'border-amber-400 bg-amber-500/15'
-                          : 'border-white/5 bg-white/5 hover:border-amber-300/30'
+                <div className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">3. Rune Modifier (Opt)</div>
+                <div className="space-y-1">
+                  {MODULES.runes.map((rn) => (
+                    <button
+                      key={rn.id}
+                      onClick={() => setSelectedRune(selectedRune === rn.id ? null : rn.id)}
+                      className={`w-full text-left p-2 rounded-lg border text-xs transition ${
+                        selectedRune === rn.id ? 'border-[#8c97d6] bg-[#eef0fb] font-semibold text-[#1d2650]' : 'border-slate-200 bg-white hover:bg-[#f7f7fd] text-slate-700'
                       }`}
                     >
-                      <div className="font-medium text-amber-300 flex items-center justify-between">
-                        <span>{rune.name}</span>
-                        {selectedRune === rune.id && <span className="text-[9px] bg-amber-400 text-black font-bold px-1.5 rounded">LOADED</span>}
-                      </div>
-                      <div className="text-[10px] text-white/40 mt-0.5">{rune.desc}</div>
-                    </Button>
+                      <div className="font-bold">{rn.name}</div>
+                      <div className="text-[10px] text-slate-500 line-clamp-1">{rn.desc}</div>
+                    </button>
                   ))}
                 </div>
               </div>
             </div>
 
-            {/* Forge Button & Progress */}
-            <div className="rounded-2xl border border-white/10 bg-slate-900/40 p-4 flex flex-col items-center gap-3">
-              {forging ? (
-                <div className="w-full text-center space-y-2">
-                  <div className="font-bold text-cyan-300 animate-pulse">Stabilizing elements within the Veil... {forgeProgress}%</div>
-                  <div className="h-2 w-full rounded bg-white/10 overflow-hidden max-w-sm mx-auto">
-                    <div className="h-full bg-cyan-500 transition-all duration-300" style={{ width: `${forgeProgress}%` }} />
-                  </div>
+            {/* Forge Control Bar */}
+            <div className="rounded-xl border border-slate-300/80 bg-white/90 p-4 shadow-sm flex items-center justify-between">
+              <div>
+                <div className="text-xs font-bold text-[#1d2650]">
+                  Spell Formula: <span className="text-[#3b4785]">{selectedElement || '___'} + {selectedUtility || '___'} {selectedRune ? `(${selectedRune})` : ''}</span>
                 </div>
-              ) : (
-                <div className="flex items-center gap-6 w-full justify-between">
-                  <div className="text-xs space-x-1">
-                    <span className="text-white/50">Matrix: </span>
-                    <span className="font-bold text-cyan-300">{selectedElement || '---'}</span>
-                    <span className="text-white/50"> + </span>
-                    <span className="font-bold text-cyan-300">{selectedUtility || '---'}</span>
-                    {selectedRune && (
-                      <>
-                        <span className="text-white/50"> + </span>
-                        <span className="font-bold text-amber-300">[{selectedRune}]</span>
-                      </>
-                    )}
-                  </div>
-                  <Button onClick={handleForge} disabled={!selectedElement || !selectedUtility} className={`px-6 py-2 font-bold ${selectedElement && selectedUtility ? '' : 'opacity-60'}`}>
-                    🔨 Forge 3-Slot Protocol
-                  </Button>
-                </div>
-              )}
+                <div className="text-[11px] text-slate-500 mt-0.5">Combine code elements to stabilize regional realities.</div>
+              </div>
+
+              <Button
+                onClick={handleForge}
+                disabled={!selectedElement || !selectedUtility || forging}
+                size="sm"
+                variant="solid"
+                className="px-5 py-2 font-bold"
+              >
+                {forging ? `Forging ${forgeProgress}%...` : 'Synthesize Spell'}
+              </Button>
             </div>
           </div>
-        )}
-
-        {activeTab === 'defense' && (
-          <div className="flex-1 overflow-auto p-6 space-y-6">
-            <div>
-              <h2 className="text-base font-semibold text-white">Digital Defense Operations</h2>
-              <p className="text-white/60 text-[11px] mt-0.5">Use your forged spell inventory to quarantine and clean active operating system threats.</p>
-            </div>
-
-            <div className="space-y-3">
+        ) : (
+          /* Defense Tab */
+          <div className="space-y-3">
+            <div className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Active Regional Network Threats</div>
+            <div className="grid grid-cols-2 gap-3">
               {threats.map((threat) => (
-                <div key={threat.id} className="rounded-xl border border-white/15 bg-white/5 p-4 flex justify-between items-center gap-4">
-                  <div>
-                    <div className="flex items-center gap-2">
-                      <span className={`h-2.5 w-2.5 rounded-full ${threat.status === 'CLEANSED' ? 'bg-emerald-500' : 'bg-red-500 animate-ping'}`} />
-                      <span className="font-bold text-white text-sm">{threat.name}</span>
-                      <span className="rounded bg-white/10 px-2 py-0.5 text-[9px] text-white/50 uppercase">{threat.type}</span>
-                    </div>
-                    <div className="text-[11px] text-white/50 mt-1">Requires: {threat.vulnerability} spell | Reward: ₡{threat.reward}</div>
+                <div key={threat.id} className="rounded-xl border border-slate-300/80 bg-white/90 p-3 shadow-sm space-y-2">
+                  <div className="flex justify-between items-center">
+                    <span className="font-bold text-xs text-[#1c2650]">{threat.name}</span>
+                    <span className={`text-[10px] px-2 py-0.5 rounded font-bold ${threat.status === 'CLEANSED' ? 'bg-emerald-100 text-emerald-700' : 'bg-rose-100 text-rose-700'}`}>
+                      {threat.status}
+                    </span>
+                  </div>
+                  <div className="text-[11px] text-slate-600">
+                    Vulnerability: <span className="font-semibold text-indigo-700">{threat.vulnerability}</span>
                   </div>
 
-                  <div className="flex items-center gap-2">
-                    {threat.status === 'CLEANSED' ? (
-                      <span className="text-emerald-400 font-bold text-sm">✔ PURGED</span>
-                    ) : player.forgedSpells.length === 0 ? (
-                      <span className="text-white/30 text-[10px]">No spells forged</span>
-                    ) : (
-                      <div className="flex flex-wrap gap-1 max-w-[200px]">
-                        {player.forgedSpells.map((spell) => (
-                          <Button
-                            key={spell}
-                            onClick={() => handleCleanse(threat, spell)}
-                            className="bg-red-500/20 text-red-300 border border-red-500/40 rounded px-2.5 py-1 hover:bg-red-500 hover:text-black font-semibold text-[10px] transition"
-                          >
-                            Use {spell}
-                          </Button>
-                        ))}
-                      </div>
-                    )}
-                  </div>
+                  {threat.status === 'ACTIVE' && (
+                    <div className="pt-2 border-t border-slate-100 flex gap-1 flex-wrap">
+                      {player.forgedSpells.map((spell) => (
+                        <button
+                          key={spell}
+                          onClick={() => handleCleanse(threat, spell)}
+                          className="px-2 py-1 bg-[#eef0fb] hover:bg-[#e1e4f7] text-[#1d2650] text-[10px] rounded font-semibold transition"
+                        >
+                          Cast [{spell}]
+                        </button>
+                      ))}
+                      {player.forgedSpells.length === 0 && (
+                        <span className="text-[10px] text-slate-400">No forged spells available. Craft spells in Weaver tab.</span>
+                      )}
+                    </div>
+                  )}
                 </div>
               ))}
             </div>
           </div>
         )}
 
-        {/* Action Logs footer */}
-        <div className="h-32 border-t border-white/10 bg-black/40 p-4 font-mono text-[10px] text-green-400 overflow-auto flex flex-col-reverse gap-1 select-text">
+        {/* Forge Output Log */}
+        <div className="mt-3 bg-white/80 border border-slate-300/80 rounded-xl p-3 max-h-32 overflow-auto text-[11px] font-mono text-slate-700 shadow-inner space-y-1">
           {log.map((entry, idx) => (
-            <div key={idx} className="leading-normal">{entry}</div>
+            <div key={idx}>{entry}</div>
           ))}
         </div>
       </div>

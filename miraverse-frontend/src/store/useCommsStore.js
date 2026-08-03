@@ -10,11 +10,12 @@ export const useCommsStore = create(
       // Email
       emails: mailData,
 
-      // Channels and Directs
+      // Channels and Directs (Clean names without hashtags)
       channels: [
-        { id: 'secure-relay', name: 'secure-relay', team: 'Ops' },
-        { id: 'briefings', name: 'briefings', team: 'Faculty' },
-        { id: 'dga-ops', name: 'dga-ops', team: 'Agency' },
+        { id: 'secure-relay', name: 'Shadow Relay', team: 'Ops' },
+        { id: 'briefings', name: 'Faculty Briefings', team: 'Faculty' },
+        { id: 'dga-ops', name: 'DGA Ops', team: 'Agency' },
+        { id: 'cyacademy-core', name: 'Cyacademy Core', team: 'Students' },
       ],
       directs: [
         { id: 'dm:voss', name: 'Dr. Voss' },
@@ -30,6 +31,9 @@ export const useCommsStore = create(
         'dga-ops': [
           { id: 'd-1', user: 'Mara Quell', team: 'Agency', text: 'Ops window: verify Sector 7 nodes. Squad of four.', time: '09:10 AM' },
         ],
+        'cyacademy-core': [
+          { id: 'c-1', user: 'Aelita', team: 'Students', text: 'Notice any energy fluctuations near Lab 4?', time: '09:15 AM' }
+        ],
         'dm:voss': [ { id: 'dmv-1', user: 'Dr. Voss', team: 'Direct', text: 'Keep your relay sanitized. Report any PRISM anomalies immediately.', time: '09:22 AM' } ],
         'dm:riven': [ { id: 'dmr-1', user: 'Riven', team: 'Direct', text: 'Got a shortcut to the factory? Meet near Block C stairs.', time: '09:05 AM' } ],
         'dm:odd': [ { id: 'dmo-1', user: 'Odd', team: 'Direct', text: 'Heard a rumor: cafeteria pie heals +5 aura. Scientific.', time: '08:55 AM' } ],
@@ -40,13 +44,10 @@ export const useCommsStore = create(
         set({ messages: { ...get().messages, [key]: [...current, entry] } });
       },
 
-      // Add a new email to the store
       addEmail: (email) => {
         const current = get().emails || [];
         set({ emails: [...current, email] });
       },
-
-      // Future: add addEmail, markRead, delete, etc.
     }),
     { name: 'miraverse-comms' }
   )

@@ -3,13 +3,16 @@ import React, { useEffect, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import {
   CalendarDays, FileSearch, Gem, LayoutGrid, Mail, Moon, Power,
-  Search, Settings, ShieldCheck, Sparkles, Wifi, LogOut
+  Search, Settings, ShieldCheck, Sparkles, Wifi, LogOut, Volume2, VolumeX
 } from 'lucide-react';
 import { useOSStore } from '../store/useOSStore';
 import { useWorldStore } from '../store/useWorldStore';
 import { APPS } from '../apps/registry';
 import Window from './Window';
 import SparklesCanvas from './SparklesCanvas';
+import MAIDock from './MAIDock';
+import StarterQuestHub from './StarterQuestHub';
+import soundEngine from '../utils/soundEngine';
 import ClockDisplay from '../components/ClockDisplay';
 import LoginScreen from '../components/LoginScreen';
 import { useTimeStore } from '../utils/timeEngine';
@@ -77,11 +80,21 @@ export default function Desktop() {
     return () => clearInterval(id);
   }, [tick]);
 
+  const [isMuted, setIsMuted] = useState(false);
+
+  const toggleSound = () => {
+    const muted = soundEngine.toggleMute();
+    setIsMuted(muted);
+  };
+
   if (!isLoggedIn) {
     return <LoginScreen onLoginSuccess={loginUser} />;
   }
 
-  const launch = (app) => toggleApp(app);
+  const launch = (app) => {
+    soundEngine.playWindowOpen();
+    toggleApp(app);
+  };
 
   return (
     <main
@@ -192,6 +205,7 @@ export default function Desktop() {
               </div>
 
               <div className="flex min-w-0 flex-col gap-4">
+                <StarterQuestHub />
                 <Panel className="p-5">
                   <div className="flex items-center justify-between"><p className="text-[9px] font-bold tracking-[.19em] text-slate-500">PLAYER RECORD</p><ShieldCheck size={16} className="text-[#606ab2]" /></div>
                   <p className="mt-5 font-serif-y2k text-2xl font-bold text-[#202851]">{player?.name || 'Player'}</p>
@@ -238,20 +252,20 @@ export default function Desktop() {
       {/* Bottom Taskbar & Holographic App Launcher Dock */}
       <footer className="relative z-30 mx-6 mb-5 flex h-12 items-center justify-between border border-white/80 bg-white/65 px-3 shadow-[0_10px_35px_rgba(43,55,98,.1)] backdrop-blur-xl">
         <div className="relative flex items-center gap-3">
-          {/* FLOATING HOLOGRAPHIC MATRIX APP LAUNCHER POPUP */}
+          {/* FLOATING SOFT CELESTIAL Y2K APP LAUNCHER POPUP */}
           <AnimatePresence>
             {isLauncherOpen && (
               <motion.div
                 initial={{ opacity: 0, y: 12, scale: 0.96 }}
                 animate={{ opacity: 1, y: 0, scale: 1 }}
                 exit={{ opacity: 0, y: 12, scale: 0.96 }}
-                className="absolute bottom-14 left-0 grid w-[380px] grid-cols-4 gap-2 rounded-2xl hologram-panel p-3 shadow-2xl z-50 animate-holo-flicker border border-cyan-400/40"
+                className="absolute bottom-14 left-0 grid w-[400px] grid-cols-4 gap-2.5 rounded-2xl bg-white/92 backdrop-blur-2xl p-4 shadow-[0_16px_40px_-8px_rgba(80,90,120,0.35)] z-50 border border-white/90 select-none"
               >
-                <div className="col-span-4 flex items-center justify-between border-b border-cyan-500/30 pb-2 mb-1 px-1">
-                  <div className="flex items-center gap-1.5 font-serif-y2k text-xs font-bold text-cyan-300">
-                    <Sparkles size={14} className="text-cyan-400 animate-pulse" /> CELESTIAL APPLICATION ARCHIVE
+                <div className="col-span-4 flex items-center justify-between border-b border-slate-200/80 pb-2.5 mb-1 px-1">
+                  <div className="flex items-center gap-1.5 font-serif-y2k text-xs font-bold text-[#1d2650]">
+                    <Sparkles size={14} className="text-[#5f6ab0]" /> APPLICATION ARCHIVE
                   </div>
-                  <span className="text-[9px] font-mono text-cyan-200/60 uppercase">VER 5.2.0</span>
+                  <span className="text-[9px] font-mono text-slate-400 font-semibold uppercase">CELESTIAL OS</span>
                 </div>
                 {APPS.map((app) => {
                   const Icon = app.icon;
@@ -262,12 +276,12 @@ export default function Desktop() {
                         launch(app);
                         setIsLauncherOpen(false);
                       }}
-                      className="group flex min-h-20 flex-col items-center justify-center gap-1.5 rounded-xl border border-cyan-500/20 bg-slate-950/70 p-2.5 text-center transition hover:scale-[1.03] hover:border-cyan-400/80 hover:bg-cyan-950/50 shadow-sm"
+                      className="group flex min-h-20 flex-col items-center justify-center gap-2 rounded-xl border border-slate-200/80 bg-[#FAFAFC] p-2.5 text-center transition hover:scale-[1.03] hover:border-[#8c97d6] hover:bg-[#eef0fb] shadow-sm"
                     >
-                      <div className="p-2 rounded-lg bg-cyan-500/10 text-cyan-300 group-hover:bg-cyan-400 group-hover:text-black transition">
+                      <div className="p-2 rounded-xl bg-[#e9ebf6] text-[#5f6ab0] group-hover:bg-[#9DA9CB] group-hover:text-white transition">
                         <Icon size={18} />
                       </div>
-                      <span className="text-[10px] font-bold text-white/90 group-hover:text-cyan-200">{app.title}</span>
+                      <span className="text-[11px] font-semibold text-[#1d2650] group-hover:text-[#162241]">{app.title}</span>
                     </button>
                   );
                 })}
@@ -310,6 +324,16 @@ export default function Desktop() {
               className="w-full bg-transparent text-xs outline-none placeholder:text-slate-400"
             />
           </div>
+          <MAIDock />
+
+          <button
+            onClick={toggleSound}
+            className="p-2 text-slate-500 hover:text-[#293360] transition"
+            title={isMuted ? "Unmute Audio Engine" : "Mute Audio Engine"}
+          >
+            {isMuted ? <VolumeX size={16} className="text-rose-500" /> : <Volume2 size={16} className="text-[#4e5792]" />}
+          </button>
+
           <button
             onClick={() => setIsSanctuary((active) => !active)}
             className={'flex items-center gap-2 px-3 py-1.5 text-[10px] font-bold tracking-[.12em] transition ' + (isSanctuary ? 'bg-[#28325f] text-white' : 'text-[#4e5792] hover:bg-[#ecebf7]')}

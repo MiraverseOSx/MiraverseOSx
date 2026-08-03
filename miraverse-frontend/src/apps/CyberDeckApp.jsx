@@ -74,18 +74,18 @@ export default function CyberDeckApp() {
   };
 
   return (
-    <div className="h-full w-full bg-slate-950 p-4 text-xs font-mono text-white flex flex-col justify-between overflow-hidden select-none">
+    <div className="h-full w-full bg-gradient-to-b from-[#F6F7FB] to-[#EFF1F7] p-4 text-xs text-[#162241] flex flex-col justify-between overflow-hidden select-none">
       {/* Top Header & Combat Status */}
-      <div className="flex justify-between items-center border-b border-white/10 pb-2.5">
+      <div className="flex justify-between items-center border-b border-slate-300/80 pb-2.5">
         <div className="flex items-center gap-2">
-          <Cpu className="text-cyan-400 animate-pulse" size={18} />
+          <Cpu className="text-[#5f6ab0]" size={18} />
           <div>
-            <div className="font-bold text-cyan-300 text-sm">CYBER DECK COMBAT MATRIX</div>
-            <div className="text-[10px] text-white/50">Turn-Based Tactical Digital Defense</div>
+            <div className="font-bold text-[#1d2650] text-sm">CYBER DECK COMBAT MATRIX</div>
+            <div className="text-[10px] text-slate-500">Turn-Based Tactical Digital Defense</div>
           </div>
         </div>
 
-        <Button onClick={handleResetBattle} size="sm" className="flex items-center gap-1 px-2.5 py-1 bg-white/10 hover:bg-white/20 text-[10px] font-bold text-cyan-200">
+        <Button onClick={handleResetBattle} size="sm" variant="outline" className="flex items-center gap-1 text-[10px]">
           <RefreshCw size={12} /> Reset Battle
         </Button>
       </div>
@@ -93,24 +93,24 @@ export default function CyberDeckApp() {
       {/* Battle Canvas: Enemy vs Player Health Gauges */}
       <div className="grid grid-cols-2 gap-4 my-2">
         {/* Enemy Status Box */}
-        <div className="rounded-xl border border-pink-500/40 bg-pink-950/30 p-3 space-y-2">
+        <div className="rounded-xl border border-rose-300 bg-rose-50/80 p-3 space-y-2 shadow-sm">
           <div className="flex justify-between items-center font-bold">
-            <span className="text-pink-300 flex items-center gap-1">
-              <AlertTriangle size={14} className="text-pink-400 animate-pulse" /> PRISM Malware Core
+            <span className="text-rose-900 flex items-center gap-1">
+              <AlertTriangle size={14} className="text-rose-600 animate-pulse" /> PRISM Malware Core
             </span>
-            <span className="text-[10px] bg-pink-500/20 px-1.5 py-0.5 rounded text-pink-200">
+            <span className="text-[10px] bg-rose-200/80 px-1.5 py-0.5 rounded text-rose-800 font-semibold">
               {turn === 'enemy' ? 'ATTACKING...' : 'TARGET'}
             </span>
           </div>
 
           <div>
-            <div className="flex justify-between text-[10px] text-white/70 mb-1">
+            <div className="flex justify-between text-[10px] text-slate-600 mb-1">
               <span>Core Integrity:</span>
-              <span className="font-bold text-pink-400">{enemyHealth} / {maxEnemyHealth} HP</span>
+              <span className="font-bold text-rose-700">{enemyHealth} / {maxEnemyHealth} HP</span>
             </div>
-            <div className="w-full bg-slate-900 h-2 rounded-full overflow-hidden border border-pink-500/30">
+            <div className="w-full bg-slate-200 h-2 rounded-full overflow-hidden border border-rose-300">
               <div
-                className="bg-pink-500 h-full transition-all duration-300 shadow-[0_0_10px_#EC4899]"
+                className="bg-rose-500 h-full transition-all duration-300"
                 style={{ width: `${(enemyHealth / maxEnemyHealth) * 100}%` }}
               />
             </div>
@@ -118,24 +118,24 @@ export default function CyberDeckApp() {
         </div>
 
         {/* Player Status Box */}
-        <div className="rounded-xl border border-cyan-500/40 bg-cyan-950/30 p-3 space-y-2">
+        <div className="rounded-xl border border-indigo-300 bg-indigo-50/80 p-3 space-y-2 shadow-sm">
           <div className="flex justify-between items-center font-bold">
-            <span className="text-cyan-300 flex items-center gap-1">
-              <Shield size={14} className="text-cyan-400" /> Operative Aura
+            <span className="text-indigo-900 flex items-center gap-1">
+              <Shield size={14} className="text-[#5f6ab0]" /> Player Aura Matrix
             </span>
-            <span className="text-[10px] bg-cyan-500/20 px-1.5 py-0.5 rounded text-cyan-200">
-              Level {player.level}
+            <span className="text-[10px] bg-indigo-200/80 px-1.5 py-0.5 rounded text-indigo-800 font-semibold">
+              {turn === 'player' ? 'YOUR TURN' : 'WAITING...'}
             </span>
           </div>
 
           <div>
-            <div className="flex justify-between text-[10px] text-white/70 mb-1">
-              <span>Aura Health:</span>
-              <span className="font-bold text-emerald-400">{player.auraHealth} / 100 HP</span>
+            <div className="flex justify-between text-[10px] text-slate-600 mb-1">
+              <span>Aura Integrity:</span>
+              <span className="font-bold text-[#1d2650]">{player.auraHealth} / 100 HP</span>
             </div>
-            <div className="w-full bg-slate-900 h-2 rounded-full overflow-hidden border border-cyan-500/30">
+            <div className="w-full bg-slate-200 h-2 rounded-full overflow-hidden border border-indigo-300">
               <div
-                className="bg-emerald-400 h-full transition-all duration-300 shadow-[0_0_10px_#34D399]"
+                className="bg-[#5f6ab0] h-full transition-all duration-300"
                 style={{ width: `${player.auraHealth}%` }}
               />
             </div>
@@ -144,61 +144,62 @@ export default function CyberDeckApp() {
       </div>
 
       {/* Battle Log Box */}
-      <div className="flex-1 overflow-auto rounded-xl border border-white/10 bg-black/60 p-3 space-y-1 my-1 text-[10px]">
+      <div className="flex-1 bg-white/80 border border-slate-300/80 rounded-xl p-3 overflow-auto my-2 space-y-1 shadow-inner font-mono text-[11px]">
         {battleLog.map((log, idx) => (
-          <div key={idx} className="leading-snug">{log}</div>
+          <div key={idx} className="leading-snug text-slate-700">
+            {log}
+          </div>
         ))}
       </div>
 
-      {/* Player Action Deck Controls */}
-      <div className="pt-2 border-t border-white/10">
-        <div className="text-[10px] font-bold text-cyan-300 mb-1.5 flex items-center gap-1">
-          <Zap size={12} /> Select Cyber Deck Action:
+      {/* Combat Action Cards Deck */}
+      <div className="pt-2 border-t border-slate-300/80">
+        <div className="text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-2">Available Cyber Combat Actions</div>
+        <div className="grid grid-cols-4 gap-2">
+          <Button
+            onClick={() => handlePlayerAttack('Thermal Overload', 35)}
+            disabled={turn !== 'player'}
+            size="sm"
+            variant="solid"
+            className="flex flex-col items-center p-2 h-auto text-left rounded-xl"
+          >
+            <div className="flex items-center gap-1 font-bold text-xs"><Flame size={13} /> Thermal Strike</div>
+            <div className="text-[10px] opacity-80 mt-0.5">35 Fire Dmg</div>
+          </Button>
+
+          <Button
+            onClick={() => handlePlayerAttack('Reflect Shield', 15, 0, true)}
+            disabled={turn !== 'player'}
+            size="sm"
+            variant="outline"
+            className="flex flex-col items-center p-2 h-auto text-left rounded-xl"
+          >
+            <div className="flex items-center gap-1 font-bold text-xs text-[#1d2650]"><Shield size={13} /> Reflect Shield</div>
+            <div className="text-[10px] text-slate-500 mt-0.5">15 Dmg + Defend</div>
+          </Button>
+
+          <Button
+            onClick={() => handlePlayerAttack('Spring Restoration', 10, 20)}
+            disabled={turn !== 'player'}
+            size="sm"
+            variant="outline"
+            className="flex flex-col items-center p-2 h-auto text-left rounded-xl"
+          >
+            <div className="flex items-center gap-1 font-bold text-xs text-emerald-800"><Zap size={13} /> Restorative Pulse</div>
+            <div className="text-[10px] text-slate-500 mt-0.5">10 Dmg +20 HP</div>
+          </Button>
+
+          <Button
+            onClick={() => handlePlayerAttack('Glacial Freeze', 45)}
+            disabled={turn !== 'player'}
+            size="sm"
+            variant="solid"
+            className="flex flex-col items-center p-2 h-auto text-left rounded-xl"
+          >
+            <div className="flex items-center gap-1 font-bold text-xs"><Sparkles size={13} /> Glacial Freeze</div>
+            <div className="text-[10px] opacity-80 mt-0.5">45 Ice Dmg</div>
+          </Button>
         </div>
-
-        {turn === 'victory' ? (
-          <div className="rounded-xl bg-emerald-950/60 border border-emerald-400/40 p-3 text-center text-emerald-300 font-bold text-xs space-y-1">
-            <div className="flex items-center justify-center gap-1"><CheckCircle2 size={16} /> BATTLE VICTORY!</div>
-            <Button onClick={handleResetBattle} size="sm" className="mt-1 px-4 py-1 bg-emerald-500 text-slate-950 font-bold text-xs hover:bg-emerald-400">
-              Start Next Battle
-            </Button>
-          </div>
-        ) : (
-          <div className="grid grid-cols-3 gap-2">
-            <Button
-              onClick={() => handlePlayerAttack('Thermal Flare', 50)}
-              disabled={turn !== 'player'}
-              className="rounded-lg border border-amber-500/40 bg-amber-500/10 p-2 hover:bg-amber-500/30 transition text-left disabled:opacity-50"
-            >
-              <div className="font-bold text-amber-300 flex items-center gap-1 text-[10px]">
-                <Flame size={12} /> Thermal Flare
-              </div>
-              <div className="text-[8px] text-amber-200/70">50 Dmg • Overload Core</div>
-            </Button>
-
-            <Button
-              onClick={() => handlePlayerAttack('Reflect Shield', 35, 0, true)}
-              disabled={turn !== 'player'}
-              className="rounded-lg border border-cyan-500/40 bg-cyan-500/10 p-2 hover:bg-cyan-500/30 transition text-left disabled:opacity-50"
-            >
-              <div className="font-bold text-cyan-300 flex items-center gap-1 text-[10px]">
-                <Shield size={12} /> Reflect Shield
-              </div>
-              <div className="text-[8px] text-cyan-200/70">35 Dmg • Block Next Hit</div>
-            </Button>
-
-            <Button
-              onClick={() => handlePlayerAttack('Seal Lock', 25, 15)}
-              disabled={turn !== 'player'}
-              className="rounded-lg border border-violet-500/40 bg-violet-500/10 p-2 hover:bg-violet-500/30 transition text-left disabled:opacity-50"
-            >
-              <div className="font-bold text-violet-300 flex items-center gap-1 text-[10px]">
-                <Sparkles size={12} /> Seal Lock
-              </div>
-              <div className="text-[8px] text-violet-200/70">25 Dmg • Restores +15 Aura</div>
-            </Button>
-          </div>
-        )}
       </div>
     </div>
   );

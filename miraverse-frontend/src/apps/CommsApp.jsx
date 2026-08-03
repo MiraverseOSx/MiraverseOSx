@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import { Mail, MessageSquare, Send, Hash, UserCircle2, Paperclip } from 'lucide-react';
+import { Mail, MessageSquare, Send, UserCircle2, Paperclip, FileText, Key, Stethoscope, Calendar, X, CheckCircle, Shield } from 'lucide-react';
 import { useCommsStore } from '../store/useCommsStore';
 import { useOSStore } from '../store/useOSStore';
 import Button from '../components/ui/button';
@@ -26,12 +26,17 @@ export default function CommsApp() {
   const [channelId, setChannelId] = useState('secure-relay');
   const [draft, setDraft] = useState('');
   const [chatDraft, setChatDraft] = useState('');
+  const [attachmentModal, setAttachmentModal] = useState(null);
 
   const claimedComms = useOSStore((s) => s.gameplay.claimedComms);
   const claimCommsAttachment = useOSStore((s) => s.claimCommsAttachment);
 
-  // Email datasource
   const { emails: storeEmails, channels, directs, messages, addChatMessage } = useComms();
+
+  const activeChannel = useMemo(() => {
+    return channels.find((c) => c.id === channelId) || directs.find((d) => d.id === channelId) || { name: channelId };
+  }, [channels, directs, channelId]);
+
   const emails = useMemo(() => {
     let list = storeEmails;
     if (folder === 'alerts') {
@@ -52,13 +57,11 @@ export default function CommsApp() {
     if (!selectedMessage?.attachment || claimedComms.includes(selectedMessage.id)) return;
     claimCommsAttachment(selectedMessage.id, selectedMessage.attachment.amount, 50);
   };
+
   const sendEmail = () => {
     if (!draft.trim()) return;
     setDraft('');
   };
-
-  // Channels datasource (local state per channel)
-  // use persisted messages from the store
 
   const sendChat = () => {
     if (!chatDraft.trim()) return;
@@ -71,41 +74,50 @@ export default function CommsApp() {
     setSelectedMessageId(null);
   }, [folder]);
 
+  const getAttachmentIcon = (type) => {
+    switch (type) {
+      case 'key': return <Key size={16} className="text-amber-600" />;
+      case 'medical': return <Stethoscope size={16} className="text-emerald-600" />;
+      case 'schedule': return <Calendar size={16} className="text-indigo-600" />;
+      default: return <FileText size={16} className="text-[#5f6ab0]" />;
+    }
+  };
+
   return (
-    <section className="flex h-full w-full flex-col bg-gradient-to-b from-[#F6F7FB] to-[#EFF1F7] text-[#162241]">
-      {/* Top toolbar */}
-      <div className="flex items-center justify-between border-b border-slate-300/70 bg-white/70 px-3 py-2 backdrop-blur-sm">
-        <div className="flex items-center gap-2 text-[11px] font-bold tracking-[.14em]">
-          <Button onClick={() => setMode('email')} size="sm" variant={mode==='email' ? 'solid' : 'ghost'} className="flex items-center gap-1.5">
-            <Mail size={14} /> EMAIL
+    <section className="relative flex h-full w-full flex-col bg-gradient-to-b from-[#F6F7FB] to-[#EFF1F7] text-[#162241]">
+      {/* Top Toolbar */}
+      <div className="flex h-11 items-center justify-between border-b border-slate-300/70 bg-white/70 px-4 backdrop-blur-sm">
+        <div className="flex items-center gap-2 text-xs font-bold tracking-wider">
+          <Button onClick={() => setMode('email')} size="sm" variant={mode==='email' ? 'solid' : 'ghost'} className="flex items-center gap-1.5 text-xs">
+            <Mail size={14} /> MAIL
           </Button>
-          <Button onClick={() => setMode('channels')} size="sm" variant={mode==='channels' ? 'solid' : 'ghost'} className="flex items-center gap-1.5">
+          <Button onClick={() => setMode('channels')} size="sm" variant={mode==='channels' ? 'solid' : 'ghost'} className="flex items-center gap-1.5 text-xs">
             <MessageSquare size={14} /> CHANNELS
           </Button>
         </div>
         {mode === 'email' ? (
           <div className="flex items-center gap-2">
-            <div className="flex items-center rounded-full border border-slate-300 bg-white/75 px-3 py-1 text-[12px]">
-              <span className="mr-2 text-slate-500">⌕</span>
-              <Input value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Search mail" className="w-48 bg-transparent" />
+            <div className="flex items-center rounded-full border border-slate-300/80 bg-white/80 px-3 py-1 text-xs">
+              <span className="mr-2 text-slate-400">⌕</span>
+              <Input value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Search mail" className="w-48 bg-transparent text-xs outline-none" />
             </div>
           </div>
         ) : (
-          <div className="text-[11px] font-semibold tracking-[.14em] text-slate-600 flex items-center gap-2">
-            <Hash size={12} className="text-[#636caa]" /> {channelId}
+          <div className="text-xs font-semibold tracking-wider text-[#1d2650] flex items-center gap-2">
+            <Shield size={14} className="text-[#5f6ab0]" /> {activeChannel.name}
           </div>
         )}
       </div>
 
-      {/* Main content */}
+      {/* Main Content */}
       {mode === 'email' ? (
         <div className="flex min-h-0 flex-1">
           {/* Folders */}
           <div className="w-44 shrink-0 border-r border-slate-300/70 bg-white/60 p-3">
-            <div className="text-[10px] font-bold tracking-[.2em] text-slate-600 mb-2">MAILBOX</div>
+            <div className="text-[10px] font-bold uppercase tracking-[.2em] text-slate-500 mb-2">Mailbox</div>
             <div className="space-y-1">
               {EMAIL_FOLDERS.map((f) => (
-                <button key={f.id} onClick={() => setFolder(f.id)} className={`flex w-full items-center justify-between rounded px-2 py-1.5 text-left text-[12px] ${folder === f.id ? 'bg-[#e9ebf6] text-[#1d2650] font-semibold' : 'hover:bg-[#f2f3fb] text-slate-600'}`}>
+                <button key={f.id} onClick={() => setFolder(f.id)} className={`flex w-full items-center justify-between rounded-lg px-2.5 py-1.5 text-left text-xs ${folder === f.id ? 'bg-[#e9ebf6] text-[#1d2650] font-semibold' : 'text-slate-600 hover:bg-[#f2f3fb]'}`}>
                   <span>{f.label}</span>
                   <span className="text-[10px] text-slate-400">{f.id === 'inbox' ? storeEmails.length : storeEmails.filter((m) => /alert|notice/i.test(m.subject)).length}</span>
                 </button>
@@ -113,112 +125,167 @@ export default function CommsApp() {
             </div>
           </div>
 
-          {/* Message list */}
-          <div className="w-80 shrink-0 border-r border-slate-300/70 bg-white/50">
-            <div className="flex items-center justify-between border-b border-slate-300/60 px-3 py-2 text-[11px] text-slate-600">
+          {/* Message List */}
+          <div className="w-80 shrink-0 border-r border-slate-300/70 bg-white/40">
+            <div className="flex items-center justify-between border-b border-slate-300/60 px-3 py-2 text-[11px] font-semibold text-slate-500">
               <span>{folder.toUpperCase()}</span>
               <span>{emails.length} items</span>
             </div>
-            <div className="h-full overflow-auto p-2">
+            <div className="h-full overflow-auto p-2 space-y-1">
               {emails.map((m) => (
-                <button key={m.id} onClick={() => openMessage(m)} className={`mb-1 w-full rounded-lg border px-3 py-2 text-left transition ${selectedMessageId === m.id ? 'border-[#8c97d6] bg-[#eef0fb]' : 'border-slate-200/80 bg-white hover:bg-[#f7f7fd]'}`}>
+                <button key={m.id} onClick={() => openMessage(m)} className={`w-full rounded-lg border p-2.5 text-left transition ${selectedMessageId === m.id ? 'border-[#8c97d6] bg-[#eef0fb]' : 'border-slate-200/80 bg-white/90 hover:bg-[#f7f7fd]'}`}>
                   <div className="flex items-center justify-between">
-                    <p className="truncate text-[12px] font-semibold text-[#1f2954]">{m.subject}</p>
-                    <span className="ml-2 shrink-0 text-[11px] text-slate-500">{m.time}</span>
+                    <p className="truncate text-xs font-semibold text-[#1f2954]">{m.subject}</p>
+                    <span className="ml-2 shrink-0 text-[10px] text-slate-400">{m.time}</span>
                   </div>
-                  <p className="truncate text-[11px] text-slate-600">{m.sender}</p>
+                  <div className="mt-1 flex items-center justify-between text-[11px] text-slate-500">
+                    <span className="truncate">{m.sender}</span>
+                    {m.attachment && <Paperclip size={12} className="text-[#5f6ab0]" />}
+                  </div>
                 </button>
               ))}
-              {!emails.length && <div className="p-3 text-center text-[12px] text-slate-500">No messages</div>}
+              {!emails.length && <div className="p-3 text-center text-xs text-slate-500">No messages</div>}
             </div>
           </div>
 
           {/* Reader */}
-          <div className="flex min-w-0 flex-1 flex-col">
+          <div className="flex min-w-0 flex-1 flex-col bg-[#FAFAFC] p-4">
             {!selectedMessage && (
-              <div className="m-6 rounded-xl border border-slate-300/70 bg-white/60 p-6 text-[12px] text-slate-600">
+              <div className="flex h-full items-center justify-center text-xs text-slate-500">
                 Select a message to read.
               </div>
             )}
             {selectedMessage && (
-              <div className="m-3 flex min-h-0 flex-1 flex-col rounded-xl border border-slate-300/70 bg-white/70 p-4">
-                <div className="flex items-start justify-between">
-                  <div>
-                    <div className="text-[13px] font-bold text-[#1b254d]">{selectedMessage.subject}</div>
-                    <div className="mt-0.5 text-[12px] text-slate-600">{selectedMessage.sender} · {selectedMessage.time}</div>
+              <div className="flex h-full flex-col">
+                <div className="border-b border-slate-300/70 pb-3">
+                  <div className="flex items-start justify-between">
+                    <div>
+                      <div className="text-sm font-bold text-[#1c2650]">{selectedMessage.subject}</div>
+                      <div className="mt-0.5 text-xs text-slate-500">{selectedMessage.sender} · {selectedMessage.time}</div>
+                    </div>
+                    <Button onClick={() => setSelectedMessageId(null)} size="sm" variant="ghost">Close</Button>
                   </div>
-                  <Button onClick={() => setSelectedMessageId(null)} size="sm" variant="ghost">Close</Button>
                 </div>
-                <div className="mt-3 min-h-0 flex-1 overflow-auto whitespace-pre-line text-[13px] leading-relaxed text-[#243064]">
+                <div className="my-3 flex-1 overflow-auto whitespace-pre-line text-xs leading-relaxed text-[#243064]">
                   {selectedMessage.body}
                 </div>
+
                 {selectedMessage.attachment && (
-                  <div className="mt-3 flex items-center justify-between rounded-lg border border-slate-300/70 bg-white/60 px-3 py-2 text-[12px]">
-                    <div className="flex items-center gap-2 text-slate-700"><Paperclip size={14} className="text-[#7280c9]" /> {selectedMessage.attachment.name}</div>
-                    <Button onClick={claimAttachment} disabled={attachmentClaimed} size="sm" variant={attachmentClaimed? 'ghost':'solid'}>
-                      {attachmentClaimed ? 'Claimed' : `Claim +₡${selectedMessage.attachment.amount}`}
+                  <div className="mb-3 rounded-lg border border-slate-300/80 bg-white/90 p-3 flex items-center justify-between shadow-sm">
+                    <div
+                      onClick={() => setAttachmentModal(selectedMessage.attachment)}
+                      className="flex cursor-pointer items-center gap-3 hover:opacity-80 transition"
+                    >
+                      <div className="rounded-lg bg-[#eef0fb] p-2">
+                        {getAttachmentIcon(selectedMessage.attachment.type)}
+                      </div>
+                      <div>
+                        <div className="text-xs font-semibold text-[#1d2650] flex items-center gap-1.5">
+                          {selectedMessage.attachment.name}
+                          <span className="text-[10px] text-slate-400 font-mono">(Preview)</span>
+                        </div>
+                        <div className="text-[10px] text-slate-500">
+                          {selectedMessage.attachment.previewTitle || 'Attachment Document'}
+                        </div>
+                      </div>
+                    </div>
+
+                    <Button onClick={claimAttachment} disabled={attachmentClaimed} size="sm" variant={attachmentClaimed ? 'ghost' : 'solid'} className="text-xs font-semibold">
+                      {attachmentClaimed ? <span className="flex items-center gap-1 text-emerald-600"><CheckCircle size={13} /> Claimed</span> : `Claim +₡${selectedMessage.attachment.amount}`}
                     </Button>
                   </div>
                 )}
-                <form onSubmit={(e) => { e.preventDefault(); sendEmail(); }} className="mt-3 flex items-center gap-2">
-                  <Input value={draft} onChange={(e) => setDraft(e.target.value)} placeholder="Write a reply…" className="flex-1" />
-                  <Button type="submit" className="flex items-center gap-1"><Send size={14} /> Send</Button>
+
+                <form onSubmit={(e) => { e.preventDefault(); sendEmail(); }} className="flex items-center gap-2 pt-2 border-t border-slate-300/70">
+                  <Input value={draft} onChange={(e) => setDraft(e.target.value)} placeholder="Write a reply…" className="flex-1 bg-white border-slate-300/80 text-xs text-slate-800 placeholder-slate-400 rounded-lg px-3 py-2" />
+                  <Button type="submit" size="sm" variant="solid" className="flex items-center gap-1"><Send size={13} /> Send</Button>
                 </form>
               </div>
             )}
           </div>
         </div>
       ) : (
+        /* Channel Mode */
         <div className="flex min-h-0 flex-1">
-          {/* Channel + Direct list */}
+          {/* Channel + Direct List */}
           <div className="w-56 shrink-0 border-r border-slate-300/70 bg-white/60 p-3 space-y-4">
             <div>
-              <div className="text-[10px] font-bold tracking-[.2em] text-slate-600 mb-2">CHANNELS</div>
+              <div className="text-[10px] font-bold uppercase tracking-[.2em] text-slate-500 mb-2">Channels</div>
               <div className="space-y-1">
                 {channels.map((c) => (
-                  <button key={c.id} onClick={() => setChannelId(c.id)} className={`flex w-full items-center gap-2 rounded px-2 py-1.5 text-left text-[12px] ${channelId === c.id ? 'bg-[#e9ebf6] text-[#1d2650] font-semibold' : 'hover:bg-[#f2f3fb] text-slate-600'}`}>
-                    <Hash size={13} className="text-[#5f6ab0]" /> {c.name}
+                  <button key={c.id} onClick={() => setChannelId(c.id)} className={`flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-left text-xs transition ${channelId === c.id ? 'bg-[#e9ebf6] text-[#1d2650] font-semibold' : 'text-slate-600 hover:bg-[#f2f3fb]'}`}>
+                    <Shield size={14} className="text-[#5f6ab0] shrink-0" />
+                    <span className="truncate">{c.name}</span>
                   </button>
                 ))}
               </div>
             </div>
 
             <div>
-              <div className="text-[10px] font-bold tracking-[.2em] text-slate-600 mb-2">DIRECT MESSAGES</div>
+              <div className="text-[10px] font-bold uppercase tracking-[.2em] text-slate-500 mb-2">Direct Messages</div>
               <div className="space-y-1">
                 {directs.map((d) => (
-                  <button key={d.id} onClick={() => setChannelId(d.id)} className={`flex w-full items-center gap-2 rounded px-2 py-1.5 text-left text-[12px] ${channelId === d.id ? 'bg-[#e9ebf6] text-[#1d2650] font-semibold' : 'hover:bg-[#f2f3fb] text-slate-600'}`}>
-                    <UserCircle2 size={13} className="text-[#6b74b5]" /> {d.name}
+                  <button key={d.id} onClick={() => setChannelId(d.id)} className={`flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-left text-xs transition ${channelId === d.id ? 'bg-[#e9ebf6] text-[#1d2650] font-semibold' : 'text-slate-600 hover:bg-[#f2f3fb]'}`}>
+                    <UserCircle2 size={14} className="text-[#6b74b5] shrink-0" />
+                    <span className="truncate">{d.name}</span>
                   </button>
                 ))}
               </div>
             </div>
           </div>
 
-          {/* Messages */}
-          <div className="flex min-w-0 flex-1 flex-col">
-            <div className="flex items-center justify-between border-b border-slate-300/60 bg-white/50 px-3 py-2 text-[11px] text-slate-600">
-              <span className="flex items-center gap-2"><UserCircle2 size={14} className="text-[#6b74b5]" /> Mission Chat — Professional</span>
+          {/* Messages Feed */}
+          <div className="flex min-w-0 flex-1 flex-col bg-[#FAFAFC]">
+            <div className="flex items-center justify-between border-b border-slate-300/60 px-4 py-2 text-xs text-slate-500">
+              <span className="flex items-center gap-2 font-medium text-[#1d2650]"><Shield size={14} className="text-[#5f6ab0]" /> {activeChannel.name} Communications</span>
             </div>
-            <div className="min-h-0 flex-1 overflow-auto p-3">
-              <div className="mx-auto max-w-3xl space-y-2">
-                {(messages[channelId] || []).map((m) => (
-                  <div key={m.id} className="max-w-[85%] rounded-lg border border-slate-300/70 bg-white/70 px-3 py-2">
-                    <div className="mb-0.5 flex items-center justify-between text-[11px] text-slate-600">
-                      <span className="font-semibold text-[#1c2650]">{m.user}</span>
-                      <span>{m.time}</span>
-                    </div>
-                    <div className="text-[13px] text-[#28335e] leading-snug">{m.text}</div>
+            <div className="min-h-0 flex-1 overflow-auto p-4 space-y-3">
+              {(messages[channelId] || []).map((m) => (
+                <div key={m.id} className="max-w-[85%] rounded-lg border border-slate-300/70 bg-white/90 p-3 text-xs shadow-sm">
+                  <div className="mb-1 flex items-center justify-between text-[11px] text-slate-400">
+                    <span className="font-semibold text-[#1c2650]">{m.user}</span>
+                    <span>{m.time}</span>
                   </div>
-                ))}
-              </div>
+                  <div className="text-[#28335e] leading-relaxed">{m.text}</div>
+                </div>
+              ))}
             </div>
-            <form onSubmit={(e) => { e.preventDefault(); sendChat(); }} className="border-t border-slate-300/70 bg-white/60 p-3">
-              <div className="mx-auto flex max-w-3xl items-center gap-2">
-                <Input value={chatDraft} onChange={(e) => setChatDraft(e.target.value)} placeholder={channelId.startsWith('dm:') ? 'Message @direct' : 'Message #channel'} className="flex-1" />
-                <Button type="submit" className="flex items-center gap-1"><Send size={14} /> Send</Button>
+
+            <form onSubmit={(e) => { e.preventDefault(); sendChat(); }} className="border-t border-slate-300/70 bg-white/80 p-3">
+              <div className="flex items-center gap-2">
+                <Input value={chatDraft} onChange={(e) => setChatDraft(e.target.value)} placeholder={`Message ${activeChannel.name}...`} className="flex-1 bg-white border-slate-300 text-xs text-slate-800 placeholder-slate-400 rounded-lg px-3 py-2" />
+                <Button type="submit" size="sm" variant="solid" className="flex items-center gap-1"><Send size={13} /> Send</Button>
               </div>
             </form>
+          </div>
+        </div>
+      )}
+
+      {/* Attachment Preview Modal */}
+      {attachmentModal && (
+        <div className="absolute inset-0 z-50 flex items-center justify-center bg-slate-900/40 p-6 backdrop-blur-sm">
+          <div className="w-full max-w-md rounded-xl border border-slate-300/90 bg-white p-5 shadow-2xl text-[#162241]">
+            <div className="flex items-center justify-between border-b border-slate-200 pb-3">
+              <div className="flex items-center gap-2 text-sm font-bold text-[#1d2650]">
+                {getAttachmentIcon(attachmentModal.type)}
+                <span>{attachmentModal.name}</span>
+              </div>
+              <button onClick={() => setAttachmentModal(null)} className="text-slate-400 hover:text-slate-600"><X size={16} /></button>
+            </div>
+
+            <div className="my-4 space-y-2">
+              <div className="text-xs font-semibold text-[#1f2954]">{attachmentModal.previewTitle}</div>
+              <div className="rounded-lg border border-slate-200 bg-[#f7f8fd] p-3 font-mono text-[11px] leading-relaxed text-[#28335e] whitespace-pre-line">
+                {attachmentModal.previewText}
+              </div>
+            </div>
+
+            <div className="flex items-center justify-between border-t border-slate-200 pt-3 text-xs">
+              <span className="text-slate-500">Reward: +₡{attachmentModal.amount}</span>
+              <Button onClick={() => { claimAttachment(); setAttachmentModal(null); }} disabled={attachmentClaimed} size="sm" variant={attachmentClaimed ? 'ghost' : 'solid'}>
+                {attachmentClaimed ? 'Already Claimed' : `Claim +₡${attachmentModal.amount}`}
+              </Button>
+            </div>
           </div>
         </div>
       )}

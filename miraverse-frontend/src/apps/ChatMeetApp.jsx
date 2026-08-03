@@ -113,17 +113,17 @@ export default function ChatMeetApp() {
   };
 
   return (
-    <GlassContainer variant="dark" className="flex h-full w-full font-sans text-xs text-white select-none overflow-hidden rounded-none border-none">
+    <GlassContainer variant="light" className="flex h-full w-full font-sans text-xs text-[#162241] select-none overflow-hidden rounded-none border-none bg-gradient-to-b from-[#F6F7FB] to-[#EFF1F7]">
       {/* ── LIVE MEETING ROOM VIEW ── */}
       {activeMeeting ? (
-        <div className="flex-1 flex flex-col h-full bg-slate-950/90">
+        <div className="flex-1 flex flex-col h-full bg-[#FAFAFC]">
           {/* Top Call Bar */}
-          <div className="bg-slate-900/90 border-b border-cyan-500/20 p-3 flex items-center justify-between shrink-0">
+          <div className="bg-white/80 border-b border-slate-300/80 p-3 flex items-center justify-between shrink-0">
             <div className="flex items-center gap-3">
-              <div className="h-3 w-3 rounded-full bg-cyan-400 animate-ping" />
+              <div className="h-3 w-3 rounded-full bg-indigo-600 animate-ping" />
               <div>
-                <div className="font-bold text-sm text-cyan-300 font-serif-y2k">{activeMeeting.title}</div>
-                <div className="text-[10px] text-white/50 font-mono">Host: {activeMeeting.host} • {activeMeeting.duration}</div>
+                <div className="font-bold text-sm text-[#1d2650] font-serif-y2k">{activeMeeting.title}</div>
+                <div className="text-[10px] text-slate-500 font-mono">Host: {activeMeeting.host} • {activeMeeting.duration}</div>
               </div>
             </div>
 

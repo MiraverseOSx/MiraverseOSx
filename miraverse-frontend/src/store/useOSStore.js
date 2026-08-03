@@ -567,7 +567,7 @@ export const useOSStore = create((set) => ({
       isMinimized: false,
       isMaximized: false,
       position: app.position || spawnPosition(state.windows.length),
-      size: app.size || { width: 680, height: 480 },
+      size: app.size || { width: 920, height: 600 },
     };
     return {
       windows: [...state.windows, newWindow],
@@ -604,7 +604,7 @@ export const useOSStore = create((set) => ({
       isMinimized: false,
       isMaximized: false,
       position: app.position || spawnPosition(state.windows.length),
-      size: app.size || { width: 680, height: 480 },
+      size: app.size || { width: 920, height: 600 },
     };
     return {
       windows: [...state.windows, newWindow],

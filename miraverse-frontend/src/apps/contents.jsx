@@ -1,11 +1,12 @@
 import React, { useState, lazy, Suspense } from 'react';
 import { miraverseDb } from '../db/miraverseDb';
 import { useOSStore } from '../store/useOSStore';
+import { Folder, FileText, Search, Shield, Globe, Users, Briefcase, BookOpen, Copy, Check } from 'lucide-react';
 
 // Lazy load app modules for code splitting and fast initial bundle loading
 const CommsApp = lazy(() => import('./CommsApp'));
 const SpellForgeApp = lazy(() => import('./SpellForgeApp'));
-const AuraPassportApp = lazy(() => import('./AuraPassportApp'));
+const CivicProfileApp = lazy(() => import('./CivicProfileApp'));
 const NoticeBoardApp = lazy(() => import('./NoticeBoardApp'));
 const BrowserApp = lazy(() => import('./BrowserApp'));
 const MailApp = lazy(() => import('./MailApp'));
@@ -13,115 +14,207 @@ const ChatMeetApp = lazy(() => import('./ChatMeetApp'));
 
 // Sleek loading fallback for lazy-loaded apps
 const AppLoadingFallback = ({ name = 'App' }) => (
-  <div className="flex h-full w-full flex-col items-center justify-center bg-black/60 p-6 text-center text-white/80">
+  <div className="flex h-full w-full flex-col items-center justify-center bg-white/80 p-6 text-center text-slate-800">
     <div className="relative mb-3 flex items-center justify-center">
-      <div className="h-10 w-10 animate-spin rounded-full border-2 border-cyan-500/20 border-t-cyan-400" />
-      <span className="absolute text-xs font-mono text-cyan-300">OS</span>
+      <div className="h-10 w-10 animate-spin rounded-full border-2 border-indigo-500/20 border-t-indigo-500" />
+      <span className="absolute text-xs font-mono text-indigo-600">OS</span>
     </div>
-    <div className="text-xs font-medium tracking-wider text-cyan-200 uppercase">Loading {name}...</div>
-    <div className="mt-1 text-[11px] text-white/40 font-mono">Initializing module memory space</div>
+    <div className="text-xs font-medium tracking-wider text-[#1d2650] uppercase">Loading {name}...</div>
+    <div className="mt-1 text-[11px] text-slate-500 font-mono">Initializing module memory space</div>
   </div>
 );
 
 const Panel = ({ children }) => (
-  <div className="h-full w-full overflow-auto p-6 text-sm leading-relaxed text-white/80">
+  <div className="h-full w-full overflow-auto p-6 text-sm leading-relaxed text-slate-800">
     {children}
   </div>
 );
 
 // ----------------------------------------------------------------------
-// Files App: Browses Live Database Records (Lore, Regions, Factions, NPCs, Houses)
+// Files App: Refined & Redesigned Y2K Celestial File Explorer
 // ----------------------------------------------------------------------
 const Files = () => {
   const [activeFolder, setActiveFolder] = useState('lore');
+  const [search, setSearch] = useState('');
   const [selectedItem, setSelectedItem] = useState(null);
+  const [copied, setCopied] = useState(false);
+
   const addSkillXP = useOSStore((s) => s.addSkillXP);
   const incrementAppRank = useOSStore((s) => s.incrementAppRank);
 
   const folders = [
-    { id: 'lore', label: 'Lore Archive', icon: '📜', data: miraverseDb.getLoreEntries() },
+    { id: 'lore', label: 'Lore Archive', icon: BookOpen, data: miraverseDb.getLoreEntries() },
+    { id: 'regions', label: 'Regions', icon: Globe, data: miraverseDb.getRegions() },
+    { id: 'factions', label: 'Factions', icon: Shield, data: miraverseDb.getFactions() },
+    { id: 'npcs', label: 'NPC Registry', icon: Users, data: miraverseDb.getNPCs() },
+    { id: 'careers', label: 'Careers', icon: Briefcase, data: miraverseDb.getCareers() },
   ];
 
-  const currentFolder = folders.find((f) => f.id === activeFolder);
+  const currentFolder = folders.find((f) => f.id === activeFolder) || folders[0];
+
+  const filteredData = currentFolder.data.filter((item) => {
+    if (!search.trim()) return true;
+    const q = search.toLowerCase();
+    return (
+      (item.title && item.title.toLowerCase().includes(q)) ||
+      (item.name && item.name.toLowerCase().includes(q)) ||
+      (item.id && item.id.toLowerCase().includes(q)) ||
+      (item.content && item.content.toLowerCase().includes(q)) ||
+      (item.description && item.description.toLowerCase().includes(q)) ||
+      (item.role && item.role.toLowerCase().includes(q))
+    );
+  });
+
+  const copySnippet = (text) => {
+    navigator.clipboard.writeText(text);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
 
   return (
-    <div className="flex h-full w-full bg-black/40 text-white/90">
-      {/* Sidebar Folders */}
-      <div className="w-48 border-r border-white/10 bg-black/20 p-3">
-        <div className="mb-2 text-xs font-semibold uppercase tracking-wider text-white/40">
-          Database Directories
+    <div className="flex h-full w-full flex-col bg-gradient-to-b from-[#F6F7FB] to-[#EFF1F7] text-[#162241]">
+      {/* Explorer Header & Navigation Bar */}
+      <div className="flex h-11 items-center justify-between border-b border-slate-300/70 bg-white/70 px-4 backdrop-blur-sm">
+        <div className="flex items-center gap-2 text-xs font-mono text-[#1d2650]">
+          <Folder size={15} className="text-[#5f6ab0]" />
+          <span className="font-semibold">miraverse_os</span>
+          <span className="text-slate-400">/</span>
+          <span className="text-slate-700">{currentFolder.label.toLowerCase().replace(/\s+/g, '_')}</span>
         </div>
-        <div className="space-y-1">
-          {folders.map((f) => (
-            <button
-              key={f.id}
-              onClick={() => {
-                setActiveFolder(f.id);
-                setSelectedItem(null);
-              }}
-              className={`flex w-full items-center gap-2 rounded-lg px-3 py-2 text-left text-xs transition ${
-                activeFolder === f.id ? 'bg-white/20 font-medium text-white' : 'hover:bg-white/10 text-white/70'
-              }`}
-            >
-              <span>{f.icon}</span>
-              <span className="truncate">{f.label}</span>
-              <span className="ml-auto text-[10px] text-white/40">{f.data.length}</span>
-            </button>
-          ))}
+
+        <div className="flex items-center gap-2">
+          <div className="flex items-center rounded-full border border-slate-300/80 bg-white/80 px-3 py-1 text-xs">
+            <Search size={13} className="mr-2 text-slate-400" />
+            <input
+              type="text"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              placeholder={`Search ${currentFolder.label.toLowerCase()}...`}
+              className="w-52 bg-transparent text-xs text-slate-800 placeholder-slate-400 outline-none"
+            />
+          </div>
         </div>
       </div>
 
-      {/* Main File Listing */}
-      <div className="flex flex-1 flex-col overflow-hidden">
-        <div className="flex items-center justify-between border-b border-white/10 px-4 py-2 text-xs text-white/60">
-          <span>miraverse_azure.sql / {currentFolder.label}</span>
-          <span>{currentFolder.data.length} records</span>
+      {/* Main Layout */}
+      <div className="flex min-h-0 flex-1 overflow-hidden">
+        {/* Left Sidebar Directories */}
+        <div className="w-48 shrink-0 border-r border-slate-300/70 bg-white/60 p-3">
+          <div className="mb-2 text-[10px] font-bold uppercase tracking-[.2em] text-slate-500">
+            System Directories
+          </div>
+          <div className="space-y-1">
+            {folders.map((f) => {
+              const IconComp = f.icon;
+              return (
+                <button
+                  key={f.id}
+                  onClick={() => {
+                    setActiveFolder(f.id);
+                    setSelectedItem(null);
+                  }}
+                  className={`flex w-full items-center justify-between rounded-lg px-2.5 py-1.5 text-left text-xs transition ${
+                    activeFolder === f.id
+                      ? 'bg-[#e9ebf6] font-semibold text-[#1d2650]'
+                      : 'text-slate-600 hover:bg-[#f2f3fb]'
+                  }`}
+                >
+                  <div className="flex items-center gap-2">
+                    <IconComp size={14} className={activeFolder === f.id ? 'text-[#5f6ab0]' : 'text-slate-400'} />
+                    <span>{f.label}</span>
+                  </div>
+                  <span className="text-[10px] text-slate-400 font-mono">
+                    {f.data.length}
+                  </span>
+                </button>
+              );
+            })}
+          </div>
         </div>
 
-        <div className="flex-1 overflow-auto p-4">
-          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
-            {currentFolder.data.map((item) => (
-              <div
-                key={item.id}
-                onClick={() => {
-                  setSelectedItem(item);
-                  addSkillXP('Research', 10);
-                  incrementAppRank('research');
-                }}
-                className={`cursor-pointer flex flex-col rounded-xl border p-3 transition ${
-                  selectedItem?.id === item.id
-                    ? 'border-cyan-400/50 bg-cyan-500/20'
-                    : 'border-white/10 bg-white/5 hover:border-white/20 hover:bg-white/10'
-                }`}
-              >
-                <div className="flex items-center gap-2 font-medium text-xs text-white">
-                  <span>📄</span>
-                  <span className="truncate">{item.title || item.name}</span>
-                </div>
-                <div className="mt-2 text-[11px] text-white/50 line-clamp-2">
-                  {item.summary || item.lore || item.ideology || item.motto || item.type}
-                </div>
-                <div className="mt-2 flex items-center justify-between text-[10px] text-cyan-300/70">
-                  <span>{item.id}</span>
-                  {item.era && <span>{item.era}</span>}
-                </div>
-              </div>
-            ))}
+        {/* Center Item Grid & Drawer */}
+        <div className="flex min-w-0 flex-1 flex-col overflow-hidden bg-[#FAFAFC]">
+          <div className="flex items-center justify-between border-b border-slate-300/60 px-4 py-2 text-[11px] font-semibold text-slate-500">
+            <span>{currentFolder.label.toUpperCase()}</span>
+            <span>{filteredData.length} records</span>
           </div>
 
-          {/* Selected File Details */}
-          {selectedItem && (
-            <div className="mt-4 rounded-xl border border-cyan-500/30 bg-black/70 p-4 text-xs">
-              <div className="flex items-center justify-between border-b border-white/10 pb-2">
-                <span className="font-semibold text-cyan-300 text-sm">{selectedItem.title || selectedItem.name}</span>
-                <span className="rounded bg-cyan-500/20 px-2 py-0.5 text-[10px] text-cyan-200">{selectedItem.id}</span>
-              </div>
-              <p className="mt-2 text-white/80 leading-relaxed">{selectedItem.summary || selectedItem.lore}</p>
-              {selectedItem.tags && (
-                <div className="mt-3 text-[10px] text-white/40">Tags: {selectedItem.tags}</div>
-              )}
+          <div className="flex-1 overflow-auto p-4">
+            <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
+              {filteredData.map((item) => (
+                <div
+                  key={item.id}
+                  onClick={() => {
+                    setSelectedItem(item);
+                    addSkillXP('Research', 10);
+                    incrementAppRank('research');
+                  }}
+                  className={`group cursor-pointer flex flex-col rounded-lg border p-3 transition ${
+                    selectedItem?.id === item.id
+                      ? 'border-[#8c97d6] bg-[#eef0fb] shadow-sm'
+                      : 'border-slate-200/80 bg-white hover:bg-[#f7f7fd]'
+                  }`}
+                >
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2 font-semibold text-xs text-[#1f2954] truncate">
+                      <FileText size={14} className="text-[#5f6ab0] shrink-0" />
+                      <span className="truncate">{item.title || item.name}</span>
+                    </div>
+                    <span className="rounded bg-slate-100 px-1.5 py-0.5 text-[9px] font-mono text-slate-500">
+                      {item.id}
+                    </span>
+                  </div>
+
+                  <p className="mt-2 text-[11px] leading-relaxed text-slate-600 line-clamp-2">
+                    {item.content || item.description || item.role || item.lore_summary || 'Record file entry'}
+                  </p>
+
+                  <div className="mt-2 flex items-center justify-between text-[10px] text-slate-400 border-t border-slate-100 pt-1.5">
+                    <span>{item.category || item.type || item.faction || 'System Entry'}</span>
+                    {item.status && <span className="text-emerald-600 font-medium">{item.status}</span>}
+                  </div>
+                </div>
+              ))}
             </div>
-          )}
+
+            {!filteredData.length && (
+              <div className="p-8 text-center text-xs text-slate-500">
+                No matching records found in {currentFolder.label}.
+              </div>
+            )}
+
+            {/* Selected File Detail Drawer */}
+            {selectedItem && (
+              <div className="mt-5 rounded-xl border border-slate-300/80 bg-white p-4 shadow-md">
+                <div className="flex items-center justify-between border-b border-slate-200 pb-2">
+                  <div>
+                    <h3 className="text-xs font-bold text-[#1c2650] flex items-center gap-2">
+                      <FileText size={15} className="text-[#5f6ab0]" />
+                      {selectedItem.title || selectedItem.name}
+                    </h3>
+                    <span className="text-[10px] font-mono text-slate-400">ID: {selectedItem.id}</span>
+                  </div>
+                  <button
+                    onClick={() => copySnippet(selectedItem.content || selectedItem.description || selectedItem.name)}
+                    className="flex items-center gap-1.5 rounded-md border border-slate-300 bg-[#f4f5fc] px-2.5 py-1 text-[11px] text-[#1d2650] hover:bg-[#eef0fb]"
+                  >
+                    {copied ? <Check size={12} className="text-emerald-600" /> : <Copy size={12} />}
+                    {copied ? 'Copied' : 'Copy'}
+                  </button>
+                </div>
+
+                <div className="my-3 text-xs leading-relaxed text-[#243064] whitespace-pre-line">
+                  {selectedItem.content || selectedItem.description || selectedItem.role || selectedItem.lore_summary}
+                </div>
+
+                {selectedItem.perks && (
+                  <div className="mt-2 text-[11px] text-slate-600">
+                    <span className="font-semibold text-[#1c2650]">Perks:</span> {selectedItem.perks.join(', ')}
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </div>
@@ -135,7 +228,7 @@ const TerminalApp = () => {
   const [input, setInput] = useState('');
   const [history, setHistory] = useState([
     { type: 'sys', text: 'MiraverseOSx Terminal [Native Engine v2.0.0]' },
-    { type: 'sys', text: 'Connected to Native World Authority' },
+    { type: 'sys', text: 'Connected to Native World Authority & Express API (http://localhost:5000/api)' },
     { type: 'sys', text: 'Type "help" or "SELECT * FROM Factions" to query database.\n' },
   ]);
 
@@ -155,7 +248,7 @@ const TerminalApp = () => {
       newHistory.push({
         type: 'res',
         text: `Available CLI Commands:
-  • SELECT * FROM [Regions | Houses | Factions | NPCs | Apps | Lore | Events]
+  • SELECT * FROM [Regions | Factions | NPCs | Careers | Apps | Lore]
   • SHOW TABLES
   • LORE SEARCH <query>
   • CLEAR
@@ -169,7 +262,7 @@ const TerminalApp = () => {
       newHistory.push({
         type: 'res',
         text: `Found ${results.length} Lore Entries matching "${q}":\n` +
-          results.map((r) => `[${r.id}] ${r.title} (${r.era}): ${r.summary}`).join('\n\n'),
+          results.map((r) => `[${r.id}] ${r.title}: ${r.content}`).join('\n\n'),
       });
     } else {
       const res = miraverseDb.executeSQL(cmd);
@@ -234,43 +327,43 @@ const SettingsApp = () => {
     <Panel>
       <div className="space-y-6">
         <div>
-          <h2 className="text-base font-semibold text-white">Database Engine Status</h2>
+          <h2 className="text-base font-semibold text-[#1c2650]">World Authority Engine Status</h2>
           <div className="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-4">
-            <div className="rounded-lg border border-white/10 bg-white/5 p-3">
-              <div className="text-xs text-white/50">Regions</div>
-              <div className="text-lg font-bold text-cyan-400">{miraverseDb.getRegions().length}</div>
+            <div className="rounded-lg border border-slate-300/70 bg-white/70 p-3 shadow-sm">
+              <div className="text-xs text-slate-500">Regions</div>
+              <div className="text-lg font-bold text-[#3b4785]">{miraverseDb.getRegions().length}</div>
             </div>
-            <div className="rounded-lg border border-white/10 bg-white/5 p-3">
-              <div className="text-xs text-white/50">Factions</div>
-              <div className="text-lg font-bold text-cyan-400">{miraverseDb.getFactions().length}</div>
+            <div className="rounded-lg border border-slate-300/70 bg-white/70 p-3 shadow-sm">
+              <div className="text-xs text-slate-500">Factions</div>
+              <div className="text-lg font-bold text-[#3b4785]">{miraverseDb.getFactions().length}</div>
             </div>
-            <div className="rounded-lg border border-white/10 bg-white/5 p-3">
-              <div className="text-xs text-white/50">NPCs</div>
-              <div className="text-lg font-bold text-cyan-400">{miraverseDb.getNPCs().length}</div>
+            <div className="rounded-lg border border-slate-300/70 bg-white/70 p-3 shadow-sm">
+              <div className="text-xs text-slate-500">NPCs</div>
+              <div className="text-lg font-bold text-[#3b4785]">{miraverseDb.getNPCs().length}</div>
             </div>
-            <div className="rounded-lg border border-white/10 bg-white/5 p-3">
-              <div className="text-xs text-white/50">Lore Entries</div>
-              <div className="text-lg font-bold text-cyan-400">{miraverseDb.getLoreEntries().length}</div>
+            <div className="rounded-lg border border-slate-300/70 bg-white/70 p-3 shadow-sm">
+              <div className="text-xs text-slate-500">Lore Entries</div>
+              <div className="text-lg font-bold text-[#3b4785]">{miraverseDb.getLoreEntries().length}</div>
             </div>
           </div>
         </div>
 
         <div>
-          <h2 className="mb-3 text-base font-semibold text-white">Wallpaper Select</h2>
+          <h2 className="mb-3 text-base font-semibold text-[#1c2650]">Wallpaper Select</h2>
           <div className="grid grid-cols-3 gap-3">
             {wallpapers.map((wp) => (
               <button
                 key={wp.name}
                 onClick={() => setWallpaper(wp.url)}
                 className={`flex flex-col items-center overflow-hidden rounded-lg border p-2 transition ${
-                  currentWallpaper === wp.url ? 'border-cyan-400 bg-cyan-500/20' : 'border-white/10 hover:bg-white/10'
+                  currentWallpaper === wp.url ? 'border-[#8c97d6] bg-[#eef0fb]' : 'border-slate-200 hover:bg-white'
                 }`}
               >
                 <div
                   className="h-16 w-full rounded bg-cover bg-center"
                   style={{ backgroundImage: `url("${wp.url}")` }}
                 />
-                <span className="mt-2 text-xs text-white/80">{wp.name}</span>
+                <span className="mt-2 text-xs text-slate-700 font-medium">{wp.name}</span>
               </button>
             ))}
           </div>
@@ -293,7 +386,7 @@ export const CONTENTS = {
   mail: withSuspense(MailApp, 'Mail'),
   chatmeet: withSuspense(ChatMeetApp, 'ChatMeet'),
   spellforge: withSuspense(SpellForgeApp, 'SpellForge'),
-  passport: withSuspense(AuraPassportApp, 'Aura Passport'),
+  passport: withSuspense(CivicProfileApp, 'Civic Profile'),
   terminal: TerminalApp,
   browser: withSuspense(BrowserApp, 'Browser'),
   settings: SettingsApp,

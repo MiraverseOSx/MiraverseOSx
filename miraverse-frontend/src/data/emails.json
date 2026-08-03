@@ -6,7 +6,14 @@
     "subject": "Welcome to MIRAVERSEOSX",
     "time": "08:00 AM",
     "read": false,
-    "attachment": { "type": "credits", "amount": 100, "name": "REGISTRATION_CARD.pdf", "claimed": false },
+    "attachment": {
+      "type": "document",
+      "amount": 100,
+      "name": "REGISTRATION_CARD.pdf",
+      "claimed": false,
+      "previewTitle": "Cyacademy Student Registration Clearance",
+      "previewText": "STUDENT ID: CS-99201\nCLEARANCE LEVEL: Level 1 Provisional\nREGISTRATION DATE: 2026-08-02\nSTATUS: Active Student Candidate\nPERKS: Access to Library Archives & Cyacademy Labs\n\nAUTHORIZATION SEAL: #CYA-SEC-8891"
+    },
     "body": "Welcome, player.\n\nYour provisional Cyacademy registration has been received. Your record currently contains no verified credits, no active contacts, no declared career track, no reputation standing, and no confirmed housing beyond temporary placement. This is expected. MIRAVERSEOSX begins from a clean state so every player builds their identity through choices, work, study, relationships, and discovery."
   },
   {
@@ -26,7 +33,14 @@
     "subject": "Housing Assignment: Dorm Access Pending",
     "time": "08:10 AM",
     "read": false,
-    "attachment": { "type": "credits", "amount": 150, "name": "DORM_KEY.ics", "claimed": false },
+    "attachment": {
+      "type": "key",
+      "amount": 150,
+      "name": "DORM_KEY.ics",
+      "claimed": false,
+      "previewTitle": "Dormitory Security Access Token",
+      "previewText": "ASSIGNMENT: Dorm Block A (North Wing), Room 104\nSECURITY CIPHER: 0x8F9A-4B2C\nSTATUS: Unlocked & Assigned\nENERGY RECOVER: +10 Aura Health / hr\nCONTAINMENT CLEARANCE: Level 2 Safe Zone"
+    },
     "body": "Player has been assigned a starter dorm room in Block A (North Wing). You do not own property, private housing, or permanent real estate. Use your dorm room to rest, restore energy, and clear temporary conditions."
   },
   {
@@ -36,7 +50,14 @@
     "subject": "Aura Passport Activation Required",
     "time": "08:15 AM",
     "read": false,
-    "attachment": { "type": "credits", "amount": 50, "name": "AURA_CONSENT_FORM.pdf", "claimed": false },
+    "attachment": {
+      "type": "document",
+      "amount": 50,
+      "name": "AURA_CONSENT_FORM.pdf",
+      "claimed": false,
+      "previewTitle": "Aureline Civic Identity Authorization Form",
+      "previewText": "SUBJECT: Player Aura Baseline Scan\nCONSENT: Granted for baseline telemetry\nAURA AFFINITY: Unbound Celestial\nCIVIC CODE: #AURA-8821-B\nSTATUS: Pending Identity Verification"
+    },
     "body": "Player’s Aura Passport is currently inactive. Please complete your registration in the Aura Passport app to verify baseline aura health, record elemental affinity, and initialize civic standing."
   },
   {
@@ -46,7 +67,14 @@
     "subject": "Faith Medical Portal Registration",
     "time": "08:20 AM",
     "read": false,
-    "attachment": { "type": "credits", "amount": 100, "name": "INTAKE_SCAN_REQUEST.pdf", "claimed": false },
+    "attachment": {
+      "type": "medical",
+      "amount": 100,
+      "name": "INTAKE_SCAN_REQUEST.pdf",
+      "claimed": false,
+      "previewTitle": "Faith Medical Diagnostic Intake Telemetry",
+      "previewText": "PATIENT: Player\nPATIENT RECORD: #FM-88392\nDIAGNOSIS: Slight Veilwilt Exposure (Stage 1)\nRECOMMENDED CARE: Spring Restoration at Marlowe Springs\nAURA STABILITY: 92.4%"
+    },
     "body": "Faith Medical Group has created a basic patient record for player. Access the Faith Medical app or Browser (`faithmed.aure`) to view care providers, check treatment options, or request clinical aura telemetry."
   },
   {
@@ -57,7 +85,7 @@
     "time": "08:25 AM",
     "read": false,
     "attachment": null,
-    "body": "Player currently has no saved contacts or direct connections. Comms app provides access to public channels (#secure-relay, #briefings, #dga-ops) and direct messaging."
+    "body": "Player currently has no saved contacts or direct connections. Comms app provides access to public channels (Shadow Relay, Faculty Briefings, DGA Ops) and direct messaging."
   },
   {
     "id": "MSG-007",
@@ -76,7 +104,14 @@
     "subject": "Orientation Schedule: Day One",
     "time": "08:35 AM",
     "read": false,
-    "attachment": { "type": "credits", "amount": 200, "name": "DAY_ONE_SCHEDULE.ics", "claimed": false },
+    "attachment": {
+      "type": "schedule",
+      "amount": 200,
+      "name": "DAY_ONE_SCHEDULE.ics",
+      "claimed": false,
+      "previewTitle": "Day One Cyacademy Orientation Schedule",
+      "previewText": "• 08:00 AM - Registration & Dorm Check-in\n• 09:00 AM - DGA Briefing (Agent Mara Quell)\n• 11:00 AM - SpellForge Fundamentals (Archmage Hex)\n• 02:00 PM - NetRunner Traversal (Zero Cool)\n• 05:00 PM - Evening Assembly & Wheel of Year Ceremony"
+    },
     "body": "Player, welcome to Cyacademy. Report to campus for orientation, complete your preliminary tasks, and maintain awareness of network anomalies."
   }
 ]
