@@ -27,6 +27,7 @@ jobs:
         with:
           node-version: '20'
           cache: 'npm'
+          cache-dependency-path: 'miraverse-frontend/package-lock.json'
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -42,8 +43,10 @@ jobs:
 
       - name: Install Dependencies
         run: |
-          npm ci
+          cd miraverse-frontend && npm ci
+          cd ..
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+          if [ -f miraverse-backend/requirements.txt ]; then pip install -r miraverse-backend/requirements.txt; fi
           pip install pytest
 
       - name: Azure Login (OIDC)
@@ -55,10 +58,10 @@ jobs:
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
       - name: Run ESLint (Code Errors & Style)
-        run: npm run lint --if-present
+        run: cd miraverse-frontend && npm run lint --if-present
 
       - name: Run Node Component Tests & Coverage
-        run: npm run test -- --run --coverage --watchAll=false
+        run: cd miraverse-frontend && npm run test -- --run --coverage --watchAll=false
         continue-on-error: true
 
       - name: Run Python Tests
