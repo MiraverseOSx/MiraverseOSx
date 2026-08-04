@@ -1,0 +1,40 @@
+/* src/styles/apps/SpellForge.css */
+
+.spellforge-container {
+  background: #1e0b36;
+  color: #fae8ff;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 1.25rem;
+  font-family: Georgia, serif;
+  border-radius: 4px;
+}
+
+.element-socket-btn {
+  background: rgba(192, 132, 252, 0.15);
+  border: 1px solid rgba(192, 132, 252, 0.4);
+  color: #e9d5ff;
+  font-family: Georgia, serif;
+  font-weight: 600;
+  font-size: 0.75rem;
+  padding: 0.625rem;
+  border-radius: 4px;
+  transition: all 0.2s ease-in-out;
+}
+
+.element-socket-btn:hover {
+  background: rgba(192, 132, 252, 0.35);
+  border-color: #c084fc;
+  box-shadow: 0 0 15px rgba(192, 132, 252, 0.4);
+  color: #ffffff;
+}
+
+.element-socket-btn.active {
+  background: linear-gradient(135deg, #c084fc 0%, #e879f9 100%);
+  color: #1e0b36;
+  font-weight: 700;
+  border-color: #f472b6;
+  box-shadow: 0 0 20px rgba(244, 114, 182, 0.5);
+}
