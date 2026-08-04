@@ -44,7 +44,6 @@ export default function CivicProfileApp() {
 
   const player = useOSStore((s) => s.gameplay.player);
   const setHouseAffiliation = useOSStore((s) => s.setHouseAffiliation);
-  const advanceStarterPhase = useOSStore((s) => s.advanceStarterPhase);
   const healAura = useOSStore((s) => s.healAura);
   const toggleApp = useOSStore((s) => s.toggleApp);
 
@@ -186,8 +185,8 @@ export default function CivicProfileApp() {
                           <div className="font-bold text-emerald-700 font-mono">{player.auraHealth}%</div>
                         </div>
                         <div className="rounded-lg bg-[#FAFAFC] p-2 border border-slate-200">
-                          <div className="text-[10px] text-slate-500">Phase</div>
-                          <div className="font-bold text-indigo-700 font-mono">Phase {player.starterPhase}</div>
+                          <div className="text-[10px] text-slate-500">Clearance</div>
+                          <div className="font-bold text-indigo-700 font-mono">Level {player.clearanceLevel || 1}</div>
                         </div>
                       </div>
 
@@ -251,7 +250,6 @@ export default function CivicProfileApp() {
                           onClick={() => {
                             setHouseAffiliation(h.name);
                             setAppliedCycademy(true);
-                            advanceStarterPhase(2);
                           }}
                           className={`rounded-xl border p-3 text-left transition ${h.color} hover:shadow-md`}
                         >

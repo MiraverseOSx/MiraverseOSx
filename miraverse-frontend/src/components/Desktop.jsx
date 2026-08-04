@@ -11,10 +11,10 @@ import { APPS } from '../apps/registry';
 import Window from './Window';
 import SparklesCanvas from './SparklesCanvas';
 import MAIDock from './MAIDock';
-import StarterQuestHub from './StarterQuestHub';
 import soundEngine from '../utils/soundEngine';
 import ClockDisplay from '../components/ClockDisplay';
 import LoginScreen from '../components/LoginScreen';
+import MeridionLandingPage from '../components/MeridionLandingPage';
 import { useTimeStore } from '../utils/timeEngine';
 
 import { Card } from './ui/card';
@@ -44,6 +44,7 @@ export default function Desktop() {
   const [searchQuery, setSearchQuery] = useState('');
   const [isLauncherOpen, setIsLauncherOpen] = useState(false);
   const [isSanctuary, setIsSanctuary] = useState(false);
+  const [authView, setAuthView] = useState('landing'); // 'landing' | 'login' | 'register'
 
   // Authentication store
   const isLoggedIn = useOSStore((s) => s.isLoggedIn);
@@ -88,7 +89,21 @@ export default function Desktop() {
   };
 
   if (!isLoggedIn) {
-    return <LoginScreen onLoginSuccess={loginUser} />;
+    if (authView === 'landing') {
+      return (
+        <MeridionLandingPage
+          onSignIn={() => setAuthView('login')}
+          onEnroll={() => setAuthView('register')}
+        />
+      );
+    }
+    return (
+      <LoginScreen
+        onLoginSuccess={loginUser}
+        initialMode={authView}
+        onBackToLanding={() => setAuthView('landing')}
+      />
+    );
   }
 
   const launch = (app) => {
@@ -205,7 +220,6 @@ export default function Desktop() {
               </div>
 
               <div className="flex min-w-0 flex-col gap-4">
-                <StarterQuestHub />
                 <Panel className="p-5">
                   <div className="flex items-center justify-between"><p className="text-[9px] font-bold tracking-[.19em] text-slate-500">PLAYER RECORD</p><ShieldCheck size={16} className="text-[#606ab2]" /></div>
                   <p className="mt-5 font-serif-y2k text-2xl font-bold text-[#202851]">{player?.name || 'Player'}</p>

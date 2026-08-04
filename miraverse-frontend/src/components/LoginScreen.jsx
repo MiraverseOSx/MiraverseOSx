@@ -6,8 +6,8 @@ import Button from './ui/button';
 import Input from './ui/input';
 import { useOSStore } from '../store/useOSStore';
 
-export default function LoginScreen({ onLoginSuccess }) {
-  const [mode, setMode] = useState('login'); // 'login' | 'register'
+export default function LoginScreen({ onLoginSuccess, initialMode = 'login', onBackToLanding }) {
+  const [mode, setMode] = useState(initialMode); // 'login' | 'register'
   const [username, setUsername] = useState('CY-9021-PLAYER');
   const [password, setPassword] = useState('••••••••');
   const [assetKey, setAssetKey] = useState('ASSET-AURELINE-88');
@@ -44,6 +44,15 @@ export default function LoginScreen({ onLoginSuccess }) {
       {/* Background Starry & Holographic Grid Effect */}
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,#1e1035_0%,#090518_60%,#04020c_100%)]" />
       <div className="absolute inset-0 pointer-events-none opacity-15 holo-grid" />
+
+      {onBackToLanding && (
+        <button
+          onClick={onBackToLanding}
+          className="absolute top-6 left-6 z-30 flex items-center gap-2 rounded-xl border border-purple-500/30 bg-purple-950/60 px-4 py-2 text-xs font-semibold text-purple-200 hover:text-white hover:bg-purple-900/80 backdrop-blur-md transition"
+        >
+          ← Return to Meridion Realm
+        </button>
+      )}
 
       {/* Main Holographic Login Container */}
       <motion.div

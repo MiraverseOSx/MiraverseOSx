@@ -54,19 +54,18 @@ const FREELANCE_GIGS = [
 export default function NoticeBoardApp() {
   const [activeTab, setActiveTab] = useState('tasks'); // 'tasks' | 'gigs'
   const [completedGigs, setCompletedGigs] = useState([]);
+  const [completedTasks, setCompletedTasks] = useState([]);
 
-  const player = useOSStore((s) => s.gameplay.player);
-  const advanceStarterPhase = useOSStore((s) => s.advanceStarterPhase);
   const addXP = useOSStore((s) => s.addXP);
   const addCredits = useOSStore((s) => s.addCredits);
 
-  const currentPhase = player.starterPhase || 0;
-  const availableTasks = TASKS.filter((t) => t.phase >= currentPhase && t.phase <= currentPhase + 1);
+  const availableTasks = TASKS.filter((t) => !completedTasks.includes(t.id));
 
   const completeTask = (task) => {
+    if (completedTasks.includes(task.id)) return;
     addXP(task.reward.xp);
     addCredits(task.reward.credits);
-    advanceStarterPhase(task.phase);
+    setCompletedTasks((prev) => [...prev, task.id]);
   };
 
   const completeGig = (gig) => {
@@ -83,10 +82,7 @@ export default function NoticeBoardApp() {
         <div className="space-y-4">
           <div>
             <div className="text-[10px] font-bold tracking-[.2em] text-slate-500 uppercase">MISSION BOARD</div>
-            <div className="mt-2 rounded-xl border border-slate-200 bg-white p-3 shadow-sm">
-              <div className="text-[10px] text-slate-500">Starter Phase</div>
-              <div className="mt-0.5 font-mono text-sm font-bold text-[#1d2650]">Phase {currentPhase} / 5</div>
-            </div>
+            <p className="mt-1 text-[11px] text-slate-500">Citizen Board Tasks & Contracts</p>
           </div>
 
           <div className="space-y-1">
