@@ -32,7 +32,7 @@ jobs:
       - name: Clear Git Extra Header
         run: git config --local --unset-all http.https://github.com/.extraheader || true
 
-- name: Build And Deploy
+      - name: Build And Deploy
         id: builddeploy
         uses: Azure/static-web-apps-deploy@v1
         with:
