@@ -1,21 +1,22 @@
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@1,700;1,900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Esteban&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+/* Base Layout */
 body {
   margin: 0;
-  font-family: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-family: 'Esteban', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  overflow: hidden;
+  overflow: hidden; /* intentional cosmic desktop lock */
   user-select: none;
   background-color: #05030d;
   color: #f3e8ff;
 }
 
-/* Theme tokens with CSS variables */
+/* Future Palette Tokens (not used yet, safe to keep) */
 :root {
   --color-primary: #0f0a21;
   --color-secondary: #070514;
@@ -24,6 +25,7 @@ body {
   --color-surface: #0a061d;
 }
 
+/* Math Font */
 @font-face {
   font-family: 'Libertinus Math';
   src: url('./fonts/LibertinusMath-Regular.ttf') format('truetype');
@@ -31,25 +33,22 @@ body {
   font-style: normal;
 }
 
-.font-serif-y2k {
-  font-family: 'Libertinus Math', 'Playfair Display', Georgia, serif;
-  font-style: italic;
-}
-
-/* Celestial Meridion Dark Cosmic Desktop Background */
+/* Cosmic Desktop Background */
 .bg-meridion-desktop {
-  background: 
+  background:
     radial-gradient(ellipse at 20% 20%, rgba(168, 85, 247, 0.18) 0%, transparent 50%),
     radial-gradient(ellipse at 80% 80%, rgba(99, 102, 241, 0.15) 0%, transparent 50%),
     radial-gradient(circle at 50% 50%, rgba(147, 51, 234, 0.08) 0%, transparent 70%),
     linear-gradient(145deg, #070514 0%, #0c0722 45%, #05030d 100%);
 }
 
-/* Ultra-Sleek Dark Glassmorphic Panels */
+/* Glassmorphic Panels */
 .meridion-card {
   background: rgba(14, 9, 34, 0.75);
   border: 1px solid rgba(168, 85, 247, 0.25);
-  box-shadow: 0 12px 35px -5px rgba(0, 0, 0, 0.6), inset 0 0 20px rgba(168, 85, 247, 0.04);
+  box-shadow:
+    0 12px 35px -5px rgba(0, 0, 0, 0.6),
+    inset 0 0 20px rgba(168, 85, 247, 0.04);
   backdrop-filter: blur(24px);
   border-radius: 1.25rem;
   color: #f3e8ff;
@@ -58,19 +57,21 @@ body {
 
 .meridion-card:hover {
   border-color: rgba(192, 132, 252, 0.45);
-  box-shadow: 0 16px 40px -5px rgba(168, 85, 247, 0.2), inset 0 0 25px rgba(168, 85, 247, 0.08);
+  box-shadow:
+    0 16px 40px -5px rgba(168, 85, 247, 0.2),
+    inset 0 0 25px rgba(168, 85, 247, 0.08);
 }
 
-/* CRT Monitor Scanline overlay */
+/* CRT Scanlines */
 .crt-scanlines {
   background: linear-gradient(
-    rgba(18, 16, 16, 0) 50%, 
+    rgba(18, 16, 16, 0) 50%,
     rgba(0, 0, 0, 0.25) 50%
   );
   background-size: 100% 4px;
 }
 
-/* Glass-adaptive smooth scrollbars */
+/* Smooth Glass Scrollbars */
 ::-webkit-scrollbar {
   width: 5px;
   height: 5px;
@@ -90,33 +91,37 @@ body {
   background: rgba(168, 85, 247, 0.7);
 }
 
-/* Smooth season background transitions */
+/* Seasonal Background Transitions */
 .season-transition {
   transition: background 1000ms ease-in-out, color 500ms ease-in-out;
 }
 
-/* Holographic Matrix FX */
+/* Holographic Flicker */
 @keyframes holo-flicker {
-  0% { opacity: 0.94; transform: translateY(0px); }
+  0% { opacity: 0.94; transform: translateY(0); }
   25% { opacity: 0.88; transform: translateY(-0.5px); }
-  50% { opacity: 1; transform: translateY(0px); }
+  50% { opacity: 1; transform: translateY(0); }
   75% { opacity: 0.92; transform: translateY(0.5px); }
-  100% { opacity: 0.94; transform: translateY(0px); }
+  100% { opacity: 0.94; transform: translateY(0); }
 }
 
 .animate-holo-flicker {
   animation: holo-flicker 4s infinite ease-in-out;
 }
 
+/* Hologram Panels */
 .hologram-panel {
   background: radial-gradient(circle at 50% 0%, rgba(168, 85, 247, 0.22), rgba(9, 5, 24, 0.95));
   border: 1px solid rgba(192, 132, 252, 0.4);
-  box-shadow: 0 0 40px rgba(168, 85, 247, 0.3), inset 0 0 20px rgba(168, 85, 247, 0.15);
+  box-shadow:
+    0 0 40px rgba(168, 85, 247, 0.3),
+    inset 0 0 20px rgba(168, 85, 247, 0.15);
   backdrop-filter: blur(24px);
 }
 
+/* Holographic Grid */
 .holo-grid {
-  background-image: 
+  background-image:
     linear-gradient(rgba(168, 85, 247, 0.15) 1px, transparent 1px),
     linear-gradient(90deg, rgba(168, 85, 247, 0.15) 1px, transparent 1px);
   background-size: 24px 24px;

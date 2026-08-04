@@ -9,6 +9,8 @@ const spawnPosition = (count) => ({
 
 export const useOSStore = create((set) => ({
   isLoggedIn: false,
+  isSanctuary: false,
+  toggleSanctuary: () => set((s) => ({ isSanctuary: !s.isSanctuary })),
   windows: [],
   activeWindowId: null,
   wallpaper: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=2072&auto=format&fit=crop',

@@ -1,12 +1,38 @@
 {
+    // Startup
     "workbench.startupEditor": "readme",
+    // Python Testing
+    "python.testing.pytestEnabled": true,
+    "python.testing.unittestEnabled": false,
+    "python.testing.nosetestsEnabled": false,
     "python.testing.pytestArgs": [
         ".",
         "--cache-mode=session"
     ],
-    "python.testing.unittestEnabled": false,
-    "python.testing.pytestEnabled": true,
     "python.testing.autoTestDiscoverOnSaveEnabled": true,
     "python.testing.autoTestDiscoverOnSavePattern": "**/*.{py,jsonl}",
-    "deepscan.enable": true
+    // JavaScript / TypeScript Quality
+    "deepscan.enable": true,
+    "js/ts.updateImportsOnFileMove.enabled": "always",
+    // Tailwind + CSS Cleanup
+    "css.validate": false,
+    "scss.validate": false,
+    "less.validate": false,
+    // Editor Feel (Smooth + Modern)
+    "editor.cursorSmoothCaretAnimation": "on",
+    "editor.smoothScrolling": true,
+    "editor.minimap.enabled": false,
+    "editor.fontLigatures": true,
+    "editor.renderWhitespace": "none",
+    "editor.formatOnSave": true,
+    // Light Theme + Neutral Icons
+    "workbench.colorTheme": "Light+",
+    "workbench.iconTheme": "vs-seti",
+    "workbench.productIconTheme": "Default",
+    // Terminal
+    "terminal.integrated.defaultProfile.windows": "PowerShell",
+    "terminal.integrated.cursorStyle": "line",
+    "terminal.integrated.cursorBlinking": true,
+    "terminal.integrated.fontFamily": "Cascadia Code",
+    "terminal.integrated.fontSize": 14
 }

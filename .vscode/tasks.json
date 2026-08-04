@@ -9,6 +9,23 @@
 				"run",
 				"dev"
 			],
+			"options": {
+				"cwd": "${workspaceFolder}/miraverse-frontend"
+			},
+			"isBackground": true,
+			"problemMatcher": [
+				"$vite-stderr"
+			],
+			"group": "build"
+		},
+		{
+			"label": "Start Vite dev server",
+			"type": "shell",
+			"command": "npm",
+			"args": [
+				"run",
+				"dev"
+			],
 			"isBackground": true,
 			"problemMatcher": [
 				"$vite-stderr"
