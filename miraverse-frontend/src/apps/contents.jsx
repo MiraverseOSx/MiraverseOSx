@@ -11,6 +11,7 @@ const NoticeBoardApp = lazy(() => import('./NoticeBoardApp'));
 const BrowserApp = lazy(() => import('./BrowserApp'));
 const MailApp = lazy(() => import('./MailApp'));
 const ChatMeetApp = lazy(() => import('./ChatMeetApp'));
+const FileExplorerApp = lazy(() => import('./FileExplorerApp'));
 
 // Sleek loading fallback for lazy-loaded apps
 const AppLoadingFallback = ({ name = 'App' }) => (
@@ -381,7 +382,7 @@ const withSuspense = (Component, name) => (props) => (
 );
 
 export const CONTENTS = {
-  files: Files,
+  files: withSuspense(FileExplorerApp, 'File Explorer'),
   comms: withSuspense(CommsApp, 'Comms'),
   mail: withSuspense(MailApp, 'Mail'),
   chatmeet: withSuspense(ChatMeetApp, 'ChatMeet'),
