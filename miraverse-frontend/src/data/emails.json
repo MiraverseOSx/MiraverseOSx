@@ -1,5 +1,23 @@
 [
   {
+    "id": "MSG-000",
+    "sender": "Director Vane / DGA Registry",
+    "faction": "Digital Governance Agency",
+    "subject": "[ACTION REQUIRED] DGA Provisional Identity Registration & Verification",
+    "time": "07:55 AM",
+    "read": false,
+    "attachment": {
+      "type": "dga_verification",
+      "amount": 250,
+      "name": "DGA_CITIZEN_REGISTRATION.pdf",
+      "claimed": false,
+      "previewTitle": "Digital Governance Agency Citizen Registration Portal",
+      "previewText": "APPLICANT ID: #DGA-PROV-99410\nISSUING AUTHORITY: Digital Governance Agency (DGA)\nREQUIREMENT: Verify identity biometrics to unlock full Civic Profile & OS Clearance Level 1.\nSTATUS: PENDING VERIFICATION",
+      "actionLabel": "⚡ Verify Identity & Unlock Civic Profile"
+    },
+    "body": "Official Dispatch from the Digital Governance Agency (DGA):\n\nWelcome, provisional citizen.\n\nYour temporary MIRAVERSEOSX network key has been logged. Under DGA Directive 14-B, all new assets must verify their citizen biometrics before full OS clearance and Civic Profile features are granted.\n\nOpen the attachment link below to complete your identity registration. Once verified, your Civic Profile will be unlocked and you will be directed to schedule your mandatory Faith Medical baseline scan."
+  },
+  {
     "id": "MSG-001",
     "sender": "Cyacademy Registration Office",
     "faction": "Cyacademy Admin",
@@ -12,9 +30,9 @@
       "name": "REGISTRATION_CARD.pdf",
       "claimed": false,
       "previewTitle": "Cyacademy Student Registration Clearance",
-      "previewText": "STUDENT ID: CS-99201\nCLEARANCE LEVEL: Level 1 Provisional\nREGISTRATION DATE: 2026-08-02\nSTATUS: Active Student Candidate\nPERKS: Access to Library Archives & Cyacademy Labs\n\nAUTHORIZATION SEAL: #CYA-SEC-8891"
+      "previewText": "STUDENT ID: CS-99201\nCLEARANCE LEVEL: Level 1 Provisional\nREGISTRATION DATE: 2026-08-02\nSTATUS: Active Candidate\nPERKS: Access to Library Archives & Cyacademy Labs\n\nAUTHORIZATION SEAL: #CYA-SEC-8891"
     },
-    "body": "Welcome, player.\n\nYour provisional Cyacademy registration has been received. Your record currently contains no verified credits, no active contacts, no declared career track, no reputation standing, and no confirmed housing beyond temporary placement. This is expected. MIRAVERSEOSX begins from a clean state so every player builds their identity through choices, work, study, relationships, and discovery."
+    "body": "Welcome, citizen.\n\nYour provisional MIRAVERSEOSX registration has been received. Your record currently contains no verified credits, no active contacts, no declared career track, and no permanent housing. This is expected. MIRAVERSEOSX begins from a clean state so every player builds their identity through choices, work, study, relationships, and discovery."
   },
   {
     "id": "MSG-002",
@@ -24,7 +42,7 @@
     "time": "08:05 AM",
     "read": false,
     "attachment": null,
-    "body": "Temporary access has been generated for player. You are logged into MIRAVERSEOSX under a default asset key. Please review your initial applications: Mail, Comms, Notice Board, Aura Passport, Faith Medical Portal, and Cyacademy Systems."
+    "body": "Temporary access has been generated for player. You are logged into MIRAVERSEOSX under a default asset key. Please review your initial applications: Mail, Comms, Notice Board, Civic Profile, Faith Medical Portal, and Cyacademy Systems."
   },
   {
     "id": "MSG-003",
@@ -41,13 +59,13 @@
       "previewTitle": "Dormitory Security Access Token",
       "previewText": "ASSIGNMENT: Dorm Block A (North Wing), Room 104\nSECURITY CIPHER: 0x8F9A-4B2C\nSTATUS: Unlocked & Assigned\nENERGY RECOVER: +10 Aura Health / hr\nCONTAINMENT CLEARANCE: Level 2 Safe Zone"
     },
-    "body": "Player has been assigned a starter dorm room in Block A (North Wing). You do not own property, private housing, or permanent real estate. Use your dorm room to rest, restore energy, and clear temporary conditions."
+    "body": "Player has been assigned a starter dorm room in Block A (North Wing). You do not own property or permanent real estate. Use your dorm room to rest, restore energy, and clear temporary conditions."
   },
   {
     "id": "MSG-004",
     "sender": "Aureline Civic Identity Bureau",
     "faction": "Civic Bureau",
-    "subject": "Aura Passport Activation Required",
+    "subject": "Civic Profile Verification Notice",
     "time": "08:15 AM",
     "read": false,
     "attachment": {
@@ -56,15 +74,15 @@
       "name": "AURA_CONSENT_FORM.pdf",
       "claimed": false,
       "previewTitle": "Aureline Civic Identity Authorization Form",
-      "previewText": "SUBJECT: Player Aura Baseline Scan\nCONSENT: Granted for baseline telemetry\nAURA AFFINITY: Unbound Celestial\nCIVIC CODE: #AURA-8821-B\nSTATUS: Pending Identity Verification"
+      "previewText": "SUBJECT: Player Aura Baseline Scan\nCONSENT: Granted for baseline telemetry\nAURA AFFINITY: Unbound Celestial\nCIVIC CODE: #AURA-8821-B\nSTATUS: Pending DGA Identity Verification"
     },
-    "body": "Player’s Aura Passport is currently inactive. Please complete your registration in the Aura Passport app to verify baseline aura health, record elemental affinity, and initialize civic standing."
+    "body": "Player’s Civic Profile requires DGA identity verification. Please verify your DGA email registration dispatch to unlock full civic profile features."
   },
   {
     "id": "MSG-005",
     "sender": "Faith Medical Group",
     "faction": "Faith Medical",
-    "subject": "Faith Medical Portal Registration",
+    "subject": "Faith Medical Mandatory Intake Checkup",
     "time": "08:20 AM",
     "read": false,
     "attachment": {
@@ -75,7 +93,7 @@
       "previewTitle": "Faith Medical Diagnostic Intake Telemetry",
       "previewText": "PATIENT: Player\nPATIENT RECORD: #FM-88392\nDIAGNOSIS: Slight Veilwilt Exposure (Stage 1)\nRECOMMENDED CARE: Spring Restoration at Marlowe Springs\nAURA STABILITY: 92.4%"
     },
-    "body": "Faith Medical Group has created a basic patient record for player. Access the Faith Medical app or Browser (`faithmed.aure`) to view care providers, check treatment options, or request clinical aura telemetry."
+    "body": "Faith Medical Group has created a mandatory intake checkup record for player. Access the Faith Medical app or Browser (`faithmed.aure`) to complete your baseline diagnostic scan."
   },
   {
     "id": "MSG-006",
@@ -89,13 +107,20 @@
   },
   {
     "id": "MSG-007",
-    "sender": "Cyacademy Student Systems",
-    "faction": "Cyacademy Admin",
-    "subject": "Notice Board Access Granted",
+    "sender": "VectorNet Underground",
+    "faction": "Netrunners",
+    "subject": "Encrypted Exploit Key Dispatch",
     "time": "08:30 AM",
     "read": false,
-    "attachment": null,
-    "body": "Player has been granted access to the Notice Board. Available tasks, student requests, faculty postings, and field missions can be accepted from the Notice Board app."
+    "attachment": {
+      "type": "key",
+      "amount": 300,
+      "name": "EXPLOIT_PATCH_v2.key",
+      "claimed": false,
+      "previewTitle": "Cryptographic Exploit Access Key",
+      "previewText": "EXPLOIT CIPHER: #VEC-CIPHER-0x49\nMODULE: Sub-Conduit Packet Sniffer v2\nSTATUS: Unregistered Netrunner Tool\nREWARD: +300 ₡ Credits + Cryptography XP"
+    },
+    "body": "Greetings, netrunner. Here is an encrypted exploit key for accessing subterranean packet channels. Claim it into your inventory."
   },
   {
     "id": "MSG-008",
@@ -109,9 +134,9 @@
       "amount": 200,
       "name": "DAY_ONE_SCHEDULE.ics",
       "claimed": false,
-      "previewTitle": "Day One Cyacademy Orientation Schedule",
-      "previewText": "• 08:00 AM - Registration & Dorm Check-in\n• 09:00 AM - DGA Briefing (Agent Mara Quell)\n• 11:00 AM - SpellForge Fundamentals (Archmage Hex)\n• 02:00 PM - NetRunner Traversal (Zero Cool)\n• 05:00 PM - Evening Assembly & Wheel of Year Ceremony"
+      "previewTitle": "Day One Orientation Schedule",
+      "previewText": "• 08:00 AM - Registration & Identity Verification\n• 09:00 AM - DGA Security Briefing\n• 11:00 AM - SpellForge Fundamentals\n• 02:00 PM - Netrunner Traversal\n• 05:00 PM - Evening Assembly"
     },
-    "body": "Player, welcome to Cyacademy. Report to campus for orientation, complete your preliminary tasks, and maintain awareness of network anomalies."
+    "body": "Player, welcome. Report to campus for orientation, complete your preliminary tasks, and maintain awareness of network anomalies."
   }
 ]

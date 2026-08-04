@@ -50,6 +50,7 @@ export const useOSStore = create((set) => ({
       conditions: ['Veilwilt'],
       forgedSpells: [],
       lineageDecrypted: false,
+      dgaVerified: false,
       npcVectors: {
         voss: { trust: 80, rivalry: 10, sync: 90, corruption: 15 },
         riven: { trust: 65, rivalry: 45, sync: 70, corruption: 5 },
@@ -254,6 +255,18 @@ export const useOSStore = create((set) => ({
       gameplay: {
         ...state.gameplay,
         prismCorruptionLevel: Math.max(2.0, Number((state.gameplay.prismCorruptionLevel - amount).toFixed(1))),
+      },
+    })),
+
+  verifyDGAIdentity: () =>
+    set((state) => ({
+      gameplay: {
+        ...state.gameplay,
+        player: {
+          ...state.gameplay.player,
+          dgaVerified: true,
+          starterPhase: Math.max(1, state.gameplay.player.starterPhase),
+        },
       },
     })),
 

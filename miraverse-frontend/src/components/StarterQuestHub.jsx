@@ -1,16 +1,16 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Sparkles, ChevronRight, CheckCircle2, Shield, UserCheck, Zap, ChevronDown, ChevronUp } from 'lucide-react';
+import { Sparkles, ChevronRight, CheckCircle2, Shield, UserCheck, Zap, ChevronDown, ChevronUp, Lock, Mail } from 'lucide-react';
 import { useOSStore } from '../store/useOSStore';
 import { APPS } from '../apps/registry';
 import soundEngine from '../utils/soundEngine';
 
 const STARTER_PHASES = [
-  { phase: 0, title: 'Phase 0 — Provisional Citizen Boot', desc: 'Boot MIRAVERSE OSX as a Fresh Provisional Citizen. Confirm citizen ID & claim emergency stipend.' },
-  { phase: 1, title: 'Phase 1 — Life Path Selection', desc: 'Open Civic Profile to choose Path A (Cycademy Student Track) or Path B (Independent Freelancer).' },
-  { phase: 2, title: 'Phase 2 — Quarters / Suite Setup', desc: 'Confirm housing assignment (Citizen Quarters or Cycademy Student Suite) & review rules.' },
-  { phase: 3, title: 'Phase 3 — Faith Medical Clearance', desc: 'Visit Faith Medical portal to complete baseline aura diagnostics.' },
-  { phase: 4, title: 'Phase 4 — Social Orientation', desc: 'Join Day One Orientation call or Netrunner briefing in ChatMeet.' },
+  { phase: 0, title: 'Phase 0 — DGA Identity Registration', desc: 'Open Mail app and verify your identity biometrics via the official DGA email link.' },
+  { phase: 1, title: 'Phase 1 — Mandatory Faith Medical Intake', desc: 'Visit Faith Medical portal to complete baseline aura diagnostic scan.' },
+  { phase: 2, title: 'Phase 2 — Quarters / Suite Setup', desc: 'Confirm housing assignment (Provisional Quarters or Cycademy Student Suite).' },
+  { phase: 3, title: 'Phase 3 — Social Orientation', desc: 'Join Day One Orientation call or Netrunner briefing in ChatMeet.' },
+  { phase: 4, title: 'Phase 4 — Freedom & Career Choices', desc: 'Take freelance contracts, work medical/DGA shifts, or apply for Cycademy clearance.' },
   { phase: 5, title: 'Phase 5 — Full Citizen Clearance', desc: 'Full OS clearance unlocked! Engage in daily quest loops, freelance gigs, and spellcrafting.' },
 ];
 
@@ -18,7 +18,6 @@ export default function StarterQuestHub() {
   const [isExpanded, setIsExpanded] = useState(true);
   const player = useOSStore((s) => s.gameplay.player);
   const toggleApp = useOSStore((s) => s.toggleApp);
-  const advanceStarterPhase = useOSStore((s) => s.advanceStarterPhase);
 
   const currentPhase = player.starterPhase || 0;
   const activePhase = STARTER_PHASES.find((p) => p.phase === currentPhase) || STARTER_PHASES[0];
@@ -26,16 +25,15 @@ export default function StarterQuestHub() {
   const handleActionClick = () => {
     soundEngine.playClick();
     if (currentPhase === 0) {
-      const profileApp = APPS.find((a) => a.id === 'passport');
-      if (profileApp) toggleApp(profileApp);
-      advanceStarterPhase(1);
+      const mailApp = APPS.find((a) => a.id === 'mail');
+      if (mailApp) toggleApp(mailApp);
     } else if (currentPhase === 1) {
+      const browserApp = APPS.find((a) => a.id === 'browser');
+      if (browserApp) toggleApp(browserApp);
+    } else if (currentPhase === 2) {
       const profileApp = APPS.find((a) => a.id === 'passport');
       if (profileApp) toggleApp(profileApp);
     } else if (currentPhase === 3) {
-      const medApp = APPS.find((a) => a.id === 'browser');
-      if (medApp) toggleApp(medApp);
-    } else if (currentPhase === 4) {
       const meetApp = APPS.find((a) => a.id === 'chatmeet');
       if (meetApp) toggleApp(meetApp);
     } else {
@@ -68,7 +66,12 @@ export default function StarterQuestHub() {
       {isExpanded && (
         <div className="space-y-3 pt-1">
           <div className="rounded-xl border border-indigo-200 bg-[#FAFAFC] p-3 text-xs space-y-1 shadow-sm">
-            <div className="font-bold text-[#1d2650]">{activePhase.title}</div>
+            <div className="font-bold text-[#1d2650] flex items-center justify-between">
+              <span>{activePhase.title}</span>
+              {!player.dgaVerified && currentPhase === 0 && (
+                <span className="text-[9px] bg-amber-100 px-1.5 py-0.5 rounded text-amber-800 font-mono font-bold">DGA LOCK</span>
+              )}
+            </div>
             <p className="text-[11px] text-slate-600 leading-relaxed">{activePhase.desc}</p>
           </div>
 

@@ -254,17 +254,32 @@ export default function MailApp() {
 
             <div className="flex items-center justify-between border-t border-slate-200 pt-3 text-xs">
               <span className="text-slate-500">Reward: +₡{attachmentModal.amount}</span>
-              <Button
-                onClick={() => {
-                  handleClaim();
-                  setAttachmentModal(null);
-                }}
-                disabled={attachmentClaimed}
-                size="sm"
-                variant={attachmentClaimed ? 'ghost' : 'solid'}
-              >
-                {attachmentClaimed ? 'Already Claimed' : `Claim +₡${attachmentModal.amount}`}
-              </Button>
+              {attachmentModal.type === 'dga_verification' ? (
+                <Button
+                  onClick={() => {
+                    useOSStore.getState().verifyDGAIdentity();
+                    handleClaim();
+                    setAttachmentModal(null);
+                  }}
+                  size="sm"
+                  variant="solid"
+                  className="font-bold bg-emerald-600 hover:bg-emerald-700 text-white"
+                >
+                  ⚡ Verify Identity & Unlock Civic Profile
+                </Button>
+              ) : (
+                <Button
+                  onClick={() => {
+                    handleClaim();
+                    setAttachmentModal(null);
+                  }}
+                  disabled={attachmentClaimed}
+                  size="sm"
+                  variant={attachmentClaimed ? 'ghost' : 'solid'}
+                >
+                  {attachmentClaimed ? 'Already Claimed' : `Claim +₡${attachmentModal.amount}`}
+                </Button>
+              )}
             </div>
           </div>
         </div>
