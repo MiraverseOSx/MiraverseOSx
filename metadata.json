@@ -1,0 +1,15 @@
+{
+    "name": "MiraverseOSx Unified Dev Server",
+    "version": "0.1.0",
+    "stack": {
+        "frontend": "Vite + React",
+        "backend": "Express",
+        "port": 3000
+    },
+    "capabilities": [
+        "Unified /api routes",
+        "Vite middleware HMR on same port",
+        "MAI agent endpoint",
+        "World Authority data endpoints"
+    ]
+}

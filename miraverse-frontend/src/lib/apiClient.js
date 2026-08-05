@@ -1,9 +1,9 @@
 /**
  * MIRAVERSE OSX - Express API Client & World Connector
- * Connects to http://localhost:5000/api with graceful fallback.
+ * Connects to unified Express server on /api with graceful fallback.
  */
 
-const API_BASE_URL = 'http://localhost:5000/api';
+const API_BASE_URL = '/api';
 
 export const apiClient = {
   async getHealth() {
