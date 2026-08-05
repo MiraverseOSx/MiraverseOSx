@@ -80,6 +80,36 @@ export default function SparklesCanvas() {
       ctx.clearRect(0, 0, width, height);
       tick += 0.02;
 
+      // Draw Constellation Vector Lines between nearby particles
+      for (let i = 0; i < particles.length; i++) {
+        for (let j = i + 1; j < particles.length; j++) {
+          const p1 = particles[i];
+          const p2 = particles[j];
+          const x1 = p1.x + Math.sin(p1.phase) * p1.swayAmp * 12;
+          const y1 = p1.y;
+          const x2 = p2.x + Math.sin(p2.phase) * p2.swayAmp * 12;
+          const y2 = p2.y;
+
+          const dx = x2 - x1;
+          const dy = y2 - y1;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+
+          const maxDist = width < 768 ? 90 : 130;
+          if (dist < maxDist) {
+            const lineAlpha = (1 - dist / maxDist) * 0.25;
+            ctx.save();
+            ctx.beginPath();
+            ctx.moveTo(x1, y1);
+            ctx.lineTo(x2, y2);
+            ctx.strokeStyle = '#E0E7FF';
+            ctx.globalAlpha = lineAlpha;
+            ctx.lineWidth = 0.8;
+            ctx.stroke();
+            ctx.restore();
+          }
+        }
+      }
+
       particles.forEach((p) => {
         p.y += p.speedY;
         p.phase += p.swayFreq;
@@ -95,11 +125,19 @@ export default function SparklesCanvas() {
         }
 
         if (p.type === 'star') {
-          drawStar(currentX, p.y, p.size * 1.8, p.size * 0.45, p.color, currentOpacity);
+          drawStar(currentX, p.y, p.size * 2.0, p.size * 0.5, p.color, currentOpacity);
+          // Glow halo around constellation node point
+          ctx.save();
+          ctx.beginPath();
+          ctx.arc(currentX, p.y, p.size * 3.5, 0, Math.PI * 2);
+          ctx.fillStyle = '#FFFFFF';
+          ctx.globalAlpha = currentOpacity * 0.15;
+          ctx.fill();
+          ctx.restore();
         } else {
           ctx.save();
           ctx.beginPath();
-          ctx.arc(currentX, p.y, p.size * 0.55, 0, Math.PI * 2);
+          ctx.arc(currentX, p.y, p.size * 0.6, 0, Math.PI * 2);
           ctx.fillStyle = p.color;
           ctx.globalAlpha = currentOpacity;
           ctx.fill();

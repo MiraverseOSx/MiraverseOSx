@@ -29,10 +29,9 @@
 
 /* Unified Continuous Workspace Container (No Floating Cards / Gaps) */
 .unified-workspace-container {
-  background: rgba(13, 7, 36, 0.88) !important;
   border: 1px solid rgba(168, 85, 247, 0.3) !important;
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6) !important;
-  backdrop-filter: blur(24px) !important;
+  backdrop-filter: blur(12px) !important;
   border-radius: 2px !important;
   color: #fae8ff !important;
   font-family: Georgia, serif !important;

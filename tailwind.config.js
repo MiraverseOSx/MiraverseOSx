@@ -7,10 +7,13 @@ export default {
   content: [
     "./index.html",
     "./src/**/*.{js,jsx,ts,tsx}",
+    "./miraverse-frontend/src/**/*.{js,jsx,ts,tsx}",
   ],
   theme: {
     extend: {
-      // Optional future semantic tokens (not required for current workflow)
+      fontFamily: {
+        'serif-y2k': ['Esteban', 'Georgia', 'serif'],
+      },
       colors: {
         os: {
           primary: 'var(--color-primary)',

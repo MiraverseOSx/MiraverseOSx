@@ -69,18 +69,18 @@ export default function MAIDock() {
   const getStatusRing = () => {
     switch (status) {
       case 'thinking':
-        return 'border-amber-400 bg-amber-100 animate-pulse text-amber-600';
+        return 'border-amber-400/60 bg-amber-950/40 animate-pulse text-amber-300';
       case 'executing':
-        return 'border-emerald-400 bg-emerald-100 text-emerald-600';
+        return 'border-emerald-400/60 bg-emerald-950/40 text-emerald-300';
       case 'error':
-        return 'border-rose-400 bg-rose-100 text-rose-600';
+        return 'border-rose-400/60 bg-rose-950/40 text-rose-300';
       default:
-        return 'border-[#8c97d6] bg-[#e9ebf6] text-[#5f6ab0]';
+        return 'border-purple-400/40 bg-purple-950/40 text-purple-300';
     }
   };
 
   return (
-    <div className="relative z-40">
+    <div className="relative z-40 font-serif">
       {/* Expanded MAI Floating Panel */}
       <AnimatePresence>
         {isOpen && (
@@ -88,37 +88,37 @@ export default function MAIDock() {
             initial={{ opacity: 0, y: 10, scale: 0.96 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 10, scale: 0.96 }}
-            className="absolute bottom-14 right-0 w-96 rounded-2xl border border-white/90 bg-white/92 backdrop-blur-2xl p-4 shadow-[0_16px_40px_-8px_rgba(80,90,120,0.35)] select-none text-[#162241]"
+            className="absolute bottom-14 right-0 w-96 rounded-sm border border-purple-500/40 bg-[#0d0724]/95 backdrop-blur-2xl p-4 shadow-2xl select-none text-purple-100"
           >
             {/* Header */}
-            <div className="flex items-center justify-between border-b border-slate-200/80 pb-2.5 mb-3">
+            <div className="flex items-center justify-between border-b border-purple-500/20 pb-2.5 mb-3">
               <div className="flex items-center gap-2">
-                <div className={`flex h-7 w-7 items-center justify-center rounded-xl border ${getStatusRing()}`}>
+                <div className={`flex h-7 w-7 items-center justify-center rounded-sm border ${getStatusRing()}`}>
                   <Bot size={16} />
                 </div>
                 <div>
-                  <div className="font-serif-y2k text-xs font-bold text-[#1d2650]">MAI AGENT ASSISTANT</div>
-                  <div className="text-[9px] font-mono text-slate-400">SOVEREIGN OS LORE ENGINE</div>
+                  <div className="font-serif text-xs font-bold text-purple-200">MAI AGENT ASSISTANT</div>
+                  <div className="text-[9px] font-mono text-purple-400/80">SOVEREIGN OS LORE ENGINE</div>
                 </div>
               </div>
-              <span className="rounded bg-[#e9ebf6] px-2 py-0.5 font-mono text-[9px] font-semibold text-[#5f6ab0]">
+              <span className="rounded-sm border border-purple-500/30 bg-purple-950/60 px-2 py-0.5 font-mono text-[9px] font-semibold text-purple-300">
                 {status.toUpperCase()}
               </span>
             </div>
 
             {/* AI Response Display Card */}
             {aiResponse ? (
-              <div className="mb-3 rounded-xl border border-slate-200 bg-[#FAFAFC] p-3 text-xs space-y-1.5 shadow-sm">
-                <div className="text-[10px] font-mono text-slate-400 flex items-center gap-1">
-                  <Sparkles size={11} className="text-[#5f6ab0]" /> {aiResponse.thought}
+              <div className="mb-3 rounded-sm border border-purple-500/30 bg-purple-950/40 p-3 text-xs space-y-1.5 shadow-sm">
+                <div className="text-[10px] font-mono text-purple-400 flex items-center gap-1">
+                  <Sparkles size={11} className="text-purple-300" /> {aiResponse.thought}
                 </div>
-                <div className="text-xs leading-relaxed text-[#243064] font-medium">
+                <div className="text-xs leading-relaxed text-purple-100 font-medium">
                   {aiResponse.response}
                 </div>
               </div>
             ) : (
-              <div className="mb-3 rounded-xl border border-slate-200/80 bg-[#FAFAFC] p-3 text-xs text-slate-500 leading-relaxed">
-                Welcome, player. Ask me about MIRAVERSE lore, NPCs, regions, or type commands like <span className="font-mono text-[#3b4785]">"launch SpellForge"</span> or <span className="font-mono text-[#3b4785]">"search lore Aethercore"</span>.
+              <div className="mb-3 rounded-sm border border-purple-500/20 bg-purple-950/40 p-3 text-xs text-purple-300/80 leading-relaxed">
+                Welcome, citizen. Ask me about MIRAVERSE lore, NPCs, regions, or type commands like <span className="font-mono text-purple-200 font-bold">"launch SpellForge"</span> or <span className="font-mono text-purple-200 font-bold">"open browser"</span>.
               </div>
             )}
 
@@ -129,12 +129,12 @@ export default function MAIDock() {
                 value={prompt}
                 onChange={(e) => setPrompt(e.target.value)}
                 placeholder="Ask MAI or issue OS command..."
-                className="flex-1 rounded-xl border border-slate-300/80 bg-white px-3 py-2 text-xs text-slate-800 placeholder-slate-400 outline-none focus:border-[#8c97d6]"
+                className="flex-1 rounded-sm border border-purple-500/30 bg-purple-950/60 px-3 py-2 text-xs text-purple-100 placeholder:text-purple-400/60 outline-none focus:border-purple-400"
               />
               <button
                 type="submit"
                 disabled={status === 'thinking'}
-                className="flex h-9 w-9 items-center justify-center rounded-xl bg-[#17213f] text-white hover:bg-[#28325f] transition shadow-sm"
+                className="flex h-9 w-9 items-center justify-center rounded-sm bg-purple-600 text-white hover:bg-purple-500 transition shadow-sm"
               >
                 <Send size={14} />
               </button>
@@ -149,17 +149,16 @@ export default function MAIDock() {
           soundEngine.playClick();
           setIsOpen((prev) => !prev);
         }}
-        className={`flex items-center gap-2 rounded-xl border px-3 py-1.5 text-xs font-semibold transition ${
+        className={`flex items-center gap-1.5 border px-3 py-1.5 rounded-sm text-[11px] font-serif transition ${
           isOpen
-            ? 'border-[#17213f] bg-[#17213f] text-white shadow-sm'
-            : 'border-slate-300/80 bg-white/70 text-[#1d2650] hover:bg-white'
+            ? 'border-purple-400 bg-purple-600 text-white shadow-[0_0_12px_rgba(168,85,247,0.4)]'
+            : 'border-purple-500/30 bg-purple-950/60 text-purple-200 hover:text-white hover:bg-purple-900/60'
         }`}
+        title="MAI Agent Assistant"
       >
-        <div className={`flex h-4 w-4 items-center justify-center rounded-full border ${getStatusRing()}`}>
-          <Bot size={10} />
-        </div>
-        <span className="font-serif-y2k font-bold text-xs tracking-wide">MAI</span>
-        {isOpen ? <ChevronDown size={14} /> : <ChevronUp size={14} />}
+        <Bot size={14} className="text-purple-300" />
+        <span className="font-bold tracking-wide">MAI</span>
+        {isOpen ? <ChevronDown size={13} /> : <ChevronUp size={13} />}
       </button>
     </div>
   );

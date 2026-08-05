@@ -31,6 +31,9 @@ import ClockDisplay from './ClockDisplay';
 import Button from './ui/button';
 import SparklesCanvas from './SparklesCanvas';
 import MeridionLandingPage from './MeridionLandingPage';
+import LoginScreen from './LoginScreen';
+import MAIDock from './MAIDock';
+import { Calendar, CheckSquare, Award, CheckCircle2 } from 'lucide-react';
 
 const WHEEL_OF_THE_YEAR = [
   { month: 'January', phase: 'Mid-Winter', icon: '❄️' },
@@ -60,6 +63,7 @@ export default function Desktop() {
 
   const player = useOSStore((s) => s.gameplay.player);
 
+  const [authMode, setAuthMode] = useState(null); // null | 'login' | 'register'
   const [isLauncherOpen, setIsLauncherOpen] = useState(false);
   const [isPhoneOpen, setIsPhoneOpen] = useState(false);
   const [isDocumentModalOpen, setIsDocumentModalOpen] = useState(false);
@@ -71,10 +75,22 @@ export default function Desktop() {
   };
 
   if (!isLoggedIn) {
+    if (authMode) {
+      return (
+        <LoginScreen
+          initialMode={authMode}
+          onLoginSuccess={(userData) => {
+            useOSStore.getState().loginUser(userData);
+            setAuthMode(null);
+          }}
+          onBackToLanding={() => setAuthMode(null)}
+        />
+      );
+    }
     return (
       <MeridionLandingPage
-        onSignIn={() => useOSStore.getState().loginUser({ name: 'CY-9021-CITIZEN', clearance: 1 })}
-        onEnroll={() => useOSStore.getState().loginUser({ name: 'CY-9021-CITIZEN', clearance: 1 })}
+        onSignIn={() => setAuthMode('login')}
+        onEnroll={() => setAuthMode('register')}
       />
     );
   }
@@ -89,8 +105,8 @@ export default function Desktop() {
       }}
     >
       {/* Central Ambient Watermark */}
-      <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-[0.08]">
-        <img src="/logo_icon.png" alt="MIRAVERSE OS" className="h-[520px] w-[520px] object-contain mix-blend-screen" />
+      <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-[0.16] z-0">
+        <img src="/logo_icon.png" alt="MIRAVERSE OS" className="h-[560px] w-[560px] object-contain mix-blend-screen" />
       </div>
       <SparklesCanvas />
 
@@ -136,25 +152,25 @@ export default function Desktop() {
             <span className="text-amber-400 font-extrabold">◈</span>
           </motion.div>
 
-          <ClockDisplay />
+          <ClockDisplay monthIndex={currentMonthIndex} />
           <Wifi size={15} className="text-purple-400" />
         </div>
       </header>
 
-      {/* ── UNIFIED CONTINUOUS WORKSPACE PAGE (NO FLOATING CARDS / GAPS) ── */}
-      <div className="relative z-20 flex min-h-0 flex-1 p-6 overflow-hidden">
+      {/* ── UNIFIED CONTINUOUS WORKSPACE PAGE (SOLID SIDE PANELS TOP TO BOTTOM) ── */}
+      <div className="relative z-20 flex min-h-0 flex-1 px-6 py-2.5 overflow-hidden">
         <AnimatePresence>
           {!isSanctuary && (
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="unified-workspace-container flex h-full w-full overflow-hidden"
+              className="unified-workspace-container flex h-full w-full overflow-hidden shadow-2xl"
             >
               {/* ------------------------------------------------------------ */}
-              {/* LEFT SIDEBAR: Integrated Workspace Dock & Diagnostics        */}
+              {/* LEFT SIDEBAR: Integrated Workspace Dock & Diagnostics (SOLID) */}
               {/* ------------------------------------------------------------ */}
-              <aside className="w-64 shrink-0 hairline-divider-r flex flex-col justify-between p-5 space-y-4">
+              <aside className="w-64 shrink-0 hairline-divider-r flex flex-col justify-between p-5 space-y-4 bg-[#070514] h-full overflow-y-auto">
                 <div className="space-y-5">
                   <div>
                     <p className="mb-3 text-[10px] font-mono font-bold tracking-wider text-purple-400 uppercase">
@@ -162,13 +178,13 @@ export default function Desktop() {
                     </p>
                     <nav className="space-y-1 font-serif text-xs">
                       {[
-                        { id: 'phone', label: '📱 Phone (Personal Line)', icon: Smartphone, color: 'text-pink-400', action: () => setIsPhoneOpen(!isPhoneOpen) },
-                        { id: 'comms', label: '💬 Comms (OS Network)', icon: Mail, color: 'text-purple-400', action: () => launch(APPS.find((a) => a.id === 'comms')) },
-                        { id: 'mail', label: '✉️ Mail (Official Papers)', icon: FileText, color: 'text-indigo-400', badge: !player?.dgaVerified, action: () => launch(APPS.find((a) => a.id === 'mail') || APPS.find((a) => a.id === 'comms')) },
-                        { id: 'browser', label: '🌐 Net Browser (Web/Faith)', icon: Globe, color: 'text-cyan-400', action: () => launch(APPS.find((a) => a.id === 'browser')) },
-                        { id: 'passport', label: '🪪 Citizen Record', icon: UserCheck, color: 'text-emerald-400', action: () => launch(APPS.find((a) => a.id === 'passport')) },
-                        { id: 'files', label: '📁 File Explorer (files)', icon: Folder, color: 'text-amber-400', action: () => launch(APPS.find((a) => a.id === 'files')) },
-                        { id: 'spellforge', label: '🔥 SpellForge Matrix', icon: Sparkles, color: 'text-purple-400', action: () => launch(APPS.find((a) => a.id === 'spellforge')) },
+                        { id: 'phone', label: '📱 Phone', icon: Smartphone, color: 'text-pink-400', action: () => setIsPhoneOpen(!isPhoneOpen) },
+                        { id: 'comms', label: '💬 Comms', icon: Mail, color: 'text-purple-400', action: () => toggleApp(APPS.find((a) => a.id === 'comms')) },
+                        { id: 'mail', label: '✉️ Mail', icon: FileText, color: 'text-indigo-400', badge: !player?.dgaVerified, action: () => toggleApp(APPS.find((a) => a.id === 'mail') || APPS.find((a) => a.id === 'comms')) },
+                        { id: 'browser', label: '🌐 Net Browser', icon: Globe, color: 'text-cyan-400', action: () => toggleApp(APPS.find((a) => a.id === 'browser')) },
+                        { id: 'passport', label: '🪪 Citizen Record', icon: UserCheck, color: 'text-emerald-400', action: () => toggleApp(APPS.find((a) => a.id === 'passport')) },
+                        { id: 'files', label: '📁 File Explorer', icon: Folder, color: 'text-amber-400', action: () => toggleApp(APPS.find((a) => a.id === 'files')) },
+                        { id: 'spellforge', label: '🔥 SpellForge Matrix', icon: Sparkles, color: 'text-purple-400', action: () => toggleApp(APPS.find((a) => a.id === 'spellforge')) },
                       ].map((item) => (
                         <button
                           key={item.id}
@@ -217,7 +233,7 @@ export default function Desktop() {
                 {/* CITY SERVICES */}
                 <div className="pt-3 border-t border-purple-500/20">
                   <button
-                    onClick={() => launch(APPS.find((a) => a.id === 'settings'))}
+                    onClick={() => toggleApp(APPS.find((a) => a.id === 'settings'))}
                     className="flex w-full items-center gap-2 rounded-sm border border-purple-500/20 bg-purple-950/30 px-3 py-2 text-xs font-serif text-purple-200 hover:text-white transition"
                   >
                     <Settings size={14} className="text-purple-400" />
@@ -227,70 +243,146 @@ export default function Desktop() {
               </aside>
 
               {/* ------------------------------------------------------------ */}
-              {/* CENTER COLUMN: Primary Citizen Feed & Active Focus           */}
+              {/* CENTER COLUMN: Primary Citizen Feed (GRADIENT)               */}
               {/* ------------------------------------------------------------ */}
-              <main className="flex-1 hairline-divider-r p-6 space-y-6 overflow-y-auto">
-                {/* 🔔 UNREAD DGA REGISTRATION DISPATCH SECTION */}
-                <div className="hairline-divider-b pb-6 space-y-3">
-                  <div className="flex items-start justify-between">
-                    <div className="flex items-start gap-3">
-                      <div className="h-10 w-10 shrink-0 rounded-sm bg-amber-500/20 border border-amber-400/40 flex items-center justify-center text-amber-300">
-                        <Bell size={20} className="animate-bounce" />
+              <main className="flex-1 hairline-divider-r p-6 space-y-5 overflow-y-auto bg-gradient-to-b from-[#180e3c]/50 via-[#070514]/20 to-[#120a2e]/50 backdrop-blur-[2px]">
+                {/* 🔔 TOP UNREAD DGA REGISTRATION DISPATCH STRIP */}
+                <div className="flex items-center justify-between gap-4 p-3 rounded-sm border border-amber-400/30 bg-gradient-to-r from-amber-500/15 via-purple-950/30 to-purple-950/20 shadow-sm">
+                  <div className="flex items-center gap-3 min-w-0">
+                    <Bell size={16} className="text-amber-300 animate-bounce shrink-0" />
+                    <div className="min-w-0">
+                      <div className="font-serif text-xs font-bold text-amber-300 truncate uppercase tracking-wider">
+                        🔔 Unread DGA Registration Dispatch
                       </div>
-                      <div className="space-y-1">
-                        <div className="font-serif text-sm font-bold text-amber-300 uppercase tracking-wide">
-                          🔔 Unread DGA Registration Dispatch
-                        </div>
-                        <p className="text-xs text-purple-200/90 leading-relaxed font-serif">
-                          Welcome to Aureline. Complete your civic dossier to unlock full OS Clearance Level 1 and citizen services.
-                        </p>
-                      </div>
+                      <p className="text-[11px] text-purple-200/80 font-serif truncate">
+                        Complete your civic dossier to unlock Level 1 clearance.
+                      </p>
                     </div>
                   </div>
-
                   <Button
                     onClick={() => setIsDocumentModalOpen(true)}
                     size="sm"
                     variant="solid"
-                    className="w-full py-2.5 bg-gradient-to-r from-amber-500 to-purple-600 hover:from-amber-400 hover:to-purple-500 font-bold text-xs text-black shadow-[0_0_20px_rgba(251,191,36,0.3)] flex items-center justify-center gap-2 rounded-sm font-serif"
+                    className="shrink-0 py-1.5 px-3 bg-gradient-to-r from-amber-500 to-purple-600 hover:from-amber-400 hover:to-purple-500 font-bold text-[11px] text-black shadow-[0_0_15px_rgba(251,191,36,0.25)] flex items-center gap-1.5 rounded-sm font-serif"
                   >
-                    <FileText size={15} /> [ ✉️ Open DGA Registration Form (.osform) &gt; ]
+                    <FileText size={13} /> [ Open Form &gt; ]
                   </Button>
                 </div>
 
-                {/* ENCRYPTED COMMS RELAY SECTION */}
-                <div className="space-y-3">
-                  <div className="flex items-center justify-between border-b border-purple-500/20 pb-2">
-                    <p className="text-[10px] font-mono font-bold tracking-wider text-purple-400 uppercase">
-                      ENCRYPTED COMMS RELAY
-                    </p>
-                    <Radio size={14} className="text-purple-400 animate-pulse" />
+                {/* ── 2-COLUMN GRID: COMMS RELAY & LIVE WORLD EVENTS ── */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {/* LEFT: ENCRYPTED COMMS RELAY */}
+                  <div className="space-y-2">
+                    <div className="flex items-center justify-between border-b border-purple-500/20 pb-1.5">
+                      <p className="text-[10px] font-mono font-bold tracking-wider text-purple-400 uppercase">
+                        ENCRYPTED COMMS RELAY
+                      </p>
+                      <Radio size={13} className="text-purple-400 animate-pulse" />
+                    </div>
+
+                    <div className="rounded-sm border border-purple-500/20 bg-purple-950/30 p-3 space-y-2">
+                      <div className="flex items-center justify-between font-mono text-[11px]">
+                        <span className="font-bold text-white font-serif">Voss / secure line</span>
+                        <span className="text-[9px] text-purple-400">142.85 MHz</span>
+                      </div>
+                      <p className="text-[11px] text-purple-200/80 italic font-serif leading-relaxed">
+                        "Do not broadcast this. PRISM activity detected near Sector 4."
+                      </p>
+                      <Button
+                        onClick={() => setIsSignalPlayerOpen(true)}
+                        size="sm"
+                        variant="outline"
+                        className="text-[11px] font-serif border-purple-400/40 text-purple-200 hover:text-white hover:bg-purple-900/60 rounded-sm w-full flex items-center justify-center gap-1.5 py-1.5"
+                      >
+                        <Radio size={13} /> [ 📻 Play Decoded Transmission (.sig) &gt; ]
+                      </Button>
+                    </div>
                   </div>
 
-                  <div className="rounded-sm border border-purple-500/20 bg-purple-950/40 p-4 space-y-2">
-                    <div className="flex items-center justify-between font-mono text-xs">
-                      <span className="font-bold text-white font-serif">Voss / secure line</span>
-                      <span className="text-[10px] text-purple-400">142.85 MHz</span>
+                  {/* RIGHT: LIVE WORLD EVENTS */}
+                  <div className="space-y-2">
+                    <div className="flex items-center justify-between border-b border-purple-500/20 pb-1.5">
+                      <div className="flex items-center gap-1.5">
+                        <Calendar size={13} className="text-indigo-400" />
+                        <p className="text-[10px] font-mono font-bold tracking-wider text-indigo-300 uppercase">
+                          LIVE WORLD EVENTS
+                        </p>
+                      </div>
+                      <span className="h-2 w-2 rounded-full bg-emerald-400 animate-ping" />
                     </div>
-                    <p className="text-xs text-purple-200/80 italic font-serif">
-                      "Do not broadcast this. PRISM activity detected near Sector 4."
-                    </p>
-                    <Button
-                      onClick={() => setIsSignalPlayerOpen(true)}
-                      size="sm"
-                      variant="outline"
-                      className="mt-2 text-xs font-serif border-purple-400/40 text-purple-200 hover:text-white hover:bg-purple-900/60 rounded-sm w-full flex items-center justify-center gap-2"
-                    >
-                      <Radio size={14} /> [ 📻 Play Decoded Transmission (.sig) &gt; ]
-                    </Button>
+
+                    <div className="space-y-1.5">
+                      {(player?.worldEvents || []).slice(0, 2).map((evt) => (
+                        <div
+                          key={evt.id}
+                          className="rounded-sm border border-purple-500/15 bg-purple-950/20 p-2.5 space-y-1 hover:border-purple-400/30 transition"
+                        >
+                          <div className="flex items-center justify-between">
+                            <span className="font-serif text-[11px] font-bold text-purple-100 flex items-center gap-1">
+                              <Sparkles size={11} className="text-indigo-400" /> {evt.name}
+                            </span>
+                            <span className="font-mono text-[8px] px-1.5 py-0.5 rounded bg-purple-900/60 text-purple-300 border border-purple-500/20">
+                              {evt.monthReq}
+                            </span>
+                          </div>
+                          <div className="flex items-center justify-between font-mono text-[9px] pt-1 border-t border-purple-500/10">
+                            <span className="text-amber-300 font-semibold">{evt.reward}</span>
+                            <button
+                              onClick={() => useOSStore.getState().joinWorldEvent(evt.id)}
+                              className="text-purple-300 hover:text-white hover:underline font-serif text-[10px]"
+                            >
+                              [ Join &gt; ]
+                            </button>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+
+                {/* 📋 DAILY CIVIC TASKS & SHIFT TRACKER (CLEAN BORDERLESS LIST) */}
+                <div className="space-y-2 pt-2">
+                  <div className="flex items-center justify-between border-b border-purple-500/20 pb-1.5">
+                    <div className="flex items-center gap-2">
+                      <CheckSquare size={13} className="text-amber-400" />
+                      <p className="text-[10px] font-mono font-bold tracking-wider text-amber-300 uppercase">
+                        DAILY CIVIC TASKS & SHIFT TRACKER
+                      </p>
+                    </div>
+                    <Award size={13} className="text-amber-400" />
+                  </div>
+
+                  <div className="divide-y divide-purple-500/10 font-serif text-xs">
+                    {[
+                      { id: 'T1', label: 'Civic Intake Scan at Aureline Terminal', reward: '+50 ◈', credits: 50 },
+                      { id: 'T2', label: 'Veil Observance & Aura Diagnostics', reward: '+75 ◈', credits: 75 },
+                      { id: 'T3', label: 'Undervault Terminal Clutter Cleaning', reward: '+50 ◈', credits: 50 },
+                      { id: 'T4', label: 'Faith Medical Volunteer Intake Shift', reward: '+100 ◈', credits: 100 },
+                    ].map((task) => (
+                      <div
+                        key={task.id}
+                        className="flex items-center justify-between py-2 px-1 hover:bg-purple-900/20 transition rounded-xs"
+                      >
+                        <div className="flex items-center gap-2">
+                          <CheckCircle2 size={14} className="text-purple-400 shrink-0" />
+                          <span className="text-purple-200 text-[11px]">{task.label}</span>
+                        </div>
+                        <button
+                          onClick={() => useOSStore.getState().addCredits(task.credits)}
+                          className="font-mono text-[9px] font-bold text-amber-300 border border-amber-500/30 bg-amber-950/30 px-2 py-0.5 rounded-xs hover:bg-amber-900/50 transition"
+                        >
+                          {task.reward} Claim
+                        </button>
+                      </div>
+                    ))}
                   </div>
                 </div>
               </main>
 
               {/* ------------------------------------------------------------ */}
-              {/* RIGHT SIDEBAR: City Telemetry & Ledger                       */}
+              {/* RIGHT SIDEBAR: City Telemetry & Ledger (SOLID)               */}
               {/* ------------------------------------------------------------ */}
-              <aside className="w-72 shrink-0 p-5 space-y-6 overflow-y-auto">
+              <aside className="w-72 shrink-0 p-5 space-y-6 overflow-y-auto bg-[#070514] h-full">
                 {/* AURELINE NETWORK BROADCAST */}
                 <div className="hairline-divider-b pb-5 space-y-2">
                   <p className="text-[10px] font-mono font-bold tracking-wider text-purple-400 uppercase">
@@ -337,6 +429,55 @@ export default function Desktop() {
                     </div>
                   </div>
                 </div>
+
+                {/* AURELINE CITIZEN ID BADGE PREVIEW */}
+                <div className="border-t border-purple-500/20 pt-5 space-y-2">
+                  <div className="flex items-center justify-between text-[10px] font-mono font-bold text-purple-400 uppercase">
+                    <span>CITIZEN DOSSIER BADGE</span>
+                    <span className="text-emerald-400 font-bold">VERIFIED</span>
+                  </div>
+                  <div
+                    onClick={() => toggleApp(APPS.find((a) => a.id === 'passport'))}
+                    className="relative cursor-pointer group overflow-hidden rounded-sm border border-purple-400/30 bg-purple-950/40 p-2 shadow-lg transition hover:border-purple-300"
+                  >
+                    <img
+                      src="/front_id_card.svg"
+                      alt="Aureline Citizen ID Card"
+                      className="w-full h-auto object-contain rounded-xs opacity-90 group-hover:opacity-100 transition transform group-hover:scale-[1.02]"
+                    />
+                    <div className="mt-2 flex items-center justify-between font-mono text-[9px] text-purple-300">
+                      <span>ID: CY-9021-CITIZEN</span>
+                      <span className="text-amber-300 font-bold">Level 1</span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* PERSONAL PHONE LINE WIDGET CARD */}
+                <div className="border-t border-purple-500/20 pt-4 space-y-2">
+                  <div className="flex items-center justify-between text-[10px] font-mono font-bold text-purple-400 uppercase">
+                    <span>MOBILE COMMS LINE</span>
+                    <span className="text-emerald-400 font-bold flex items-center gap-1">
+                      <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-ping" /> ONLINE
+                    </span>
+                  </div>
+                  <button
+                    onClick={() => setIsPhoneOpen((prev) => !prev)}
+                    className="w-full flex items-center gap-3 rounded-sm border border-pink-400/50 bg-[#1e1338]/90 p-2.5 shadow-[0_0_20px_rgba(244,114,182,0.25)] backdrop-blur-xl hover:border-pink-300 hover:scale-[1.02] transition text-left group"
+                    title="Toggle Personal Phone Line"
+                  >
+                    <div className="relative h-9 w-5 rounded-md border-2 border-pink-300 bg-slate-950 flex flex-col justify-between p-0.5 shadow-inner shrink-0">
+                      <div className="h-0.5 w-1.5 mx-auto bg-pink-300 rounded-full" />
+                      <div className="h-1 w-1 mx-auto bg-pink-400 rounded-full animate-ping" />
+                      <div className="h-0.5 w-2 mx-auto bg-pink-300/80 rounded-full" />
+                    </div>
+                    <div className="font-serif">
+                      <div className="text-xs font-bold text-pink-200 group-hover:text-white flex items-center gap-1">
+                        📱 Phone Line
+                      </div>
+                      <div className="text-[9px] font-mono text-pink-300/70">Aureline Mobile Comms</div>
+                    </div>
+                  </button>
+                </div>
               </aside>
             </motion.div>
           )}
@@ -376,8 +517,9 @@ export default function Desktop() {
         <SignalPlayerModal onClose={() => setIsSignalPlayerOpen(false)} />
       )}
 
-      {/* ── FOOTER TASKBAR: ARCHIVE, SEARCH, MAI, SANCTUARY ── */}
+      {/* ── FOOTER TASKBAR: ARCHIVE & APPS (LEFT) | SETTINGS, SANCTUARY, LOGOUT, MAI (RIGHT) ── */}
       <footer className="os-footer-bar relative z-30 mx-6 mb-4 flex h-12 items-center justify-between px-4 select-none font-serif text-xs">
+        {/* Left Side Controls: Archive, Open Windows, Search */}
         <div className="relative flex items-center gap-3">
           {/* FLOATING APP LAUNCHER POPUP (📦 ARCHIVE) */}
           <AnimatePresence>
@@ -400,7 +542,7 @@ export default function Desktop() {
                     <button
                       key={app.id}
                       onClick={() => {
-                        launch(app);
+                        toggleApp(app);
                         setIsLauncherOpen(false);
                       }}
                       className="group flex min-h-20 flex-col items-center justify-center gap-2 rounded-sm border border-purple-500/20 bg-purple-950/40 p-2.5 text-center transition hover:border-purple-400/50 hover:bg-purple-900/50 shadow-sm"
@@ -418,13 +560,13 @@ export default function Desktop() {
 
           <button
             onClick={() => setIsLauncherOpen((open) => !open)}
-            className="flex items-center gap-2 border-r border-purple-500/30 pr-4 text-[10px] font-bold tracking-[.14em] text-purple-200 hover:text-white transition"
+            className="flex items-center gap-2 border-r border-purple-500/30 pr-3 text-[10px] font-bold tracking-[.14em] text-purple-200 hover:text-white transition"
           >
             <LayoutGrid size={16} /> [📦 ARCHIVE]
           </button>
 
           {/* Open Apps / Window Taskbar Buttons */}
-          <div className="flex items-center gap-1.5 overflow-x-auto max-w-md">
+          <div className="flex items-center gap-1.5 overflow-x-auto max-w-xs sm:max-w-md">
             {windows.map((win) => (
               <button
                 key={win.id}
@@ -439,19 +581,35 @@ export default function Desktop() {
               </button>
             ))}
           </div>
-        </div>
 
-        {/* Right Footer Controls */}
-        <div className="flex items-center gap-3">
+          <div className="h-4 w-[1px] bg-purple-500/30 mx-1" />
+
+          {/* Search Bar */}
           <div className="relative flex items-center">
             <Search className="absolute left-2.5 text-purple-400" size={13} />
             <input
               type="text"
               placeholder="Search city records..."
-              className="h-8 w-44 rounded-sm border border-purple-500/20 bg-purple-950/40 pl-8 pr-3 text-[11px] text-purple-200 placeholder:text-purple-400/60 focus:border-purple-400 focus:outline-none"
+              className="h-8 w-36 sm:w-44 rounded-sm border border-purple-500/20 bg-purple-950/40 pl-8 pr-3 text-[11px] text-purple-200 placeholder:text-purple-400/60 focus:border-purple-400 focus:outline-none"
             />
           </div>
+        </div>
 
+        {/* Right Side Controls: Settings, Sanctuary, Logout, MAI */}
+        <div className="relative flex items-center gap-2.5">
+          {/* Settings */}
+          <Button
+            onClick={() => toggleApp(APPS.find((a) => a.id === 'settings'))}
+            size="sm"
+            variant="outline"
+            className="flex items-center gap-1 border-purple-500/30 bg-purple-950/60 text-purple-200 hover:bg-purple-900/60 text-[11px] font-serif rounded-sm"
+            title="System Settings"
+          >
+            <Settings size={13} className="text-purple-300" />
+            <span className="hidden sm:inline">Settings</span>
+          </Button>
+
+          {/* Sanctuary */}
           <Button
             onClick={() => toggleSanctuary()}
             size="sm"
@@ -459,9 +617,11 @@ export default function Desktop() {
             className="flex items-center gap-1 border-purple-500/30 bg-purple-950/60 text-purple-200 hover:bg-purple-900/60 text-[11px] font-serif rounded-sm"
             title="Clear Desktop Canvas"
           >
-            <Shield size={13} /> Sanctuary
+            <Shield size={13} className="text-purple-300" />
+            <span className="hidden sm:inline">Sanctuary</span>
           </Button>
 
+          {/* Log Out */}
           <Button
             onClick={() => logoutUser()}
             size="sm"
@@ -469,8 +629,12 @@ export default function Desktop() {
             className="flex items-center gap-1 border-purple-500/30 bg-purple-950/60 text-purple-200 hover:bg-purple-900/60 text-[11px] font-serif rounded-sm"
             title="Log Out of Municipal OS"
           >
-            <LogOut size={13} /> Log Out
+            <LogOut size={13} className="text-purple-300" />
+            <span className="hidden sm:inline">Log Out</span>
           </Button>
+
+          {/* MAI Agent Popup Assistant */}
+          <MAIDock />
         </div>
       </footer>
     </main>
