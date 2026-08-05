@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Globe, Search, RotateCw, Newspaper } from 'lucide-react';
+import { Search, Globe } from 'lucide-react';
 import { PORTALS } from './constants';
 
 export default function SearchHome({ openTab, navigateTab }) {
@@ -12,89 +12,79 @@ export default function SearchHome({ openTab, navigateTab }) {
         }
     };
 
+    // Beautiful matching colors
+    const colors = {
+        'faithmed.aure': { bg: 'bg-emerald-50 text-emerald-600 border-emerald-100 hover:border-emerald-200 hover:shadow-emerald-500/5', iconColor: 'text-emerald-500' },
+        'cyacademy.aure': { bg: 'bg-purple-50 text-purple-600 border-purple-100 hover:border-purple-200 hover:shadow-purple-500/5', iconColor: 'text-purple-500' },
+        'dga.gov.aure': { bg: 'bg-blue-50 text-blue-600 border-blue-100 hover:border-blue-200 hover:shadow-blue-500/5', iconColor: 'text-blue-500' },
+        'library.aure': { bg: 'bg-amber-50 text-amber-600 border-amber-100 hover:border-amber-200 hover:shadow-amber-500/5', iconColor: 'text-amber-500' },
+        'vectornet.aure': { bg: 'bg-cyan-50 text-cyan-600 border-cyan-100 hover:border-cyan-200 hover:shadow-cyan-500/5', iconColor: 'text-cyan-500' },
+        'aurelinedaily.aure': { bg: 'bg-rose-50 text-rose-600 border-rose-100 hover:border-rose-200 hover:shadow-rose-500/5', iconColor: 'text-rose-500' },
+    };
+
     return (
-        <div className="min-h-full bg-gradient-to-b from-slate-50 to-white flex flex-col items-center pt-24 px-8 pb-12">
-            <div className="text-center mb-10 w-full max-w-2xl">
-                <div className="flex items-center justify-center mb-6 space-x-3 text-purple-600">
-                    <Globe size={48} className="text-purple-500" />
-                    <h1 className="text-5xl font-extrabold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-purple-600 to-indigo-500">
-                        Aureline Search
-                    </h1>
+        <div className="flex flex-col items-center justify-center h-full w-full bg-[#fafbfc] px-8 text-slate-800 select-none">
+            <div className="w-full max-w-2xl flex flex-col items-center space-y-10 -mt-8">
+                
+                {/* Logo & Branding */}
+                <div className="flex flex-col items-center space-y-3">
+                    <div className="flex items-center justify-center space-x-3.5">
+                        <div className="flex items-center justify-center h-14 w-14 rounded-2xl bg-gradient-to-tr from-purple-600 to-indigo-600 shadow-md shadow-indigo-500/20 text-white">
+                            <Globe size={28} className="animate-spin-slow" />
+                        </div>
+                        <span className="text-4xl font-black tracking-tight bg-gradient-to-r from-purple-700 via-indigo-600 to-purple-900 bg-clip-text text-transparent font-sans">
+                            Aureline
+                        </span>
+                    </div>
+                    <p className="text-[10px] font-bold tracking-[0.25em] text-slate-400 uppercase">
+                        Quantum Search Core
+                    </p>
                 </div>
 
-                <form onSubmit={handleSearch} className="relative w-full shadow-lg rounded-full group">
-                    <Search className="absolute left-6 top-1/2 -translate-y-1/2 text-slate-400 h-5 w-5 group-focus-within:text-purple-500 transition-colors" />
+                {/* Search Box */}
+                <form onSubmit={handleSearch} className="w-full max-w-xl relative group">
+                    <div className="absolute inset-y-0 left-4 flex items-center pointer-events-none">
+                        <Search className="text-slate-400 group-focus-within:text-purple-600 transition-colors" size={20} />
+                    </div>
                     <input
                         type="text"
                         value={searchQuery}
-                        onChange={e => setSearchQuery(e.target.value)}
-                        className="w-full h-14 pl-14 pr-6 rounded-full border border-slate-200 bg-white text-lg focus:outline-none focus:ring-2 focus:ring-purple-400/50 focus:border-purple-400 transition-shadow"
-                        placeholder="Search the Aureline network..."
-                        autoFocus
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                        placeholder="Search Aureline nodes, citizens, or archives..."
+                        className="w-full h-14 pl-12 pr-6 rounded-full border border-slate-200 bg-white text-slate-800 placeholder-slate-400/80 text-base font-medium outline-none shadow-sm hover:shadow-md focus:shadow-lg focus:border-purple-400 focus:ring-4 focus:ring-purple-500/5 transition-all duration-300"
+                        spellCheck={false}
                     />
                 </form>
-            </div>
 
-            <div className="w-full max-w-4xl grid grid-cols-3 gap-4 mb-16">
-                {Object.entries(PORTALS).map(([url, portal]) => (
-                    <div
-                        key={url}
-                        onClick={() => openTab(`https://${url}`, portal.title)}
-                        className="flex flex-col items-center justify-center p-4 rounded-2xl border border-slate-100 bg-white shadow-sm hover:shadow-md hover:border-slate-200 cursor-pointer transition-all hover:-translate-y-0.5"
-                    >
-                        <div className={`p-4 rounded-full mb-3 bg-${portal.accent}-50 text-${portal.accent}-600`}>
-                            <portal.icon size={28} />
-                        </div>
-                        <span className="text-sm font-semibold text-slate-700">{portal.title}</span>
-                        <span className="text-xs text-slate-400 mt-1">{url}</span>
+                {/* Bookmark Tiles */}
+                <div className="w-full max-w-2xl space-y-4">
+                    <div className="text-[10px] font-extrabold uppercase tracking-[0.2em] text-slate-400 text-center">
+                        Quick Launch Portal Directory
                     </div>
-                ))}
-            </div>
-
-            <div className="w-full max-w-4xl grid grid-cols-2 gap-8">
-                <div className="bg-white rounded-xl border border-slate-100 p-6 shadow-sm">
-                    <h3 className="text-sm font-bold text-slate-400 uppercase tracking-wider mb-4 flex items-center">
-                        <RotateCw size={14} className="mr-2" /> Recent History
-                    </h3>
-                    <div className="space-y-3">
-                        {[
-                            { title: 'Aethercore Resonance Data', url: 'library.aure/archives' },
-                            { title: 'Veilwilt Symptoms', url: 'faithmed.aure/research' },
-                            { title: 'DGA Advisory 44-B', url: 'dga.gov.aure/advisories' },
-                            { title: 'Faculty Directory', url: 'cyacademy.aure/faculty' },
-                            { title: 'Latest Exploits', url: 'vectornet.aure/exploits' },
-                        ].map((item, i) => (
-                            <div key={i} className="flex items-center text-sm cursor-pointer hover:bg-slate-50 p-2 -mx-2 rounded-lg" onClick={() => navigateTab(`https://${item.url}`)}>
-                                <Globe size={14} className="text-slate-400 mr-3 shrink-0" />
-                                <div className="truncate">
-                                    <div className="font-medium text-slate-700">{item.title}</div>
-                                    <div className="text-xs text-slate-400 truncate">{item.url}</div>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-
-                <div className="bg-white rounded-xl border border-slate-100 p-6 shadow-sm">
-                    <h3 className="text-sm font-bold text-slate-400 uppercase tracking-wider mb-4 flex items-center">
-                        <Newspaper size={14} className="mr-2" /> Trending Now
-                    </h3>
-                    <div className="space-y-4">
-                        <div className="cursor-pointer group" onClick={() => openTab('https://aurelinedaily.aure', 'Aureline Daily')}>
-                            <h4 className="text-sm font-semibold text-slate-800 group-hover:text-blue-600 transition-colors">PRISM Activity Spikes in Lower Wards</h4>
-                            <p className="text-xs text-slate-500 mt-1 line-clamp-2">DGA reports indicate a 40% increase in unauthorized Aether tapping along the eastern perimeter...</p>
-                            <span className="text-[10px] text-slate-400 mt-1 block">2 hours ago • Aureline Daily</span>
-                        </div>
-                        <div className="cursor-pointer group" onClick={() => openTab('https://aurelinedaily.aure', 'Aureline Daily')}>
-                            <h4 className="text-sm font-semibold text-slate-800 group-hover:text-blue-600 transition-colors">Cycademy Announces Breakthrough in Resonance Stabilization</h4>
-                            <p className="text-xs text-slate-500 mt-1 line-clamp-2">Lead researchers claim new harmonic focal arrays could reduce Veilwilt risks by up to 15%...</p>
-                            <span className="text-[10px] text-slate-400 mt-1 block">5 hours ago • Aureline Daily</span>
-                        </div>
-                        <div className="cursor-pointer group" onClick={() => openTab('https://aurelinedaily.aure', 'Aureline Daily')}>
-                            <h4 className="text-sm font-semibold text-slate-800 group-hover:text-blue-600 transition-colors">FaithMed Opens New Wing for Aether-Burn Victims</h4>
-                            <p className="text-xs text-slate-500 mt-1 line-clamp-2">Responding to recent industrial incidents, the primary medical facility expands its specialized care...</p>
-                            <span className="text-[10px] text-slate-400 mt-1 block">1 day ago • Aureline Daily</span>
-                        </div>
+                    <div className="grid grid-cols-3 gap-4">
+                        {Object.entries(PORTALS).map(([url, portal]) => {
+                            const IconComp = portal.icon;
+                            const theme = colors[url] || { bg: 'bg-slate-50 text-slate-600 border-slate-100', iconColor: 'text-slate-500' };
+                            return (
+                                <button
+                                    key={url}
+                                    onClick={() => openTab(`https://${url}`, portal.title)}
+                                    className="flex items-center gap-3 p-3.5 rounded-xl border border-slate-100 bg-white hover:shadow-md hover:-translate-y-0.5 active:translate-y-0 transition-all duration-300 text-left group"
+                                >
+                                    <div className={`h-10 w-10 shrink-0 rounded-lg flex items-center justify-center ${theme.bg} transition-transform duration-300 group-hover:scale-110`}>
+                                        <IconComp size={20} className={theme.iconColor} />
+                                    </div>
+                                    <div className="min-w-0">
+                                        <div className="text-xs font-bold text-slate-700 truncate group-hover:text-purple-700 transition-colors">
+                                            {portal.title}
+                                        </div>
+                                        <div className="text-[9px] font-mono text-slate-400 truncate">
+                                            {url}
+                                        </div>
+                                    </div>
+                                </button>
+                            );
+                        })}
                     </div>
                 </div>
             </div>

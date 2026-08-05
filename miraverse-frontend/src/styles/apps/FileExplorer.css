@@ -1,15 +1,10 @@
 /* src/styles/apps/FileExplorer.css */
 
 .file-explorer-container {
-  background: rgba(241, 245, 249, 0.94);
-  backdrop-filter: blur(20px);
-  color: #0f172a;
-  font-family: Georgia, serif;
   height: 100%;
   width: 100%;
   display: flex;
   flex-direction: column;
-  border-radius: 4px;
 }
 
 /* Directory Tree Navigation Item */

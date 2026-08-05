@@ -3,7 +3,7 @@ import { ChevronLeft, ChevronRight, RotateCw, Lock, Star, MoreHorizontal } from 
 
 export default function AddressBar({ value, onChange, onSubmit, onBack, onForward, onRefresh, canBack, canForward }) {
     return (
-        <div className="flex items-center p-2 bg-[#130b2e] border-b border-purple-500/20 space-x-3 max-w-full shrink-0">
+        <div className="flex items-center p-2 bg-[#130b2e] border-b border-purple-500/20 space-x-3">
             <div className="flex items-center space-x-1 text-purple-400">
                 <button onClick={onBack} disabled={!canBack} className="p-1.5 rounded hover:bg-purple-900/50 hover:text-purple-200 disabled:opacity-40 disabled:cursor-not-allowed"><ChevronLeft size={18} /></button>
                 <button onClick={onForward} disabled={!canForward} className="p-1.5 rounded hover:bg-purple-900/50 hover:text-purple-200 disabled:opacity-40 disabled:cursor-not-allowed"><ChevronRight size={18} /></button>

@@ -1,9 +1,17 @@
 import React from 'react';
 import { X, Plus } from 'lucide-react';
+import { useOSStore } from '../../store/useOSStore';
 
-export default function TabBar({ tabs, activeTabId, onSwitch, onClose, onNew }) {
+export default function TabBar({ tabs, activeTabId, onSwitch, onClose, onNew, onPointerDown }) {
+    const closeWindow = useOSStore((s) => s.closeWindow);
+    const toggleMinimize = useOSStore((s) => s.toggleMinimize);
+    const toggleMaximize = useOSStore((s) => s.toggleMaximize);
+
     return (
-        <div className="flex items-center px-2 pt-2 bg-[#0d0724] border-b border-purple-500/20">
+        <div 
+            onPointerDown={onPointerDown}
+            className="flex items-center px-2 pt-2 bg-[#0d0724] border-b border-purple-500/20 max-w-full overflow-hidden shrink-0 select-none cursor-grab active:cursor-grabbing"
+        >
             <div className="flex space-x-1 overflow-x-auto flex-1 hide-scrollbar">
                 {tabs.map(tab => (
                     <div
@@ -26,6 +34,7 @@ export default function TabBar({ tabs, activeTabId, onSwitch, onClose, onNew }) 
                     </div>
                 ))}
             </div>
+            
             <button
                 onClick={onNew}
                 className="p-1.5 ml-2 rounded-full text-purple-400 hover:bg-purple-900/50 hover:text-purple-200 transition-colors"
@@ -33,6 +42,31 @@ export default function TabBar({ tabs, activeTabId, onSwitch, onClose, onNew }) 
             >
                 <Plus size={18} />
             </button>
+
+            {/* Integrated Browser Window Control Buttons */}
+            <div className="flex items-center gap-3.5 ml-auto pl-4 pr-2 text-purple-400 font-bold text-xs select-none">
+                <button
+                    onClick={(e) => { e.stopPropagation(); toggleMinimize('browser'); }}
+                    className="hover:text-purple-200 transition-colors px-1"
+                    title="Minimize"
+                >
+                    _
+                </button>
+                <button
+                    onClick={(e) => { e.stopPropagation(); toggleMaximize('browser'); }}
+                    className="hover:text-purple-200 transition-colors px-1"
+                    title="Maximize"
+                >
+                    □
+                </button>
+                <button
+                    onClick={(e) => { e.stopPropagation(); closeWindow('browser'); }}
+                    className="hover:text-red-400 transition-colors px-1"
+                    title="Close"
+                >
+                    ✕
+                </button>
+            </div>
         </div>
     );
 }

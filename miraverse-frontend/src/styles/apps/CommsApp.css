@@ -1,16 +1,10 @@
 /* src/styles/apps/CommsApp.css */
 
-/* Comms Chat Container: Soft Celestial Lavender-Gray Glass */
 .comms-container {
-  background: rgba(237, 240, 248, 0.92);
-  backdrop-filter: blur(20px);
-  color: #1e1b4b;
-  font-family: Georgia, serif;
   height: 100%;
   width: 100%;
   display: flex;
   flex-direction: column;
-  border-radius: 4px;
 }
 
 /* Mail & Dispatches View: Soft Frosted Ivory Pearl Glass */

@@ -6,7 +6,20 @@ import { Folder, FileText, Search, Shield, Globe, Users, Briefcase, BookOpen, Co
 export const APPS = [
   { id: 'comms', title: 'Comms (OS Network)', icon: Mail },
   { id: 'mail', title: 'Mail (Official Papers)', icon: FileText },
-  { id: 'browser', title: 'Net Browser (Web/Faith)', icon: Globe },
+  { 
+    id: 'browser', 
+    title: 'Net Browser (Web/Faith)', 
+    icon: Globe, 
+    isMaximized: false,
+    size: { width: 1100, height: 700 },
+    position: { x: 'calc(50vw - 550px)', y: 'calc(50vh - 350px)' },
+    theme: {
+      frameClass: 'rounded-xl border border-white/30 bg-white/40 backdrop-blur-xl shadow-2xl overflow-hidden flex flex-col',
+      headerActiveClass: 'bg-[#0d0724] text-purple-200 border-b border-purple-500/20',
+      headerInactiveClass: 'bg-[#0d0724]/90 text-purple-400/80 border-b border-purple-500/20',
+      bodyClass: 'bg-white/60 text-slate-800'
+    }
+  },
   { id: 'passport', title: 'Citizen Record', icon: UserCheck },
   { id: 'files', title: 'File Explorer (files)', icon: Folder },
   { id: 'spellforge', title: 'SpellForge Matrix', icon: Sparkles },
@@ -19,7 +32,7 @@ const CommsApp = lazy(() => import('./CommsApp'));
 const SpellForgeApp = lazy(() => import('./SpellForgeApp'));
 const CivicProfileApp = lazy(() => import('./CivicProfileApp'));
 const NoticeBoardApp = lazy(() => import('./NoticeBoardApp'));
-const BrowserApp = lazy(() => import('./BrowserApp'));
+const BrowserApp = lazy(() => import('./Browser'));
 const MailApp = lazy(() => import('./MailApp'));
 const ChatMeetApp = lazy(() => import('./ChatMeetApp'));
 const FileExplorerApp = lazy(() => import('./FileExplorerApp'));
@@ -125,11 +138,10 @@ const Files = () => {
                     setActiveFolder(f.id);
                     setSelectedItem(null);
                   }}
-                  className={`flex w-full items-center justify-between rounded-lg px-2.5 py-1.5 text-left text-xs transition ${
-                    activeFolder === f.id
+                  className={`flex w-full items-center justify-between rounded-lg px-2.5 py-1.5 text-left text-xs transition ${activeFolder === f.id
                       ? 'bg-[#e9ebf6] font-semibold text-[#1d2650]'
                       : 'text-slate-600 hover:bg-[#f2f3fb]'
-                  }`}
+                    }`}
                 >
                   <div className="flex items-center gap-2">
                     <IconComp size={14} className={activeFolder === f.id ? 'text-[#5f6ab0]' : 'text-slate-400'} />
@@ -161,11 +173,10 @@ const Files = () => {
                     addSkillXP('Research', 10);
                     incrementAppRank('research');
                   }}
-                  className={`group cursor-pointer flex flex-col rounded-lg border p-3 transition ${
-                    selectedItem?.id === item.id
+                  className={`group cursor-pointer flex flex-col rounded-lg border p-3 transition ${selectedItem?.id === item.id
                       ? 'border-[#8c97d6] bg-[#eef0fb] shadow-sm'
                       : 'border-slate-200/80 bg-white hover:bg-[#f7f7fd]'
-                  }`}
+                    }`}
                 >
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2 font-semibold text-xs text-[#1f2954] truncate">
@@ -367,9 +378,8 @@ const SettingsApp = () => {
               <button
                 key={wp.name}
                 onClick={() => setWallpaper(wp.url)}
-                className={`flex flex-col items-center overflow-hidden rounded-lg border p-2 transition ${
-                  currentWallpaper === wp.url ? 'border-[#8c97d6] bg-[#eef0fb]' : 'border-slate-200 hover:bg-white'
-                }`}
+                className={`flex flex-col items-center overflow-hidden rounded-lg border p-2 transition ${currentWallpaper === wp.url ? 'border-[#8c97d6] bg-[#eef0fb]' : 'border-slate-200 hover:bg-white'
+                  }`}
               >
                 <div
                   className="h-16 w-full rounded bg-cover bg-center"

@@ -1,6 +1,6 @@
 // src/components/Desktop.jsx
 import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, useDragControls } from 'framer-motion';
 import {
   Sparkles,
   Search,
@@ -34,6 +34,8 @@ import MeridionLandingPage from './MeridionLandingPage';
 import LoginScreen from './LoginScreen';
 import MAIDock from './MAIDock';
 import { Calendar, CheckSquare, Award, CheckCircle2 } from 'lucide-react';
+import OSWindow from './OSWindow';
+import BrowserApp from '../apps/browser';
 
 const WHEEL_OF_THE_YEAR = [
   { month: 'January', phase: 'Mid-Winter', icon: '❄️' },
@@ -59,9 +61,11 @@ export default function Desktop() {
     isSanctuary,
     toggleSanctuary,
     logoutUser,
+    focusWindow,
   } = useOSStore();
 
   const player = useOSStore((s) => s.gameplay.player);
+  const workspaceRef = React.useRef(null);
 
   const [authMode, setAuthMode] = useState(null); // null | 'login' | 'register'
   const [isLauncherOpen, setIsLauncherOpen] = useState(false);
@@ -69,6 +73,7 @@ export default function Desktop() {
   const [isDocumentModalOpen, setIsDocumentModalOpen] = useState(false);
   const [isSignalPlayerOpen, setIsSignalPlayerOpen] = useState(false);
   const [currentMonthIndex, setCurrentMonthIndex] = useState(2); // March (Early Spring)
+
 
   const advanceMonth = () => {
     setCurrentMonthIndex((prev) => (prev + 1) % 12);
@@ -97,6 +102,7 @@ export default function Desktop() {
 
   return (
     <main
+      ref={workspaceRef}
       className="relative flex h-screen w-screen flex-col overflow-hidden bg-meridion-desktop text-purple-100 select-none font-serif"
       onMouseDown={(event) => {
         if (event.target === event.currentTarget) {
@@ -111,7 +117,7 @@ export default function Desktop() {
       <SparklesCanvas />
 
       {/* ── TOP HEADER BAR: BRANDING, WHEEL & CREDIT LEDGER ── */}
-      <header className="os-header-bar relative z-30 mx-6 mt-4 flex h-14 items-center justify-between px-5 select-none font-serif">
+      <header className="os-header-bar relative z-20 mx-6 mt-4 flex h-14 items-center justify-between px-5 select-none font-serif">
         <div className="flex items-center gap-4">
           <div className="grid h-9 w-9 place-items-center rounded-sm bg-purple-500/20 border border-purple-400/40 text-purple-300 shadow-[0_0_15px_rgba(168,85,247,0.3)]">
             <Sparkles size={18} />
@@ -158,7 +164,7 @@ export default function Desktop() {
       </header>
 
       {/* ── UNIFIED CONTINUOUS WORKSPACE PAGE (SOLID SIDE PANELS TOP TO BOTTOM) ── */}
-      <div className="relative z-20 flex min-h-0 flex-1 px-6 py-2.5 overflow-hidden">
+      <div className="relative z-10 flex min-h-0 flex-1 px-6 py-2.5 overflow-hidden">
         <AnimatePresence>
           {!isSanctuary && (
             <motion.div
@@ -494,15 +500,15 @@ export default function Desktop() {
           </div>
         )}
 
-        {/* Floating App Windows */}
-        <AnimatePresence>
-          {windows.filter((win) => !win.isMinimized).map((win) => (
-            <Window key={win.id} win={win} />
-          ))}
-        </AnimatePresence>
       </div>
 
-      {/* ── OVERLAY MODALS ── */}
+      {/* Floating App Windows */}
+      <AnimatePresence>
+        {windows.filter((win) => !win.isMinimized).map((win) => (
+          <Window key={win.id} win={win} workspaceRef={workspaceRef} />
+        ))}
+      </AnimatePresence>
+
       {isPhoneOpen && (
         <div className="fixed bottom-16 right-6 z-50 shadow-2xl">
           <PhoneWidget />
@@ -518,7 +524,7 @@ export default function Desktop() {
       )}
 
       {/* ── FOOTER TASKBAR: ARCHIVE & APPS (LEFT) | SETTINGS, SANCTUARY, LOGOUT, MAI (RIGHT) ── */}
-      <footer className="os-footer-bar relative z-30 mx-6 mb-4 flex h-12 items-center justify-between px-4 select-none font-serif text-xs">
+      <footer className="os-footer-bar relative z-20 mx-6 mb-4 flex h-12 items-center justify-between px-4 select-none font-serif text-xs">
         {/* Left Side Controls: Archive, Open Windows, Search */}
         <div className="relative flex items-center gap-3">
           {/* FLOATING APP LAUNCHER POPUP (📦 ARCHIVE) */}

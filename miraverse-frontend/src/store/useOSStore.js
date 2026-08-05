@@ -580,7 +580,7 @@ export const useOSStore = create((set) => ({
       id: app.id || Math.random().toString(36).substr(2, 9),
       zIndex: maxZ + 1,
       isMinimized: false,
-      isMaximized: false,
+      isMaximized: app.isMaximized ?? false,
       position: app.position || spawnPosition(state.windows.length),
       size: app.size || { width: 920, height: 600 },
     };
@@ -617,7 +617,7 @@ export const useOSStore = create((set) => ({
       id: app.id || Math.random().toString(36).substr(2, 9),
       zIndex: maxZ + 1,
       isMinimized: false,
-      isMaximized: false,
+      isMaximized: app.isMaximized ?? false,
       position: app.position || spawnPosition(state.windows.length),
       size: app.size || { width: 920, height: 600 },
     };
