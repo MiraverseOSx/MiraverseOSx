@@ -22,7 +22,18 @@ export default {
           accent: 'var(--color-accent)',
           text: 'var(--color-text)',
           surface: 'var(--color-surface)',
-        }
+        },
+        lavender: 'var(--lavender)',
+        rose: 'var(--rose)',
+        purple: 'var(--purple)',
+        deepblue: 'var(--deep-blue)',
+      },
+      borderRadius: {
+        window: 'var(--radius-window)',
+        card: 'var(--radius-card)',
+      },
+      boxShadow: {
+        window: 'var(--shadow-window)',
       },
     },
   },

@@ -35,7 +35,9 @@ import LoginScreen from './LoginScreen';
 import MAIDock from './MAIDock';
 import { Calendar, CheckSquare, Award, CheckCircle2 } from 'lucide-react';
 import OSWindow from './OSWindow';
-import BrowserApp from '../apps/BrowserApp/BrowserApp';
+import logoIcon from '../assets/images/logo_icon.png';
+import frontIdCard from '../assets/images/front_id_card.svg';
+// Browser is loaded via lazy in contents.jsx; no direct import needed here
 
 const WHEEL_OF_THE_YEAR = [
   { month: 'January', phase: 'Mid-Winter', icon: '❄️' },
@@ -113,7 +115,7 @@ export default function Desktop() {
       {/* Background Branding — subtle, bottom-right watermark */}
       <div className="pointer-events-none absolute bottom-6 right-6 z-0 opacity-10">
         <img
-          src="/logo_icon.png"
+          src={logoIcon}
           alt="MIRAVERSE OS"
           className="h-64 w-64 md:h-80 md:w-80 object-contain mix-blend-screen blur-[0.5px]"
         />
@@ -193,7 +195,7 @@ export default function Desktop() {
                       {[
                         { id: 'phone', label: '📱 Phone', icon: Smartphone, color: 'text-pink-400', action: () => setIsPhoneOpen(!isPhoneOpen) },
                         { id: 'comms', label: '💬 Comms', icon: Mail, color: 'text-purple-400', action: () => toggleApp(APPS.find((a) => a.id === 'comms')) },
-                        { id: 'mail', label: '✉️ Mail', icon: FileText, color: 'text-indigo-400', badge: !player?.dgaVerified, action: () => toggleApp(APPS.find((a) => a.id === 'mail') || APPS.find((a) => a.id === 'comms')) },
+                        // Mail removed; keep Comms available
                         { id: 'browser', label: '🌐 Net Browser', icon: Globe, color: 'text-cyan-400', action: () => toggleApp(APPS.find((a) => a.id === 'browser')) },
                         { id: 'passport', label: '🪪 Citizen Record', icon: UserCheck, color: 'text-emerald-400', action: () => toggleApp(APPS.find((a) => a.id === 'passport')) },
                         { id: 'files', label: '📁 File Explorer', icon: Folder, color: 'text-amber-400', action: () => toggleApp(APPS.find((a) => a.id === 'files')) },
@@ -418,7 +420,7 @@ export default function Desktop() {
                     className="relative cursor-pointer group overflow-hidden rounded-sm border border-purple-400/30 bg-purple-950/40 p-2 shadow-lg transition hover:border-purple-300"
                   >
                     <img
-                      src="/front_id_card.svg"
+                      src={frontIdCard}
                       alt="Aureline Citizen ID Card"
                       className="w-full h-auto object-contain rounded-xs opacity-90 group-hover:opacity-100 transition transform group-hover:scale-[1.02]"
                     />

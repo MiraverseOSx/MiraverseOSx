@@ -87,7 +87,7 @@ export default function PhoneWidget() {
     <div
       className="w-[320px] h-[580px] rounded-[40px] border-[8px] border-slate-900 bg-slate-950 shadow-2xl flex flex-col justify-between p-3 select-none text-white relative font-sans overflow-hidden bg-cover bg-center"
       style={{
-        backgroundImage: `url('https://images.unsplash.com/photo-1517411032315-54ef2cb783bb?q=80&w=600&auto=format&fit=crop')`,
+        backgroundImage: `linear-gradient(135deg, rgba(99,102,241,0.35), rgba(147,51,234,0.35))`,
       }}
     >
       {/* Twilight Dusk Overlay Gradient */}
@@ -120,7 +120,7 @@ export default function PhoneWidget() {
                   <div
                     className="w-11 h-11 rounded-xl bg-cover bg-center border border-pink-300/40 shadow-sm shrink-0"
                     style={{
-                      backgroundImage: `url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=200&auto=format&fit=crop')`,
+                      backgroundImage: `linear-gradient(135deg, rgba(99,102,241,0.35), rgba(147,51,234,0.35))`,
                     }}
                   />
                   <div className="flex-1 min-w-0">
@@ -336,9 +336,8 @@ export default function PhoneWidget() {
                     <button
                       key={contact}
                       onClick={() => setActiveSmsContact(contact)}
-                      className={`px-2 py-0.5 rounded-full transition ${
-                        activeSmsContact === contact ? 'bg-pink-500 text-slate-950 font-bold' : 'bg-white/10 text-white/60'
-                      }`}
+                      className={`px-2 py-0.5 rounded-full transition ${activeSmsContact === contact ? 'bg-pink-500 text-slate-950 font-bold' : 'bg-white/10 text-white/60'
+                        }`}
                     >
                       {contact}
                     </button>
@@ -349,9 +348,8 @@ export default function PhoneWidget() {
                   {(smsThreads[activeSmsContact] || []).map((msg) => (
                     <div
                       key={msg.id}
-                      className={`rounded-lg p-2 border space-y-0.5 ${
-                        msg.sender === 'You' ? 'bg-purple-950/70 border-pink-400/40 ml-3' : 'bg-slate-950/70 border-white/10 mr-3'
-                      }`}
+                      className={`rounded-lg p-2 border space-y-0.5 ${msg.sender === 'You' ? 'bg-purple-950/70 border-pink-400/40 ml-3' : 'bg-slate-950/70 border-white/10 mr-3'
+                        }`}
                     >
                       <div className="flex justify-between text-[9px]">
                         <span className="font-bold text-pink-300">{msg.sender}</span>
@@ -495,11 +493,10 @@ export default function PhoneWidget() {
                         <button
                           key={el}
                           onClick={() => setSpellElement(el)}
-                          className={`p-1.5 rounded-lg border font-semibold transition ${
-                            spellElement === el
+                          className={`p-1.5 rounded-lg border font-semibold transition ${spellElement === el
                               ? 'border-pink-400 bg-pink-500/30 text-white'
                               : 'border-white/10 bg-white/5 text-white/70'
-                          }`}
+                            }`}
                         >
                           {el}
                         </button>
@@ -514,11 +511,10 @@ export default function PhoneWidget() {
                         <button
                           key={ut}
                           onClick={() => setSpellUtility(ut)}
-                          className={`p-1.5 rounded-lg border font-semibold transition ${
-                            spellUtility === ut
+                          className={`p-1.5 rounded-lg border font-semibold transition ${spellUtility === ut
                               ? 'border-purple-400 bg-purple-500/30 text-white'
                               : 'border-white/10 bg-white/5 text-white/70'
-                          }`}
+                            }`}
                         >
                           {ut}
                         </button>

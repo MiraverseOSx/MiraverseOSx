@@ -1,0 +1,34 @@
+.tabbar {
+  background: linear-gradient(to right, var(--lavender), var(--rose));
+  padding: 6px;
+  display: flex;
+  gap: 6px;
+}
+.tab {
+  background: var(--purple);
+  border-radius: 10px;
+  padding: 10px 18px;
+  transition: 0.25s ease;
+  color: white; /* Added to improve contrast on purple bg */
+  cursor: pointer;
+}
+.tab.active {
+  background: var(--lavender);
+  box-shadow: 0 0 12px var(--deep-blue);
+  transform: scale(1.05);
+  color: #333; /* Dark text on light lavender active tab */
+}
+.addressbar {
+  background: linear-gradient(to right, var(--rose), var(--lavender));
+  padding: 10px;
+  display: flex;
+  gap: 10px;
+}
+.address-input {
+  flex: 1;
+  background: var(--glass-bg);
+  border: 2px solid var(--lavender);
+  border-radius: 10px;
+  padding: 8px;
+  color: #333;
+}

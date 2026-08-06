@@ -1,4 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Esteban&display=swap');
+@import './styles/tokens.css';
+@import './styles/theme.css';
+@import './styles/components.css';
 
 @tailwind base;
 @tailwind components;

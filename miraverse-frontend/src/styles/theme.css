@@ -1,0 +1,20 @@
+.os-desktop {
+  background: radial-gradient(circle at top, var(--lavender), var(--rose));
+  min-height: 100vh;
+  padding: 2rem;
+}
+
+.os-window {
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur));
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-window);
+  box-shadow: var(--shadow-window);
+
+  width: 1100px;
+  height: 700px;
+  margin: 2rem auto;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}

@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Sparkles, ArrowRight, UserPlus, LogIn, Compass, Shield, BookOpen, HeartPulse } from 'lucide-react';
 import SparklesCanvas from './SparklesCanvas';
+import meridionWorld from '../assets/images/meridion_world.jpg';
 
 export default function MeridionLandingPage({ onSignIn, onEnroll }) {
   const [hoveredCard, setHoveredCard] = useState(null);
@@ -57,7 +58,7 @@ export default function MeridionLandingPage({ onSignIn, onEnroll }) {
           {/* World Hero Background Image */}
           <div className="relative h-[440px] sm:h-[500px] w-full overflow-hidden">
             <img
-              src="/meridion_world.jpg"
+              src={meridionWorld}
               alt="World of Meridion"
               className="h-full w-full object-cover object-center transform hover:scale-105 transition-transform duration-1000"
             />

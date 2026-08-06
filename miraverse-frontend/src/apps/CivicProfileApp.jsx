@@ -65,8 +65,9 @@ export default function CivicProfileApp() {
   ];
 
   const handleOpenMailForVerification = () => {
-    const mailApp = APPS.find((a) => a.id === 'mail');
-    if (mailApp) toggleApp(mailApp);
+    // Mail app removed; fall back to Comms
+    const commsApp = APPS.find((a) => a.id === 'comms');
+    if (commsApp) toggleApp(commsApp);
   };
 
   return (
@@ -84,41 +85,36 @@ export default function CivicProfileApp() {
         <div className="flex items-center gap-1 bg-white/70 border border-slate-300/80 rounded-xl p-1 shadow-sm">
           <button
             onClick={() => setActiveTab('record')}
-            className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition ${
-              activeTab === 'record' ? 'bg-[#17213f] text-white shadow-sm' : 'text-slate-600 hover:bg-[#eef0fb]'
-            }`}
+            className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition ${activeTab === 'record' ? 'bg-[#17213f] text-white shadow-sm' : 'text-slate-600 hover:bg-[#eef0fb]'
+              }`}
           >
             🆔 Record
           </button>
           <button
             onClick={() => setActiveTab('inventory')}
-            className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition ${
-              activeTab === 'inventory' ? 'bg-[#17213f] text-white shadow-sm' : 'text-slate-600 hover:bg-[#eef0fb]'
-            }`}
+            className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition ${activeTab === 'inventory' ? 'bg-[#17213f] text-white shadow-sm' : 'text-slate-600 hover:bg-[#eef0fb]'
+              }`}
           >
             🎒 Inventory
           </button>
           <button
             onClick={() => setActiveTab('skills')}
-            className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition ${
-              activeTab === 'skills' ? 'bg-[#17213f] text-white shadow-sm' : 'text-slate-600 hover:bg-[#eef0fb]'
-            }`}
+            className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition ${activeTab === 'skills' ? 'bg-[#17213f] text-white shadow-sm' : 'text-slate-600 hover:bg-[#eef0fb]'
+              }`}
           >
             ⚡ Skills (9)
           </button>
           <button
             onClick={() => setActiveTab('clubs')}
-            className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition ${
-              activeTab === 'clubs' ? 'bg-[#17213f] text-white shadow-sm' : 'text-slate-600 hover:bg-[#eef0fb]'
-            }`}
+            className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition ${activeTab === 'clubs' ? 'bg-[#17213f] text-white shadow-sm' : 'text-slate-600 hover:bg-[#eef0fb]'
+              }`}
           >
             🏛️ Clubs
           </button>
           <button
             onClick={() => setActiveTab('dorm')}
-            className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition ${
-              activeTab === 'dorm' ? 'bg-[#17213f] text-white shadow-sm' : 'text-slate-600 hover:bg-[#eef0fb]'
-            }`}
+            className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition ${activeTab === 'dorm' ? 'bg-[#17213f] text-white shadow-sm' : 'text-slate-600 hover:bg-[#eef0fb]'
+              }`}
           >
             🏠 Dorm
           </button>

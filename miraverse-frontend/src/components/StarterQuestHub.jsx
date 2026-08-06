@@ -25,8 +25,8 @@ export default function StarterQuestHub() {
   const handleActionClick = () => {
     soundEngine.playClick();
     if (currentPhase === 0) {
-      const mailApp = APPS.find((a) => a.id === 'mail');
-      if (mailApp) toggleApp(mailApp);
+      const commsApp = APPS.find((a) => a.id === 'comms');
+      if (commsApp) toggleApp(commsApp);
     } else if (currentPhase === 1) {
       const browserApp = APPS.find((a) => a.id === 'browser');
       if (browserApp) toggleApp(browserApp);

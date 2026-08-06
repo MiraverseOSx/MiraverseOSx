@@ -1,0 +1,15 @@
+:root {
+  --lavender: #E7D7FF;
+  --rose: #F7C9E8;
+  --purple: #A078FF;
+  --deep-blue: #3A4FFF;
+
+  --glass-bg: rgba(255,255,255,0.35);
+  --glass-border: rgba(255,255,255,0.25);
+  --glass-blur: 22px;
+
+  --radius-window: 16px;
+  --radius-card: 12px;
+
+  --shadow-window: 0 0 30px rgba(160,120,255,0.3);
+}

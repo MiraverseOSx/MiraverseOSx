@@ -6,10 +6,10 @@ import { Folder, FileText, Search, Shield, Globe, Users, Briefcase, BookOpen, Co
 export const APPS = [
   { id: 'comms', title: 'Comms (OS Network)', icon: Mail },
   { id: 'mail', title: 'Mail (Official Papers)', icon: FileText },
-  { 
-    id: 'browser', 
-    title: 'Net Browser (Web/Faith)', 
-    icon: Globe, 
+  {
+    id: 'browser',
+    title: 'Net Browser (Web/Faith)',
+    icon: Globe,
     isMaximized: false,
     size: { width: 1100, height: 700 },
     position: { x: 'calc(50vw - 550px)', y: 'calc(50vh - 350px)' },
@@ -138,8 +138,8 @@ const Files = () => {
                     setSelectedItem(null);
                   }}
                   className={`flex w-full items-center justify-between rounded-lg px-2.5 py-1.5 text-left text-xs transition ${activeFolder === f.id
-                      ? 'bg-[#e9ebf6] font-semibold text-[#1d2650]'
-                      : 'text-slate-600 hover:bg-[#f2f3fb]'
+                    ? 'bg-[#e9ebf6] font-semibold text-[#1d2650]'
+                    : 'text-slate-600 hover:bg-[#f2f3fb]'
                     }`}
                 >
                   <div className="flex items-center gap-2">
@@ -173,8 +173,8 @@ const Files = () => {
                     incrementAppRank('research');
                   }}
                   className={`group cursor-pointer flex flex-col rounded-lg border p-3 transition ${selectedItem?.id === item.id
-                      ? 'border-[#8c97d6] bg-[#eef0fb] shadow-sm'
-                      : 'border-slate-200/80 bg-white hover:bg-[#f7f7fd]'
+                    ? 'border-[#8c97d6] bg-[#eef0fb] shadow-sm'
+                    : 'border-slate-200/80 bg-white hover:bg-[#f7f7fd]'
                     }`}
                 >
                   <div className="flex items-center justify-between">
