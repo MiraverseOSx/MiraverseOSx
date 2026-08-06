@@ -27,15 +27,23 @@ export default function CommsApp() {
   const [draft, setDraft] = useState('');
   const [chatDraft, setChatDraft] = useState('');
   const [attachmentModal, setAttachmentModal] = useState(null);
+  const [maiToneSelected, setMaiToneSelected] = useState(null);
 
   const claimedComms = useOSStore((s) => s.gameplay.claimedComms);
   const claimCommsAttachment = useOSStore((s) => s.claimCommsAttachment);
+  const selectMAITone = useOSStore((s) => s.selectMAITone);
+  const maiTone = useOSStore((s) => s.gameplay.maiTone);
 
   const { emails: storeEmails, channels, directs, messages, addChatMessage } = useComms();
 
   const activeChannel = useMemo(() => {
     return channels.find((c) => c.id === channelId) || directs.find((d) => d.id === channelId) || { name: channelId };
   }, [channels, directs, channelId]);
+
+  const handleMAIToneChoice = (tone) => {
+    selectMAITone(tone);
+    setMaiToneSelected(tone);
+  };
 
   const emails = useMemo(() => {
     let list = storeEmails;
@@ -169,6 +177,49 @@ export default function CommsApp() {
                 <div className="my-3 flex-1 overflow-auto whitespace-pre-line text-xs leading-relaxed text-[#243064]">
                   {selectedMessage.body}
                 </div>
+
+                {/* MAI Welcome Packet Tone Response Selector */}
+                {/MAI|Welcome Packet|Initialization Complete/i.test(selectedMessage.subject) && (
+                  <div className="my-3 rounded-xl border border-purple-300 bg-purple-50/80 p-4 space-y-3 shadow-sm">
+                    <div className="text-xs font-bold text-purple-900 font-serif flex items-center gap-2">
+                      <Sparkles size={15} className="text-purple-600" /> MAI ALIGNMENT RESPONSE PROTOCOL
+                    </div>
+                    <p className="text-[11px] text-purple-700 leading-relaxed">
+                      Select your response tone to set your initial relationship vector with MAI:
+                    </p>
+                    <div className="grid grid-cols-3 gap-2">
+                      <button
+                        onClick={() => handleMAIToneChoice('friendly')}
+                        className={`rounded-lg border p-2 text-xs font-semibold text-center transition ${
+                          maiTone === 'friendly' ? 'border-emerald-500 bg-emerald-100 text-emerald-900 font-bold' : 'border-purple-200 bg-white text-purple-800 hover:bg-purple-100'
+                        }`}
+                      >
+                        😊 Friendly (+Trust)
+                      </button>
+                      <button
+                        onClick={() => handleMAIToneChoice('neutral')}
+                        className={`rounded-lg border p-2 text-xs font-semibold text-center transition ${
+                          maiTone === 'neutral' ? 'border-indigo-500 bg-indigo-100 text-indigo-900 font-bold' : 'border-purple-200 bg-white text-purple-800 hover:bg-purple-100'
+                        }`}
+                      >
+                        😐 Neutral (Balanced)
+                      </button>
+                      <button
+                        onClick={() => handleMAIToneChoice('cold')}
+                        className={`rounded-lg border p-2 text-xs font-semibold text-center transition ${
+                          maiTone === 'cold' ? 'border-rose-500 bg-rose-100 text-rose-900 font-bold' : 'border-purple-200 bg-white text-purple-800 hover:bg-purple-100'
+                        }`}
+                      >
+                        ❄️ Cold (+Rivalry)
+                      </button>
+                    </div>
+                    {maiTone && (
+                      <p className="text-[10px] text-purple-600 font-mono text-center">
+                        ✓ Tone Vector Established: <span className="font-bold uppercase">{maiTone}</span>
+                      </p>
+                    )}
+                  </div>
+                )}
 
                 {selectedMessage.attachment && (
                   <div className="mb-3 rounded-lg border border-slate-300/80 bg-white/90 p-3 flex items-center justify-between shadow-sm">

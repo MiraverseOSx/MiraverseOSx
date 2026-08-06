@@ -31,6 +31,7 @@ export const APPS = [
 const CommsApp = lazy(() => import('./CommsApp'));
 const SpellForgeApp = lazy(() => import('./SpellForgeApp'));
 const CivicProfileApp = lazy(() => import('./CivicProfileApp'));
+const PulseApp = lazy(() => import('./PulseApp/PulseApp'));
 const NoticeBoardApp = lazy(() => import('./NoticeBoardApp'));
 const BrowserApp = lazy(() => import('./BrowserApp/BrowserApp'));
 const MailApp = lazy(() => import('./MailApp'));
@@ -55,7 +56,7 @@ const Panel = ({ children }) => (
 );
 
 // ----------------------------------------------------------------------
-// Files App: Refined & Redesigned Y2K Celestial File Explorer
+// Files App: Refined & Redesigned Celestial File Explorer
 // ----------------------------------------------------------------------
 const Files = () => {
   const [activeFolder, setActiveFolder] = useState('lore');
@@ -407,6 +408,7 @@ export const CONTENTS = {
   mail: withSuspense(MailApp, 'Mail'),
   spellforge: withSuspense(SpellForgeApp, 'SpellForge'),
   passport: withSuspense(CivicProfileApp, 'Civic Profile'),
+  pulse: withSuspense(PulseApp, 'Pulse Network'),
   terminal: TerminalApp,
   browser: withSuspense(BrowserApp, 'Browser'),
   settings: SettingsApp,

@@ -11,9 +11,11 @@
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "cors": "^2.8.5",
+    "dotenv": "^17.4.2",
     "express": "^4.19.2",
     "framer-motion": "^12.42.2",
     "lucide-react": "^1.29.0",
+    "node-fetch": "^3.3.2",
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
     "tailwind-merge": "^3.6.0",
@@ -53,5 +55,21 @@
     "postcss": "^8.5.22",
     "tailwindcss": "^3.4.19",
     "vite": "^8.2.0"
-  }
+  },
+  "description": "Evaluate your Microsoft Foundry AI agent locally with pytest-powered testing. This project provides a complete evaluation framework for assessing agent quality, performance, and accuracy using built-in and custom evaluators.",
+  "main": "postcss.config.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mirxclej/MiraverseOSx.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mirxclej/MiraverseOSx/issues"
+  },
+  "homepage": "https://github.com/mirxclej/MiraverseOSx#readme"
 }

@@ -67,6 +67,7 @@ export default function Desktop() {
   } = useOSStore();
 
   const player = useOSStore((s) => s.gameplay.player);
+  const lockedApps = useOSStore((s) => s.gameplay.lockedApps) || [];
   const workspaceRef = React.useRef(null);
 
   const [authMode, setAuthMode] = useState(null); // null | 'login' | 'register'
@@ -75,7 +76,6 @@ export default function Desktop() {
   const [isDocumentModalOpen, setIsDocumentModalOpen] = useState(false);
   const [isSignalPlayerOpen, setIsSignalPlayerOpen] = useState(false);
   const [currentMonthIndex, setCurrentMonthIndex] = useState(2); // March (Early Spring)
-
 
   const advanceMonth = () => {
     setCurrentMonthIndex((prev) => (prev + 1) % 12);
@@ -194,25 +194,40 @@ export default function Desktop() {
                     <nav className="space-y-1 font-serif text-xs">
                       {[
                         { id: 'phone', label: '📱 Phone', icon: Smartphone, color: 'text-pink-400', action: () => setIsPhoneOpen(!isPhoneOpen) },
-                        { id: 'comms', label: '💬 Comms', icon: Mail, color: 'text-purple-400', action: () => toggleApp(APPS.find((a) => a.id === 'comms')) },
-                        // Mail removed; keep Comms available
+                        { id: 'mail', label: '✉️ Civic Mailbox', icon: FileText, color: 'text-[#8c97d6]', action: () => toggleApp(APPS.find((a) => a.id === 'mail')) },
                         { id: 'browser', label: '🌐 Net Browser', icon: Globe, color: 'text-cyan-400', action: () => toggleApp(APPS.find((a) => a.id === 'browser')) },
                         { id: 'passport', label: '🪪 Citizen Record', icon: UserCheck, color: 'text-emerald-400', action: () => toggleApp(APPS.find((a) => a.id === 'passport')) },
+                        { id: 'pulse', label: '📡 Pulse Network', icon: Radio, color: 'text-pink-400', action: () => toggleApp(APPS.find((a) => a.id === 'pulse')) },
+                        { id: 'comms', label: '💬 Comms Portal', icon: Mail, color: 'text-purple-400', action: () => toggleApp(APPS.find((a) => a.id === 'comms')) },
                         { id: 'files', label: '📁 File Explorer', icon: Folder, color: 'text-amber-400', action: () => toggleApp(APPS.find((a) => a.id === 'files')) },
                         { id: 'spellforge', label: '🔥 SpellForge Matrix', icon: Sparkles, color: 'text-purple-400', action: () => toggleApp(APPS.find((a) => a.id === 'spellforge')) },
-                      ].map((item) => (
-                        <button
-                          key={item.id}
-                          onClick={item.action}
-                          className="flex w-full items-center justify-between rounded-sm px-3 py-2 text-purple-200 hover:bg-purple-900/40 hover:text-white transition"
-                        >
-                          <div className="flex items-center gap-2.5">
-                            <item.icon size={15} className={item.color} />
-                            <span>{item.label}</span>
-                          </div>
-                          {item.badge && <span className="h-2 w-2 rounded-full bg-amber-400 animate-ping" />}
-                        </button>
-                      ))}
+                      ].map((item) => {
+                        const isLocked = lockedApps.includes(item.id);
+                        return (
+                          <button
+                            key={item.id}
+                            onClick={isLocked ? undefined : item.action}
+                            disabled={isLocked}
+                            className={`flex w-full items-center justify-between rounded-sm px-3 py-2 transition ${
+                              isLocked
+                                ? 'opacity-50 cursor-not-allowed bg-purple-950/20 text-purple-400/60'
+                                : 'text-purple-200 hover:bg-purple-900/40 hover:text-white'
+                            }`}
+                          >
+                            <div className="flex items-center gap-2.5">
+                              <item.icon size={15} className={isLocked ? 'text-purple-500/50' : item.color} />
+                              <span>{item.label}</span>
+                            </div>
+                            {isLocked ? (
+                              <span className="text-[9px] font-mono font-bold text-amber-400/80 bg-purple-950 px-1.5 py-0.5 rounded border border-amber-400/30">
+                                🔒 Locked
+                              </span>
+                            ) : item.badge ? (
+                              <span className="h-2 w-2 rounded-full bg-amber-400 animate-ping" />
+                            ) : null}
+                          </button>
+                        );
+                      })}
                     </nav>
                   </div>
 

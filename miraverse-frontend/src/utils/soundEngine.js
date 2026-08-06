@@ -40,11 +40,24 @@ class SoundEngine {
     return this.isMuted;
   }
 
+  // Helper to play WAV audio file from public/sounds/
+  playAudioFile(filename, volume = 0.4) {
+    if (this.isMuted) return;
+    try {
+      const audio = new Audio(`/sounds/${filename}`);
+      audio.volume = volume;
+      audio.play().catch(() => {});
+    } catch (e) {
+      // Fallback silently if audio fails
+    }
+  }
+
   // --- Sound Effects ---
 
   // Subtle Y2K UI Click
   playClick() {
     if (this.isMuted) return;
+    this.playAudioFile('mixkit-water-sci-fi-bleep-902.wav', 0.2);
     this.ensureContext();
     if (!this.ctx) return;
 
@@ -69,6 +82,7 @@ class SoundEngine {
   // Window Open Chime
   playWindowOpen() {
     if (this.isMuted) return;
+    this.playAudioFile('mixkit-sci-fi-high-tech-sounds-860.wav', 0.3);
     this.ensureContext();
     if (!this.ctx) return;
 
@@ -94,6 +108,7 @@ class SoundEngine {
   // Window Close Chime
   playWindowClose() {
     if (this.isMuted) return;
+    this.playAudioFile('mixkit-glitch-sci-fi-rewind-transition-1093.wav', 0.2);
     this.ensureContext();
     if (!this.ctx) return;
 
@@ -119,6 +134,7 @@ class SoundEngine {
   // MAI Agent Voice Pulse Chirp
   playMAIPulse() {
     if (this.isMuted) return;
+    this.playAudioFile('mixkit-intro-text-glitch-2950.wav', 0.3);
     this.ensureContext();
     if (!this.ctx) return;
 
@@ -143,6 +159,7 @@ class SoundEngine {
   // Success / Reward Notification Chime
   playSuccess() {
     if (this.isMuted) return;
+    this.playAudioFile('mixkit-crystal-chime-3108.wav', 0.4);
     this.ensureContext();
     if (!this.ctx) return;
 

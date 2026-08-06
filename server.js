@@ -1,3 +1,4 @@
+import 'dotenv/config';
 import express from 'express';
 import cors from 'cors';
 import { createServer as createHttpServer } from 'http';
@@ -47,19 +48,57 @@ async function createApp() {
     });
     app.get('/api/world/lore', (req, res) => res.json(WorldAuthority.searchLore(req.query.q || '')));
 
-    app.post('/api/mai/chat', (req, res) => {
+    app.post('/api/mai/chat', async (req, res) => {
         const { prompt, userContext } = req.body || {};
         if (!prompt) return res.status(400).json({ error: 'Prompt is required' });
+
         const loreMatch = WorldAuthority.searchLore(prompt);
-        const response = {
-            thought: `Processed prompt "${prompt}" under user context: ${userContext?.active_app || 'Desktop'}`,
-            response: loreMatch.length > 0
+        let maiReply = '';
+        let thoughtProcess = '';
+
+        if (process.env.FOUNDRY_ENDPOINT && process.env.FOUNDRY_KEY) {
+            try {
+                const foundryRes = await fetch(process.env.FOUNDRY_ENDPOINT, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'api-key': process.env.FOUNDRY_KEY,
+                    },
+                    body: JSON.stringify({
+                        messages: [
+                            { role: 'system', content: process.env.AGENT_INSTRUCTIONS || 'You are MAI, operational assistant for MiraverseOSx.' },
+                            { role: 'user', content: `[Context: active_app=${userContext?.active_app || 'Desktop'}] ${prompt}` }
+                        ]
+                    })
+                });
+
+                if (foundryRes.ok) {
+                    const data = await foundryRes.json();
+                    maiReply = data.choices?.[0]?.message?.content || data.response || (typeof data === 'string' ? data : JSON.stringify(data));
+                    thoughtProcess = `MAI Foundry Neural Response (Context: ${userContext?.active_app || 'Desktop'})`;
+                } else {
+                    const errText = await foundryRes.text();
+                    console.warn(`Foundry API HTTP ${foundryRes.status}:`, errText);
+                    thoughtProcess = `Foundry HTTP ${foundryRes.status} - Falling back to WorldAuthority lore.`;
+                }
+            } catch (err) {
+                console.warn('Foundry endpoint reach failure:', err.message);
+                thoughtProcess = `Foundry Connection Error - Falling back to WorldAuthority.`;
+            }
+        }
+
+        if (!maiReply) {
+            maiReply = loreMatch.length > 0
                 ? `MAI Query Result: ${loreMatch[0].title} - ${loreMatch[0].content}`
-                : `MAI Systems operational. Querying MIRAVERSE OSX World Authority for "${prompt}".`,
+                : `MAI Systems operational. Querying MIRAVERSE OSX World Authority for "${prompt}".`;
+        }
+
+        res.json({
+            thought: thoughtProcess || `Processed prompt "${prompt}" under user context: ${userContext?.active_app || 'Desktop'}`,
+            response: maiReply,
             action: { target_app: userContext?.active_app || 'Desktop', command: 'sync_state', payload: { query: prompt } },
             contract: MAI_AGENT_CONTRACT?.name || 'MAI',
-        };
-        res.json(response);
+        });
     });
 
     // ---------------- Vite Dev Middleware (Frontend) ----------------
@@ -94,8 +133,8 @@ async function createApp() {
         const serve = (await import('serve-static')).default;
         const compression = (await import('compression')).default;
         app.use(compression());
-        app.use('/', serve(path.resolve(__dirname, 'miraverse-frontend', 'dist')));
-        app.get('*', (req, res) => res.sendFile(path.resolve(__dirname, 'miraverse-frontend', 'dist', 'index.html')));
+        app.use('/', serve(path.resolve(__dirname, 'dist')));
+        app.get('*', (req, res) => res.sendFile(path.resolve(__dirname, 'dist', 'index.html')));
         app.listen(PORT, () => console.log(`✓ Unified Server running on http://localhost:${PORT}`));
     }
 }

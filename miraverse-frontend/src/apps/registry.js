@@ -1,4 +1,4 @@
-import { Folder, Mail, Gamepad2, Terminal, Globe, Settings, Sparkles, UserCheck, BookOpen, Video, FileText } from 'lucide-react';
+import { Folder, Mail, Gamepad2, Terminal, Globe, Settings, Sparkles, UserCheck, BookOpen, Video, FileText, Radio } from 'lucide-react';
 import { miraverseDb } from '../db/miraverseDb';
 
 // Icon mapping per app ID
@@ -8,6 +8,7 @@ const ICON_MAP = {
   mail: FileText,
   spellforge: Sparkles,
   passport: UserCheck,
+  pulse: Radio,
   terminal: Terminal,
   browser: Globe,
   settings: Settings,
@@ -20,6 +21,7 @@ const SIZE_MAP = {
   mail: { width: 960, height: 620 },
   spellforge: { width: 940, height: 620 },
   passport: { width: 880, height: 580 },
+  pulse: { width: 940, height: 630 },
   terminal: { width: 800, height: 520 },
   browser: { width: 1040, height: 680 },
   settings: { width: 800, height: 540 },

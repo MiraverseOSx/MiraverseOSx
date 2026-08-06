@@ -44,6 +44,25 @@ export const useOSStore = create((set) => ({
     claimedComms: [],
     timeSegmentIndex: 2, // 0: Morning, 1: Afternoon, 2: Evening, 3: Night
     timeCycleCount: 28,
+    onboardingPhase: 1, // 1: Boot, 2: Emails Read, 3: Identity Verified, 4: Pulse Created, 5: Comms Unlocked, 6: Completed
+    lockedApps: ['passport', 'pulse', 'comms'], // Apps locked until onboarding steps are completed
+    identity: {
+      fingerprint: false,
+      facial: false,
+      auraBaseline: false,
+      citizenId: null,
+      barcode: null,
+      signalSignature: 'Aura-Code-Alpha',
+      profileTags: ['#Netrunner', '#Scholar'],
+      declaredRegion: 'Aureline Central',
+    },
+    pulseProfile: {
+      displayName: null,
+      houseTag: 'Vector',
+      visibility: 'Public',
+      theme: 'purple',
+    },
+    maiTone: null, // 'friendly' | 'neutral' | 'cold'
     player: {
       level: 1,
       credits: 500,
@@ -56,11 +75,13 @@ export const useOSStore = create((set) => ({
       lineageDecrypted: false,
       dgaVerified: false,
       npcVectors: {
-        voss: { trust: 80, rivalry: 10, sync: 90, corruption: 15 },
-        riven: { trust: 65, rivalry: 45, sync: 70, corruption: 5 },
-        sissi: { trust: 40, rivalry: 80, sync: 35, corruption: 20 },
-        odd: { trust: 95, rivalry: 5, sync: 85, corruption: 0 },
-        mara: { trust: 75, rivalry: 30, sync: 60, corruption: 25 },
+        jeremie: { trust: 50, rivalry: 10, friendship: 50, sync: 50 },
+        sissi: { trust: 40, rivalry: 60, friendship: 30, sync: 40 },
+        aelita: { trust: 70, rivalry: 5, friendship: 80, sync: 75 },
+        odd: { trust: 90, rivalry: 5, friendship: 95, sync: 85 },
+        voss: { trust: 80, rivalry: 10, friendship: 60, sync: 90 },
+        riven: { trust: 65, rivalry: 45, friendship: 50, sync: 70 },
+        mara: { trust: 75, rivalry: 30, friendship: 60, sync: 60 },
       },
       skills: {
         Programming: { level: 1, xp: 0 },
@@ -92,9 +113,13 @@ export const useOSStore = create((set) => ({
         { id: 'EVT-EXCH', name: 'Regional Exchange Week', monthReq: 'September', active: true, desc: 'Delegates from Fross, Lumia, Marlowe, Brisland, and Kaji visit Cyacademy.', reward: 'Regional Reputation Boost' }
       ],
       activities: [
+        { id: 'Q_DAY1_1', category: 'Quests', title: 'Day 1: Boot Sequence', desc: 'Log in and access your desktop applications.', status: 'COMPLETED', reward: '50 Credits + 25 XP' },
+        { id: 'Q_DAY1_2', category: 'Quests', title: 'Day 1: DGA & Faith Medical Emails', desc: 'Read official onboarding dispatches in Mail.', status: 'IN_PROGRESS', reward: '100 Credits + 50 XP' },
+        { id: 'Q_DAY1_3', category: 'Quests', title: 'Day 1: Identity Registration', desc: 'Complete Fingerprint, Facial, & Aura scans in Citizen Record.', status: 'AVAILABLE', reward: 'Citizen ID + 100 XP' },
+        { id: 'Q_DAY1_4', category: 'Quests', title: 'Day 1: Pulse Profile Activation', desc: 'Create your Pulse network handle & view initial NPC messages.', status: 'LOCKED', reward: 'Pulse Unlock + 75 XP' },
+        { id: 'Q_DAY1_5', category: 'Quests', title: 'Day 1: Comms Portal & MAI Alignment', desc: 'Read MAI Welcome Packet & set relationship tone vector.', status: 'LOCKED', reward: 'Comms Unlock + 100 XP' },
         { id: 'J01', category: 'Journey', title: 'Lightborn Inheritance Revelation', desc: 'Investigate pre-Collapse archives to uncover your lineage.', status: 'IN_PROGRESS', reward: 'Lineage Decrypted + 500 XP' },
         { id: 'A01', category: 'Adventures', title: 'Void Rift Surge Containment', desc: 'Stabilize dimensional anchors near the Digital Sprawl during the Void event.', status: 'AVAILABLE', reward: '300 Credits + Aura Shield' },
-        { id: 'Q01', category: 'Quests', title: 'The Ironspire Intel Heist', desc: 'Retrieve classified deployment schedules from Commander Halvorn.', status: 'AVAILABLE', reward: '200 Credits + 80 XP' },
         { id: 'T01', category: 'Tasks', title: 'Clear Digital Clutter in Undervault', desc: 'Standard terminal cleaning and file sorting.', status: 'AVAILABLE', reward: '50 Credits + 30 Programming XP' },
         { id: 'M01', category: 'Missions', title: 'Faith Medical Volunteer Intake Shift', desc: 'Assist Dr. Sharon with aura diagnostics at Aureline Medical.', status: 'AVAILABLE', reward: '100 Credits + Career XP' }
       ],
@@ -266,6 +291,7 @@ export const useOSStore = create((set) => ({
     set((state) => ({
       gameplay: {
         ...state.gameplay,
+        lockedApps: state.gameplay.lockedApps.filter((a) => a !== 'passport' && a !== 'pulse'),
         player: {
           ...state.gameplay.player,
           dgaVerified: true,
@@ -273,6 +299,104 @@ export const useOSStore = create((set) => ({
         },
       },
     })),
+
+  unlockApp: (appId) =>
+    set((state) => ({
+      gameplay: {
+        ...state.gameplay,
+        lockedApps: state.gameplay.lockedApps.filter((a) => a !== appId),
+      },
+    })),
+
+  completeIdentityScan: (data) =>
+    set((state) => {
+      const newLocked = state.gameplay.lockedApps.filter((a) => a !== 'passport' && a !== 'pulse');
+      return {
+        gameplay: {
+          ...state.gameplay,
+          lockedApps: newLocked,
+          onboardingPhase: Math.max(3, state.gameplay.onboardingPhase),
+          identity: {
+            ...state.gameplay.identity,
+            ...data,
+            citizenId: data.citizenId || `CY-${Math.floor(1000 + Math.random() * 9000)}-CITIZEN`,
+            barcode: data.barcode || `||| |||| || ||| ${Math.floor(100000 + Math.random() * 900000)}`,
+          },
+          player: {
+            ...state.gameplay.player,
+            dgaVerified: true,
+            credits: state.gameplay.player.credits + 150,
+            xp: state.gameplay.player.xp + 100,
+            activities: state.gameplay.player.activities.map((act) => {
+              if (act.id === 'Q_DAY1_3') return { ...act, status: 'COMPLETED' };
+              if (act.id === 'Q_DAY1_4') return { ...act, status: 'IN_PROGRESS' };
+              return act;
+            }),
+          },
+        },
+      };
+    }),
+
+  createPulseProfile: (profileData) =>
+    set((state) => {
+      const newLocked = state.gameplay.lockedApps.filter((a) => a !== 'pulse' && a !== 'comms');
+      return {
+        gameplay: {
+          ...state.gameplay,
+          lockedApps: newLocked,
+          onboardingPhase: Math.max(4, state.gameplay.onboardingPhase),
+          pulseProfile: {
+            ...state.gameplay.pulseProfile,
+            ...profileData,
+          },
+          player: {
+            ...state.gameplay.player,
+            credits: state.gameplay.player.credits + 100,
+            xp: state.gameplay.player.xp + 75,
+            activities: state.gameplay.player.activities.map((act) => {
+              if (act.id === 'Q_DAY1_4') return { ...act, status: 'COMPLETED' };
+              if (act.id === 'Q_DAY1_5') return { ...act, status: 'IN_PROGRESS' };
+              return act;
+            }),
+          },
+        },
+      };
+    }),
+
+  selectMAITone: (tone) =>
+    set((state) => {
+      let trustDelta = 0;
+      let friendshipDelta = 0;
+      let rivalryDelta = 0;
+      if (tone === 'friendly') { trustDelta = 15; friendshipDelta = 20; }
+      else if (tone === 'neutral') { trustDelta = 5; }
+      else if (tone === 'cold') { rivalryDelta = 25; trustDelta = -10; }
+
+      return {
+        gameplay: {
+          ...state.gameplay,
+          maiTone: tone,
+          onboardingPhase: Math.max(5, state.gameplay.onboardingPhase),
+          player: {
+            ...state.gameplay.player,
+            xp: state.gameplay.player.xp + 100,
+            npcVectors: {
+              ...state.gameplay.player.npcVectors,
+              jeremie: {
+                ...state.gameplay.player.npcVectors.jeremie,
+                trust: Math.min(100, Math.max(0, state.gameplay.player.npcVectors.jeremie.trust + trustDelta)),
+                friendship: Math.min(100, Math.max(0, state.gameplay.player.npcVectors.jeremie.friendship + friendshipDelta)),
+                rivalry: Math.min(100, Math.max(0, state.gameplay.player.npcVectors.jeremie.rivalry + rivalryDelta)),
+              },
+            },
+            activities: state.gameplay.player.activities.map((act) => {
+              if (act.id === 'Q_DAY1_5') return { ...act, status: 'COMPLETED' };
+              return act;
+            }),
+          },
+        },
+      };
+    }),
 
   completeQuest: (questId) =>
     set((state) => {
