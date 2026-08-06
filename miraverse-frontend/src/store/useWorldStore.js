@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import apiClient from '../lib/apiClient';
+import apiClient from '../utils/apiClient';
 
 export const useWorldStore = create((set, get) => ({
   overview: null,

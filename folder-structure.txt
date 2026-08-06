@@ -1,0 +1,111 @@
+﻿MiraverseOSx src Directory Tree
+================================
+state
+os
+store
+  useWorldStore.js
+  useOSStore.js
+  useCommsStore.js
+utils
+  timeEngine.js
+  soundEngine.js
+  apiClient.js
+styles
+  apps
+    MSNPortal.css
+    Modals.css
+    NoticeBoardApp.css
+    SpellForge.css
+    PhoneWidget.css
+    CivicProfile.css
+    BrowserApp.css
+    CommsApp.css
+    FileExplorer.css
+    Desktop.css
+games
+  games.js
+  GameHubApp.jsx
+assets
+  fonts
+    LibertinusMath-Regular.ttf
+apps
+  GameDoc
+  CyberDeck
+  MailApp
+  SpellForge
+  NoticeBoardApp
+  browser
+    frame
+      ContentFrame.jsx
+    portals
+      HomePortal.jsx
+      Library.jsx
+      VectorNet.jsx
+      FaithMed.jsx
+      AurelineDaily.jsx
+      CyAcademy.jsx
+      DGA.jsx
+    chrome
+      TabBar.jsx
+      AddressBar.jsx
+    components
+      TabBar.jsx
+      ContentFrame.jsx
+      AddressBar.jsx
+    SearchHome.jsx
+    SearchResults.jsx
+    BrowserApp.jsx
+    constants.js
+  AuraPassport
+  BrowserApp
+  Comms
+  ChatMeet
+  MailApp.jsx
+  GameDocApp.jsx
+  FileExplorerApp.jsx
+  SpellForgeApp.jsx
+  registry.js
+  NoticeBoardApp.jsx
+  FaithMedicalApp.jsx
+  CivicProfileApp.jsx
+  ChatMeetApp.jsx
+  AuraPassportApp.jsx
+  CyberDeckApp.jsx
+  contents.jsx
+  CommsApp.jsx
+components
+  widgets
+    PhoneWidget.jsx
+    SignalPlayerModal.jsx
+    BulletinWidget.jsx
+    ClockDisplay.jsx
+  ui
+    input.jsx
+    card.jsx
+    button.jsx
+  OSWindow.jsx
+  MeridionLandingPage.jsx
+  SparklesCanvas.jsx
+  Window.jsx
+  StarterQuestHub.jsx
+  DocumentModal.jsx
+  Desktop.jsx
+  GlassContainer.jsx
+  MAIDock.jsx
+  LoginScreen.jsx
+db
+  schemas
+    documentTemplate.json
+  miraverseDb.js
+data
+  mailData.json
+  gameDevDoc.json
+  phoneData.js
+  mockDocuments.js
+  commsData.js
+  bulletinData.js
+  emails.json
+  data.js
+index.jsx
+index.css
+App.jsx

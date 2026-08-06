@@ -1,6 +1,6 @@
 // src/components/ClockDisplay.jsx
 import { useEffect } from 'react';
-import { useTimeStore } from '../utils/timeEngine';
+import { useTimeStore } from '../../utils/timeEngine';
 
 const MONTH_TO_SEASON = {
   0: 'MID-WINTER',    // January

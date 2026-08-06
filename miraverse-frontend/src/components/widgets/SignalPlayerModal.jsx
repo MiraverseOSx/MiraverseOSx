@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Radio, X, Play, Pause, Volume2, ShieldAlert, Activity } from 'lucide-react';
-import Button from './ui/button';
+import Button from '../ui/button';
 
 export default function SignalPlayerModal({ title = 'Transmission_Intercept.sig', onClose }) {
   const [isPlaying, setIsPlaying] = useState(true);

@@ -5,7 +5,7 @@ import {
 } from 'lucide-react';
 import Button from '../components/ui/button';
 import DocumentModal from '../components/DocumentModal';
-import SignalPlayerModal from '../components/SignalPlayerModal';
+import SignalPlayerModal from '../components/widgets/SignalPlayerModal';
 import { MOCK_DOCUMENTS } from '../data/mockDocuments';
 
 const FILES_DATA = [

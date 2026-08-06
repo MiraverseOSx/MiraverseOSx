@@ -32,9 +32,8 @@ const CommsApp = lazy(() => import('./CommsApp'));
 const SpellForgeApp = lazy(() => import('./SpellForgeApp'));
 const CivicProfileApp = lazy(() => import('./CivicProfileApp'));
 const NoticeBoardApp = lazy(() => import('./NoticeBoardApp'));
-const BrowserApp = lazy(() => import('./Browser'));
+const BrowserApp = lazy(() => import('./BrowserApp/BrowserApp'));
 const MailApp = lazy(() => import('./MailApp'));
-const ChatMeetApp = lazy(() => import('./ChatMeetApp'));
 const FileExplorerApp = lazy(() => import('./FileExplorerApp'));
 
 // Sleek loading fallback for lazy-loaded apps
@@ -406,7 +405,6 @@ export const CONTENTS = {
   files: withSuspense(FileExplorerApp, 'File Explorer'),
   comms: withSuspense(CommsApp, 'Comms'),
   mail: withSuspense(MailApp, 'Mail'),
-  chatmeet: withSuspense(ChatMeetApp, 'ChatMeet'),
   spellforge: withSuspense(SpellForgeApp, 'SpellForge'),
   passport: withSuspense(CivicProfileApp, 'Civic Profile'),
   terminal: TerminalApp,

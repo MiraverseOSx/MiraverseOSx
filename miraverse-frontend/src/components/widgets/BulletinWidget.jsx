@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { motion, useDragControls } from 'framer-motion';
-import { useOSStore } from '../store/useOSStore';
+import { useOSStore } from '../../store/useOSStore';
 import { GripHorizontal, Sparkles, ShieldCheck, Share2, Award, Zap, Database, CheckCircle2, Scan } from 'lucide-react';
-import { CAMPUS_ANNOUNCEMENTS, DGA_OPS_BULLETINS, LORE_ECHOES } from '../data/bulletinData';
+import { CAMPUS_ANNOUNCEMENTS, DGA_OPS_BULLETINS, LORE_ECHOES } from '../../data/bulletinData';
 
 export default function BulletinWidget() {
   const [isGlitched, setIsGlitched] = useState(false);

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { useOSStore } from '../store/useOSStore';
-import { INITIAL_SMS_THREADS, INITIAL_VOICEMAILS, INITIAL_EVIDENCE_ITEMS } from '../data/phoneData';
+import { useOSStore } from '../../store/useOSStore';
+import { INITIAL_SMS_THREADS, INITIAL_VOICEMAILS, INITIAL_EVIDENCE_ITEMS } from '../../data/phoneData';
 import {
   MessageSquare,
   Camera,

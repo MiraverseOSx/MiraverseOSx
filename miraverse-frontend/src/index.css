@@ -36,7 +36,7 @@ body {
 /* Math Font */
 @font-face {
   font-family: 'Libertinus Math';
-  src: url('./fonts/LibertinusMath-Regular.ttf') format('truetype');
+  src: url('./assets/fonts/LibertinusMath-Regular.ttf') format('truetype');
   font-weight: normal;
   font-style: normal;
 }

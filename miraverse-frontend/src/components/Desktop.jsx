@@ -24,10 +24,10 @@ import {
 import { useOSStore } from '../store/useOSStore';
 import { APPS } from '../apps/contents';
 import Window from './Window';
-import PhoneWidget from './PhoneWidget';
+import PhoneWidget from './widgets/PhoneWidget';
 import DocumentModal from './DocumentModal';
-import SignalPlayerModal from './SignalPlayerModal';
-import ClockDisplay from './ClockDisplay';
+import SignalPlayerModal from './widgets/SignalPlayerModal';
+import ClockDisplay from './widgets/ClockDisplay';
 import Button from './ui/button';
 import SparklesCanvas from './SparklesCanvas';
 import MeridionLandingPage from './MeridionLandingPage';
@@ -35,7 +35,7 @@ import LoginScreen from './LoginScreen';
 import MAIDock from './MAIDock';
 import { Calendar, CheckSquare, Award, CheckCircle2 } from 'lucide-react';
 import OSWindow from './OSWindow';
-import BrowserApp from '../apps/browser';
+import BrowserApp from '../apps/BrowserApp/BrowserApp';
 
 const WHEEL_OF_THE_YEAR = [
   { month: 'January', phase: 'Mid-Winter', icon: '❄️' },
