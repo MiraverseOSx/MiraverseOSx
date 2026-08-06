@@ -14,6 +14,8 @@ export const useOSStore = create((set) => ({
   windows: [],
   activeWindowId: null,
   wallpaper: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=2072&auto=format&fit=crop',
+  browserUrl: null,
+  setBrowserUrl: (url) => set({ browserUrl: url }),
 
   loginUser: (userData) =>
     set((s) => ({

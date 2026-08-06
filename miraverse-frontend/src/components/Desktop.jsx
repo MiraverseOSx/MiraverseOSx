@@ -110,11 +110,18 @@ export default function Desktop() {
         }
       }}
     >
-      {/* Central Ambient Watermark */}
-      <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-[0.16] z-0">
-        <img src="/logo_icon.png" alt="MIRAVERSE OS" className="h-[560px] w-[560px] object-contain mix-blend-screen" />
+      {/* Background Branding — subtle, bottom-right watermark */}
+      <div className="pointer-events-none absolute bottom-6 right-6 z-0 opacity-10">
+        <img
+          src="/logo_icon.png"
+          alt="MIRAVERSE OS"
+          className="h-64 w-64 md:h-80 md:w-80 object-contain mix-blend-screen blur-[0.5px]"
+        />
       </div>
-      <SparklesCanvas />
+      {/* Ambient sparkles with reduced intensity */}
+      <div className="pointer-events-none absolute inset-0 z-0 opacity-20">
+        <SparklesCanvas />
+      </div>
 
       {/* ── TOP HEADER BAR: BRANDING, WHEEL & CREDIT LEDGER ── */}
       <header className="os-header-bar relative z-20 mx-6 mt-4 flex h-14 items-center justify-between px-5 select-none font-serif">
@@ -346,43 +353,7 @@ export default function Desktop() {
                   </div>
                 </div>
 
-                {/* 📋 DAILY CIVIC TASKS & SHIFT TRACKER (CLEAN BORDERLESS LIST) */}
-                <div className="space-y-2 pt-2">
-                  <div className="flex items-center justify-between border-b border-purple-500/20 pb-1.5">
-                    <div className="flex items-center gap-2">
-                      <CheckSquare size={13} className="text-amber-400" />
-                      <p className="text-[10px] font-mono font-bold tracking-wider text-amber-300 uppercase">
-                        DAILY CIVIC TASKS & SHIFT TRACKER
-                      </p>
-                    </div>
-                    <Award size={13} className="text-amber-400" />
-                  </div>
-
-                  <div className="divide-y divide-purple-500/10 font-serif text-xs">
-                    {[
-                      { id: 'T1', label: 'Civic Intake Scan at Aureline Terminal', reward: '+50 ◈', credits: 50 },
-                      { id: 'T2', label: 'Veil Observance & Aura Diagnostics', reward: '+75 ◈', credits: 75 },
-                      { id: 'T3', label: 'Undervault Terminal Clutter Cleaning', reward: '+50 ◈', credits: 50 },
-                      { id: 'T4', label: 'Faith Medical Volunteer Intake Shift', reward: '+100 ◈', credits: 100 },
-                    ].map((task) => (
-                      <div
-                        key={task.id}
-                        className="flex items-center justify-between py-2 px-1 hover:bg-purple-900/20 transition rounded-xs"
-                      >
-                        <div className="flex items-center gap-2">
-                          <CheckCircle2 size={14} className="text-purple-400 shrink-0" />
-                          <span className="text-purple-200 text-[11px]">{task.label}</span>
-                        </div>
-                        <button
-                          onClick={() => useOSStore.getState().addCredits(task.credits)}
-                          className="font-mono text-[9px] font-bold text-amber-300 border border-amber-500/30 bg-amber-950/30 px-2 py-0.5 rounded-xs hover:bg-amber-900/50 transition"
-                        >
-                          {task.reward} Claim
-                        </button>
-                      </div>
-                    ))}
-                  </div>
-                </div>
+                {/* Center column tail space reserved for future widgets */}
               </main>
 
               {/* ------------------------------------------------------------ */}
@@ -577,11 +548,10 @@ export default function Desktop() {
               <button
                 key={win.id}
                 onClick={() => toggleApp(win)}
-                className={`flex items-center gap-1.5 px-3 py-1 rounded-sm text-xs font-semibold border transition ${
-                  !win.isMinimized
-                    ? 'bg-purple-600 text-white border-purple-400 shadow-[0_0_12px_rgba(168,85,247,0.4)]'
-                    : 'bg-purple-950/40 text-purple-200 border-purple-500/20 hover:bg-purple-900/50'
-                }`}
+                className={`flex items-center gap-1.5 px-3 py-1 rounded-sm text-xs font-semibold border transition ${!win.isMinimized
+                  ? 'bg-purple-600 text-white border-purple-400 shadow-[0_0_12px_rgba(168,85,247,0.4)]'
+                  : 'bg-purple-950/40 text-purple-200 border-purple-500/20 hover:bg-purple-900/50'
+                  }`}
               >
                 <span>{win.title}</span>
               </button>

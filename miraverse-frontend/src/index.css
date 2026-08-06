@@ -4,13 +4,21 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Flat civic card aesthetic */
+.mira-flat-card {
+  background-color: #0b0717;
+  border: 1px solid rgba(168, 85, 247, 0.3);
+  box-shadow: none;
+}
+
 /* Base Layout */
 body {
   margin: 0;
   font-family: 'Esteban', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  overflow: hidden; /* intentional cosmic desktop lock */
+  overflow: hidden;
+  /* intentional cosmic desktop lock */
   user-select: none;
   background-color: #05030d;
   color: #f3e8ff;
@@ -64,10 +72,8 @@ body {
 
 /* CRT Scanlines */
 .crt-scanlines {
-  background: linear-gradient(
-    rgba(18, 16, 16, 0) 50%,
-    rgba(0, 0, 0, 0.25) 50%
-  );
+  background: linear-gradient(rgba(18, 16, 16, 0) 50%,
+      rgba(0, 0, 0, 0.25) 50%);
   background-size: 100% 4px;
 }
 
@@ -98,11 +104,30 @@ body {
 
 /* Holographic Flicker */
 @keyframes holo-flicker {
-  0% { opacity: 0.94; transform: translateY(0); }
-  25% { opacity: 0.88; transform: translateY(-0.5px); }
-  50% { opacity: 1; transform: translateY(0); }
-  75% { opacity: 0.92; transform: translateY(0.5px); }
-  100% { opacity: 0.94; transform: translateY(0); }
+  0% {
+    opacity: 0.94;
+    transform: translateY(0);
+  }
+
+  25% {
+    opacity: 0.88;
+    transform: translateY(-0.5px);
+  }
+
+  50% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  75% {
+    opacity: 0.92;
+    transform: translateY(0.5px);
+  }
+
+  100% {
+    opacity: 0.94;
+    transform: translateY(0);
+  }
 }
 
 .animate-holo-flicker {

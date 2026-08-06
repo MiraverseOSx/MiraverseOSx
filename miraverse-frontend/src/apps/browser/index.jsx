@@ -4,6 +4,7 @@ import TabBar from './TabBar';
 import AddressBar from './AddressBar';
 import ContentFrame from './ContentFrame';
 import { PORTALS } from './constants';
+import { useOSStore } from '../../store/useOSStore';
 import '../../styles/apps/BrowserApp.css';
 
 export default function BrowserApp({ onTabBarPointerDown }) {
@@ -14,6 +15,16 @@ export default function BrowserApp({ onTabBarPointerDown }) {
     const [nextTabId, setNextTabId] = useState(2);
     const [addressInput, setAddressInput] = useState('');
     const [historyMap, setHistoryMap] = useState({ 1: { stack: ['https://search.aure'], index: 0 } });
+
+    const browserUrl = useOSStore((s) => s.browserUrl);
+    const setBrowserUrl = useOSStore((s) => s.setBrowserUrl);
+
+    React.useEffect(() => {
+        if (browserUrl) {
+            openTab(browserUrl, browserUrl.replace('https://', '').split('/')[0]);
+            setBrowserUrl(null);
+        }
+    }, [browserUrl]);
 
     const activeTab = tabs.find(t => t.id === activeTabId);
 

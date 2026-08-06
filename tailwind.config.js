@@ -13,6 +13,7 @@ export default {
     extend: {
       fontFamily: {
         'serif-y2k': ['Esteban', 'Georgia', 'serif'],
+        tech: ['"Share Tech Mono"', 'monospace'],
       },
       colors: {
         os: {
