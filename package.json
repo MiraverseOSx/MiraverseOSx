@@ -8,6 +8,7 @@
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.2",
     "@testing-library/user-event": "^13.5.0",
+    "bootstrap": "^5.3.8",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "cors": "^2.8.5",
@@ -15,8 +16,10 @@
     "express": "^4.19.2",
     "framer-motion": "^12.42.2",
     "lucide-react": "^1.29.0",
+    "mongodb": "^7.5.0",
     "node-fetch": "^3.3.2",
     "react": "^19.2.8",
+    "react-bootstrap": "^2.10.10",
     "react-dom": "^19.2.8",
     "tailwind-merge": "^3.6.0",
     "web-vitals": "^2.1.4",
@@ -25,6 +28,9 @@
   "scripts": {
     "dev": "node server.js",
     "start": "node server.js",
+    "seed:db": "node miraverse-backend/db/seedMongoDB.js",
+    "electron": "electron .",
+    "electron:dev": "electron .",
     "build": "vite build",
     "preview": "vite preview"
   },
@@ -52,12 +58,13 @@
     "@tailwindcss/typography": "^0.5.20",
     "@vitejs/plugin-react": "^6.0.5",
     "autoprefixer": "^10.5.4",
+    "electron": "^43.3.0",
     "postcss": "^8.5.22",
     "tailwindcss": "^3.4.19",
     "vite": "^8.2.0"
   },
   "description": "Evaluate your Microsoft Foundry AI agent locally with pytest-powered testing. This project provides a complete evaluation framework for assessing agent quality, performance, and accuracy using built-in and custom evaluators.",
-  "main": "postcss.config.js",
+  "main": "electron/main.cjs",
   "directories": {
     "doc": "docs"
   },

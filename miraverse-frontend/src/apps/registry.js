@@ -4,8 +4,8 @@ import { miraverseDb } from '../db/miraverseDb';
 // Icon mapping per app ID
 const ICON_MAP = {
   files: Folder,
-  comms: Mail,
   mail: FileText,
+  comms: Mail,
   spellforge: Sparkles,
   passport: UserCheck,
   pulse: Radio,
@@ -17,8 +17,8 @@ const ICON_MAP = {
 // Optimal default window sizes per app
 const SIZE_MAP = {
   files: { width: 920, height: 600 },
-  comms: { width: 980, height: 640 },
   mail: { width: 960, height: 620 },
+  comms: { width: 980, height: 640 },
   spellforge: { width: 940, height: 620 },
   passport: { width: 880, height: 580 },
   pulse: { width: 940, height: 630 },

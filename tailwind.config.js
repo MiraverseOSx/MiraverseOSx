@@ -13,7 +13,12 @@ export default {
     extend: {
       fontFamily: {
         'serif-y2k': ['Esteban', 'Georgia', 'serif'],
-        tech: ['"Share Tech Mono"', 'monospace'],
+        display: ['"Yeseva One"', 'Georgia', 'serif'],
+        ui: ['Commissioner', 'Segoe UI', 'sans-serif'],
+        body: ['Esteban', 'Georgia', 'serif'],
+        lore: ['Alice', 'Georgia', 'serif'],
+        signature: ['Cookie', 'cursive'],
+        tech: ['Commissioner', 'Segoe UI', 'sans-serif'],
       },
       colors: {
         os: {

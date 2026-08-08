@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import Form from 'react-bootstrap/Form';
 import { useOSStore } from '../store/useOSStore';
 
 export default function DocumentModal({ file, onClose, onSubmitForm }) {
@@ -230,7 +231,8 @@ export default function DocumentModal({ file, onClose, onSubmitForm }) {
                       )}
 
                       {field.type === 'select' && (
-                        <select
+                        <Form.Select
+                          aria-label={field.label || 'Select option'}
                           value={formData[field.id] || ''}
                           onChange={(e) => handleInputChange(field.id, e.target.value)}
                           className="bg-[#07040d] border border-purple-700/60 p-2 text-purple-100 focus:outline-none focus:border-purple-400 text-xs rounded-none"
@@ -240,7 +242,7 @@ export default function DocumentModal({ file, onClose, onSubmitForm }) {
                           {field.options.map((opt, i) => (
                             <option key={i} value={opt}>{opt}</option>
                           ))}
-                        </select>
+                        </Form.Select>
                       )}
 
                       {field.type === 'checkbox' && (

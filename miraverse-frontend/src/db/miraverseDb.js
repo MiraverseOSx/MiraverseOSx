@@ -2,13 +2,14 @@ import worldData from '../../../miraverse-backend/world/worldData.json' with { t
 import apiClient from '../utils/apiClient';
 
 export const APPS = [
-  { id: 'files', title: 'Files', category: 'Utility', dev: 'FAC_NETRUNNERS', version: '2.0.0', primary: 'File system & lore archive explorer', lore: 'System file explorer for browsing documents, logs, and database records.' },
-  { id: 'comms', title: 'Comms', category: 'Communication', dev: 'FAC_NETRUNNERS', version: '2.9.7', primary: 'Encrypted email portal & ShadowChat feed', lore: 'Communication portal for receiving NPC transmissions and mesh chat.' },
+  { id: 'files', title: 'File Explorer', category: 'Utility', dev: 'FAC_NETRUNNERS', version: '2.0.0', primary: 'File system & lore archive explorer', lore: 'System file explorer for browsing documents, logs, and database records.' },
+  { id: 'mail', title: 'Civic Mailbox', category: 'Communication', dev: 'FAC_NEO_CITIZENS', version: '1.0.0', primary: 'Official civic dispatch mailbox', lore: 'Aureline municipal mailbox for receiving official dispatches and civic notifications.' },
+  { id: 'comms', title: 'Comms Portal', category: 'Communication', dev: 'FAC_NETRUNNERS', version: '2.9.7', primary: 'Encrypted messaging & NPC transmissions', lore: 'Communication portal for receiving NPC transmissions and mesh chat.' },
   { id: 'spellforge', title: 'SpellForge', category: 'Hacking/Magic', dev: 'FAC_ARCANE_GUILD', version: '2.0.0', primary: 'Combine code modules to stabilize reality', lore: 'Interface for combining element and utility modules into cyber spells.' },
-  { id: 'passport', title: 'Citizen Record', category: 'Utility/Identity', dev: 'FAC_NEO_CITIZENS', version: '2.0.0', primary: 'Citizen record, inventory backpack, skill tree, and student registry', lore: 'Displays citizen clearance, inventory, and active aura networks.' },
-  { id: 'pulse', title: 'Pulse Network', category: 'Social/Network', dev: 'FAC_NEO_CITIZENS', version: '1.0.0', primary: 'Aureline social signal broadcast & NPC network feed', lore: 'Civic social network for following citizens and broadcasting signals.' },
+  { id: 'passport', title: 'Citizen Record', category: 'Utility/Identity', dev: 'FAC_NEO_CITIZENS', version: '2.0.0', primary: 'Citizen record, inventory backpack, skill tree', lore: 'Displays citizen clearance, inventory, and active aura networks.' },
+  { id: 'pulse', title: 'Pulse Network', category: 'Social/Network', dev: 'FAC_NEO_CITIZENS', version: '1.0.0', primary: 'Aureline social signal broadcast & NPC feed', lore: 'Civic social network for following citizens and broadcasting signals.' },
   { id: 'terminal', title: 'Terminal', category: 'Intelligence', dev: 'FAC_NETRUNNERS', version: '2.1.0', primary: 'Command line interface & live SQL query shell', lore: 'Terminal interface for executing database commands and scripts.' },
-  { id: 'browser', title: 'Browser', category: 'Navigation', dev: 'FAC_NEO_CITIZENS', version: '4.2.1', primary: 'Miraverse Web Portal & regional web browser', lore: 'Browser for viewing live net portals across the Miraverse.' },
+  { id: 'browser', title: 'Net Browser', category: 'Navigation', dev: 'FAC_NEO_CITIZENS', version: '4.2.1', primary: 'Miraverse Web Portal & regional web browser', lore: 'Browser for viewing live net portals across the Miraverse.' },
   { id: 'settings', title: 'Settings', category: 'Utility', dev: 'FAC_ARCANE_GUILD', version: '3.0.0', primary: 'System preferences & DB statistics monitor', lore: 'System control panel and database status reader.' }
 ];
 

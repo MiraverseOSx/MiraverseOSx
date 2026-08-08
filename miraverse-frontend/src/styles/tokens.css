@@ -1,15 +1,27 @@
 :root {
-  --lavender: #E7D7FF;
-  --rose: #F7C9E8;
-  --purple: #A078FF;
-  --deep-blue: #3A4FFF;
+  --canvas-moon: #f6f2f4;
+  --canvas-vapor: #d7d5ce;
+  --glass-bg: rgba(216, 221, 230, 0.35);
+  --glass-strong: rgba(230, 233, 239, 0.58);
+  --glass-border: rgba(13, 21, 51, 0.34);
+  --glass-blur: 12px;
 
-  --glass-bg: rgba(255,255,255,0.35);
-  --glass-border: rgba(255,255,255,0.25);
-  --glass-blur: 22px;
+  --midnight-indigo: #2f3d7a;
+  --stardust-navy: #0d1533;
+  --azurite-jade: #488270;
+  --starlight-violet: #454e93;
+  --aurora-pink: #f5d6e7;
+  --blush-lavender: #d8c8d9;
+  --mauve-melody: #aa829e;
+  --system-gold: #b38a36;
+  --system-silver: #8b92a7;
 
-  --radius-window: 16px;
-  --radius-card: 12px;
+  --lavender: var(--blush-lavender);
+  --rose: #ead2dd;
+  --purple: var(--starlight-violet);
+  --deep-blue: var(--midnight-indigo);
 
-  --shadow-window: 0 0 30px rgba(160,120,255,0.3);
+  --radius-window: 0px;
+  --radius-card: 0px;
+  --shadow-window: 0 8px 32px rgba(13, 21, 51, 0.08);
 }

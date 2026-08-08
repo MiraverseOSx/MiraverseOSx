@@ -7,6 +7,9 @@ export default defineConfig({
   server: {
     port: 3000,
     open: true,
+    watch: {
+      ignored: ['**/bootstrap/**', '**/dist/**', '**/node_modules/**'],
+    },
   },
   preview: {
     port: 3000,

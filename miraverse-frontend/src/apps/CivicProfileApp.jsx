@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import Form from 'react-bootstrap/Form';
 import { useOSStore } from '../store/useOSStore';
 import {
   User, Shield, Sparkles, BookOpen, Package, Home, Award, CheckCircle2,
@@ -356,16 +357,17 @@ export default function CivicProfileApp() {
 
                 {/* Declared Region */}
                 <div>
-                  <label className="font-bold text-xs text-[#1d2650]">Declared Origin Region:</label>
-                  <select
+                  <label className="font-bold text-xs text-[#1d2650] mb-1 block">Declared Origin Region:</label>
+                  <Form.Select
+                    aria-label="Declared Origin Region"
                     value={chosenRegion}
                     onChange={(e) => setChosenRegion(e.target.value)}
-                    className="w-full mt-1 rounded-xl border border-slate-300 bg-white p-2.5 text-xs text-slate-800 outline-none"
+                    className="w-full text-xs rounded-xl border border-slate-300 bg-white p-2.5 text-slate-800 focus:outline-none focus:border-indigo-500 shadow-xs"
                   >
                     {REGIONS.map((r) => (
                       <option key={r} value={r}>{r}</option>
                     ))}
-                  </select>
+                  </Form.Select>
                 </div>
 
                 <Button

@@ -1,7 +1,7 @@
 import React, { useState, lazy, Suspense } from 'react';
 import { miraverseDb } from '../db/miraverseDb';
 import { useOSStore } from '../store/useOSStore';
-import { Folder, FileText, Search, Shield, Globe, Users, Briefcase, BookOpen, Copy, Check, Mail, UserCheck, Sparkles, Settings, Bookmark } from 'lucide-react';
+import { Folder, FileText, Search, Shield, Globe, Users, Briefcase, BookOpen, Copy, Check, Mail, UserCheck, Sparkles, Settings, Bookmark, Radio, Terminal } from 'lucide-react';
 
 export const APPS = [
   { id: 'comms', title: 'Comms (OS Network)', icon: Mail },
@@ -21,8 +21,10 @@ export const APPS = [
     }
   },
   { id: 'passport', title: 'Citizen Record', icon: UserCheck },
+  { id: 'pulse', title: 'Pulse Network', icon: Radio },
   { id: 'files', title: 'File Explorer (files)', icon: Folder },
   { id: 'spellforge', title: 'SpellForge Matrix', icon: Sparkles },
+  { id: 'terminal', title: 'System Terminal', icon: Terminal },
   { id: 'board', title: 'Notice Board', icon: Bookmark },
   { id: 'settings', title: 'System Settings', icon: Settings },
 ];

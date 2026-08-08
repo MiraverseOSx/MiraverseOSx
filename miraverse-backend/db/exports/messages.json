@@ -1,0 +1,22 @@
+[
+  {
+    "id": "MSG-000",
+    "userId": "CY-9021-CITIZEN",
+    "sender": "Director Vane / DGA Registry",
+    "faction": "Digital Governance Agency",
+    "subject": "[ACTION REQUIRED] DGA Provisional Identity Registration & Verification",
+    "time": "07:55 AM",
+    "read": false,
+    "body": "Official Dispatch from the Digital Governance Agency (DGA): Welcome, provisional citizen. Your temporary key has been logged. Verify your biometrics to unlock your Civic Profile."
+  },
+  {
+    "id": "MSG-001",
+    "userId": "CY-9021-CITIZEN",
+    "sender": "Cyacademy Registration Office",
+    "faction": "Cyacademy Admin",
+    "subject": "Welcome to MIRAVERSEOSX",
+    "time": "08:00 AM",
+    "read": false,
+    "body": "Welcome citizen. Your provisional registration is active. Your record starts clean so you build your identity through choices, study, and discovery."
+  }
+]

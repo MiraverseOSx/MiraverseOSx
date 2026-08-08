@@ -1,34 +1,42 @@
 .tabbar {
-  background: linear-gradient(to right, var(--lavender), var(--rose));
+  background: rgba(255, 255, 255, 0.58);
+  border-bottom: 1px solid var(--glass-border);
   padding: 6px;
   display: flex;
   gap: 6px;
 }
+
 .tab {
-  background: var(--purple);
-  border-radius: 10px;
+  background: rgba(216, 204, 236, 0.48);
+  border: 1px solid rgba(27, 37, 79, 0.25);
+  border-radius: 0;
   padding: 10px 18px;
-  transition: 0.25s ease;
-  color: white; /* Added to improve contrast on purple bg */
+  transition: 0.18s ease;
+  color: var(--midnight-indigo);
   cursor: pointer;
 }
+
 .tab.active {
-  background: var(--lavender);
-  box-shadow: 0 0 12px var(--deep-blue);
-  transform: scale(1.05);
-  color: #333; /* Dark text on light lavender active tab */
+  background: rgba(255, 255, 255, 0.86);
+  border-color: var(--starlight-violet);
+  box-shadow: none;
+  transform: none;
+  color: var(--midnight-indigo);
 }
+
 .addressbar {
-  background: linear-gradient(to right, var(--rose), var(--lavender));
+  background: rgba(255, 255, 255, 0.46);
+  border-bottom: 1px solid var(--glass-border);
   padding: 10px;
   display: flex;
   gap: 10px;
 }
+
 .address-input {
   flex: 1;
   background: var(--glass-bg);
-  border: 2px solid var(--lavender);
-  border-radius: 10px;
+  border: 1px solid var(--glass-border);
+  border-radius: 0;
   padding: 8px;
-  color: #333;
+  color: var(--midnight-indigo);
 }

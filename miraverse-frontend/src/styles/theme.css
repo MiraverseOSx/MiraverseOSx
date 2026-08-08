@@ -1,19 +1,146 @@
 .os-desktop {
-  background: radial-gradient(circle at top, var(--lavender), var(--rose));
+  background:
+    radial-gradient(circle at 12% 18%, rgba(255, 255, 255, 0.9) 0 1px, transparent 1.8px),
+    radial-gradient(circle at 77% 14%, rgba(255, 255, 255, 0.82) 0 1px, transparent 1.7px),
+    radial-gradient(circle at 63% 72%, rgba(48, 59, 103, 0.16) 0 1px, transparent 1.8px),
+    radial-gradient(circle at 28% 84%, rgba(255, 255, 255, 0.76) 0 1px, transparent 1.6px),
+    radial-gradient(ellipse at 18% 10%, rgba(255, 255, 255, 0.82), transparent 38%),
+    radial-gradient(ellipse at 82% 78%, rgba(185, 190, 202, 0.44), transparent 46%),
+    linear-gradient(138deg, #d8dbe2 0%, #aeb4c0 48%, #c9cdd5 100%);
+  background-size: 170px 170px, 230px 230px, 190px 190px, 260px 260px, auto, auto, auto;
   min-height: 100vh;
-  padding: 2rem;
+}
+
+.os-desktop::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(115deg, transparent 0 26%, rgba(255, 255, 255, 0.2) 43%, transparent 62%),
+    radial-gradient(ellipse at center, rgba(255, 255, 255, 0.08), rgba(61, 70, 94, 0.16));
+  mix-blend-mode: screen;
+  opacity: 0.72;
+}
+
+.command-stars {
+  background-image:
+    radial-gradient(circle at 12% 18%, rgba(255, 255, 255, .9) 0 1px, transparent 1.6px),
+    radial-gradient(circle at 72% 26%, rgba(184, 198, 255, .84) 0 1px, transparent 1.5px),
+    radial-gradient(circle at 35% 76%, rgba(255, 255, 255, .72) 0 1px, transparent 1.5px),
+    radial-gradient(circle at 88% 80%, rgba(151, 169, 235, .72) 0 1px, transparent 1.6px);
+  background-size: 96px 96px, 132px 132px, 118px 118px, 150px 150px;
+  animation: command-star-drift 24s linear infinite;
+}
+
+.command-stars::before,
+.command-stars::after {
+  content: '';
+  position: absolute;
+  inset: -45% 0 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(165deg, transparent 0 46%, rgba(210, 216, 226, .72) 48%, transparent 50%),
+    linear-gradient(165deg, transparent 0 47%, rgba(143, 153, 174, .5) 48.5%, transparent 50%),
+    linear-gradient(165deg, transparent 0 47%, rgba(234, 238, 244, .66) 48%, transparent 49%);
+  background-size: 170px 290px, 240px 360px, 310px 430px;
+  opacity: .52;
+  animation: falling-grey-stars 10s linear infinite;
+}
+
+.command-stars::after {
+  background-size: 230px 370px, 320px 460px, 400px 540px;
+  opacity: .28;
+  animation-duration: 17s;
+  animation-delay: -7s;
+}
+
+.navy-cosmic-shell {
+  position: relative;
+  isolation: isolate;
+  background:
+    radial-gradient(ellipse at 48% 18%, rgba(84, 101, 158, .34), transparent 42%),
+    radial-gradient(ellipse at 78% 82%, rgba(110, 119, 143, .18), transparent 46%),
+    linear-gradient(155deg, rgba(19, 31, 72, .96), rgba(7, 14, 39, .98));
+  border-color: transparent !important;
+  box-shadow: none;
+}
+
+.navy-cosmic-shell::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 14% 22%, rgba(225, 230, 239, .72) 0 1px, transparent 1.8px),
+    radial-gradient(circle at 74% 16%, rgba(155, 166, 190, .62) 0 1px, transparent 1.8px),
+    radial-gradient(circle at 38% 72%, rgba(234, 238, 244, .58) 0 1px, transparent 1.7px),
+    radial-gradient(circle at 88% 84%, rgba(139, 149, 171, .58) 0 1px, transparent 1.8px);
+  background-size: 128px 128px, 183px 183px, 156px 156px, 220px 220px;
+  opacity: .52;
+  animation: command-star-drift 34s linear infinite;
+}
+
+.misty-navy-panel {
+  position: relative;
+  isolation: isolate;
+  color: #e8edf8;
+  background:
+    linear-gradient(160deg, rgba(56, 70, 101, .84), rgba(20, 31, 65, .9)),
+    radial-gradient(ellipse at 30% 12%, rgba(220, 227, 237, .2), transparent 42%);
+  border-color: transparent !important;
+  box-shadow: none;
+}
+
+.misty-navy-panel::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse at 18% 15%, rgba(222, 228, 237, .18), transparent 35%),
+    radial-gradient(ellipse at 80% 75%, rgba(145, 157, 180, .16), transparent 42%),
+    linear-gradient(118deg, transparent 22%, rgba(213, 220, 231, .08) 48%, transparent 72%);
+}
+
+@keyframes command-star-drift {
+  from {
+    background-position: 0 0, 0 0, 0 0, 0 0;
+  }
+
+  to {
+    background-position: 30px 120px, -45px 190px, 65px 150px, -30px 220px;
+  }
+}
+
+@keyframes falling-grey-stars {
+  from {
+    transform: translate3d(0, -28%, 0);
+  }
+
+  to {
+    transform: translate3d(-28px, 52%, 0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+  .command-stars,
+  .command-stars::before,
+  .command-stars::after,
+  .navy-cosmic-shell::before {
+    animation: none;
+  }
 }
 
 .os-window {
   background: var(--glass-bg);
   backdrop-filter: blur(var(--glass-blur));
   border: 1px solid var(--glass-border);
-  border-radius: var(--radius-window);
+  border-radius: 0;
   box-shadow: var(--shadow-window);
-
-  width: 1100px;
-  height: 700px;
-  margin: 2rem auto;
   overflow: hidden;
   display: flex;
   flex-direction: column;
