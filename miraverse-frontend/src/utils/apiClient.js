@@ -1,82 +1,55 @@
 /**
- * MIRAVERSE OSX - Express API Client & World Connector
- * Connects to unified Express server on /api with graceful fallback.
+ * MIRAVERSE OSX - Standalone Client World Connector
+ * Pure client-side data provider with zero backend dependencies.
  */
-
-const API_BASE_URL = '/api';
+import worldData from '../data/worldData.json' with { type: 'json' };
 
 export const apiClient = {
   async getHealth() {
-    try {
-      const res = await fetch(`${API_BASE_URL}/health`);
-      return await res.json();
-    } catch (err) {
-      return { status: 'offline', error: err.message };
-    }
+    return { status: 'standalone', engine: 'Native Client-Side Memory', uptime: '100%' };
   },
 
   async getWorldOverview() {
-    try {
-      const res = await fetch(`${API_BASE_URL}/world/overview`);
-      return await res.json();
-    } catch (err) {
-      console.warn('Backend offline, using fallback');
-      return null;
-    }
+    return {
+      title: worldData.metadata?.title || 'MIRAVERSE OSX',
+      version: worldData.version || '2.0.0',
+      regions: worldData.regions || [],
+      factions: worldData.factions || [],
+      npcs: worldData.npcs || [],
+      lore: worldData.lore || [],
+    };
   },
 
   async getRegions() {
-    try {
-      const res = await fetch(`${API_BASE_URL}/world/regions`);
-      return await res.json();
-    } catch (err) {
-      return [];
-    }
+    return worldData.regions || [];
   },
 
   async getFactions() {
-    try {
-      const res = await fetch(`${API_BASE_URL}/world/factions`);
-      return await res.json();
-    } catch (err) {
-      return [];
-    }
+    return worldData.factions || [];
   },
 
   async getNPCs() {
-    try {
-      const res = await fetch(`${API_BASE_URL}/world/npcs`);
-      return await res.json();
-    } catch (err) {
-      return [];
-    }
+    return worldData.npcs || [];
   },
 
   async searchLore(query = '') {
-    try {
-      const res = await fetch(`${API_BASE_URL}/world/lore?q=${encodeURIComponent(query)}`);
-      return await res.json();
-    } catch (err) {
-      return [];
-    }
+    const lore = worldData.lore || [];
+    if (!query) return lore;
+    const q = query.toLowerCase();
+    return lore.filter((l) =>
+      l.title.toLowerCase().includes(q) ||
+      l.content.toLowerCase().includes(q) ||
+      l.category.toLowerCase().includes(q)
+    );
   },
 
-  async sendMAIPrompt(prompt, userContext = {}) {
-    try {
-      const res = await fetch(`${API_BASE_URL}/mai/chat`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ prompt, userContext })
-      });
-      return await res.json();
-    } catch (err) {
-      return {
-        thought: 'Backend connection offline',
-        response: 'MAI Offline Mode: Unable to reach Express backend API server.',
-        action: null
-      };
-    }
-  }
+  async sendMAIPrompt(prompt) {
+    return {
+      thought: 'Client MAI Logic',
+      response: `MAI Assistant: Processing "${prompt}" in native standalone mode.`,
+      action: null,
+    };
+  },
 };
 
 export default apiClient;

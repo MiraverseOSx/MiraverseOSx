@@ -2,7 +2,6 @@
   "name": "miraverseosx",
   "version": "0.1.0",
   "private": true,
-  "main": "electron/main.cjs",
   "type": "module",
   "dependencies": {
     "@testing-library/dom": "^10.4.1",
@@ -12,13 +11,8 @@
     "bootstrap": "^5.3.8",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
-    "cors": "^2.8.5",
-    "dotenv": "^17.4.2",
-    "express": "^4.19.2",
     "framer-motion": "^12.42.2",
     "lucide-react": "^1.29.0",
-    "mongodb": "^7.5.0",
-    "node-fetch": "^3.3.2",
     "react": "^19.2.8",
     "react-bootstrap": "^2.10.10",
     "react-dom": "^19.2.8",
@@ -27,11 +21,8 @@
     "zustand": "^5.0.14"
   },
   "scripts": {
-    "dev": "node server.js",
-    "start": "node server.js",
-    "seed:db": "node miraverse-backend/db/seedMongoDB.js",
-    "electron": "electron electron/main.cjs",
-    "electron:dev": "electron electron/main.cjs",
+    "dev": "vite",
+    "start": "vite",
     "build": "vite build",
     "preview": "vite preview"
   },
@@ -59,13 +50,11 @@
     "@tailwindcss/typography": "^0.5.20",
     "@vitejs/plugin-react": "^6.0.5",
     "autoprefixer": "^10.5.4",
-    "electron": "^43.3.0",
     "postcss": "^8.5.22",
     "tailwindcss": "^3.4.19",
     "vite": "^8.2.0"
   },
-  "description": "Evaluate your Microsoft Foundry AI agent locally with pytest-powered testing. This project provides a complete evaluation framework for assessing agent quality, performance, and accuracy using built-in and custom evaluators.",
-  "main": "electron/main.cjs",
+  "description": "MIRAVERSEOSX - Celestial Operating System Desktop",
   "directories": {
     "doc": "docs"
   },
@@ -73,11 +62,6 @@
     "type": "git",
     "url": "git+https://github.com/mirxclej/MiraverseOSx.git"
   },
-  "keywords": [],
   "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/mirxclej/MiraverseOSx/issues"
-  },
-  "homepage": "https://github.com/mirxclej/MiraverseOSx#readme"
+  "license": "ISC"
 }

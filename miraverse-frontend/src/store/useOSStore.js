@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import missionsData from '../../../miraverse-backend/db/exports/missions.json' with { type: 'json' };
+import missionsData from '../data/missions.json' with { type: 'json' };
 
 const MENU_BAR_HEIGHT = 70;
 const DEFAULT_WINDOW_SIZE = { width: 960, height: 640 };

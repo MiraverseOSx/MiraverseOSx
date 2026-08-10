@@ -1,5 +1,4 @@
-import worldData from '../../../miraverse-backend/world/worldData.json' with { type: 'json' };
-import apiClient from '../utils/apiClient';
+import worldData from '../data/worldData.json' with { type: 'json' };
 
 export const APPS = [
   { id: 'files', title: 'File Explorer', category: 'Utility', dev: 'FAC_NETRUNNERS', version: '2.0.0', primary: 'File system & lore archive explorer', lore: 'System file explorer for browsing documents, logs, and database records.' },
