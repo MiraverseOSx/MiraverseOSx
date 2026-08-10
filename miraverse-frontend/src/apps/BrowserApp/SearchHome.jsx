@@ -22,6 +22,7 @@ export default function SearchHome({ openTab, navigateTab }) {
         'shipping.aure': 'bg-orange-50 text-orange-700 border-orange-200 hover:bg-orange-100',
         'vectornet.onion': 'bg-slate-100 text-slate-800 border-slate-300 hover:bg-slate-200',
         'auresuite.aure': 'bg-rose-50 text-rose-700 border-rose-200 hover:bg-rose-100',
+        'mai.space.aure': 'bg-purple-50 text-purple-700 border-purple-200 hover:bg-purple-100',
     };
 
     return (

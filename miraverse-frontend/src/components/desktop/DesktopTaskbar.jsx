@@ -35,13 +35,8 @@ export default function DesktopTaskbar({
       action: () => openApp('browser'),
     },
     {
-      id: 'board',
-      label: '📜 Master Quest Tracker',
-      action: () => openApp('board'),
-    },
-    {
       id: 'mail',
-      label: '✉️ Civic Mailbox',
+      label: '✉️ Mailbox',
       action: () => openApp('mail'),
     },
     {
@@ -50,19 +45,9 @@ export default function DesktopTaskbar({
       action: () => openApp('comms'),
     },
     {
-      id: 'spellforge',
-      label: '🔥 SpellForge Matrix',
-      action: () => openApp('spellforge'),
-    },
-    {
       id: 'passport',
       label: '🪪 Citizen Record',
       action: () => openApp('passport'),
-    },
-    {
-      id: 'pulse',
-      label: '📡 Pulse Network',
-      action: () => openApp('pulse'),
     },
     {
       id: 'files',
@@ -78,16 +63,6 @@ export default function DesktopTaskbar({
       id: 'settings',
       label: '⚙️ System Settings',
       action: () => openApp('settings'),
-    },
-    {
-      id: 'sanctuary',
-      label: '🛡️ Sanctuary Mode',
-      action: toggleSanctuary,
-    },
-    {
-      id: 'phone',
-      label: '📱 Phone Line',
-      action: onTogglePhone,
     },
   ];
 

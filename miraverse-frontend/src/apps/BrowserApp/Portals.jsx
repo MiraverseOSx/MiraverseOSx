@@ -320,3 +320,5 @@ export function DarkWebOnionPortal() {
         </div>
     );
 }
+
+export { MaiSpacePortal } from './MaiSpacePortal';

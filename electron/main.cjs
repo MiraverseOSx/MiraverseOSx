@@ -3,9 +3,10 @@ const { spawn } = require('node:child_process');
 const net = require('node:net');
 const path = require('node:path');
 
-const APP_URL = process.env.MIRAVERSE_URL || 'http://127.0.0.1:3000';
 const SERVER_PORT = 3000;
+const APP_URL = process.env.MIRAVERSE_URL || `http://127.0.0.1:${SERVER_PORT}`;
 let serverProcess = null;
+let mainWindow = null;
 
 function isPortOpen(port) {
     return new Promise((resolve) => {
@@ -15,7 +16,7 @@ function isPortOpen(port) {
             resolve(true);
         });
         socket.once('error', () => resolve(false));
-        socket.setTimeout(500, () => {
+        socket.setTimeout(400, () => {
             socket.destroy();
             resolve(false);
         });
@@ -27,22 +28,25 @@ async function waitForServer(port, attempts = 60) {
         if (await isPortOpen(port)) return;
         await new Promise((resolve) => setTimeout(resolve, 250));
     }
-    throw new Error(`Miraverse server did not start on port ${port}.`);
+    throw new Error(`Miraverse server did not respond on port ${port}.`);
 }
 
 async function ensureServer() {
-    if (await isPortOpen(SERVER_PORT)) return;
+    if (await isPortOpen(SERVER_PORT)) {
+        console.log(`Port ${SERVER_PORT} already active.`);
+        return;
+    }
 
-    serverProcess = spawn('node', ['server.js'], {
+    serverProcess = spawn(process.execPath, [path.resolve(__dirname, '..', 'server.js')], {
         cwd: path.resolve(__dirname, '..'),
-        env: { ...process.env, PORT: String(SERVER_PORT) },
+        env: { ...process.env, PORT: String(SERVER_PORT), ELECTRON_RUN_AS_NODE: '1' },
         stdio: 'inherit',
         windowsHide: true,
     });
 
     serverProcess.once('exit', (code) => {
         if (code && !app.isQuitting) {
-            console.error(`Miraverse server exited with code ${code}.`);
+            console.error(`Miraverse server process exited with code ${code}.`);
         }
         serverProcess = null;
     });
@@ -51,43 +55,61 @@ async function ensureServer() {
 }
 
 async function createWindow() {
-    await ensureServer();
+    try {
+        await ensureServer();
+    } catch (e) {
+        console.warn('Server launch check warning:', e.message);
+    }
 
-    const window = new BrowserWindow({
+    mainWindow = new BrowserWindow({
         width: 1440,
         height: 900,
         minWidth: 1024,
         minHeight: 680,
         backgroundColor: '#07040d',
-        title: 'MiraverseOSx',
+        title: 'MiraverseOSx | Celestial Netrunner OS',
         autoHideMenuBar: true,
-        show: false,
+        show: true,
+        center: true,
         webPreferences: {
             preload: path.join(__dirname, 'preload.cjs'),
             contextIsolation: true,
             nodeIntegration: false,
-            sandbox: true,
+            sandbox: false,
         },
     });
 
-    window.once('ready-to-show', () => window.show());
-    window.webContents.setWindowOpenHandler(({ url }) => {
-        if (url.startsWith(APP_URL) || url.startsWith('http://localhost:3000') || url.startsWith('http://127.0.0.1:3000')) {
+    mainWindow.webContents.setWindowOpenHandler(({ url }) => {
+        if (url.startsWith('http://localhost') || url.startsWith('http://127.0.0.1')) {
             return { action: 'allow' };
         }
         shell.openExternal(url);
         return { action: 'deny' };
     });
 
-    await window.loadURL(APP_URL);
+    mainWindow.webContents.on('did-fail-load', () => {
+        console.log('Retrying connection to UI...');
+        setTimeout(() => {
+            if (mainWindow && !mainWindow.isDestroyed()) {
+                mainWindow.loadURL(APP_URL);
+            }
+        }, 1000);
+    });
+
+    await mainWindow.loadURL(APP_URL);
+    mainWindow.show();
+    mainWindow.focus();
+
+    mainWindow.on('closed', () => {
+        mainWindow = null;
+    });
 }
 
 app.whenReady().then(async () => {
     try {
         await createWindow();
     } catch (error) {
-        console.error(error);
-        app.quit();
+        console.error('Failed to create Electron window:', error);
     }
 
     app.on('activate', () => {
@@ -97,7 +119,9 @@ app.whenReady().then(async () => {
 
 app.on('before-quit', () => {
     app.isQuitting = true;
-    if (serverProcess && !serverProcess.killed) serverProcess.kill();
+    if (serverProcess && !serverProcess.killed) {
+        try { serverProcess.kill(); } catch (_) {}
+    }
 });
 
 app.on('window-all-closed', () => {

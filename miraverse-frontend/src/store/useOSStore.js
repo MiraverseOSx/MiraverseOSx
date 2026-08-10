@@ -247,13 +247,33 @@ export const useOSStore = create((set) => ({
       lineageDecrypted: false,
       dgaVerified: false,
       npcVectors: {
-        jeremie: { trust: 50, rivalry: 10, friendship: 50, sync: 50 },
-        sissi: { trust: 40, rivalry: 60, friendship: 30, sync: 40 },
-        aelita: { trust: 70, rivalry: 5, friendship: 80, sync: 75 },
-        odd: { trust: 90, rivalry: 5, friendship: 95, sync: 85 },
-        voss: { trust: 80, rivalry: 10, friendship: 60, sync: 90 },
-        riven: { trust: 65, rivalry: 45, friendship: 50, sync: 70 },
-        mara: { trust: 75, rivalry: 30, friendship: 60, sync: 60 },
+        jeremie: { friendship: 60, trust: 75, rivalry: 10, sync: 80, corruption: 0 },
+        sissi: { friendship: 30, trust: 40, rivalry: 75, sync: 40, corruption: 0 },
+        aelita: { friendship: 85, trust: 90, rivalry: 5, sync: 85, corruption: 5 },
+        odd: { friendship: 95, trust: 85, rivalry: 15, sync: 80, corruption: 0 },
+        voss: { friendship: 50, trust: 80, rivalry: 20, sync: 90, corruption: 0 },
+        riven: { friendship: 65, trust: 60, rivalry: 45, sync: 75, corruption: 10 },
+        mara: { friendship: 55, trust: 75, rivalry: 30, sync: 65, corruption: 0 },
+        tali: { friendship: 80, trust: 70, rivalry: 10, sync: 70, corruption: 0 },
+        liora: { friendship: 40, trust: 50, rivalry: 65, sync: 55, corruption: 0 },
+        ember: { friendship: 45, trust: 45, rivalry: 70, sync: 60, corruption: 0 },
+        ulrich: { friendship: 50, trust: 55, rivalry: 80, sync: 70, corruption: 0 },
+        franz: { friendship: 60, trust: 85, rivalry: 0, sync: 90, corruption: 15 },
+        rowan: { friendship: 70, trust: 90, rivalry: 5, sync: 65, corruption: 0 },
+        ilyra: { friendship: 75, trust: 85, rivalry: 0, sync: 75, corruption: 0 },
+        maris: { friendship: 65, trust: 70, rivalry: 10, sync: 60, corruption: 0 },
+        kael: { friendship: 55, trust: 65, rivalry: 25, sync: 70, corruption: 5 },
+        nyx: { friendship: 20, trust: 40, rivalry: 50, sync: 45, corruption: 60 },
+        null: { friendship: 10, trust: 30, rivalry: 60, sync: 30, corruption: 85 },
+      },
+      reputation: {
+        campus: 50,
+        dga: 40,
+        faith: 50,
+        archive: 30,
+        vector: 35,
+        delegation: 25,
+        orynvell: 10,
       },
       skills: {
         Programming: { level: 1, xp: 0 },
@@ -267,9 +287,9 @@ export const useOSStore = create((set) => ({
         Cryptography: { level: 1, xp: 0 },
       },
       careers: {
-        medical: { rankIndex: 0, xp: 0 },
-        dga: { rankIndex: 0, xp: 0 },
-        gov: { rankIndex: 0, xp: 0 },
+        medical: { rankIndex: 0, xp: 0, title: 'Faith Medical Healthcare & Diagnostics' },
+        dga: { rankIndex: 0, xp: 0, title: 'DGA Security & Containment Ops' },
+        gov: { rankIndex: 0, xp: 0, title: 'Governmental Civic Administration' },
       },
       starterPhase: 0,
       houseAffiliation: null,
@@ -337,7 +357,7 @@ export const useOSStore = create((set) => ({
 
   updateNPCVector: (npcId, vectorName, delta) =>
     set((state) => {
-      const current = state.gameplay.player.npcVectors[npcId] || { trust: 50, rivalry: 0, sync: 50, corruption: 0 };
+      const current = state.gameplay.player.npcVectors[npcId] || { friendship: 50, trust: 50, rivalry: 0, sync: 50, corruption: 0 };
       const val = Math.max(0, Math.min(100, (current[vectorName] || 0) + delta));
       return {
         gameplay: {
@@ -350,6 +370,24 @@ export const useOSStore = create((set) => ({
                 ...current,
                 [vectorName]: val,
               },
+            },
+          },
+        },
+      };
+    }),
+
+  updateReputationTrack: (trackName, delta) =>
+    set((state) => {
+      const currentReps = state.gameplay.player.reputation || { campus: 50, dga: 40, faith: 50, archive: 30, vector: 35, delegation: 25, orynvell: 10 };
+      const val = Math.max(0, Math.min(100, (currentReps[trackName] || 0) + delta));
+      return {
+        gameplay: {
+          ...state.gameplay,
+          player: {
+            ...state.gameplay.player,
+            reputation: {
+              ...currentReps,
+              [trackName]: val,
             },
           },
         },
@@ -475,6 +513,55 @@ export const useOSStore = create((set) => ({
           player: {
             ...state.gameplay.player,
             credits: state.gameplay.player.credits + (credits || 100),
+            xp: newXP,
+            level: newLevel,
+          },
+        },
+      };
+    }),
+
+  advanceAppRank: (appKey) =>
+    set((state) => {
+      const currentRanks = state.gameplay.appRanks || { explorer: 1, weaver: 1, investigator: 1, research: 1, influence: 1, clearance: 1 };
+      const currentRank = currentRanks[appKey] || 1;
+      if (currentRank >= 5) return state;
+      const nextRank = currentRank + 1;
+      const addedXP = nextRank * 50;
+      const newXP = state.gameplay.player.xp + addedXP;
+      const newLevel = Math.floor(newXP / 100) + 1;
+
+      return {
+        gameplay: {
+          ...state.gameplay,
+          appRanks: {
+            ...currentRanks,
+            [appKey]: nextRank,
+          },
+          player: {
+            ...state.gameplay.player,
+            xp: newXP,
+            level: newLevel,
+          },
+        },
+      };
+    }),
+
+  completeStarterLoop: (loopKey) =>
+    set((state) => {
+      const completed = state.gameplay.starterCompletedLoops || [];
+      if (completed.includes(loopKey)) return state;
+      const addedCredits = 150;
+      const addedXP = 100;
+      const newXP = state.gameplay.player.xp + addedXP;
+      const newLevel = Math.floor(newXP / 100) + 1;
+
+      return {
+        gameplay: {
+          ...state.gameplay,
+          starterCompletedLoops: [...completed, loopKey],
+          player: {
+            ...state.gameplay.player,
+            credits: state.gameplay.player.credits + addedCredits,
             xp: newXP,
             level: newLevel,
           },

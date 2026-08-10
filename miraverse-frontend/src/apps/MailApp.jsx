@@ -1,7 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import {
     Mail, Inbox, Star, Archive, Send, Paperclip, CheckCircle2,
-    Shield, Activity, Lock, ArrowRight, Sparkles
+    Shield, Activity, Lock, ArrowRight, Sparkles, ExternalLink, FileText
 } from 'lucide-react';
 import { useCommsStore } from '../store/useCommsStore';
 import { useOSStore } from '../store/useOSStore';
@@ -11,6 +11,8 @@ import Input from '../components/ui/input';
 import {
     AppShell, AppToolbar, AppSidebar, AppPane, EmptyState, SearchField, StatusBadge
 } from '../components/ui/app-shell';
+import DocumentModal from '../components/DocumentModal';
+import { MOCK_DOCUMENTS } from '../data/mockDocuments';
 import { useToastStore } from '../store/useToastStore';
 
 export default function MailApp() {
@@ -21,12 +23,12 @@ export default function MailApp() {
     const [starredIds, setStarredIds] = useState([]);
     const [replyText, setReplyText] = useState('');
     const [replyStatus, setReplyStatus] = useState(null);
+    const [openDocModal, setOpenDocModal] = useState(null);
 
     const emails = useCommsStore((s) => s.emails);
     const claimedComms = useOSStore((s) => s.gameplay.claimedComms);
     const claimCommsAttachment = useOSStore((s) => s.claimCommsAttachment);
     const toggleApp = useOSStore((s) => s.toggleApp);
-    const dgaVerified = useOSStore((s) => s.gameplay.player.dgaVerified);
     const pushToast = useToastStore((s) => s.pushToast);
 
     const toggleStar = (id, e) => {
@@ -40,7 +42,7 @@ export default function MailApp() {
         return emails.filter((mail) => {
             // Folder filter
             if (activeFolder === 'starred' && !starredIds.includes(mail.id)) return false;
-            if (activeFolder === 'official' && !/DGA|Governance|Faith|Cyacademy|Bureau/i.test(mail.sender)) return false;
+            if (activeFolder === 'official' && !/DGA|Governance|Faith|Cyacademy|Bureau|Housing|Finance|Safety|Mobile|Integration|Pulse/i.test(mail.sender)) return false;
 
             // Faction filter
             if (activeFaction !== 'all') {
@@ -63,16 +65,40 @@ export default function MailApp() {
     }, [emails, activeFolder, activeFaction, search, starredIds]);
 
     const selectedMail = emails.find((m) => m.id === selectedMailId) || emails[0];
-    const isAttachmentClaimed = selectedMail?.attachment && claimedComms.includes(selectedMail.id);
 
-    const handleClaimAttachment = () => {
-        if (!selectedMail?.attachment || isAttachmentClaimed) return;
-        claimCommsAttachment(selectedMail.id, selectedMail.attachment.amount, 50);
+    const getMailAttachments = (mail) => {
+        if (!mail) return [];
+        if (mail.attachments && Array.isArray(mail.attachments)) return mail.attachments;
+        if (mail.attachment) return [mail.attachment];
+        return [];
+    };
+
+    const currentAttachments = getMailAttachments(selectedMail);
+
+    const handleClaimAttachmentItem = (attId, amount) => {
+        const claimId = `${selectedMail.id}_${attId || 'default'}`;
+        if (claimedComms.includes(claimId)) return;
+        claimCommsAttachment(claimId, amount || 100, 50);
         pushToast({
             title: 'Attachment claimed',
-            message: `Added ${selectedMail.attachment.amount} ₡ and 50 XP.`,
+            message: `Added ${amount || 100} ₡ and 50 XP.`,
             tone: 'success',
         });
+    };
+
+    const handleOpenDocumentAttachment = (att) => {
+        const mockKey = att.mockKey || 'dga-registration';
+        const docDef = MOCK_DOCUMENTS[mockKey] || {
+            id: att.id || 'doc',
+            filename: att.name,
+            name: att.name,
+            extension: att.name.endsWith('.osform') ? '.osform' : '.pdf',
+            category: 'Municipal Document',
+            meta: { classification: 'MUNICIPAL DISPATCH', author: selectedMail?.sender || 'Civic Bureau', timestamp: selectedMail?.time || 'TODAY', fileSize: '4.0 KB' },
+            security: { isEncrypted: false },
+            content: { title: att.previewTitle || att.name, subtitle: att.previewText || 'Municipal Attachment Document', bodyText: selectedMail?.body || 'Official Municipal Document' }
+        };
+        setOpenDocModal(docDef);
     };
 
     const handleActionClick = (actionType) => {
@@ -101,8 +127,8 @@ export default function MailApp() {
         <AppShell>
             <AppToolbar
                 icon={Mail}
-                title="Aureline Civic Mailbox"
-                subtitle="Official dispatch and intake portal"
+                title="AureMail Mailbox"
+                subtitle="Personal Citizen Inbox & Municipal Dispatches"
                 actions={(
                     <>
                         <SearchField
@@ -121,12 +147,10 @@ export default function MailApp() {
             <div className="flex min-h-0 flex-1 overflow-hidden">
                 {/* PANE 1: LEFT FOLDERS & NAVIGATION */}
                 <AppSidebar className="w-[22%] min-w-44 max-w-52 shrink-0 p-3 space-y-4" label="Mailbox folders and factions">
-                    {/* New Dispatch Badge */}
                     <button className="flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#17213f] to-[#3a497b] py-2 text-xs font-bold text-white shadow-sm hover:opacity-90 transition">
                         <Sparkles size={14} className="text-purple-300" /> New Dispatch
                     </button>
 
-                    {/* Mailbox Folders */}
                     <div className="space-y-1">
                         <div className="text-[10px] font-bold uppercase tracking-[.2em] text-slate-400 mb-1.5 px-2">
                             Mailbox Folders
@@ -134,7 +158,7 @@ export default function MailApp() {
                         {[
                             { id: 'inbox', label: 'Inbox', icon: Inbox, count: emails.length },
                             { id: 'starred', label: 'Starred', icon: Star, count: starredIds.length },
-                            { id: 'official', label: 'Official Dispatches', icon: Shield, count: emails.filter((m) => /DGA|Faith|Cyacademy/i.test(m.sender)).length },
+                            { id: 'official', label: 'Official Dispatches', icon: Shield, count: emails.filter((m) => /DGA|Faith|Cyacademy|Bureau|Housing|Finance/i.test(m.sender)).length },
                             { id: 'archive', label: 'Archive', icon: Archive, count: 0 },
                         ].map((f) => {
                             const IconComp = f.icon;
@@ -162,13 +186,12 @@ export default function MailApp() {
                         })}
                     </div>
 
-                    {/* Faction Filter Pills */}
                     <div className="border-t border-slate-200 pt-3 space-y-1.5">
                         <div className="text-[10px] font-bold uppercase tracking-[.2em] text-slate-400 px-2">
                             Factions
                         </div>
                         <div className="flex flex-wrap gap-1 px-1">
-                            {['all', 'dga', 'faith', 'cyacademy', 'netrunners'].map((fac) => (
+                            {['all', 'dga', 'faith', 'cyacademy', 'civic'].map((fac) => (
                                 <button
                                     key={fac}
                                     onClick={() => setActiveFaction(fac)}
@@ -195,6 +218,7 @@ export default function MailApp() {
                         {filteredEmails.map((mail) => {
                             const isSelected = selectedMailId === mail.id;
                             const isStarred = starredIds.includes(mail.id);
+                            const atts = getMailAttachments(mail);
 
                             return (
                                 <div
@@ -205,7 +229,6 @@ export default function MailApp() {
                                         : 'border-slate-200/80 bg-white/90 hover:bg-[#f7f7fd]'
                                         }`}
                                 >
-                                    {/* Top Sender Row */}
                                     <div className="flex items-center justify-between">
                                         <span className="truncate text-xs font-bold text-[#1f2954]">
                                             {mail.sender}
@@ -221,24 +244,21 @@ export default function MailApp() {
                                         </div>
                                     </div>
 
-                                    {/* Subject Line */}
                                     <div className="mt-1 truncate text-xs font-medium text-[#243064]">
                                         {mail.subject}
                                     </div>
 
-                                    {/* Body Snippet */}
                                     <p className="mt-1 text-[11px] text-slate-500 line-clamp-2 leading-snug">
                                         {mail.body}
                                     </p>
 
-                                    {/* Badges */}
                                     <div className="mt-2 flex items-center justify-between border-t border-slate-100 pt-1.5 text-[10px]">
                                         <span className="rounded bg-indigo-50 px-1.5 py-0.5 text-indigo-700 font-medium">
                                             {mail.faction || 'Official Dispatch'}
                                         </span>
-                                        {mail.attachment && (
+                                        {atts.length > 0 && (
                                             <span className="flex items-center gap-1 text-[#5f6ab0] font-semibold">
-                                                <Paperclip size={11} /> Attachment
+                                                <Paperclip size={11} /> {atts.length} {atts.length === 1 ? 'Attachment' : 'Attachments'}
                                             </span>
                                         )}
                                     </div>
@@ -256,7 +276,6 @@ export default function MailApp() {
                 <main className="flex min-w-0 flex-1 flex-col bg-[#FAFAFC] overflow-y-auto p-6">
                     {selectedMail ? (
                         <div className="flex h-full flex-col space-y-4">
-                            {/* Header Box */}
                             <div className="rounded-2xl border border-slate-300/80 bg-white p-5 shadow-sm space-y-3">
                                 <div className="flex items-start justify-between border-b border-slate-200 pb-3">
                                     <div>
@@ -275,82 +294,76 @@ export default function MailApp() {
                                     </span>
                                 </div>
 
-                                {/* Body Content Box */}
-                                <div className="text-xs leading-relaxed text-[#243064] whitespace-pre-line font-serif  bg-[#FAF9FF] p-4 rounded-xl border border-purple-200/50">
+                                <div className="text-xs leading-relaxed text-[#243064] whitespace-pre-line font-serif bg-[#FAF9FF] p-4 rounded-xl border border-purple-200/50">
                                     {selectedMail.body}
                                 </div>
                             </div>
 
-                            {/* Special Interactive Action Card (e.g. DGA Identity Verification or Faith Medical Intake) */}
-                            {(selectedMail.id === 'MSG-000' || selectedMail.id === 'MSG-005') && (
-                                <div className="rounded-2xl border border-amber-300/90 bg-gradient-to-r from-amber-500/10 via-purple-950/5 to-purple-950/10 p-5 shadow-md space-y-3">
-                                    <div className="flex items-center gap-3">
-                                        <div className="h-10 w-10 rounded-xl bg-amber-500 text-slate-950 flex items-center justify-center font-bold shadow-sm shrink-0">
-                                            {selectedMail.id === 'MSG-000' ? <Lock size={20} /> : <Activity size={20} />}
-                                        </div>
-                                        <div>
-                                            <h3 className="text-xs font-bold text-[#1d2650] font-serif uppercase tracking-wider">
-                                                {selectedMail.id === 'MSG-000'
-                                                    ? '⚡ DGA Provisional Identity Verification Portal'
-                                                    : '🏥 Faith Medical Baseline Diagnostic Scan'}
-                                            </h3>
-                                            <p className="text-[11px] text-slate-600">
-                                                {selectedMail.id === 'MSG-000'
-                                                    ? 'Complete your biometric identity setup in the Citizen Record app to unlock full OS features.'
-                                                    : 'Schedule your mandatory aura baseline scan on the Faith Medical Portal.'}
-                                            </p>
-                                        </div>
+                            {/* Attachments Section */}
+                            {currentAttachments.length > 0 && (
+                                <div className="space-y-2">
+                                    <div className="text-xs font-bold text-[#1d2650] flex items-center gap-1.5">
+                                        <Paperclip size={14} className="text-[#5f6ab0]" />
+                                        <span>Attached Municipal Enclosures ({currentAttachments.length})</span>
                                     </div>
+                                    <div className="grid grid-cols-1 gap-2.5">
+                                        {currentAttachments.map((att, idx) => {
+                                            const attId = att.id || `att-${idx}`;
+                                            const claimId = `${selectedMail.id}_${attId}`;
+                                            const isClaimed = claimedComms.includes(claimId);
 
-                                    <Button
-                                        onClick={() => handleActionClick(selectedMail.id === 'MSG-000' ? 'dga_verification' : 'faith_intake')}
-                                        size="sm"
-                                        variant="solid"
-                                        className="w-full py-2.5 bg-gradient-to-r from-amber-500 to-purple-600 hover:from-amber-400 hover:to-purple-500 text-black font-bold text-xs shadow-md flex items-center justify-center gap-2 rounded-xl"
-                                    >
-                                        <span>
-                                            {selectedMail.id === 'MSG-000'
-                                                ? 'Open Citizen Record App & Scan Biometrics >'
-                                                : 'Launch Faith Medical Portal in Net Browser >'}
-                                        </span>
-                                        <ArrowRight size={14} />
-                                    </Button>
-                                </div>
-                            )}
+                                            return (
+                                                <div key={attId} className="rounded-xl border border-slate-300/80 bg-white p-3.5 shadow-sm flex items-center justify-between">
+                                                    <div
+                                                        onClick={() => handleOpenDocumentAttachment(att)}
+                                                        className="flex cursor-pointer items-center gap-3 hover:opacity-80 transition"
+                                                    >
+                                                        <div className="rounded-lg bg-[#eef0fb] p-2.5 text-[#5f6ab0]">
+                                                            <FileText size={18} />
+                                                        </div>
+                                                        <div>
+                                                            <div className="text-xs font-bold text-[#1d2650] flex items-center gap-2">
+                                                                {att.name}
+                                                                <span className="text-[10px] font-mono text-purple-700 bg-purple-50 px-1.5 py-0.5 rounded border border-purple-200">
+                                                                    Inspect Form
+                                                                </span>
+                                                            </div>
+                                                            <p className="text-[11px] text-slate-500 mt-0.5">
+                                                                {att.previewTitle || att.previewText || 'Municipal Attachment Document'}
+                                                            </p>
+                                                        </div>
+                                                    </div>
 
-                            {/* Attachment Box */}
-                            {selectedMail.attachment && (
-                                <div className="rounded-2xl border border-slate-300/80 bg-white p-4 shadow-sm flex items-center justify-between">
-                                    <div className="flex items-center gap-3">
-                                        <div className="h-10 w-10 rounded-xl bg-[#eef0fb] flex items-center justify-center text-[#5f6ab0]">
-                                            <Paperclip size={20} />
-                                        </div>
-                                        <div>
-                                            <div className="text-xs font-bold text-[#1d2650] flex items-center gap-2">
-                                                {selectedMail.attachment.name}
-                                                <span className="text-[10px] font-mono text-slate-400">PDF Document</span>
-                                            </div>
-                                            <p className="text-[11px] text-slate-500">
-                                                {selectedMail.attachment.previewTitle || 'Official Document Attachment'}
-                                            </p>
-                                        </div>
+                                                    <div className="flex items-center gap-2">
+                                                        <Button
+                                                            onClick={() => handleOpenDocumentAttachment(att)}
+                                                            size="sm"
+                                                            variant="ghost"
+                                                            className="text-xs font-bold text-[#5f6ab0] border border-slate-200 flex items-center gap-1"
+                                                        >
+                                                            Open <ExternalLink size={12} />
+                                                        </Button>
+
+                                                        <Button
+                                                            onClick={() => handleClaimAttachmentItem(attId, att.amount || 100)}
+                                                            disabled={isClaimed}
+                                                            size="sm"
+                                                            variant={isClaimed ? 'ghost' : 'solid'}
+                                                            className="font-bold text-xs px-3 py-1.5"
+                                                        >
+                                                            {isClaimed ? (
+                                                                <span className="flex items-center gap-1 text-emerald-600 font-bold">
+                                                                    <CheckCircle2 size={13} /> Claimed (+₡{att.amount || 100})
+                                                                </span>
+                                                            ) : (
+                                                                `Claim (+₡${att.amount || 100})`
+                                                            )}
+                                                        </Button>
+                                                    </div>
+                                                </div>
+                                            );
+                                        })}
                                     </div>
-
-                                    <Button
-                                        onClick={handleClaimAttachment}
-                                        disabled={isAttachmentClaimed}
-                                        size="sm"
-                                        variant={isAttachmentClaimed ? 'ghost' : 'solid'}
-                                        className="font-bold text-xs px-4 py-2"
-                                    >
-                                        {isAttachmentClaimed ? (
-                                            <span className="flex items-center gap-1 text-emerald-600 font-bold">
-                                                <CheckCircle2 size={14} /> Claimed (+₡{selectedMail.attachment.amount})
-                                            </span>
-                                        ) : (
-                                            `Claim Attachment (+₡${selectedMail.attachment.amount})`
-                                        )}
-                                    </Button>
                                 </div>
                             )}
 
@@ -377,6 +390,11 @@ export default function MailApp() {
                     )}
                 </main>
             </div>
+
+            {/* Document Inspection Modal */}
+            {openDocModal && (
+                <DocumentModal file={openDocModal} onClose={() => setOpenDocModal(null)} />
+            )}
         </AppShell>
     );
 }

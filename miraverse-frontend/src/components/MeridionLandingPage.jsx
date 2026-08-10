@@ -1,12 +1,15 @@
 // src/components/MeridionLandingPage.jsx
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Sparkles, ArrowRight, UserPlus, LogIn, Compass, Shield, BookOpen, HeartPulse } from 'lucide-react';
+import { Sparkles, ArrowRight, UserPlus, LogIn, Compass, Shield, BookOpen, HeartPulse, Video, Eye } from 'lucide-react';
 import SparklesCanvas from './SparklesCanvas';
 import meridionWorld from '../assets/images/meridion_world.jpg';
+import videoLandscape from '../assets/videos/mixkit-flying-over-a-relaxing-creek-full-of-rock-on-the-51585-hd-ready.mp4';
+import videoGlitter from '../assets/videos/mixkit-glitter-stars-and-snowflakes-19007-hd-ready.mp4';
 
 export default function MeridionLandingPage({ onSignIn, onEnroll }) {
   const [hoveredCard, setHoveredCard] = useState(null);
+  const [useVideoMode, setUseVideoMode] = useState(true);
 
   return (
     <div className="relative min-h-screen w-full bg-[#05030d] text-white font-sans overflow-x-hidden select-none">
@@ -14,7 +17,7 @@ export default function MeridionLandingPage({ onSignIn, onEnroll }) {
       <SparklesCanvas />
 
       {/* ── TOP IMMERSIVE HEADER BAR ── */}
-      <header className="fixed top-0 left-0 right-0 z-50 flex h-16 items-center justify-between px-8 border-b border-purple-500/20 bg-[#070514]/60 backdrop-blur-xl">
+      <header className="fixed top-0 left-0 right-0 z-50 flex h-16 items-center justify-between px-8 border-b border-purple-500/20 bg-[#070514]/70 backdrop-blur-xl">
         <div className="flex items-center gap-3">
           <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-purple-500/20 border border-purple-400/40 text-purple-300 shadow-[0_0_15px_rgba(168,85,247,0.3)]">
             <Sparkles size={18} />
@@ -55,13 +58,25 @@ export default function MeridionLandingPage({ onSignIn, onEnroll }) {
           transition={{ duration: 0.8, ease: 'easeOut' }}
           className="relative w-full max-w-5xl overflow-hidden rounded-3xl border border-purple-400/30 bg-[#090518]/80 shadow-[0_25px_70px_rgba(112,26,204,0.25)] backdrop-blur-2xl"
         >
-          {/* World Hero Background Image */}
+          {/* World Hero Background: Image or Video */}
           <div className="relative h-[440px] sm:h-[500px] w-full overflow-hidden">
-            <img
-              src={meridionWorld}
-              alt="World of Meridion"
-              className="h-full w-full object-cover object-center transform hover:scale-105 transition-transform duration-1000"
-            />
+            {useVideoMode ? (
+              <video
+                autoPlay
+                loop
+                muted
+                playsInline
+                className="h-full w-full object-cover object-center transform hover:scale-105 transition-transform duration-1000"
+              >
+                <source src={videoLandscape} type="video/mp4" />
+              </video>
+            ) : (
+              <img
+                src={meridionWorld}
+                alt="World of Meridion"
+                className="h-full w-full object-cover object-center transform hover:scale-105 transition-transform duration-1000"
+              />
+            )}
 
             {/* Dark Purple Gradient Overlay */}
             <div className="absolute inset-0 bg-gradient-to-t from-[#090518] via-[#090518]/40 to-transparent" />
@@ -69,7 +84,7 @@ export default function MeridionLandingPage({ onSignIn, onEnroll }) {
             {/* Floating Top Badge */}
             <div className="absolute top-6 left-6 inline-flex items-center gap-2 rounded-full border border-purple-300/30 bg-purple-950/60 px-3.5 py-1.5 backdrop-blur-md text-[10px] font-mono tracking-wider text-purple-200">
               <span className="h-2 w-2 rounded-full bg-purple-400 animate-pulse" />
-              <span>LIVE WORLD • MERIDION NETWORK</span>
+              <span>LIVE WORLD • MERIDION VIDEO FEED</span>
             </div>
           </div>
 
@@ -100,7 +115,7 @@ export default function MeridionLandingPage({ onSignIn, onEnroll }) {
                 className="w-full sm:w-auto px-8 py-4 rounded-2xl bg-purple-950/70 hover:bg-purple-900/80 font-semibold text-sm text-purple-200 border border-purple-400/40 hover:border-purple-300 transition-all duration-200 backdrop-blur-md flex items-center justify-center gap-3"
               >
                 <LogIn size={18} className="text-purple-300" />
-                <span>Sign In</span>
+                <span>Sign In / Login Boot</span>
               </button>
             </div>
           </div>

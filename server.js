@@ -51,7 +51,14 @@ async function createApp() {
     });
 
     const httpServer = createHttpServer(app);
-    httpServer.listen(PORT, () => {
+    httpServer.on('error', (err) => {
+      if (err.code === 'EADDRINUSE') {
+        console.log(`Port ${PORT} is already in use — reusing existing server.`);
+      } else {
+        console.error('Server error:', err);
+      }
+    });
+    httpServer.listen(PORT, '0.0.0.0', () => {
       console.log(`⚡ Unified Dev Server: http://localhost:${PORT}`);
     });
   } else {

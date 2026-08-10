@@ -1,342 +1,358 @@
-import { useEffect, useMemo, useState } from 'react';
-import { Mail, MessageSquare, Send, UserCircle2, Paperclip, FileText, Key, Stethoscope, Calendar, X, CheckCircle, Shield } from 'lucide-react';
+import React, { useState, useMemo } from 'react';
+import {
+  Shield, AlertTriangle, Lock, Unlock, Key, Cpu, Radio, UserCheck, Send, Sparkles, Activity, CheckCircle, RefreshCw, MessageSquare
+} from 'lucide-react';
 import { useCommsStore } from '../store/useCommsStore';
 import { useOSStore } from '../store/useOSStore';
 import Button from '../components/ui/button';
 import Input from '../components/ui/input';
-
-const EMAIL_FOLDERS = [
-  { id: 'inbox', label: 'Inbox' },
-  { id: 'alerts', label: 'Alerts' },
-];
-
-const useComms = () => ({
-  channels: useCommsStore((s) => s.channels),
-  directs: useCommsStore((s) => s.directs),
-  messages: useCommsStore((s) => s.messages),
-  addChatMessage: useCommsStore((s) => s.addChatMessage),
-  emails: useCommsStore((s) => s.emails),
-});
+import { useToastStore } from '../store/useToastStore';
 
 export default function CommsApp() {
-  const [mode, setMode] = useState('channels'); // 'channels' | 'email'
-  const [folder, setFolder] = useState('inbox');
-  const [search, setSearch] = useState('');
-  const [selectedMessageId, setSelectedMessageId] = useState(null);
-  const [channelId, setChannelId] = useState('secure-relay');
-  const [draft, setDraft] = useState('');
+  const [activeChannelId, setActiveChannelId] = useState('city-alerts');
   const [chatDraft, setChatDraft] = useState('');
-  const [attachmentModal, setAttachmentModal] = useState(null);
-  const [maiToneSelected, setMaiToneSelected] = useState(null);
+  const [wardenAlert, setWardenAlert] = useState(null);
 
-  const claimedComms = useOSStore((s) => s.gameplay.claimedComms);
-  const claimCommsAttachment = useOSStore((s) => s.claimCommsAttachment);
-  const selectMAITone = useOSStore((s) => s.selectMAITone);
-  const maiTone = useOSStore((s) => s.gameplay.maiTone);
+  const tier0Channels = useCommsStore((s) => s.tier0Channels);
+  const tier1Channels = useCommsStore((s) => s.tier1Channels);
+  const tier2Channels = useCommsStore((s) => s.tier2Channels);
+  const directs = useCommsStore((s) => s.directs);
+  const lockedChannels = useCommsStore((s) => s.lockedChannels);
+  const messages = useCommsStore((s) => s.messages);
+  const addChatMessage = useCommsStore((s) => s.addChatMessage);
+  const corruptedChannels = useCommsStore((s) => s.corruptedChannels);
+  const purgeChannelCorruption = useCommsStore((s) => s.purgeChannelCorruption);
+  const investigationFlags = useCommsStore((s) => s.investigationFlags);
+  const incrementInvestigationFlags = useCommsStore((s) => s.incrementInvestigationFlags);
+  const encryptionActive = useCommsStore((s) => s.encryptionActive);
+  const toggleEncryption = useCommsStore((s) => s.toggleEncryption);
 
-  const { emails: storeEmails, channels, directs, messages, addChatMessage } = useComms();
+  const player = useOSStore((s) => s.gameplay.player);
+  const updateNPCVector = useOSStore((s) => s.updateNPCVector);
+  const addXP = useOSStore((s) => s.addXP);
+  const pushToast = useToastStore((s) => s.pushToast);
+
+  // Combine all active channels
+  const allActiveChannels = useMemo(() => {
+    return [...tier0Channels, ...tier1Channels, ...tier2Channels, ...directs];
+  }, [tier0Channels, tier1Channels, tier2Channels, directs]);
 
   const activeChannel = useMemo(() => {
-    return channels.find((c) => c.id === channelId) || directs.find((d) => d.id === channelId) || { name: channelId };
-  }, [channels, directs, channelId]);
+    return allActiveChannels.find((c) => c.id === activeChannelId) || { name: activeChannelId, id: activeChannelId };
+  }, [allActiveChannels, activeChannelId]);
 
-  const handleMAIToneChoice = (tone) => {
-    selectMAITone(tone);
-    setMaiToneSelected(tone);
-  };
+  const isDirectLink = activeChannelId.startsWith('dm:');
+  const isReadOnly = activeChannel.readOnly;
+  const isCorrupted = corruptedChannels.includes(activeChannelId);
 
-  const emails = useMemo(() => {
-    let list = storeEmails;
-    if (folder === 'alerts') {
-      list = list.filter((m) => /alert|notice|security|orientation|setup|activation/i.test(m.subject) || /System|Services|Dean|Medical|Bureau|Security/i.test(m.sender));
+  // Send Message with DGA Surveillance Monitoring
+  const handleSendMessage = (e) => {
+    e.preventDefault();
+    if (!chatDraft.trim() || isReadOnly) return;
+
+    const restrictedPattern = /PRISM|exploit|Old Factory Ward|malware|subconduit|illegal/i;
+    if (restrictedPattern.test(chatDraft) && !encryptionActive) {
+      incrementInvestigationFlags();
+      setWardenAlert(`⚠️ DGA WARDEN BOT WARNING: Restricted keyword detected in unencrypted channel. Investigation Flag recorded (#${investigationFlags + 1}). Deploy Encryption Key to secure sub-channel.`);
+      pushToast({ title: 'DGA Surveillance Warning', message: 'Restricted topic flagged by Warden Bot.', tone: 'error' });
     }
-    if (search.trim()) {
-      const q = search.trim().toLowerCase();
-      list = list.filter((m) => m.subject.toLowerCase().includes(q) || m.sender.toLowerCase().includes(q) || (m.body || '').toLowerCase().includes(q));
-    }
-    return list;
-  }, [storeEmails, folder, search]);
 
-  const selectedMessage = useMemo(() => emails.find((m) => m.id === selectedMessageId) || null, [emails, selectedMessageId]);
-  const attachmentClaimed = selectedMessage?.attachment && claimedComms.includes(selectedMessage.id);
+    const entry = {
+      id: Date.now(),
+      user: player.name || 'Provisional Citizen',
+      team: 'Citizen',
+      text: chatDraft,
+      time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+    };
 
-  const openMessage = (m) => setSelectedMessageId(m?.id || null);
-  const claimAttachment = () => {
-    if (!selectedMessage?.attachment || claimedComms.includes(selectedMessage.id)) return;
-    claimCommsAttachment(selectedMessage.id, selectedMessage.attachment.amount, 50);
-  };
-
-  const sendEmail = () => {
-    if (!draft.trim()) return;
-    setDraft('');
-  };
-
-  const sendChat = () => {
-    if (!chatDraft.trim()) return;
-    const entry = { id: Date.now(), user: 'You', team: 'Student', text: chatDraft, time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) };
-    addChatMessage(channelId, entry);
+    addChatMessage(activeChannelId, entry);
     setChatDraft('');
   };
 
-  useEffect(() => {
-    setSelectedMessageId(null);
-  }, [folder]);
-
-  const getAttachmentIcon = (type) => {
-    switch (type) {
-      case 'key': return <Key size={16} className="text-amber-600" />;
-      case 'medical': return <Stethoscope size={16} className="text-emerald-600" />;
-      case 'schedule': return <Calendar size={16} className="text-indigo-600" />;
-      default: return <FileText size={16} className="text-[#5f6ab0]" />;
-    }
+  // Run OS Channel Diagnostic to Purge Corruption
+  const handlePurgeCorruption = () => {
+    purgeChannelCorruption(activeChannelId);
+    addXP(25);
+    pushToast({ title: 'Channel Sanitized', message: 'Purged data bleed. +25 XP awarded.', tone: 'success' });
   };
 
+  // NPC Affinity Dialogue Options for Direct Links (Tier 3)
+  const handleNPCDialogue = (npcKey, choice) => {
+    if (choice.trust) updateNPCVector(npcKey, 'trust', choice.trust);
+    if (choice.rivalry) updateNPCVector(npcKey, 'rivalry', choice.rivalry);
+    if (choice.friendship) updateNPCVector(npcKey, 'friendship', choice.friendship);
+    if (choice.sync) updateNPCVector(npcKey, 'sync', choice.sync);
+
+    addChatMessage(activeChannelId, {
+      id: Date.now(),
+      user: 'You',
+      team: 'Direct',
+      text: choice.text,
+      time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+    });
+
+    setTimeout(() => {
+      addChatMessage(activeChannelId, {
+        id: Date.now() + 1,
+        user: activeChannel.name,
+        team: 'Direct',
+        text: choice.npcResponse,
+        time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+      });
+    }, 1000);
+  };
+
+  const activeNPCVector = isDirectLink ? player.npcVectors?.[activeChannel.npcKey] : null;
+
   return (
-    <section className="relative flex h-full w-full flex-col bg-gradient-to-b from-[#F6F7FB] to-[#EFF1F7] text-[#162241]">
-      {/* Top Toolbar */}
-      <div className="flex h-11 items-center justify-between border-b border-slate-300/70 bg-white/70 px-4 backdrop-blur-sm">
-        <div className="flex items-center gap-2 text-xs font-bold tracking-wider">
-          <Button onClick={() => setMode('email')} size="sm" variant={mode === 'email' ? 'solid' : 'ghost'} className="flex items-center gap-1.5 text-xs">
-            <Mail size={14} /> MAIL
-          </Button>
-          <Button onClick={() => setMode('channels')} size="sm" variant={mode === 'channels' ? 'solid' : 'ghost'} className="flex items-center gap-1.5 text-xs">
-            <MessageSquare size={14} /> CHANNELS
-          </Button>
+    <div className="flex h-full w-full flex-col bg-[#090b14] text-[#d1d5db] font-mono text-xs select-none">
+      {/* Top Network Status Bar */}
+      <div className="flex h-11 items-center justify-between border-b border-[#222944] bg-[#0d101f] px-4">
+        <div className="flex items-center gap-2.5">
+          <Radio size={16} className="text-[#38bdf8] animate-pulse" />
+          <span className="font-bold text-white tracking-wider uppercase">Comms Terminal</span>
+          <span className="text-white/30">|</span>
+          <span className="text-[#38bdf8] font-semibold">{activeChannel.name}</span>
         </div>
-        {mode === 'email' ? (
-          <div className="flex items-center gap-2">
-            <div className="flex items-center rounded-full border border-slate-300/80 bg-white/80 px-3 py-1 text-xs">
-              <span className="mr-2 text-slate-400">⌕</span>
-              <Input value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Search mail" className="w-48 bg-transparent text-xs outline-none" />
-            </div>
-          </div>
-        ) : (
-          <div className="text-xs font-semibold tracking-wider text-[#1d2650] flex items-center gap-2">
-            <Shield size={14} className="text-[#5f6ab0]" /> {activeChannel.name}
-          </div>
-        )}
+
+        <div className="flex items-center gap-3">
+          {/* Encryption Toggle Button */}
+          <button
+            onClick={toggleEncryption}
+            className={`flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-[10px] font-bold border transition ${
+              encryptionActive
+                ? 'bg-emerald-500/20 border-emerald-500/50 text-emerald-300'
+                : 'bg-[#171c33] border-[#2d3659] text-white/50 hover:text-white'
+            }`}
+          >
+            {encryptionActive ? <Lock size={12} /> : <Unlock size={12} />}
+            <span>{encryptionActive ? 'ENCRYPTED SUB-CHANNEL' : 'UNENCRYPTED (MONITORED)'}</span>
+          </button>
+
+          {/* DGA Investigation Status */}
+          <span className={`text-[10px] font-bold px-2 py-0.5 rounded border ${
+            investigationFlags > 0 ? 'bg-rose-950/60 border-rose-500/60 text-rose-300' : 'bg-slate-900 border-slate-800 text-slate-400'
+          }`}>
+            DGA Flags: {investigationFlags}
+          </span>
+        </div>
       </div>
 
-      {/* Main Content */}
-      {mode === 'email' ? (
-        <div className="flex min-h-0 flex-1">
-          {/* Folders */}
-          <div className="w-[19%] min-w-36 max-w-44 shrink-0 border-r border-slate-300/70 bg-white/60 p-3">
-            <div className="text-[10px] font-bold uppercase tracking-[.2em] text-slate-500 mb-2">Mailbox</div>
+      {/* Main Terminal Workspace */}
+      <div className="flex min-h-0 flex-1">
+        {/* Tiered Sidebar Navigation */}
+        <div className="w-[26%] min-w-48 max-w-64 shrink-0 border-r border-[#222944] bg-[#0c0f1c] p-3 overflow-y-auto space-y-4">
+          
+          {/* Tier 0: System Alerts */}
+          <div>
+            <div className="text-[9px] font-bold uppercase tracking-widest text-[#38bdf8] mb-1.5 px-2 flex items-center gap-1">
+              <Shield size={12} /> Tier 0: System & Civic Alerts
+            </div>
             <div className="space-y-1">
-              {EMAIL_FOLDERS.map((f) => (
-                <button key={f.id} onClick={() => setFolder(f.id)} className={`flex w-full items-center justify-between rounded-lg px-2.5 py-1.5 text-left text-xs ${folder === f.id ? 'bg-[#e9ebf6] text-[#1d2650] font-semibold' : 'text-slate-600 hover:bg-[#f2f3fb]'}`}>
-                  <span>{f.label}</span>
-                  <span className="text-[10px] text-slate-400">{f.id === 'inbox' ? storeEmails.length : storeEmails.filter((m) => /alert|notice/i.test(m.subject)).length}</span>
+              {tier0Channels.map((c) => (
+                <button
+                  key={c.id}
+                  onClick={() => setActiveChannelId(c.id)}
+                  className={`flex w-full items-center justify-between rounded-lg px-2.5 py-1.5 text-left transition ${
+                    activeChannelId === c.id ? 'bg-[#1d2645] text-white font-bold border border-[#38bdf8]/40' : 'text-slate-400 hover:bg-white/5'
+                  }`}
+                >
+                  <span className="truncate">{c.name}</span>
+                  <span className="text-[9px] bg-rose-500/20 text-rose-300 px-1 rounded">READ-ONLY</span>
                 </button>
               ))}
             </div>
           </div>
+
+          {/* Tier 1: Faction & District Rooms */}
+          <div>
+            <div className="text-[9px] font-bold uppercase tracking-widest text-emerald-400 mb-1.5 px-2 flex items-center gap-1">
+              <Radio size={12} /> Tier 1: District & Faction Rooms
+            </div>
+            <div className="space-y-1">
+              {tier1Channels.map((c) => {
+                const hasBleed = corruptedChannels.includes(c.id);
+                return (
+                  <button
+                    key={c.id}
+                    onClick={() => setActiveChannelId(c.id)}
+                    className={`flex w-full items-center justify-between rounded-lg px-2.5 py-1.5 text-left transition ${
+                      activeChannelId === c.id ? 'bg-[#1d2645] text-white font-bold border border-emerald-400/40' : 'text-slate-400 hover:bg-white/5'
+                    }`}
+                  >
+                    <span className="truncate">{c.name}</span>
+                    {hasBleed && <span className="text-[9px] bg-amber-500/20 text-amber-300 px-1 rounded animate-pulse">BLEED</span>}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Tier 2: Squad Coordination */}
+          <div>
+            <div className="text-[9px] font-bold uppercase tracking-widest text-amber-400 mb-1.5 px-2 flex items-center gap-1">
+              <Cpu size={12} /> Tier 2: Squad & Quest Tactics
+            </div>
+            <div className="space-y-1">
+              {tier2Channels.map((c) => (
+                <button
+                  key={c.id}
+                  onClick={() => setActiveChannelId(c.id)}
+                  className={`flex w-full items-center justify-between rounded-lg px-2.5 py-1.5 text-left transition ${
+                    activeChannelId === c.id ? 'bg-[#1d2645] text-white font-bold border border-amber-400/40' : 'text-slate-400 hover:bg-white/5'
+                  }`}
+                >
+                  <span className="truncate">{c.name}</span>
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Tier 3: Direct Citizen Links (NPC Affinity) */}
+          <div>
+            <div className="text-[9px] font-bold uppercase tracking-widest text-purple-400 mb-1.5 px-2 flex items-center gap-1">
+              <UserCheck size={12} /> Tier 3: Direct Citizen Links
+            </div>
+            <div className="space-y-1">
+              {directs.map((d) => (
+                <button
+                  key={d.id}
+                  onClick={() => setActiveChannelId(d.id)}
+                  className={`flex w-full items-center justify-between rounded-lg px-2.5 py-1.5 text-left transition ${
+                    activeChannelId === d.id ? 'bg-[#1d2645] text-white font-bold border border-purple-400/40' : 'text-slate-400 hover:bg-white/5'
+                  }`}
+                >
+                  <span className="truncate">{d.name}</span>
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Grayed-Out Teasers (Locked Channels) */}
+          <div className="pt-2 border-t border-[#222944]">
+            <div className="text-[9px] font-bold uppercase tracking-widest text-slate-500 mb-1.5 px-2">
+              🔒 Locked Network Channels
+            </div>
+            <div className="space-y-1 opacity-50 select-none">
+              {lockedChannels.map((l) => (
+                <div key={l.id} className="p-2 rounded-lg bg-[#141829] border border-slate-800 text-[10px]">
+                  <div className="font-bold text-slate-400 truncate">{l.name}</div>
+                  <div className="text-[8px] text-rose-400/80 mt-0.5">{l.req}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* Center Terminal Feed */}
+        <div className="flex min-w-0 flex-1 flex-col bg-[#070912]">
+          
+          {/* Header Banner */}
+          <div className="flex items-center justify-between border-b border-[#222944] bg-[#0d101f] px-4 py-2 text-xs">
+            <div>
+              <div className="font-bold text-white flex items-center gap-2">
+                <span>{activeChannel.name}</span>
+                {isCorrupted && <span className="text-[9px] font-bold bg-amber-500/20 text-amber-300 px-1.5 py-0.5 rounded border border-amber-500/40">DATA BLEED DETECTED</span>}
+              </div>
+              <div className="text-[10px] text-slate-400">{activeChannel.desc || activeChannel.title || 'Official Network Channel'}</div>
+            </div>
+
+            {/* Run OS Diagnostic Button if Corrupted */}
+            {isCorrupted && (
+              <button
+                onClick={handlePurgeCorruption}
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-amber-500 text-black font-bold text-xs hover:bg-amber-400 transition"
+              >
+                <RefreshCw size={13} /> Run Channel Diagnostic
+              </button>
+            )}
+          </div>
+
+          {/* Warden Bot Warning Alert */}
+          {wardenAlert && (
+            <div className="p-3 bg-rose-950/80 border-b border-rose-500/50 text-rose-300 text-xs flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <AlertTriangle size={16} className="text-rose-400 shrink-0" />
+                <span>{wardenAlert}</span>
+              </div>
+              <button onClick={() => setWardenAlert(null)} className="text-rose-400 font-bold hover:text-white">✕</button>
+            </div>
+          )}
+
+          {/* NPC Vector Meter (Tier 3 Directs) */}
+          {activeNPCVector && (
+            <div className="p-3 bg-[#111629] border-b border-[#222944] grid grid-cols-4 gap-2 text-[10px]">
+              <div><span className="text-slate-400">Trust:</span> <span className="font-bold text-emerald-400">{activeNPCVector.trust}%</span></div>
+              <div><span className="text-slate-400">Rivalry:</span> <span className="font-bold text-rose-400">{activeNPCVector.rivalry}%</span></div>
+              <div><span className="text-slate-400">Friendship:</span> <span className="font-bold text-cyan-400">{activeNPCVector.friendship}%</span></div>
+              <div><span className="text-slate-400">Sync:</span> <span className="font-bold text-purple-400">{activeNPCVector.sync}%</span></div>
+            </div>
+          )}
 
           {/* Message List */}
-          <div className="w-[33%] min-w-60 max-w-80 shrink-0 border-r border-slate-300/70 bg-white/40">
-            <div className="flex items-center justify-between border-b border-slate-300/60 px-3 py-2 text-[11px] font-semibold text-slate-500">
-              <span>{folder.toUpperCase()}</span>
-              <span>{emails.length} items</span>
-            </div>
-            <div className="h-full overflow-auto p-2 space-y-1">
-              {emails.map((m) => (
-                <button key={m.id} onClick={() => openMessage(m)} className={`w-full rounded-lg border p-2.5 text-left transition ${selectedMessageId === m.id ? 'border-[#8c97d6] bg-[#eef0fb]' : 'border-slate-200/80 bg-white/90 hover:bg-[#f7f7fd]'}`}>
-                  <div className="flex items-center justify-between">
-                    <p className="truncate text-xs font-semibold text-[#1f2954]">{m.subject}</p>
-                    <span className="ml-2 shrink-0 text-[10px] text-slate-400">{m.time}</span>
-                  </div>
-                  <div className="mt-1 flex items-center justify-between text-[11px] text-slate-500">
-                    <span className="truncate">{m.sender}</span>
-                    {m.attachment && <Paperclip size={12} className="text-[#5f6ab0]" />}
-                  </div>
+          <div className="min-h-0 flex-1 overflow-y-auto p-4 space-y-3 font-mono text-xs">
+            {(messages[activeChannelId] || []).map((m) => (
+              <div key={m.id} className="max-w-[88%] rounded-xl border border-[#222944] bg-[#0e1224] p-3 text-xs shadow-sm">
+                <div className="mb-1 flex items-center justify-between text-[10px] text-slate-400">
+                  <span className="font-bold text-[#38bdf8]">{m.user} <span className="text-slate-500 font-normal">({m.team})</span></span>
+                  <span className="text-slate-500">{m.time}</span>
+                </div>
+                <div className={`leading-relaxed ${isCorrupted ? 'text-amber-200 line-through decoration-amber-500/50' : 'text-slate-200'}`}>
+                  {m.text}
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Direct Link Dialogue Options */}
+          {isDirectLink && activeNPCVector && (
+            <div className="p-3 border-t border-[#222944] bg-[#0e1224] space-y-2">
+              <div className="text-[10px] font-bold text-purple-300 uppercase tracking-widest">Select Dialogue Response:</div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                <button
+                  onClick={() => handleNPCDialogue(activeChannel.npcKey, {
+                    text: 'I agree, let us coordinate security protocols.',
+                    npcResponse: 'Excellent choice. I have logged your authorization.',
+                    trust: 10,
+                    sync: 10
+                  })}
+                  className="p-2 rounded-lg border border-emerald-500/30 bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-300 text-left text-[11px] transition"
+                >
+                  🤝 Cooperative Response (+Trust, +Sync)
                 </button>
-              ))}
-              {!emails.length && <div className="p-3 text-center text-xs text-slate-500">No messages</div>}
-            </div>
-          </div>
-
-          {/* Reader */}
-          <div className="flex min-w-0 flex-1 flex-col bg-[#FAFAFC] p-4">
-            {!selectedMessage && (
-              <div className="flex h-full items-center justify-center text-xs text-slate-500">
-                Select a message to read.
-              </div>
-            )}
-            {selectedMessage && (
-              <div className="flex h-full flex-col">
-                <div className="border-b border-slate-300/70 pb-3">
-                  <div className="flex items-start justify-between">
-                    <div>
-                      <div className="text-sm font-bold text-[#1c2650]">{selectedMessage.subject}</div>
-                      <div className="mt-0.5 text-xs text-slate-500">{selectedMessage.sender} · {selectedMessage.time}</div>
-                    </div>
-                    <Button onClick={() => setSelectedMessageId(null)} size="sm" variant="ghost">Close</Button>
-                  </div>
-                </div>
-                <div className="my-3 flex-1 overflow-auto whitespace-pre-line text-xs leading-relaxed text-[#243064]">
-                  {selectedMessage.body}
-                </div>
-
-                {/* MAI Welcome Packet Tone Response Selector */}
-                {/MAI|Welcome Packet|Initialization Complete/i.test(selectedMessage.subject) && (
-                  <div className="my-3 rounded-xl border border-purple-300 bg-purple-50/80 p-4 space-y-3 shadow-sm">
-                    <div className="text-xs font-bold text-purple-900 font-serif flex items-center gap-2">
-                      <Sparkles size={15} className="text-purple-600" /> MAI ALIGNMENT RESPONSE PROTOCOL
-                    </div>
-                    <p className="text-[11px] text-purple-700 leading-relaxed">
-                      Select your response tone to set your initial relationship vector with MAI:
-                    </p>
-                    <div className="grid grid-cols-3 gap-2">
-                      <button
-                        onClick={() => handleMAIToneChoice('friendly')}
-                        className={`rounded-lg border p-2 text-xs font-semibold text-center transition ${maiTone === 'friendly' ? 'border-emerald-500 bg-emerald-100 text-emerald-900 font-bold' : 'border-purple-200 bg-white text-purple-800 hover:bg-purple-100'
-                          }`}
-                      >
-                        😊 Friendly (+Trust)
-                      </button>
-                      <button
-                        onClick={() => handleMAIToneChoice('neutral')}
-                        className={`rounded-lg border p-2 text-xs font-semibold text-center transition ${maiTone === 'neutral' ? 'border-indigo-500 bg-indigo-100 text-indigo-900 font-bold' : 'border-purple-200 bg-white text-purple-800 hover:bg-purple-100'
-                          }`}
-                      >
-                        😐 Neutral (Balanced)
-                      </button>
-                      <button
-                        onClick={() => handleMAIToneChoice('cold')}
-                        className={`rounded-lg border p-2 text-xs font-semibold text-center transition ${maiTone === 'cold' ? 'border-rose-500 bg-rose-100 text-rose-900 font-bold' : 'border-purple-200 bg-white text-purple-800 hover:bg-purple-100'
-                          }`}
-                      >
-                        ❄️ Cold (+Rivalry)
-                      </button>
-                    </div>
-                    {maiTone && (
-                      <p className="text-[10px] text-purple-600 font-mono text-center">
-                        ✓ Tone Vector Established: <span className="font-bold uppercase">{maiTone}</span>
-                      </p>
-                    )}
-                  </div>
-                )}
-
-                {selectedMessage.attachment && (
-                  <div className="mb-3 rounded-lg border border-slate-300/80 bg-white/90 p-3 flex items-center justify-between shadow-sm">
-                    <div
-                      onClick={() => setAttachmentModal(selectedMessage.attachment)}
-                      className="flex cursor-pointer items-center gap-3 hover:opacity-80 transition"
-                    >
-                      <div className="rounded-lg bg-[#eef0fb] p-2">
-                        {getAttachmentIcon(selectedMessage.attachment.type)}
-                      </div>
-                      <div>
-                        <div className="text-xs font-semibold text-[#1d2650] flex items-center gap-1.5">
-                          {selectedMessage.attachment.name}
-                          <span className="text-[10px] text-slate-400 font-mono">(Preview)</span>
-                        </div>
-                        <div className="text-[10px] text-slate-500">
-                          {selectedMessage.attachment.previewTitle || 'Attachment Document'}
-                        </div>
-                      </div>
-                    </div>
-
-                    <Button onClick={claimAttachment} disabled={attachmentClaimed} size="sm" variant={attachmentClaimed ? 'ghost' : 'solid'} className="text-xs font-semibold">
-                      {attachmentClaimed ? <span className="flex items-center gap-1 text-emerald-600"><CheckCircle size={13} /> Claimed</span> : `Claim +₡${selectedMessage.attachment.amount}`}
-                    </Button>
-                  </div>
-                )}
-
-                <form onSubmit={(e) => { e.preventDefault(); sendEmail(); }} className="flex items-center gap-2 pt-2 border-t border-slate-300/70">
-                  <Input value={draft} onChange={(e) => setDraft(e.target.value)} placeholder="Write a reply…" className="flex-1 bg-white border-slate-300/80 text-xs text-slate-800 placeholder-slate-400 rounded-lg px-3 py-2" />
-                  <Button type="submit" size="sm" variant="solid" className="flex items-center gap-1"><Send size={13} /> Send</Button>
-                </form>
-              </div>
-            )}
-          </div>
-        </div>
-      ) : (
-        /* Channel Mode */
-        <div className="flex min-h-0 flex-1">
-          {/* Channel + Direct List */}
-          <div className="w-[24%] min-w-44 max-w-56 shrink-0 border-r border-slate-300/70 bg-white/60 p-3 space-y-4">
-            <div>
-              <div className="text-[10px] font-bold uppercase tracking-[.2em] text-slate-500 mb-2">Channels</div>
-              <div className="space-y-1">
-                {channels.map((c) => (
-                  <button key={c.id} onClick={() => setChannelId(c.id)} className={`flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-left text-xs transition ${channelId === c.id ? 'bg-[#e9ebf6] text-[#1d2650] font-semibold' : 'text-slate-600 hover:bg-[#f2f3fb]'}`}>
-                    <Shield size={14} className="text-[#5f6ab0] shrink-0" />
-                    <span className="truncate">{c.name}</span>
-                  </button>
-                ))}
+                <button
+                  onClick={() => handleNPCDialogue(activeChannel.npcKey, {
+                    text: 'I am running independent diagnostic scans.',
+                    npcResponse: 'Proceed with caution. The lower conduits are erratic.',
+                    rivalry: 10,
+                    trust: 5
+                  })}
+                  className="p-2 rounded-lg border border-amber-500/30 bg-amber-500/10 hover:bg-amber-500/20 text-amber-300 text-left text-[11px] transition"
+                >
+                  ⚡ Independent Approach (+Rivalry)
+                </button>
               </div>
             </div>
+          )}
 
-            <div>
-              <div className="text-[10px] font-bold uppercase tracking-[.2em] text-slate-500 mb-2">Direct Messages</div>
-              <div className="space-y-1">
-                {directs.map((d) => (
-                  <button key={d.id} onClick={() => setChannelId(d.id)} className={`flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-left text-xs transition ${channelId === d.id ? 'bg-[#e9ebf6] text-[#1d2650] font-semibold' : 'text-slate-600 hover:bg-[#f2f3fb]'}`}>
-                    <UserCircle2 size={14} className="text-[#6b74b5] shrink-0" />
-                    <span className="truncate">{d.name}</span>
-                  </button>
-                ))}
-              </div>
-            </div>
-          </div>
-
-          {/* Messages Feed */}
-          <div className="flex min-w-0 flex-1 flex-col bg-[#FAFAFC]">
-            <div className="flex items-center justify-between border-b border-slate-300/60 px-4 py-2 text-xs text-slate-500">
-              <span className="flex items-center gap-2 font-medium text-[#1d2650]"><Shield size={14} className="text-[#5f6ab0]" /> {activeChannel.name} Communications</span>
-            </div>
-            <div className="min-h-0 flex-1 overflow-auto p-4 space-y-3">
-              {(messages[channelId] || []).map((m) => (
-                <div key={m.id} className="max-w-[85%] rounded-lg border border-slate-300/70 bg-white/90 p-3 text-xs shadow-sm">
-                  <div className="mb-1 flex items-center justify-between text-[11px] text-slate-400">
-                    <span className="font-semibold text-[#1c2650]">{m.user}</span>
-                    <span>{m.time}</span>
-                  </div>
-                  <div className="text-[#28335e] leading-relaxed">{m.text}</div>
-                </div>
-              ))}
-            </div>
-
-            <form onSubmit={(e) => { e.preventDefault(); sendChat(); }} className="border-t border-slate-300/70 bg-white/80 p-3">
+          {/* Terminal Input Bar */}
+          {!isReadOnly && (
+            <form onSubmit={handleSendMessage} className="border-t border-[#222944] bg-[#0d101f] p-3">
               <div className="flex items-center gap-2">
-                <Input value={chatDraft} onChange={(e) => setChatDraft(e.target.value)} placeholder={`Message ${activeChannel.name}...`} className="flex-1 bg-white border-slate-300 text-xs text-slate-800 placeholder-slate-400 rounded-lg px-3 py-2" />
-                <Button type="submit" size="sm" variant="solid" className="flex items-center gap-1"><Send size={13} /> Send</Button>
+                <Input
+                  value={chatDraft}
+                  onChange={(e) => setChatDraft(e.target.value)}
+                  placeholder={`Message ${activeChannel.name}...`}
+                  className="flex-1 bg-[#060810] border-[#222944] text-xs text-white placeholder:text-slate-600 rounded-lg px-3 py-2"
+                />
+                <Button type="submit" size="sm" variant="solid" className="flex items-center gap-1.5 px-4 py-2 bg-[#38bdf8] text-black font-bold hover:bg-[#7dd3fc]">
+                  <Send size={13} /> Send
+                </Button>
               </div>
             </form>
-          </div>
+          )}
         </div>
-      )}
-
-      {/* Attachment Preview Modal */}
-      {attachmentModal && (
-        <div className="absolute inset-0 z-50 flex items-center justify-center bg-slate-900/40 p-6 backdrop-blur-sm">
-          <div className="w-full max-w-md rounded-xl border border-slate-300/90 bg-white p-5 shadow-2xl text-[#162241]">
-            <div className="flex items-center justify-between border-b border-slate-200 pb-3">
-              <div className="flex items-center gap-2 text-sm font-bold text-[#1d2650]">
-                {getAttachmentIcon(attachmentModal.type)}
-                <span>{attachmentModal.name}</span>
-              </div>
-              <button onClick={() => setAttachmentModal(null)} className="text-slate-400 hover:text-slate-600"><X size={16} /></button>
-            </div>
-
-            <div className="my-4 space-y-2">
-              <div className="text-xs font-semibold text-[#1f2954]">{attachmentModal.previewTitle}</div>
-              <div className="rounded-lg border border-slate-200 bg-[#f7f8fd] p-3 font-mono text-[11px] leading-relaxed text-[#28335e] whitespace-pre-line">
-                {attachmentModal.previewText}
-              </div>
-            </div>
-
-            <div className="flex items-center justify-between border-t border-slate-200 pt-3 text-xs">
-              <span className="text-slate-500">Reward: +₡{attachmentModal.amount}</span>
-              <Button onClick={() => { claimAttachment(); setAttachmentModal(null); }} disabled={attachmentClaimed} size="sm" variant={attachmentClaimed ? 'ghost' : 'solid'}>
-                {attachmentClaimed ? 'Already Claimed' : `Claim +₡${attachmentModal.amount}`}
-              </Button>
-            </div>
-          </div>
-        </div>
-      )}
-    </section>
+      </div>
+    </div>
   );
 }

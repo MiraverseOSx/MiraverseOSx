@@ -1,11 +1,11 @@
-import { Folder, Mail, Gamepad2, Terminal, Globe, Settings, Sparkles, UserCheck, BookOpen, Video, FileText, Radio, Award } from 'lucide-react';
+import { Folder, Mail, MessageSquare, Terminal, Globe, Settings, Sparkles, UserCheck, Radio, Award, FileText } from 'lucide-react';
 import { miraverseDb } from '../db/miraverseDb';
 
 // Icon mapping per app ID
 const ICON_MAP = {
   files: Folder,
-  mail: FileText,
-  comms: Mail,
+  mail: Mail,
+  comms: MessageSquare,
   spellforge: Sparkles,
   passport: UserCheck,
   pulse: Radio,

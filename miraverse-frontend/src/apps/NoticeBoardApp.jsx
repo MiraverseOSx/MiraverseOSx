@@ -2,7 +2,8 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { useOSStore } from '../store/useOSStore';
 import {
     Compass, Zap, Scroll, Briefcase, Sparkles, Award, Lock, Play, Globe,
-    Check, MessageSquare, MapPin, User, FileCode, Search, CircleDot, Gift
+    Check, MessageSquare, MapPin, User, FileCode, Search, CircleDot, Gift,
+    CheckCircle2, ArrowRight, Shield, Activity, Calendar
 } from 'lucide-react';
 import {
     AppShell, AppToolbar, AppSidebar, AppPane, EmptyState, SearchField, StatusBadge
@@ -10,23 +11,23 @@ import {
 import { useToastStore } from '../store/useToastStore';
 
 const CATEGORY_DEFINITIONS = [
-    { id: 'All', label: 'All Activities', icon: Globe, color: 'text-slate-400' },
-    { id: 'Journey', label: 'Journey', icon: Compass, color: 'text-violet-400' },
-    { id: 'Adventures', label: 'Adventures', icon: Sparkles, color: 'text-emerald-400' },
-    { id: 'Quests', label: 'Quests', icon: Scroll, color: 'text-blue-400' },
-    { id: 'Tasks', label: 'Tasks', icon: Zap, color: 'text-amber-400' },
-    { id: 'Missions', label: 'Missions', icon: Briefcase, color: 'text-pink-400' },
+    { id: 'All', label: 'All Operations', icon: Globe, color: 'text-secondary' },
+    { id: 'Journey', label: 'Journeys', icon: Compass, color: 'text-purple' },
+    { id: 'Adventures', label: 'Adventures', icon: Sparkles, color: 'text-success' },
+    { id: 'Quests', label: 'Quests', icon: Scroll, color: 'text-primary' },
+    { id: 'Tasks', label: 'Tasks', icon: Zap, color: 'text-warning' },
+    { id: 'Missions', label: 'City Missions', icon: Briefcase, color: 'text-danger' },
 ];
 
 const STATUS_TONES = {
-    LOCKED: 'neutral',
+    LOCKED: 'secondary',
     AVAILABLE: 'info',
     IN_PROGRESS: 'warning',
     COMPLETED: 'success',
 };
 
 export default function NoticeBoardApp() {
-    const [activeTab, setActiveTab] = useState('Journey'); // 'Journey' | 'Adventures' | 'Quests' | 'Tasks' | 'Missions' | 'All'
+    const [activeTab, setActiveTab] = useState('Journey');
     const [selectedActivityId, setSelectedActivityId] = useState('J01');
     const [statusFilter, setStatusFilter] = useState('ALL');
     const [searchQuery, setSearchQuery] = useState('');
@@ -74,6 +75,9 @@ export default function NoticeBoardApp() {
     const isAvailable = selectedActivity?.status === 'AVAILABLE';
     const isCompleted = selectedActivity?.status === 'COMPLETED';
 
+    const updateReputationTrack = useOSStore((s) => s.updateReputationTrack);
+    const addSkillXP = useOSStore((s) => s.addSkillXP);
+
     const handlePrimaryAction = () => {
         if (!selectedActivity || isLocked || isCompleted) return;
         if (isAvailable) {
@@ -82,9 +86,17 @@ export default function NoticeBoardApp() {
             return;
         }
         completeActivity(selectedActivity.id);
+
+        if (selectedActivity.rewards?.repBonus) {
+            updateReputationTrack(selectedActivity.rewards.repBonus.track, selectedActivity.rewards.repBonus.amount);
+        }
+        if (selectedActivity.rewards?.skillXP) {
+            addSkillXP(selectedActivity.rewards.skillXP.skill, selectedActivity.rewards.skillXP.amount);
+        }
+
         pushToast({
             title: 'Rewards claimed',
-            message: `+${rewardXP} XP and +${rewardCredits} ₡`,
+            message: `+${rewardXP} XP, +${rewardCredits} ₡${selectedActivity.rewards?.item ? `, ${selectedActivity.rewards.item}` : ''}`,
             tone: 'success',
         });
     };
@@ -93,49 +105,61 @@ export default function NoticeBoardApp() {
         <AppShell>
             <AppToolbar
                 icon={Award}
-                title="Master Activity Tracker"
-                subtitle="Journey, operations, quests, tasks, and missions"
+                title="Municipal & Student Notice Board"
+                subtitle="Journeys, Adventures, Quests, Tasks & Career Shifts"
                 actions={(
-                    <div className="flex items-center gap-2">
-                        <StatusBadge tone="warning">{inProgressCount} tracked</StatusBadge>
-                        <StatusBadge tone="success">{completedCount} resolved</StatusBadge>
+                    <div className="d-flex items-center gap-2">
+                        <span className="badge bg-warning text-dark font-mono px-2.5 py-1">
+                            {inProgressCount} Tracked
+                        </span>
+                        <span className="badge bg-success text-white font-mono px-2.5 py-1">
+                            {completedCount} Completed
+                        </span>
                     </div>
                 )}
             />
-            <div className="flex min-h-0 flex-1 overflow-hidden bg-slate-100 text-slate-800 font-sans select-none">
-                {/* Sidebar Navigation */}
-                <AppSidebar className="w-[22%] min-w-44 max-w-56 bg-slate-900 text-slate-200 p-4 flex flex-col justify-between shrink-0" label="Activity categories">
-                    <div className="space-y-6">
-                        <div className="flex items-center gap-3 px-2">
-                            <div className="h-9 w-9 rounded-xl bg-gradient-to-tr from-purple-600 to-indigo-600 text-white flex items-center justify-center font-bold shadow-md">
+
+            {/* Bootstrap Main Container */}
+            <div className="container-fluid p-0 flex-1 min-h-0 d-flex overflow-hidden bg-light select-none">
+                
+                {/* ── LEFT BOOTSTRAP NAVIGATION SIDEBAR ── */}
+                <div className="col-12 col-md-3 col-lg-2 bg-dark text-white p-3 d-flex flex-column justify-content-between shrink-0 border-end border-secondary">
+                    <div className="space-y-4">
+                        {/* Notice Board Header Branding */}
+                        <div className="d-flex items-center gap-2.5 p-2 bg-secondary bg-opacity-20 rounded-3">
+                            <div className="p-2 bg-primary rounded-3 text-white shadow-sm">
                                 <Award size={20} />
                             </div>
                             <div>
-                                <div className="font-bold text-sm text-white leading-tight">Master Tracker</div>
-                                <div className="text-[9px] text-purple-400 font-mono tracking-wider">MISSIONS JSON ENGINE</div>
+                                <h6 className="fw-bold mb-0 text-white font-serif">Civic Notice Board</h6>
+                                <small className="text-muted font-mono" style={{ fontSize: '9px' }}>AURELINE DISPATCH BOARD</small>
                             </div>
                         </div>
 
-                        {/* Progress Meter */}
-                        <div className="p-3 bg-slate-800/80 rounded-xl space-y-2 border border-slate-700/50">
-                            <div className="flex justify-between text-[11px] font-bold">
-                                <span className="text-slate-300">Completion</span>
-                                <span className="text-emerald-400 font-mono">{completionPercentage}%</span>
+                        {/* Progress Meter Box */}
+                        <div className="card bg-secondary bg-opacity-20 border-secondary border-opacity-30 p-3 text-white">
+                            <div className="d-flex justify-content-between text-xs font-mono fw-bold mb-1">
+                                <span>Board Clearance</span>
+                                <span className="text-success">{completionPercentage}%</span>
                             </div>
-                            <div className="h-2 w-full bg-slate-700 rounded-full overflow-hidden">
+                            <div className="progress mb-2" style={{ height: '8px' }}>
                                 <div
-                                    className="h-full bg-gradient-to-r from-purple-500 to-emerald-400 rounded-full transition-all duration-500"
+                                    className="progress-bar bg-gradient bg-primary"
+                                    role="progressbar"
                                     style={{ width: `${completionPercentage}%` }}
+                                    aria-valuenow={completionPercentage}
+                                    aria-valuemin="0"
+                                    aria-valuemax="100"
                                 />
                             </div>
-                            <div className="flex justify-between text-[9px] font-mono text-slate-400">
-                                <span>{inProgressCount} tracked</span>
-                                <span>{completedCount}/{activities.length} resolved</span>
+                            <div className="d-flex justify-content-between text-muted font-mono" style={{ fontSize: '10px' }}>
+                                <span>{inProgressCount} active</span>
+                                <span>{completedCount}/{activities.length} done</span>
                             </div>
                         </div>
 
-                        {/* Category Selector Tabs */}
-                        <nav className="space-y-1">
+                        {/* Bootstrap Nav Pills Categories */}
+                        <div className="nav nav-pills flex-column gap-1">
                             {categories.map((cat) => {
                                 const IconComp = cat.icon;
                                 const isActive = activeTab === cat.id;
@@ -147,37 +171,40 @@ export default function NoticeBoardApp() {
                                             setStatusFilter('ALL');
                                             setSearchQuery('');
                                         }}
-                                        className={`flex w-full items-center justify-between px-3 py-2.5 rounded-xl text-xs font-bold transition cursor-pointer ${isActive
-                                            ? 'bg-purple-600 text-white shadow-md'
-                                            : 'text-slate-300 hover:bg-slate-800 hover:text-white'
-                                            }`}
+                                        className={`nav-link d-flex justify-content-between align-items-center text-start text-xs fw-bold px-3 py-2.5 rounded-3 transition ${
+                                            isActive
+                                                ? 'active bg-primary text-white shadow-sm'
+                                                : 'text-white-50 hover:bg-secondary hover:bg-opacity-30'
+                                        }`}
                                     >
-                                        <div className="flex items-center gap-2.5">
-                                            <IconComp size={16} className={isActive ? 'text-white' : cat.color} />
+                                        <div className="d-flex items-center gap-2">
+                                            <IconComp size={15} className={isActive ? 'text-white' : ''} />
                                             <span>{cat.label}</span>
                                         </div>
-                                        <span className={`text-[10px] font-mono px-2 py-0.5 rounded-full ${isActive ? 'bg-purple-700 text-white' : 'bg-slate-800 text-slate-400'
-                                            }`}>
+                                        <span className={`badge rounded-pill ${isActive ? 'bg-white text-primary' : 'bg-secondary'}`}>
                                             {cat.badge}
                                         </span>
                                     </button>
                                 );
                             })}
-                        </nav>
+                        </div>
                     </div>
 
-                    <div className="p-3 bg-slate-800/60 rounded-xl text-[10px] text-slate-400 space-y-1 font-mono">
-                        <div className="flex justify-between"><span>Level: <strong className="text-white">{player?.level || 1}</strong></span><span>XP: <strong className="text-purple-400">{player?.xp || 0}</strong></span></div>
-                        <div className="flex justify-between"><span>Credits: <strong className="text-emerald-400">{player?.credits || 0} ₡</strong></span></div>
+                    {/* Vitals Summary Footer */}
+                    <div className="p-3 bg-secondary bg-opacity-20 rounded-3 text-white-50 font-mono text-xs space-y-1 mt-4">
+                        <div className="d-flex justify-content-between"><span>Citizen Level:</span> <strong className="text-white">{player?.level || 1}</strong></div>
+                        <div className="d-flex justify-content-between"><span>Credits:</span> <strong className="text-success">{player?.credits || 0} ₡</strong></div>
                     </div>
-                </AppSidebar>
+                </div>
 
-                {/* Middle List View */}
-                <AppPane className="w-[31%] min-w-60 max-w-72 border-r border-slate-200 flex flex-col shrink-0">
-                    <div className="p-4 border-b border-slate-200 bg-slate-50 font-bold text-xs text-slate-700 uppercase tracking-wider">
+                {/* ── CENTER LIST INDEX ── */}
+                <div className="col-12 col-md-4 col-lg-3 bg-white border-end border-slate-200 d-flex flex-column shrink-0 overflow-hidden">
+                    <div className="p-3 bg-light border-bottom font-bold text-xs text-uppercase tracking-wider text-muted">
                         {activeTab} Index ({filteredActivities.length})
                     </div>
-                    <div className="p-3 border-b border-slate-200 space-y-2 bg-white">
+
+                    {/* Search & Filter Bar */}
+                    <div className="p-3 border-bottom bg-white space-y-2">
                         <SearchField
                             value={searchQuery}
                             onChange={(event) => setSearchQuery(event.target.value)}
@@ -187,110 +214,122 @@ export default function NoticeBoardApp() {
                         <select
                             value={statusFilter}
                             onChange={(event) => setStatusFilter(event.target.value)}
-                            className="w-full rounded-lg border border-slate-200 bg-white px-2 py-1.5 text-[10px] font-bold text-slate-600 outline-none focus:border-violet-400"
+                            className="form-select form-select-sm text-xs font-mono fw-bold"
                         >
-                            <option value="ALL">All states</option>
+                            <option value="ALL">All States</option>
                             <option value="IN_PROGRESS">Tracked</option>
                             <option value="AVAILABLE">Available</option>
                             <option value="LOCKED">Locked</option>
                             <option value="COMPLETED">Completed</option>
                         </select>
                     </div>
-                    <div className="flex-1 overflow-y-auto divide-y divide-slate-100">
+
+                    {/* Activity List Group */}
+                    <div className="list-group list-group-flush flex-1 overflow-y-auto">
                         {filteredActivities.map((act) => {
                             const isSelected = selectedActivity?.id === act.id;
-                            const isDone = act.status === 'COMPLETED';
                             return (
                                 <button
                                     key={act.id}
                                     onClick={() => setSelectedActivityId(act.id)}
-                                    className={`w-full text-left p-4 transition cursor-pointer flex flex-col space-y-1.5 ${isSelected ? 'bg-purple-50 border-l-4 border-purple-600' : 'hover:bg-slate-50'
-                                        }`}
+                                    className={`list-group-item list-group-item-action p-3 transition border-start border-4 ${
+                                        isSelected ? 'border-primary bg-primary bg-opacity-10 fw-bold' : 'border-transparent'
+                                    }`}
                                 >
-                                    <div className="flex justify-between items-center text-[10px] font-mono font-bold">
-                                        <span className="text-violet-600 uppercase">{act.category}</span>
-                                        <StatusBadge tone={STATUS_TONES[act.status] ?? 'neutral'}>{act.status.replace('_', ' ')}</StatusBadge>
+                                    <div className="d-flex justify-content-between align-items-center text-xs font-mono mb-1">
+                                        <span className="badge bg-purple-100 text-purple border">{act.category}</span>
+                                        <span className={`badge bg-${STATUS_TONES[act.status] || 'secondary'}`}>
+                                            {act.status.replace('_', ' ')}
+                                        </span>
                                     </div>
-                                    <div className="font-bold text-xs text-slate-900 leading-snug">{act.title}</div>
-                                    <div className="text-[10px] text-slate-500 font-mono truncate">{act.subtitle || act.giver}</div>
+                                    <div className="text-xs font-bold text-dark">{act.title}</div>
+                                    <div className="text-muted text-xs truncate mt-0.5">{act.subtitle || act.giver}</div>
                                 </button>
                             );
                         })}
+
                         {filteredActivities.length === 0 && (
-                            <EmptyState icon={Search} title="No matching activities" description="Adjust the category, state, or search filter." />
+                            <EmptyState icon={Search} title="No matching activities" description="Adjust category or filter options." />
                         )}
                     </div>
-                </AppPane>
+                </div>
 
-                {/* Right Detailed Inspect Panel */}
+                {/* ── RIGHT DETAIL INSPECT PANEL ── */}
                 {selectedActivity ? (
-                    <main className="flex-1 bg-white p-6 overflow-y-auto space-y-6">
-                        {/* Header */}
-                        <div className="border-b border-slate-200 pb-4 space-y-2">
-                            <div className="flex items-center gap-2">
-                                <span className="px-2.5 py-0.5 bg-purple-100 text-purple-800 text-[10px] font-mono font-bold uppercase rounded-full">
+                    <main className="col-12 col-md-5 col-lg-7 bg-white p-4 overflow-y-auto space-y-4 flex-1">
+                        
+                        {/* Notice Card Header */}
+                        <div className="card shadow-sm border-0 bg-gradient-to-r from-slate-50 to-purple-50 p-4 rounded-3 space-y-2">
+                            <div className="d-flex items-center gap-2">
+                                <span className="badge bg-primary text-white uppercase font-mono px-2.5 py-1">
                                     {selectedActivity.category}
                                 </span>
-                                <StatusBadge tone={STATUS_TONES[selectedActivity.status] ?? 'neutral'} className="uppercase">
+                                <span className={`badge bg-${STATUS_TONES[selectedActivity.status] || 'secondary'} uppercase font-mono px-2.5 py-1`}>
                                     {selectedActivity.status.replace('_', ' ')}
-                                </StatusBadge>
+                                </span>
                                 {selectedActivity.fileTriggers?.map((f, i) => (
-                                    <span key={i} className="px-2 py-0.5 bg-slate-100 text-slate-700 text-[10px] font-mono rounded flex items-center gap-1">
-                                        <FileCode size={11} /> {f}
+                                    <span key={i} className="badge bg-light text-dark border font-mono">
+                                        <FileCode size={11} className="me-1" /> {f}
                                     </span>
                                 ))}
                             </div>
-                            <h1 className="text-xl font-bold text-slate-900">{selectedActivity.title}</h1>
-                            <p className="text-xs text-slate-500 font-mono">{selectedActivity.subtitle}</p>
+                            <h4 className="fw-bold text-dark font-serif mb-0">{selectedActivity.title}</h4>
+                            <p className="text-muted text-xs font-mono mb-0">{selectedActivity.subtitle}</p>
                         </div>
 
-                        {/* Metadata Badges */}
-                        <div className="grid grid-cols-2 gap-3 text-xs font-mono">
-                            <div className="p-3 bg-slate-50 border border-slate-200 rounded-xl flex items-center gap-2.5">
-                                <User className="text-purple-600 shrink-0" size={18} />
-                                <div>
-                                    <div className="text-[9px] text-slate-400 uppercase">Assigned By</div>
-                                    <div className="font-bold text-slate-800">{selectedActivity.giver || 'MIRAVERSE OS'}</div>
+                        {/* Metadata Grid */}
+                        <div className="row g-3 text-xs font-mono">
+                            <div className="col-md-6">
+                                <div className="card border-0 bg-light p-3 rounded-3 d-flex flex-row items-center gap-3">
+                                    <User className="text-primary shrink-0" size={20} />
+                                    <div>
+                                        <div className="text-muted uppercase text-[9px]">Assigned Authority</div>
+                                        <div className="fw-bold text-dark">{selectedActivity.giver || 'Aureline Civic Bureau'}</div>
+                                    </div>
                                 </div>
                             </div>
-                            <div className="p-3 bg-slate-50 border border-slate-200 rounded-xl flex items-center gap-2.5">
-                                <MapPin className="text-emerald-600 shrink-0" size={18} />
-                                <div>
-                                    <div className="text-[9px] text-slate-400 uppercase">Target Context / Location</div>
-                                    <div className="font-bold text-slate-800">{selectedActivity.appContext || selectedActivity.location || 'Desktop'}</div>
+                            <div className="col-md-6">
+                                <div className="card border-0 bg-light p-3 rounded-3 d-flex flex-row items-center gap-3">
+                                    <MapPin className="text-success shrink-0" size={20} />
+                                    <div>
+                                        <div className="text-muted uppercase text-[9px]">Target Context / Zone</div>
+                                        <div className="fw-bold text-dark">{selectedActivity.appContext || selectedActivity.location || 'Municipal Core'}</div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
 
+                        {/* Prerequisite Alert */}
                         {selectedActivity.prerequisite && (
-                            <div className={`flex items-start gap-3 rounded-xl border p-3 text-xs ${isLocked ? 'border-slate-300 bg-slate-100 text-slate-600' : 'border-blue-100 bg-blue-50 text-blue-800'}`}>
+                            <div className={`alert ${isLocked ? 'alert-secondary' : 'alert-info'} d-flex items-start gap-2 mb-0 text-xs rounded-3`}>
                                 {isLocked ? <Lock size={16} className="mt-0.5 shrink-0" /> : <CircleDot size={16} className="mt-0.5 shrink-0" />}
-                                <div><strong>Prerequisite:</strong> {selectedActivity.prerequisite}</div>
+                                <div><strong>Prerequisite Required:</strong> {selectedActivity.prerequisite}</div>
                             </div>
                         )}
 
-                        {/* Lore Background */}
+                        {/* Lore Narrative Card */}
                         {selectedActivity.loreBackground && (
-                            <div className="p-4 border border-purple-100 bg-purple-50/50 rounded-2xl space-y-1.5">
-                                <h3 className="text-xs font-bold text-purple-950 uppercase tracking-wider">Lore Background</h3>
-                                <p className="text-xs text-purple-900 leading-relaxed font-serif">
+                            <div className="card border-purple-200 bg-purple-50/40 p-4 rounded-3 space-y-1">
+                                <h6 className="fw-bold text-purple-950 uppercase text-xs tracking-wider mb-1">Lore & Tactical Context</h6>
+                                <p className="text-purple-900 text-xs leading-relaxed font-serif mb-0">
                                     {selectedActivity.loreBackground}
                                 </p>
                             </div>
                         )}
 
-                        {/* Steps Checklist */}
+                        {/* Objective Checklist */}
                         {selectedActivity.steps && (
-                            <div className="space-y-3">
-                                <h3 className="text-xs font-bold text-slate-700 uppercase tracking-wider">Objective Checklist</h3>
-                                <div className="space-y-2">
+                            <div className="space-y-2">
+                                <h6 className="fw-bold text-dark uppercase text-xs tracking-wider mb-2">Objective Checklist</h6>
+                                <div className="list-group">
                                     {selectedActivity.steps.map((step, i) => (
-                                        <div key={i} className="p-3 border border-slate-200 rounded-xl flex items-center gap-3 bg-slate-50 text-xs">
-                                            <div className={`h-5 w-5 rounded-full flex items-center justify-center font-bold text-[10px] ${step.done || selectedActivity.status === 'COMPLETED' ? 'bg-emerald-500 text-white' : 'bg-slate-200 text-slate-600'
-                                                }`}>
-                                                {step.done || selectedActivity.status === 'COMPLETED' ? <Check size={12} /> : i + 1}
+                                        <div key={i} className="list-group-item d-flex items-center gap-3 text-xs bg-light border-0 mb-1 rounded-3">
+                                            <div className={`rounded-circle d-flex items-center justify-center font-mono text-[10px] text-white ${
+                                                step.done || selectedActivity.status === 'COMPLETED' ? 'bg-success' : 'bg-secondary'
+                                            }`} style={{ width: '22px', height: '22px' }}>
+                                                {step.done || selectedActivity.status === 'COMPLETED' ? <Check size={13} /> : i + 1}
                                             </div>
-                                            <span className={step.done || selectedActivity.status === 'COMPLETED' ? 'line-through text-slate-400' : 'text-slate-800 font-medium'}>
+                                            <span className={step.done || selectedActivity.status === 'COMPLETED' ? 'text-decoration-line-through text-muted' : 'fw-semibold text-dark'}>
                                                 {step.text}
                                             </span>
                                         </div>
@@ -299,27 +338,38 @@ export default function NoticeBoardApp() {
                             </div>
                         )}
 
-                        {/* Dialogue Hooks */}
+                        {/* Dialogue Transmission Hook */}
                         {selectedActivity.dialogueHooks && (
-                            <div className="p-4 border border-slate-200 bg-slate-900 text-slate-200 rounded-2xl space-y-2 font-mono text-xs">
-                                <div className="flex items-center gap-1.5 text-emerald-400 font-bold">
+                            <div className="card bg-dark text-white p-3.5 rounded-3 font-mono text-xs space-y-1">
+                                <div className="d-flex items-center gap-1.5 text-success fw-bold">
                                     <MessageSquare size={14} /> Transmission Relay Log
                                 </div>
-                                <div className="text-slate-300 italic">
+                                <div className="text-white-50 italic">
                                     "{selectedActivity.dialogueHooks.briefing || selectedActivity.dialogueHooks.completion}"
                                 </div>
                             </div>
                         )}
 
-                        {/* Rewards & Claim Button */}
-                        <div className="p-4 border border-slate-200 bg-slate-50 rounded-2xl flex items-center justify-between">
-                            <div className="flex items-start gap-2">
-                                <Gift size={18} className="mt-0.5 text-violet-600 shrink-0" />
+                        {/* Rewards & Claim Footer Action Card */}
+                        <div className="card bg-light border-0 p-4 rounded-3 d-flex flex-row justify-content-between align-items-center shadow-sm">
+                            <div className="d-flex items-center gap-3">
+                                <div className="p-2.5 bg-primary bg-opacity-10 text-primary rounded-3">
+                                    <Gift size={22} />
+                                </div>
                                 <div>
-                                    <div className="text-[10px] text-slate-400 uppercase font-mono">Completion Rewards</div>
-                                    <div className="text-sm font-bold text-slate-900 font-mono">
-                                        +{rewardXP} XP • +{rewardCredits} ₡
-                                        {selectedActivity.rewards?.item && <span className="ml-1 text-violet-600">• {selectedActivity.rewards.item}</span>}
+                                    <div className="text-muted text-[10px] uppercase font-mono">Completion Rewards System</div>
+                                    <div className="fw-bold text-dark font-mono text-xs d-flex flex-wrap items-center gap-1.5 mt-0.5">
+                                        <span className="badge bg-purple-100 text-purple border">+{rewardXP} XP</span>
+                                        <span className="badge bg-success bg-opacity-10 text-success border">+{rewardCredits} ₡</span>
+                                        {selectedActivity.rewards?.item && (
+                                            <span className="badge bg-primary text-white">🎁 {selectedActivity.rewards.item}</span>
+                                        )}
+                                        {selectedActivity.rewards?.repBonus && (
+                                            <span className="badge bg-warning text-dark">🏆 +{selectedActivity.rewards.repBonus.amount}% {selectedActivity.rewards.repBonus.track} Rep</span>
+                                        )}
+                                        {selectedActivity.rewards?.skillXP && (
+                                            <span className="badge bg-info text-dark">⚡ +{selectedActivity.rewards.skillXP.amount} {selectedActivity.rewards.skillXP.skill} XP</span>
+                                        )}
                                     </div>
                                 </div>
                             </div>
@@ -327,23 +377,24 @@ export default function NoticeBoardApp() {
                             <button
                                 onClick={handlePrimaryAction}
                                 disabled={isLocked || isCompleted}
-                                className={`px-5 py-2.5 rounded-xl text-xs font-bold transition flex items-center gap-2 cursor-pointer ${isCompleted
-                                    ? 'bg-emerald-600 text-white opacity-90'
-                                    : isLocked
-                                        ? 'bg-slate-200 text-slate-500 cursor-not-allowed'
-                                        : isAvailable
-                                            ? 'bg-blue-600 hover:bg-blue-500 text-white shadow-md'
-                                            : 'bg-violet-600 hover:bg-violet-500 text-white shadow-md'
-                                    }`}
+                                className={`btn btn-sm font-bold px-4 py-2 text-xs d-flex items-center gap-2 rounded-3 ${
+                                    isCompleted
+                                        ? 'btn-success text-white'
+                                        : isLocked
+                                            ? 'btn-secondary text-white disabled'
+                                            : isAvailable
+                                                ? 'btn-primary text-white shadow-sm'
+                                                : 'btn-violet text-white shadow-sm'
+                                }`}
                             >
-                                {isCompleted ? <Check size={16} /> : isLocked ? <Lock size={16} /> : <Play size={16} />}
-                                <span>{isCompleted ? 'Completed & Claimed' : isLocked ? 'Prerequisite Required' : isAvailable ? 'Accept & Track' : 'Complete & Claim'}</span>
+                                {isCompleted ? <CheckCircle2 size={16} /> : isLocked ? <Lock size={16} /> : <Play size={16} />}
+                                <span>{isCompleted ? 'Completed & Claimed' : isLocked ? 'Locked (Prerequisite)' : isAvailable ? 'Accept & Track' : 'Complete & Claim'}</span>
                             </button>
                         </div>
                     </main>
                 ) : (
-                    <main className="flex-1 bg-white flex items-center justify-center p-8 text-center">
-                        <EmptyState icon={Search} title="No operation selected" description="Adjust the category, state, or search filter to restore this node." />
+                    <main className="col-12 col-md-5 col-lg-7 bg-white d-flex items-center justify-center p-5 text-center">
+                        <EmptyState icon={Search} title="No operation selected" description="Adjust category or filter options." />
                     </main>
                 )}
             </div>

@@ -1,12 +1,13 @@
 // src/apps/FileExplorerApp.jsx
 import React, { useState } from 'react';
 import {
-  Folder, FileText, Map, ShieldAlert, Activity, Radio, Lock, Zap, ChevronRight, Cpu, MapPin
+  Folder, FileText, Map, ShieldAlert, Activity, Radio, Zap, ChevronRight, Cpu, MapPin, Search, LayoutGrid, List, Paperclip, ExternalLink
 } from 'lucide-react';
 import Button from '../components/ui/button';
 import DocumentModal from '../components/DocumentModal';
 import SignalPlayerModal from '../components/widgets/SignalPlayerModal';
 import { MOCK_DOCUMENTS } from '../data/mockDocuments';
+import '../styles/apps/FileExplorer.css';
 
 const FILES_DATA = [
   // /documents
@@ -41,9 +42,17 @@ export default function FileExplorerApp() {
   const [selectedDoc, setSelectedDoc] = useState(null);
   const [activeModal, setActiveModal] = useState(null); // 'document' | 'sig'
   const [activeDirectory, setActiveDirectory] = useState('/root');
-  const [glitchActive, setGlitchActive] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [viewMode, setViewMode] = useState('grid'); // 'grid' | 'list'
 
-  const filteredFiles = FILES_DATA.filter((file) => file.dir === activeDirectory);
+  const filteredFiles = FILES_DATA.filter((file) => {
+    const matchesDir = file.dir === activeDirectory;
+    const matchesSearch = !searchQuery.trim() || 
+      file.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      file.desc.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      file.type.toLowerCase().includes(searchQuery.toLowerCase());
+    return matchesDir && matchesSearch;
+  });
 
   const handleFileSelect = (file) => {
     setSelectedFile(file);
@@ -55,12 +64,6 @@ export default function FileExplorerApp() {
 
   const executeFile = (file) => {
     if (!file) return;
-
-    // Glitch animation for threat files
-    if (file.type === 'prism' || file.type === 'corrupt') {
-      setGlitchActive(true);
-      setTimeout(() => setGlitchActive(false), 2500);
-    }
 
     // Resolve Document Schema structure from MOCK_DOCUMENTS or fallback
     const resolvedDoc = MOCK_DOCUMENTS[file.mockKey] || {
@@ -76,6 +79,7 @@ export default function FileExplorerApp() {
         fileSize: file.size
       },
       security: { isEncrypted: false },
+      attachments: [],
       content: {
         title: file.name.replace(/_/g, ' ').toUpperCase(),
         subtitle: file.desc,
@@ -94,45 +98,82 @@ export default function FileExplorerApp() {
 
   const getFileIcon = (type) => {
     switch (type) {
-      case 'osform': return <FileText size={18} className="text-purple-400" />;
+      case 'osform': return <FileText size={16} className="text-[#f4d35e]" />;
       case 'txt':
-      case 'doc': return <FileText size={18} className="text-slate-300" />;
-      case 'log': return <FileText size={18} className="text-purple-500 font-mono" />;
-      case 'map': return <Map size={18} className="text-cyan-400" />;
+      case 'doc': return <FileText size={16} className="text-purple-200" />;
+      case 'log': return <FileText size={16} className="text-[#e29578]" />;
+      case 'map': return <Map size={16} className="text-amber-300" />;
       case 'node':
-      case 'grid': return <MapPin size={18} className="text-teal-400" />;
-      case 'mod': return <Zap size={18} className="text-amber-400 animate-pulse" />;
-      case 'spell': return <Zap size={18} className="text-indigo-400" />;
-      case 'veil': return <Zap size={18} className="text-pink-400 animate-bounce" />;
-      case 'diag': return <Activity size={18} className="text-emerald-400" />;
-      case 'aura': return <Activity size={18} className="text-green-400" />;
+      case 'grid': return <MapPin size={16} className="text-rose-300" />;
+      case 'mod': return <Zap size={16} className="text-[#f4d35e]" />;
+      case 'spell': return <Zap size={16} className="text-rose-400" />;
+      case 'veil': return <Zap size={16} className="text-pink-300" />;
+      case 'diag': return <Activity size={16} className="text-amber-400" />;
+      case 'aura': return <Activity size={16} className="text-rose-300" />;
       case 'sig':
-      case 'wav': return <Radio size={18} className="text-indigo-400 animate-pulse" />;
-      case 'sys': return <Cpu size={18} className="text-slate-400" />;
+      case 'wav': return <Radio size={16} className="text-purple-300" />;
+      case 'sys': return <Cpu size={16} className="text-slate-300" />;
       case 'prism':
-      case 'corrupt': return <ShieldAlert size={18} className="text-rose-500 animate-pulse" />;
-      default: return <FileText size={18} className="text-purple-300" />;
+      case 'corrupt': return <ShieldAlert size={16} className="text-rose-400" />;
+      default: return <FileText size={16} className="text-[#e29578]" />;
     }
   };
 
+  const getAttachmentCount = (mockKey) => {
+    const doc = MOCK_DOCUMENTS[mockKey];
+    return doc?.attachments?.length || 0;
+  };
+
   return (
-    <div className={`relative flex h-full w-full flex-col bg-[#0b071e] text-purple-100 font-sans text-xs select-none transition-all duration-300 ${glitchActive ? 'animate-holo-flicker border-2 border-rose-500' : ''}`}>
-      {/* Top Address Bar */}
-      <div className="flex h-11 items-center justify-between border-b border-purple-500/20 bg-purple-950/40 px-4 backdrop-blur-md">
-        <div className="flex items-center gap-2 font-mono text-xs text-purple-300">
-          <Folder size={16} className="text-purple-400" />
-          <span>MIRAVERSEOSX // File Explorer</span>
-          <span className="text-purple-500">/</span>
+    <div className="relative flex h-full w-full flex-col bg-[#141021] text-purple-100 font-sans text-xs select-none transition-all">
+      {/* Top Address & Filter Header */}
+      <div className="flex h-12 items-center justify-between border-b border-[#2a233d] bg-[#1a152b] px-4 backdrop-blur-md gap-4">
+        <div className="flex items-center gap-2.5 font-mono text-xs text-white/80 shrink-0">
+          <Folder size={16} className="text-[#f4d35e]" />
+          <span className="text-[#f4d35e] font-semibold">File Explorer</span>
+          <span className="text-white/40">/</span>
           <span className="text-white font-bold">{activeDirectory}</span>
         </div>
-        <span className="font-mono text-[10px] text-purple-400">{filteredFiles.length} File Objects</span>
+
+        {/* Search Bar & View Mode Toggle */}
+        <div className="flex items-center gap-3">
+          <div className="relative flex items-center">
+            <Search size={14} className="absolute left-2.5 text-white/40 pointer-events-none" />
+            <input
+              type="text"
+              placeholder="Filter files..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="bg-[#0f0c1a] border border-[#332b49] rounded-lg pl-8 pr-3 py-1 text-xs text-white focus:outline-none focus:border-rose-400/60 transition w-36 sm:w-48 placeholder:text-white/30"
+            />
+          </div>
+
+          <div className="flex items-center rounded-lg border border-[#332b49] bg-[#0f0c1a] p-0.5">
+            <button
+              onClick={() => setViewMode('grid')}
+              className={`p-1 rounded-md transition ${viewMode === 'grid' ? 'bg-rose-500/20 text-[#f4d35e] font-bold' : 'text-white/40 hover:text-white'}`}
+              title="Grid View"
+            >
+              <LayoutGrid size={14} />
+            </button>
+            <button
+              onClick={() => setViewMode('list')}
+              className={`p-1 rounded-md transition ${viewMode === 'list' ? 'bg-rose-500/20 text-[#f4d35e] font-bold' : 'text-white/40 hover:text-white'}`}
+              title="List View"
+            >
+              <List size={14} />
+            </button>
+          </div>
+
+          <span className="font-mono text-[10px] text-white/50 hidden sm:inline">{filteredFiles.length} items</span>
+        </div>
       </div>
 
       {/* Main Workspace */}
       <div className="flex min-h-0 flex-1">
         {/* Left Directory Tree */}
-        <div className="w-[21%] min-w-40 max-w-48 shrink-0 border-r border-purple-500/20 bg-black/40 p-3 space-y-1 font-mono text-[11px]">
-          <div className="text-[9px] font-bold text-purple-400/80 uppercase tracking-widest mb-2">Directories</div>
+        <div className="w-[21%] min-w-40 max-w-48 shrink-0 border-r border-[#2a233d] bg-[#1a152b] p-3 space-y-1.5 font-mono text-[11px]">
+          <div className="text-[9px] font-bold text-rose-300/70 uppercase tracking-widest px-2 mb-2">Directories</div>
           {['/root', '/documents', '/spells', '/diagnostics', '/system'].map((dir) => (
             <button
               key={dir}
@@ -140,65 +181,124 @@ export default function FileExplorerApp() {
                 setActiveDirectory(dir);
                 setSelectedFile(null);
               }}
-              className={`flex w-full items-center gap-2 rounded-lg px-2.5 py-1.5 transition ${activeDirectory === dir ? 'bg-purple-900/60 text-white font-bold border border-purple-400/30' : 'text-purple-300/70 hover:bg-purple-900/20'
-                }`}
+              className={`flex w-full items-center gap-2 rounded-lg px-2.5 py-2 transition text-left ${
+                activeDirectory === dir
+                  ? 'bg-rose-500/15 text-[#f4d35e] font-bold border border-rose-400/30'
+                  : 'text-white/60 hover:bg-white/5 hover:text-white'
+              }`}
             >
-              <Folder size={14} className="text-purple-400" />
+              <Folder size={14} className={activeDirectory === dir ? 'text-[#f4d35e]' : 'text-white/40'} />
               <span>{dir}</span>
             </button>
           ))}
         </div>
 
-        {/* Center File Grid */}
-        <div className="flex-1 p-4 overflow-auto space-y-2">
+        {/* Center File Workspace */}
+        <div className="flex-1 p-4 overflow-auto space-y-3 bg-[#141021]">
           {filteredFiles.length === 0 ? (
-            <div className="flex flex-col items-center justify-center h-48 text-purple-400/60 font-mono text-xs">
-              <Folder size={28} className="text-purple-400/30 mb-2" />
-              <span>Directory is empty</span>
+            <div className="flex flex-col items-center justify-center h-48 text-white/40 font-mono text-xs">
+              <Folder size={32} className="text-white/20 mb-2" />
+              <span>No matching files found</span>
+            </div>
+          ) : viewMode === 'grid' ? (
+            /* 1. Grid View Tiles */
+            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+              {filteredFiles.map((file) => {
+                const attCount = getAttachmentCount(file.mockKey);
+                return (
+                  <div
+                    key={file.id}
+                    onClick={() => handleFileSelect(file)}
+                    onDoubleClick={() => handleFileDoubleClick(file)}
+                    className={`file-grid-card ${
+                      selectedFile?.id === file.id ? 'selected' : ''
+                    }`}
+                  >
+                    <div className="flex items-center gap-3">
+                      <div className="p-2.5 rounded-lg bg-[#201936] border border-[#352c4e] shrink-0">
+                        {getFileIcon(file.type)}
+                      </div>
+                      <div className="min-w-0 flex-1">
+                        <div className="font-mono text-xs font-bold text-white flex items-center gap-2 truncate">
+                          <span>{file.name}</span>
+                          {attCount > 0 && (
+                            <span className="inline-flex items-center gap-0.5 text-[9px] font-normal text-[#f4d35e] bg-amber-500/10 border border-amber-500/30 px-1.5 py-0.5 rounded">
+                              <Paperclip size={10} /> {attCount}
+                            </span>
+                          )}
+                        </div>
+                        <div className="text-[10px] text-white/60 truncate mt-0.5">{file.desc}</div>
+                      </div>
+                    </div>
+
+                    <span className="font-mono text-[10px] text-white/40 shrink-0 ml-2">{file.size}</span>
+                  </div>
+                );
+              })}
             </div>
           ) : (
-            <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
-              {filteredFiles.map((file) => (
-                <div
-                  key={file.id}
-                  onClick={() => handleFileSelect(file)}
-                  onDoubleClick={() => handleFileDoubleClick(file)}
-                  className={`flex items-center justify-between rounded-xl border p-3 cursor-pointer transition ${selectedFile?.id === file.id
-                      ? 'border-purple-400 bg-purple-900/40 shadow-[0_0_15px_rgba(168,85,247,0.2)]'
-                      : 'border-purple-500/20 bg-purple-950/20 hover:bg-purple-900/30 hover:border-purple-400/40'
-                    }`}
-                >
-                  <div className="flex items-center gap-3">
-                    <div className="p-2 rounded-lg bg-purple-950/60 border border-purple-500/30">
-                      {getFileIcon(file.type)}
-                    </div>
-                    <div>
-                      <div className="font-mono text-xs font-bold text-white flex items-center gap-1.5">
-                        {file.name}
-                      </div>
-                      <div className="text-[10px] text-purple-300/70 leading-snug">{file.desc}</div>
-                    </div>
-                  </div>
-
-                  <span className="font-mono text-[10px] text-purple-400/80">{file.size}</span>
-                </div>
-              ))}
+            /* 2. Compact Tabular List View */
+            <div className="rounded-xl border border-[#2a233d] bg-[#1a152b] overflow-hidden">
+              <table className="w-full text-left border-collapse">
+                <thead>
+                  <tr className="border-b border-[#2a233d] bg-[#141021] text-[10px] font-mono text-white/40 uppercase">
+                    <th className="py-2 px-3 font-semibold">Name</th>
+                    <th className="py-2 px-3 font-semibold">Description</th>
+                    <th className="py-2 px-3 font-semibold">Attachments</th>
+                    <th className="py-2 px-3 font-semibold text-right">Size</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-[#261f38] text-xs">
+                  {filteredFiles.map((file) => {
+                    const attCount = getAttachmentCount(file.mockKey);
+                    const isSelected = selectedFile?.id === file.id;
+                    return (
+                      <tr
+                        key={file.id}
+                        onClick={() => handleFileSelect(file)}
+                        onDoubleClick={() => handleFileDoubleClick(file)}
+                        className={`cursor-pointer transition ${
+                          isSelected ? 'bg-rose-500/15 text-white font-medium' : 'hover:bg-white/5 text-white/80'
+                        }`}
+                      >
+                        <td className="py-2.5 px-3 flex items-center gap-2 font-mono">
+                          {getFileIcon(file.type)}
+                          <span className="font-bold">{file.name}</span>
+                        </td>
+                        <td className="py-2.5 px-3 text-[11px] text-white/60">{file.desc}</td>
+                        <td className="py-2.5 px-3 font-mono text-[10px]">
+                          {attCount > 0 ? (
+                            <span className="inline-flex items-center gap-1 text-[#f4d35e] bg-amber-500/10 border border-amber-500/30 px-1.5 py-0.5 rounded">
+                              <Paperclip size={10} /> {attCount} attached
+                            </span>
+                          ) : (
+                            <span className="text-white/20">—</span>
+                          )}
+                        </td>
+                        <td className="py-2.5 px-3 font-mono text-[10px] text-right text-white/50">{file.size}</td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
             </div>
           )}
 
           {/* Selected File Action Footer */}
           {selectedFile && (
-            <div className="mt-4 rounded-xl border border-purple-500/30 bg-purple-950/60 p-3 flex items-center justify-between font-mono text-xs">
-              <div>
-                <span className="text-purple-400">Selected:</span> <span className="font-bold text-white">{selectedFile.name}</span>
+            <div className="mt-4 rounded-xl border border-rose-400/30 bg-[#1e1730] p-3 flex items-center justify-between font-mono text-xs">
+              <div className="flex items-center gap-2">
+                <span className="text-rose-300">Selected:</span>
+                <span className="font-bold text-white">{selectedFile.name}</span>
+                <span className="text-white/40">({selectedFile.size})</span>
               </div>
               <Button
                 onClick={() => executeFile(selectedFile)}
                 size="sm"
                 variant="solid"
-                className="bg-purple-600 hover:bg-purple-500 text-white font-bold text-xs"
+                className="bg-[#f4d35e] hover:bg-[#ffe6a7] text-black font-bold text-xs flex items-center gap-1.5 px-4 py-1.5 rounded-lg transition"
               >
-                Execute / View File <ChevronRight size={14} />
+                Inspect / View File <ExternalLink size={13} />
               </Button>
             </div>
           )}

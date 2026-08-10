@@ -83,7 +83,12 @@ export default function Desktop() {
               exit={{ opacity: 0 }}
               className="unified-workspace-container grid h-full w-full grid-cols-12 gap-0 overflow-hidden"
             >
-              {areSidebarsVisible && <IdentityVitals onOpenCitizenRecord={() => openAppById('passport')} />}
+              {areSidebarsVisible && (
+                <IdentityVitals
+                  onOpenCitizenRecord={() => openAppById('passport')}
+                  onTogglePhone={() => setIsPhoneOpen((prev) => !prev)}
+                />
+              )}
 
               <main
                 ref={appWorkspaceRef}

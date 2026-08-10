@@ -6,7 +6,7 @@ import SearchResults from './SearchResults';
 import AureSuiteApp from './AureSuiteApp';
 import {
     FaithMedPortal, DGAPortal, CyacademyPortal, OrynvellRecordsPortal,
-    BankPortal, ShippingPortal, DarkWebOnionPortal
+    BankPortal, ShippingPortal, DarkWebOnionPortal, MaiSpacePortal
 } from './Portals';
 import { PORTALS } from './constants';
 import { useOSStore } from '../../store/useOSStore';
@@ -71,6 +71,11 @@ function ContentFrame({ url, openTab, navigateTab }) {
     // AureSuite Cloud Workspace Hub
     if (domain === 'auresuite.aure') {
         return <AureSuiteApp />;
+    }
+
+    // Mai.space Social Grid
+    if (domain === 'mai.space' || domain === 'mai.space.aure' || domain === 'maispace.aure' || domain === 'social.aure') {
+        return <MaiSpacePortal />;
     }
 
     // Fallback Generic Connected Page

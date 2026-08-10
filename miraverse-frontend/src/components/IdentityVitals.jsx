@@ -2,7 +2,7 @@ import React from 'react';
 import { useOSStore } from '../store/useOSStore';
 import { Lock, Smartphone, Mail, Home, CheckCircle2, AlertCircle, Cpu, Radio, Shield, User } from 'lucide-react';
 
-export default function IdentityVitals({ onOpenCitizenRecord }) {
+export default function IdentityVitals({ onOpenCitizenRecord, onTogglePhone }) {
     const player = useOSStore((state) => state.gameplay.player);
     const identity = useOSStore((state) => state.gameplay.identity);
     const toggleApp = useOSStore((state) => state.toggleApp);
@@ -43,21 +43,21 @@ export default function IdentityVitals({ onOpenCitizenRecord }) {
                     <button
                         onClick={onOpenCitizenRecord}
                         className="p-2.5 rounded-lg bg-white/10 hover:bg-white/20 transition cursor-pointer text-white"
-                        title="Open Citizen Record"
+                        title="Open Citizen Record (Passport)"
                     >
                         <Lock size={22} />
                     </button>
                     <button
                         onClick={() => openAppById('mail')}
                         className="p-2.5 rounded-lg bg-white/10 hover:bg-white/20 transition cursor-pointer text-white"
-                        title="Open Civic Mailbox"
+                        title="Open Mailbox"
                     >
                         <Mail size={22} />
                     </button>
                     <button
-                        onClick={() => openAppById('comms')}
+                        onClick={onTogglePhone || (() => openAppById('comms'))}
                         className="p-2.5 rounded-lg bg-white/10 hover:bg-white/20 transition cursor-pointer text-white"
-                        title="Open Comms Portal"
+                        title="Open Phone Component"
                     >
                         <Smartphone size={22} />
                     </button>

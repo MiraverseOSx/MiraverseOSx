@@ -13,6 +13,7 @@ export const PORTALS = {
     'shipping.aure': { title: 'CargoTrack Logistics', category: 'Cargo & Logistics', icon: Truck, accent: 'orange', domain: 'shipping.aure' },
     'vectornet.onion': { title: 'Vector DarkNet', category: 'Anonymized Darkweb', icon: Eye, accent: 'cyan', domain: 'vectornet.onion' },
     'auresuite.aure': { title: 'AureSuite Cloud Workspace', category: 'Cloud Tools Hub', icon: Grid, accent: 'rose', domain: 'auresuite.aure' },
+    'mai.space.aure': { title: 'Mai.space Social Grid', category: 'Public Social Network', icon: Globe, accent: 'purple', domain: 'mai.space.aure' },
 };
 
 export const SAMPLE_ARCHIVES = [

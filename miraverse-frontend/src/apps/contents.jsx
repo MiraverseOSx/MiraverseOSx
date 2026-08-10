@@ -1,11 +1,11 @@
 import React, { useState, lazy, Suspense } from 'react';
 import { miraverseDb } from '../db/miraverseDb';
 import { useOSStore } from '../store/useOSStore';
-import { Folder, FileText, Search, Shield, Globe, Users, Briefcase, BookOpen, Copy, Check, Mail, UserCheck, Sparkles, Settings, Bookmark, Radio, Terminal } from 'lucide-react';
+import { Folder, FileText, Search, Shield, Globe, Users, Briefcase, BookOpen, Copy, Check, Mail, MessageSquare, UserCheck, Sparkles, Settings, Bookmark, Radio, Terminal } from 'lucide-react';
 
 export const APPS = [
-  { id: 'comms', title: 'Comms (OS Network)', icon: Mail },
-  { id: 'mail', title: 'Mail (Official Papers)', icon: FileText },
+  { id: 'comms', title: 'Comms Portal (Chat & Mesh)', icon: MessageSquare },
+  { id: 'mail', title: 'AureMail Mailbox (Personal & Dispatches)', icon: Mail },
   {
     id: 'browser',
     title: 'Net Browser (Web/Faith)',
@@ -21,7 +21,7 @@ export const APPS = [
     }
   },
   { id: 'passport', title: 'Citizen Record', icon: UserCheck },
-  { id: 'pulse', title: 'Pulse Network', icon: Radio },
+  { id: 'pulse', title: 'Mai.space (Public Social & Reputation)', icon: Radio },
   { id: 'files', title: 'File Explorer (files)', icon: Folder },
   { id: 'spellforge', title: 'SpellForge Matrix', icon: Sparkles },
   { id: 'terminal', title: 'System Terminal', icon: Terminal },
@@ -407,7 +407,7 @@ const withSuspense = (Component, name) => (props) => (
 export const CONTENTS = {
   files: withSuspense(FileExplorerApp, 'File Explorer'),
   comms: withSuspense(CommsApp, 'Comms'),
-  mail: withSuspense(MailApp, 'Mail'),
+  mail: withSuspense(MailApp, 'Mailbox'),
   spellforge: withSuspense(SpellForgeApp, 'SpellForge'),
   passport: withSuspense(CivicProfileApp, 'Civic Profile'),
   pulse: withSuspense(PulseApp, 'Pulse Network'),
