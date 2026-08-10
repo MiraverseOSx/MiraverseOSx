@@ -32,6 +32,7 @@ async function seedDatabase() {
       { name: 'careers', file: 'careers.json', keyField: 'id' },
       { name: 'commsMessages', file: 'messages.json', keyField: 'id' },
       { name: 'pulsePosts', file: 'pulse_posts.json', keyField: 'id' },
+      { name: 'missions', file: 'missions.json', keyField: 'id' },
     ];
 
     for (const col of collections) {

@@ -3,39 +3,64 @@ import { motion, useDragControls } from 'framer-motion';
 import { useOSStore } from '../store/useOSStore';
 import { getContent } from '../apps/contents';
 
-const MENU_BAR_HEIGHT = 70;
+const WINDOW_MARGIN = 12;
+const CASCADE_OFFSET = 24;
+const HORIZONTAL_DRAG_OVERFLOW = 96;
+const VERTICAL_DRAG_OVERFLOW = 40;
 
-export default function Window({ win, workspaceRef }) {
+export default function Window({ win, workspaceRef, isFocusMode = false, windowIndex = 0 }) {
   const focusWindow = useOSStore((s) => s.focusWindow);
   const closeWindow = useOSStore((s) => s.closeWindow);
   const toggleMinimize = useOSStore((s) => s.toggleMinimize);
   const toggleMaximize = useOSStore((s) => s.toggleMaximize);
+  const moveWindow = useOSStore((s) => s.moveWindow);
   const activeWindowId = useOSStore((s) => s.activeWindowId);
 
   const dragControls = useDragControls();
   const Body = getContent(win.contentKey || win.id);
   const isActive = activeWindowId === win.id;
-
-  const [constraints, setConstraints] = React.useState({ left: -800, right: 1200, top: 0, bottom: 600 });
+  const windowOffset = win.windowOffset || { x: 0, y: 0 };
+  const [windowRect, setWindowRect] = React.useState({
+    width: 960,
+    height: 640,
+    left: WINDOW_MARGIN,
+    top: WINDOW_MARGIN,
+  });
+  const [constraints, setConstraints] = React.useState({ left: 0, right: 0, top: 0, bottom: 0 });
 
   React.useEffect(() => {
-    const updateConstraints = () => {
+    const updateGeometry = () => {
       if (workspaceRef?.current) {
         const rect = workspaceRef.current.getBoundingClientRect();
-        const winWidth = typeof win.size.width === 'number' ? win.size.width : 920;
+        const fullWidth = Math.max(320, Math.round(rect.width - (WINDOW_MARGIN * 2)));
+        const fullHeight = Math.max(240, Math.round(rect.height - (WINDOW_MARGIN * 2)));
+        const width = fullWidth;
+        const height = fullHeight;
+        const cascade = isFocusMode ? windowIndex % 4 : 0;
+        const left = Math.round(rect.left + WINDOW_MARGIN + (cascade * CASCADE_OFFSET));
+        const top = Math.round(rect.top + WINDOW_MARGIN + (cascade * CASCADE_OFFSET));
+        const horizontalOverflow = isFocusMode ? HORIZONTAL_DRAG_OVERFLOW : 0;
+        const verticalOverflow = isFocusMode ? VERTICAL_DRAG_OVERFLOW : 0;
+
+        setWindowRect({ width, height, left, top });
         setConstraints({
-          left: -winWidth + 150,
-          right: rect.width - 150,
-          top: 0,
-          bottom: rect.height - 40,
+          left: rect.left + WINDOW_MARGIN - left - horizontalOverflow,
+          right: rect.right - WINDOW_MARGIN - left - width + horizontalOverflow,
+          top: rect.top + WINDOW_MARGIN - top - verticalOverflow,
+          bottom: rect.bottom - WINDOW_MARGIN - top - height + verticalOverflow,
         });
       }
     };
 
-    updateConstraints();
-    window.addEventListener('resize', updateConstraints);
-    return () => window.removeEventListener('resize', updateConstraints);
-  }, [workspaceRef, win.size]);
+    updateGeometry();
+    const resizeObserver = new ResizeObserver(updateGeometry);
+    if (workspaceRef?.current) resizeObserver.observe(workspaceRef.current);
+    window.addEventListener('resize', updateGeometry);
+    return () => {
+      resizeObserver.disconnect();
+      window.removeEventListener('resize', updateGeometry);
+    };
+  }, [isFocusMode, windowIndex, workspaceRef]);
 
   const startDrag = (e) => {
     if (win.isMaximized) return;
@@ -44,17 +69,26 @@ export default function Window({ win, workspaceRef }) {
     dragControls.start(e);
   };
 
-  const maximizedStyle = {
-    top: MENU_BAR_HEIGHT,
-    left: 0,
-    width: '100vw',
-    height: `calc(100vh - ${MENU_BAR_HEIGHT}px - 70px)`,
+  const handleDragEnd = (_event, info) => {
+    if (win.isMaximized) return;
+    moveWindow(win.id, {
+      x: windowOffset.x + info.offset.x,
+      y: windowOffset.y + info.offset.y,
+    });
   };
+
+  const workspaceBounds = workspaceRef?.current?.getBoundingClientRect();
+  const maximizedStyle = workspaceBounds ? {
+    top: workspaceBounds.top + WINDOW_MARGIN,
+    left: workspaceBounds.left + WINDOW_MARGIN,
+    width: Math.max(320, workspaceBounds.width - (WINDOW_MARGIN * 2)),
+    height: Math.max(240, workspaceBounds.height - (WINDOW_MARGIN * 2)),
+  } : windowRect;
   const normalStyle = {
-    top: win.position.y,
-    left: win.position.x,
-    width: win.size.width,
-    height: win.size.height,
+    top: windowRect.top,
+    left: windowRect.left,
+    width: windowRect.width,
+    height: windowRect.height,
   };
 
   const baseFrame = 'rounded-none border border-[#1b254f]/35 bg-white/60 backdrop-blur-[18px] shadow-none';
@@ -86,12 +120,19 @@ export default function Window({ win, workspaceRef }) {
       dragMomentum={false}
       dragElastic={0}
       dragConstraints={constraints}
+      dragSnapToOrigin
+      onDragEnd={handleDragEnd}
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.08 }}
-      className={`absolute flex flex-col overflow-hidden select-none ${frameClass}`}
-      style={{ ...(win.isMaximized ? maximizedStyle : normalStyle), zIndex: win.zIndex }}
+      className={`absolute flex flex-col overflow-hidden select-none transition-shadow ${frameClass} ${isActive ? 'ring-1 ring-[#8d79c5]/50 shadow-[0_22px_55px_rgba(13,21,51,.28)]' : 'shadow-[0_8px_24px_rgba(13,21,51,.14)]'}`}
+      style={{
+        ...(win.isMaximized ? maximizedStyle : normalStyle),
+        x: win.isMaximized ? 0 : windowOffset.x,
+        y: win.isMaximized ? 0 : windowOffset.y,
+        zIndex: win.zIndex,
+      }}
       onMouseDown={() => focusWindow(win.id)}
     >
       {/* Title bar */}
@@ -141,7 +182,7 @@ export default function Window({ win, workspaceRef }) {
       )}
 
       {/* Main Content Body */}
-      <div className={`min-h-0 flex-1 overflow-hidden select-text ${bodyClass}`}>
+      <div className={`min-h-0 min-w-0 flex-1 overflow-hidden select-text ${bodyClass}`}>
         <Body onTabBarPointerDown={startDrag} />
       </div>
     </motion.div>

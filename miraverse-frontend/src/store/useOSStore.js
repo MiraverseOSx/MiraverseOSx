@@ -1,6 +1,8 @@
 import { create } from 'zustand';
+import missionsData from '../../../miraverse-backend/db/exports/missions.json' with { type: 'json' };
 
 const MENU_BAR_HEIGHT = 70;
+const DEFAULT_WINDOW_SIZE = { width: 960, height: 640 };
 
 const spawnPosition = (count) => ({
   x: 140 + (count % 6) * 32,
@@ -15,7 +17,176 @@ export const useOSStore = create((set) => ({
   activeWindowId: null,
   wallpaper: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=2072&auto=format&fit=crop',
   browserUrl: null,
-  setBrowserUrl: (url) => set({ browserUrl: url }),
+  browserState: {
+    tabs: [
+      { id: 1, url: 'https://search.aure', title: 'New Tab' }
+    ],
+    activeTabId: 1,
+    nextTabId: 2,
+    historyMap: { 1: { stack: ['https://search.aure'], index: 0 } },
+  },
+
+  setBrowserUrl: (url) => set((s) => {
+    if (!url) return { browserUrl: null };
+    let formattedUrl = url;
+    if (!url.startsWith('http://') && !url.startsWith('https://')) {
+      formattedUrl = `https://${url}`;
+    }
+
+    const tabs = s.browserState.tabs;
+    const existing = tabs.find((t) => t.url === formattedUrl);
+    let newTabs = tabs;
+    let newActiveId = s.browserState.activeTabId;
+    let newNextId = s.browserState.nextTabId;
+    let newHistoryMap = s.browserState.historyMap;
+
+    if (existing) {
+      newActiveId = existing.id;
+    } else {
+      const newTab = { id: newNextId, url: formattedUrl, title: formattedUrl.replace(/^https?:\/\//, '').split('/')[0] };
+      newTabs = [...tabs, newTab];
+      newActiveId = newNextId;
+      newNextId = newNextId + 1;
+      newHistoryMap = {
+        ...s.browserState.historyMap,
+        [newActiveId]: { stack: [formattedUrl], index: 0 },
+      };
+    }
+
+    return {
+      browserUrl: formattedUrl,
+      browserState: {
+        ...s.browserState,
+        tabs: newTabs,
+        activeTabId: newActiveId,
+        nextTabId: newNextId,
+        historyMap: newHistoryMap,
+      },
+    };
+  }),
+
+  openBrowserTab: (url = 'https://search.aure', title = 'New Tab') => set((s) => {
+    let formattedUrl = url;
+    if (!url.startsWith('http://') && !url.startsWith('https://')) {
+      formattedUrl = `https://${url}`;
+    }
+    const tabs = s.browserState.tabs;
+    const existing = tabs.find((t) => t.url === formattedUrl);
+    if (existing) {
+      return {
+        browserState: {
+          ...s.browserState,
+          activeTabId: existing.id,
+        },
+      };
+    }
+    if (tabs.length >= 6) return s;
+    const newTabId = s.browserState.nextTabId;
+    const newTab = { id: newTabId, url: formattedUrl, title };
+    return {
+      browserState: {
+        ...s.browserState,
+        tabs: [...tabs, newTab],
+        activeTabId: newTabId,
+        nextTabId: newTabId + 1,
+        historyMap: {
+          ...s.browserState.historyMap,
+          [newTabId]: { stack: [formattedUrl], index: 0 },
+        },
+      },
+    };
+  }),
+
+  closeBrowserTab: (id) => set((s) => {
+    const tabs = s.browserState.tabs;
+    if (tabs.length <= 1) return s;
+    const idx = tabs.findIndex((t) => t.id === id);
+    const newTabs = tabs.filter((t) => t.id !== id);
+    let newActiveId = s.browserState.activeTabId;
+    if (id === s.browserState.activeTabId) {
+      newActiveId = newTabs[Math.min(idx, newTabs.length - 1)].id;
+    }
+    return {
+      browserState: {
+        ...s.browserState,
+        tabs: newTabs,
+        activeTabId: newActiveId,
+      },
+    };
+  }),
+
+  setActiveBrowserTab: (id) => set((s) => ({
+    browserState: {
+      ...s.browserState,
+      activeTabId: id,
+    },
+  })),
+
+  navigateBrowserTab: (url, title = 'Browsing') => set((s) => {
+    let formattedUrl = url;
+    if (!url.startsWith('http://') && !url.startsWith('https://')) {
+      formattedUrl = `https://${url}`;
+    }
+    const activeTabId = s.browserState.activeTabId;
+    const newTabs = s.browserState.tabs.map((t) =>
+      t.id === activeTabId ? { ...t, url: formattedUrl, title } : t
+    );
+    const h = s.browserState.historyMap[activeTabId] || { stack: [], index: -1 };
+    const newStack = h.stack.slice(0, h.index + 1).concat(formattedUrl);
+    const newHistoryMap = {
+      ...s.browserState.historyMap,
+      [activeTabId]: { stack: newStack, index: newStack.length - 1 },
+    };
+    return {
+      browserState: {
+        ...s.browserState,
+        tabs: newTabs,
+        historyMap: newHistoryMap,
+      },
+    };
+  }),
+
+  goBrowserBack: () => set((s) => {
+    const activeTabId = s.browserState.activeTabId;
+    const h = s.browserState.historyMap[activeTabId];
+    if (!h || h.index <= 0) return s;
+    const newIndex = h.index - 1;
+    const newUrl = h.stack[newIndex];
+    const newTabs = s.browserState.tabs.map((t) =>
+      t.id === activeTabId ? { ...t, url: newUrl } : t
+    );
+    return {
+      browserState: {
+        ...s.browserState,
+        tabs: newTabs,
+        historyMap: {
+          ...s.browserState.historyMap,
+          [activeTabId]: { ...h, index: newIndex },
+        },
+      },
+    };
+  }),
+
+  goBrowserForward: () => set((s) => {
+    const activeTabId = s.browserState.activeTabId;
+    const h = s.browserState.historyMap[activeTabId];
+    if (!h || h.index >= h.stack.length - 1) return s;
+    const newIndex = h.index + 1;
+    const newUrl = h.stack[newIndex];
+    const newTabs = s.browserState.tabs.map((t) =>
+      t.id === activeTabId ? { ...t, url: newUrl } : t
+    );
+    return {
+      browserState: {
+        ...s.browserState,
+        tabs: newTabs,
+        historyMap: {
+          ...s.browserState.historyMap,
+          [activeTabId]: { ...h, index: newIndex },
+        },
+      },
+    };
+  }),
 
   loginUser: (userData) =>
     set((s) => ({
@@ -67,6 +238,7 @@ export const useOSStore = create((set) => ({
       level: 1,
       credits: 500,
       xp: 0,
+      rewardItems: [],
       completedQuests: [],
       hackedNodes: 0,
       auraHealth: 100,
@@ -112,17 +284,7 @@ export const useOSStore = create((set) => ({
         { id: 'EVT-LEAK', name: 'Purge Archive Leak', monthReq: 'November', active: true, desc: 'Lightborn genealogy history leak. Encrypted files appear in Central Library archives.', reward: 'Lineage Fragment #09' },
         { id: 'EVT-EXCH', name: 'Regional Exchange Week', monthReq: 'September', active: true, desc: 'Delegates from Fross, Lumia, Marlowe, Brisland, and Kaji visit Cyacademy.', reward: 'Regional Reputation Boost' }
       ],
-      activities: [
-        { id: 'Q_DAY1_1', category: 'Quests', title: 'Day 1: Boot Sequence', desc: 'Log in and access your desktop applications.', status: 'COMPLETED', reward: '50 Credits + 25 XP' },
-        { id: 'Q_DAY1_2', category: 'Quests', title: 'Day 1: DGA & Faith Medical Emails', desc: 'Read official onboarding dispatches in Mail.', status: 'IN_PROGRESS', reward: '100 Credits + 50 XP' },
-        { id: 'Q_DAY1_3', category: 'Quests', title: 'Day 1: Identity Registration', desc: 'Complete Fingerprint, Facial, & Aura scans in Citizen Record.', status: 'AVAILABLE', reward: 'Citizen ID + 100 XP' },
-        { id: 'Q_DAY1_4', category: 'Quests', title: 'Day 1: Pulse Profile Activation', desc: 'Create your Pulse network handle & view initial NPC messages.', status: 'LOCKED', reward: 'Pulse Unlock + 75 XP' },
-        { id: 'Q_DAY1_5', category: 'Quests', title: 'Day 1: Comms Portal & MAI Alignment', desc: 'Read MAI Welcome Packet & set relationship tone vector.', status: 'LOCKED', reward: 'Comms Unlock + 100 XP' },
-        { id: 'J01', category: 'Journey', title: 'Lightborn Inheritance Revelation', desc: 'Investigate pre-Collapse archives to uncover your lineage.', status: 'IN_PROGRESS', reward: 'Lineage Decrypted + 500 XP' },
-        { id: 'A01', category: 'Adventures', title: 'Void Rift Surge Containment', desc: 'Stabilize dimensional anchors near the Digital Sprawl during the Void event.', status: 'AVAILABLE', reward: '300 Credits + Aura Shield' },
-        { id: 'T01', category: 'Tasks', title: 'Clear Digital Clutter in Undervault', desc: 'Standard terminal cleaning and file sorting.', status: 'AVAILABLE', reward: '50 Credits + 30 Programming XP' },
-        { id: 'M01', category: 'Missions', title: 'Faith Medical Volunteer Intake Shift', desc: 'Assist Dr. Sharon with aura diagnostics at Aureline Medical.', status: 'AVAILABLE', reward: '100 Credits + Career XP' }
-      ],
+      activities: missionsData,
       appRanks: {
         explorer: 1,
         weaver: 1,
@@ -255,6 +417,47 @@ export const useOSStore = create((set) => ({
             ...state.gameplay.player,
             xp: newXP,
             level: newLevel,
+          },
+        },
+      };
+    }),
+
+  completeActivity: (id) =>
+    set((state) => {
+      const activities = state.gameplay.player.activities || [];
+      const item = activities.find((a) => a.id === id);
+      if (!item || item.status !== 'IN_PROGRESS') return state;
+
+      const newActivities = activities.map((a) =>
+        a.id === id ? { ...a, status: 'COMPLETED' } : a
+      );
+
+      const addedCredits = Number(item.rewards?.credits ?? item.credits ?? 0);
+      const addedXP = Number(item.rewards?.xp ?? item.xp ?? 0);
+      const rewardItem = item.rewards?.item ?? item.item;
+      const rewardItems = state.gameplay.player.rewardItems || [];
+      const newXP = state.gameplay.player.xp + addedXP;
+      const newLevel = Math.floor(newXP / 100) + 1;
+
+      let newLocked = state.gameplay.lockedApps || [];
+      const unlockApp = item.rewards?.unlockApp ?? item.unlockApp;
+      if (unlockApp && newLocked.includes(unlockApp)) {
+        newLocked = newLocked.filter((app) => app !== unlockApp);
+      }
+
+      return {
+        gameplay: {
+          ...state.gameplay,
+          lockedApps: newLocked,
+          player: {
+            ...state.gameplay.player,
+            credits: state.gameplay.player.credits + addedCredits,
+            xp: newXP,
+            level: newLevel,
+            rewardItems: rewardItem && !rewardItems.includes(rewardItem)
+              ? [...rewardItems, rewardItem]
+              : rewardItems,
+            activities: newActivities,
           },
         },
       };
@@ -600,17 +803,26 @@ export const useOSStore = create((set) => ({
     }),
 
   updateActivityStatus: (activityId, status) =>
-    set((state) => ({
-      gameplay: {
-        ...state.gameplay,
-        player: {
-          ...state.gameplay.player,
-          activities: state.gameplay.player.activities.map((act) =>
-            act.id === activityId ? { ...act, status } : act
-          ),
+    set((state) => {
+      const allowedStatuses = ['LOCKED', 'AVAILABLE', 'IN_PROGRESS', 'COMPLETED'];
+      if (!allowedStatuses.includes(status)) return state;
+
+      const activities = state.gameplay.player.activities || [];
+      const activity = activities.find((act) => act.id === activityId);
+      if (!activity || activity.status === 'COMPLETED' || status === 'COMPLETED') return state;
+
+      return {
+        gameplay: {
+          ...state.gameplay,
+          player: {
+            ...state.gameplay.player,
+            activities: activities.map((act) =>
+              act.id === activityId ? { ...act, status } : act
+            ),
+          },
         },
-      },
-    })),
+      };
+    }),
 
   setMonth: (monthIndex) =>
     set((state) => ({
@@ -693,7 +905,7 @@ export const useOSStore = create((set) => ({
     if (existing) {
       return {
         windows: state.windows.map((w) =>
-          w.id === app.id ? { ...w, zIndex: maxZ + 1, isMinimized: false } : w
+          w.id === app.id ? { ...w, size: DEFAULT_WINDOW_SIZE, zIndex: maxZ + 1, isMinimized: false } : w
         ),
         activeWindowId: app.id,
       };
@@ -708,7 +920,8 @@ export const useOSStore = create((set) => ({
       isMinimized: false,
       isMaximized: app.isMaximized ?? false,
       position: app.position || spawnPosition(state.windows.length),
-      size: app.size || { width: 920, height: 600 },
+      windowOffset: { x: 0, y: 0 },
+      size: app.size || DEFAULT_WINDOW_SIZE,
     };
     return {
       windows: [...state.windows, newWindow],
@@ -730,7 +943,7 @@ export const useOSStore = create((set) => ({
       }
       return {
         windows: state.windows.map((w) =>
-          w.id === app.id ? { ...w, zIndex: maxZ + 1, isMinimized: false } : w
+          w.id === app.id ? { ...w, size: DEFAULT_WINDOW_SIZE, zIndex: maxZ + 1, isMinimized: false } : w
         ),
         activeWindowId: app.id,
       };
@@ -745,7 +958,8 @@ export const useOSStore = create((set) => ({
       isMinimized: false,
       isMaximized: app.isMaximized ?? false,
       position: app.position || spawnPosition(state.windows.length),
-      size: app.size || { width: 920, height: 600 },
+      windowOffset: { x: 0, y: 0 },
+      size: app.size || DEFAULT_WINDOW_SIZE,
     };
     return {
       windows: [...state.windows, newWindow],
@@ -768,7 +982,7 @@ export const useOSStore = create((set) => ({
     const maxZ = Math.max(100, ...state.windows.map((w) => w.zIndex || 100));
     return {
       windows: state.windows.map((w) =>
-        w.id === id ? { ...w, zIndex: maxZ + 1, isMinimized: false } : w
+        w.id === id ? { ...w, size: DEFAULT_WINDOW_SIZE, zIndex: maxZ + 1, isMinimized: false } : w
       ),
       activeWindowId: id,
     };
@@ -789,7 +1003,7 @@ export const useOSStore = create((set) => ({
 
   moveWindow: (id, position) => set((state) => ({
     windows: state.windows.map((w) =>
-      w.id === id ? { ...w, position } : w
+      w.id === id ? { ...w, windowOffset: position } : w
     ),
   })),
 

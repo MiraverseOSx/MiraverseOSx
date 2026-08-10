@@ -1,13 +1,17 @@
 import React, { useState, useMemo } from 'react';
 import {
-    Mail, Inbox, Star, Archive, Trash2, Send, Search, Paperclip, CheckCircle2,
-    Shield, Activity, Building, Lock, ArrowRight, Sparkles, AlertCircle, FileText, ExternalLink
+    Mail, Inbox, Star, Archive, Send, Paperclip, CheckCircle2,
+    Shield, Activity, Lock, ArrowRight, Sparkles
 } from 'lucide-react';
 import { useCommsStore } from '../store/useCommsStore';
 import { useOSStore } from '../store/useOSStore';
 import { APPS } from '../apps/registry';
 import Button from '../components/ui/button';
 import Input from '../components/ui/input';
+import {
+    AppShell, AppToolbar, AppSidebar, AppPane, EmptyState, SearchField, StatusBadge
+} from '../components/ui/app-shell';
+import { useToastStore } from '../store/useToastStore';
 
 export default function MailApp() {
     const [activeFolder, setActiveFolder] = useState('inbox');
@@ -23,6 +27,7 @@ export default function MailApp() {
     const claimCommsAttachment = useOSStore((s) => s.claimCommsAttachment);
     const toggleApp = useOSStore((s) => s.toggleApp);
     const dgaVerified = useOSStore((s) => s.gameplay.player.dgaVerified);
+    const pushToast = useToastStore((s) => s.pushToast);
 
     const toggleStar = (id, e) => {
         e?.stopPropagation();
@@ -63,6 +68,11 @@ export default function MailApp() {
     const handleClaimAttachment = () => {
         if (!selectedMail?.attachment || isAttachmentClaimed) return;
         claimCommsAttachment(selectedMail.id, selectedMail.attachment.amount, 50);
+        pushToast({
+            title: 'Attachment claimed',
+            message: `Added ${selectedMail.attachment.amount} ₡ and 50 XP.`,
+            tone: 'success',
+        });
     };
 
     const handleActionClick = (actionType) => {
@@ -82,50 +92,35 @@ export default function MailApp() {
         e.preventDefault();
         if (!replyText.trim()) return;
         setReplyStatus('Reply sent to dispatch channel.');
+        pushToast({ title: 'Reply sent', message: selectedMail?.subject, tone: 'success' });
         setReplyText('');
         setTimeout(() => setReplyStatus(null), 3000);
     };
 
     return (
-        <div className="flex h-full w-full flex-col bg-gradient-to-b from-[#F6F7FB] to-[#EFF1F7] text-[#162241] font-sans select-none overflow-hidden">
-            {/* ── TOP MAILBOX CONTROL BAR ── */}
-            <header className="flex h-12 shrink-0 items-center justify-between border-b border-slate-300/80 bg-white/80 px-4 backdrop-blur-md">
-                <div className="flex items-center gap-3">
-                    <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-[#8c97d6] to-[#5f6ab0] text-white shadow-sm">
-                        <Mail size={16} />
-                    </div>
-                    <div>
-                        <h1 className="text-xs font-bold text-[#1d2650] font-serif tracking-wide">
-                            AURELINE CIVIC MAILBOX
-                        </h1>
-                        <span className="text-[9px] font-mono text-slate-500 uppercase tracking-widest">
-                            OFFICIAL DISPATCH & INTAKE PORTAL
-                        </span>
-                    </div>
-                </div>
-
-                {/* Search & Stats */}
-                <div className="flex items-center gap-3">
-                    <div className="flex items-center rounded-full border border-slate-300/80 bg-white/90 px-3 py-1 text-xs shadow-inner">
-                        <Search size={13} className="mr-2 text-slate-400" />
-                        <input
-                            type="text"
+        <AppShell>
+            <AppToolbar
+                icon={Mail}
+                title="Aureline Civic Mailbox"
+                subtitle="Official dispatch and intake portal"
+                actions={(
+                    <>
+                        <SearchField
                             value={search}
-                            onChange={(e) => setSearch(e.target.value)}
-                            placeholder="Search dispatches & notices..."
-                            className="w-48 bg-transparent text-xs text-slate-800 placeholder-slate-400 outline-none"
+                            onChange={(event) => setSearch(event.target.value)}
+                            placeholder="Search dispatches..."
+                            label="Search dispatches and notices"
+                            className="w-52"
                         />
-                    </div>
-                    <span className="rounded-full bg-indigo-100 px-2.5 py-0.5 font-mono text-[10px] font-bold text-indigo-800">
-                        {emails.length} Messages
-                    </span>
-                </div>
-            </header>
+                        <StatusBadge tone="info">{emails.length} messages</StatusBadge>
+                    </>
+                )}
+            />
 
             {/* ── MAIN MAILBOX LAYOUT (3 PANES) ── */}
             <div className="flex min-h-0 flex-1 overflow-hidden">
                 {/* PANE 1: LEFT FOLDERS & NAVIGATION */}
-                <aside className="w-52 shrink-0 border-r border-slate-300/70 bg-white/60 p-3 space-y-4">
+                <AppSidebar className="w-[22%] min-w-44 max-w-52 shrink-0 p-3 space-y-4" label="Mailbox folders and factions">
                     {/* New Dispatch Badge */}
                     <button className="flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#17213f] to-[#3a497b] py-2 text-xs font-bold text-white shadow-sm hover:opacity-90 transition">
                         <Sparkles size={14} className="text-purple-300" /> New Dispatch
@@ -148,8 +143,8 @@ export default function MailApp() {
                                     key={f.id}
                                     onClick={() => setActiveFolder(f.id)}
                                     className={`flex w-full items-center justify-between rounded-lg px-2.5 py-2 text-left text-xs transition ${activeFolder === f.id
-                                            ? 'bg-[#e9ebf6] font-bold text-[#1d2650] shadow-sm'
-                                            : 'text-slate-600 hover:bg-[#f2f3fb]'
+                                        ? 'bg-[#e9ebf6] font-bold text-[#1d2650] shadow-sm'
+                                        : 'text-slate-600 hover:bg-[#f2f3fb]'
                                         }`}
                                 >
                                     <div className="flex items-center gap-2">
@@ -178,8 +173,8 @@ export default function MailApp() {
                                     key={fac}
                                     onClick={() => setActiveFaction(fac)}
                                     className={`rounded-full px-2 py-0.5 text-[10px] font-semibold capitalize transition ${activeFaction === fac
-                                            ? 'bg-[#17213f] text-white'
-                                            : 'bg-slate-200/80 text-slate-600 hover:bg-slate-300'
+                                        ? 'bg-[#17213f] text-white'
+                                        : 'bg-slate-200/80 text-slate-600 hover:bg-slate-300'
                                         }`}
                                 >
                                     {fac}
@@ -187,10 +182,10 @@ export default function MailApp() {
                             ))}
                         </div>
                     </div>
-                </aside>
+                </AppSidebar>
 
                 {/* PANE 2: CENTER EMAIL FEED LIST */}
-                <div className="w-80 shrink-0 border-r border-slate-300/70 bg-white/40 flex flex-col">
+                <AppPane className="w-[32%] min-w-60 max-w-80 shrink-0 border-r border-slate-300/70 bg-white/40 flex flex-col">
                     <div className="flex items-center justify-between border-b border-slate-300/60 px-3 py-2 text-[11px] font-semibold text-slate-500 bg-white/60">
                         <span>{activeFolder.toUpperCase()}</span>
                         <span>{filteredEmails.length} messages</span>
@@ -206,8 +201,8 @@ export default function MailApp() {
                                     key={mail.id}
                                     onClick={() => setSelectedMailId(mail.id)}
                                     className={`group relative cursor-pointer rounded-xl border p-3 transition shadow-xs ${isSelected
-                                            ? 'border-[#8c97d6] bg-[#eef0fb] shadow-sm'
-                                            : 'border-slate-200/80 bg-white/90 hover:bg-[#f7f7fd]'
+                                        ? 'border-[#8c97d6] bg-[#eef0fb] shadow-sm'
+                                        : 'border-slate-200/80 bg-white/90 hover:bg-[#f7f7fd]'
                                         }`}
                                 >
                                     {/* Top Sender Row */}
@@ -252,12 +247,10 @@ export default function MailApp() {
                         })}
 
                         {!filteredEmails.length && (
-                            <div className="p-8 text-center text-xs text-slate-500 italic">
-                                No dispatches found in this folder.
-                            </div>
+                            <EmptyState icon={Inbox} title="No dispatches found" description="Try another folder, faction, or search term." />
                         )}
                     </div>
-                </div>
+                </AppPane>
 
                 {/* PANE 3: RIGHT DISPATCH READER */}
                 <main className="flex min-w-0 flex-1 flex-col bg-[#FAFAFC] overflow-y-auto p-6">
@@ -380,13 +373,10 @@ export default function MailApp() {
                             </div>
                         </div>
                     ) : (
-                        <div className="flex h-full flex-col items-center justify-center text-slate-400">
-                            <Mail size={32} className="mb-2 opacity-50" />
-                            <p className="text-xs font-medium">Select a dispatch from the left column to read.</p>
-                        </div>
+                        <EmptyState icon={Mail} title="No dispatch selected" description="Select a dispatch from the message list to read it." />
                     )}
                 </main>
             </div>
-        </div>
+        </AppShell>
     );
 }

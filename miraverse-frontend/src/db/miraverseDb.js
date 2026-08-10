@@ -10,6 +10,7 @@ export const APPS = [
   { id: 'pulse', title: 'Pulse Network', category: 'Social/Network', dev: 'FAC_NEO_CITIZENS', version: '1.0.0', primary: 'Aureline social signal broadcast & NPC feed', lore: 'Civic social network for following citizens and broadcasting signals.' },
   { id: 'terminal', title: 'Terminal', category: 'Intelligence', dev: 'FAC_NETRUNNERS', version: '2.1.0', primary: 'Command line interface & live SQL query shell', lore: 'Terminal interface for executing database commands and scripts.' },
   { id: 'browser', title: 'Net Browser', category: 'Navigation', dev: 'FAC_NEO_CITIZENS', version: '4.2.1', primary: 'Miraverse Web Portal & regional web browser', lore: 'Browser for viewing live net portals across the Miraverse.' },
+  { id: 'board', title: 'Master Quest Tracker', category: 'Gameplay', dev: 'FAC_NEO_CITIZENS', version: '2.0.0', primary: 'Missions, Journeys, Quests & Tasks engine', lore: 'Central gameplay tracker for Journeys, Adventures, Quests, Tasks, and Missions.' },
   { id: 'settings', title: 'Settings', category: 'Utility', dev: 'FAC_ARCANE_GUILD', version: '3.0.0', primary: 'System preferences & DB statistics monitor', lore: 'System control panel and database status reader.' }
 ];
 

@@ -16,6 +16,24 @@
   --system-gold: #b38a36;
   --system-silver: #8b92a7;
 
+  --ui-navy-950: #0b1430;
+  --ui-navy-900: #121d3f;
+  --ui-violet-600: #6653a5;
+  --ui-violet-100: #ece9f8;
+  --ui-teal-600: #258577;
+  --ui-amber-500: #c6902f;
+  --ui-red-600: #b9485d;
+  --ui-surface: rgba(250, 251, 254, 0.94);
+  --ui-surface-muted: rgba(240, 242, 248, 0.92);
+  --ui-border: rgba(47, 61, 122, 0.2);
+  --ui-border-strong: rgba(47, 61, 122, 0.38);
+  --ui-shadow-low: 0 2px 8px rgba(13, 21, 51, 0.08);
+  --ui-shadow-high: 0 18px 45px rgba(13, 21, 51, 0.22);
+  --ui-toolbar-height: 52px;
+  --ui-radius-sm: 8px;
+  --ui-radius-md: 12px;
+  --ui-radius-lg: 16px;
+
   --lavender: var(--blush-lavender);
   --rose: #ead2dd;
   --purple: var(--starlight-violet);
@@ -23,5 +41,5 @@
 
   --radius-window: 0px;
   --radius-card: 0px;
-  --shadow-window: 0 8px 32px rgba(13, 21, 51, 0.08);
+  --shadow-window: var(--ui-shadow-high);
 }

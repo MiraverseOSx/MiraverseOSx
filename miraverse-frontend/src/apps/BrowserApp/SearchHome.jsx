@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Search, Globe } from 'lucide-react';
+import { Search } from 'lucide-react';
 import { PORTALS } from './constants';
 
 export default function SearchHome({ openTab, navigateTab }) {
@@ -8,77 +8,80 @@ export default function SearchHome({ openTab, navigateTab }) {
     const handleSearch = (e) => {
         e.preventDefault();
         if (searchQuery.trim()) {
-            navigateTab(`https://search.aure/find?q=${encodeURIComponent(searchQuery.trim())}`);
+            navigateTab(`https://versenet.aure/find?q=${encodeURIComponent(searchQuery.trim())}`);
         }
     };
 
-    // Beautiful matching colors
-    const colors = {
-        'faithmed.aure': { bg: 'bg-emerald-50 text-emerald-600 border-emerald-100 hover:border-emerald-200 hover:shadow-emerald-500/5', iconColor: 'text-emerald-500' },
-        'cyacademy.aure': { bg: 'bg-purple-50 text-purple-600 border-purple-100 hover:border-purple-200 hover:shadow-purple-500/5', iconColor: 'text-purple-500' },
-        'dga.gov.aure': { bg: 'bg-blue-50 text-blue-600 border-blue-100 hover:border-blue-200 hover:shadow-blue-500/5', iconColor: 'text-blue-500' },
-        'library.aure': { bg: 'bg-amber-50 text-amber-600 border-amber-100 hover:border-amber-200 hover:shadow-amber-500/5', iconColor: 'text-amber-500' },
-        'vectornet.aure': { bg: 'bg-cyan-50 text-cyan-600 border-cyan-100 hover:border-cyan-200 hover:shadow-cyan-500/5', iconColor: 'text-cyan-500' },
-        'aurelinedaily.aure': { bg: 'bg-rose-50 text-rose-600 border-rose-100 hover:border-rose-200 hover:shadow-rose-500/5', iconColor: 'text-rose-500' },
+    const tileColors = {
+        'versenet.aure': 'bg-emerald-50 text-emerald-700 border-emerald-200 hover:bg-emerald-100',
+        'faithmed.aure': 'bg-teal-50 text-teal-700 border-teal-200 hover:bg-teal-100',
+        'dga.gov': 'bg-blue-50 text-blue-700 border-blue-200 hover:bg-blue-100',
+        'cyacademy.edu': 'bg-purple-50 text-purple-700 border-purple-200 hover:bg-purple-100',
+        'records.orynvell.gov': 'bg-amber-50 text-amber-700 border-amber-200 hover:bg-amber-100',
+        'bank.aure': 'bg-indigo-50 text-indigo-700 border-indigo-200 hover:bg-indigo-100',
+        'shipping.aure': 'bg-orange-50 text-orange-700 border-orange-200 hover:bg-orange-100',
+        'vectornet.onion': 'bg-slate-100 text-slate-800 border-slate-300 hover:bg-slate-200',
+        'auresuite.aure': 'bg-rose-50 text-rose-700 border-rose-200 hover:bg-rose-100',
     };
 
     return (
-        <div className="flex flex-col items-center justify-center h-full w-full bg-[#fafbfc] px-8 text-slate-800 select-none">
-            <div className="w-full max-w-2xl flex flex-col items-center space-y-10 -mt-8">
+        <div className="flex flex-col items-center justify-between h-full w-full bg-[#f8fafc] px-6 py-10 text-slate-800 select-none overflow-y-auto font-sans">
+            <div className="w-full max-w-3xl flex flex-col items-center space-y-10 my-auto">
                 
-                {/* Logo & Branding */}
-                <div className="flex flex-col items-center space-y-3">
-                    <div className="flex items-center justify-center space-x-3.5">
-                        <div className="flex items-center justify-center h-14 w-14 rounded-2xl bg-gradient-to-tr from-purple-600 to-indigo-600 shadow-md shadow-indigo-500/20 text-white">
-                            <Globe size={28} className="animate-spin-slow" />
-                        </div>
-                        <span className="text-4xl font-black tracking-tight bg-gradient-to-r from-purple-700 via-indigo-600 to-purple-900 bg-clip-text text-transparent font-sans">
-                            Aureline
-                        </span>
-                    </div>
-                    <p className="text-[10px] font-bold tracking-[0.25em] text-slate-400 uppercase">
-                        Quantum Search Core
+                {/* Serif Logo Header matching the Versenet UI Blueprint */}
+                <div className="flex flex-col items-center space-y-2 text-center">
+                    <h1 className="font-serif text-6xl font-bold tracking-tight text-[#0f172a]">
+                        Versenet
+                    </h1>
+                    <p className="text-xs font-semibold tracking-widest text-slate-400 uppercase font-mono">
+                        Aureline Quantum Search & Index Network
                     </p>
                 </div>
 
-                {/* Search Box */}
-                <form onSubmit={handleSearch} className="w-full max-w-xl relative group">
-                    <div className="absolute inset-y-0 left-4 flex items-center pointer-events-none">
-                        <Search className="text-slate-400 group-focus-within:text-purple-600 transition-colors" size={20} />
+                {/* Versenet Blueprint Search Bar with Green Search Button */}
+                <form onSubmit={handleSearch} className="w-full max-w-xl flex items-center shadow-sm hover:shadow-md transition-shadow rounded-full overflow-hidden border border-slate-300 bg-white">
+                    <div className="pl-5 text-slate-400">
+                        <Search size={20} />
                     </div>
                     <input
                         type="text"
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
-                        placeholder="Search Aureline nodes, citizens, or archives..."
-                        className="w-full h-14 pl-12 pr-6 rounded-full border border-slate-200 bg-white text-slate-800 placeholder-slate-400/80 text-base font-medium outline-none shadow-sm hover:shadow-md focus:shadow-lg focus:border-purple-400 focus:ring-4 focus:ring-purple-500/5 transition-all duration-300"
+                        placeholder="Search the web or enter a URL..."
+                        className="flex-1 h-13 px-4 text-slate-800 placeholder-slate-400 text-base font-medium outline-none bg-transparent"
                         spellCheck={false}
                     />
+                    <button
+                        type="submit"
+                        className="h-13 px-7 bg-[#10b981] hover:bg-[#059669] text-white font-bold text-sm tracking-wide transition-colors flex items-center justify-center cursor-pointer"
+                    >
+                        Search
+                    </button>
                 </form>
 
-                {/* Bookmark Tiles */}
-                <div className="w-full max-w-2xl space-y-4">
-                    <div className="text-[10px] font-extrabold uppercase tracking-[0.2em] text-slate-400 text-center">
-                        Quick Launch Portal Directory
+                {/* Target Portal Directory Grid */}
+                <div className="w-full space-y-4 pt-4">
+                    <div className="text-[10px] font-extrabold uppercase tracking-[0.25em] text-slate-400 text-center">
+                        Verified Network Portals & Target Domains
                     </div>
-                    <div className="grid grid-cols-3 gap-4">
+                    <div className="grid grid-cols-3 gap-3.5">
                         {Object.entries(PORTALS).map(([url, portal]) => {
                             const IconComp = portal.icon;
-                            const theme = colors[url] || { bg: 'bg-slate-50 text-slate-600 border-slate-100', iconColor: 'text-slate-500' };
+                            const colorClass = tileColors[url] || 'bg-slate-50 text-slate-700 border-slate-200';
                             return (
                                 <button
                                     key={url}
                                     onClick={() => openTab(`https://${url}`, portal.title)}
-                                    className="flex items-center gap-3 p-3.5 rounded-xl border border-slate-100 bg-white hover:shadow-md hover:-translate-y-0.5 active:translate-y-0 transition-all duration-300 text-left group"
+                                    className={`flex items-center gap-3 p-3 rounded-xl border ${colorClass} transition-all duration-200 text-left group shadow-xs cursor-pointer`}
                                 >
-                                    <div className={`h-10 w-10 shrink-0 rounded-lg flex items-center justify-center ${theme.bg} transition-transform duration-300 group-hover:scale-110`}>
-                                        <IconComp size={20} className={theme.iconColor} />
+                                    <div className="h-9 w-9 shrink-0 rounded-lg bg-white shadow-xs flex items-center justify-center">
+                                        <IconComp size={18} />
                                     </div>
-                                    <div className="min-w-0">
-                                        <div className="text-xs font-bold text-slate-700 truncate group-hover:text-purple-700 transition-colors">
+                                    <div className="min-w-0 flex-1">
+                                        <div className="text-xs font-bold truncate">
                                             {portal.title}
                                         </div>
-                                        <div className="text-[9px] font-mono text-slate-400 truncate">
+                                        <div className="text-[9px] font-mono opacity-70 truncate">
                                             {url}
                                         </div>
                                     </div>
@@ -87,6 +90,11 @@ export default function SearchHome({ openTab, navigateTab }) {
                         })}
                     </div>
                 </div>
+            </div>
+
+            {/* Footer */}
+            <div className="text-[10px] text-slate-400 font-mono tracking-wider pt-6">
+                VERSENET SECURE WEB ENGINE • AURELINE NETWORK PROTOCOL 4.2.1
             </div>
         </div>
     );

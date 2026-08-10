@@ -72,7 +72,9 @@ async function createWindow() {
 
     window.once('ready-to-show', () => window.show());
     window.webContents.setWindowOpenHandler(({ url }) => {
-        if (url.startsWith(APP_URL)) return { action: 'allow' };
+        if (url.startsWith(APP_URL) || url.startsWith('http://localhost:3000') || url.startsWith('http://127.0.0.1:3000')) {
+            return { action: 'allow' };
+        }
         shell.openExternal(url);
         return { action: 'deny' };
     });

@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MiraverseOSx Browser</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Commissioner:wght@400;600&family=Yeseva+One&display=swap"
+        rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        /* Our Custom Color Palette */
+        :root {
+            --navy-blue: #000080;
+            --white: #ffffff;
+            --lavender: #E6E6FA;
+            --sea-green: #2E8B57;
+            --dusty-blue: #779ecb;
+            --light-gray: #f5f6f8;
+            --border-color: #d1d5db;
+        }
+
+        body {
+            background-color: var(--light-gray);
+            font-family: 'Commissioner', sans-serif;
+            margin: 0;
+            padding: 40px;
+            display: flex;
+            justify-content: center;
+            height: 100vh;
+            box-sizing: border-box;
+        }
+
+        /* Main Browser Window */
+        #browser-window {
+            background-color: var(--white);
+            width: 100%;
+            max-width: 1000px;
+            height: 100%;
+            border: 2px solid var(--navy-blue);
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 128, 0.1);
+        }
+
+        /* Tabs Area */
+        #browser-tabs {
+            background-color: var(--dusty-blue);
+            display: flex;
+            padding: 8px 10px 0 10px;
+            gap: 5px;
+        }
+
+        .tab {
+            background-color: var(--white);
+            color: var(--navy-blue);
+            padding: 8px 20px;
+            border-radius: 8px 8px 0 0;
+            font-size: 0.9rem;
+            font-weight: 600;
+            border: 1px solid var(--navy-blue);
+            border-bottom: none;
+            cursor: pointer;
+        }
+
+        /* Style for the New Tab Button */
+        .new-tab-button {
+            background: none;
+            border: none;
+            color: var(--white);
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            padding: 0 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .new-tab-button:hover {
+            color: var(--navy-blue);
+            background-color: rgba(255, 255, 255, 0.5);
+            /* Subtle hover effect */
+            border-radius: 5px 5px 0 0;
+        }
+
+        /* Toolbar Area */
+        #browser-toolbar {
+            background-color: var(--white);
+            padding: 10px 15px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            border-bottom: 2px solid var(--lavender);
+        }
+
+        .nav-btn {
+            background: none;
+            border: none;
+            color: var(--dusty-blue);
+            font-size: 1.2rem;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .nav-btn:hover {
+            color: var(--navy-blue);
+        }
+
+        /* Functional Address Bar */
+        #address-bar-container {
+            flex-grow: 1;
+            display: flex;
+            background-color: var(--light-gray);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            overflow: hidden;
+        }
+
+        #url-input {
+            flex-grow: 1;
+            border: none;
+            background: transparent;
+            padding: 8px 15px;
+            color: var(--navy-blue);
+            font-family: 'Commissioner', sans-serif;
+            outline: none;
+        }
+
+        #search-go-button {
+            background-color: var(--lavender);
+            border: none;
+            padding: 0 20px;
+            color: var(--navy-blue);
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        #search-go-button:hover {
+            background-color: var(--dusty-blue);
+            color: var(--white);
+        }
+
+        /* Main Screen Area */
+        #browser-screen {
+            flex-grow: 1;
+            position: relative;
+            background-color: var(--white);
+            overflow-y: auto;
+        }
+
+        /* All websites are hidden by default */
+        .website-page {
+            display: none;
+            padding: 40px;
+            height: 100%;
+            box-sizing: border-box;
+        }
+
+        /* The Centered Homepage (Versenet) */
+        #versenet-home {
+            display: flex;
+            /* Shown by default when JS loads */
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+        }
+
+        #versenet-home h1 {
+            font-family: 'Yeseva One', serif;
+            color: var(--navy-blue);
+            font-size: 4rem;
+            margin-bottom: 20px;
+        }
+
+        .big-search-bar {
+            display: flex;
+            width: 100%;
+            max-width: 500px;
+            border: 2px solid var(--dusty-blue);
+            border-radius: 30px;
+            overflow: hidden;
+        }
+
+        .big-search-bar input {
+            flex-grow: 1;
+            padding: 12px 20px;
+            border: none;
+            outline: none;
+            font-size: 1.1rem;
+        }
+
+        .big-search-bar button {
+            background-color: var(--sea-green);
+            color: var(--white);
+            border: none;
+            padding: 0 25px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        /* Site Headers */
+        .site-header {
+            font-family: 'Yeseva One', serif;
+            color: var(--navy-blue);
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="browser-window">
+
+        <!-- 1. TABS -->
+        <div id="browser-tabs">
+            <div class="tab">New Tab</div>
+            <button class="new-tab-button">+</button>
+        </div>
+
+        <!-- 2. TOOLBAR -->
+        <header id="browser-toolbar">
+            <button class="nav-btn" id="btn-back">&#8592;</button>
+            <button class="nav-btn" id="btn-forward">&#8594;</button>
+            <button class="nav-btn" id="btn-refresh">&#8635;</button>
+            <div id="address-bar-container">
+                <input type="text" id="url-input" value="versenet.aure" spellcheck="false">
+                <button id="search-go-button">Go</button>
+            </div>
+        </header>
+
+        <!-- 3. THE SCREEN (Where websites load) -->
+        <main id="browser-screen">
+
+            <!-- SITE 1: Versenet (Homepage with centered search) -->
+            <div id="versenet-home" class="website-page">
+                <h1>Versenet</h1>
+                <div class="big-search-bar">
+                    <input type="text" id="versenet-search-input" placeholder="Search the web or enter a URL...">
+                    <button id="versenet-search-btn">Search</button>
+                </div>
+            </div>
+
+            <!-- SITE 2: Faith Medical -->
+            <div id="site-faithmed" class="website-page" style="background-color: var(--light-gray);">
+                <!-- Using Bootstrap Container, Row, and Col classes for layout -->
+                <div class="container mt-5">
+                    <div class="row justify-content-center">
+                        <div class="col-md-6">
+
+                            <!-- Using Bootstrap Card classes for the login box -->
+                            <div class="card shadow">
+                                <div class="card-header text-white" style="background-color: var(--sea-green);">
+                                    <h3 class="mb-0 text-center font-monospace">Faith Medical Intranet</h3>
+                                </div>
+                                <div class="card-body p-4">
+                                    <h5 class="text-center mb-4 text-muted">Authorized Personnel Only</h5>
+
+                                    <form>
+                                        <div class="mb-3">
+                                            <label class="form-label fw-bold">Employee ID</label>
+                                            <input type="text" class="form-control" placeholder="Enter ID">
+                                        </div>
+                                        <div class="mb-4">
+                                            <label class="form-label fw-bold">Password</label>
+                                            <input type="password" class="form-control" placeholder="Enter Password">
+                                        </div>
+                                        <button type="button" class="btn w-100 fw-bold"
+                                            style="background-color: var(--navy-blue); color: white;">
+                                            Access Records
+                                        </button>
+                                    </form>
+
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SITE 3: DGA (.gov) -->
+            <div id="site-dga" class="website-page">
+                <h1 class="site-header">Department of Global Affairs (DGA)</h1>
+                <p>Restricted government network. Unauthorized access is strictly prohibited.</p>
+            </div>
+
+            <!-- SITE 4: CyAcademy / AureSuite -->
+            <div id="site-cyacademy" class="website-page" style="background-color: var(--light-gray);">
+                <!-- "container" centers everything and gives it nice margins -->
+                <div class="container mt-4">
+
+                    <h1 class="site-header text-center mb-4" style="color: var(--navy-blue);">AureSuite Workspace</h1>
+                    <p class="text-center text-muted mb-5">Welcome to your centralized suite. Select an application to
+                        launch.</p>
+
+                    <!-- "row" tells Bootstrap we are starting a grid, "g-4" adds gaps between items -->
+                    <div class="row g-4 justify-content-center">
+
+                        <!-- "col-md-4" means this box takes up 4/12 columns (so it fits 3 in a row on a desktop) -->
+                        <div class="col-md-4">
+                            <!-- "card" creates a nice white box with a border and "shadow-sm" gives it a 3D drop shadow -->
+                            <div class="card text-center h-100 shadow-sm border-0">
+                                <div class="card-body">
+                                    <h5 class="card-title fw-bold" style="color: var(--dusty-blue);">AureMail</h5>
+                                    <p class="card-text text-muted small">Access encrypted communications.</p>
+                                    <!-- "btn" makes it look like a button, "w-100" makes it stretch the full width -->
+                                    <button class="btn w-100"
+                                        style="background-color: var(--lavender); color: var(--navy-blue); font-weight: bold;">Launch
+                                        Mail</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="card text-center h-100 shadow-sm border-0">
+                                <div class="card-body">
+                                    <h5 class="card-title fw-bold" style="color: var(--dusty-blue);">AureDrive</h5>
+                                    <p class="card-text text-muted small">Cloud storage and document retrieval.</p>
+                                    <button class="btn w-100"
+                                        style="background-color: var(--lavender); color: var(--navy-blue); font-weight: bold;">Launch
+                                        Drive</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="card text-center h-100 shadow-sm border-0">
+                                <div class="card-body">
+                                    <h5 class="card-title fw-bold" style="color: var(--dusty-blue);">AureChat</h5>
+                                    <p class="card-text text-muted small">Instant messaging and chat logs.</p>
+                                    <button class="btn w-100"
+                                        style="background-color: var(--lavender); color: var(--navy-blue); font-weight: bold;">Launch
+                                        Chat</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="card text-center h-100 shadow-sm border-0">
+                                <div class="card-body">
+                                    <h5 class="card-title fw-bold" style="color: var(--dusty-blue);">AureMaps</h5>
+                                    <p class="card-text text-muted small">City grid and location tracking.</p>
+                                    <button class="btn w-100"
+                                        style="background-color: var(--lavender); color: var(--navy-blue); font-weight: bold;">Launch
+                                        Maps</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="card text-center h-100 shadow-sm border-2"
+                                style="border-color: var(--navy-blue) !important;">
+                                <div class="card-body">
+                                    <h5 class="card-title fw-bold" style="color: var(--navy-blue);">AureScanner</h5>
+                                    <p class="card-text text-muted small">Decrypt files and scan for anomalies.</p>
+                                    <button class="btn w-100"
+                                        style="background-color: var(--navy-blue); color: white; font-weight: bold;">Launch
+                                        Scanner</button>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- SITE 5: Orynvell Public Records -->
+            <div id="site-records" class="website-page">
+                <h1 class="site-header">Orynvell Municipal Records</h1>
+                <ul>
+                    <li>📁 Property Deeds (1998 - Present)</li>
+                    <li>📁 Arrest Warrants (Classified)</li>
+                    <li>📁 City Planning Blueprints</li>
+                </ul>
+            </div>
+
+            <!-- SITE 6: Dark Web -->
+            <div id="site-darkweb" class="website-page" style="background-color: #111; color: var(--sea-green);">
+                <h1 style="font-family: monospace;">The Under-net</h1>
+                <p style="font-family: monospace;">Connection established. Trace routing disabled.</p>
+            </div>
+
+            <!-- SITE 7: Shipping Company -->
+            <div id="site-shipping" class="website-page">
+                <h1 class="site-header" style="color: var(--navy-blue);">Orynvell Freight & Logistics</h1>
+                <p>Enter tracking number below:</p>
+                <input type="text" placeholder="Tracking #"> <button>Track</button>
+            </div>
+
+            <!-- SITE 8: Bank -->
+            <div id="site-bank" class="website-page" style="background-color: var(--light-gray);">
+                <h1 class="site-header" style="color: var(--navy-blue); text-align: center; margin-bottom: 30px;">First
+                    Orynvell Bank</h1>
+
+                <!-- Mock Login Screen -->
+                <div
+                    style="max-width: 400px; margin: 0 auto; background: white; padding: 30px; border-radius: 12px; border: 1px solid var(--border-color); box-shadow: 0 4px 6px rgba(0,0,0,0.05);">
+                    <h3 style="color: var(--dusty-blue); margin-bottom: 20px; font-family: 'Commissioner', sans-serif;">
+                        Secure Login</h3>
+
+                    <div style="margin-bottom: 15px;">
+                        <label
+                            style="display: block; margin-bottom: 5px; color: var(--navy-blue); font-weight: 600;">Account
+                            Number</label>
+                        <input type="text" placeholder="XXXX-XXXX-XXXX"
+                            style="width: 100%; padding: 10px; border: 1px solid var(--border-color); border-radius: 5px; box-sizing: border-box;">
+                    </div>
+
+                    <div style="margin-bottom: 20px;">
+                        <label
+                            style="display: block; margin-bottom: 5px; color: var(--navy-blue); font-weight: 600;">PIN</label>
+                        <input type="password" placeholder="****"
+                            style="width: 100%; padding: 10px; border: 1px solid var(--border-color); border-radius: 5px; box-sizing: border-box;">
+                    </div>
+
+                    <button
+                        style="width: 100%; background-color: var(--navy-blue); color: white; border: none; padding: 12px; border-radius: 5px; font-weight: bold; cursor: pointer;">Access
+                        Account</button>
+
+                    <div style="margin-top: 15px; text-align: center; font-size: 0.8rem; color: #666;">
+                        Unauthorized access is a federal offense under the Digital Securities Act.
+                    </div>
+                </div>
+            </div>
+
+            <!-- ERROR 404: Page Not Found -->
+            <div id="site-404" class="website-page">
+                <h1 class="site-header" style="color: red;">404 - Site Not Found</h1>
+                <p>The DNS address could not be resolved. Please check the URL and try again.</p>
+            </div>
+
+        </main>
+    </div>
+
+    <script>
+        // 1. Grab the important elements from our HTML
+        const urlInput = document.getElementById('url-input');
+        const goButton = document.getElementById('search-go-button');
+        const allPages = document.querySelectorAll('.website-page');
+
+        // Elements for the Versenet homepage search
+        const versenetInput = document.getElementById('versenet-search-input');
+        const versenetBtn = document.getElementById('versenet-search-btn');
+
+        // Navigation elements
+        const btnBack = document.getElementById('btn-back');
+        const btnForward = document.getElementById('btn-forward');
+        const btnRefresh = document.getElementById('btn-refresh');
+
+        // History tracking
+        let historyStack = [];
+        let historyIndex = -1;
+        let isNavigatingHistory = false; // Flag to prevent pushing history when using back/forward
+
+        // 2. The main function that switches the websites
+        function navigateToUrl(url) {
+            // Convert URL to lowercase and clean up extra spaces
+            const cleanUrl = url.toLowerCase().trim();
+
+            // Update the address bar to show where we are going
+            urlInput.value = cleanUrl;
+
+            // Handle history
+            if (!isNavigatingHistory && cleanUrl !== "") {
+                // If we are navigating to a new page, not going back/forward
+                // Remove any forward history we might have
+                historyStack = historyStack.slice(0, historyIndex + 1);
+                historyStack.push(cleanUrl);
+                historyIndex++;
+            }
+            isNavigatingHistory = false; // Reset the flag
+
+            // Update button states
+            btnBack.style.opacity = historyIndex > 0 ? "1" : "0.5";
+            btnBack.style.cursor = historyIndex > 0 ? "pointer" : "default";
+            btnForward.style.opacity = historyIndex < historyStack.length - 1 ? "1" : "0.5";
+            btnForward.style.cursor = historyIndex < historyStack.length - 1 ? "pointer" : "default";
+
+            // Hide EVERY website first
+            allPages.forEach(page => {
+                page.style.display = 'none';
+            });
+
+            // Show the specific website based on what they typed
+            if (cleanUrl === 'versenet.aure' || cleanUrl === '') {
+                document.getElementById('versenet-home').style.display = 'flex'; // flex for centered layout
+            }
+            else if (cleanUrl.includes('faithmed.aure')) {
+                document.getElementById('site-faithmed').style.display = 'block';
+            }
+            else if (cleanUrl.includes('dga.gov')) {
+                document.getElementById('site-dga').style.display = 'block';
+            }
+            else if (cleanUrl.includes('cyacademy.edu') || cleanUrl.includes('auresuite')) {
+                document.getElementById('site-cyacademy').style.display = 'block';
+            }
+            else if (cleanUrl.includes('records.orynvell.gov')) {
+                document.getElementById('site-records').style.display = 'block';
+            }
+            else if (cleanUrl.includes('darkweb') || cleanUrl.includes('.onion')) {
+                document.getElementById('site-darkweb').style.display = 'block';
+            }
+            else if (cleanUrl.includes('freight') || cleanUrl.includes('shipping')) {
+                document.getElementById('site-shipping').style.display = 'block';
+            }
+            else if (cleanUrl.includes('bank.aure')) {
+                document.getElementById('site-bank').style.display = 'block';
+            }
+            else {
+                // If they typed something we don't have a page for, show the 404 error
+                document.getElementById('site-404').style.display = 'block';
+            }
+        }
+
+        // 3. Trigger navigation when they click the "Go" button
+        goButton.addEventListener('click', function () {
+            navigateToUrl(urlInput.value);
+        });
+
+        // 4. Trigger navigation when they press the "Enter" key inside the top address bar
+        urlInput.addEventListener('keypress', function (event) {
+            if (event.key === 'Enter') {
+                navigateToUrl(urlInput.value);
+            }
+        });
+
+        // 5. Trigger navigation from the big search bar in the middle of Versenet
+        function handleVersenetSearch() {
+            let query = versenetInput.value;
+            if (query.trim() === "") return;
+            navigateToUrl(query);
+            versenetInput.value = ''; // clear it out after
+        }
+
+        versenetBtn.addEventListener('click', handleVersenetSearch);
+        versenetInput.addEventListener('keypress', function (event) {
+            if (event.key === 'Enter') {
+                handleVersenetSearch();
+            }
+        });
+
+        // History Event Listeners
+        btnBack.addEventListener('click', () => {
+            if (historyIndex > 0) {
+                historyIndex--;
+                isNavigatingHistory = true;
+                navigateToUrl(historyStack[historyIndex]);
+            }
+        });
+
+        btnForward.addEventListener('click', () => {
+            if (historyIndex < historyStack.length - 1) {
+                historyIndex++;
+                isNavigatingHistory = true;
+                navigateToUrl(historyStack[historyIndex]);
+            }
+        });
+
+        btnRefresh.addEventListener('click', () => {
+            if (historyIndex >= 0) {
+                isNavigatingHistory = true;
+                navigateToUrl(historyStack[historyIndex]);
+            } else {
+                navigateToUrl(urlInput.value);
+            }
+        });
+
+
+        // Initialize the browser on Versenet
+        navigateToUrl('versenet.aure');
+    </script>
+</body>
+
+</html>

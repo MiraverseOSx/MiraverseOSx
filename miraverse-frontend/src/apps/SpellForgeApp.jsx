@@ -156,7 +156,7 @@ export default function SpellForgeApp() {
   return (
     <div className="flex h-full w-full bg-gradient-to-b from-[#F6F7FB] to-[#EFF1F7] text-[#162241] font-sans text-xs select-none">
       {/* Sidebar Navigation */}
-      <div className="w-48 border-r border-slate-300/80 bg-white/60 p-4 flex flex-col justify-between">
+      <div className="w-[21%] min-w-40 max-w-48 shrink-0 border-r border-slate-300/80 bg-white/60 p-4 flex flex-col justify-between">
         <div className="space-y-4">
           <div className="flex flex-col">
             <div className="flex items-center gap-2">
@@ -169,17 +169,15 @@ export default function SpellForgeApp() {
           <div className="space-y-1">
             <button
               onClick={() => setActiveTab('forge')}
-              className={`w-full text-left px-3 py-2 rounded-lg text-xs font-semibold transition ${
-                activeTab === 'forge' ? 'bg-[#e9ebf6] text-[#1d2650]' : 'text-slate-600 hover:bg-[#f2f3fb]'
-              }`}
+              className={`w-full text-left px-3 py-2 rounded-lg text-xs font-semibold transition ${activeTab === 'forge' ? 'bg-[#e9ebf6] text-[#1d2650]' : 'text-slate-600 hover:bg-[#f2f3fb]'
+                }`}
             >
               🔮 Spell Weaver
             </button>
             <button
               onClick={() => setActiveTab('defense')}
-              className={`w-full text-left px-3 py-2 rounded-lg text-xs font-semibold transition ${
-                activeTab === 'defense' ? 'bg-[#e9ebf6] text-[#1d2650]' : 'text-slate-600 hover:bg-[#f2f3fb]'
-              }`}
+              className={`w-full text-left px-3 py-2 rounded-lg text-xs font-semibold transition ${activeTab === 'defense' ? 'bg-[#e9ebf6] text-[#1d2650]' : 'text-slate-600 hover:bg-[#f2f3fb]'
+                }`}
             >
               🛡️ Defense Matrix ({threats.filter((t) => t.status === 'ACTIVE').length})
             </button>
@@ -211,9 +209,8 @@ export default function SpellForgeApp() {
                     <button
                       key={el.id}
                       onClick={() => setSelectedElement(el.id)}
-                      className={`w-full text-left p-2 rounded-lg border text-xs transition ${
-                        selectedElement === el.id ? 'border-[#8c97d6] bg-[#eef0fb] font-semibold text-[#1d2650]' : 'border-slate-200 bg-white hover:bg-[#f7f7fd] text-slate-700'
-                      }`}
+                      className={`w-full text-left p-2 rounded-lg border text-xs transition ${selectedElement === el.id ? 'border-[#8c97d6] bg-[#eef0fb] font-semibold text-[#1d2650]' : 'border-slate-200 bg-white hover:bg-[#f7f7fd] text-slate-700'
+                        }`}
                     >
                       <div className="font-bold">{el.name}</div>
                       <div className="text-[10px] text-slate-500 line-clamp-1">{el.desc}</div>
@@ -230,9 +227,8 @@ export default function SpellForgeApp() {
                     <button
                       key={ut.id}
                       onClick={() => setSelectedUtility(ut.id)}
-                      className={`w-full text-left p-2 rounded-lg border text-xs transition ${
-                        selectedUtility === ut.id ? 'border-[#8c97d6] bg-[#eef0fb] font-semibold text-[#1d2650]' : 'border-slate-200 bg-white hover:bg-[#f7f7fd] text-slate-700'
-                      }`}
+                      className={`w-full text-left p-2 rounded-lg border text-xs transition ${selectedUtility === ut.id ? 'border-[#8c97d6] bg-[#eef0fb] font-semibold text-[#1d2650]' : 'border-slate-200 bg-white hover:bg-[#f7f7fd] text-slate-700'
+                        }`}
                     >
                       <div className="font-bold">{ut.name}</div>
                       <div className="text-[10px] text-slate-500 line-clamp-1">{ut.desc}</div>
@@ -249,9 +245,8 @@ export default function SpellForgeApp() {
                     <button
                       key={rn.id}
                       onClick={() => setSelectedRune(selectedRune === rn.id ? null : rn.id)}
-                      className={`w-full text-left p-2 rounded-lg border text-xs transition ${
-                        selectedRune === rn.id ? 'border-[#8c97d6] bg-[#eef0fb] font-semibold text-[#1d2650]' : 'border-slate-200 bg-white hover:bg-[#f7f7fd] text-slate-700'
-                      }`}
+                      className={`w-full text-left p-2 rounded-lg border text-xs transition ${selectedRune === rn.id ? 'border-[#8c97d6] bg-[#eef0fb] font-semibold text-[#1d2650]' : 'border-slate-200 bg-white hover:bg-[#f7f7fd] text-slate-700'
+                        }`}
                     >
                       <div className="font-bold">{rn.name}</div>
                       <div className="text-[10px] text-slate-500 line-clamp-1">{rn.desc}</div>

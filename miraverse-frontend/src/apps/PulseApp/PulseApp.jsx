@@ -205,11 +205,10 @@ export default function PulseApp() {
                     key={tag.id}
                     type="button"
                     onClick={() => setHouseTag(tag.id)}
-                    className={`rounded-xl border p-3 text-left transition ${
-                      houseTag === tag.id
+                    className={`rounded-xl border p-3 text-left transition ${houseTag === tag.id
                         ? 'border-pink-400 bg-pink-950/40 text-white font-bold shadow-[0_0_15px_rgba(244,114,182,0.2)]'
                         : 'border-purple-500/20 bg-purple-950/20 text-purple-300 hover:bg-purple-900/40'
-                    }`}
+                      }`}
                   >
                     <div className="flex items-center gap-2 text-xs">
                       <span>{tag.icon}</span>
@@ -236,7 +235,7 @@ export default function PulseApp() {
         /* STEP 2: LIVE PULSE SOCIAL FEED & COMPOSER */
         <div className="flex min-h-0 flex-1 overflow-hidden">
           {/* LEFT SIDEBAR: TRENDS & FRIENDS */}
-          <aside className="w-64 shrink-0 border-r border-purple-500/20 bg-[#0a061c]/80 p-4 space-y-5 overflow-y-auto">
+          <aside className="w-[27%] min-w-52 max-w-64 shrink-0 border-r border-purple-500/20 bg-[#0a061c]/80 p-4 space-y-5 overflow-y-auto">
             {/* User Badge */}
             <div className="rounded-2xl border border-purple-500/30 bg-purple-950/40 p-4 space-y-2">
               <div className="flex items-center gap-3">
@@ -317,11 +316,10 @@ export default function PulseApp() {
 
                     <button
                       onClick={() => handleFollow(post.id)}
-                      className={`px-3 py-1 rounded-full text-[10px] font-bold border transition ${
-                        post.followed
+                      className={`px-3 py-1 rounded-full text-[10px] font-bold border transition ${post.followed
                           ? 'border-emerald-400/40 bg-emerald-950/40 text-emerald-300'
                           : 'border-pink-400/40 bg-pink-950/40 text-pink-200 hover:bg-pink-900/60'
-                      }`}
+                        }`}
                     >
                       {post.followed ? '✓ Following' : '+ Follow'}
                     </button>

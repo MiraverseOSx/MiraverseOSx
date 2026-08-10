@@ -6,7 +6,7 @@ export default defineConfig({
   publicDir: 'miraverse-frontend/public',
   server: {
     port: 3000,
-    open: true,
+    open: false,
     watch: {
       ignored: ['**/bootstrap/**', '**/dist/**', '**/node_modules/**'],
     },
