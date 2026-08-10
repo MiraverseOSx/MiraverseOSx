@@ -1,0 +1,644 @@
+M:\MiraverseOSx\obj\Debug\net8.0\MiraverseOSx.csproj.AssemblyReference.cache
+M:\MiraverseOSx\obj\Debug\net8.0\MiraverseOSx.GeneratedMSBuildEditorConfig.editorconfig
+M:\MiraverseOSx\obj\Debug\net8.0\MiraverseOSx.AssemblyInfoInputs.cache
+M:\MiraverseOSx\obj\Debug\net8.0\MiraverseOSx.AssemblyInfo.cs
+M:\MiraverseOSx\obj\Debug\net8.0\MiraverseOSx.csproj.CoreCompileInputs.cache
+M:\MiraverseOSx\obj\Debug\net8.0\MiraverseOSx.sourcelink.json
+M:\MiraverseOSx\bin\Debug\net8.0\game_logic\ecosystem_engine.py
+M:\MiraverseOSx\bin\Debug\net8.0\game_logic\harmony_math.py
+M:\MiraverseOSx\bin\Debug\net8.0\game_logic\mission_director.py
+M:\MiraverseOSx\bin\Debug\net8.0\game_logic\npc_brain.py
+M:\MiraverseOSx\bin\Debug\net8.0\game_logic\__init__.py
+M:\MiraverseOSx\bin\Debug\net8.0\game_logic\__pycache__\ecosystem_engine.cpython-314.pyc
+M:\MiraverseOSx\bin\Debug\net8.0\game_logic\__pycache__\harmony_math.cpython-314.pyc
+M:\MiraverseOSx\bin\Debug\net8.0\game_logic\__pycache__\mission_director.cpython-314.pyc
+M:\MiraverseOSx\bin\Debug\net8.0\game_logic\__pycache__\npc_brain.cpython-314.pyc
+M:\MiraverseOSx\bin\Debug\net8.0\game_logic\__pycache__\__init__.cpython-314.pyc
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\assets\app-shell-DLm50emX.js
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\assets\BrowserApp-BLaOJ7h8.js
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\assets\BrowserApp-DBzn1Yge.css
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\assets\CivicProfileApp-BiafVcrR.js
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\assets\CommsApp-Dh04G5ii.js
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\assets\everything_is_great_but_do_not-ibzqC-2F.mp4
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\assets\FileExplorerApp-Dtrmgx4I.css
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\assets\FileExplorerApp-Sa6uXriS.js
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\assets\framer-motion-DfvbEsWJ.js
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\assets\index-BPeTgWLp.js
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\assets\index-DyKdEnW8.css
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\assets\LibertinusMath-Regular-CsiPAxMn.ttf
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\assets\logo_icon-CUPqIqiP.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\assets\MailApp-tKYoRpRZ.js
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\assets\MaiSpacePortal-D57OidWM.js
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\assets\meridion_world-Bx744lBB.jpg
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\assets\mixkit-a-woman-monitoring-close-circuit-surveillance-23673-hd-ready-DO32EXpQ.mp4
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\assets\mixkit-black-ink-splashing-505-hd-ready-5xOo6vN8.mp4
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\assets\mixkit-flying-over-a-relaxing-creek-full-of-rock-on-the-51585-hd-ready-BCqJ8giU.mp4
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\assets\mixkit-glitter-stars-and-snowflakes-19007-hd-ready-jJGDjwg1.mp4
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\assets\mockDocuments-DWqizeR8.js
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\assets\NoticeBoardApp-DaKo_vxF.js
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\assets\PulseApp-IfOKGT9I.js
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\assets\react-core-DfgA1Eg8.js
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\assets\SpellForgeApp-k6iD_Kfe.js
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\assets\useCommsStore-DWfS_9r-.js
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\assets\vendor-BeQanxsc.js
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\assets\vendor-CM5My5ae.css
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\0.5x\Alarm 256 px.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\0.5x\Apple 256 px.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\0.5x\Back 2 256 px.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\0.5x\Back 256 px.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\0.5x\Battery - full 256 px.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\0.5x\Before 256 px.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\0.5x\bone head 256 px.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\0.5x\Button  256 px.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\0.5x\camera 1 256 px.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\0.5x\camera 2 256 px.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\0.5x\Click - left 256 px.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\0.5x\Click - middle  256 px.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\0.5x\Click - right 256 px.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\0.5x\Cross 256 px.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\0.5x\Danger sign 1 256 px.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\0.5x\Danger sign 2 256 px.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\0.5x\Delete 256 px.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\0.5x\divide  256 px.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\0.5x\Download  256 px.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\0.5x\Empty battery  256 px.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\0.5x\Equal 256 px.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\0.5x\Exclamation sign 2 256 px.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\0.5x\Exclamation sign 256 px.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\0.5x\F  256 px.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\0.5x\Gamepad 1 256 px.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\0.5x\Gamepad 2 256 px.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\0.5x\Gift 256 px.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\0.5x\House 256 px.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\0.5x\Key 256 px.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\0.5x\Keyboard 256 px.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\0.5x\Like 256 px.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\0.5x\Link 256 px.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\0.5x\Lock 256 px.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\0.5x\Low battery 256 px.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\0.5x\magnifier  256 px.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\0.5x\Mail 256 px.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\0.5x\Map 256 px.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\0.5x\Market 256 px.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\0.5x\medal 1 256 px.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\0.5x\medal 2 256 px.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\0.5x\medal 3 256 px.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\0.5x\Menu 1 256 px.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\0.5x\Menu 2 256 px.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\0.5x\Menu 256 px.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\0.5x\Message 256 px.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\0.5x\Money  256 px.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\0.5x\Monitor 256 px.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\0.5x\Mouse  256 px.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\0.5x\Musick note 256 px.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\0.5x\Mute 2 256 px.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\0.5x\Mute 256 px.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\0.5x\Negative  256 px.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\0.5x\Network  256 px.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\0.5x\Network 2 256 px.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\0.5x\Next - Speed Up 256 px.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\0.5x\Next 256 px.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\0.5x\No wifi 256 px.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\0.5x\Pause 256 px.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\0.5x\Play - Puse 256 px.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\0.5x\Play 256 px.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\0.5x\Plus 256 px.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\0.5x\Power plug 256 px.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\0.5x\Power sign 256 px.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\0.5x\Question 256 px.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\0.5x\Ranking 256 px.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\0.5x\Reply  256 px.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\0.5x\Rotate phone 1 256 px.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\0.5x\Rotate phone 2 256 px.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\0.5x\Save 256 px.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\0.5x\Setting 1 256 px.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\0.5x\Setting 2 256 px.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\0.5x\Share 1 256 px.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\0.5x\Share 2 256 px.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\0.5x\Star 256 px.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\0.5x\Steam 256 px.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\0.5x\Twitch 256 px.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\0.5x\Unlock  256 px.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\0.5x\Upload 256 px.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\0.5x\video cam 256 px.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\0.5x\Volume 256 px.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\0.5x\Waving 256 px.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\0.5x\Wi Fi 256 px.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\0.5x\Wi Fi allert 256 px.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\0.5x\Wrench 1 256 px.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\0.5x\Wrench 2 256 px.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\0.5x\Wrench 3 256 px.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\0.5x\Youtube - video play 256 px.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\0.5x\zoom in 256 px.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\0.5x\zoom out 256 px.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\1x\Alarm 512 px.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\1x\Apple 512 px.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\1x\Back 2 512 px.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\1x\Back 512 px.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\1x\Battery - full 512 px.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\1x\Before 512 px.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\1x\bone head 512 px.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\1x\camera 1 512 px.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\1x\camera 2 512 px.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\1x\Click - left 512 px.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\1x\Click - middle  512 px.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\1x\Click - right 512 px.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\1x\Cross 512 px.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\1x\Danger sign 1 512 px.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\1x\Danger sign 2 512 px.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\1x\Delete 512 px.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\1x\divide  512 px.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\1x\Download  512 px.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\1x\Empty battery  512 px.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\1x\Equal 512 px.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\1x\Exclamation sign 2 512 px.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\1x\Exclamation sign 512 px.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\1x\F  512 px.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\1x\Gamepad 1 512 px.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\1x\Gamepad 2 512 px.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\1x\Gift 512 px.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\1x\House 512 px.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\1x\Key 512 px.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\1x\Keyboard 512 px.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\1x\Like 512 px.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\1x\Link 512 px.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\1x\Lock 512 px.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\1x\Low battery 512 px.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\1x\magnifier  512 px.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\1x\Mail 512 px.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\1x\Map 512 px.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\1x\Market 512 px.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\1x\medal 1 512 px.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\1x\medal 2 512 px.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\1x\medal 3 512 px.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\1x\Menu 1 512 px.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\1x\Menu 2 512 px.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\1x\Menu 512 px.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\1x\Message 512 px.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\1x\Money  512 px.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\1x\Monitor 512 px.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\1x\Mouse  512 px.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\1x\Musick note 512 px.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\1x\Mute 2 512 px.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\1x\Mute 512 px.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\1x\Negative  512 px.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\1x\Network  512 px.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\1x\Network 2 512 px.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\1x\Next - Speed Up 512 px.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\1x\Next 512 px.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\1x\No wifi 512 px.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\1x\Pause 512 px.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\1x\Play - Puse 512 px.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\1x\Play 512 px.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\1x\Plus 512 px.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\1x\Power plug 512 px.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\1x\Power sign 512 px.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\1x\Question 512 px.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\1x\Ranking 512 px.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\1x\Reply  512 px.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\1x\Rotate phone 1 512 px.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\1x\Rotate phone 2 512 px.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\1x\Save 512 px.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\1x\Setting 1 512 px.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\1x\Setting 2 512 px.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\1x\Share 1 512 px.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\1x\Share 2 512 px.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\1x\Star 512 px.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\1x\Steam 512 px.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\1x\Twitch 512 px.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\1x\Unlock  512 px.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\1x\Upload 512 px.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\1x\video cam 512 px.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\1x\Volume 512 px.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\1x\Waving 512 px.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\1x\Wi Fi 512 px.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\1x\Wi Fi allert 512 px.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\1x\Wrench 1 512 px.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\1x\Wrench 2 512 px.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\1x\Wrench 3 512 px.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\1x\Youtube - video play 512 px.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\1x\zoom in 512 px.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\1x\zoom out 512 px.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\2x\Alarm.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\2x\Apple.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\2x\Back 2.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\2x\Back.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\2x\Battery - full.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\2x\Before.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\2x\bone head.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\2x\Button_.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\2x\camera 1.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\2x\camera 2.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\2x\Click - left.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\2x\Click - middle_.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\2x\Click - right.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\2x\Cross.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\2x\Danger sign 1.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\2x\Danger sign 2.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\2x\Delete.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\2x\divide_.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\2x\Download_.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\2x\Empty battery_.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\2x\Equal.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\2x\Exclamation sign 2.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\2x\Exclamation sign.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\2x\F_.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\2x\Gamepad 1.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\2x\Gamepad 2.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\2x\Gift.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\2x\House.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\2x\Key.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\2x\Keyboard.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\2x\Like.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\2x\Link.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\2x\Lock.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\2x\Low battery.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\2x\magnifier_.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\2x\Mail.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\2x\Map.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\2x\Market.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\2x\medal 1.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\2x\medal 2.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\2x\medal 3.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\2x\Menu 1.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\2x\Menu 2.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\2x\Menu.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\2x\Message.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\2x\Money_.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\2x\Monitor.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\2x\Mouse_.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\2x\Musick note.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\2x\Mute 2.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\2x\Mute.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\2x\Negative_.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\2x\Network 2.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\2x\Network_.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\2x\Next - Speed Up.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\2x\Next.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\2x\No wifi.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\2x\Pause.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\2x\Play - Puse.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\2x\Play.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\2x\Plus.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\2x\Power plug.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\2x\Power sign.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\2x\Question.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\2x\Ranking.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\2x\Reply_.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\2x\Rotate phone 1.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\2x\Rotate phone 2.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\2x\Save.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\2x\Setting 1.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\2x\Setting 2.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\2x\Share 1.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\2x\Share 2.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\2x\Star.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\2x\Steam.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\2x\Twitch.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\2x\Unlock_.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\2x\Upload.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\2x\video cam.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\2x\Volume.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\2x\Waving.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\2x\Wi Fi allert.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\2x\Wi Fi.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\2x\Wrench 1.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\2x\Wrench 2.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\2x\Wrench 3.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\2x\Youtube - video play.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\2x\zoom in.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\2x\zoom out.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\0.5x\Alarm x256.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\0.5x\Apple x256.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\0.5x\Back 2 x256.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\0.5x\Back x256.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\0.5x\Battery - full x256.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\0.5x\Before x256.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\0.5x\bone head x256.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\0.5x\Button  x256.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\0.5x\camera 1 x256.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\0.5x\camera 2 x256.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\0.5x\Click - left x256.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\0.5x\Click - middle  x256.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\0.5x\Click - right x256.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\0.5x\Cross x256.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\0.5x\Danger sign 1 x256.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\0.5x\Danger sign 2 x256.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\0.5x\Delete x256.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\0.5x\divide  x256.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\0.5x\Download  x256.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\0.5x\Empty battery  x256.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\0.5x\Equal x256.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\0.5x\Exclamation sign 2 x256.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\0.5x\Exclamation sign x256.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\0.5x\F  x256.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\0.5x\Gamepad 1 x256.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\0.5x\Gamepad 2 x256.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\0.5x\Gift x256.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\0.5x\House x256.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\0.5x\Key x256.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\0.5x\Keyboard x256.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\0.5x\Like x256.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\0.5x\Link x256.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\0.5x\Lock x256.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\0.5x\Low battery x256.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\0.5x\magnifier  x256.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\0.5x\Mail x256.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\0.5x\Map x256.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\0.5x\Market x256.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\0.5x\medal 1 x256.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\0.5x\medal 2 x256.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\0.5x\medal 3 x256.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\0.5x\Menu 1 x256.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\0.5x\Menu 2 x256.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\0.5x\Menu x256.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\0.5x\Message x256.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\0.5x\Money  x256.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\0.5x\Monitor x256.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\0.5x\Mouse  x256.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\0.5x\Musick note x256.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\0.5x\Mute 2 x256.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\0.5x\Mute x256.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\0.5x\Negative  x256.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\0.5x\Network  x256.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\0.5x\Network 2 x256.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\0.5x\Next - Speed Up x256.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\0.5x\Next x256.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\0.5x\No wifi x256.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\0.5x\Pause x256.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\0.5x\Play - Puse x256.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\0.5x\Play x256.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\0.5x\Plus x256.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\0.5x\Power plug x256.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\0.5x\Power sign x256.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\0.5x\Question x256.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\0.5x\Ranking x256.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\0.5x\Reply  x256.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\0.5x\Rotate phone 1 x256.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\0.5x\Rotate phone 2 x256.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\0.5x\Save x256.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\0.5x\Setting 1 x256.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\0.5x\Setting 2 x256.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\0.5x\Share 1 x256.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\0.5x\Share 2 x256.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\0.5x\Star x256.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\0.5x\Steam x256.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\0.5x\Twitch x256.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\0.5x\Unlock  x256.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\0.5x\Upload x256.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\0.5x\video cam x256.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\0.5x\Volume x256.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\0.5x\Waving x256.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\0.5x\Wi Fi allert x256.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\0.5x\Wi Fi x256.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\0.5x\Wrench 1 x256.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\0.5x\Wrench 2 x256.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\0.5x\Wrench 3 x256.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\0.5x\Youtube - video play x256.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\0.5x\zoom in x256.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\0.5x\zoom out x256.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\1x\Alarm x512.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\1x\Apple x512.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\1x\Back 2 x512.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\1x\Back x512.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\1x\Battery - full x512.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\1x\Before x512.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\1x\bone head x512.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\1x\Button  x512.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\1x\camera 1 x512.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\1x\camera 2 x512.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\1x\Click - left x512.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\1x\Click - middle  x512.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\1x\Click - right x512.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\1x\Cross x512.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\1x\Danger sign 1 x512.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\1x\Danger sign 2 x512.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\1x\Delete x512.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\1x\divide  x512.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\1x\Download  x512.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\1x\Empty battery  x512.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\1x\Equal x512.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\1x\Exclamation sign 2 x512.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\1x\Exclamation sign x512.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\1x\F  x512.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\1x\Gamepad 1 x512.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\1x\Gamepad 2 x512.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\1x\Gift x512.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\1x\House x512.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\1x\Key x512.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\1x\Keyboard x512.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\1x\Like x512.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\1x\Link x512.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\1x\Lock x512.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\1x\Low battery x512.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\1x\magnifier  x512.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\1x\Mail x512.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\1x\Map x512.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\1x\Market x512.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\1x\medal 1 x512.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\1x\medal 2 x512.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\1x\medal 3 x512.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\1x\Menu 1 x512.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\1x\Menu 2 x512.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\1x\Menu x512.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\1x\Message x512.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\1x\Money  x512.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\1x\Monitor x512.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\1x\Mouse  x512.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\1x\Musick note x512.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\1x\Mute 2 x512.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\1x\Mute x512.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\1x\Negative  x512.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\1x\Network  x512.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\1x\Network 2 x512.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\1x\Next - Speed Up x512.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\1x\Next x512.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\1x\No wifi x512.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\1x\Pause x512.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\1x\Play - Puse x512.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\1x\Play x512.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\1x\Plus x512.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\1x\Power Plug x512.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\1x\Power sign x512.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\1x\Question x512.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\1x\Ranking x512.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\1x\Reply  x512.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\1x\Rotate phone 1 x512.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\1x\Rotate phone 2 x512.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\1x\Save x512.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\1x\Setting 1 x512.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\1x\Setting 2 x512.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\1x\Share 1 x512.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\1x\Share 2 x512.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\1x\Star x512.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\1x\Steam x512.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\1x\Twitch x512.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\1x\Unlock  x512.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\1x\Upload x512.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\1x\video cam x512.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\1x\Volume x512.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\1x\Waving x512.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\1x\Wi Fi allert x512.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\1x\Wi Fi x512.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\1x\Wrench 1 x512.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\1x\Wrench 2 x512.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\1x\Wrench 3 x512.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\1x\Youtube - video play x512.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\1x\zoom in x512.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\1x\zoom out x512.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\2x\Alarm .png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\2x\Alarm.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\2x\Apple.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\2x\Back 2.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\2x\Back.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\2x\Battery - full.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\2x\Before.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\2x\bone head.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\2x\Button_.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\2x\camera 1.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\2x\camera 2.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\2x\Click - left.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\2x\Click - middle_.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\2x\Click - right.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\2x\Cross.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\2x\Danger sign 1.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\2x\Danger sign 2.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\2x\Delete.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\2x\divide_.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\2x\Download_.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\2x\Empty battery_.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\2x\Equal.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\2x\Exclamation sign 2.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\2x\Exclamation sign.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\2x\F_.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\2x\Gamepad 1.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\2x\Gamepad 2.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\2x\Gift.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\2x\House.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\2x\Key.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\2x\Keyboard.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\2x\Like.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\2x\Link.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\2x\Lock.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\2x\Low battery.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\2x\magnifier_.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\2x\Mail.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\2x\Map.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\2x\Market.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\2x\medal 1.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\2x\medal 2.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\2x\medal 3.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\2x\Menu 1.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\2x\Menu 2.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\2x\Menu.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\2x\Message.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\2x\Money_.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\2x\Monitor.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\2x\Mouse_.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\2x\Musick note.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\2x\Mute 2.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\2x\Mute.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\2x\Negative_.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\2x\Network 2.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\2x\Network_.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\2x\Next - Speed Up.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\2x\Next.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\2x\No wifi.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\2x\Pause.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\2x\Play - Puse.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\2x\Play.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\2x\Plus.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\2x\Power plug.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\2x\Power sign.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\2x\Question.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\2x\Ranking.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\2x\Reply_.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\2x\Rotate phone 1.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\2x\Rotate phone 2.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\2x\Save.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\2x\Setting 1.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\2x\Setting 2.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\2x\Share 1.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\2x\Share 2.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\2x\Star.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\2x\Steam.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\2x\Twitch.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\2x\Unlock_.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\2x\Upload.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\2x\video cam.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\2x\Volume.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\2x\Waving.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\2x\Wi Fi allert.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\2x\Wi Fi.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\2x\Wrench 1.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\2x\Wrench 2.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\2x\Wrench 3.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\2x\Youtube - video play.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\2x\zoom in.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\2x\zoom out.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\Untitled-11.ai
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Dark Icons\Untitled-11.psd
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\icons set 1 copy.svg
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\icons set 1.eps
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Untitled-11.psd
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icon set 1\Untitled-4.ai
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icons8\icons8-address-50.gif
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icons8\icons8-audio-wave-50.gif
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icons8\icons8-bookmark-16.svg
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icons8\icons8-close-16.svg
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icons8\icons8-coins-50.gif
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icons8\icons8-done-16.svg
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icons8\icons8-folder-16.svg
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icons8\icons8-home-16.svg
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icons8\icons8-internet-50.gif
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icons8\icons8-lock-16.svg
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icons8\icons8-male-user-16.svg
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icons8\icons8-opened-folder-16.svg
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icons8\icons8-padlock-16.svg
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icons8\icons8-settings-50.gif
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icons8\icons8-sun-16.svg
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icons8\icons8-target-50.gif
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icons8\icons8-toggle-on-50.gif
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icons8\icons8-trash-16.svg
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icons8\icons8-user-female-16.svg
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\icons\Icons8\icons8-video-50.gif
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\images\back_id_card.svg
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\images\base.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\images\command line.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\images\comms_window.svg
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\images\icons8-speech-bubble-50.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\images\Logo_Icon - 1.png
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\images\TerminalOutput.svg
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\index.html
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\manifest.json
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\robots.txt
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\sounds\mixkit-crystal-chime-3108.wav
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\sounds\mixkit-futuristic-tech-engine-glitch-2949.wav
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\sounds\mixkit-glitch-sci-fi-rewind-transition-1093.wav
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\sounds\mixkit-intro-text-glitch-2950.wav
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\sounds\mixkit-sci-fi-high-tech-sounds-860.wav
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\sounds\mixkit-sci-fi-machine-deep-hum-2137.wav
+M:\MiraverseOSx\bin\Debug\net8.0\wwwroot\sounds\mixkit-water-sci-fi-bleep-902.wav
+M:\MiraverseOSx\bin\Debug\net8.0\MiraverseOSx.exe
+M:\MiraverseOSx\bin\Debug\net8.0\MiraverseOSx.deps.json
+M:\MiraverseOSx\bin\Debug\net8.0\MiraverseOSx.runtimeconfig.json
+M:\MiraverseOSx\bin\Debug\net8.0\MiraverseOSx.dll
+M:\MiraverseOSx\bin\Debug\net8.0\MiraverseOSx.pdb
+M:\MiraverseOSx\bin\Debug\net8.0\Photino.NET.dll
+M:\MiraverseOSx\bin\Debug\net8.0\Python.Deployment.dll
+M:\MiraverseOSx\bin\Debug\net8.0\Python.Included.dll
+M:\MiraverseOSx\bin\Debug\net8.0\Python.Runtime.dll
+M:\MiraverseOSx\bin\Debug\net8.0\runtimes\linux-arm64\native\Photino.Native.so
+M:\MiraverseOSx\bin\Debug\net8.0\runtimes\linux-x64\native\Photino.Native.so
+M:\MiraverseOSx\bin\Debug\net8.0\runtimes\osx-arm64\native\Photino.Native.dylib
+M:\MiraverseOSx\bin\Debug\net8.0\runtimes\osx-x64\native\Photino.Native.dylib
+M:\MiraverseOSx\bin\Debug\net8.0\runtimes\win-arm64\native\Photino.Native.dll
+M:\MiraverseOSx\bin\Debug\net8.0\runtimes\win-arm64\native\WebView2Loader.dll
+M:\MiraverseOSx\bin\Debug\net8.0\runtimes\win-x64\native\Photino.Native.dll
+M:\MiraverseOSx\bin\Debug\net8.0\runtimes\win-x64\native\WebView2Loader.dll
+M:\MiraverseOSx\obj\Debug\net8.0\Miravers.FF149BE3.Up2Date
+M:\MiraverseOSx\obj\Debug\net8.0\MiraverseOSx.dll
+M:\MiraverseOSx\obj\Debug\net8.0\refint\MiraverseOSx.dll
+M:\MiraverseOSx\obj\Debug\net8.0\MiraverseOSx.pdb
+M:\MiraverseOSx\obj\Debug\net8.0\MiraverseOSx.genruntimeconfig.cache
+M:\MiraverseOSx\obj\Debug\net8.0\ref\MiraverseOSx.dll

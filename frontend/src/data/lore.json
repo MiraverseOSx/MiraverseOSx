@@ -1,0 +1,50 @@
+[
+  {
+    "id": "LORE_001",
+    "title": "The Dawn of MIRAVERSE OSX",
+    "category": "History",
+    "excerpt": "Conception of the unified digital reality platform and sovereign OS environment.",
+    "content": "MIRAVERSE OSX was conceived as a unified digital reality platform where web interfaces, autonomous AI agents (MAI), and game mechanics operate seamlessly within a single operating system desktop.",
+    "tags": ["history", "os", "miraverse"]
+  },
+  {
+    "id": "LORE_002",
+    "title": "MAI Protocol Initialization",
+    "category": "AI",
+    "excerpt": "Autonomous AI companion contract and agent orchestration protocol.",
+    "content": "MAI acts as the sovereign OS assistant, enforcing world contracts, orchestrating app events, and communicating with users across ChatMeet, SpellForge, and CyberDeck.",
+    "tags": ["mai", "ai", "protocol"]
+  },
+  {
+    "id": "ARC-001",
+    "title": "Pre-Collapse AETHERCORE Blueprint Fragment",
+    "category": "Archives",
+    "excerpt": "Deep energy resonance maps indicating subterranean conduit lines under the Old Factory Ward.",
+    "content": "Deep energy resonance maps indicating AETHERCORE subterranean conduit lines under the Old Factory Ward. High frequency energy flow channels detected at depth 400m.",
+    "tags": ["blueprint", "aethercore", "subterranean"]
+  },
+  {
+    "id": "ARC-002",
+    "title": "Purge-Era Student Genealogy Index",
+    "category": "Archives",
+    "excerpt": "Classified records detailing Lightborn lineage bloodlines and hereditary Veil sensitivities.",
+    "content": "Classified records detailing Lightborn lineage bloodlines and hereditary Veil sensitivities. Student records from the pre-collapse era highlight inherited magical code affinities.",
+    "tags": ["genealogy", "lightborn", "veil"]
+  },
+  {
+    "id": "ARC-003",
+    "title": "PRISM Cult Signal Intercept #88",
+    "category": "Security",
+    "excerpt": "Intercepted frequency wave containing corrupted binary runes targeting Cycademy node gateways.",
+    "content": "Intercepted frequency wave containing corrupted binary runes targeting Cycademy node gateways. High risk of corruption propagation across Sector 3 network nodes.",
+    "tags": ["prism", "intercept", "security"]
+  },
+  {
+    "id": "ARC-004",
+    "title": "Clinical Study: Veilwilt & Sunspire Fever",
+    "category": "Medical",
+    "excerpt": "Telemetry analysis showing direct correlation between elemental spell strain and aura corruption.",
+    "content": "Telemetry analysis showing direct correlation between elemental spell strain and aura corruption. Recommended treatment: Marlowe Springs aura bath and Faith Medical baseline restoration.",
+    "tags": ["medical", "veilwilt", "aura"]
+  }
+]

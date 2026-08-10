@@ -1,0 +1,6 @@
+/* src/styles/apps/Desktop.css */
+
+.credit-counter-badge:hover {
+  border-color: rgba(251, 191, 36, 0.8) !important;
+  box-shadow: 0 0 15px rgba(251, 191, 36, 0.3) !important;
+}

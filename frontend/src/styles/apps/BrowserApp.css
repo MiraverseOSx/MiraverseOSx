@@ -1,0 +1,158 @@
+
+
+/* MSN-style portal skin */
+.msn-portal {
+  height: 100%;
+  width: 100%;
+  background: linear-gradient(180deg, #f7f8fb 0%, #ffffff 100%);
+  color: #0f172a;
+  /* slate-900 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Helvetica Neue, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+}
+
+.msn-portal .portal-container {
+  height: 100%;
+  width: 100%;
+  max-width: 1200px;
+  /* ~max-w-6xl */
+  display: grid;
+  grid-template-rows: auto 1fr;
+  gap: 16px;
+  padding: 0 24px;
+}
+
+.msn-portal .portal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 0;
+}
+
+.msn-portal .portal-nav {
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .msn-portal .portal-nav {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    font-size: 0.875rem;
+    color: #475569;
+    /* slate-600 */
+  }
+
+  .msn-portal .portal-nav button {
+    background: transparent;
+    border: 0;
+    color: inherit;
+    cursor: pointer;
+  }
+
+  .msn-portal .portal-nav button:hover {
+    color: #0f172a;
+    /* slate-900 */
+  }
+}
+
+.msn-portal .portal-search {
+  position: relative;
+  width: 320px;
+  max-width: 100%;
+}
+
+.msn-portal .portal-search input {
+  width: 100%;
+  height: 40px;
+  padding: 0 12px 0 36px;
+  border: 1px solid #cbd5e1;
+  /* slate-300 */
+  border-radius: 9999px;
+  background: #fff;
+  font-size: 0.875rem;
+  outline: none;
+}
+
+.msn-portal .portal-search input:focus {
+  border-color: #a78bfa;
+  /* purple-400 */
+  box-shadow: 0 0 0 2px rgba(167, 139, 250, 0.35);
+}
+
+.msn-portal .card {
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  /* slate-200 */
+  border-radius: 12px;
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+  overflow: hidden;
+}
+
+.msn-portal .card.hoverable:hover {
+  box-shadow: 0 4px 14px rgba(2, 6, 23, 0.08);
+}
+
+.msn-portal .widget {
+  padding: 20px;
+}
+
+.msn-portal .widget-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: #334155;
+  /* slate-700 */
+}
+
+.msn-portal .portal-shortcut {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  background: #fff;
+  cursor: pointer;
+}
+
+.msn-portal .portal-shortcut:hover {
+  box-shadow: 0 4px 14px rgba(2, 6, 23, 0.08);
+}
+
+.msn-portal .hero-grid {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+}
+
+.msn-portal .top-cards {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.msn-portal .content-grid {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: 24px;
+  height: 100%;
+}
+
+.msn-portal .col-8 {
+  grid-column: span 8 / span 8;
+}
+
+.msn-portal .col-4 {
+  grid-column: span 4 / span 4;
+}
+
+.msn-portal .shortcuts {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 12px;
+}

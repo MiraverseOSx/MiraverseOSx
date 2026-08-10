@@ -1,0 +1,145 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v8.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v8.0": {
+      "MiraverseOSx/1.0.0": {
+        "dependencies": {
+          "Photino.NET": "4.0.16",
+          "Python.Included": "3.11.4"
+        },
+        "runtime": {
+          "MiraverseOSx.dll": {}
+        }
+      },
+      "Photino.Native/4.0.22": {
+        "runtimeTargets": {
+          "runtimes/linux-arm64/native/Photino.Native.so": {
+            "rid": "linux-arm64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/linux-x64/native/Photino.Native.so": {
+            "rid": "linux-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/osx-arm64/native/Photino.Native.dylib": {
+            "rid": "osx-arm64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/osx-x64/native/Photino.Native.dylib": {
+            "rid": "osx-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/win-arm64/native/Photino.Native.dll": {
+            "rid": "win-arm64",
+            "assetType": "native",
+            "fileVersion": "4.0.0.0"
+          },
+          "runtimes/win-arm64/native/WebView2Loader.dll": {
+            "rid": "win-arm64",
+            "assetType": "native",
+            "fileVersion": "1.0.2903.40"
+          },
+          "runtimes/win-x64/native/Photino.Native.dll": {
+            "rid": "win-x64",
+            "assetType": "native",
+            "fileVersion": "4.0.0.0"
+          },
+          "runtimes/win-x64/native/WebView2Loader.dll": {
+            "rid": "win-x64",
+            "assetType": "native",
+            "fileVersion": "1.0.2903.40"
+          }
+        }
+      },
+      "Photino.NET/4.0.16": {
+        "dependencies": {
+          "Photino.Native": "4.0.22"
+        },
+        "runtime": {
+          "lib/net8.0/Photino.NET.dll": {
+            "assemblyVersion": "4.0.16.0",
+            "fileVersion": "4.0.16.0"
+          }
+        }
+      },
+      "Python.Deployment/2.0.3": {
+        "runtime": {
+          "lib/netstandard2.0/Python.Deployment.dll": {
+            "assemblyVersion": "1.5.0.0",
+            "fileVersion": "1.5.0.0"
+          }
+        }
+      },
+      "Python.Included/3.11.4": {
+        "dependencies": {
+          "Python.Deployment": "2.0.3",
+          "pythonnet": "3.0.1"
+        },
+        "runtime": {
+          "lib/netstandard2.0/Python.Included.dll": {
+            "assemblyVersion": "3.10.0.0",
+            "fileVersion": "3.10.0.0"
+          }
+        }
+      },
+      "pythonnet/3.0.1": {
+        "runtime": {
+          "lib/netstandard2.0/Python.Runtime.dll": {
+            "assemblyVersion": "3.0.1.0",
+            "fileVersion": "3.0.1.0"
+          }
+        }
+      }
+    }
+  },
+  "libraries": {
+    "MiraverseOSx/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Photino.Native/4.0.22": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-VIHipEOe4CZ7HElZE8zTwcvANOsCZ2yak/4nQ4LXzjdlwIjdbY8htmHfNR6rRPgWlCfTfT349GCa6V6Id2/Xyg==",
+      "path": "photino.native/4.0.22",
+      "hashPath": "photino.native.4.0.22.nupkg.sha512"
+    },
+    "Photino.NET/4.0.16": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-2oTFsxt8XpLlVvtChlBD8HzLw6MgfHF+DQ4aLEDfgc4GbYjumEywB1JMfWDChm2Whfkr4ZF7DV2deRrpitiBcw==",
+      "path": "photino.net/4.0.16",
+      "hashPath": "photino.net.4.0.16.nupkg.sha512"
+    },
+    "Python.Deployment/2.0.3": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-rgvvL85q7d3QR0/TKupVdn4r+h/nGTZ+x+35l+GovHfo6HuLuY8RRHfZ+/XJ2C4hJA2KRq9rA/ebnfh8bSKpEA==",
+      "path": "python.deployment/2.0.3",
+      "hashPath": "python.deployment.2.0.3.nupkg.sha512"
+    },
+    "Python.Included/3.11.4": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-v+Jo+bgk74RS4WH1FEQJEQPEcCl5zXOzO/bKbi7SPIwKypdYNMIaewIUx1Gm7q2AbUjU3By+l7ENWM+ViR11Aw==",
+      "path": "python.included/3.11.4",
+      "hashPath": "python.included.3.11.4.nupkg.sha512"
+    },
+    "pythonnet/3.0.1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-FYgnTnIUDE/9CC1m/046UvevJW9RYLtvyc98pycc+76lFG+MdTlwkKoG63RkvPKgbqlJJSMqu8zxeiqHS8vR9Q==",
+      "path": "pythonnet/3.0.1",
+      "hashPath": "pythonnet.3.0.1.nupkg.sha512"
+    }
+  }
+}
