@@ -67,7 +67,7 @@ export default function DesktopTaskbar({
   ];
 
   return (
-    <footer className="fixed bottom-0 left-0 right-0 z-20 flex h-12 items-center justify-between border-t border-[#1b254f]/35 bg-white/58 px-4 select-none font-ui text-xs shadow-none backdrop-blur-[18px]">
+    <footer className="fixed bottom-0 left-0 right-0 z-20 flex h-12 items-center justify-between border-t border-slate-800 bg-[#090e1a] px-4 select-none font-ui text-xs shadow-2xl text-slate-100">
       {/* Left Controls: Utilities Launcher, Window Buttons, Search */}
       <div className="relative flex items-center gap-3">
         {/* Utilities Drawer Popup */}
@@ -77,10 +77,10 @@ export default function DesktopTaskbar({
               initial={{ opacity: 0, y: 12, scale: 0.96 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: 12, scale: 0.96 }}
-              className="absolute bottom-14 left-0 z-50 w-[280px] space-y-3 border border-[#1b254f]/30 bg-white/80 p-4 text-[#1b254f] shadow-none backdrop-blur-[18px] font-ui"
+              className="absolute bottom-14 left-0 z-50 w-[280px] space-y-3 border border-slate-700 bg-slate-900 p-4 text-slate-100 shadow-2xl rounded-lg font-ui"
             >
-              <div className="flex items-center justify-between border-b border-slate-200 pb-2.5 mb-1 px-1">
-                <div className="flex items-center gap-1.5 font-display text-sm text-[#1b254f]">
+              <div className="flex items-center justify-between border-b border-slate-800 pb-2.5 mb-1 px-1">
+                <div className="flex items-center gap-1.5 font-display text-sm text-sky-300 font-bold">
                   <PublicIcon src="/icons/Icon set 1/0.5x/Star 256 px.png" size={14} /> System utilities
                 </div>
               </div>
@@ -92,7 +92,7 @@ export default function DesktopTaskbar({
                     item.action();
                     setIsLauncherOpen(false);
                   }}
-                  className="flex w-full items-center gap-3 border border-transparent px-3 py-2.5 text-xs font-semibold hover:border-[#1b254f]/25 hover:bg-white/60 transition"
+                  className="flex w-full items-center gap-3 border border-slate-800 rounded-md px-3 py-2.5 text-xs font-semibold bg-slate-800/80 hover:bg-slate-700 text-slate-200 transition"
                 >
                   {item.icon && <PublicIcon src={item.icon} size={16} />}
                   <span>{item.label}</span>
@@ -104,16 +104,16 @@ export default function DesktopTaskbar({
 
         <button
           onClick={() => setIsLauncherOpen((open) => !open)}
-          className="flex items-center gap-2 border-r border-[#1b254f]/25 pr-3 text-[10px] font-semibold tracking-[.14em] text-[#1b254f] hover:text-[#7657a6] transition"
+          className="flex items-center gap-2 border-r border-slate-800 pr-3 text-[10px] font-bold tracking-[.14em] text-sky-400 hover:text-sky-300 transition"
         >
           <PublicIcon src="/icons/Icon set 1/0.5x/Menu 256 px.png" size={16} /> Utilities
         </button>
 
         <button
           onClick={onToggleSidebars}
-          className={`flex h-8 items-center gap-2 border px-2.5 text-[10px] font-semibold tracking-wide transition ${areSidebarsVisible
-              ? 'border-[#1b254f]/25 bg-white/40 text-[#1b254f] hover:bg-white/65'
-              : 'border-[#7657a6] bg-[#7657a6] text-white'
+          className={`flex h-8 items-center gap-2 border px-2.5 text-[10px] font-semibold tracking-wide rounded-md transition ${areSidebarsVisible
+              ? 'border-slate-700 bg-slate-800 text-slate-200 hover:bg-slate-700'
+              : 'border-sky-500 bg-sky-600 text-white'
             }`}
           title={areSidebarsVisible ? 'Hide sidebars and open workspace' : 'Restore desktop sidebars'}
           aria-pressed={!areSidebarsVisible}
@@ -128,9 +128,9 @@ export default function DesktopTaskbar({
             <button
               key={win.id}
               onClick={() => toggleApp(win)}
-              className={`flex items-center gap-1.5 px-3 py-1 rounded-none text-xs font-semibold border shadow-none transition ${!win.isMinimized
-                  ? 'bg-[#7657a6] text-white border-[#7657a6]'
-                  : 'bg-white/40 text-[#1b254f] border-[#1b254f]/25 hover:bg-white/60'
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-semibold border transition ${!win.isMinimized
+                  ? 'bg-sky-600 text-white border-sky-400 font-bold'
+                  : 'bg-slate-800 text-slate-300 border-slate-700 hover:bg-slate-700'
                 }`}
             >
               <span>{win.title}</span>
@@ -138,7 +138,7 @@ export default function DesktopTaskbar({
           ))}
         </div>
 
-        <div className="h-4 w-[1px] bg-slate-300/50 mx-1" />
+        <div className="h-4 w-[1px] bg-slate-800 mx-1" />
 
         {/* Search Bar */}
         <div className="relative flex items-center">
@@ -146,7 +146,7 @@ export default function DesktopTaskbar({
           <input
             type="text"
             placeholder="Search city records..."
-            className="h-8 w-36 sm:w-44 rounded-none border border-[#1b254f]/25 bg-white/40 backdrop-blur-sm pl-8 pr-3 text-[11px] text-[#1b254f] placeholder:text-[#8b92a7] focus:border-[#7657a6] focus:outline-none"
+            className="h-8 w-36 sm:w-44 rounded-md border border-slate-700 bg-slate-900 pl-8 pr-3 text-[11px] text-slate-200 placeholder:text-slate-500 focus:border-sky-400 focus:outline-none"
           />
         </div>
       </div>
@@ -155,14 +155,14 @@ export default function DesktopTaskbar({
       <div className="relative flex items-center gap-2.5">
         <button
           onClick={() => openApp('settings')}
-          className="grid h-9 w-9 place-items-center border border-[#1b254f]/30 bg-white/40 transition hover:bg-white/70"
+          className="grid h-8 w-8 place-items-center rounded-md border border-slate-700 bg-slate-800 transition hover:bg-slate-700"
           title="System Settings"
           aria-label="Open system settings"
         >
           <img
             src="/icons/Icons8/icons8-settings-50.gif"
             alt=""
-            className="h-5 w-5 object-contain"
+            className="h-4 w-4 object-contain"
             aria-hidden="true"
           />
         </button>
@@ -171,7 +171,7 @@ export default function DesktopTaskbar({
           onClick={() => toggleSanctuary()}
           size="sm"
           variant="outline"
-          className="flex items-center gap-1 border-[#1b254f]/25 bg-white/40 text-[#1b254f] hover:bg-white/60 text-[11px] font-ui rounded-none shadow-none backdrop-blur-sm"
+          className="flex items-center gap-1 border-slate-700 bg-slate-800 text-slate-200 hover:bg-slate-700 text-[11px] font-ui rounded-md shadow-none"
           title="Clear Desktop Canvas"
         >
           <PublicIcon src="/icons/Icon set 1/0.5x/Lock 256 px.png" size={13} />
@@ -182,7 +182,7 @@ export default function DesktopTaskbar({
           onClick={() => logoutUser()}
           size="sm"
           variant="outline"
-          className="flex items-center gap-1 border-[#1b254f]/25 bg-white/40 text-[#1b254f] hover:bg-white/60 text-[11px] font-ui rounded-none shadow-none backdrop-blur-sm"
+          className="flex items-center gap-1 border-slate-700 bg-slate-800 text-slate-200 hover:bg-slate-700 text-[11px] font-ui rounded-md shadow-none"
           title="Log Out of Municipal OS"
         >
           <PublicIcon src="/icons/Icon set 1/0.5x/Power sign 256 px.png" size={13} />

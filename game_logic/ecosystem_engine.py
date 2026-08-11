@@ -1,11 +1,19 @@
 """
 Ecosystem Engine for MiraverseOSx
 Calculates world simulation ticks, corruption spread, resource flows, and weather/astral cycles.
+Supports Cython C-extension acceleration with seamless pure Python fallback.
 """
 
 import math
 import random
 import time
+import json
+
+try:
+    from .ecosystem_engine_cy import calculate_tick_cy
+    HAS_CYTHON = True
+except ImportError:
+    HAS_CYTHON = False
 
 class EcosystemEngine:
     def __init__(self):
@@ -51,6 +59,7 @@ class EcosystemEngine:
         return {
             "tick": self.tick_count,
             "timestamp": time.time(),
+            "engine": "Python_Fallback",
             "state": self.world_state
         }
 
@@ -58,4 +67,9 @@ class EcosystemEngine:
 engine_instance = EcosystemEngine()
 
 def calculate_tick():
-    return engine_instance.process_tick()
+    if HAS_CYTHON:
+        try:
+            return calculate_tick_cy()
+        except Exception:
+            pass
+    return json.dumps(engine_instance.process_tick())

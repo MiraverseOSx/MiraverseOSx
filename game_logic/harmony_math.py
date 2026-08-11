@@ -2,10 +2,18 @@
 Harmony Math for MiraverseOSx
 Handles complex resolution math: spell synthesis efficiency, hacking probability,
 combat checks, and elemental harmony matrices.
+Supports Cython C-extension acceleration with seamless pure Python fallback.
 """
 
 import math
 import random
+import json
+
+try:
+    from .harmony_math_cy import resolve_spell_cy, resolve_hack_cy
+    HAS_CYTHON_MATH = True
+except ImportError:
+    HAS_CYTHON_MATH = False
 
 class HarmonyMath:
     def __init__(self):
@@ -31,6 +39,7 @@ class HarmonyMath:
             final_power = round(final_power * 1.5, 2)
 
         return {
+            "engine": "Python_Fallback",
             "element": element,
             "final_power": final_power,
             "is_critical": critical_strike,
@@ -45,6 +54,7 @@ class HarmonyMath:
         success = roll < probability
         
         return {
+            "engine": "Python_Fallback",
             "success": success,
             "probability_percent": round(probability * 100, 1),
             "roll": round(roll * 100, 1),
@@ -54,7 +64,17 @@ class HarmonyMath:
 math_instance = HarmonyMath()
 
 def resolve_spell(element, power, rune_level, player_level=1, corruption=0.0):
-    return math_instance.calculate_spell_power(element, power, rune_level, player_level, corruption)
+    if HAS_CYTHON_MATH:
+        try:
+            return resolve_spell_cy(element, float(power), int(rune_level), int(player_level), float(corruption))
+        except Exception:
+            pass
+    return json.dumps(math_instance.calculate_spell_power(element, power, rune_level, player_level, corruption))
 
 def resolve_hack(skill, node_level, layers=1):
-    return math_instance.calculate_hack_success(skill, node_level, layers)
+    if HAS_CYTHON_MATH:
+        try:
+            return resolve_hack_cy(float(skill), float(node_level), int(layers))
+        except Exception:
+            pass
+    return json.dumps(math_instance.calculate_hack_success(skill, node_level, layers))

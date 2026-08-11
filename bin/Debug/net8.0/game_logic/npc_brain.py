@@ -100,4 +100,4 @@ class NPCBrain:
 brain_instance = NPCBrain()
 
 def get_npc_response(npc_name, prompt, context=""):
-    return brain_instance.generate_dialogue(npc_name, prompt, context)
+    return json.dumps(brain_instance.generate_dialogue(npc_name, prompt, context))

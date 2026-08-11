@@ -19,7 +19,10 @@
   - **SpellForge (`SpellForgeApp`)**: 6 Regional Elements, 8 Utility Protocols, and 5 Rune Modifiers with live synthesis and network defense grid.
   - **File Explorer (`FileExplorerApp`)**: Local documents, system records, and encrypted `.arch` archives.
   - **Notice Board (`NoticeBoardApp`)**: Bootstrap 5 multi-tier operations engine tracking Journeys, Adventures, Quests, Tasks, and Missions.
-  - **Taskbar Assistant (Mai)**: Persistent taskbar companion with onboarding guidance and PRISM corruption reactive states.
+- **AI Logic & Agent Orchestrator**:
+  - **Groq API Engine (`miragroq`)**: Sub-second, real-time LLM inference native to the OS.
+  - **Local Cloud (LocalStack Desktop / Docker)**: Emulates AWS cloud services (S3 asset storage, DynamoDB civic records, SQS telemetry) locally at `http://localhost:4566`.
+  - **Agent Orchestrator (`mcp-agents-groq`)**: Node.js MCP server framework orchestrating AI agents, tool calls, and workflow generation with web UI dashboard on port `5050`.
 
 ---
 

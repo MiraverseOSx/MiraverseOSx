@@ -58,5 +58,7 @@ class MissionDirector:
 
 director_instance = MissionDirector()
 
+import json
+
 def create_procedural_mission(player_level=1, region=None):
-    return director_instance.generate_mission(player_level, region)
+    return json.dumps(director_instance.generate_mission(player_level, region))

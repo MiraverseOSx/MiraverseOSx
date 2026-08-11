@@ -1,0 +1,1 @@
+import{j as r}from"./react-core-DJVB7uHZ.js";import{M as t}from"./MaiSpacePortal-CdVwq3kW.js";import"./vendor-ihEKISw7.js";import"./index-De4rhBc0.js";import"./framer-motion-Ct3qxJmb.js";function s(){return r.jsx(t,{})}export{s as default};

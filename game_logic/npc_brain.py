@@ -1,17 +1,19 @@
 """
 NPC Brain for MiraverseOSx
-Integrates with local Ollama AI endpoint (http://localhost:11434/api/generate)
-with seamless fallback responses for offline / non-Ollama environments.
+Integrates with Groq API (miragroq key) for ultra-fast, real-time AI inference
+and mcp-agents-groq Agent Orchestrator with seamless fallback responses.
 """
 
 import json
+import os
 import urllib.request
 import urllib.error
 
 class NPCBrain:
-    def __init__(self, ollama_url="http://localhost:11434/api/generate", default_model="llama3"):
-        self.ollama_url = ollama_url
+    def __init__(self, groq_api_key=None, default_model="llama-3.3-70b-versatile", orchestrator_url="http://localhost:5050/api/agent"):
+        self.groq_api_key = groq_api_key or os.environ.get("GROQ_API_KEY", "miragroq")
         self.default_model = default_model
+        self.orchestrator_url = orchestrator_url
         
         self.personas = {
             "Mai": {
@@ -56,33 +58,65 @@ class NPCBrain:
             f"{system_context}"
         )
 
-        payload = {
-            "model": self.default_model,
-            "prompt": f"System: {system_instruction}\nUser: {prompt}\n{npc_name}:",
-            "stream": False
-        }
-
+        # 1. Try MCP Agent Orchestrator endpoint first
         try:
+            orch_payload = {
+                "prompt": f"[{npc_name}] {prompt}",
+                "context": system_instruction
+            }
             req = urllib.request.Request(
-                self.ollama_url,
-                data=json.dumps(payload).encode("utf-8"),
+                self.orchestrator_url,
+                data=json.dumps(orch_payload).encode("utf-8"),
                 headers={"Content-Type": "application/json"},
                 method="POST"
             )
-            with urllib.request.urlopen(req, timeout=3) as resp:
+            with urllib.request.urlopen(req, timeout=2) as resp:
                 data = json.loads(resp.read().decode("utf-8"))
-                response_text = data.get("response", "").strip()
-                if response_text:
+                if data.get("response"):
                     return {
                         "npc": npc_name,
-                        "source": "ollama",
+                        "source": "mcp-agents-groq",
                         "model": self.default_model,
-                        "text": response_text
+                        "text": data["response"]
                     }
         except Exception:
-            pass  # Fallback to persona template engine if Ollama endpoint is down
+            pass
 
-        # Fallback response generation
+        # 2. Try Direct Groq API endpoint with miragroq key
+        if self.groq_api_key:
+            groq_payload = {
+                "model": self.default_model,
+                "messages": [
+                    {"role": "system", "content": system_instruction},
+                    {"role": "user", "content": prompt}
+                ],
+                "temperature": 0.6,
+                "max_tokens": 150
+            }
+            try:
+                req = urllib.request.Request(
+                    "https://api.groq.com/openai/v1/chat/completions",
+                    data=json.dumps(groq_payload).encode("utf-8"),
+                    headers={
+                        "Content-Type": "application/json",
+                        "Authorization": f"Bearer {self.groq_api_key}"
+                    },
+                    method="POST"
+                )
+                with urllib.request.urlopen(req, timeout=2) as resp:
+                    data = json.loads(resp.read().decode("utf-8"))
+                    text = data.get("choices", [{}])[0].get("message", {}).get("content", "").strip()
+                    if text:
+                        return {
+                            "npc": npc_name,
+                            "source": "Groq API (miragroq)",
+                            "model": self.default_model,
+                            "text": text
+                        }
+            except Exception:
+                pass
+
+        # 3. Fallback response generation
         fallback_templates = [
             f"[{persona['role']}] {prompt[:30]}... Understood. We must maintain harmony across the grid.",
             f"[{persona['role']}] Direct signal received. Ensure your civic registration and elemental matrix are synced.",
@@ -100,4 +134,5 @@ class NPCBrain:
 brain_instance = NPCBrain()
 
 def get_npc_response(npc_name, prompt, context=""):
-    return brain_instance.generate_dialogue(npc_name, prompt, context)
+    return json.dumps(brain_instance.generate_dialogue(npc_name, prompt, context))
+

@@ -43,10 +43,28 @@ export const apiClient = {
     );
   },
 
-  async sendMAIPrompt(prompt) {
+  async sendMAIPrompt(prompt, context = {}) {
+    try {
+      const res = await fetch('http://localhost:5050/api/agent', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ prompt, context: JSON.stringify(context) })
+      });
+      if (res.ok) {
+        const data = await res.json();
+        return {
+          thought: data.thought || 'mcp-agents-groq (Groq Inference)',
+          response: data.response || `MAI Assistant: Processed "${prompt}"`,
+          action: data.action || null,
+          source: data.source || 'Groq API'
+        };
+      }
+    } catch (err) {
+      // Clean fallback to native client logic if server is offline
+    }
     return {
       thought: 'Client MAI Logic',
-      response: `MAI Assistant: Processing "${prompt}" in native standalone mode.`,
+      response: `MAI Assistant: Processing "${prompt}" in native OS standalone mode.`,
       action: null,
     };
   },

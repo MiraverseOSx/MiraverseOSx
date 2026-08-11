@@ -110,10 +110,10 @@ export default function MAIDock() {
             initial={{ opacity: 0, y: 10, scale: 0.96 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 10, scale: 0.96 }}
-            className={`absolute bottom-14 right-0 w-96 rounded-2xl border p-4 shadow-2xl select-none text-white backdrop-blur-2xl ${
+            className={`absolute bottom-14 right-0 w-96 rounded-2xl border p-4 shadow-2xl select-none text-white ${
               isCorrupted
-                ? 'border-pink-500/80 bg-black/95 text-pink-100 shadow-[0_0_30px_rgba(236,72,153,0.3)]'
-                : 'border-purple-500/40 bg-[#0d0724]/95 text-purple-100'
+                ? 'border-pink-500 bg-slate-950 text-pink-100 shadow-[0_0_30px_rgba(236,72,153,0.3)]'
+                : 'border-purple-600 bg-slate-900 text-purple-100 shadow-2xl'
             }`}
           >
             {/* Header */}

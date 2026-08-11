@@ -91,23 +91,23 @@ export default function Window({ win, workspaceRef, isFocusMode = false, windowI
     height: windowRect.height,
   };
 
-  const baseFrame = 'rounded-none border border-[#1b254f]/35 bg-white/60 backdrop-blur-[18px] shadow-none';
-  const baseBody = 'bg-white/45 text-[#1b254f] font-ui';
+  const baseFrame = 'rounded-none border border-slate-700 bg-slate-900 shadow-2xl';
+  const baseBody = 'bg-slate-900 text-slate-100 font-ui';
   const themePresets = {
-    browser: { frameClass: baseFrame, headerActiveClass: 'bg-[#d8ccec]/75 text-[#1b254f] border-b border-[#1b254f]/35 font-ui font-semibold', headerInactiveClass: 'bg-white/45 text-[#303b67] border-b border-[#1b254f]/25 font-ui', bodyClass: baseBody },
-    spellforge: { frameClass: baseFrame, headerActiveClass: 'bg-[#7657a6]/18 text-[#1b254f] border-b border-[#7657a6]/50 font-lore font-semibold', headerInactiveClass: 'bg-[#d8ccec]/35 text-[#303b67] border-b border-[#7657a6]/30 font-lore', bodyClass: `${baseBody} font-lore` },
-    files: { frameClass: baseFrame, headerActiveClass: 'bg-[#8b92a7]/22 text-[#1b254f] border-b border-[#1b254f]/35 font-ui uppercase font-semibold text-[11px]', headerInactiveClass: 'bg-white/45 text-[#303b67] border-b border-[#1b254f]/25 font-ui uppercase text-[11px]', bodyClass: baseBody },
-    comms: { frameClass: baseFrame, headerActiveClass: 'bg-[#279d8f]/16 text-[#1b254f] border-b border-[#279d8f]/55 font-ui uppercase tracking-wider text-[11px] font-semibold', headerInactiveClass: 'bg-white/45 text-[#303b67] border-b border-[#279d8f]/30 font-ui tracking-wider text-[11px]', bodyClass: baseBody },
-    mail: { frameClass: baseFrame, headerActiveClass: 'bg-[#303b67]/14 text-[#1b254f] border-b border-[#303b67]/45 font-ui uppercase tracking-wider text-[11px] font-semibold', headerInactiveClass: 'bg-white/45 text-[#303b67] border-b border-[#303b67]/25 font-ui tracking-wider text-[11px]', bodyClass: baseBody },
-    passport: { frameClass: baseFrame, headerActiveClass: 'bg-[#b38a36]/16 text-[#1b254f] border-b border-[#b38a36]/55 font-display', headerInactiveClass: 'bg-white/45 text-[#303b67] border-b border-[#b38a36]/30 font-display', bodyClass: `${baseBody} font-body` },
-    board: { frameClass: baseFrame, headerActiveClass: 'bg-[#d591ad]/18 text-[#1b254f] border-b border-[#d591ad]/55 font-display', headerInactiveClass: 'bg-white/45 text-[#303b67] border-b border-[#d591ad]/30 font-display', bodyClass: baseBody },
-    settings: { frameClass: baseFrame, headerActiveClass: 'bg-[#8b92a7]/18 text-[#1b254f] border-b border-[#1b254f]/35 font-ui font-semibold', headerInactiveClass: 'bg-white/45 text-[#303b67] border-b border-[#1b254f]/25 font-ui', bodyClass: baseBody }
+    browser: { frameClass: baseFrame, headerActiveClass: 'bg-slate-800 text-slate-100 border-b border-slate-700 font-ui font-semibold', headerInactiveClass: 'bg-slate-900 text-slate-400 border-b border-slate-800 font-ui', bodyClass: baseBody },
+    spellforge: { frameClass: baseFrame, headerActiveClass: 'bg-purple-950 text-purple-200 border-b border-purple-800 font-lore font-semibold', headerInactiveClass: 'bg-slate-900 text-slate-400 border-b border-slate-800 font-lore', bodyClass: `${baseBody} font-lore` },
+    files: { frameClass: baseFrame, headerActiveClass: 'bg-slate-800 text-slate-100 border-b border-slate-700 font-ui uppercase font-semibold text-[11px]', headerInactiveClass: 'bg-slate-900 text-slate-400 border-b border-slate-800 font-ui uppercase text-[11px]', bodyClass: baseBody },
+    comms: { frameClass: baseFrame, headerActiveClass: 'bg-teal-950 text-teal-200 border-b border-teal-800 font-ui uppercase tracking-wider text-[11px] font-semibold', headerInactiveClass: 'bg-slate-900 text-slate-400 border-b border-slate-800 font-ui tracking-wider text-[11px]', bodyClass: baseBody },
+    mail: { frameClass: baseFrame, headerActiveClass: 'bg-indigo-950 text-indigo-200 border-b border-indigo-800 font-ui uppercase tracking-wider text-[11px] font-semibold', headerInactiveClass: 'bg-slate-900 text-slate-400 border-b border-slate-800 font-ui tracking-wider text-[11px]', bodyClass: baseBody },
+    passport: { frameClass: baseFrame, headerActiveClass: 'bg-amber-950 text-amber-200 border-b border-amber-800 font-display', headerInactiveClass: 'bg-slate-900 text-slate-400 border-b border-slate-800 font-display', bodyClass: `${baseBody} font-body` },
+    board: { frameClass: baseFrame, headerActiveClass: 'bg-pink-950 text-pink-200 border-b border-pink-800 font-display', headerInactiveClass: 'bg-slate-900 text-slate-400 border-b border-slate-800 font-display', bodyClass: baseBody },
+    settings: { frameClass: baseFrame, headerActiveClass: 'bg-slate-800 text-slate-100 border-b border-slate-700 font-ui font-semibold', headerInactiveClass: 'bg-slate-900 text-slate-400 border-b border-slate-800 font-ui', bodyClass: baseBody }
   };
 
   const activePreset = themePresets[win.id] || {};
   const frameClass = activePreset.frameClass || baseFrame;
-  const headerActiveClass = activePreset.headerActiveClass || 'bg-[#d8ccec]/65 text-[#1b254f] border-b border-[#1b254f]/35 font-ui font-semibold';
-  const headerInactiveClass = activePreset.headerInactiveClass || 'bg-white/45 text-[#303b67] border-b border-[#1b254f]/25 font-ui';
+  const headerActiveClass = activePreset.headerActiveClass || 'bg-slate-800 text-slate-100 border-b border-slate-700 font-ui font-semibold';
+  const headerInactiveClass = activePreset.headerInactiveClass || 'bg-slate-900 text-slate-400 border-b border-slate-800 font-ui';
   const bodyClass = activePreset.bodyClass || baseBody;
 
   const isBrowser = win.id === 'browser';

@@ -23,7 +23,7 @@ export default function PlayerRegistrationForm({ onClose }) {
   };
 
   return (
-    <div className="p-5 bg-slate-900/90 text-slate-100 rounded-xl border border-sky-500/30 backdrop-blur-md shadow-2xl max-w-md mx-auto">
+    <div className="p-5 bg-slate-900 text-slate-100 rounded-xl border border-slate-700 shadow-2xl max-w-md mx-auto">
       <div className="flex items-center gap-3 mb-4 pb-3 border-b border-sky-500/20">
         <UserCheck className="w-6 h-6 text-sky-400" />
         <h2 className="text-xl font-bold tracking-wide text-sky-300">Biometric Civic Calibration</h2>
