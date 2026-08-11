@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Sparkles, Send, Bot, Terminal, ChevronUp, ChevronDown, CheckCircle2, AlertCircle, ShieldAlert, FileText, HelpCircle, Activity } from 'lucide-react';
 import { useOSStore } from '../store/useOSStore';
 import { useWorldStore } from '../store/useWorldStore';
+import { useGameStore } from '../store/useGameStore';
 import { APPS } from '../apps/registry';
 import soundEngine from '../utils/soundEngine';
 
@@ -64,8 +65,9 @@ export default function MAIDock() {
       }
     }
 
-    // Call Express API / WorldAuthority for lore, NPCs, and dynamic AI responses
+    // Call Express API / WorldAuthority & Python Ollama Brain for dynamic AI responses
     try {
+      useGameStore.getState().requestNPCDialogue('Mai', userQuery);
       const response = await sendMAIPrompt(userQuery, { active_app: 'Desktop' });
       setStatus('executing');
       soundEngine.playSuccess();

@@ -15,7 +15,7 @@ const sendToPhotinoHost = (action, payload = {}) => {
 
 export const useGameStore = create((setStore, getStore) => ({
   // World & Ecosystem State
-  tickCount: 0,
+  tickCount: 1,
   worldState: {
     corruption_level: 12.4,
     prism_harmonic: 88.5,
@@ -58,6 +58,17 @@ export const useGameStore = create((setStore, getStore) => ({
       description: "Bypass regional firewalls and sync your biometric profile.",
       rewards: { xp: 200, credits: 350, item: "Aura Credits" },
       status: "Available"
+    },
+    {
+      id: "MIS-INIT-02",
+      title: "Aether Matrix Stabilization",
+      type: "Aether Purification",
+      region: "Orynvell Shallows",
+      faction: "Aureline Academy",
+      difficulty: "Adept",
+      description: "Purge corruption spores infecting the regional node with SpellForge runes.",
+      rewards: { xp: 350, credits: 600, item: "Elemental Runes" },
+      status: "Available"
     }
   ],
 
@@ -69,6 +80,9 @@ export const useGameStore = create((setStore, getStore) => ({
       text: "Welcome to MiraverseOSx! Photino-Python bridge active."
     }
   ],
+
+  // Cast Spell Log
+  spellLog: [],
 
   // IPC Connection Status
   ipcConnected: false,
@@ -118,6 +132,39 @@ export const useGameStore = create((setStore, getStore) => ({
     sendToPhotinoHost('generate_mission', { level: p.level });
   },
 
+  completeMission: (missionId) => {
+    const state = getStore();
+    const mission = state.missions.find((m) => m.id === missionId);
+    if (!mission) return;
+
+    const rewardXP = mission.rewards?.xp || 200;
+    const rewardCredits = mission.rewards?.credits || 300;
+    const newXP = state.player.xp + rewardXP;
+    const newLevel = Math.floor(newXP / 500) + 1;
+    const newCredits = state.player.credits + rewardCredits;
+
+    // Update player and decrease corruption
+    const updatedWorld = {
+      ...state.worldState,
+      corruption_level: Math.max(0, Math.round((state.worldState.corruption_level - 1.5) * 10) / 10),
+      prism_harmonic: Math.min(100, Math.round((state.worldState.prism_harmonic + 1.2) * 10) / 10)
+    };
+
+    setStore({
+      player: {
+        ...state.player,
+        xp: newXP,
+        level: newLevel,
+        credits: newCredits
+      },
+      worldState: updatedWorld,
+      missions: state.missions.filter((m) => m.id !== missionId)
+    });
+
+    // Save updated player profile
+    getStore().registerPlayer({});
+  },
+
   requestNPCDialogue: (npcName, prompt) => {
     sendToPhotinoHost('npc_dialogue', { npc: npcName, prompt });
   },
@@ -152,7 +199,9 @@ export const useGameStore = create((setStore, getStore) => ({
         dialogueHistory: [payload, ...state.dialogueHistory.slice(0, 9)]
       }));
     } else if (action === 'resolution_result') {
-      console.log('Spell/Hack resolution result:', payload);
+      setStore((state) => ({
+        spellLog: [payload, ...state.spellLog.slice(0, 4)]
+      }));
     }
   }
 }));

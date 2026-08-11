@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { useOSStore } from '../store/useOSStore';
+import { useGameStore } from '../store/useGameStore';
 import {
     Compass, Zap, Scroll, Briefcase, Sparkles, Award, Lock, Play, Globe,
     Check, MessageSquare, MapPin, User, FileCode, Search, CircleDot, Gift,
@@ -93,6 +94,10 @@ export default function NoticeBoardApp() {
         if (selectedActivity.rewards?.skillXP) {
             addSkillXP(selectedActivity.rewards.skillXP.skill, selectedActivity.rewards.skillXP.amount);
         }
+
+        // Sync with central useGameStore & Python world tick
+        useGameStore.getState().completeMission(selectedActivity.id);
+        useGameStore.getState().requestTick();
 
         pushToast({
             title: 'Rewards claimed',

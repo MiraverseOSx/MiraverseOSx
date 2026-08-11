@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useOSStore } from '../store/useOSStore';
+import { useGameStore } from '../store/useGameStore';
 import {
   Sparkles, Shield, Flame, Zap, Compass, Award, RefreshCw, AlertTriangle,
   CheckCircle2, Activity, Layers, BookOpen, ChevronRight, Lock
@@ -121,6 +122,7 @@ export default function SpellForgeApp() {
       advanceAppRank('weaver');
       addSkillXP('Spellcasting', xpBonus);
       addSkillXP('Engineering', xpBonus);
+      useGameStore.getState().requestSpellResolution(selectedElement || 'Aether', 50, selectedRune ? 2 : 1);
       setLog((prev) => [
         `✨ Spell Synthesized: [${spellName}] (${match ? match.desc : 'Stabilized Protocol'}) (+${xpBonus} Spell & Eng XP)`,
         `Rune [${selectedRune || 'Standard'}] applied. Veil Strain: ${Math.min(100, veilStrain + strainIncrease)}%.`,

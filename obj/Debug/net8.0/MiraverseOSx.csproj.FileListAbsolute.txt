@@ -642,3 +642,4 @@ M:\MiraverseOSx\obj\Debug\net8.0\refint\MiraverseOSx.dll
 M:\MiraverseOSx\obj\Debug\net8.0\MiraverseOSx.pdb
 M:\MiraverseOSx\obj\Debug\net8.0\MiraverseOSx.genruntimeconfig.cache
 M:\MiraverseOSx\obj\Debug\net8.0\ref\MiraverseOSx.dll
+M:\MiraverseOSx\bin\Debug\net8.0\game_logic\test.py

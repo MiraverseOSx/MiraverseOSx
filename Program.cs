@@ -1,7 +1,10 @@
 using System;
 using System.IO;
+using System.Net;
+using System.Text;
 using System.Text.Json;
 using System.Text.Json.Nodes;
+using System.Threading.Tasks;
 using Photino.NET;
 using Python.Included;
 using Python.Runtime;
@@ -11,10 +14,15 @@ namespace MiraverseOSx
     class Program
     {
         private static PhotinoWindow? _mainWindow;
+        private static HttpListener? _httpServer;
+        private const int ServerPort = 5000;
 
         [STAThread]
         static void Main(string[] args)
         {
+            // Start lightweight local HTTP server for wwwroot assets
+            StartLocalWebServer();
+
             // Initialize Photino native window
             _mainWindow = new PhotinoWindow()
                 .SetTitle("Miraverse OS x - Celestial Operating System")
@@ -23,61 +31,127 @@ namespace MiraverseOSx
                 .Center()
                 .SetResizable(true);
 
-            // Setup Python.Included embedded engine background thread or process bridge
+            // Initialize Python Engine asynchronously
             InitializePythonEngine();
 
             // Register web message IPC bridge handler
             _mainWindow.RegisterWebMessageReceivedHandler(OnWebMessageReceived);
 
-            // Path to wwwroot index.html
-            string wwwrootPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "wwwroot", "index.html");
-            if (!File.Exists(wwwrootPath))
-            {
-                // Fallback to project root wwwroot if running in dev environment
-                wwwrootPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "index.html");
-            }
-
-            if (File.Exists(wwwrootPath))
-            {
-                _mainWindow.Load(wwwrootPath);
-            }
-            else
-            {
-                _mainWindow.LoadRawString(@"
-                    <html>
-                        <body style='font-family: sans-serif; background: #0f172a; color: #f8fafc; padding: 2rem;'>
-                            <h1>MiraverseOSx Bridge Initialized</h1>
-                            <p>wwwroot/index.html not found. Please build the frontend using <code>npm run build</code> inside the <code>frontend</code> folder.</p>
-                        </body>
-                    </html>
-                ");
-            }
+            // Load app from local web server or file fallback
+            string localUrl = $"http://localhost:{ServerPort}/index.html";
+            _mainWindow.Load(localUrl);
 
             _mainWindow.WaitForClose();
+
+            // Cleanup server on exit
+            StopLocalWebServer();
+        }
+
+        private static void StartLocalWebServer()
+        {
+            Task.Run(() =>
+            {
+                try
+                {
+                    string wwwroot = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "wwwroot");
+                    if (!Directory.Exists(wwwroot))
+                    {
+                        wwwroot = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot");
+                    }
+
+                    _httpServer = new HttpListener();
+                    _httpServer.Prefixes.Add($"http://localhost:{ServerPort}/");
+                    _httpServer.Start();
+                    Console.WriteLine($"[Local Server] Serving wwwroot from '{wwwroot}' on http://localhost:{ServerPort}/");
+
+                    while (_httpServer.IsListening)
+                    {
+                        var context = _httpServer.GetContext();
+                        Task.Run(() => ProcessHttpRequest(context, wwwroot));
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"[Local Server Notice] {ex.Message}");
+                }
+            });
+        }
+
+        private static void ProcessHttpRequest(HttpListenerContext context, string wwwroot)
+        {
+            try
+            {
+                string relPath = context.Request.Url?.AbsolutePath.TrimStart('/') ?? "index.html";
+                if (string.IsNullOrEmpty(relPath)) relPath = "index.html";
+
+                string filePath = Path.Combine(wwwroot, relPath.Replace('/', Path.DirectorySeparatorChar));
+                if (!File.Exists(filePath))
+                {
+                    filePath = Path.Combine(wwwroot, "index.html");
+                }
+
+                byte[] bytes = File.ReadAllBytes(filePath);
+                string ext = Path.GetExtension(filePath).ToLowerInvariant();
+                context.Response.ContentType = ext switch
+                {
+                    ".html" => "text/html",
+                    ".js" => "application/javascript",
+                    ".css" => "text/css",
+                    ".png" => "image/png",
+                    ".jpg" or ".jpeg" => "image/jpeg",
+                    ".svg" => "image/svg+xml",
+                    ".mp4" => "video/mp4",
+                    ".ttf" => "font/ttf",
+                    ".json" => "application/json",
+                    _ => "application/octet-stream"
+                };
+
+                context.Response.ContentLength64 = bytes.Length;
+                context.Response.OutputStream.Write(bytes, 0, bytes.Length);
+                context.Response.OutputStream.Close();
+            }
+            catch
+            {
+                context.Response.StatusCode = 500;
+                context.Response.Close();
+            }
+        }
+
+        private static void StopLocalWebServer()
+        {
+            try
+            {
+                _httpServer?.Stop();
+                _httpServer?.Close();
+            }
+            catch { }
         }
 
         private static void InitializePythonEngine()
         {
-            try
+            Task.Run(async () =>
             {
-                Installer.SetupPython().Wait();
-                PythonEngine.Initialize();
-                PythonEngine.BeginAllowThreads();
-
-                using (Py.GIL())
+                try
                 {
-                    dynamic sys = Py.Import("sys");
-                    string baseDir = Directory.GetCurrentDirectory();
-                    string gameLogicDir = Path.Combine(baseDir, "game_logic");
-                    sys.path.append(gameLogicDir);
-                    sys.path.append(baseDir);
+                    await Installer.SetupPython();
+                    PythonEngine.Initialize();
+                    PythonEngine.BeginAllowThreads();
+
+                    using (Py.GIL())
+                    {
+                        dynamic sys = Py.Import("sys");
+                        string baseDir = Directory.GetCurrentDirectory();
+                        string gameLogicDir = Path.Combine(baseDir, "game_logic");
+                        sys.path.append(gameLogicDir);
+                        sys.path.append(baseDir);
+                    }
+                    Console.WriteLine("[Python Engine] Successfully initialized embedded Python runtime.");
                 }
-                Console.WriteLine("[Python Engine] Successfully initialized embedded Python runtime.");
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"[Python Engine Warning] Embedded Python initialization notice: {ex.Message}. Falling back to dynamic message handling.");
-            }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"[Python Engine Notice] {ex.Message}. Using C# fallback engine.");
+                }
+            });
         }
 
         private static void OnWebMessageReceived(object? sender, string rawMessage)
@@ -212,7 +286,18 @@ namespace MiraverseOSx
                     {
                         npc = payload?["npc"]?.ToString() ?? "Mai",
                         source = "photino_csharp_fallback",
-                        text = $"[Mai System]: Signal received for prompt '{payload?["prompt"]}'. Biometric link verified."
+                        text = $"[{payload?["npc"] ?? "Mai"}]: Received message '{payload?["prompt"]}'. Synchronized with Photino matrix."
+                    }
+                },
+                "calculate_resolution" => new
+                {
+                    action = "resolution_result",
+                    payload = new
+                    {
+                        element = payload?["element"]?.ToString() ?? "Fire",
+                        final_power = (payload?["power"]?.GetValue<int>() ?? 50) * 1.35,
+                        is_critical = random.NextDouble() < 0.2,
+                        efficiency = 92.5
                     }
                 },
                 _ => new { action = "ack", payload = new { status = "received" } }
