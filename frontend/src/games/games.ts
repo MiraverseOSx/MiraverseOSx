@@ -1,4 +1,14 @@
-export const GAMES_CATALOG = [
+export interface GameCatalogItem {
+  id: string;
+  title: string;
+  category: string;
+  difficulty: string;
+  reward: string;
+  icon: string;
+  description: string;
+}
+
+export const GAMES_CATALOG: GameCatalogItem[] = [
   {
     id: 'netrunner',
     title: 'Netrunner Hacking',

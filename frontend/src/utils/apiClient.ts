@@ -4,8 +4,21 @@
  */
 import worldData from '../data/worldData.json' with { type: 'json' };
 
+export interface HealthStatus {
+  status: string;
+  engine: string;
+  uptime: string;
+}
+
+export interface MAIPromptResponse {
+  thought: string;
+  response: string;
+  action: string | null;
+  source?: string;
+}
+
 export const apiClient = {
-  async getHealth() {
+  async getHealth(): Promise<HealthStatus> {
     return { status: 'standalone', engine: 'Native Client-Side Memory', uptime: '100%' };
   },
 
@@ -32,18 +45,18 @@ export const apiClient = {
     return worldData.npcs || [];
   },
 
-  async searchLore(query = '') {
+  async searchLore(query: string = '') {
     const lore = worldData.lore || [];
     if (!query) return lore;
     const q = query.toLowerCase();
-    return lore.filter((l) =>
+    return lore.filter((l: any) =>
       l.title.toLowerCase().includes(q) ||
       l.content.toLowerCase().includes(q) ||
       l.category.toLowerCase().includes(q)
     );
   },
 
-  async sendMAIPrompt(prompt, context = {}) {
+  async sendMAIPrompt(prompt: string, context: Record<string, unknown> = {}): Promise<MAIPromptResponse> {
     try {
       const res = await fetch('http://localhost:5050/api/agent', {
         method: 'POST',

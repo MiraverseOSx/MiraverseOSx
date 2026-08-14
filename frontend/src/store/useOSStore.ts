@@ -4,12 +4,116 @@ import missionsData from '../data/missions.json' with { type: 'json' };
 const MENU_BAR_HEIGHT = 70;
 const DEFAULT_WINDOW_SIZE = { width: 960, height: 640 };
 
-const spawnPosition = (count) => ({
+const spawnPosition = (count: number) => ({
   x: 140 + (count % 6) * 32,
   y: MENU_BAR_HEIGHT + 32 + (count % 6) * 32,
 });
 
-export const useOSStore = create((set) => ({
+export interface BrowserTab {
+  id: number;
+  url: string;
+  title: string;
+}
+
+export interface TabHistory {
+  stack: string[];
+  index: number;
+}
+
+export interface BrowserState {
+  tabs: BrowserTab[];
+  activeTabId: number;
+  nextTabId: number;
+  historyMap: Record<number, TabHistory>;
+}
+
+export interface OSWindow {
+  id: string;
+  title: string;
+  contentKey: string;
+  zIndex: number;
+  isMinimized: boolean;
+  isMaximized: boolean;
+  position: { x: number; y: number };
+  windowOffset: { x: number; y: number };
+  size: { width: number; height: number };
+  [key: string]: any;
+}
+
+export interface OSStoreState {
+  isLoggedIn: boolean;
+  isSanctuary: boolean;
+  toggleSanctuary: () => void;
+  windows: OSWindow[];
+  activeWindowId: string | null;
+  wallpaper: string;
+  browserUrl: string | null;
+  browserState: BrowserState;
+
+  setBrowserUrl: (url: string | null) => void;
+  openBrowserTab: (url?: string, title?: string) => void;
+  closeBrowserTab: (id: number) => void;
+  setActiveBrowserTab: (id: number) => void;
+  navigateBrowserTab: (url: string, title?: string) => void;
+  goBrowserBack: () => void;
+  goBrowserForward: () => void;
+
+  loginUser: (userData: any) => void;
+  logoutUser: () => void;
+
+  gameplay: any;
+
+  advanceTime: () => void;
+  restInDorm: () => void;
+  updateNPCVector: (npcId: string, vectorName: string, delta: number) => void;
+  updateReputationTrack: (trackName: string, delta: number) => void;
+  startSession: (gameId: string, initialState?: Record<string, any>) => void;
+  updateSession: (gameId: string, sessionData: Record<string, any>) => void;
+  endSession: (gameId: string) => void;
+  addCredits: (amount: number) => void;
+  addXP: (amount: number) => void;
+  completeActivity: (id: string) => void;
+  claimCommsAttachment: (commId: string, credits?: number, xp?: number) => void;
+  advanceAppRank: (appKey: string) => void;
+  completeStarterLoop: (loopKey: string) => void;
+  purgePrismCorruption: (amount: number) => void;
+  verifyDGAIdentity: () => void;
+  unlockApp: (appId: string) => void;
+  completeIdentityScan: (data: any) => void;
+  createPulseProfile: (profileData: any) => void;
+  selectMAITone: (tone: string) => void;
+  completeQuest: (questId: string) => void;
+  incrementHackedNodes: () => void;
+  damageAura: (amount: number) => void;
+  healAura: (amount: number) => void;
+  addCondition: (name: string) => void;
+  removeCondition: (name: string) => void;
+  clearConditions: () => void;
+  addForgedSpell: (name: string) => void;
+  decryptLineage: () => void;
+  addSkillXP: (skillName: string, amount: number) => void;
+  addCareerXP: (track: string, amount: number) => void;
+  advanceStarterPhase: (targetPhase?: number) => void;
+  setHouseAffiliation: (house: string) => void;
+  updateActivityStatus: (activityId: string, status: string) => void;
+  setMonth: (monthIndex: number) => void;
+  advanceMonth: () => void;
+  claimDailyReward: () => void;
+  joinWorldEvent: (eventId: string) => void;
+  incrementAppRank: (appName: string) => void;
+
+  addWindow: (app: any) => void;
+  toggleApp: (app: any) => void;
+  closeWindow: (id: string) => void;
+  focusWindow: (id: string) => void;
+  toggleMinimize: (id: string) => void;
+  toggleMaximize: (id: string) => void;
+  moveWindow: (id: string, position: { x: number; y: number }) => void;
+  clearActive: () => void;
+  setWallpaper: (url: string) => void;
+}
+
+export const useOSStore = create<OSStoreState>((set) => ({
   isLoggedIn: false,
   isSanctuary: false,
   toggleSanctuary: () => set((s) => ({ isSanctuary: !s.isSanctuary })),
@@ -463,10 +567,10 @@ export const useOSStore = create((set) => ({
   completeActivity: (id) =>
     set((state) => {
       const activities = state.gameplay.player.activities || [];
-      const item = activities.find((a) => a.id === id);
+      const item = activities.find((a: any) => a.id === id);
       if (!item || item.status !== 'IN_PROGRESS') return state;
 
-      const newActivities = activities.map((a) =>
+      const newActivities = activities.map((a: any) =>
         a.id === id ? { ...a, status: 'COMPLETED' } : a
       );
 
@@ -480,7 +584,7 @@ export const useOSStore = create((set) => ({
       let newLocked = state.gameplay.lockedApps || [];
       const unlockApp = item.rewards?.unlockApp ?? item.unlockApp;
       if (unlockApp && newLocked.includes(unlockApp)) {
-        newLocked = newLocked.filter((app) => app !== unlockApp);
+        newLocked = newLocked.filter((app: string) => app !== unlockApp);
       }
 
       return {
@@ -581,7 +685,7 @@ export const useOSStore = create((set) => ({
     set((state) => ({
       gameplay: {
         ...state.gameplay,
-        lockedApps: state.gameplay.lockedApps.filter((a) => a !== 'passport' && a !== 'pulse'),
+        lockedApps: state.gameplay.lockedApps.filter((a: string) => a !== 'passport' && a !== 'pulse'),
         player: {
           ...state.gameplay.player,
           dgaVerified: true,
@@ -594,13 +698,13 @@ export const useOSStore = create((set) => ({
     set((state) => ({
       gameplay: {
         ...state.gameplay,
-        lockedApps: state.gameplay.lockedApps.filter((a) => a !== appId),
+        lockedApps: state.gameplay.lockedApps.filter((a: string) => a !== appId),
       },
     })),
 
   completeIdentityScan: (data) =>
     set((state) => {
-      const newLocked = state.gameplay.lockedApps.filter((a) => a !== 'passport' && a !== 'pulse');
+      const newLocked = state.gameplay.lockedApps.filter((a: string) => a !== 'passport' && a !== 'pulse');
       return {
         gameplay: {
           ...state.gameplay,
@@ -617,7 +721,7 @@ export const useOSStore = create((set) => ({
             dgaVerified: true,
             credits: state.gameplay.player.credits + 150,
             xp: state.gameplay.player.xp + 100,
-            activities: state.gameplay.player.activities.map((act) => {
+            activities: state.gameplay.player.activities.map((act: any) => {
               if (act.id === 'Q_DAY1_3') return { ...act, status: 'COMPLETED' };
               if (act.id === 'Q_DAY1_4') return { ...act, status: 'IN_PROGRESS' };
               return act;
@@ -629,7 +733,7 @@ export const useOSStore = create((set) => ({
 
   createPulseProfile: (profileData) =>
     set((state) => {
-      const newLocked = state.gameplay.lockedApps.filter((a) => a !== 'pulse' && a !== 'comms');
+      const newLocked = state.gameplay.lockedApps.filter((a: string) => a !== 'pulse' && a !== 'comms');
       return {
         gameplay: {
           ...state.gameplay,
@@ -643,7 +747,7 @@ export const useOSStore = create((set) => ({
             ...state.gameplay.player,
             credits: state.gameplay.player.credits + 100,
             xp: state.gameplay.player.xp + 75,
-            activities: state.gameplay.player.activities.map((act) => {
+            activities: state.gameplay.player.activities.map((act: any) => {
               if (act.id === 'Q_DAY1_4') return { ...act, status: 'COMPLETED' };
               if (act.id === 'Q_DAY1_5') return { ...act, status: 'IN_PROGRESS' };
               return act;
@@ -679,7 +783,7 @@ export const useOSStore = create((set) => ({
                 rivalry: Math.min(100, Math.max(0, state.gameplay.player.npcVectors.jeremie.rivalry + rivalryDelta)),
               },
             },
-            activities: state.gameplay.player.activities.map((act) => {
+            activities: state.gameplay.player.activities.map((act: any) => {
               if (act.id === 'Q_DAY1_5') return { ...act, status: 'COMPLETED' };
               return act;
             }),
@@ -755,7 +859,7 @@ export const useOSStore = create((set) => ({
         ...state.gameplay,
         player: {
           ...state.gameplay.player,
-          conditions: state.gameplay.player.conditions.filter((c) => c !== name),
+          conditions: state.gameplay.player.conditions.filter((c: string) => c !== name),
         },
       },
     })),
@@ -872,30 +976,13 @@ export const useOSStore = create((set) => ({
       },
     })),
 
-  completeStarterLoop: (loopId) =>
-    set((state) => {
-      const current = state.gameplay.player.starterCompletedLoops || [];
-      if (current.includes(loopId)) return state;
-      return {
-        gameplay: {
-          ...state.gameplay,
-          player: {
-            ...state.gameplay.player,
-            starterCompletedLoops: [...current, loopId],
-            xp: state.gameplay.player.xp + 25,
-            credits: state.gameplay.player.credits + 50,
-          },
-        },
-      };
-    }),
-
   updateActivityStatus: (activityId, status) =>
     set((state) => {
       const allowedStatuses = ['LOCKED', 'AVAILABLE', 'IN_PROGRESS', 'COMPLETED'];
       if (!allowedStatuses.includes(status)) return state;
 
       const activities = state.gameplay.player.activities || [];
-      const activity = activities.find((act) => act.id === activityId);
+      const activity = activities.find((act: any) => act.id === activityId);
       if (!activity || activity.status === 'COMPLETED' || status === 'COMPLETED') return state;
 
       return {
@@ -903,7 +990,7 @@ export const useOSStore = create((set) => ({
           ...state.gameplay,
           player: {
             ...state.gameplay.player,
-            activities: activities.map((act) =>
+            activities: activities.map((act: any) =>
               act.id === activityId ? { ...act, status } : act
             ),
           },
@@ -946,7 +1033,7 @@ export const useOSStore = create((set) => ({
       },
     })),
 
-  joinWorldEvent: (eventId) =>
+  joinWorldEvent: (_eventId) =>
     set((state) => ({
       gameplay: {
         ...state.gameplay,
@@ -998,7 +1085,7 @@ export const useOSStore = create((set) => ({
       };
     }
 
-    const newWindow = {
+    const newWindow: OSWindow = {
       title: app.title,
       contentKey: app.contentKey,
       ...app,
@@ -1036,7 +1123,7 @@ export const useOSStore = create((set) => ({
       };
     }
 
-    const newWindow = {
+    const newWindow: OSWindow = {
       title: app.title,
       contentKey: app.contentKey,
       ...app,

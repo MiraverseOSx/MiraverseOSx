@@ -1,8 +1,20 @@
-import { Folder, Mail, MessageSquare, Terminal, Globe, Settings, Sparkles, UserCheck, Radio, Award, FileText } from 'lucide-react';
-import { miraverseDb } from '../db/miraverseDb';
+import { Folder, Mail, MessageSquare, Terminal, Globe, Settings, Sparkles, UserCheck, Radio, Award, LucideIcon } from 'lucide-react';
+import { miraverseDb, AppMetadata } from '../db/miraverseDb';
+
+export interface RegisteredApp extends AppMetadata {
+  icon: LucideIcon;
+  contentKey: string;
+  size: { width: number; height: number };
+  theme?: {
+    frameClass: string;
+    headerActiveClass: string;
+    headerInactiveClass: string;
+    bodyClass: string;
+  };
+}
 
 // Icon mapping per app ID
-const ICON_MAP = {
+const ICON_MAP: Record<string, LucideIcon> = {
   files: Folder,
   mail: Mail,
   comms: MessageSquare,
@@ -20,7 +32,7 @@ const ICON_MAP = {
 const DEFAULT_APP_SIZE = { width: 960, height: 640 };
 
 // Populate launchable APPS list dynamically from miraverseDb
-export const APPS = miraverseDb.getApps().map((app) => ({
+export const APPS: RegisteredApp[] = miraverseDb.getApps().map((app) => ({
   ...app,
   icon: ICON_MAP[app.id] || Folder,
   contentKey: app.id,
@@ -33,4 +45,4 @@ export const APPS = miraverseDb.getApps().map((app) => ({
   } : undefined,
 }));
 
-export const getApp = (id) => APPS.find((a) => a.id === id);
+export const getApp = (id: string): RegisteredApp | undefined => APPS.find((a) => a.id === id);

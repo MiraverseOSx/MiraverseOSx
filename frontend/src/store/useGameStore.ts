@@ -1,8 +1,22 @@
 import { create } from 'zustand';
 import { get, set } from 'idb-keyval';
 
+declare global {
+  interface Window {
+    external?: {
+      sendMessage?: (msg: string) => void;
+      receiveMessage?: (callback: (rawMessage: string) => void) => void;
+    };
+    chrome?: {
+      webview?: {
+        postMessage?: (msg: string) => void;
+      };
+    };
+  }
+}
+
 // Photino Bridge helper
-const sendToPhotinoHost = (action, payload = {}) => {
+const sendToPhotinoHost = (action: string, payload: Record<string, any> = {}) => {
   const msg = JSON.stringify({ action, payload });
   if (window.external && window.external.sendMessage) {
     window.external.sendMessage(msg);
@@ -13,7 +27,64 @@ const sendToPhotinoHost = (action, payload = {}) => {
   }
 };
 
-export const useGameStore = create((setStore, getStore) => ({
+export interface GameMission {
+  id: string;
+  title: string;
+  type: string;
+  region: string;
+  faction: string;
+  difficulty: string;
+  description: string;
+  rewards: { xp?: number; credits?: number; item?: string };
+  status: string;
+}
+
+export interface DialogueEntry {
+  npc: string;
+  source: string;
+  text: string;
+}
+
+export interface GameStoreState {
+  tickCount: number;
+  worldState: {
+    corruption_level: number;
+    prism_harmonic: number;
+    aether_density: number;
+    astral_phase: string;
+    weather_condition: string;
+    active_anomalies: number;
+    regional_health: Record<string, number>;
+  };
+  player: {
+    name: string;
+    handle: string;
+    class: string;
+    level: number;
+    xp: number;
+    credits: number;
+    biometrics: {
+      dermalNodes: string;
+      opticalGeometry: string;
+      auraTelemetry: string;
+    };
+  };
+  missions: GameMission[];
+  dialogueHistory: DialogueEntry[];
+  spellLog: any[];
+  ipcConnected: boolean;
+
+  initializeStore: () => Promise<void>;
+  registerPlayer: (profileData: Partial<GameStoreState['player']>) => Promise<void>;
+  requestTick: () => void;
+  requestMission: () => void;
+  completeMission: (missionId: string) => void;
+  requestNPCDialogue: (npcName: string, prompt: string) => void;
+  requestSpellResolution: (element: string, power: number, runeLevel: number) => void;
+  handlePhotinoResponse: (data: { action: string; payload: any }) => void;
+}
+
+export const useGameStore = create<GameStoreState>((setStore, getStore) => ({
   // World & Ecosystem State
   tickCount: 1,
   worldState: {
@@ -102,7 +173,7 @@ export const useGameStore = create((setStore, getStore) => ({
     // Attach Photino message listener if available
     if (window.external && window.external.receiveMessage) {
       setStore({ ipcConnected: true });
-      window.external.receiveMessage((rawMessage) => {
+      window.external.receiveMessage((rawMessage: string) => {
         try {
           const data = JSON.parse(rawMessage);
           getStore().handlePhotinoResponse(data);

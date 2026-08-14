@@ -4,18 +4,23 @@
  * window chimes, MAI voice pulses, and ambient synth pads.
  */
 
-class SoundEngine {
-  constructor() {
-    this.ctx = null;
-    this.isMuted = false;
-    this.masterGain = null;
-    this.ambientOsc = null;
+declare global {
+  interface Window {
+    webkitAudioContext?: typeof AudioContext;
   }
+}
 
-  init() {
+class SoundEngine {
+  ctx: AudioContext | null = null;
+  isMuted: boolean = false;
+  masterGain: GainNode | null = null;
+  ambientOsc: OscillatorNode | null = null;
+
+  init(): void {
     if (this.ctx) return;
     try {
       const AudioCtx = window.AudioContext || window.webkitAudioContext;
+      if (!AudioCtx) return;
       this.ctx = new AudioCtx();
       this.masterGain = this.ctx.createGain();
       this.masterGain.gain.setValueAtTime(0.15, this.ctx.currentTime);
@@ -25,23 +30,23 @@ class SoundEngine {
     }
   }
 
-  ensureContext() {
+  ensureContext(): void {
     if (!this.ctx) this.init();
     if (this.ctx && this.ctx.state === 'suspended') {
       this.ctx.resume();
     }
   }
 
-  toggleMute() {
+  toggleMute(): boolean {
     this.isMuted = !this.isMuted;
-    if (this.masterGain) {
+    if (this.masterGain && this.ctx) {
       this.masterGain.gain.setValueAtTime(this.isMuted ? 0 : 0.15, this.ctx.currentTime);
     }
     return this.isMuted;
   }
 
   // Helper to play WAV audio file from public/sounds/
-  playAudioFile(filename, volume = 0.4) {
+  playAudioFile(filename: string, volume: number = 0.4): void {
     if (this.isMuted) return;
     try {
       const audio = new Audio(`/sounds/${filename}`);
@@ -55,11 +60,11 @@ class SoundEngine {
   // --- Sound Effects ---
 
   // Subtle Y2K UI Click
-  playClick() {
+  playClick(): void {
     if (this.isMuted) return;
     this.playAudioFile('mixkit-water-sci-fi-bleep-902.wav', 0.2);
     this.ensureContext();
-    if (!this.ctx) return;
+    if (!this.ctx || !this.masterGain) return;
 
     const osc = this.ctx.createOscillator();
     const gain = this.ctx.createGain();
@@ -80,14 +85,15 @@ class SoundEngine {
   }
 
   // Window Open Chime
-  playWindowOpen() {
+  playWindowOpen(): void {
     if (this.isMuted) return;
     this.playAudioFile('mixkit-sci-fi-high-tech-sounds-860.wav', 0.3);
     this.ensureContext();
-    if (!this.ctx) return;
+    if (!this.ctx || !this.masterGain) return;
 
     const now = this.ctx.currentTime;
     [523.25, 659.25, 783.99].forEach((freq, i) => {
+      if (!this.ctx || !this.masterGain) return;
       const osc = this.ctx.createOscillator();
       const gain = this.ctx.createGain();
 
@@ -106,14 +112,15 @@ class SoundEngine {
   }
 
   // Window Close Chime
-  playWindowClose() {
+  playWindowClose(): void {
     if (this.isMuted) return;
     this.playAudioFile('mixkit-glitch-sci-fi-rewind-transition-1093.wav', 0.2);
     this.ensureContext();
-    if (!this.ctx) return;
+    if (!this.ctx || !this.masterGain) return;
 
     const now = this.ctx.currentTime;
     [659.25, 523.25].forEach((freq, i) => {
+      if (!this.ctx || !this.masterGain) return;
       const osc = this.ctx.createOscillator();
       const gain = this.ctx.createGain();
 
@@ -132,11 +139,11 @@ class SoundEngine {
   }
 
   // MAI Agent Voice Pulse Chirp
-  playMAIPulse() {
+  playMAIPulse(): void {
     if (this.isMuted) return;
     this.playAudioFile('mixkit-intro-text-glitch-2950.wav', 0.3);
     this.ensureContext();
-    if (!this.ctx) return;
+    if (!this.ctx || !this.masterGain) return;
 
     const now = this.ctx.currentTime;
     const osc = this.ctx.createOscillator();
@@ -157,14 +164,15 @@ class SoundEngine {
   }
 
   // Success / Reward Notification Chime
-  playSuccess() {
+  playSuccess(): void {
     if (this.isMuted) return;
     this.playAudioFile('mixkit-crystal-chime-3108.wav', 0.4);
     this.ensureContext();
-    if (!this.ctx) return;
+    if (!this.ctx || !this.masterGain) return;
 
     const now = this.ctx.currentTime;
     [587.33, 880.00].forEach((freq, i) => {
+      if (!this.ctx || !this.masterGain) return;
       const osc = this.ctx.createOscillator();
       const gain = this.ctx.createGain();
 

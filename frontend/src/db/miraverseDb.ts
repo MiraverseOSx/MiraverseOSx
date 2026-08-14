@@ -1,6 +1,16 @@
 import worldData from '../data/worldData.json' with { type: 'json' };
 
-export const APPS = [
+export interface AppMetadata {
+  id: string;
+  title: string;
+  category: string;
+  dev: string;
+  version: string;
+  primary: string;
+  lore: string;
+}
+
+export const APPS: AppMetadata[] = [
   { id: 'files', title: 'File Explorer', category: 'Utility', dev: 'FAC_NETRUNNERS', version: '2.0.0', primary: 'File system & lore archive explorer', lore: 'System file explorer for browsing documents, logs, and database records.' },
   { id: 'mail', title: 'AureMail Mailbox', category: 'Communication', dev: 'FAC_NEO_CITIZENS', version: '1.0.0', primary: 'Personal citizen email & municipal dispatches', lore: 'Aureline personal citizen email for receiving dispatches, invoices, and welcome packets.' },
   { id: 'comms', title: 'Comms Portal', category: 'Communication', dev: 'FAC_NETRUNNERS', version: '2.9.7', primary: 'Encrypted messaging & NPC transmissions', lore: 'Communication portal for receiving NPC transmissions and mesh chat.' },
@@ -20,19 +30,19 @@ export const CAREERS = worldData.careers || [];
 export const LORE_ENTRIES = worldData.lore || [];
 
 export const miraverseDb = {
-  getApps: () => APPS,
-  getApp: (id) => APPS.find((a) => a.id === id),
+  getApps: (): AppMetadata[] => APPS,
+  getApp: (id: string): AppMetadata | undefined => APPS.find((a) => a.id === id),
   getRegions: () => REGIONS,
   getFactions: () => FACTIONS,
   getNPCs: () => NPCS,
   getCareers: () => CAREERS,
   getLoreEntries: () => LORE_ENTRIES,
 
-  searchLore: (query) => {
+  searchLore: (query: string) => {
     if (!query) return LORE_ENTRIES;
     const q = query.toLowerCase();
     return LORE_ENTRIES.filter(
-      (l) =>
+      (l: any) =>
         l.title.toLowerCase().includes(q) ||
         l.content.toLowerCase().includes(q) ||
         l.category.toLowerCase().includes(q)
@@ -40,7 +50,7 @@ export const miraverseDb = {
   },
 
   // Interactive SQL / CLI executor connecting to Express API or Native JSON
-  executeSQL: (sqlString) => {
+  executeSQL: (sqlString: string) => {
     const clean = sqlString.trim().toLowerCase();
 
     if (clean.includes('from regions') || clean === 'regions') {

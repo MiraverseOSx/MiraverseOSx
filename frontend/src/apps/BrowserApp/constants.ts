@@ -1,9 +1,25 @@
 import { 
     Activity, Building, Shield, BookOpen, Globe, Newspaper, 
-    FileText, Landmark, Truck, Eye, Grid 
+    FileText, Landmark, Truck, Eye, Grid, LucideIcon 
 } from 'lucide-react';
 
-export const PORTALS = {
+export interface PortalInfo {
+    title: string;
+    category: string;
+    icon: LucideIcon;
+    accent: string;
+    domain: string;
+}
+
+export interface SampleArchive {
+    id: string;
+    title: string;
+    address: string;
+    type: string;
+    excerpt: string;
+}
+
+export const PORTALS: Record<string, PortalInfo> = {
     'versenet.aure': { title: 'Versenet Search Engine', category: 'Search Engine', icon: Globe, accent: 'green', domain: 'versenet.aure' },
     'faithmed.aure': { title: 'Faith Medical Group', category: 'Medical Intranet', icon: Activity, accent: 'emerald', domain: 'faithmed.aure' },
     'dga.gov': { title: 'Department of Global Affairs', category: 'Global Affairs', icon: Shield, accent: 'blue', domain: 'dga.gov' },
@@ -16,7 +32,7 @@ export const PORTALS = {
     'mai.space.aure': { title: 'Mai.space Social Grid', category: 'Public Social Network', icon: Globe, accent: 'purple', domain: 'mai.space.aure' },
 };
 
-export const SAMPLE_ARCHIVES = [
+export const SAMPLE_ARCHIVES: SampleArchive[] = [
     { id: 'ARC-001', title: 'Pre-Collapse AETHERCORE Blueprint Fragment', address: 'records.orynvell.gov/deeds/aethercore-01', type: 'Archive', excerpt: 'Deep energy resonance maps indicating AETHERCORE subterranean conduit lines under the Old Factory Ward.' },
     { id: 'ARC-002', title: 'Purge-Era Student Genealogy Index', address: 'cyacademy.edu/archives/lineage-index', type: 'Archive', excerpt: 'Classified records detailing Lightborn lineage bloodlines and hereditary Veil sensitivities.' },
     { id: 'ARC-003', title: 'PRISM Cult Signal Intercept #88', address: 'dga.gov/intercepts/prism-88', type: 'Security Log', excerpt: 'Intercepted frequency wave containing corrupted binary runes targeting Cycademy node gateways.' },

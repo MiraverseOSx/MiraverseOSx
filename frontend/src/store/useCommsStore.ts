@@ -1,9 +1,45 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import mailData from '../data/emails.json';
-import { INITIAL_SHADOWCHAT_FEED } from '../data/commsData';
 
-export const useCommsStore = create(
+export interface ChannelItem {
+  id: string;
+  name: string;
+  readOnly?: boolean;
+  desc?: string;
+  npcKey?: string;
+  title?: string;
+  req?: string;
+}
+
+export interface ChatMessage {
+  id: string;
+  user: string;
+  team: string;
+  text: string;
+  time: string;
+}
+
+export interface CommsState {
+  emails: any[];
+  tier0Channels: ChannelItem[];
+  tier1Channels: ChannelItem[];
+  tier2Channels: ChannelItem[];
+  directs: ChannelItem[];
+  lockedChannels: ChannelItem[];
+  corruptedChannels: string[];
+  investigationFlags: number;
+  encryptionActive: boolean;
+  messages: Record<string, ChatMessage[]>;
+
+  addChatMessage: (key: string, entry: ChatMessage) => void;
+  addEmail: (email: any) => void;
+  toggleEncryption: () => void;
+  incrementInvestigationFlags: () => void;
+  purgeChannelCorruption: (channelId: string) => void;
+}
+
+export const useCommsStore = create<CommsState>()(
   persist(
     (set, get) => ({
       // Email Dispatches
