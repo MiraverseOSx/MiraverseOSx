@@ -1,16 +1,13 @@
-version: '3.8'
-
 services:
   localstack:
     container_name: miraverse-localstack
-    image: localstack/localstack:latest
+    image: localstack/localstack-pro:latest
     ports:
       - "127.0.0.1:4566:4566"            # LocalStack Gateway
       - "127.0.0.1:4510-4559:4510-4559"  # external services port range
     environment:
-      - SERVICES=s3,dynamodb,sqs,sns,kms,lambda
+      - LOCALSTACK_AUTH_TOKEN=${LOCALSTACK_AUTH_TOKEN:-ls-tudiSoye-ZiXe-jafI-9109-yUqABAJe80b4}
       - DEBUG=1
-      - DOCKER_HOST=unix:///var/run/docker.sock
       - AWS_DEFAULT_REGION=us-east-1
     volumes:
       - "./.localstack:/var/lib/localstack"
