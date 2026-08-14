@@ -1,6 +1,6 @@
 /**
  * MIRAVERSE OS x — Core TypeScript Definitions & Models
- * Shared contract for React/TSX frontend components and Godot C# system models.
+ * Contract for React/TSX frontend components and system models.
  */
 
 // --- App & Navigation Models ---
@@ -16,7 +16,6 @@ export interface AppIconProps {
 
 export interface AppDefinition extends AppIconProps {
   componentName: string;
-  targetScenePath?: string; // Godot scene path, e.g. "res://apps/MailApp.tscn"
   isSingleton?: boolean;
 }
 
