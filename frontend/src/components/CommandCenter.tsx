@@ -51,7 +51,7 @@ export default function CommandCenter({ onOpenSignal }) {
 
     return (
         <div className="space-y-4 text-[#edf1ff]">
-            <section className="border border-[#9ca9df]/32 bg-[#0d1738]/86 shadow-[0_8px_32px_rgba(5,10,31,0.22)] backdrop-blur-[12px]">
+            <section className="border border-[#9ca9df]/32 bg-[#0d1738] shadow-[0_8px_32px_rgba(5,10,31,0.4)]">
                 <div className="flex items-center justify-between border-b border-[#9ca9df]/20 px-4 py-3">
                     <div><p className="font-ui text-[9px] uppercase tracking-[0.2em] text-[#aeb9e8]">Aethercore analytics</p><h2 className="mt-1 font-display text-lg text-white">Citizen Resonance Matrix</h2></div>
                     <div className="text-right font-ui text-[9px] uppercase tracking-wider text-[#aeb9e8]"><div>Cycle {cycle}</div><div className="mt-1 text-[#d2d9ff]">{TIME_SEGMENTS[timeSegmentIndex]}</div></div>
@@ -69,13 +69,13 @@ export default function CommandCenter({ onOpenSignal }) {
                 </div>
             </section>
 
-            <section className="grid grid-cols-3 border border-[#9ca9df]/28 bg-[#111d43]/82 shadow-[0_8px_32px_rgba(5,10,31,0.18)] backdrop-blur-[12px]">
+            <section className="grid grid-cols-3 border border-[#9ca9df]/28 bg-[#111d43] shadow-[0_8px_32px_rgba(5,10,31,0.3)]">
                 <div className="border-r border-[#9ca9df]/16 p-3"><div className="flex items-center gap-2 font-ui text-[9px] uppercase text-[#aeb9e8]"><PublicIcon src={ICONS.aura} size={13} /> Aura integrity</div><div className="mt-2 font-display text-lg text-[#8dd0bc]">{player?.auraHealth || 0}%</div></div>
                 <div className="border-r border-[#9ca9df]/16 p-3"><div className="flex items-center gap-2 font-ui text-[9px] uppercase text-[#aeb9e8]"><PublicIcon src={ICONS.prism} size={13} /> PRISM exposure</div><div className="mt-2 font-display text-lg text-[#bbc5ff]">{corruption.toFixed(1)}%</div></div>
                 <button onClick={advanceTime} className="p-3 text-left hover:bg-white/8"><div className="flex items-center gap-2 font-ui text-[9px] uppercase text-[#aeb9e8]"><PublicIcon src={ICONS.time} size={13} /> Cycle control</div><div className="mt-2 flex items-center justify-between font-ui text-[10px] font-semibold text-white">Advance time <span>›</span></div></button>
             </section>
 
-            <section className="border border-[#9ca9df]/28 bg-[#101b3f]/84 p-4 shadow-[0_8px_32px_rgba(5,10,31,0.18)] backdrop-blur-[12px]">
+            <section className="border border-[#9ca9df]/28 bg-[#101b3f] p-4 shadow-[0_8px_32px_rgba(5,10,31,0.3)]">
                 <div className="flex items-center justify-between"><div><p className="font-ui text-[9px] uppercase tracking-[0.18em] text-[#aeb9e8]">Live signal analysis</p><h3 className="mt-1 font-display text-sm text-white">Sector 4 PRISM anomaly</h3></div><PublicIcon src={ICONS.signal} size={17} className="brightness-0 invert opacity-80" /></div>
                 <p className="mt-3 font-body text-[11px] leading-relaxed text-[#c6ceec]">Encrypted spectral evidence remains attached to the current incident record. Review the transmission before advancing into the night segment.</p>
                 <button onClick={onOpenSignal} className="mt-3 border border-[#aab7eb]/38 bg-white/6 px-3 py-2 font-ui text-[9px] font-semibold uppercase tracking-wider text-white hover:bg-white/12">Open signal evidence</button>

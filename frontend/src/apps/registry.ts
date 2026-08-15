@@ -38,10 +38,10 @@ export const APPS: RegisteredApp[] = miraverseDb.getApps().map((app) => ({
   contentKey: app.id,
   size: DEFAULT_APP_SIZE,
   theme: app.id === 'browser' ? {
-    frameClass: 'rounded-xl border border-[#e9d5ff] bg-white/70 backdrop-blur-xl shadow-[0_10px_40px_rgba(147,51,234,0.15)]',
-    headerActiveClass: 'bg-[#E7D7FF] text-[#1f2a44]',
-    headerInactiveClass: 'bg-[#F7C9E8] text-[#334155]',
-    bodyClass: 'bg-white/60 text-slate-800'
+    frameClass: 'rounded-none border border-slate-700 bg-slate-900 shadow-2xl',
+    headerActiveClass: 'bg-slate-800 text-slate-100 border-b border-slate-700',
+    headerInactiveClass: 'bg-slate-900 text-slate-400 border-b border-slate-800',
+    bodyClass: 'bg-slate-900 text-slate-100'
   } : undefined,
 }));
 

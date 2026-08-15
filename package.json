@@ -7,9 +7,7 @@
     "dev": "npm run dev --prefix frontend",
     "build": "npm run build --prefix frontend",
     "preview": "npm run preview --prefix frontend",
-    "orchestrator": "node agent-orchestrator/server.js",
-    "cloud:up": "docker compose -f docker-compose.localstack.yml up -d",
-    "cloud:down": "docker compose -f docker-compose.localstack.yml down"
+    "orchestrator": "node docs/agent-orchestrator/server.js"
   },
   "description": "MIRAVERSEOSX - Celestial Operating System Desktop Host",
   "repository": {

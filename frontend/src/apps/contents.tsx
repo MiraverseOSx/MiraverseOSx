@@ -14,10 +14,10 @@ export const APPS = [
     size: { width: 1100, height: 700 },
     position: { x: 'calc(50vw - 550px)', y: 'calc(50vh - 350px)' },
     theme: {
-      frameClass: 'rounded-xl border border-white/30 bg-white/40 backdrop-blur-xl shadow-2xl overflow-hidden flex flex-col',
-      headerActiveClass: 'bg-[#0d0724] text-purple-200 border-b border-purple-500/20',
-      headerInactiveClass: 'bg-[#0d0724]/90 text-purple-400/80 border-b border-purple-500/20',
-      bodyClass: 'bg-white/60 text-slate-800'
+      frameClass: 'rounded-none border border-slate-700 bg-slate-900 shadow-2xl overflow-hidden flex flex-col',
+      headerActiveClass: 'bg-slate-800 text-slate-100 border-b border-slate-700 font-semibold',
+      headerInactiveClass: 'bg-slate-900 text-slate-400 border-b border-slate-800',
+      bodyClass: 'bg-slate-900 text-slate-100'
     }
   },
   { id: 'passport', title: 'Citizen Record', icon: UserCheck },
@@ -101,7 +101,7 @@ const Files = () => {
   return (
     <div className="flex h-full w-full flex-col bg-gradient-to-b from-[#F6F7FB] to-[#EFF1F7] text-[#162241]">
       {/* Explorer Header & Navigation Bar */}
-      <div className="flex h-11 items-center justify-between border-b border-slate-300/70 bg-white/70 px-4 backdrop-blur-sm">
+      <div className="flex h-11 items-center justify-between border-b border-slate-300 bg-white px-4">
         <div className="flex items-center gap-2 text-xs font-mono text-[#1d2650]">
           <Folder size={15} className="text-[#5f6ab0]" />
           <span className="font-semibold">miraverse_os</span>

@@ -1,7 +1,6 @@
 /**
  * MIRAVERSE OS x — MCP Agent Orchestrator (mcp-agents-groq)
  * Powered by Groq API (miragroq key) for ultra-fast, real-time inference native to the OS.
- * Integrates LocalStack Desktop / Docker cloud emulation (S3, DynamoDB).
  */
 
 import http from 'http';
@@ -14,7 +13,6 @@ dotenv.config();
 const PORT = process.env.MCP_SERVER_PORT || 5050;
 const GROQ_API_KEY = process.env.GROQ_API_KEY || 'miragroq';
 const GROQ_MODEL = process.env.GROQ_MODEL || 'llama-3.3-70b-versatile';
-const LOCALSTACK_ENDPOINT = process.env.LOCALSTACK_ENDPOINT || 'http://localhost:4566';
 
 // Groq API Inference Call
 async function callGroqInference(prompt, systemContext = '', tools = []) {
@@ -61,7 +59,7 @@ async function callGroqInference(prompt, systemContext = '', tools = []) {
   return {
     source: 'Groq Real-Time OS Engine (Local Bridge)',
     model: GROQ_MODEL,
-    response: `MAI Orchestrator: Processing query "${prompt}". System telemetry nominal on ${LOCALSTACK_ENDPOINT}.`
+    response: `MAI Orchestrator: Processing query "${prompt}". Native telemetry online.`
   };
 }
 
@@ -89,7 +87,6 @@ const server = http.createServer(async (req, res) => {
       orchestrator: 'mcp-agents-groq',
       groqApiKey: GROQ_API_KEY ? 'miragroq (configured)' : 'missing',
       groqModel: GROQ_MODEL,
-      localstackCloud: LOCALSTACK_ENDPOINT,
       toolsRegistered: miraverseTools.length,
       uptime: process.uptime()
     }));
@@ -168,7 +165,7 @@ const server = http.createServer(async (req, res) => {
         <div class="card">
           <h1>⚡ mcp-agents-groq Agent Orchestrator</h1>
           <p>Ultra-fast real-time inference engine powered by <strong>Groq API (miragroq key)</strong>.</p>
-          <p><span class="badge">Groq Model: ${GROQ_MODEL}</span> <span class="badge">Local Cloud: ${LOCALSTACK_ENDPOINT}</span></p>
+          <p><span class="badge">Groq Model: ${GROQ_MODEL}</span></p>
         </div>
         <div class="card">
           <h2>Registered MCP Tools (${miraverseTools.length})</h2>
@@ -208,5 +205,4 @@ server.listen(PORT, () => {
   console.log(`[mcp-agents-groq] Agent Orchestrator running on http://localhost:${PORT}`);
   console.log(`[mcp-agents-groq] Workflow UI Dashboard: http://localhost:${PORT}/workflow-ui`);
   console.log(`[mcp-agents-groq] Groq API Key: ${GROQ_API_KEY ? 'miragroq' : 'not configured'}`);
-  console.log(`[mcp-agents-groq] LocalStack Cloud: ${LOCALSTACK_ENDPOINT}`);
 });

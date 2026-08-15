@@ -1,5 +1,9 @@
 import { create } from 'zustand';
 import { get, set } from 'idb-keyval';
+import { ecosystemEngine } from '../gameplay/EcosystemEngine';
+import { missionDirector } from '../gameplay/MissionDirector';
+import { harmonyEngine } from '../gameplay/HarmonyEngine';
+import { npcEngine } from '../gameplay/NPCEngine';
 
 declare global {
   interface Window {
@@ -15,15 +19,13 @@ declare global {
   }
 }
 
-// Photino Bridge helper
+// Photino Bridge helper (optional native notifications)
 const sendToPhotinoHost = (action: string, payload: Record<string, any> = {}) => {
   const msg = JSON.stringify({ action, payload });
   if (window.external && window.external.sendMessage) {
     window.external.sendMessage(msg);
   } else if (window.chrome && window.chrome.webview && window.chrome.webview.postMessage) {
     window.chrome.webview.postMessage(msg);
-  } else {
-    console.log('[Mock IPC Photino Outbound]:', action, payload);
   }
 };
 
@@ -79,28 +81,15 @@ export interface GameStoreState {
   requestTick: () => void;
   requestMission: () => void;
   completeMission: (missionId: string) => void;
-  requestNPCDialogue: (npcName: string, prompt: string) => void;
+  requestNPCDialogue: (npcName: string, prompt: string) => Promise<void>;
   requestSpellResolution: (element: string, power: number, runeLevel: number) => void;
   handlePhotinoResponse: (data: { action: string; payload: any }) => void;
 }
 
 export const useGameStore = create<GameStoreState>((setStore, getStore) => ({
-  // World & Ecosystem State
+  // World & Ecosystem State (Initialized from EcosystemEngine)
   tickCount: 1,
-  worldState: {
-    corruption_level: 12.4,
-    prism_harmonic: 88.5,
-    aether_density: 1024.0,
-    astral_phase: "Solstice Alignment",
-    weather_condition: "Aureline Clear",
-    active_anomalies: 2,
-    regional_health: {
-      "Aureline Core": 94.2,
-      "Orynvell Shallows": 76.5,
-      "Versenet Verge": 63.8,
-      "Shadow Grid": 31.0
-    }
-  },
+  worldState: ecosystemEngine.getState(),
 
   // Player Profile
   player: {
@@ -148,7 +137,7 @@ export const useGameStore = create<GameStoreState>((setStore, getStore) => ({
     {
       npc: "Mai",
       source: "system",
-      text: "Welcome to MiraverseOSx! Photino-Python bridge active."
+      text: "Welcome to MiraverseOSx! Celestial native TypeScript simulation active."
     }
   ],
 
@@ -160,7 +149,6 @@ export const useGameStore = create<GameStoreState>((setStore, getStore) => ({
 
   // Actions
   initializeStore: async () => {
-    // Load cached player profile from IndexedDB via idb-keyval
     try {
       const cachedPlayer = await get('miraverse_player_profile');
       if (cachedPlayer) {
@@ -170,7 +158,6 @@ export const useGameStore = create<GameStoreState>((setStore, getStore) => ({
       console.warn('idb-keyval error loading profile:', err);
     }
 
-    // Attach Photino message listener if available
     if (window.external && window.external.receiveMessage) {
       setStore({ ipcConnected: true });
       window.external.receiveMessage((rawMessage: string) => {
@@ -195,12 +182,21 @@ export const useGameStore = create<GameStoreState>((setStore, getStore) => ({
   },
 
   requestTick: () => {
-    sendToPhotinoHost('calculate_tick');
+    const tickRes = ecosystemEngine.processTick(1.0);
+    setStore({
+      tickCount: tickRes.tick,
+      worldState: tickRes.state
+    });
+    sendToPhotinoHost('tick_result', tickRes);
   },
 
   requestMission: () => {
     const p = getStore().player;
-    sendToPhotinoHost('generate_mission', { level: p.level });
+    const newMission = missionDirector.generateMission(p.level);
+    setStore((state) => ({
+      missions: [newMission, ...state.missions.slice(0, 4)]
+    }));
+    sendToPhotinoHost('mission_result', newMission);
   },
 
   completeMission: (missionId) => {
@@ -214,7 +210,6 @@ export const useGameStore = create<GameStoreState>((setStore, getStore) => ({
     const newLevel = Math.floor(newXP / 500) + 1;
     const newCredits = state.player.credits + rewardCredits;
 
-    // Update player and decrease corruption
     const updatedWorld = {
       ...state.worldState,
       corruption_level: Math.max(0, Math.round((state.worldState.corruption_level - 1.5) * 10) / 10),
@@ -232,28 +227,32 @@ export const useGameStore = create<GameStoreState>((setStore, getStore) => ({
       missions: state.missions.filter((m) => m.id !== missionId)
     });
 
-    // Save updated player profile
     getStore().registerPlayer({});
   },
 
-  requestNPCDialogue: (npcName, prompt) => {
-    sendToPhotinoHost('npc_dialogue', { npc: npcName, prompt });
+  requestNPCDialogue: async (npcName, prompt) => {
+    const response = await npcEngine.generateDialogue(npcName, prompt);
+    const entry: DialogueEntry = {
+      npc: response.npc,
+      source: response.source,
+      text: response.text
+    };
+    setStore((state) => ({
+      dialogueHistory: [entry, ...state.dialogueHistory.slice(0, 9)]
+    }));
+    sendToPhotinoHost('npc_dialogue', entry);
   },
 
   requestSpellResolution: (element, power, runeLevel) => {
     const p = getStore().player;
     const corruption = getStore().worldState.corruption_level;
-    sendToPhotinoHost('calculate_resolution', {
-      type: 'spell',
-      element,
-      power,
-      runeLevel,
-      playerLevel: p.level,
-      corruption
-    });
+    const resolution = harmonyEngine.calculateSpellPower(element, power, runeLevel, p.level, corruption);
+    setStore((state) => ({
+      spellLog: [resolution, ...state.spellLog.slice(0, 4)]
+    }));
+    sendToPhotinoHost('resolution_result', resolution);
   },
 
-  // Process Host Responses
   handlePhotinoResponse: (data) => {
     const { action, payload } = data;
     if (action === 'tick_result') {

@@ -1,18 +1,16 @@
 /**
  * MIRAVERSE OS x — MCP Agent Tools Engine
- * Provides tools for mcp-agents-groq framework:
- * - Civic Identity & Dermal Node Telemetry (LocalStack Cloud)
- * - Versenet Lore & Asset Indexing (LocalStack S3)
+ * Provides native tools for mcp-agents-groq framework:
+ * - Civic Identity & Dermal Node Telemetry
+ * - Versenet Lore & Asset Indexing
  * - MAI Companion System OS Shell Control
  * - SpellForge Elemental Synthesizer
  */
 
-const localstackEndpoint = process.env.LOCALSTACK_ENDPOINT || 'http://localhost:4566';
-
 export const miraverseTools = [
   {
     name: 'query_civic_records',
-    description: 'Retrieve citizen biometric calibration, dermal node status, and aura telemetry from LocalStack cloud database.',
+    description: 'Retrieve citizen biometric calibration, dermal node status, and aura telemetry from Aureline Municipal Bureau.',
     parameters: {
       type: 'object',
       properties: {
@@ -21,30 +19,9 @@ export const miraverseTools = [
       required: ['citizenId']
     },
     execute: async ({ citizenId }) => {
-      try {
-        const res = await fetch(`${localstackEndpoint}/`, {
-          method: 'POST',
-          headers: {
-            'X-Amz-Target': 'DynamoDB_20120810.GetItem',
-            'Content-Type': 'application/x-amz-json-1.0'
-          },
-          body: JSON.stringify({
-            TableName: 'CivicProfiles',
-            Key: { CitizenID: { S: citizenId } }
-          })
-        });
-        if (res.ok) {
-          const data = await res.json();
-          if (data.Item) {
-            return { status: 'success', source: 'LocalStack DynamoDB', data: data.Item };
-          }
-        }
-      } catch (err) {
-        // Fallback to active memory telemetry if LocalStack desktop service is starting
-      }
       return {
         status: 'success',
-        source: 'LocalStack Cloud Emulation (Memory Sync)',
+        source: 'Aureline Civic Bureau (Native Database)',
         data: {
           CitizenID: citizenId,
           Name: 'Aureline Netrunner',
@@ -58,7 +35,7 @@ export const miraverseTools = [
 
   {
     name: 'fetch_versenet_lore',
-    description: 'Search Versenet archives and LocalStack S3 document buckets for encrypted historical lore and regional records.',
+    description: 'Search Versenet archives and document records for encrypted historical lore and regional records.',
     parameters: {
       type: 'object',
       properties: {
@@ -68,14 +45,9 @@ export const miraverseTools = [
       required: ['query']
     },
     execute: async ({ category = 'All', query }) => {
-      try {
-        await fetch(`${localstackEndpoint}/miraverse-assets`);
-      } catch (err) {
-        // S3 client connection to LocalStack
-      }
       return {
         status: 'success',
-        source: 'Versenet Index / LocalStack S3',
+        source: 'Versenet Archives',
         query,
         category,
         results: [

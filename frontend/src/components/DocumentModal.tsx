@@ -74,7 +74,7 @@ export default function DocumentModal({ file, onClose, onSubmitForm }) {
   };
 
   return (
-    <div className="fixed inset-0 bg-[#090710]/85 backdrop-blur-sm flex items-center justify-center p-4 z-50 select-none">
+    <div className="fixed inset-0 bg-[#090710]/95 flex items-center justify-center p-4 z-50 select-none">
       {/* Rose, Yellow & Lavender Window Frame */}
       <div className={`w-full max-w-xl bg-[#141021] border ${isPrism ? 'border-rose-500/80 shadow-lg shadow-rose-950/50' : 'border-[#3a3052] shadow-xl'} text-purple-100 font-sans text-xs rounded-xl overflow-hidden flex flex-col`}>
         
