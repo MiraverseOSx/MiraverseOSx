@@ -5,10 +5,29 @@ using System.Text;
 using System.Text.Json;
 using System.Text.Json.Nodes;
 using System.Threading.Tasks;
+using Microsoft.Data.Sqlite;
+using Dapper;
 using Photino.NET;
 
 namespace MiraverseOSx
 {
+    // C# Model mapped to your SQLite Documents table
+    public class Document
+    {
+        public string Id { get; set; }
+        public string Name { get; set; }
+        public string Extension { get; set; }
+        public string Folder { get; set; }
+        public string Title { get; set; }
+        public string Content { get; set; }
+        public string Author { get; set; }
+        public int Is_Encrypted { get; set; }
+        public int Is_Prism_Flagged { get; set; }
+        public string Faction_Origin { get; set; }
+        public string Region_Origin { get; set; }
+        public string Created_At { get; set; }
+    }
+
     class Program
     {
         private static PhotinoWindow? _mainWindow;
@@ -18,7 +37,7 @@ namespace MiraverseOSx
         [STAThread]
         static void Main(string[] args)
         {
-            // Start lightweight local HTTP server for wwwroot assets
+            // Start lightweight local HTTP server for wwwroot assets and API
             StartLocalWebServer();
 
             // Initialize Photino native desktop window
@@ -77,6 +96,30 @@ namespace MiraverseOSx
             try
             {
                 string relPath = context.Request.Url?.AbsolutePath.TrimStart('/') ?? "index.html";
+
+                // --- SQLITE API ROUTE INTERCEPTOR ---
+                if (relPath.Equals("api/documents", StringComparison.OrdinalIgnoreCase))
+                {
+                    // Find SQLite db in base directory or project root
+                    string dbPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "miraverse.db");
+                    if (!File.Exists(dbPath))
+                    {
+                        dbPath = Path.Combine(Directory.GetCurrentDirectory(), "miraverse.db");
+                    }
+
+                    using var connection = new SqliteConnection($"Data Source={dbPath}");
+                    var docs = connection.Query<Document>("SELECT * FROM Documents");
+
+                    byte[] jsonBytes = JsonSerializer.SerializeToUtf8Bytes(docs);
+
+                    context.Response.ContentType = "application/json";
+                    context.Response.ContentLength64 = jsonBytes.Length;
+                    context.Response.OutputStream.Write(jsonBytes, 0, jsonBytes.Length);
+                    context.Response.OutputStream.Close();
+                    return;
+                }
+
+                // --- STATIC FILE HANDLING ---
                 if (string.IsNullOrEmpty(relPath)) relPath = "index.html";
 
                 string filePath = Path.Combine(wwwroot, relPath.Replace('/', Path.DirectorySeparatorChar));

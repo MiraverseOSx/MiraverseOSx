@@ -1,8 +1,9 @@
 /**
- * MIRAVERSE OSX - Standalone Client World Connector
- * Pure client-side data provider with zero backend dependencies.
+ * MIRAVERSE OS x — World Data API Client
+ * Reads from miraverseDb (sourced from DataGrip SQLite pipeline).
+ * No worldData.json dependency — all data flows from miraverse.db → npm run data:build → miraverseDb.ts
  */
-import worldData from '../data/worldData.json' with { type: 'json' };
+import { REGIONS, FACTIONS, NPCS, LORE_ENTRIES } from '../db/miraverseDb';
 
 export interface HealthStatus {
   status: string;
@@ -24,35 +25,34 @@ export const apiClient = {
 
   async getWorldOverview() {
     return {
-      title: worldData.metadata?.title || 'MIRAVERSE OSX',
-      version: worldData.version || '2.0.0',
-      regions: worldData.regions || [],
-      factions: worldData.factions || [],
-      npcs: worldData.npcs || [],
-      lore: worldData.lore || [],
+      title: 'MIRAVERSE OSX',
+      version: '2.0.0',
+      regions: REGIONS,
+      factions: FACTIONS,
+      npcs: NPCS,
+      lore: LORE_ENTRIES,
     };
   },
 
   async getRegions() {
-    return worldData.regions || [];
+    return REGIONS;
   },
 
   async getFactions() {
-    return worldData.factions || [];
+    return FACTIONS;
   },
 
   async getNPCs() {
-    return worldData.npcs || [];
+    return NPCS;
   },
 
   async searchLore(query: string = '') {
-    const lore = worldData.lore || [];
-    if (!query) return lore;
+    if (!query) return LORE_ENTRIES;
     const q = query.toLowerCase();
-    return lore.filter((l: any) =>
-      l.title.toLowerCase().includes(q) ||
-      l.content.toLowerCase().includes(q) ||
-      l.category.toLowerCase().includes(q)
+    return LORE_ENTRIES.filter((l: any) =>
+      l.title?.toLowerCase().includes(q) ||
+      l.content?.toLowerCase().includes(q) ||
+      l.category?.toLowerCase().includes(q)
     );
   },
 
@@ -72,8 +72,8 @@ export const apiClient = {
           source: data.source || 'Groq API'
         };
       }
-    } catch (err) {
-      // Clean fallback to native client logic if server is offline
+    } catch {
+      // Clean fallback to native client logic if orchestrator is offline
     }
     return {
       thought: 'Client MAI Logic',

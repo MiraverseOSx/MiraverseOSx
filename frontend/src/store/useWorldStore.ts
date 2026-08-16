@@ -1,5 +1,10 @@
+/**
+ * MIRAVERSE OS x — World Store
+ * Regions, Factions, NPCs, and Lore will be populated once the DataGrip
+ * SQLite pipeline is connected and seeded (npm run data:build).
+ */
 import { create } from 'zustand';
-import worldData from '../data/worldData.json' with { type: 'json' };
+import { REGIONS, FACTIONS, NPCS, LORE_ENTRIES } from '../db/miraverseDb';
 
 export interface WorldOverview {
   title: string;
@@ -25,35 +30,35 @@ export interface WorldStoreState {
 
 export const useWorldStore = create<WorldStoreState>((set) => ({
   overview: {
-    title: worldData.metadata?.title || 'MIRAVERSE OSX Native Client Reality',
-    version: worldData.version || '2.0.0',
-    regionsCount: worldData.regions?.length || 0,
-    factionsCount: worldData.factions?.length || 0,
-    npcsCount: worldData.npcs?.length || 0,
-    loreCount: worldData.lore?.length || 0,
+    title: 'MIRAVERSE OSX',
+    version: '2.0.0',
+    regionsCount: REGIONS.length,
+    factionsCount: FACTIONS.length,
+    npcsCount: NPCS.length,
+    loreCount: LORE_ENTRIES.length,
   },
-  regions: worldData.regions || [],
-  factions: worldData.factions || [],
-  npcs: worldData.npcs || [],
-  lore: worldData.lore || [],
-  backendStatus: 'standalone', // Standalone client-side architecture
+  regions: REGIONS,
+  factions: FACTIONS,
+  npcs: NPCS,
+  lore: LORE_ENTRIES,
+  backendStatus: 'awaiting-datagrip-seed',
   loading: false,
 
   syncWorldData: async () => {
     set({
       overview: {
-        title: worldData.metadata?.title || 'MIRAVERSE OSX Native Client Reality',
-        version: worldData.version || '2.0.0',
-        regionsCount: worldData.regions?.length || 0,
-        factionsCount: worldData.factions?.length || 0,
-        npcsCount: worldData.npcs?.length || 0,
-        loreCount: worldData.lore?.length || 0,
+        title: 'MIRAVERSE OSX',
+        version: '2.0.0',
+        regionsCount: REGIONS.length,
+        factionsCount: FACTIONS.length,
+        npcsCount: NPCS.length,
+        loreCount: LORE_ENTRIES.length,
       },
-      regions: worldData.regions || [],
-      factions: worldData.factions || [],
-      npcs: worldData.npcs || [],
-      lore: worldData.lore || [],
-      backendStatus: 'standalone',
+      regions: REGIONS,
+      factions: FACTIONS,
+      npcs: NPCS,
+      lore: LORE_ENTRIES,
+      backendStatus: REGIONS.length > 0 ? 'seeded' : 'awaiting-datagrip-seed',
       loading: false,
     });
   },
@@ -76,7 +81,7 @@ export const useWorldStore = create<WorldStoreState>((set) => ({
     }
     return {
       thought: 'Client MAI Assistant Rule Engine',
-      response: `MAI Municipal Assistant: System operating in high-performance native client mode. Query recognized: "${prompt}".`,
+      response: `MAI Municipal Assistant: Native client mode. Query recognized: "${prompt}".`,
       action: null,
     };
   },

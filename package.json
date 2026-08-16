@@ -7,12 +7,18 @@
     "dev": "npm run dev --prefix frontend",
     "build": "npm run build --prefix frontend",
     "preview": "npm run preview --prefix frontend",
-    "orchestrator": "node docs/agent-orchestrator/server.js"
+    "orchestrator": "node docs/agent-orchestrator/server.js",
+    "data:build": "python scripts/build_data.py"
   },
   "description": "MIRAVERSEOSX - Celestial Operating System Desktop Host",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/mirxclej/MiraverseOSx.git"
   },
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "@appwrite.io/react": "^0.1.0",
+    "@tanstack/react-query": "^5.101.4",
+    "appwrite": "^25.2.0"
+  }
 }

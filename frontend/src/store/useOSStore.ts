@@ -1,5 +1,8 @@
 import { create } from 'zustand';
-import missionsData from '../data/missions.json' with { type: 'json' };
+
+// Activities / missions — seeded by MissionDirector TypeScript engine or future DataGrip pipeline.
+const missionsData: any[] = [];
+
 
 const MENU_BAR_HEIGHT = 70;
 const DEFAULT_WINDOW_SIZE = { width: 960, height: 640 };

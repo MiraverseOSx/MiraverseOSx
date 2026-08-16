@@ -1,6 +1,8 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import mailData from '../data/emails.json';
+
+// Email inbox — will be populated from DataGrip SQLite pipeline (miraverse.db → Emails table).
+const mailData: any[] = [];
 
 export interface ChannelItem {
   id: string;
@@ -42,7 +44,7 @@ export interface CommsState {
 export const useCommsStore = create<CommsState>()(
   persist(
     (set, get) => ({
-      // Email Dispatches
+      // Email Dispatches — awaiting DataGrip seed
       emails: mailData,
 
       // ── Comms Portal Channel Tiers ──
