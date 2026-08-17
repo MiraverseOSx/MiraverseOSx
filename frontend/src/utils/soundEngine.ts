@@ -192,4 +192,13 @@ class SoundEngine {
 }
 
 export const soundEngine = new SoundEngine();
+
+export const SoundFX = {
+  playButtonTap: () => soundEngine.playClick(),
+  playSnap: () => soundEngine.playTick(),
+  playSuccess: () => soundEngine.playSuccess(),
+  playChime: () => soundEngine.playChime(),
+};
+
 export default soundEngine;
+

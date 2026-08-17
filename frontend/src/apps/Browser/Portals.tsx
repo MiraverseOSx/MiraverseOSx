@@ -69,15 +69,64 @@ export function FaithMedPortal() {
                 <div className="p-4 border border-slate-200 rounded-xl bg-slate-50 space-y-2">
                     <h3 className="text-xs font-bold text-slate-700 uppercase tracking-wider">Attending Physicians</h3>
                     <div className="text-xs space-y-1 font-mono text-slate-600">
-                        <div>• Dr. Voss (Head of Bio-Telemetry)</div>
-                        <div>• Dr. Marlowe (Aura Restoration)</div>
+                        <div>• Dr. Ilyra Saint (Chief Bio-Aura Diagnostics)</div>
+                        <div>• Maris Neryn (Spring Essence Specialist)</div>
+                        <div>• Kael Frostbourne (Cryo-Recovery Unit)</div>
                     </div>
                 </div>
                 <div className="p-4 border border-slate-200 rounded-xl bg-slate-50 space-y-2">
-                    <h3 className="text-xs font-bold text-slate-700 uppercase tracking-wider">Patient Log #FM-88392</h3>
+                    <h3 className="text-xs font-bold text-slate-700 uppercase tracking-wider">Patient Telemetry #FM-88392</h3>
                     <div className="text-xs space-y-1 font-mono text-slate-600">
-                        <div>Condition: {player?.conditions?.join(', ') || 'Healthy'}</div>
-                        <div>Clearance: Level 1 Patient Intranet</div>
+                        <div>Aura Heat: <strong className="text-emerald-700">37.2°C (Stable)</strong></div>
+                        <div>Active Conditions: <span className="font-bold text-rose-600">{player?.conditions?.join(', ') || 'None (Stable Resonance)'}</span></div>
+                        <div>Flux Index: <span className="text-indigo-600 font-bold">88.4% Harmonic</span></div>
+                    </div>
+                </div>
+            </div>
+
+            {/* Clinical Condition Treatment Matrix */}
+            <div className="space-y-3 pt-2">
+                <h3 className="text-xs font-bold text-slate-700 uppercase tracking-wider">Veil Exposure Treatment Protocols (§13.5)</h3>
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-3 text-xs font-mono">
+                    <div className="p-3 rounded-xl bg-cyan-50 border border-cyan-200 space-y-1">
+                        <div className="font-bold text-cyan-900">Frostlung Syndrome</div>
+                        <p className="text-[11px] text-cyan-700">Warm-essence thermal thaw</p>
+                        <button
+                            onClick={() => { removeCondition('Frostlung'); addXP(60); }}
+                            className="mt-1 w-full py-1 rounded bg-cyan-600 text-white font-bold text-[10px]"
+                        >
+                            Apply Thaw
+                        </button>
+                    </div>
+                    <div className="p-3 rounded-xl bg-amber-50 border border-amber-200 space-y-1">
+                        <div className="font-bold text-amber-900">Sunspire Burn Fever</div>
+                        <p className="text-[11px] text-amber-700">Thermal cooling mapping</p>
+                        <button
+                            onClick={() => { removeCondition('Sunspire Burn Fever'); addXP(60); }}
+                            className="mt-1 w-full py-1 rounded bg-amber-600 text-white font-bold text-[10px]"
+                        >
+                            Cool Aura
+                        </button>
+                    </div>
+                    <div className="p-3 rounded-xl bg-purple-50 border border-purple-200 space-y-1">
+                        <div className="font-bold text-purple-900">Veilwilt Disorder</div>
+                        <p className="text-[11px] text-purple-700">Aura rest & memory seal</p>
+                        <button
+                            onClick={() => { removeCondition('Veilwilt'); addXP(60); }}
+                            className="mt-1 w-full py-1 rounded bg-purple-600 text-white font-bold text-[10px]"
+                        >
+                            Seal Veil
+                        </button>
+                    </div>
+                    <div className="p-3 rounded-xl bg-rose-50 border border-rose-200 space-y-1">
+                        <div className="font-bold text-rose-900">Riftspine Fracture</div>
+                        <p className="text-[11px] text-rose-700">Timeline drift stabilization</p>
+                        <button
+                            onClick={() => { removeCondition('Riftspine Fracture'); addXP(60); }}
+                            className="mt-1 w-full py-1 rounded bg-rose-600 text-white font-bold text-[10px]"
+                        >
+                            Re-align Spine
+                        </button>
                     </div>
                 </div>
             </div>

@@ -2,22 +2,22 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Sparkles, ArrowRight, UserPlus, LogIn, Compass, Shield, BookOpen, HeartPulse, Video, Eye } from 'lucide-react';
-import SparklesCanvas from './SparklesCanvas';
-import meridionWorld from '../assets/images/meridion_world.jpg';
-import videoLandscape from '../assets/videos/mixkit-flying-over-a-relaxing-creek-full-of-rock-on-the-51585-hd-ready.mp4';
-import videoGlitter from '../assets/videos/mixkit-glitter-stars-and-snowflakes-19007-hd-ready.mp4';
+import SparklesCanvas from '../widgets/SparklesCanvas';
+import meridionWorld from '../../assets/images/meridion_world.jpg';
+import videoLandscape from '../../assets/videos/mixkit-flying-over-a-relaxing-creek-full-of-rock-on-the-51585-hd-ready.mp4';
+import videoGlitter from '../../assets/videos/mixkit-glitter-stars-and-snowflakes-19007-hd-ready.mp4';
 
-export default function MeridionLandingPage({ onSignIn, onEnroll }) {
+export default function MeridionLandingPage({ onSignIn, onEnroll, onDirectLaunch }) {
   const [hoveredCard, setHoveredCard] = useState(null);
   const [useVideoMode, setUseVideoMode] = useState(true);
 
   return (
-    <div className="relative min-h-screen w-full bg-[#05030d] text-white font-sans overflow-x-hidden select-none">
+    <div className="relative h-screen w-full bg-[#05030d] text-white font-sans overflow-y-auto overflow-x-hidden select-none">
       {/* Dynamic Starfield Background Canvas */}
       <SparklesCanvas />
 
       {/* ── TOP IMMERSIVE HEADER BAR ── */}
-      <header className="fixed top-0 left-0 right-0 z-50 flex h-16 items-center justify-between px-8 border-b border-purple-500/20 bg-[#070514]/70 backdrop-blur-xl">
+      <header className="sticky top-0 left-0 right-0 z-50 flex h-16 items-center justify-between px-8 border-b border-purple-500/20 bg-[#070514]/90 backdrop-blur-md">
         <div className="flex items-center gap-3">
           <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-purple-500/20 border border-purple-400/40 text-purple-300 shadow-[0_0_15px_rgba(168,85,247,0.3)]">
             <Sparkles size={18} />
@@ -29,7 +29,15 @@ export default function MeridionLandingPage({ onSignIn, onEnroll }) {
         </div>
 
         {/* Top Quick Action Buttons */}
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-3">
+          {onDirectLaunch && (
+            <button
+              onClick={onDirectLaunch}
+              className="px-3.5 py-1.5 rounded-xl text-xs font-mono font-semibold text-cyan-300 hover:text-white hover:bg-cyan-900/40 transition border border-cyan-500/40 flex items-center gap-1.5"
+            >
+              ⚡ Launch Desktop OS
+            </button>
+          )}
           <button
             onClick={onSignIn}
             className="px-4 py-2 rounded-xl text-xs font-semibold text-purple-200 hover:text-white hover:bg-purple-900/30 transition border border-purple-500/30"
@@ -46,7 +54,7 @@ export default function MeridionLandingPage({ onSignIn, onEnroll }) {
       </header>
 
       {/* ── HERO SECTION: MAC-STYLE PURPLE WORLD OF MERIDION ── */}
-      <section className="relative flex min-h-screen w-full flex-col items-center justify-center pt-20 pb-16 px-6">
+      <section className="relative z-10 flex min-h-[calc(100vh-4rem)] w-full flex-col items-center justify-center py-12 px-6">
         {/* Ambient Purple Radial Glows */}
         <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 h-[600px] w-[800px] bg-purple-600/15 rounded-full blur-[140px] pointer-events-none" />
         <div className="absolute top-1/3 right-10 h-[400px] w-[400px] bg-indigo-600/15 rounded-full blur-[120px] pointer-events-none" />
@@ -56,16 +64,17 @@ export default function MeridionLandingPage({ onSignIn, onEnroll }) {
           initial={{ opacity: 0, scale: 0.96, y: 20 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           transition={{ duration: 0.8, ease: 'easeOut' }}
-          className="relative w-full max-w-5xl overflow-hidden rounded-3xl border border-purple-400/30 bg-[#090518]/80 shadow-[0_25px_70px_rgba(112,26,204,0.25)] backdrop-blur-2xl"
+          className="relative w-full max-w-5xl overflow-hidden rounded-3xl border border-purple-400/30 bg-[#090518]/90 shadow-[0_25px_70px_rgba(112,26,204,0.25)]"
         >
           {/* World Hero Background: Image or Video */}
-          <div className="relative h-[440px] sm:h-[500px] w-full overflow-hidden">
+          <div className="relative h-[440px] sm:h-[500px] w-full overflow-hidden bg-[#090518]">
             {useVideoMode ? (
               <video
                 autoPlay
                 loop
                 muted
                 playsInline
+                onError={() => setUseVideoMode(false)}
                 className="h-full w-full object-cover object-center transform hover:scale-105 transition-transform duration-1000"
               >
                 <source src={videoLandscape} type="video/mp4" />

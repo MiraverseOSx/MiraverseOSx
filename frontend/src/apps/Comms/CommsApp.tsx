@@ -2,11 +2,11 @@ import React, { useState, useMemo } from 'react';
 import {
   Shield, AlertTriangle, Lock, Unlock, Key, Cpu, Radio, UserCheck, Send, Sparkles, Activity, CheckCircle, RefreshCw, MessageSquare
 } from 'lucide-react';
-import { useCommsStore } from '../store/useCommsStore';
-import { useOSStore } from '../store/useOSStore';
-import Button from '../components/ui/button';
-import Input from '../components/ui/input';
-import { useToastStore } from '../store/useToastStore';
+import { useCommsStore } from '../../store/useCommsStore';
+import { useOSStore } from '../../store/useOSStore';
+import Button from '../../components/ui/button';
+import Input from '../../components/ui/input';
+import { useToastStore } from '../../store/useToastStore';
 
 export default function CommsApp() {
   const [activeChannelId, setActiveChannelId] = useState('city-alerts');

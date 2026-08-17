@@ -1,7 +1,7 @@
 import React from 'react';
 import { AlertTriangle, CheckCircle2, Info, X } from 'lucide-react';
 import { AnimatePresence, motion } from 'framer-motion';
-import { useToastStore } from '../store/useToastStore';
+import { useToastStore } from '../../store/useToastStore';
 
 const TONE_STYLES = {
     success: { icon: CheckCircle2, className: 'border-emerald-300 bg-emerald-50 text-emerald-950' },

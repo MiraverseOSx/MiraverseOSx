@@ -1,5 +1,5 @@
 import React from 'react';
-import { useOSStore } from '../store/useOSStore';
+import { useOSStore } from '../../store/useOSStore';
 import { Scroll, Radio, Sparkles, ClipboardList, Globe } from 'lucide-react';
 
 export default function ProgressionPanel() {

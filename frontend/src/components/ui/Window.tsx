@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion, useDragControls } from 'framer-motion';
-import { useOSStore } from '../store/useOSStore';
-import { getContent } from '../apps/contents';
+import { useOSStore } from '../../store/useOSStore';
+import { getContent } from '../../apps/contents';
 
 const WINDOW_MARGIN = 12;
 const CASCADE_OFFSET = 24;

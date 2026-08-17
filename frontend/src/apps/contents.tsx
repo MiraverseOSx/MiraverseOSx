@@ -1,43 +1,42 @@
 import React, { useState, lazy, Suspense } from 'react';
 import { miraverseDb } from '../db/miraverseDb';
 import { useOSStore } from '../store/useOSStore';
-import { Folder, FileText, Search, Shield, Globe, Users, Briefcase, BookOpen, Copy, Check, Mail, MessageSquare, UserCheck, Sparkles, Settings, Bookmark, Radio, Terminal } from 'lucide-react';
+import { 
+  Folder, FileText, Search, Shield, Globe, Users, Briefcase, BookOpen, 
+  Copy, Check, Mail, MessageSquare, UserCheck, Sparkles, Settings, 
+  Bookmark, Radio, Terminal, Cpu, Home, Activity
+} from 'lucide-react';
 
 export const APPS = [
-  { id: 'comms', title: 'Comms Portal (Chat & Mesh)', icon: MessageSquare },
-  { id: 'mail', title: 'AureMail Mailbox (Personal & Dispatches)', icon: Mail },
-  {
-    id: 'browser',
-    title: 'Net Browser (Web/Faith)',
-    icon: Globe,
-    isMaximized: false,
-    size: { width: 1100, height: 700 },
-    position: { x: 'calc(50vw - 550px)', y: 'calc(50vh - 350px)' },
-    theme: {
-      frameClass: 'rounded-none border border-slate-700 bg-slate-900 shadow-2xl overflow-hidden flex flex-col',
-      headerActiveClass: 'bg-slate-800 text-slate-100 border-b border-slate-700 font-semibold',
-      headerInactiveClass: 'bg-slate-900 text-slate-400 border-b border-slate-800',
-      bodyClass: 'bg-slate-900 text-slate-100'
-    }
-  },
-  { id: 'passport', title: 'Citizen Record', icon: UserCheck },
-  { id: 'pulse', title: 'Mai.space (Public Social & Reputation)', icon: Radio },
-  { id: 'files', title: 'File Explorer (files)', icon: Folder },
-  { id: 'spellforge', title: 'SpellForge Matrix', icon: Sparkles },
-  { id: 'terminal', title: 'System Terminal', icon: Terminal },
-  { id: 'board', title: 'Notice Board', icon: Bookmark },
-  { id: 'settings', title: 'System Settings', icon: Settings },
+  { id: 'jobs', title: 'Career Workstation (§5E)', icon: Briefcase, category: 'Careers' },
+  { id: 'board', title: 'Master Notice Board', icon: Bookmark, category: 'Gameplay' },
+  { id: 'process', title: 'Process Monitor (PRISM/Sys)', icon: Cpu, category: 'Security' },
+  { id: 'housing', title: 'Residential Dorm 4B', icon: Home, category: 'Lifestyle' },
+  { id: 'spellforge', title: 'SpellForge Matrix', icon: Sparkles, category: 'Magic/Hacking' },
+  { id: 'browser', title: 'Net Browser (Faith Med & Sites)', icon: Globe, category: 'Navigation' },
+  { id: 'mail', title: 'AureMail Mailbox', icon: Mail, category: 'Communication' },
+  { id: 'comms', title: 'Comms Portal (Encrypted Chat)', icon: MessageSquare, category: 'Communication' },
+  { id: 'passport', title: 'Citizen Record (Vitals & Skills)', icon: UserCheck, category: 'Identity' },
+  { id: 'pulse', title: 'Mai.space (Public Network)', icon: Radio, category: 'Social' },
+  { id: 'files', title: 'File Explorer (Virtual Drive)', icon: Folder, category: 'Utility' },
+  { id: 'lore', title: 'Lore Explorer (Appwrite Cloud)', icon: BookOpen, category: 'Database' },
+  { id: 'terminal', title: 'System Terminal (SQL & Shell)', icon: Terminal, category: 'Intelligence' },
+  { id: 'settings', title: 'System Settings', icon: Settings, category: 'Utility' },
 ];
 
 // Lazy load app modules for code splitting and fast initial bundle loading
-const CommsApp = lazy(() => import('./CommsApp'));
+const CommsApp = lazy(() => import('./Comms/CommsApp'));
 const SpellForgeApp = lazy(() => import('./SpellForgeApp'));
 const CivicProfileApp = lazy(() => import('./CivicProfileApp'));
-const PulseApp = lazy(() => import('./PulseApp/PulseApp'));
+const PulseApp = lazy(() => import('./Pulse/PulseApp'));
 const NoticeBoardApp = lazy(() => import('./NoticeBoardApp'));
-const BrowserApp = lazy(() => import('./BrowserApp/BrowserApp'));
+const BrowserApp = lazy(() => import('./Browser/BrowserApp'));
 const MailApp = lazy(() => import('./MailApp'));
 const FileExplorerApp = lazy(() => import('./FileExplorerApp'));
+const LoreExplorerApp = lazy(() => import('./LoreExplorer'));
+const ProcessMonitorApp = lazy(() => import('./ProcessMonitorApp'));
+const HousingApp = lazy(() => import('./HousingApp'));
+const JobWorkstationApp = lazy(() => import('./JobWorkstationApp'));
 
 // Sleek loading fallback for lazy-loaded apps
 const AppLoadingFallback = ({ name = 'App' }) => (
@@ -415,6 +414,10 @@ export const CONTENTS = {
   browser: withSuspense(BrowserApp, 'Browser'),
   settings: SettingsApp,
   board: withSuspense(NoticeBoardApp, 'Notice Board'),
+  lore: withSuspense(LoreExplorerApp, 'Lore Explorer'),
+  process: withSuspense(ProcessMonitorApp, 'Process Monitor'),
+  housing: withSuspense(HousingApp, 'Residential Quarters'),
+  jobs: withSuspense(JobWorkstationApp, 'Career Workstation'),
 };
 
 export const getContent = (key) => CONTENTS[key] || (() => <Panel>Nothing here yet.</Panel>);

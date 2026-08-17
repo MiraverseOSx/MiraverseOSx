@@ -1,6 +1,6 @@
 import React from 'react';
-import { useOSStore } from '../store/useOSStore';
-import PublicIcon from './ui/PublicIcon';
+import { useOSStore } from '../../store/useOSStore';
+import PublicIcon from '../ui/PublicIcon';
 
 const TIME_SEGMENTS = ['Morning', 'Afternoon', 'Evening', 'Night'];
 const ICONS = {

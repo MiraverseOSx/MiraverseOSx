@@ -1,196 +1,156 @@
-import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import React from 'react';
 import { useOSStore } from '../../store/useOSStore';
-import { APPS } from '../../apps/contents';
-import Button from '../ui/button';
-import PublicIcon from '../ui/PublicIcon';
-import MAIDock from '../MAIDock';
+import { APPS_DIRECTORY } from './AppLauncherModal';
+import MAIDock from '../widgets/MAIDock';
+import { 
+  LayoutGrid, Smartphone, Power, Sidebar, 
+  Volume2, VolumeX, Clock, Sparkles, Grid
+} from 'lucide-react';
+import { useSystemStore } from '../../store/useSystemStore';
+import { SoundFX } from '../../utils/audio';
+
+export interface DesktopTaskbarProps {
+  areSidebarsVisible: boolean;
+  onToggleSidebars: () => void;
+  onTogglePhone: () => void;
+  onOpenLauncher: () => void;
+}
 
 export default function DesktopTaskbar({
   areSidebarsVisible,
   onToggleSidebars,
   onTogglePhone,
-  onOpenDocumentModal,
-  onOpenSignalPlayer,
-}) {
-  const {
-    windows,
-    toggleApp,
-    toggleSanctuary,
-    logoutUser,
-  } = useOSStore();
+  onOpenLauncher,
+}: DesktopTaskbarProps) {
+  const { windows, toggleApp, logoutUser } = useOSStore();
+  const { soundEnabled, toggleSound } = useSystemStore();
 
-  const [isLauncherOpen, setIsLauncherOpen] = useState(false);
+  const cycle = useOSStore((s) => s.gameplay?.timeCycleCount) || 1;
+  const timeSegmentIndex = useOSStore((s) => s.gameplay?.timeSegmentIndex) || 0;
+  const timeSegments = ['Morning', 'Afternoon', 'Evening', 'Night'];
 
-  const getApp = (id) => APPS.find((app) => app.id === id);
-  const openApp = (id) => {
-    const app = getApp(id);
-    if (app) toggleApp(app);
+  const getAppMeta = (id: string) => {
+    return APPS_DIRECTORY.find((a) => a.id === id) || { label: id, icon: Grid, color: 'text-slate-300' };
   };
 
-  const utilityItems = [
-    {
-      id: 'browser',
-      label: '🌐 Net Browser',
-      action: () => openApp('browser'),
-    },
-    {
-      id: 'mail',
-      label: '✉️ Mailbox',
-      action: () => openApp('mail'),
-    },
-    {
-      id: 'comms',
-      label: '💬 Comms Portal',
-      action: () => openApp('comms'),
-    },
-    {
-      id: 'passport',
-      label: '🪪 Citizen Record',
-      action: () => openApp('passport'),
-    },
-    {
-      id: 'files',
-      label: '📁 File Explorer',
-      action: () => openApp('files'),
-    },
-    {
-      id: 'terminal',
-      label: '💻 Terminal',
-      action: () => openApp('terminal'),
-    },
-    {
-      id: 'settings',
-      label: '⚙️ System Settings',
-      action: () => openApp('settings'),
-    },
-  ];
+  const handleToggleSound = () => {
+    toggleSound();
+    if (!soundEnabled) SoundFX.playSnap();
+  };
 
   return (
-    <footer className="fixed bottom-0 left-0 right-0 z-20 flex h-12 items-center justify-between border-t border-slate-800 bg-[#090e1a] px-4 select-none font-ui text-xs shadow-2xl text-slate-100">
-      {/* Left Controls: Utilities Launcher, Window Buttons, Search */}
-      <div className="relative flex items-center gap-3">
-        {/* Utilities Drawer Popup */}
-        <AnimatePresence>
-          {isLauncherOpen && (
-            <motion.div
-              initial={{ opacity: 0, y: 12, scale: 0.96 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{ opacity: 0, y: 12, scale: 0.96 }}
-              className="absolute bottom-14 left-0 z-50 w-[280px] space-y-3 border border-slate-700 bg-slate-900 p-4 text-slate-100 shadow-2xl rounded-lg font-ui"
-            >
-              <div className="flex items-center justify-between border-b border-slate-800 pb-2.5 mb-1 px-1">
-                <div className="flex items-center gap-1.5 font-display text-sm text-sky-300 font-bold">
-                  <PublicIcon src="/icons/Icon set 1/0.5x/Star 256 px.png" size={14} /> System utilities
-                </div>
-              </div>
-
-              {utilityItems.map((item) => (
-                <button
-                  key={item.id}
-                  onClick={() => {
-                    item.action();
-                    setIsLauncherOpen(false);
-                  }}
-                  className="flex w-full items-center gap-3 border border-slate-800 rounded-md px-3 py-2.5 text-xs font-semibold bg-slate-800/80 hover:bg-slate-700 text-slate-200 transition"
-                >
-                  {item.icon && <PublicIcon src={item.icon} size={16} />}
-                  <span>{item.label}</span>
-                </button>
-              ))}
-            </motion.div>
-          )}
-        </AnimatePresence>
-
+    <nav className="fixed bottom-3.5 left-1/2 -translate-x-1/2 z-40 flex items-center justify-between gap-3 h-11 px-3 bg-[#0a0f1df0] backdrop-blur-2xl border border-[#1e2a4a] rounded-xl shadow-[0_12px_40px_rgba(0,0,0,0.65)] select-none font-sans text-xs text-slate-100 max-w-[96vw]">
+      
+      {/* 1. LEFT: SLENDER APP LAUNCHER BUTTON */}
+      <div className="flex items-center gap-1.5">
         <button
-          onClick={() => setIsLauncherOpen((open) => !open)}
-          className="flex items-center gap-2 border-r border-slate-800 pr-3 text-[10px] font-bold tracking-[.14em] text-sky-400 hover:text-sky-300 transition"
+          onClick={() => {
+            if (soundEnabled) SoundFX.playSnap();
+            onOpenLauncher();
+          }}
+          className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-[#141d36] hover:bg-[#1c294c] border border-[#24335c] text-sky-300 font-mono text-xs font-semibold transition active:scale-95 group"
+          title="App Directory (Ctrl+Space)"
         >
-          <PublicIcon src="/icons/Icon set 1/0.5x/Menu 256 px.png" size={16} /> Utilities
+          <LayoutGrid size={14} className="text-sky-400 group-hover:rotate-45 transition-transform" />
+          <span className="tracking-wide">Apps</span>
         </button>
+      </div>
 
-        <button
-          onClick={onToggleSidebars}
-          className={`flex h-8 items-center gap-2 border px-2.5 text-[10px] font-semibold tracking-wide rounded-md transition ${areSidebarsVisible
-              ? 'border-slate-700 bg-slate-800 text-slate-200 hover:bg-slate-700'
-              : 'border-sky-500 bg-sky-600 text-white'
-            }`}
-          title={areSidebarsVisible ? 'Hide sidebars and open workspace' : 'Restore desktop sidebars'}
-          aria-pressed={!areSidebarsVisible}
-        >
-          <PublicIcon src="/icons/Icon set 1/0.5x/Menu 256 px.png" size={13} />
-          <span>{areSidebarsVisible ? 'Focus' : 'Panels'}</span>
-        </button>
+      {/* 2. CENTER: RUNNING WINDOW ICONS WITH ACTIVE GLOW DOTS */}
+      <div className="flex items-center gap-1 px-2 border-l border-r border-[#16213a] min-h-[28px]">
+        {windows.length === 0 ? (
+          <span className="text-[10px] font-mono text-slate-500 px-2 italic">Workspace Idle</span>
+        ) : (
+          windows.map((win) => {
+            const meta = getAppMeta(win.id);
+            const Icon = meta.icon;
+            const isFocused = !win.isMinimized;
 
-        {/* Open Apps Taskbar Buttons */}
-        <div className="flex items-center gap-1.5 overflow-x-auto max-w-xs sm:max-w-md">
-          {windows.map((win) => (
-            <button
-              key={win.id}
-              onClick={() => toggleApp(win)}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-semibold border transition ${!win.isMinimized
-                  ? 'bg-sky-600 text-white border-sky-400 font-bold'
-                  : 'bg-slate-800 text-slate-300 border-slate-700 hover:bg-slate-700'
+            return (
+              <button
+                key={win.id}
+                onClick={() => {
+                  if (soundEnabled) SoundFX.playSnap();
+                  toggleApp(win);
+                }}
+                className={`relative flex flex-col items-center justify-center h-7 w-8 rounded-lg transition group ${
+                  isFocused
+                    ? 'bg-[#16213e] text-sky-300 border border-[#2b3a67] shadow-xs'
+                    : 'text-slate-400 hover:text-slate-200 hover:bg-[#12192e]'
                 }`}
-            >
-              <span>{win.title}</span>
-            </button>
-          ))}
-        </div>
-
-        <div className="h-4 w-[1px] bg-slate-800 mx-1" />
-
-        {/* Search Bar */}
-        <div className="relative flex items-center">
-          <PublicIcon src="/icons/Icons8/icons8-home-16.svg" size={13} className="absolute left-2.5 opacity-60" />
-          <input
-            type="text"
-            placeholder="Search city records..."
-            className="h-8 w-36 sm:w-44 rounded-md border border-slate-700 bg-slate-900 pl-8 pr-3 text-[11px] text-slate-200 placeholder:text-slate-500 focus:border-sky-400 focus:outline-none"
-          />
-        </div>
+                title={`${meta.label} (${isFocused ? 'Active' : 'Minimized'})`}
+              >
+                <Icon size={15} className={isFocused ? meta.color : 'text-slate-400'} />
+                {/* Active Indicator Dot */}
+                <span
+                  className={`absolute bottom-0.5 h-1 w-1 rounded-full ${
+                    isFocused ? 'bg-sky-400 shadow-[0_0_6px_#38bdf8]' : 'bg-slate-500'
+                  }`}
+                />
+              </button>
+            );
+          })
+        )}
       </div>
 
-      {/* Right Controls: Settings, Sanctuary, Logout, MAI */}
-      <div className="relative flex items-center gap-2.5">
+      {/* 3. RIGHT: REFINED SYSTEM TRAY */}
+      <div className="flex items-center gap-1.5">
+        {/* Subtle Sidebar Toggle */}
         <button
-          onClick={() => openApp('settings')}
-          className="grid h-8 w-8 place-items-center rounded-md border border-slate-700 bg-slate-800 transition hover:bg-slate-700"
-          title="System Settings"
-          aria-label="Open system settings"
+          onClick={() => {
+            if (soundEnabled) SoundFX.playSnap();
+            onToggleSidebars();
+          }}
+          className={`p-1.5 rounded-lg border transition ${
+            areSidebarsVisible
+              ? 'bg-[#182342] text-amber-300 border-amber-500/40 shadow-xs'
+              : 'bg-[#10172c] hover:bg-[#16213e] text-slate-400 hover:text-slate-200 border-[#1c2744]'
+          }`}
+          title={areSidebarsVisible ? 'Hide Side Panels' : 'Show Side Panels (Vitals & Progression)'}
         >
-          <img
-            src="/icons/Icons8/icons8-settings-50.gif"
-            alt=""
-            className="h-4 w-4 object-contain"
-            aria-hidden="true"
-          />
+          <Sidebar size={14} className={areSidebarsVisible ? 'text-amber-400' : 'text-slate-400'} />
         </button>
 
-        <Button
-          onClick={() => toggleSanctuary()}
-          size="sm"
-          variant="outline"
-          className="flex items-center gap-1 border-slate-700 bg-slate-800 text-slate-200 hover:bg-slate-700 text-[11px] font-ui rounded-md shadow-none"
-          title="Clear Desktop Canvas"
+        {/* Smartphone Toggle */}
+        <button
+          onClick={() => {
+            if (soundEnabled) SoundFX.playSnap();
+            onTogglePhone();
+          }}
+          className="p-1.5 rounded-lg bg-[#10172c] hover:bg-[#16213e] text-slate-400 hover:text-amber-400 border border-[#1c2744] transition"
+          title="Toggle Smartphone"
         >
-          <PublicIcon src="/icons/Icon set 1/0.5x/Lock 256 px.png" size={13} />
-          <span className="hidden sm:inline">Sanctuary</span>
-        </Button>
+          <Smartphone size={14} />
+        </button>
 
-        <Button
-          onClick={() => logoutUser()}
-          size="sm"
-          variant="outline"
-          className="flex items-center gap-1 border-slate-700 bg-slate-800 text-slate-200 hover:bg-slate-700 text-[11px] font-ui rounded-md shadow-none"
-          title="Log Out of Municipal OS"
+        {/* Sound Toggle */}
+        <button
+          onClick={handleToggleSound}
+          className="p-1.5 rounded-lg bg-[#10172c] hover:bg-[#16213e] text-slate-400 hover:text-sky-400 border border-[#1c2744] transition"
+          title={soundEnabled ? 'Mute' : 'Unmute'}
         >
-          <PublicIcon src="/icons/Icon set 1/0.5x/Power sign 256 px.png" size={13} />
-          <span className="hidden sm:inline">Log Out</span>
-        </Button>
+          {soundEnabled ? <Volume2 size={14} /> : <VolumeX size={14} className="text-rose-400" />}
+        </button>
 
+        {/* MAI Voice Assistant Dock */}
         <MAIDock />
+
+        {/* Live Sys-Cycle Clock */}
+        <div className="hidden sm:flex items-center gap-1.5 px-2 py-1 rounded-lg bg-[#070b16] border border-[#16213a] text-[10px] font-mono text-slate-400">
+          <Clock size={11} className="text-sky-400" />
+          <span>C{cycle} • {timeSegments[timeSegmentIndex]}</span>
+        </div>
+
+        {/* Power / Logout */}
+        <button
+          onClick={logoutUser}
+          className="p-1.5 rounded-lg bg-rose-950/30 hover:bg-rose-900/50 text-rose-400 border border-rose-900/40 transition"
+          title="Logout"
+        >
+          <Power size={13} />
+        </button>
       </div>
-    </footer>
+
+    </nav>
   );
 }

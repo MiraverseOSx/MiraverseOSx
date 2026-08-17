@@ -2,14 +2,14 @@
 import React, { useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Sparkles, Key, User, ShieldAlert, LogIn, Lock, ArrowRight, Video, Play, Volume2, VolumeX, Eye } from 'lucide-react';
-import Button from './ui/button';
-import Input from './ui/input';
+import Button from './button';
+import Input from './input';
 
-import videoAnomaly from '../assets/videos/everything_is_great_but_do_not.mp4';
-import videoSurveillance from '../assets/videos/mixkit-a-woman-monitoring-close-circuit-surveillance-23673-hd-ready.mp4';
-import videoInk from '../assets/videos/mixkit-black-ink-splashing-505-hd-ready.mp4';
-import videoLandscape from '../assets/videos/mixkit-flying-over-a-relaxing-creek-full-of-rock-on-the-51585-hd-ready.mp4';
-import videoGlitter from '../assets/videos/mixkit-glitter-stars-and-snowflakes-19007-hd-ready.mp4';
+import videoAnomaly from '../../assets/videos/everything_is_great_but_do_not.mp4';
+import videoSurveillance from '../../assets/videos/mixkit-a-woman-monitoring-close-circuit-surveillance-23673-hd-ready.mp4';
+import videoInk from '../../assets/videos/mixkit-black-ink-splashing-505-hd-ready.mp4';
+import videoLandscape from '../../assets/videos/mixkit-flying-over-a-relaxing-creek-full-of-rock-on-the-51585-hd-ready.mp4';
+import videoGlitter from '../../assets/videos/mixkit-glitter-stars-and-snowflakes-19007-hd-ready.mp4';
 
 const VIDEO_FEEDS = [
   { id: 'glitter', name: 'Aether Glitter Stars', src: videoGlitter, label: 'Celestial Aura Feed' },

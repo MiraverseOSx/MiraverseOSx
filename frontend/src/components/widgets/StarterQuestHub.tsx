@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Sparkles, ChevronRight, CheckCircle2, ChevronDown, ChevronUp, Lock, Award, Compass, Map, CheckSquare } from 'lucide-react';
-import { useOSStore } from '../store/useOSStore';
-import { APPS } from '../apps/registry';
-import soundEngine from '../utils/soundEngine';
+import { useOSStore } from '../../store/useOSStore';
+import { APPS } from '../../apps/registry';
+import soundEngine from '../../utils/soundEngine';
 
 const CATEGORY_ICONS = {
   Quests: Sparkles,

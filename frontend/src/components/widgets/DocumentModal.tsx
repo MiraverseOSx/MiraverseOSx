@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Form from 'react-bootstrap/Form';
 import { Paperclip, FileText, Download, ShieldAlert, CheckCircle, ExternalLink } from 'lucide-react';
-import { useOSStore } from '../store/useOSStore';
+import { useOSStore } from '../../store/useOSStore';
 
 export default function DocumentModal({ file, onClose, onSubmitForm }) {
   const player = useOSStore((s) => s.gameplay.player);

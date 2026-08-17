@@ -4,7 +4,7 @@ import {
   Folder, FileText, Map, ShieldAlert, Activity, Radio, Zap, ChevronRight, Cpu, MapPin, Search, LayoutGrid, List, Paperclip, ExternalLink
 } from 'lucide-react';
 import Button from '../components/ui/button';
-import DocumentModal from '../components/DocumentModal';
+import DocumentModal from '../components/widgets/DocumentModal';
 import SignalPlayerModal from '../components/widgets/SignalPlayerModal';
 import { MOCK_DOCUMENTS } from '../data/mockDocuments';
 import '../styles/apps/FileExplorer.css';

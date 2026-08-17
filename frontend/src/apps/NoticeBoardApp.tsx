@@ -1,408 +1,362 @@
-import React, { useEffect, useMemo, useState } from 'react';
-import { useOSStore } from '../store/useOSStore';
-import { useGameStore } from '../store/useGameStore';
-import {
-    Compass, Zap, Scroll, Briefcase, Sparkles, Award, Lock, Play, Globe,
-    Check, MessageSquare, MapPin, User, FileCode, Search, CircleDot, Gift,
-    CheckCircle2, ArrowRight, Shield, Activity, Calendar
+import React, { useState } from 'react';
+import { 
+  Pin, 
+  CheckSquare, 
+  Square, 
+  ChevronLeft, 
+  ChevronRight, 
+  Compass, 
+  ShieldAlert, 
+  Terminal, 
+  Sparkles, 
+  Clock, 
+  Layers,
+  FolderGit2
 } from 'lucide-react';
-import {
-    AppShell, AppToolbar, AppSidebar, AppPane, EmptyState, SearchField, StatusBadge
-} from '../components/ui/app-shell';
-import { useToastStore } from '../store/useToastStore';
+import { SoundFX } from '../utils/audio';
+import { useSystemStore } from '../store/useSystemStore';
+import { useOSStore } from '../store/useOSStore';
 
-const CATEGORY_DEFINITIONS = [
-    { id: 'All', label: 'All Operations', icon: Globe, color: 'text-secondary' },
-    { id: 'Journey', label: 'Journeys', icon: Compass, color: 'text-purple' },
-    { id: 'Adventures', label: 'Adventures', icon: Sparkles, color: 'text-success' },
-    { id: 'Quests', label: 'Quests', icon: Scroll, color: 'text-primary' },
-    { id: 'Tasks', label: 'Tasks', icon: Zap, color: 'text-warning' },
-    { id: 'Missions', label: 'City Missions', icon: Briefcase, color: 'text-danger' },
-];
-
-const STATUS_TONES = {
-    LOCKED: 'secondary',
-    AVAILABLE: 'info',
-    IN_PROGRESS: 'warning',
-    COMPLETED: 'success',
-};
+interface NoticeItem {
+  id: string;
+  category: 'tasks' | 'quests' | 'missions' | 'adventures' | 'journey';
+  title: string;
+  description: string;
+  priority: 'Normal' | 'Elevated' | 'Critical' | 'Archival';
+  isPinned?: boolean;
+  completed: boolean;
+  tag: string;
+  rewardXP?: number;
+  rewardCredits?: number;
+}
 
 export default function NoticeBoardApp() {
-    const [activeTab, setActiveTab] = useState('Journey');
-    const [selectedActivityId, setSelectedActivityId] = useState('J01');
-    const [statusFilter, setStatusFilter] = useState('ALL');
-    const [searchQuery, setSearchQuery] = useState('');
+  const { soundEnabled } = useSystemStore();
+  const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [activeCategory, setActiveCategory] = useState<'all' | 'tasks' | 'quests' | 'missions' | 'adventures' | 'journey'>('all');
+  
+  const addXP = useOSStore((s) => s.addXP);
+  const addCredits = useOSStore((s) => s.addCredits);
 
-    const player = useOSStore((s) => s.gameplay.player);
-    const completeActivity = useOSStore((s) => s.completeActivity);
-    const updateActivityStatus = useOSStore((s) => s.updateActivityStatus);
-    const pushToast = useToastStore((s) => s.pushToast);
+  // Initial Aureline Systems Notice Data based on your lore specification
+  const [notices, setNotices] = useState<NoticeItem[]>([
+    {
+      id: 'n-01',
+      category: 'missions',
+      title: 'Aureline Civic Onboarding Registration',
+      description: 'Complete provisional resident intake forms via .osform and confirm Faith Medical portal synchronization.',
+      priority: 'Critical',
+      isPinned: true,
+      completed: true,
+      tag: 'DGA-01',
+      rewardXP: 100,
+      rewardCredits: 150,
+    },
+    {
+      id: 'n-02',
+      category: 'quests',
+      title: 'Investigate Old Factory Ward Anomalies',
+      description: 'Trace erratic background process signatures near the Supercomputer lower levels for AETHERCORE file remnants.',
+      priority: 'Elevated',
+      isPinned: true,
+      completed: false,
+      tag: 'PRISM-WARN',
+      rewardXP: 250,
+      rewardCredits: 300,
+    },
+    {
+      id: 'n-03',
+      category: 'tasks',
+      title: 'Starter House Room Calibration',
+      description: 'Unpack starter assignment box, configure terminal dock, and inspect wall port integrity in residential sector.',
+      priority: 'Normal',
+      isPinned: false,
+      completed: false,
+      tag: 'RES-04',
+      rewardXP: 50,
+      rewardCredits: 75,
+    },
+    {
+      id: 'n-04',
+      category: 'adventures',
+      title: 'Founding Day Protocol: March 6 Archive Unlock',
+      description: 'Prepare ceremonial decryption keys for Maeryn Seraphima historical records across district mainframes.',
+      priority: 'Archival',
+      isPinned: true,
+      completed: false,
+      tag: 'ORYNVELL',
+      rewardXP: 500,
+      rewardCredits: 600,
+    },
+    {
+      id: 'n-05',
+      category: 'journey',
+      title: 'Lightborn Lineage Discovery Path',
+      description: 'Cross-reference diagnostic aura reports with restricted royal archives to uncover your true inheritance.',
+      priority: 'Critical',
+      isPinned: false,
+      completed: false,
+      tag: 'VEIL-CORE',
+      rewardXP: 1000,
+      rewardCredits: 1200,
+    },
+    {
+      id: 'n-06',
+      category: 'tasks',
+      title: 'Faith Medical Aura Thermal Scan',
+      description: 'Schedule routine flux stability check at faithmed.aure to prevent Veilwilt symptom onset.',
+      priority: 'Normal',
+      isPinned: false,
+      completed: true,
+      tag: 'HEALTH',
+      rewardXP: 75,
+      rewardCredits: 100,
+    }
+  ]);
 
-    const activities = player?.activities || [];
-
-    const categories = CATEGORY_DEFINITIONS.map((category) => ({
-        ...category,
-        badge: category.id === 'All'
-            ? activities.length
-            : activities.filter((activity) => activity.category === category.id).length,
-    }));
-
-    const filteredActivities = useMemo(() => {
-        const normalizedSearch = searchQuery.trim().toLowerCase();
-        return activities.filter((activity) => {
-            const matchesCategory = activeTab === 'All' || activity.category === activeTab;
-            const matchesStatus = statusFilter === 'ALL' || activity.status === statusFilter;
-            const matchesSearch = !normalizedSearch || [activity.title, activity.subtitle, activity.giver, activity.location]
-                .some((value) => String(value ?? '').toLowerCase().includes(normalizedSearch));
-            return matchesCategory && matchesStatus && matchesSearch;
-        });
-    }, [activeTab, activities, searchQuery, statusFilter]);
-
-    const selectedActivity = filteredActivities.find((activity) => activity.id === selectedActivityId) || filteredActivities[0] || null;
-
-    useEffect(() => {
-        if (selectedActivity?.id !== selectedActivityId) {
-            setSelectedActivityId(selectedActivity?.id ?? null);
+  const toggleNoticeCompletion = (id: string) => {
+    if (soundEnabled) SoundFX.playButtonTap();
+    setNotices((prev) =>
+      prev.map((n) => {
+        if (n.id === id) {
+          const nextState = !n.completed;
+          if (nextState) {
+            if (n.rewardXP) addXP(n.rewardXP);
+            if (n.rewardCredits) addCredits(n.rewardCredits);
+            SoundFX.playSuccess();
+          }
+          return { ...n, completed: nextState };
         }
-    }, [selectedActivity, selectedActivityId]);
-
-    const completedCount = activities.filter((a) => a.status === 'COMPLETED').length;
-    const inProgressCount = activities.filter((a) => a.status === 'IN_PROGRESS').length;
-    const completionPercentage = activities.length > 0 ? Math.round((completedCount / activities.length) * 100) : 0;
-
-    const rewardXP = selectedActivity?.rewards?.xp ?? selectedActivity?.xp ?? 0;
-    const rewardCredits = selectedActivity?.rewards?.credits ?? selectedActivity?.credits ?? 0;
-    const isLocked = selectedActivity?.status === 'LOCKED';
-    const isAvailable = selectedActivity?.status === 'AVAILABLE';
-    const isCompleted = selectedActivity?.status === 'COMPLETED';
-
-    const updateReputationTrack = useOSStore((s) => s.updateReputationTrack);
-    const addSkillXP = useOSStore((s) => s.addSkillXP);
-
-    const handlePrimaryAction = () => {
-        if (!selectedActivity || isLocked || isCompleted) return;
-        if (isAvailable) {
-            updateActivityStatus(selectedActivity.id, 'IN_PROGRESS');
-            pushToast({ title: 'Activity tracked', message: selectedActivity.title, tone: 'info' });
-            return;
-        }
-        completeActivity(selectedActivity.id);
-
-        if (selectedActivity.rewards?.repBonus) {
-            updateReputationTrack(selectedActivity.rewards.repBonus.track, selectedActivity.rewards.repBonus.amount);
-        }
-        if (selectedActivity.rewards?.skillXP) {
-            addSkillXP(selectedActivity.rewards.skillXP.skill, selectedActivity.rewards.skillXP.amount);
-        }
-
-        // Sync with central useGameStore & Python world tick
-        useGameStore.getState().completeMission(selectedActivity.id);
-        useGameStore.getState().requestTick();
-
-        pushToast({
-            title: 'Rewards claimed',
-            message: `+${rewardXP} XP, +${rewardCredits} ₡${selectedActivity.rewards?.item ? `, ${selectedActivity.rewards.item}` : ''}`,
-            tone: 'success',
-        });
-    };
-
-    return (
-        <AppShell>
-            <AppToolbar
-                icon={Award}
-                title="Municipal & Student Notice Board"
-                subtitle="Journeys, Adventures, Quests, Tasks & Career Shifts"
-                actions={(
-                    <div className="d-flex items-center gap-2">
-                        <span className="badge bg-warning text-dark font-mono px-2.5 py-1">
-                            {inProgressCount} Tracked
-                        </span>
-                        <span className="badge bg-success text-white font-mono px-2.5 py-1">
-                            {completedCount} Completed
-                        </span>
-                    </div>
-                )}
-            />
-
-            {/* Bootstrap Main Container */}
-            <div className="container-fluid p-0 flex-1 min-h-0 d-flex overflow-hidden bg-light select-none">
-                
-                {/* ── LEFT BOOTSTRAP NAVIGATION SIDEBAR ── */}
-                <div className="col-12 col-md-3 col-lg-2 bg-dark text-white p-3 d-flex flex-column justify-content-between shrink-0 border-end border-secondary">
-                    <div className="space-y-4">
-                        {/* Notice Board Header Branding */}
-                        <div className="d-flex items-center gap-2.5 p-2 bg-secondary bg-opacity-20 rounded-3">
-                            <div className="p-2 bg-primary rounded-3 text-white shadow-sm">
-                                <Award size={20} />
-                            </div>
-                            <div>
-                                <h6 className="fw-bold mb-0 text-white font-serif">Civic Notice Board</h6>
-                                <small className="text-muted font-mono" style={{ fontSize: '9px' }}>AURELINE DISPATCH BOARD</small>
-                            </div>
-                        </div>
-
-                        {/* Progress Meter Box */}
-                        <div className="card bg-secondary bg-opacity-20 border-secondary border-opacity-30 p-3 text-white">
-                            <div className="d-flex justify-content-between text-xs font-mono fw-bold mb-1">
-                                <span>Board Clearance</span>
-                                <span className="text-success">{completionPercentage}%</span>
-                            </div>
-                            <div className="progress mb-2" style={{ height: '8px' }}>
-                                <div
-                                    className="progress-bar bg-gradient bg-primary"
-                                    role="progressbar"
-                                    style={{ width: `${completionPercentage}%` }}
-                                    aria-valuenow={completionPercentage}
-                                    aria-valuemin="0"
-                                    aria-valuemax="100"
-                                />
-                            </div>
-                            <div className="d-flex justify-content-between text-muted font-mono" style={{ fontSize: '10px' }}>
-                                <span>{inProgressCount} active</span>
-                                <span>{completedCount}/{activities.length} done</span>
-                            </div>
-                        </div>
-
-                        {/* Bootstrap Nav Pills Categories */}
-                        <div className="nav nav-pills flex-column gap-1">
-                            {categories.map((cat) => {
-                                const IconComp = cat.icon;
-                                const isActive = activeTab === cat.id;
-                                return (
-                                    <button
-                                        key={cat.id}
-                                        onClick={() => {
-                                            setActiveTab(cat.id);
-                                            setStatusFilter('ALL');
-                                            setSearchQuery('');
-                                        }}
-                                        className={`nav-link d-flex justify-content-between align-items-center text-start text-xs fw-bold px-3 py-2.5 rounded-3 transition ${
-                                            isActive
-                                                ? 'active bg-primary text-white shadow-sm'
-                                                : 'text-white-50 hover:bg-secondary hover:bg-opacity-30'
-                                        }`}
-                                    >
-                                        <div className="d-flex items-center gap-2">
-                                            <IconComp size={15} className={isActive ? 'text-white' : ''} />
-                                            <span>{cat.label}</span>
-                                        </div>
-                                        <span className={`badge rounded-pill ${isActive ? 'bg-white text-primary' : 'bg-secondary'}`}>
-                                            {cat.badge}
-                                        </span>
-                                    </button>
-                                );
-                            })}
-                        </div>
-                    </div>
-
-                    {/* Vitals Summary Footer */}
-                    <div className="p-3 bg-secondary bg-opacity-20 rounded-3 text-white-50 font-mono text-xs space-y-1 mt-4">
-                        <div className="d-flex justify-content-between"><span>Citizen Level:</span> <strong className="text-white">{player?.level || 1}</strong></div>
-                        <div className="d-flex justify-content-between"><span>Credits:</span> <strong className="text-success">{player?.credits || 0} ₡</strong></div>
-                    </div>
-                </div>
-
-                {/* ── CENTER LIST INDEX ── */}
-                <div className="col-12 col-md-4 col-lg-3 bg-white border-end border-slate-200 d-flex flex-column shrink-0 overflow-hidden">
-                    <div className="p-3 bg-light border-bottom font-bold text-xs text-uppercase tracking-wider text-muted">
-                        {activeTab} Index ({filteredActivities.length})
-                    </div>
-
-                    {/* Search & Filter Bar */}
-                    <div className="p-3 border-bottom bg-white space-y-2">
-                        <SearchField
-                            value={searchQuery}
-                            onChange={(event) => setSearchQuery(event.target.value)}
-                            placeholder="Search operations..."
-                            label="Search activities"
-                        />
-                        <select
-                            value={statusFilter}
-                            onChange={(event) => setStatusFilter(event.target.value)}
-                            className="form-select form-select-sm text-xs font-mono fw-bold"
-                        >
-                            <option value="ALL">All States</option>
-                            <option value="IN_PROGRESS">Tracked</option>
-                            <option value="AVAILABLE">Available</option>
-                            <option value="LOCKED">Locked</option>
-                            <option value="COMPLETED">Completed</option>
-                        </select>
-                    </div>
-
-                    {/* Activity List Group */}
-                    <div className="list-group list-group-flush flex-1 overflow-y-auto">
-                        {filteredActivities.map((act) => {
-                            const isSelected = selectedActivity?.id === act.id;
-                            return (
-                                <button
-                                    key={act.id}
-                                    onClick={() => setSelectedActivityId(act.id)}
-                                    className={`list-group-item list-group-item-action p-3 transition border-start border-4 ${
-                                        isSelected ? 'border-primary bg-primary bg-opacity-10 fw-bold' : 'border-transparent'
-                                    }`}
-                                >
-                                    <div className="d-flex justify-content-between align-items-center text-xs font-mono mb-1">
-                                        <span className="badge bg-purple-100 text-purple border">{act.category}</span>
-                                        <span className={`badge bg-${STATUS_TONES[act.status] || 'secondary'}`}>
-                                            {act.status.replace('_', ' ')}
-                                        </span>
-                                    </div>
-                                    <div className="text-xs font-bold text-dark">{act.title}</div>
-                                    <div className="text-muted text-xs truncate mt-0.5">{act.subtitle || act.giver}</div>
-                                </button>
-                            );
-                        })}
-
-                        {filteredActivities.length === 0 && (
-                            <EmptyState icon={Search} title="No matching activities" description="Adjust category or filter options." />
-                        )}
-                    </div>
-                </div>
-
-                {/* ── RIGHT DETAIL INSPECT PANEL ── */}
-                {selectedActivity ? (
-                    <main className="col-12 col-md-5 col-lg-7 bg-white p-4 overflow-y-auto space-y-4 flex-1">
-                        
-                        {/* Notice Card Header */}
-                        <div className="card shadow-sm border-0 bg-gradient-to-r from-slate-50 to-purple-50 p-4 rounded-3 space-y-2">
-                            <div className="d-flex items-center gap-2">
-                                <span className="badge bg-primary text-white uppercase font-mono px-2.5 py-1">
-                                    {selectedActivity.category}
-                                </span>
-                                <span className={`badge bg-${STATUS_TONES[selectedActivity.status] || 'secondary'} uppercase font-mono px-2.5 py-1`}>
-                                    {selectedActivity.status.replace('_', ' ')}
-                                </span>
-                                {selectedActivity.fileTriggers?.map((f, i) => (
-                                    <span key={i} className="badge bg-light text-dark border font-mono">
-                                        <FileCode size={11} className="me-1" /> {f}
-                                    </span>
-                                ))}
-                            </div>
-                            <h4 className="fw-bold text-dark font-serif mb-0">{selectedActivity.title}</h4>
-                            <p className="text-muted text-xs font-mono mb-0">{selectedActivity.subtitle}</p>
-                        </div>
-
-                        {/* Metadata Grid */}
-                        <div className="row g-3 text-xs font-mono">
-                            <div className="col-md-6">
-                                <div className="card border-0 bg-light p-3 rounded-3 d-flex flex-row items-center gap-3">
-                                    <User className="text-primary shrink-0" size={20} />
-                                    <div>
-                                        <div className="text-muted uppercase text-[9px]">Assigned Authority</div>
-                                        <div className="fw-bold text-dark">{selectedActivity.giver || 'Aureline Civic Bureau'}</div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="col-md-6">
-                                <div className="card border-0 bg-light p-3 rounded-3 d-flex flex-row items-center gap-3">
-                                    <MapPin className="text-success shrink-0" size={20} />
-                                    <div>
-                                        <div className="text-muted uppercase text-[9px]">Target Context / Zone</div>
-                                        <div className="fw-bold text-dark">{selectedActivity.appContext || selectedActivity.location || 'Municipal Core'}</div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        {/* Prerequisite Alert */}
-                        {selectedActivity.prerequisite && (
-                            <div className={`alert ${isLocked ? 'alert-secondary' : 'alert-info'} d-flex items-start gap-2 mb-0 text-xs rounded-3`}>
-                                {isLocked ? <Lock size={16} className="mt-0.5 shrink-0" /> : <CircleDot size={16} className="mt-0.5 shrink-0" />}
-                                <div><strong>Prerequisite Required:</strong> {selectedActivity.prerequisite}</div>
-                            </div>
-                        )}
-
-                        {/* Lore Narrative Card */}
-                        {selectedActivity.loreBackground && (
-                            <div className="card border-purple-200 bg-purple-50/40 p-4 rounded-3 space-y-1">
-                                <h6 className="fw-bold text-purple-950 uppercase text-xs tracking-wider mb-1">Lore & Tactical Context</h6>
-                                <p className="text-purple-900 text-xs leading-relaxed font-serif mb-0">
-                                    {selectedActivity.loreBackground}
-                                </p>
-                            </div>
-                        )}
-
-                        {/* Objective Checklist */}
-                        {selectedActivity.steps && (
-                            <div className="space-y-2">
-                                <h6 className="fw-bold text-dark uppercase text-xs tracking-wider mb-2">Objective Checklist</h6>
-                                <div className="list-group">
-                                    {selectedActivity.steps.map((step, i) => (
-                                        <div key={i} className="list-group-item d-flex items-center gap-3 text-xs bg-light border-0 mb-1 rounded-3">
-                                            <div className={`rounded-circle d-flex items-center justify-center font-mono text-[10px] text-white ${
-                                                step.done || selectedActivity.status === 'COMPLETED' ? 'bg-success' : 'bg-secondary'
-                                            }`} style={{ width: '22px', height: '22px' }}>
-                                                {step.done || selectedActivity.status === 'COMPLETED' ? <Check size={13} /> : i + 1}
-                                            </div>
-                                            <span className={step.done || selectedActivity.status === 'COMPLETED' ? 'text-decoration-line-through text-muted' : 'fw-semibold text-dark'}>
-                                                {step.text}
-                                            </span>
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
-                        )}
-
-                        {/* Dialogue Transmission Hook */}
-                        {selectedActivity.dialogueHooks && (
-                            <div className="card bg-dark text-white p-3.5 rounded-3 font-mono text-xs space-y-1">
-                                <div className="d-flex items-center gap-1.5 text-success fw-bold">
-                                    <MessageSquare size={14} /> Transmission Relay Log
-                                </div>
-                                <div className="text-white-50 italic">
-                                    "{selectedActivity.dialogueHooks.briefing || selectedActivity.dialogueHooks.completion}"
-                                </div>
-                            </div>
-                        )}
-
-                        {/* Rewards & Claim Footer Action Card */}
-                        <div className="card bg-light border-0 p-4 rounded-3 d-flex flex-row justify-content-between align-items-center shadow-sm">
-                            <div className="d-flex items-center gap-3">
-                                <div className="p-2.5 bg-primary bg-opacity-10 text-primary rounded-3">
-                                    <Gift size={22} />
-                                </div>
-                                <div>
-                                    <div className="text-muted text-[10px] uppercase font-mono">Completion Rewards System</div>
-                                    <div className="fw-bold text-dark font-mono text-xs d-flex flex-wrap items-center gap-1.5 mt-0.5">
-                                        <span className="badge bg-purple-100 text-purple border">+{rewardXP} XP</span>
-                                        <span className="badge bg-success bg-opacity-10 text-success border">+{rewardCredits} ₡</span>
-                                        {selectedActivity.rewards?.item && (
-                                            <span className="badge bg-primary text-white">🎁 {selectedActivity.rewards.item}</span>
-                                        )}
-                                        {selectedActivity.rewards?.repBonus && (
-                                            <span className="badge bg-warning text-dark">🏆 +{selectedActivity.rewards.repBonus.amount}% {selectedActivity.rewards.repBonus.track} Rep</span>
-                                        )}
-                                        {selectedActivity.rewards?.skillXP && (
-                                            <span className="badge bg-info text-dark">⚡ +{selectedActivity.rewards.skillXP.amount} {selectedActivity.rewards.skillXP.skill} XP</span>
-                                        )}
-                                    </div>
-                                </div>
-                            </div>
-
-                            <button
-                                onClick={handlePrimaryAction}
-                                disabled={isLocked || isCompleted}
-                                className={`btn btn-sm font-bold px-4 py-2 text-xs d-flex items-center gap-2 rounded-3 ${
-                                    isCompleted
-                                        ? 'btn-success text-white'
-                                        : isLocked
-                                            ? 'btn-secondary text-white disabled'
-                                            : isAvailable
-                                                ? 'btn-primary text-white shadow-sm'
-                                                : 'btn-violet text-white shadow-sm'
-                                }`}
-                            >
-                                {isCompleted ? <CheckCircle2 size={16} /> : isLocked ? <Lock size={16} /> : <Play size={16} />}
-                                <span>{isCompleted ? 'Completed & Claimed' : isLocked ? 'Locked (Prerequisite)' : isAvailable ? 'Accept & Track' : 'Complete & Claim'}</span>
-                            </button>
-                        </div>
-                    </main>
-                ) : (
-                    <main className="col-12 col-md-5 col-lg-7 bg-white d-flex items-center justify-center p-5 text-center">
-                        <EmptyState icon={Search} title="No operation selected" description="Adjust category or filter options." />
-                    </main>
-                )}
-            </div>
-        </AppShell>
+        return n;
+      })
     );
+  };
+
+  const filteredNotices = activeCategory === 'all' 
+    ? notices 
+    : notices.filter(n => n.category === activeCategory);
+
+  const pinnedNotices = notices.filter(n => n.isPinned && !n.completed);
+
+  return (
+    <div className="flex h-full bg-[#F8F9FA] text-slate-800 font-sans select-none overflow-hidden rounded-none border border-slate-300">
+      
+      {/* 1. COLLAPSIBLE SIDEBAR */}
+      <aside 
+        className={`bg-slate-900 text-white transition-all duration-300 flex flex-col justify-between border-r border-slate-800 z-10 ${
+          sidebarOpen ? 'w-56 p-3' : 'w-14 p-2 items-center'
+        }`}
+      >
+        <div className="flex flex-col gap-3 w-full">
+          {/* Sidebar Header / Toggle */}
+          <div className="flex items-center justify-between pb-2 border-b border-slate-800">
+            {sidebarOpen && (
+              <span className="text-[10px] font-mono font-bold tracking-widest text-amber-400 uppercase">
+                Aureline Directories
+              </span>
+            )}
+            <button
+              onClick={() => {
+                if (soundEnabled) SoundFX.playSnap();
+                setSidebarOpen(!sidebarOpen);
+              }}
+              className="p-1 hover:bg-slate-800 text-slate-400 hover:text-white rounded transition-colors"
+              title="Toggle Sidebar"
+            >
+              {sidebarOpen ? <ChevronLeft className="w-4 h-4" /> : <ChevronRight className="w-4 h-4" />}
+            </button>
+          </div>
+
+          {/* Navigation Category Buttons */}
+          <nav className="flex flex-col gap-1">
+            {[
+              { id: 'all', label: 'All Protocols', icon: <Layers className="w-3.5 h-3.5" /> },
+              { id: 'tasks', label: 'Tasks', icon: <CheckSquare className="w-3.5 h-3.5 text-emerald-400" /> },
+              { id: 'quests', label: 'Quests', icon: <Compass className="w-3.5 h-3.5 text-blue-400" /> },
+              { id: 'missions', label: 'Missions', icon: <Terminal className="w-3.5 h-3.5 text-purple-400" /> },
+              { id: 'adventures', label: 'Adventures', icon: <Sparkles className="w-3.5 h-3.5 text-amber-400" /> },
+              { id: 'journey', label: 'The Journey', icon: <FolderGit2 className="w-3.5 h-3.5 text-rose-400" /> },
+            ].map((cat) => (
+              <button
+                key={cat.id}
+                onClick={() => {
+                  if (soundEnabled) SoundFX.playSnap();
+                  setActiveCategory(cat.id as any);
+                }}
+                className={`flex items-center gap-2.5 px-2.5 py-2 text-xs transition-all rounded-none border ${
+                  activeCategory === cat.id
+                    ? 'bg-slate-800 text-white border-slate-700 font-semibold shadow-xs'
+                    : 'bg-transparent text-slate-400 border-transparent hover:bg-slate-800/60 hover:text-slate-200'
+                } ${!sidebarOpen ? 'justify-center' : ''}`}
+                title={cat.label}
+              >
+                <div className="shrink-0">{cat.icon}</div>
+                {sidebarOpen && <span className="truncate">{cat.label}</span>}
+              </button>
+            ))}
+          </nav>
+        </div>
+
+        {sidebarOpen && (
+          <div className="p-2 bg-slate-950 border border-slate-800 text-[10px] font-mono text-slate-400">
+            SYS_STATUS: <span className="text-emerald-400 font-bold">ONLINE</span>
+          </div>
+        )}
+      </aside>
+
+      {/* 2. MAIN NOTICE BOARD CONTENT AREA */}
+      <main className="flex-1 flex flex-col overflow-y-auto p-4 bg-[#F8F9FA]">
+        
+        {/* Header Banner */}
+        <div className="mb-4 bg-white p-4 border border-slate-300 shadow-2xs flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+          <div>
+            <div className="flex items-center gap-2 mb-1">
+              <span className="text-[10px] font-mono uppercase bg-slate-900 text-white px-2 py-0.5 rounded-none font-bold">
+                NOTICE BOARD ACCESS GRANTED
+              </span>
+              <span className="text-[10px] font-mono text-slate-500">// Aureline Systems Framework</span>
+            </div>
+            <h1 className="text-lg font-bold text-[#2C3E50]">
+              Synchronized Life & Task Directory
+            </h1>
+          </div>
+          <div className="text-right font-mono text-xs text-slate-500">
+            Active Entries: <strong className="text-slate-900">{filteredNotices.length}</strong>
+          </div>
+        </div>
+
+        {/* ASYMMETRIC TWO-COLUMN LAYOUT WITH DIVERSITY */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 items-start">
+          
+          {/* LEFT DIVERSIFIED COLUMN (Main Feed - 2 cols span on large screens) */}
+          <div className="lg:col-span-2 space-y-3">
+            <h3 className="text-xs font-bold uppercase tracking-wider text-slate-500 font-mono mb-2 flex items-center gap-1.5">
+              <Terminal className="w-3.5 h-3.5 text-slate-700" />
+              Primary Protocol Stream ({activeCategory.toUpperCase()})
+            </h3>
+
+            {filteredNotices.length === 0 ? (
+              <div className="p-8 text-center bg-white border border-dashed border-slate-300 text-xs text-slate-400">
+                No active directives found under this protocol category.
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                {filteredNotices.map((notice, index) => {
+                  // Create visual diversity by varying card heights and background borders based on index
+                  const isWideCard = index % 3 === 0;
+                  return (
+                    <div 
+                      key={notice.id}
+                      className={`bg-white p-4 border transition-all flex flex-col justify-between rounded-none shadow-2xs hover:shadow-md ${
+                        notice.completed ? 'opacity-60 border-slate-200 bg-slate-50' : 'border-slate-300 hover:border-slate-500'
+                      } ${isWideCard ? 'sm:col-span-2 bg-gradient-to-r from-white via-white to-slate-50/50' : 'col-span-1'}`}
+                    >
+                      <div>
+                        {/* Card Top Meta */}
+                        <div className="flex items-center justify-between mb-2">
+                          <span className="text-[10px] font-mono uppercase px-1.5 py-0.2 bg-slate-100 text-slate-700 border border-slate-200 font-bold">
+                            {notice.tag}
+                          </span>
+                          <span className={`text-[10px] font-mono font-bold px-2 py-0.5 border ${
+                            notice.priority === 'Critical' ? 'bg-red-50 text-red-700 border-red-200' :
+                            notice.priority === 'Elevated' ? 'bg-amber-50 text-amber-800 border-amber-200' :
+                            notice.priority === 'Archival' ? 'bg-purple-50 text-purple-800 border-purple-200' :
+                            'bg-slate-100 text-slate-700 border-slate-200'
+                          }`}>
+                            {notice.priority}
+                          </span>
+                        </div>
+
+                        {/* Title & Description */}
+                        <h4 className={`text-sm font-bold text-[#2C3E50] mb-1 ${notice.completed ? 'line-through text-slate-400' : ''}`}>
+                          {notice.title}
+                        </h4>
+                        <p className="text-xs text-slate-600 leading-relaxed mb-4">
+                          {notice.description}
+                        </p>
+                      </div>
+
+                      {/* Card Footer with Status Toggle */}
+                      <div className="pt-3 border-t border-slate-100 flex items-center justify-between">
+                        <button
+                          onClick={() => toggleNoticeCompletion(notice.id)}
+                          className="flex items-center gap-1.5 text-xs font-mono font-medium text-slate-700 hover:text-slate-900 transition-colors"
+                        >
+                          {notice.completed ? (
+                            <CheckSquare className="w-4 h-4 text-emerald-600" />
+                          ) : (
+                            <Square className="w-4 h-4 text-slate-400 hover:text-slate-700" />
+                          )}
+                          <span className={notice.completed ? 'line-through text-slate-400' : ''}>
+                            {notice.completed ? 'Protocol Fulfilled' : 'Mark Complete'}
+                          </span>
+                        </button>
+                        <span className="text-[10px] font-mono uppercase text-slate-400">
+                          {notice.category}
+                        </span>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            )}
+          </div>
+
+          {/* RIGHT SIDEBAR COLUMN (Cute Pinned Sections & System Notices) */}
+          <div className="space-y-4">
+            
+            {/* Pinned Priority Section */}
+            <div className="bg-white border-2 border-amber-500/80 p-4 rounded-none shadow-sm relative overflow-hidden">
+              <div className="absolute top-0 right-0 bg-amber-500 text-slate-950 font-mono text-[9px] font-bold px-2 py-0.5 flex items-center gap-1">
+                <Pin className="w-3 h-3 fill-slate-950" /> PINNED PRIORITY
+              </div>
+              
+              <h3 className="text-xs font-bold uppercase tracking-wider text-slate-900 font-mono mb-3 flex items-center gap-1.5">
+                <ShieldAlert className="w-4 h-4 text-amber-600" />
+                Critical Aureline Directives
+              </h3>
+
+              <div className="space-y-2.5">
+                {pinnedNotices.length === 0 ? (
+                  <p className="text-xs text-slate-400 italic">No pinned notices currently requiring attention.</p>
+                ) : (
+                  pinnedNotices.map((pin) => (
+                    <div key={pin.id} className="p-2.5 bg-amber-50/60 border border-amber-200 text-xs">
+                      <div className="font-bold text-slate-900 mb-1">{pin.title}</div>
+                      <p className="text-[11px] text-slate-600 leading-normal">{pin.description}</p>
+                    </div>
+                  ))
+                )}
+              </div>
+            </div>
+
+            {/* Quick System Telemetry Widget */}
+            <div className="bg-slate-900 text-white p-4 rounded-none border border-slate-800 shadow-sm">
+              <h3 className="text-xs font-bold uppercase tracking-wider text-slate-300 font-mono mb-2 flex items-center gap-1.5">
+                <Clock className="w-3.5 h-3.5 text-indigo-400" />
+                System Framework Status
+              </h3>
+              <div className="space-y-2 text-xs font-mono">
+                <div className="flex justify-between py-1 border-b border-slate-800 text-slate-300">
+                  <span>Framework:</span>
+                  <span className="text-emerald-400">AurelineOS v4.2</span>
+                </div>
+                <div className="flex justify-between py-1 border-b border-slate-800 text-slate-300">
+                  <span>Veil Stability:</span>
+                  <span className="text-amber-400">Nominal (94.2%)</span>
+                </div>
+                <div className="flex justify-between py-1 text-slate-300">
+                  <span>Tasks Completed:</span>
+                  <span className="text-indigo-400">{notices.filter(n => n.completed).length} / {notices.length}</span>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+
+      </main>
+    </div>
+  );
 }

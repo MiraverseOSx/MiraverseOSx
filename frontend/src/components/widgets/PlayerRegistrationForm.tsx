@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useGameStore } from '../store/useGameStore';
+import { useGameStore } from '../../store/useGameStore';
 import { UserCheck, Shield, Sparkles, Cpu } from 'lucide-react';
 
 export default function PlayerRegistrationForm({ onClose }) {

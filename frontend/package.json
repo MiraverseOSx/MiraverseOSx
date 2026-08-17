@@ -9,6 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "appwrite": "^26.2.0",
     "bootstrap": "^5.3.3",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
@@ -22,10 +23,15 @@
     "zustand": "^5.0.3"
   },
   "devDependencies": {
+    "@types/react": "^19.2.18",
+    "@types/react-dom": "^19.2.4",
     "@vitejs/plugin-react": "^4.3.4",
-    "autoprefixer": "^10.4.20",
-    "postcss": "^8.5.2",
+    "autoprefixer": "^10.5.4",
+    "postcss": "^8.5.26",
     "tailwindcss": "^3.4.17",
     "vite": "^6.1.0"
+  },
+  "allowScripts": {
+    "esbuild@0.25.12": true
   }
 }

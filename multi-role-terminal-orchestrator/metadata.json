@@ -1,0 +1,6 @@
+{
+  "name": "Multi-Role Terminal Orchestrator",
+  "description": "Desktop simulation terminal with a proactive Multi-Agent Orchestrator engine spanning Medical, Investigation, and Dispatch modules.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

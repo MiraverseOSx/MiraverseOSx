@@ -5,13 +5,13 @@ import {
 } from 'lucide-react';
 import { useCommsStore } from '../store/useCommsStore';
 import { useOSStore } from '../store/useOSStore';
-import { APPS } from '../apps/registry';
+import { APPS } from './registry';
 import Button from '../components/ui/button';
 import Input from '../components/ui/input';
 import {
     AppShell, AppToolbar, AppSidebar, AppPane, EmptyState, SearchField, StatusBadge
 } from '../components/ui/app-shell';
-import DocumentModal from '../components/DocumentModal';
+import DocumentModal from '../components/widgets/DocumentModal';
 import { MOCK_DOCUMENTS } from '../data/mockDocuments';
 import { useToastStore } from '../store/useToastStore';
 

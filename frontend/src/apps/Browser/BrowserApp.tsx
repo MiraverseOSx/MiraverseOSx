@@ -1,6 +1,6 @@
 // @CodeScene(disable:"Overall Code Complexity")
 import React, { useState, useEffect } from 'react';
-import OSWindow from '../../components/OSWindow';
+import OSWindow from '../../components/ui/OSWindow';
 import SearchHome from './SearchHome';
 import SearchResults from './SearchResults';
 import AureSuiteApp from './AureSuiteApp';

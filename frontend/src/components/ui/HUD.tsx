@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { useGameStore } from '../store/useGameStore';
+import { useGameStore } from '../../store/useGameStore';
 import { Activity, ShieldAlert, Cpu, Sparkles, MessageSquare, Terminal, RefreshCw } from 'lucide-react';
 
 export default function HUD() {

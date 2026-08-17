@@ -2,21 +2,20 @@
 	"version": "2.0.0",
 	"tasks": [
 		{
-			"label": "Start Vite dev server",
-			"type": "shell",
-			"command": "npm",
+			"label": "build",
+			"command": "dotnet",
+			"type": "process",
 			"args": [
-				"run",
-				"dev"
+				"build",
+				"${workspaceFolder}/MiraverseOSx.csproj",
+				"/property:GenerateFullPaths=true",
+				"/consoleloggerparameters:NoSummary"
 			],
-			"options": {
-				"cwd": "${workspaceFolder}/miraverse-frontend"
-			},
-			"isBackground": true,
-			"problemMatcher": [
-				"$vite-stderr"
-			],
-			"group": "build"
+			"problemMatcher": "$msCompile",
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			}
 		},
 		{
 			"label": "Start Vite dev server",
@@ -26,11 +25,12 @@
 				"run",
 				"dev"
 			],
+			"options": {
+				"cwd": "${workspaceFolder}"
+			},
 			"isBackground": true,
-			"problemMatcher": [
-				"$vite-stderr"
-			],
-			"group": "build"
+			"problemMatcher": [],
+			"group": "none"
 		}
 	]
 }

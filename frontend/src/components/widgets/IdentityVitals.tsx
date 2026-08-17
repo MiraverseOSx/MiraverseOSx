@@ -1,5 +1,5 @@
 import React from 'react';
-import { useOSStore } from '../store/useOSStore';
+import { useOSStore } from '../../store/useOSStore';
 import { Lock, Smartphone, Mail, Home, CheckCircle2, AlertCircle, Cpu, Radio, Shield, User } from 'lucide-react';
 
 export default function IdentityVitals({ onOpenCitizenRecord, onTogglePhone }) {

@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Sparkles, Send, Bot, Terminal, ChevronUp, ChevronDown, CheckCircle2, AlertCircle, ShieldAlert, FileText, HelpCircle, Activity } from 'lucide-react';
-import { useOSStore } from '../store/useOSStore';
-import { useWorldStore } from '../store/useWorldStore';
-import { useGameStore } from '../store/useGameStore';
-import { APPS } from '../apps/registry';
-import soundEngine from '../utils/soundEngine';
+import { useOSStore } from '../../store/useOSStore';
+import { useWorldStore } from '../../store/useWorldStore';
+import { useGameStore } from '../../store/useGameStore';
+import { APPS } from '../../apps/registry';
+import soundEngine from '../../utils/soundEngine';
 
 export default function MAIDock() {
   const [isOpen, setIsOpen] = useState(false);

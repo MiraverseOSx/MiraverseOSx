@@ -8,39 +8,53 @@ using System.Threading.Tasks;
 using Microsoft.Data.Sqlite;
 using Dapper;
 using Photino.NET;
+using Appwrite;
+using Appwrite.Services;
 
 namespace MiraverseOSx
 {
-    // C# Model mapped to your SQLite Documents table
+    // C# Model mapped to your SQLite Documents table / Appwrite Collection
     public class Document
     {
-        public string Id { get; set; }
-        public string Name { get; set; }
-        public string Extension { get; set; }
-        public string Folder { get; set; }
-        public string Title { get; set; }
-        public string Content { get; set; }
-        public string Author { get; set; }
+        public string Id { get; set; } = string.Empty;
+        public string Name { get; set; } = string.Empty;
+        public string Extension { get; set; } = string.Empty;
+        public string Folder { get; set; } = string.Empty;
+        public string Title { get; set; } = string.Empty;
+        public string Content { get; set; } = string.Empty;
+        public string Author { get; set; } = string.Empty;
         public int Is_Encrypted { get; set; }
         public int Is_Prism_Flagged { get; set; }
-        public string Faction_Origin { get; set; }
-        public string Region_Origin { get; set; }
-        public string Created_At { get; set; }
+        public string Faction_Origin { get; set; } = string.Empty;
+        public string Region_Origin { get; set; } = string.Empty;
+        public string Created_At { get; set; } = string.Empty;
     }
 
     class Program
     {
         private static PhotinoWindow? _mainWindow;
         private static HttpListener? _httpServer;
-        private const int ServerPort = 5000;
+        private static int _activePort = 5000;
+
+        // --- APPWRITE SERVICE INSTANCES ---
+        public static Client AppwriteClient { get; private set; } = null!;
+        public static Account AppwriteAccount { get; private set; } = null!;
+        public static Databases AppwriteDatabases { get; private set; } = null!;
+
+        // Appwrite Cloud configuration (NYC regional endpoint)
+        private const string AppwriteEndpoint = "https://nyc.cloud.appwrite.io/v1";
+        private const string AppwriteProjectId = "6a8217de003313795046";
 
         [STAThread]
         static void Main(string[] args)
         {
-            // Start lightweight local HTTP server for wwwroot assets and API
-            StartLocalWebServer();
+            // 1. Initialize Appwrite Client & Services
+            InitializeAppwrite();
 
-            // Initialize Photino native desktop window
+            // 2. Start lightweight local HTTP server for wwwroot assets and API
+            _activePort = StartLocalWebServer();
+
+            // 3. Initialize Photino native desktop window
             _mainWindow = new PhotinoWindow()
                 .SetTitle("Miraverse OS x - Celestial Operating System")
                 .SetUseOsDefaultSize(false)
@@ -48,47 +62,82 @@ namespace MiraverseOSx
                 .Center()
                 .SetResizable(true);
 
-            // Register web message IPC bridge handler
+            // 4. Register web message IPC bridge handler
             _mainWindow.RegisterWebMessageReceivedHandler(OnWebMessageReceived);
 
-            // Load app from local web server
-            string localUrl = $"http://localhost:{ServerPort}/index.html";
+            // 5. Load app from local web server
+            string localUrl = $"http://localhost:{_activePort}/index.html";
             _mainWindow.Load(localUrl);
 
             _mainWindow.WaitForClose();
 
-            // Cleanup server on exit
+            // 6. Cleanup server on exit
             StopLocalWebServer();
         }
 
-        private static void StartLocalWebServer()
+        private static void InitializeAppwrite()
         {
-            Task.Run(() =>
+            try
+            {
+                AppwriteClient = new Client()
+                    .SetEndpoint(AppwriteEndpoint)
+                    .SetProject(AppwriteProjectId);
+
+                AppwriteAccount = new Account(AppwriteClient);
+                AppwriteDatabases = new Databases(AppwriteClient);
+
+                Console.WriteLine("[Appwrite] SDK successfully initialized.");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"[Appwrite Init Error] {ex.Message}");
+            }
+        }
+
+        private static int StartLocalWebServer()
+        {
+            string wwwroot = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "wwwroot");
+            if (!Directory.Exists(wwwroot))
+            {
+                wwwroot = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot");
+            }
+
+            int port = 5000;
+            for (int p = 5000; p <= 5015; p++)
             {
                 try
                 {
-                    string wwwroot = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "wwwroot");
-                    if (!Directory.Exists(wwwroot))
-                    {
-                        wwwroot = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot");
-                    }
-
                     _httpServer = new HttpListener();
-                    _httpServer.Prefixes.Add($"http://localhost:{ServerPort}/");
+                    _httpServer.Prefixes.Add($"http://localhost:{p}/");
                     _httpServer.Start();
-                    Console.WriteLine($"[Local Server] Serving wwwroot from '{wwwroot}' on http://localhost:{ServerPort}/");
-
-                    while (_httpServer.IsListening)
-                    {
-                        var context = _httpServer.GetContext();
-                        Task.Run(() => ProcessHttpRequest(context, wwwroot));
-                    }
+                    port = p;
+                    Console.WriteLine($"[Local Server] Serving wwwroot from '{wwwroot}' on http://localhost:{p}/");
+                    break;
                 }
-                catch (Exception ex)
+                catch
                 {
-                    Console.WriteLine($"[Local Server Notice] {ex.Message}");
+                    try { _httpServer?.Close(); } catch { }
+                    _httpServer = null;
                 }
-            });
+            }
+
+            if (_httpServer != null)
+            {
+                Task.Run(() =>
+                {
+                    while (_httpServer != null && _httpServer.IsListening)
+                    {
+                        try
+                        {
+                            var context = _httpServer.GetContext();
+                            Task.Run(() => ProcessHttpRequest(context, wwwroot));
+                        }
+                        catch { }
+                    }
+                });
+            }
+
+            return port;
         }
 
         private static void ProcessHttpRequest(HttpListenerContext context, string wwwroot)
@@ -100,7 +149,6 @@ namespace MiraverseOSx
                 // --- SQLITE API ROUTE INTERCEPTOR ---
                 if (relPath.Equals("api/documents", StringComparison.OrdinalIgnoreCase))
                 {
-                    // Find SQLite db in base directory or project root
                     string dbPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "miraverse.db");
                     if (!File.Exists(dbPath))
                     {
@@ -164,7 +212,7 @@ namespace MiraverseOSx
             catch { }
         }
 
-        private static void OnWebMessageReceived(object? sender, string rawMessage)
+        private static async void OnWebMessageReceived(object? sender, string rawMessage)
         {
             try
             {
@@ -174,12 +222,20 @@ namespace MiraverseOSx
                 string action = jsonNode["action"]?.ToString() ?? "";
                 var payload = jsonNode["payload"]?.AsObject();
 
+                // Example: Handle Appwrite cloud sync via IPC bridge
+                if (action == "sync_cloud_documents")
+                {
+                    // Logic to query Appwrite Databases or trigger async sync
+                    Console.WriteLine("[IPC] Cloud document synchronization triggered.");
+                }
+
                 // Echo back native system acknowledgment
                 var ack = JsonSerializer.Serialize(new
                 {
                     action = $"{action}_ack",
                     payload = new { status = "received", timestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds() }
                 });
+
                 _mainWindow?.SendWebMessage(ack);
             }
             catch (Exception ex)
