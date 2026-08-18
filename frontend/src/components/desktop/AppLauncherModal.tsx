@@ -36,7 +36,7 @@ export const APPS_DIRECTORY = [
   { id: 'process', label: 'Process Monitor (PRISM)', category: 'Security & Tools', icon: Cpu, color: 'text-[#D5E2F5]', border: 'border-[#7B9CC4]/50', desc: 'Kernel thread inspector, origin tracer & PRISM corruption isolation' },
   { id: 'terminal', label: 'System Terminal', category: 'Security & Tools', icon: Terminal, color: 'text-[#4CD6C4]', border: 'border-[#4CD6C4]/50', desc: 'Command line execution shell & direct live SQL query engine' },
   { id: 'files', label: 'File Explorer', category: 'Storage & Registry', icon: Folder, color: 'text-[#FBE6AB]', border: 'border-[#E5C370]/50', desc: 'Local documents, Purge archives, canonical file types & map rasters' },
-  { id: 'lore', label: 'Lore Explorer (Cloud)', category: 'Storage & Registry', icon: BookOpen, color: 'text-[#EDE7FF]', border: 'border-[#8FA2E6]/50', desc: 'Live synchronized Appwrite Cloud lore database & character registries' },
+  { id: 'lore', label: 'Lore Explorer', category: 'Storage & Registry', icon: BookOpen, color: 'text-[#EDE7FF]', border: 'border-[#8FA2E6]/50', desc: 'Local lore database — factions, regions, and character registries' },
   { id: 'settings', label: 'System Settings', category: 'Storage & Registry', icon: Settings, color: 'text-[#D5E2F5]', border: 'border-[#7B9CC4]/50', desc: 'Theme personalization, sound synthesizer & OS preferences' },
 ];
 

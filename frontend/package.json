@@ -9,7 +9,6 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "appwrite": "^26.2.0",
     "bootstrap": "^5.3.3",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",

@@ -1,32 +1,20 @@
 import React, { useEffect, useState } from 'react';
-import { fetchFactions, fetchLocations, fetchNPCs, FactionDocument, LocationDocument, NPCDocument } from '../utils/appwriteClient';
-import { Shield, Globe, Users, RefreshCw, Sparkles, MapPin, Radio, Compass } from 'lucide-react';
+import { miraverseDb } from '../db/miraverseDb';
+import { Shield, Globe, Users, RefreshCw, MapPin } from 'lucide-react';
 
 export default function LoreExplorer() {
     const [activeTab, setActiveTab] = useState<'factions' | 'locations' | 'npcs'>('factions');
-    const [factions, setFactions] = useState<FactionDocument[]>([]);
-    const [locations, setLocations] = useState<LocationDocument[]>([]);
-    const [npcs, setNPCs] = useState<NPCDocument[]>([]);
+    const [factions, setFactions] = useState<any[]>([]);
+    const [locations, setLocations] = useState<any[]>([]);
+    const [npcs, setNPCs] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
-    const [error, setError] = useState<string | null>(null);
 
-    const loadData = async () => {
+    const loadData = () => {
         setLoading(true);
-        setError(null);
-        try {
-            const [factionsData, locationsData, npcsData] = await Promise.all([
-                fetchFactions(),
-                fetchLocations(),
-                fetchNPCs(),
-            ]);
-            setFactions(factionsData);
-            setLocations(locationsData);
-            setNPCs(npcsData);
-        } catch (err: any) {
-            setError(err?.message || 'Failed to connect to Appwrite Cloud');
-        } finally {
-            setLoading(false);
-        }
+        setFactions(miraverseDb.getFactions());
+        setLocations(miraverseDb.getRegions());
+        setNPCs(miraverseDb.getNPCs());
+        setLoading(false);
     };
 
     useEffect(() => {
@@ -41,11 +29,11 @@ export default function LoreExplorer() {
                     <div className="flex items-center gap-2">
                         <span className="h-2.5 w-2.5 rounded-full bg-emerald-500 animate-pulse" />
                         <h2 className="text-base font-bold tracking-wider text-[#1e2640] uppercase font-mono">
-                            SYSTEM DIRECTORY // CLOUD REALITY REGISTRY
+                            SYSTEM DIRECTORY // REALITY REGISTRY
                         </h2>
                     </div>
                     <p className="text-xs text-slate-500 mt-0.5">
-                        Live synchronized data from Appwrite Cloud (<span className="font-mono text-indigo-600 font-semibold">nyc.cloud.appwrite.io</span>)
+                        Local lore database — factions, regions, and character registries
                     </p>
                 </div>
 
@@ -91,7 +79,7 @@ export default function LoreExplorer() {
                         onClick={loadData}
                         disabled={loading}
                         className="p-2 rounded-lg bg-[#ffffff] hover:bg-slate-100 text-slate-700 border border-[#d8dce8] transition active:scale-95 disabled:opacity-50"
-                        title="Sync with Cloud"
+                        title="Refresh registry"
                     >
                         <RefreshCw size={14} className={loading ? 'animate-spin text-indigo-600' : ''} />
                     </button>
@@ -103,11 +91,7 @@ export default function LoreExplorer() {
                 {loading ? (
                     <div className="flex flex-col items-center justify-center py-20 text-slate-400">
                         <div className="h-8 w-8 rounded-full border-2 border-indigo-500/20 border-t-indigo-600 animate-spin mb-3" />
-                        <span className="text-xs font-mono tracking-wider uppercase text-slate-500">Querying Appwrite Cloud Registers...</span>
-                    </div>
-                ) : error ? (
-                    <div className="p-4 rounded-lg bg-rose-50 border border-rose-200 text-rose-800 text-xs font-mono">
-                        <span className="font-bold">Sync Error:</span> {error}
+                        <span className="text-xs font-mono tracking-wider uppercase text-slate-500">Loading registry records...</span>
                     </div>
                 ) : (
                     <>
@@ -116,19 +100,19 @@ export default function LoreExplorer() {
                             <div className="space-y-4">
                                 {factions.length === 0 ? (
                                     <div className="text-center py-12 text-slate-400 text-xs font-mono">
-                                        No faction documents found in collection.
+                                        No faction records found.
                                     </div>
                                 ) : (
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                         {factions.map((faction) => {
-                                            const name = faction.Name || faction.name || 'Unnamed Faction';
-                                            const color = faction.Accent_Color || faction.accentColor || '#3b4785';
-                                            const ideology = faction.Ideology || faction.ideology || faction.Description || faction.description || 'No ideology manifest recorded.';
-                                            const influence = faction.Influence_Level ?? faction.influenceLevel ?? 50;
+                                            const name = faction.name || faction.title || 'Unnamed Faction';
+                                            const color = faction.accentColor || faction.color || '#3b4785';
+                                            const ideology = faction.ideology || faction.description || 'No ideology manifest recorded.';
+                                            const influence = faction.influenceLevel ?? faction.influence ?? 50;
 
                                             return (
                                                 <div
-                                                    key={faction.$id}
+                                                    key={faction.id}
                                                     className="bg-[#ffffff] p-5 rounded-xl border border-[#d8dce8] shadow-xs hover:shadow-md transition flex flex-col justify-between"
                                                 >
                                                     <div>
@@ -142,7 +126,7 @@ export default function LoreExplorer() {
                                                                     color: color,
                                                                 }}
                                                             >
-                                                                {faction.$id}
+                                                                {faction.id}
                                                             </span>
                                                         </div>
                                                         <p className="text-xs text-slate-600 leading-relaxed mb-4">{ideology}</p>
@@ -164,19 +148,19 @@ export default function LoreExplorer() {
                             <div className="space-y-4">
                                 {locations.length === 0 ? (
                                     <div className="text-center py-12 text-slate-400 text-xs font-mono">
-                                        No location documents found in collection.
+                                        No location records found.
                                     </div>
                                 ) : (
                                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                                         {locations.map((loc) => {
-                                            const name = loc.Name || loc.name || 'Unnamed District';
-                                            const type = loc.Type || loc.type || 'District';
-                                            const desc = loc.Description || loc.description || 'Regional sector under municipal observation.';
-                                            const danger = loc.Danger_Level ?? loc.dangerLevel ?? 1;
+                                            const name = loc.name || loc.title || 'Unnamed District';
+                                            const type = loc.type || loc.category || 'District';
+                                            const desc = loc.description || 'Regional sector under municipal observation.';
+                                            const danger = loc.dangerLevel ?? loc.danger ?? 1;
 
                                             return (
                                                 <div
-                                                    key={loc.$id}
+                                                    key={loc.id}
                                                     className="bg-[#ffffff] p-5 rounded-xl border border-[#d8dce8] shadow-xs hover:shadow-md transition flex flex-col justify-between"
                                                 >
                                                     <div>
@@ -210,19 +194,19 @@ export default function LoreExplorer() {
                             <div className="space-y-4">
                                 {npcs.length === 0 ? (
                                     <div className="text-center py-12 text-slate-400 text-xs font-mono">
-                                        No NPC documents found in collection.
+                                        No NPC records found.
                                     </div>
                                 ) : (
                                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                                         {npcs.map((npc) => {
-                                            const name = npc.Name || npc.name || 'Citizen';
-                                            const title = npc.Title || npc.title || 'Resident';
-                                            const role = npc.Role || npc.role || 'Citizen';
-                                            const tone = npc.Dialogue_Tone || npc.dialogueTone || 'Neutral';
+                                            const name = npc.name || npc.title || 'Citizen';
+                                            const title = npc.title || npc.subtitle || 'Resident';
+                                            const role = npc.role || 'Citizen';
+                                            const tone = npc.dialogueTone || npc.tone || 'Neutral';
 
                                             return (
                                                 <div
-                                                    key={npc.$id}
+                                                    key={npc.id}
                                                     className="bg-[#ffffff] p-5 rounded-xl border border-[#d8dce8] shadow-xs hover:shadow-md transition flex flex-col justify-between"
                                                 >
                                                     <div>

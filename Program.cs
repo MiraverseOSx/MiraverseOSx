@@ -8,12 +8,10 @@ using System.Threading.Tasks;
 using Microsoft.Data.Sqlite;
 using Dapper;
 using Photino.NET;
-using Appwrite;
-using Appwrite.Services;
 
 namespace MiraverseOSx
 {
-    // C# Model mapped to your SQLite Documents table / Appwrite Collection
+    // C# Model mapped to your SQLite Documents table
     public class Document
     {
         public string Id { get; set; } = string.Empty;
@@ -36,25 +34,13 @@ namespace MiraverseOSx
         private static HttpListener? _httpServer;
         private static int _activePort = 5000;
 
-        // --- APPWRITE SERVICE INSTANCES ---
-        public static Client AppwriteClient { get; private set; } = null!;
-        public static Account AppwriteAccount { get; private set; } = null!;
-        public static Databases AppwriteDatabases { get; private set; } = null!;
-
-        // Appwrite Cloud configuration (NYC regional endpoint)
-        private const string AppwriteEndpoint = "https://nyc.cloud.appwrite.io/v1";
-        private const string AppwriteProjectId = "6a8217de003313795046";
-
         [STAThread]
         static void Main(string[] args)
         {
-            // 1. Initialize Appwrite Client & Services
-            InitializeAppwrite();
-
-            // 2. Start lightweight local HTTP server for wwwroot assets and API
+            // 1. Start lightweight local HTTP server for wwwroot assets and API
             _activePort = StartLocalWebServer();
 
-            // 3. Initialize Photino native desktop window
+            // 2. Initialize Photino native desktop window
             _mainWindow = new PhotinoWindow()
                 .SetTitle("Miraverse OS x - Celestial Operating System")
                 .SetUseOsDefaultSize(false)
@@ -62,36 +48,17 @@ namespace MiraverseOSx
                 .Center()
                 .SetResizable(true);
 
-            // 4. Register web message IPC bridge handler
+            // 3. Register web message IPC bridge handler
             _mainWindow.RegisterWebMessageReceivedHandler(OnWebMessageReceived);
 
-            // 5. Load app from local web server
+            // 4. Load app from local web server
             string localUrl = $"http://localhost:{_activePort}/index.html";
             _mainWindow.Load(localUrl);
 
             _mainWindow.WaitForClose();
 
-            // 6. Cleanup server on exit
+            // 5. Cleanup server on exit
             StopLocalWebServer();
-        }
-
-        private static void InitializeAppwrite()
-        {
-            try
-            {
-                AppwriteClient = new Client()
-                    .SetEndpoint(AppwriteEndpoint)
-                    .SetProject(AppwriteProjectId);
-
-                AppwriteAccount = new Account(AppwriteClient);
-                AppwriteDatabases = new Databases(AppwriteClient);
-
-                Console.WriteLine("[Appwrite] SDK successfully initialized.");
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"[Appwrite Init Error] {ex.Message}");
-            }
         }
 
         private static int StartLocalWebServer()
@@ -221,13 +188,6 @@ namespace MiraverseOSx
 
                 string action = jsonNode["action"]?.ToString() ?? "";
                 var payload = jsonNode["payload"]?.AsObject();
-
-                // Example: Handle Appwrite cloud sync via IPC bridge
-                if (action == "sync_cloud_documents")
-                {
-                    // Logic to query Appwrite Databases or trigger async sync
-                    Console.WriteLine("[IPC] Cloud document synchronization triggered.");
-                }
 
                 // Echo back native system acknowledgment
                 var ack = JsonSerializer.Serialize(new

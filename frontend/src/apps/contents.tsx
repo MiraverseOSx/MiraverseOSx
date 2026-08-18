@@ -19,7 +19,7 @@ export const APPS = [
   { id: 'passport', title: 'MIRROR // Citizen Record (§5.3)', icon: UserCheck, category: 'Personal Apps' },
   { id: 'pulse', title: 'PULSE Telemetry (§5.3)', icon: Radio, category: 'Civic Subsystems' },
   { id: 'files', title: 'File Explorer (Virtual Drive)', icon: Folder, category: 'Storage' },
-  { id: 'lore', title: 'Lore Explorer (Appwrite Cloud)', icon: BookOpen, category: 'Database' },
+  { id: 'lore', title: 'Lore Explorer', icon: BookOpen, category: 'Database' },
   { id: 'terminal', title: 'System Terminal (SQL & Shell)', icon: Terminal, category: 'Intelligence' },
   { id: 'settings', title: 'System Settings', icon: Settings, category: 'Utility' },
 ];
