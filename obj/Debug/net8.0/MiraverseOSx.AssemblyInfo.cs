@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("MiraverseOSx")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+5d4e8c3b2acca3288860e09290676bb1f1782558")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+e5fab3291366137f4c954f2dc8cdad63df6ed4d5")]
 [assembly: System.Reflection.AssemblyProductAttribute("MiraverseOSx")]
 [assembly: System.Reflection.AssemblyTitleAttribute("MiraverseOSx")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
