@@ -297,19 +297,134 @@ export const useOSStore = create<OSStoreState>((set) => ({
   }),
 
   loginUser: (userData) =>
-    set((s) => ({
-      isLoggedIn: true,
-      gameplay: {
-        ...s.gameplay,
-        player: {
-          ...s.gameplay.player,
-          name: userData.name || s.gameplay.player.name,
-          clearanceLevel: userData.clearance || 1,
-          credits: userData.credits !== undefined ? userData.credits : s.gameplay.player.credits,
-          level: userData.level !== undefined ? userData.level : s.gameplay.player.level,
+    set((s) => {
+      const isAdmin = !!(
+        userData.isAdmin ||
+        userData.name?.toLowerCase().includes('admin') ||
+        (userData.clearance && userData.clearance >= 4)
+      );
+
+      if (isAdmin) {
+        return {
+          isLoggedIn: true,
+          gameplay: {
+            ...s.gameplay,
+            lockedApps: [], // ALL apps completely unlocked
+            onboardingPhase: 6, // Completed onboarding
+            identity: {
+              fingerprint: true,
+              facial: true,
+              auraBaseline: true,
+              citizenId: 'CIT-ROOT-0001',
+              barcode: 'AURE-SYS-ROOT-001',
+              signalSignature: 'Root-Resonance-Omni (Master)',
+              profileTags: ['#RootAdmin', '#Netrunner', '#MasterArchivist', '#SystemsArchitect', '#TacticalShield'],
+              declaredRegion: 'Orynvell Upper Sanctum',
+            },
+            pulseProfile: {
+              displayName: 'ADMINISTRATOR // Root',
+              houseTag: 'Vertex (Master)',
+              visibility: 'Public',
+              theme: 'gold',
+            },
+            player: {
+              ...s.gameplay.player,
+              name: userData.name || 'ADMINISTRATOR',
+              isAdmin: true,
+              clearanceLevel: 5,
+              level: userData.level !== undefined ? userData.level : 99,
+              credits: userData.credits !== undefined ? userData.credits : 99999,
+              bits: userData.bits !== undefined ? userData.bits : 9999,
+              xp: 99999,
+              dgaVerified: true,
+              lineageDecrypted: true,
+              auraHealth: 100,
+              conditions: [], // No debuffs or Veilwilt
+              hackedNodes: 99,
+              starterPhase: 5,
+              dormComfort: 100,
+              reputation: {
+                campus: 100,
+                dga: 100,
+                faith: 100,
+                archive: 100,
+                vector: 100,
+                delegation: 100,
+                orynvell: 100,
+              },
+              skills: {
+                Programming: { level: 10, xp: 9999 },
+                Networking: { level: 10, xp: 9999 },
+                Spellcasting: { level: 10, xp: 9999 },
+                Engineering: { level: 10, xp: 9999 },
+                Communication: { level: 10, xp: 9999 },
+                Creativity: { level: 10, xp: 9999 },
+                Research: { level: 10, xp: 9999 },
+                CyberSecurity: { level: 10, xp: 9999 },
+                Cryptography: { level: 10, xp: 9999 },
+              },
+              careers: {
+                archivist: { rankIndex: 5, xp: 100, title: 'Grand Master of Records' },
+                engineer: { rankIndex: 5, xp: 100, title: 'Chief Systems Synthesizer' },
+                diplomat: { rankIndex: 5, xp: 100, title: 'Plenipotentiary Ambassador' },
+                enforcer: { rankIndex: 5, xp: 100, title: 'Warden of the Shield' },
+                artist: { rankIndex: 5, xp: 100, title: 'Paragon of the Arts' },
+                medical: { rankIndex: 5, xp: 100, title: 'Grand Sanctum Physician' },
+                warden: { rankIndex: 5, xp: 100, title: 'Guardian of Arcadia' },
+                finance: { rankIndex: 5, xp: 100, title: 'Master of the Treasury' },
+                questnotice: { rankIndex: 5, xp: 100, title: 'Aureline Fixer' },
+                dga: { rankIndex: 5, xp: 100, title: 'DGA High Commander' },
+                gov: { rankIndex: 5, xp: 100, title: 'Supreme Council Regent' },
+              },
+              npcVectors: {
+                jeremie: { friendship: 100, trust: 100, rivalry: 0, sync: 100, corruption: 0 },
+                sissi: { friendship: 100, trust: 100, rivalry: 0, sync: 100, corruption: 0 },
+                aelita: { friendship: 100, trust: 100, rivalry: 0, sync: 100, corruption: 0 },
+                odd: { friendship: 100, trust: 100, rivalry: 0, sync: 100, corruption: 0 },
+                voss: { friendship: 100, trust: 100, rivalry: 0, sync: 100, corruption: 0 },
+                riven: { friendship: 100, trust: 100, rivalry: 0, sync: 100, corruption: 0 },
+                mara: { friendship: 100, trust: 100, rivalry: 0, sync: 100, corruption: 0 },
+                tali: { friendship: 100, trust: 100, rivalry: 0, sync: 100, corruption: 0 },
+                liora: { friendship: 100, trust: 100, rivalry: 0, sync: 100, corruption: 0 },
+                ember: { friendship: 100, trust: 100, rivalry: 0, sync: 100, corruption: 0 },
+                ulrich: { friendship: 100, trust: 100, rivalry: 0, sync: 100, corruption: 0 },
+                franz: { friendship: 100, trust: 100, rivalry: 0, sync: 100, corruption: 0 },
+                rowan: { friendship: 100, trust: 100, rivalry: 0, sync: 100, corruption: 0 },
+                ilyra: { friendship: 100, trust: 100, rivalry: 0, sync: 100, corruption: 0 },
+                maris: { friendship: 100, trust: 100, rivalry: 0, sync: 100, corruption: 0 },
+                kael: { friendship: 100, trust: 100, rivalry: 0, sync: 100, corruption: 0 },
+                nyx: { friendship: 100, trust: 100, rivalry: 0, sync: 100, corruption: 0 },
+                null: { friendship: 100, trust: 100, rivalry: 0, sync: 100, corruption: 0 },
+              },
+              rewardItems: [
+                'Master Root Security Key',
+                'DGA Level 5 High Clearance Card',
+                'AETHERCORE Prime Crystal',
+                'Royal Seal of Orynvell Archive',
+                'Faith Medical Bio-Aura Master Caduceus',
+                'Universal Hex Debugger',
+                'Arcadia Master Seed Vault Pass'
+              ],
+            },
+          },
+        };
+      }
+
+      return {
+        isLoggedIn: true,
+        gameplay: {
+          ...s.gameplay,
+          player: {
+            ...s.gameplay.player,
+            name: userData.name || s.gameplay.player.name,
+            clearanceLevel: userData.clearance || 1,
+            credits: userData.credits !== undefined ? userData.credits : s.gameplay.player.credits,
+            bits: userData.bits !== undefined ? userData.bits : s.gameplay.player.bits,
+            level: userData.level !== undefined ? userData.level : s.gameplay.player.level,
+          },
         },
-      },
-    })),
+      };
+    }),
 
   logoutUser: () => set({ isLoggedIn: false }),
 

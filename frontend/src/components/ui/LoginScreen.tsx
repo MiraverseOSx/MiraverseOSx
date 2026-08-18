@@ -35,33 +35,39 @@ export default function LoginScreen({ onLoginSuccess, initialMode = 'login', onB
     e?.preventDefault();
     if (!username.trim() || isBooting) return;
     setIsBooting(true);
-    setStatusMsg('⚡ INITIALIZING STARTING LOGIN BOOT SEQUENCE...');
+    const isAdminUser = username.trim().toLowerCase() === 'admin' || username.trim().toLowerCase() === 'administrator' || username.trim().toLowerCase() === 'root';
+    
+    setStatusMsg(isAdminUser ? '⚡ ROOT ADMINISTRATOR AUTHENTICATING...' : '⚡ INITIALIZING CITIZEN LOGIN BOOT SEQUENCE...');
 
     setTimeout(() => {
-      setStatusMsg('✓ BIOMETRICS & ASSET CREDENTIALS VERIFIED');
-    }, 1200);
+      setStatusMsg(isAdminUser ? '✓ ROOT BIOMETRICS & MASTER KEYS VERIFIED' : '✓ BIOMETRICS & ASSET CREDENTIALS VERIFIED');
+    }, 800);
 
     setTimeout(() => {
       onLoginSuccess({
-        name: username.trim(),
-        clearance: 1,
-        credits: 200,
-        level: 1,
+        name: isAdminUser ? 'ADMINISTRATOR' : username.trim(),
+        isAdmin: isAdminUser,
+        clearance: isAdminUser ? 5 : 1,
+        credits: isAdminUser ? 99999 : 500,
+        bits: isAdminUser ? 9999 : 25,
+        level: isAdminUser ? 99 : 1,
       });
-    }, 2200);
+    }, 1500);
   };
 
   const handleAdminBypass = () => {
     setIsBooting(true);
-    setStatusMsg('⚡ ADMIN BYPASS ENGAGED — Clearance Level 04 Unlocked');
+    setStatusMsg('⚡ ROOT ADMIN BYPASS ENGAGED — Master Clearance Level 05 Unlocked');
     setTimeout(() => {
       onLoginSuccess({
         name: 'ADMINISTRATOR',
-        clearance: 4,
-        credits: 9999,
-        level: 50,
+        isAdmin: true,
+        clearance: 5,
+        credits: 99999,
+        bits: 9999,
+        level: 99,
       });
-    }, 1200);
+    }, 800);
   };
 
   return (

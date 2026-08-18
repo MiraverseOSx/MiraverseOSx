@@ -78,7 +78,7 @@ export default function CivicProfileApp() {
 
   const player = useOSStore((s) => s.gameplay.player);
   const identity = useOSStore((s) => s.gameplay.identity);
-  const dgaVerified = player?.dgaVerified || false;
+  const dgaVerified = player?.dgaVerified || player?.isAdmin || false;
   const completeIdentityScan = useOSStore((s) => s.completeIdentityScan);
   const restInDorm = useOSStore((s) => s.restInDorm);
   const advanceAppRank = useOSStore((s) => s.advanceAppRank);

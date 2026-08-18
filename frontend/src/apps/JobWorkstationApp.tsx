@@ -43,15 +43,41 @@ export default function JobWorkstationApp() {
   const [selectedMissionId, setSelectedMissionId] = useState<string>('ms-spec-01');
   const [dgaBranchFilter, setDgaBranchFilter] = useState<'All' | 'Shield' | 'Eyes' | 'Blackout Team'>('All');
   const [actionFeedback, setActionFeedback] = useState<string | null>(null);
-  const [clearanceTier, setClearanceTier] = useState<number>(2);
-
   const player = useOSStore((s) => s.gameplay.player);
   const addCredits = useOSStore((s) => s.addCredits);
   const addBits = useOSStore((s) => s.addBits);
   const addXP = useOSStore((s) => s.addXP);
   const addCareerXP = useOSStore((s) => s.addCareerXP);
 
+  const clearanceTier = player?.clearanceLevel || (player?.isAdmin ? 5 : 2);
   const currentStationInfo = STATIONS.find((s) => s.id === activeStation) || STATIONS[0];
+
+  const handleAdminResetMissions = () => {
+    setMissions(miraverseDb.getMissions().map((m) => ({ ...m, completed: false })));
+    setActionFeedback('⚡ [ADMIN] All missions reset to uncompleted state for testing.');
+    setTimeout(() => setActionFeedback(null), 4000);
+  };
+
+  const handleAdminCompleteAll = () => {
+    missions.forEach((m) => {
+      if (!m.completed) {
+        addCredits(m.rewardCredits);
+        if (m.rewardBits) addBits(m.rewardBits);
+        addXP(m.rewardXP);
+        addCareerXP(m.track, m.rewardXP);
+      }
+    });
+    setMissions((prev) => prev.map((m) => ({ ...m, completed: true })));
+    setActionFeedback('⚡ [ADMIN] Executed and resolved all institutional directives.');
+    setTimeout(() => setActionFeedback(null), 4000);
+  };
+
+  const handleAdminAddFunds = () => {
+    addCredits(10000);
+    addBits(1000);
+    setActionFeedback('⚡ [ADMIN] Granted +10,000 ₢ CREDITS and +1,000 ◈ BITS.');
+    setTimeout(() => setActionFeedback(null), 4000);
+  };
 
   // Filter missions by active workstation & mission type
   const filteredMissions = missions.filter((m) => {
@@ -160,6 +186,41 @@ export default function JobWorkstationApp() {
           </div>
         </div>
       </header>
+
+      {/* ─── ⚡ ROOT ADMIN TESTING & DEBUG TOOLBAR (ADMINS ONLY) ─── */}
+      {player?.isAdmin && (
+        <div className="flex items-center justify-between px-6 py-2 bg-gradient-to-r from-amber-950/80 via-indigo-950/80 to-purple-950/80 border-b border-amber-500/40 text-xs font-mono">
+          <div className="flex items-center gap-2">
+            <span className="px-2 py-0.5 rounded bg-amber-500 text-slate-950 font-bold text-[10px] tracking-wider uppercase flex items-center gap-1">
+              <Zap size={11} /> ROOT ADMIN DEBUG PANEL
+            </span>
+            <span className="text-amber-200 text-[11px]">Unrestricted Access Across All 9 Institutions</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <button
+              onClick={handleAdminResetMissions}
+              className="px-2.5 py-1 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded text-[11px] font-bold transition flex items-center gap-1"
+              title="Reset all assignments to uncompleted for re-testing"
+            >
+              <RefreshCw size={12} /> Reset Missions
+            </button>
+            <button
+              onClick={handleAdminCompleteAll}
+              className="px-2.5 py-1 bg-emerald-700 hover:bg-emerald-600 text-white rounded text-[11px] font-bold transition flex items-center gap-1"
+              title="Instantly execute all directives and credit rewards"
+            >
+              <CheckCircle2 size={12} /> Resolve All
+            </button>
+            <button
+              onClick={handleAdminAddFunds}
+              className="px-2.5 py-1 bg-amber-600 hover:bg-amber-500 text-white rounded text-[11px] font-bold transition flex items-center gap-1"
+              title="Grant +10,000 Credits and +1,000 Bits"
+            >
+              <DollarSign size={12} /> +10k ₢ / +1k ◈
+            </button>
+          </div>
+        </div>
+      )}
 
       {/* ─── WORKPLACE TERMINAL SELECTOR STRIP ─── */}
       <div className="flex items-center gap-1.5 px-4 py-2 bg-[#090d1c] border-b border-slate-800 overflow-x-auto scrollbar-none">
