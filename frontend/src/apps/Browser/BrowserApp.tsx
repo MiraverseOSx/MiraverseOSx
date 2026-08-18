@@ -6,9 +6,10 @@ import SearchResults from './SearchResults';
 import AureSuiteApp from './AureSuiteApp';
 import {
     FaithMedPortal, DGAPortal, CyacademyPortal, OrynvellRecordsPortal,
-    BankPortal, ShippingPortal, DarkWebOnionPortal, MaiSpacePortal,
+    BankPortal, ShippingPortal, DarkWebOnionPortal,
     CivinetPortal, QuestNoticePortal, RoyalHistoryPortal
 } from './Portals';
+import { MaiSpacePortal } from './MaiSpacePortal';
 import { PORTALS } from './constants';
 import { useOSStore } from '../../store/useOSStore';
 import {
@@ -16,16 +17,12 @@ import {
 } from 'lucide-react';
 import '../../styles/apps/BrowserApp.css';
 
-// ==========================================
-// 1. Dynamic Content Resolver: ContentFrame
-// ==========================================
 function ContentFrame({ url, openTab, navigateTab }) {
     if (!url) return null;
     const stripped = url.replace(/^https?:\/\//, '');
     const domain = stripped.split('/')[0] || '';
     const path = stripped.substring(domain.length) || '/';
 
-    // Versenet Search Engine
     if (domain === 'versenet.aure' || domain === 'versenet' || domain === 'search.aure' || domain === '') {
         if (path.startsWith('/find?')) {
             const query = new URLSearchParams(path.slice(path.indexOf('?') + 1)).get('q') ?? '';
@@ -34,67 +31,19 @@ function ContentFrame({ url, openTab, navigateTab }) {
         return <SearchHome openTab={openTab} navigateTab={navigateTab} />;
     }
 
-    // CIVINET Municipal Services Hub
-    if (domain === 'civinet.mer' || domain === 'civinet.aure' || domain === 'civinet') {
-        return <CivinetPortal />;
-    }
+    if (domain === 'civinet.mer' || domain === 'civinet.aure' || domain === 'civinet') return <CivinetPortal />;
+    if (domain === 'questnotice.mer' || domain === 'questnotice.aure' || domain === 'questnotice') return <QuestNoticePortal />;
+    if (domain === 'royalhistory.mer' || domain === 'royalhistory.aure' || domain === 'royalhistory') return <RoyalHistoryPortal />;
+    if (domain === 'faithmed.aure') return <FaithMedPortal />;
+    if (domain === 'dga.gov' || domain === 'dga.gov.aure') return <DGAPortal />;
+    if (domain === 'cyacademy.edu' || domain === 'cyacademy.edu.aure' || domain === 'cyacademy.aure') return <CyacademyPortal />;
+    if (domain === 'records.orynvell.gov') return <OrynvellRecordsPortal />;
+    if (domain === 'bank.aure' || domain === 'finance.oryn.gov' || domain === 'finance.mer') return <BankPortal />;
+    if (domain === 'shipping.aure' || domain === 'cargotrack.aure') return <ShippingPortal />;
+    if (domain.endsWith('.onion') || domain === 'vectornet.aure') return <DarkWebOnionPortal />;
+    if (domain === 'auresuite.aure') return <AureSuiteApp />;
+    if (domain === 'mai.space' || domain === 'mai.space.aure' || domain === 'maispace.aure' || domain === 'social.aure') return <MaiSpacePortal />;
 
-    // QUESTNOTICE Civic Notice Tracker
-    if (domain === 'questnotice.mer' || domain === 'questnotice.aure' || domain === 'questnotice') {
-        return <QuestNoticePortal />;
-    }
-
-    // Royal Historic Society
-    if (domain === 'royalhistory.mer' || domain === 'royalhistory.aure' || domain === 'royalhistory') {
-        return <RoyalHistoryPortal />;
-    }
-
-    // Faith Medical Intranet
-    if (domain === 'faithmed.aure') {
-        return <FaithMedPortal />;
-    }
-
-    // Department of Global Affairs
-    if (domain === 'dga.gov' || domain === 'dga.gov.aure') {
-        return <DGAPortal />;
-    }
-
-    // Cyacademy of Sciences
-    if (domain === 'cyacademy.edu' || domain === 'cyacademy.edu.aure' || domain === 'cyacademy.aure') {
-        return <CyacademyPortal />;
-    }
-
-    // Orynvell Public Records
-    if (domain === 'records.orynvell.gov') {
-        return <OrynvellRecordsPortal />;
-    }
-
-    // First Orynvell Bank & Treasury
-    if (domain === 'bank.aure' || domain === 'finance.oryn.gov' || domain === 'finance.mer') {
-        return <BankPortal />;
-    }
-
-    // Cargo & Logistics Tracking
-    if (domain === 'shipping.aure' || domain === 'cargotrack.aure') {
-        return <ShippingPortal />;
-    }
-
-    // Darknet .onion Sites
-    if (domain.endsWith('.onion') || domain === 'vectornet.aure') {
-        return <DarkWebOnionPortal />;
-    }
-
-    // AureSuite Cloud Workspace Hub
-    if (domain === 'auresuite.aure') {
-        return <AureSuiteApp />;
-    }
-
-    // Mai.space Social Grid
-    if (domain === 'mai.space' || domain === 'mai.space.aure' || domain === 'maispace.aure' || domain === 'social.aure') {
-        return <MaiSpacePortal />;
-    }
-
-    // Fallback Generic Connected Page
     return (
         <div className="flex h-full flex-col items-center justify-center bg-white text-slate-800 p-6 text-center select-none font-sans">
             <Globe className="h-16 w-16 mb-4 text-indigo-600 animate-pulse" />
@@ -104,9 +53,6 @@ function ContentFrame({ url, openTab, navigateTab }) {
     );
 }
 
-// ==========================================
-// 2. Main Coordinator: BrowserApp
-// ==========================================
 export default function BrowserApp({ onTabBarPointerDown }) {
     const { tabs, activeTabId, historyMap } = useOSStore((s) => s.browserState);
     const openTab = useOSStore((s) => s.openBrowserTab);
@@ -115,7 +61,6 @@ export default function BrowserApp({ onTabBarPointerDown }) {
     const navigateTab = useOSStore((s) => s.navigateBrowserTab);
     const goBack = useOSStore((s) => s.goBrowserBack);
     const goForward = useOSStore((s) => s.goBrowserForward);
-
     const closeWindow = useOSStore((s) => s.closeWindow);
     const toggleMinimize = useOSStore((s) => s.toggleMinimize);
     const toggleMaximize = useOSStore((s) => s.toggleMaximize);
@@ -126,8 +71,8 @@ export default function BrowserApp({ onTabBarPointerDown }) {
     const activeTab = tabs.find((t) => t.id === activeTabId);
 
     useEffect(() => {
-        if (activeTab) setAddressInput(activeTab.url);
-    }, [activeTabId, activeTab?.url]);
+        setAddressInput(activeTab?.url || 'https://versenet.aure');
+    }, [activeTab?.url]);
 
     const handleAddressSubmit = (e) => {
         e.preventDefault();
@@ -136,30 +81,31 @@ export default function BrowserApp({ onTabBarPointerDown }) {
 
     const canBack = (() => {
         const h = historyMap[activeTabId];
-        return h && h.index > 0;
+        return !!(h && h.index > 0);
     })();
+
     const canForward = (() => {
         const h = historyMap[activeTabId];
-        return h && h.index < h.stack.length - 1;
+        return !!(h && h.index < h.stack.length - 1);
     })();
 
     const refresh = () => {
-        if (activeTab?.url) navigateTab(activeTab.url, activeTab.title);
+        if (!activeTab?.url) return;
+        navigateTab(activeTab.url, activeTab.title || 'Browsing');
     };
 
     return (
         <OSWindow>
-            {/* TabBar Section */}
             <div
                 onPointerDown={onTabBarPointerDown}
                 className="tabbar max-w-full shrink-0 select-none cursor-grab active:cursor-grabbing bg-slate-800 text-slate-200 border-b border-slate-700"
             >
                 <div className="flex space-x-1 overflow-x-auto flex-1 hide-scrollbar">
-                    {tabs.map(tab => (
+                    {tabs.map((tab) => (
                         <div
                             key={tab.id}
                             onClick={() => setActiveTabId(tab.id)}
-                            className={`tab flex items-center group min-w-[120px] max-w-[200px] text-xs font-semibold ${activeTabId === tab.id ? 'active bg-slate-900 text-white font-bold' : 'bg-slate-800/80 text-slate-400 hover:text-slate-200'}`}
+                            className={`tab flex items-center group min-w-[120px] max-w-[200px] text-xs font-semibold ${activeTabId === tab.id ? 'active bg-slate-900 text-white font-bold' : 'bg-slate-700/70 text-slate-300 hover:bg-slate-700'}`}
                         >
                             <span className="truncate flex-1">
                                 {tab.url.replace(/^https?:\/\//, '').split('/')[0] || 'New Tab'}
@@ -183,41 +129,21 @@ export default function BrowserApp({ onTabBarPointerDown }) {
                     <Plus size={18} />
                 </button>
 
-                {/* Integrated Browser Window Control Buttons */}
                 <div className="flex items-center gap-3.5 ml-auto pl-4 pr-2 text-slate-300 font-bold text-xs select-none">
-                    <button
-                        onClick={(e) => { e.stopPropagation(); toggleMinimize('browser'); }}
-                        className="hover:text-white transition-colors px-1 cursor-pointer"
-                        title="Minimize"
-                    >
-                        _
-                    </button>
-                    <button
-                        onClick={(e) => { e.stopPropagation(); toggleMaximize('browser'); }}
-                        className="hover:text-white transition-colors px-1 cursor-pointer"
-                        title="Maximize"
-                    >
-                        □
-                    </button>
-                    <button
-                        onClick={(e) => { e.stopPropagation(); closeWindow('browser'); }}
-                        className="hover:text-red-400 transition-colors px-1 cursor-pointer"
-                        title="Close"
-                    >
-                        ✕
-                    </button>
+                    <button onClick={(e) => { e.stopPropagation(); toggleMinimize('browser'); }} className="hover:text-white transition-colors px-1 cursor-pointer" title="Minimize">_</button>
+                    <button onClick={(e) => { e.stopPropagation(); toggleMaximize('browser'); }} className="hover:text-white transition-colors px-1 cursor-pointer" title="Maximize">□</button>
+                    <button onClick={(e) => { e.stopPropagation(); closeWindow('browser'); }} className="hover:text-red-400 transition-colors px-1 cursor-pointer" title="Close">✕</button>
                 </div>
             </div>
 
-            {/* AddressBar Section matching Blueprint UI */}
             <div className="addressbar relative max-w-full shrink-0 bg-slate-100 border-b border-slate-300 px-3 py-2 flex items-center gap-2">
                 <div className="flex items-center space-x-1 text-slate-600">
-                    <button onClick={goBack} disabled={!canBack} className="p-1.5 rounded hover:bg-slate-200 text-slate-700 disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer"><ChevronLeft size={18} /></button>
-                    <button onClick={goForward} disabled={!canForward} className="p-1.5 rounded hover:bg-slate-200 text-slate-700 disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer"><ChevronRight size={18} /></button>
+                    <button onClick={goBack} disabled={!canBack} className="p-1.5 rounded hover:bg-slate-200 text-slate-700 disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer"><ChevronLeft size={16} /></button>
+                    <button onClick={goForward} disabled={!canForward} className="p-1.5 rounded hover:bg-slate-200 text-slate-700 disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer"><ChevronRight size={16} /></button>
                     <button onClick={refresh} className="p-1.5 rounded hover:bg-slate-200 text-slate-700 cursor-pointer"><RotateCw size={16} /></button>
                 </div>
 
-                <form onSubmit={handleAddressSubmit} className="flex-1 flex items-center bg-white border border-slate-300 rounded-full px-3 py-1 shadow-xs focus-within:border-emerald-500 focus-within:ring-2 focus-within:ring-emerald-500/10">
+                <form onSubmit={handleAddressSubmit} className="flex-1 flex items-center bg-white border border-slate-300 rounded-full px-3 py-1 shadow-xs focus-within:border-emerald-500 focus-within:ring-2 focus-within:ring-emerald-200">
                     <Lock size={14} className="text-slate-400 mr-2 shrink-0" />
                     <input
                         type="text"
@@ -227,12 +153,7 @@ export default function BrowserApp({ onTabBarPointerDown }) {
                         placeholder="Search or enter web address..."
                         spellCheck={false}
                     />
-                    <button
-                        type="submit"
-                        className="ml-2 px-3 py-0.5 bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs rounded-full transition cursor-pointer"
-                    >
-                        Go
-                    </button>
+                    <button type="submit" className="ml-2 px-3 py-0.5 bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs rounded-full transition cursor-pointer">Go</button>
                 </form>
 
                 <div className="flex items-center space-x-1 text-slate-500">
@@ -281,7 +202,6 @@ export default function BrowserApp({ onTabBarPointerDown }) {
                 )}
             </div>
 
-            {/* Main Dynamic Portal Content Area */}
             <div className="flex-1 flex flex-col overflow-auto bg-white text-slate-800">
                 <ContentFrame url={activeTab?.url} openTab={openTab} navigateTab={navigateTab} />
             </div>
