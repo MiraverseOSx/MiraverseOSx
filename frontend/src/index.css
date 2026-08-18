@@ -6,140 +6,113 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Solid civic card aesthetic - High Contrast Solid OS */
-.mira-flat-card {
-  background: #0f172a;
-  border: 1px solid #1e293b;
-  backdrop-filter: none !important;
-  border-radius: 0;
-  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
-}
-
-/* Base Layout */
+/* ==========================================================================
+   1. MASTER BASE LAYOUT & TYPOGRAPHY (§1 & §2)
+   ========================================================================== */
 body {
   margin: 0;
-  font-family: 'Commissioner', 'Segoe UI', sans-serif;
+  font-family: var(--font-ui);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow: hidden;
   user-select: none;
-  background-color: #090d16;
-  color: #f8fafc;
+  background-color: var(--color-deep-space);
+  color: var(--color-ivory-white);
 }
 
-/* Future Palette Tokens */
-:root {
-  --color-primary: #0f172a;
-  --color-secondary: #1e293b;
-  --color-accent: #38bdf8;
-  --color-text: #f8fafc;
-  --color-surface: #0f172a;
-}
-
-/* Math Font */
-@font-face {
-  font-family: 'Libertinus Math';
-  src: url('./assets/fonts/LibertinusMath-Regular.ttf') format('truetype');
-  font-weight: normal;
-  font-style: normal;
-}
-
-/* Solid Celestial Desktop Background */
+/* ==========================================================================
+   2. CELESTIAL DESKTOP & NOVA GLASS BACKDROPS (§1 & §4)
+   ========================================================================== */
 .bg-meridion-desktop {
-  background: #090e1a;
+  background-color: #0A1026;
   background-image: 
-    radial-gradient(at 0% 0%, #111a2e 0px, transparent 50%),
-    radial-gradient(at 100% 100%, #1e1333 0px, transparent 50%),
-    radial-gradient(at 50% 50%, #0d1527 0px, transparent 100%);
+    radial-gradient(ellipse at 15% 20%, rgba(37, 74, 122, 0.45) 0%, transparent 45%),
+    radial-gradient(ellipse at 85% 80%, rgba(69, 12, 63, 0.40) 0%, transparent 50%),
+    radial-gradient(ellipse at 50% 50%, rgba(20, 43, 82, 0.35) 0%, transparent 60%);
+  background-size: cover;
+  background-attachment: fixed;
 }
 
-/* Solid Celestial Panels */
-.meridion-card {
-  background: #0f172a;
-  border: 1px solid #1e293b;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
-  backdrop-filter: none !important;
-  border-radius: 0;
-  color: #f8fafc;
-  transition: border-color 160ms ease, background-color 160ms ease;
+/* Nova Glass Windows & Panels */
+.mira-flat-card, .meridion-card {
+  background: var(--glass-fill-base);
+  border: 1px solid var(--glass-border-frost);
+  backdrop-filter: blur(var(--glass-blur-std)) saturate(150%);
+  -webkit-backdrop-filter: blur(var(--glass-blur-std)) saturate(150%);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-cosmic-std);
+  color: var(--color-ivory-white);
+  transition: border-color 200ms ease, background-color 200ms ease, transform 200ms ease;
 }
 
-.meridion-card:hover {
-  border-color: #38bdf8;
-  background: #141e33;
+.mira-flat-card:hover, .meridion-card:hover {
+  border-color: var(--glass-border-gold);
+  background: var(--glass-fill-hover);
 }
 
-/* CRT Scanlines */
-.crt-scanlines {
-  background: linear-gradient(rgba(18, 16, 16, 0) 50%,
-      rgba(0, 0, 0, 0.25) 50%);
-  background-size: 100% 4px;
+/* Hologram Panels with Starlight Glow */
+.hologram-panel {
+  background: rgba(20, 43, 82, 0.80);
+  border: 1px solid var(--color-starlight-gold);
+  box-shadow: var(--glow-starlight);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
 }
 
-/* Solid Custom Scrollbars */
+.holo-grid {
+  background-image:
+    linear-gradient(rgba(212, 176, 106, 0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(212, 176, 106, 0.08) 1px, transparent 1px);
+  background-size: 28px 28px;
+}
+
+/* ==========================================================================
+   3. TRANSLUCENT CELESTIAL SCROLLBARS
+   ========================================================================== */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #0f172a;
+  background: rgba(10, 16, 38, 0.60);
+  border-radius: 9999px;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #334155;
-  border-radius: 0;
+  background: var(--color-moonlight-slate);
+  border-radius: 9999px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #38bdf8;
+  background: var(--color-starlight-gold);
+  box-shadow: var(--glow-starlight);
 }
 
-/* Seasonal Background Transitions */
-.season-transition {
-  transition: background 1000ms ease-in-out, color 500ms ease-in-out;
+/* ==========================================================================
+   4. SECTOR DIVIDERS (§6)
+   ========================================================================== */
+.celestial-divider {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  margin: 1.25rem 0;
+  color: var(--color-starlight-mist);
 }
 
-/* Holographic Flicker */
-@keyframes holo-flicker {
-  0% {
-    opacity: 0.94;
-    transform: translateY(0);
-  }
-  25% {
-    opacity: 0.88;
-    transform: translateY(-0.5px);
-  }
-  50% {
-    opacity: 1;
-    transform: translateY(0);
-  }
-  75% {
-    opacity: 0.92;
-    transform: translateY(0.5px);
-  }
-  100% {
-    opacity: 0.94;
-    transform: translateY(0);
-  }
+.celestial-divider::before,
+.celestial-divider::after {
+  content: '';
+  flex: 1;
+  border-bottom: 1px solid rgba(212, 176, 106, 0.25);
+  background: linear-gradient(90deg, transparent, rgba(212, 176, 106, 0.35), transparent);
 }
 
-.animate-holo-flicker {
-  animation: holo-flicker 4s infinite ease-in-out;
+.celestial-divider:not(:empty)::before {
+  margin-right: 0.75rem;
 }
 
-/* Hologram Panels - Solid Modern Cyberpunk */
-.hologram-panel {
-  background: #0d1322;
-  border: 1px solid #38bdf8;
-  box-shadow: 0 0 25px rgba(56, 189, 248, 0.25);
-  backdrop-filter: none !important;
-}
-
-/* Holographic Grid */
-.holo-grid {
-  background-image:
-    linear-gradient(rgba(56, 189, 248, 0.12) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(56, 189, 248, 0.12) 1px, transparent 1px);
-  background-size: 24px 24px;
+.celestial-divider:not(:empty)::after {
+  margin-left: 0.75rem;
 }

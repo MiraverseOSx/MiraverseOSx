@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { 
   Briefcase, Bookmark, Cpu, Home, Sparkles, Globe, Mail, 
   MessageSquare, UserCheck, Radio, Folder, BookOpen, Terminal, 
-  Settings, Search, X, ChevronRight, CornerDownLeft, Star
+  Settings, Search, X, Star
 } from 'lucide-react';
 import { useOSStore } from '../../store/useOSStore';
 import { APPS } from '../../apps/contents';
@@ -17,27 +17,27 @@ export interface AppLauncherModalProps {
 
 export const APPS_DIRECTORY = [
   // 5.3 Personal Apps & Tools
-  { id: 'passport', label: 'MIRROR // Citizen Matrix', category: 'Personal Apps', icon: UserCheck, color: 'text-[#fbcfe8]', border: 'border-[#fbcfe8]/30', desc: 'Identity initialization, appearance, pronouns, wardrobe & telemetry calibration' },
-  { id: 'housing', label: 'HOMECRAFT // Residential', category: 'Personal Apps', icon: Home, color: 'text-[#c4b5fd]', border: 'border-[#c4b5fd]/30', desc: 'Residential grid editor, furniture layout, room expansion & rest' },
+  { id: 'passport', label: 'MIRROR // Citizen Matrix', category: 'Personal Apps', icon: UserCheck, color: 'text-[#F0D79A]', border: 'border-[#D4B06A]/40', desc: 'Identity initialization, appearance, pronouns, wardrobe & telemetry calibration' },
+  { id: 'housing', label: 'HOMECRAFT // Residential', category: 'Personal Apps', icon: Home, color: 'text-[#E1DAFB]', border: 'border-[#758AD1]/40', desc: 'Residential grid editor, furniture layout, room expansion & rest' },
   
   // 5.3 Workplace & Career Portals
-  { id: 'jobs', label: 'WORKNET // Federal Access', category: 'Workplace Portals', icon: Briefcase, color: 'text-[#fef08a]', border: 'border-[#fef08a]/30', desc: 'Centralized federal work access across DGA, Faith Medical, Finance & Archives' },
-  { id: 'comms', label: 'COMMS // Institutional Network', category: 'Workplace Portals', icon: MessageSquare, color: 'text-[#99f6e4]', border: 'border-[#99f6e4]/30', desc: 'Dual-pane instant messaging mesh & encrypted Cyacademy/Career inbox' },
+  { id: 'jobs', label: 'WORKNET // Federal Access', category: 'Workplace Portals', icon: Briefcase, color: 'text-[#D4B06A]', border: 'border-[#D4B06A]/40', desc: 'Centralized federal work access across DGA, Faith Medical, Finance & Archives' },
+  { id: 'comms', label: 'COMMS // Institutional Network', category: 'Workplace Portals', icon: MessageSquare, color: 'text-[#3EB9A8]', border: 'border-[#3EB9A8]/40', desc: 'Dual-pane instant messaging mesh & encrypted Cyacademy/Career inbox' },
   
   // 5.3 Civic Subsystems & Notice Boards
-  { id: 'board', label: 'CHRONICLE // Notice Board', category: 'Civic Subsystems', icon: Bookmark, color: 'text-[#a7f3d0]', border: 'border-[#a7f3d0]/30', desc: 'Central notice board, active quests, missions, adventures & lore codices' },
-  { id: 'pulse', label: 'PULSE // Faction Telemetry', category: 'Civic Subsystems', icon: Radio, color: 'text-[#f472b6]', border: 'border-[#f472b6]/30', desc: 'Faction matrix tracker, regional announcements & social broadcast feed' },
+  { id: 'board', label: 'CHRONICLE // Notice Board', category: 'Civic Subsystems', icon: Bookmark, color: 'text-[#5AA371]', border: 'border-[#5AA371]/40', desc: 'Central notice board, active quests, missions, adventures & lore codices' },
+  { id: 'pulse', label: 'PULSE // Faction Telemetry', category: 'Civic Subsystems', icon: Radio, color: 'text-[#FFD2F4]', border: 'border-[#FFD2F4]/40', desc: 'Faction matrix tracker, regional announcements & social broadcast feed' },
   
   // 5.3 Public Versenet Websites & Navigation
-  { id: 'browser', label: 'VERSENET // Browser Terminal', category: 'Versenet Web', icon: Globe, color: 'text-[#93c5fd]', border: 'border-[#93c5fd]/30', desc: 'Public website network: CIVINET, QUESTNOTICE, Faith Med, DGA & Archives' },
+  { id: 'browser', label: 'VERSENET // Browser Terminal', category: 'Versenet Web', icon: Globe, color: 'text-[#758AD1]', border: 'border-[#758AD1]/40', desc: 'Public website network: CIVINET, QUESTNOTICE, Faith Med, DGA & Archives' },
   
   // Storage, Security & Utility
-  { id: 'spellforge', label: 'SpellForge Protocol Matrix', category: 'Security & Tools', icon: Sparkles, color: 'text-[#e9d5ff]', border: 'border-[#e9d5ff]/30', desc: 'Elemental protocol synthesis, reality stabilization & firewall weaving' },
-  { id: 'process', label: 'Process Monitor (PRISM)', category: 'Security & Tools', icon: Cpu, color: 'text-[#bae6fd]', border: 'border-[#bae6fd]/30', desc: 'Kernel thread inspector, origin tracer & PRISM corruption isolation' },
-  { id: 'terminal', label: 'System Terminal', category: 'Security & Tools', icon: Terminal, color: 'text-[#6ee7b7]', border: 'border-[#6ee7b7]/30', desc: 'Command line execution shell & direct live SQL query engine' },
-  { id: 'files', label: 'File Explorer', category: 'Storage & Registry', icon: Folder, color: 'text-[#fde047]', border: 'border-[#fde047]/30', desc: 'Local documents, Purge archives, canonical file types & map rasters' },
-  { id: 'lore', label: 'Lore Explorer (Cloud)', category: 'Storage & Registry', icon: BookOpen, color: 'text-[#ddd6fe]', border: 'border-[#ddd6fe]/30', desc: 'Live synchronized Appwrite Cloud lore database & character registries' },
-  { id: 'settings', label: 'System Settings', category: 'Storage & Registry', icon: Settings, color: 'text-[#cbd5e1]', border: 'border-[#cbd5e1]/30', desc: 'Theme personalization, sound synthesizer & OS preferences' },
+  { id: 'spellforge', label: 'SpellForge Protocol Matrix', category: 'Security & Tools', icon: Sparkles, color: 'text-[#E1DAFB]', border: 'border-[#E1DAFB]/40', desc: 'Elemental protocol synthesis, reality stabilization & firewall weaving' },
+  { id: 'process', label: 'Process Monitor (PRISM)', category: 'Security & Tools', icon: Cpu, color: 'text-[#C7D2E0]', border: 'border-[#5D7EA8]/40', desc: 'Kernel thread inspector, origin tracer & PRISM corruption isolation' },
+  { id: 'terminal', label: 'System Terminal', category: 'Security & Tools', icon: Terminal, color: 'text-[#3EB9A8]', border: 'border-[#3EB9A8]/40', desc: 'Command line execution shell & direct live SQL query engine' },
+  { id: 'files', label: 'File Explorer', category: 'Storage & Registry', icon: Folder, color: 'text-[#F0D79A]', border: 'border-[#D4B06A]/40', desc: 'Local documents, Purge archives, canonical file types & map rasters' },
+  { id: 'lore', label: 'Lore Explorer (Cloud)', category: 'Storage & Registry', icon: BookOpen, color: 'text-[#E1DAFB]', border: 'border-[#758AD1]/40', desc: 'Live synchronized Appwrite Cloud lore database & character registries' },
+  { id: 'settings', label: 'System Settings', category: 'Storage & Registry', icon: Settings, color: 'text-[#C7D2E0]', border: 'border-[#5D7EA8]/40', desc: 'Theme personalization, sound synthesizer & OS preferences' },
 ];
 
 export default function AppLauncherModal({ isOpen, onClose }: AppLauncherModalProps) {
@@ -86,34 +86,34 @@ export default function AppLauncherModal({ isOpen, onClose }: AppLauncherModalPr
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
         onClick={onClose}
-        className="absolute inset-0 bg-[#070512]/80 backdrop-blur-lg transition-opacity"
+        className="absolute inset-0 bg-[#0A1026]/80 backdrop-blur-xl transition-opacity"
       />
 
-      {/* Elegant Lavender & Gold Obsidian Card */}
+      {/* ─── 4.1 NOVA GLASS LAUNCHER CONTAINER ─── */}
       <motion.div
-        initial={{ opacity: 0, scale: 0.96, y: 10 }}
+        initial={{ opacity: 0, scale: 0.96, y: 12 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
         exit={{ opacity: 0, scale: 0.96, y: 10 }}
         transition={{ type: 'spring', damping: 28, stiffness: 350 }}
-        className="relative z-10 w-full max-w-2xl bg-[#120e24]/95 backdrop-blur-2xl border border-[#c4b5fd]/35 shadow-[0_24px_80px_rgba(0,0,0,0.85),0_0_35px_rgba(196,181,253,0.15)] rounded-2xl overflow-hidden font-sans text-white flex flex-col max-h-[580px]"
+        className="relative z-10 w-full max-w-2xl bg-[#142B52]/90 backdrop-blur-2xl border border-white/20 shadow-[0_24px_80px_rgba(10,16,38,0.90),0_0_35px_rgba(212,176,106,0.15)] rounded-2xl overflow-hidden font-ui text-[#F8F6EE] flex flex-col max-h-[580px]"
       >
         {/* Header */}
-        <div className="p-4 border-b border-[#352758] bg-[#0b0818] space-y-3">
+        <div className="p-4 border-b border-white/10 bg-[#0A1026]/80 space-y-3">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <Star size={13} className="text-[#fde047]" />
-              <span className="text-[10px] font-mono font-bold tracking-[0.2em] text-[#e9d5ff] uppercase">
+              <Star size={14} className="text-[#D4B06A]" />
+              <span className="text-[11px] font-display font-bold tracking-[0.18em] text-[#F0D79A] uppercase">
                 MIRAVERSEOSX // 5.3 LAYERED INTERFACE GRID
               </span>
             </div>
             
             {/* Dual Currency Badge in Launcher */}
-            <div className="flex items-center gap-3 font-mono text-xs">
-              <span className="text-amber-400 font-bold">{player?.credits ?? 500} ₢ CREDITS</span>
-              <span className="text-cyan-400 font-bold">{player?.bits ?? 25} ◈ BITS</span>
+            <div className="flex items-center gap-3 font-ui text-xs">
+              <span className="text-[#D4B06A] font-bold">{player?.credits ?? 500} ₢ CREDITS</span>
+              <span className="text-[#3EB9A8] font-bold">{player?.bits ?? 25} ◈ BITS</span>
               <button
                 onClick={onClose}
-                className="text-slate-400 hover:text-white transition p-1 rounded-lg hover:bg-white/10 ml-2"
+                className="text-[#C7D2E0] hover:text-white transition p-1 rounded-lg hover:bg-white/10 ml-2"
                 title="Close"
               >
                 <X size={16} />
@@ -121,21 +121,21 @@ export default function AppLauncherModal({ isOpen, onClose }: AppLauncherModalPr
             </div>
           </div>
 
-          {/* Search Bar with Gold/Lavender Focus Ring */}
+          {/* Search Bar with Starlight Gold Focus Ring */}
           <div className="relative flex items-center">
-            <Search size={15} className="absolute left-3.5 text-[#a78bfa]" />
+            <Search size={15} className="absolute left-3.5 text-[#C7D2E0]" />
             <input
               type="text"
               placeholder="Search applications, protocols, and services..."
               value={query}
               onChange={(e) => setQuery(e.target.value)}
-              className="w-full h-10 pl-10 pr-4 rounded-xl bg-[#1a1435] border border-[#3f2e6b] text-xs text-white placeholder-[#a78bfa]/60 font-sans focus:outline-none focus:border-[#fde047] focus:ring-1 focus:ring-[#fde047]/60 transition"
+              className="w-full h-10 pl-10 pr-4 rounded-xl bg-[#0A1026]/70 border border-[#254A7A] text-xs text-[#F8F6EE] placeholder-[#C7D2E0]/60 font-ui focus:outline-none focus:border-[#D4B06A] focus:ring-1 focus:ring-[#D4B06A]/60 transition"
               autoFocus
             />
           </div>
 
           {/* Category Tabs */}
-          <div className="flex items-center gap-1.5 overflow-x-auto text-[11px] font-mono scrollbar-none pt-0.5">
+          <div className="flex items-center gap-1.5 overflow-x-auto text-[11px] font-ui scrollbar-none pt-0.5">
             {categories.map((cat) => (
               <button
                 key={cat}
@@ -145,8 +145,8 @@ export default function AppLauncherModal({ isOpen, onClose }: AppLauncherModalPr
                 }}
                 className={`px-3 py-1 rounded-lg transition whitespace-nowrap ${
                   activeCategory === cat
-                    ? 'bg-gradient-to-r from-[#7c3aed] to-[#d97706] text-[#fef9c3] font-bold shadow-xs border border-[#fde047]/40'
-                    : 'text-[#c4b5fd] hover:text-white hover:bg-[#231a44]'
+                    ? 'bg-gradient-to-r from-[#D4B06A] via-[#ECC86C] to-[#254A7A] text-[#0A1026] font-bold shadow-xs border border-white/30'
+                    : 'text-[#C7D2E0] hover:text-white hover:bg-[#254A7A]/50'
                 }`}
               >
                 {cat}
@@ -163,37 +163,26 @@ export default function AppLauncherModal({ isOpen, onClose }: AppLauncherModalPr
               <button
                 key={app.id}
                 onClick={() => handleLaunch(app.id)}
-                className="p-3 rounded-xl bg-[#181232]/60 hover:bg-[#241a4a] border border-[#36275c] hover:border-[#c4b5fd]/60 text-left transition flex items-center justify-between group active:scale-[0.98]"
+                className="p-3 rounded-xl bg-[#254A7A]/30 hover:bg-[#254A7A]/60 border border-white/10 hover:border-[#D4B06A]/50 text-left transition-all flex items-center justify-between group active:scale-[0.98] hover:-translate-y-0.5"
               >
                 <div className="flex items-center gap-3 min-w-0">
-                  <div className={`flex h-9 w-9 items-center justify-center rounded-lg bg-[#1f1740] border ${app.border} text-white group-hover:scale-105 transition-transform shrink-0`}>
+                  <div className={`flex h-9 w-9 items-center justify-center rounded-lg bg-[#0A1026]/70 border ${app.border} text-white group-hover:scale-105 transition-transform shrink-0`}>
                     <Icon size={18} className={app.color} />
                   </div>
                   <div className="min-w-0">
                     <div className="flex items-center gap-2">
-                      <span className="font-bold text-xs text-white group-hover:text-[#fef08a] truncate">
+                      <span className="font-bold text-xs text-[#F8F6EE] group-hover:text-[#F0D79A] truncate">
                         {app.label}
                       </span>
                     </div>
-                    <p className="text-[10px] text-[#c4b5fd]/80 truncate mt-0.5 leading-normal">
+                    <p className="text-[10px] text-[#C7D2E0]/80 truncate mt-0.5 leading-normal">
                       {app.desc}
                     </p>
                   </div>
                 </div>
-                <ChevronRight size={13} className="text-[#a78bfa] group-hover:text-[#fde047] shrink-0 ml-1.5" />
               </button>
             );
           })}
-        </div>
-
-        {/* Footer */}
-        <div className="px-4 py-2.5 bg-[#0b0818] border-t border-[#352758] flex justify-between items-center text-[10px] font-mono text-[#a78bfa]">
-          <span>{filtered.length} Applications</span>
-          <span className="flex items-center gap-1">
-            <span>Press</span>
-            <kbd className="px-1.5 py-0.2 rounded bg-[#221940] border border-[#4c387c] text-[#fef9c3] font-mono">Esc</kbd>
-            <span>to dismiss</span>
-          </span>
         </div>
       </motion.div>
     </div>

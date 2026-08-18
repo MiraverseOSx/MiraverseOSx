@@ -149,19 +149,19 @@ export default function NoticeBoardApp() {
   const pinnedNotices = notices.filter(n => n.isPinned && !n.completed);
 
   return (
-    <div className="flex h-full bg-[#F8F9FA] text-slate-800 font-sans select-none overflow-hidden rounded-none border border-slate-300">
+    <div className="flex h-full bg-[#0A1026]/90 backdrop-blur-xl text-[#F8F6EE] font-ui select-none overflow-hidden rounded-none border border-white/10 shadow-2xl">
       
       {/* 1. COLLAPSIBLE SIDEBAR */}
       <aside 
-        className={`bg-slate-900 text-white transition-all duration-300 flex flex-col justify-between border-r border-slate-800 z-10 ${
+        className={`bg-[#142B52]/80 backdrop-blur-xl text-[#F8F6EE] transition-all duration-300 flex flex-col justify-between border-r border-white/10 z-10 ${
           sidebarOpen ? 'w-56 p-3' : 'w-14 p-2 items-center'
         }`}
       >
         <div className="flex flex-col gap-3 w-full">
           {/* Sidebar Header / Toggle */}
-          <div className="flex items-center justify-between pb-2 border-b border-slate-800">
+          <div className="flex items-center justify-between pb-2 border-b border-white/10">
             {sidebarOpen && (
-              <span className="text-[10px] font-mono font-bold tracking-widest text-amber-400 uppercase">
+              <span className="text-[10px] font-display font-bold tracking-widest text-[#D4B06A] uppercase">
                 Aureline Directories
               </span>
             )}
@@ -170,7 +170,7 @@ export default function NoticeBoardApp() {
                 if (soundEnabled) SoundFX.playSnap();
                 setSidebarOpen(!sidebarOpen);
               }}
-              className="p-1 hover:bg-slate-800 text-slate-400 hover:text-white rounded transition-colors"
+              className="p-1 hover:bg-white/10 text-[#C7D2E0] hover:text-white rounded-lg transition-colors"
               title="Toggle Sidebar"
             >
               {sidebarOpen ? <ChevronLeft className="w-4 h-4" /> : <ChevronRight className="w-4 h-4" />}
@@ -180,12 +180,12 @@ export default function NoticeBoardApp() {
           {/* Navigation Category Buttons */}
           <nav className="flex flex-col gap-1">
             {[
-              { id: 'all', label: 'All Protocols', icon: <Layers className="w-3.5 h-3.5" /> },
-              { id: 'tasks', label: 'Tasks', icon: <CheckSquare className="w-3.5 h-3.5 text-emerald-400" /> },
-              { id: 'quests', label: 'Quests', icon: <Compass className="w-3.5 h-3.5 text-blue-400" /> },
-              { id: 'missions', label: 'Missions', icon: <Terminal className="w-3.5 h-3.5 text-purple-400" /> },
-              { id: 'adventures', label: 'Adventures', icon: <Sparkles className="w-3.5 h-3.5 text-amber-400" /> },
-              { id: 'journey', label: 'The Journey', icon: <FolderGit2 className="w-3.5 h-3.5 text-rose-400" /> },
+              { id: 'all', label: 'All Protocols', icon: <Layers className="w-3.5 h-3.5 text-[#D4B06A]" /> },
+              { id: 'tasks', label: 'Tasks', icon: <CheckSquare className="w-3.5 h-3.5 text-[#3EB9A8]" /> },
+              { id: 'quests', label: 'Quests', icon: <Compass className="w-3.5 h-3.5 text-[#758AD1]" /> },
+              { id: 'missions', label: 'Missions', icon: <Terminal className="w-3.5 h-3.5 text-[#E1DAFB]" /> },
+              { id: 'adventures', label: 'Adventures', icon: <Sparkles className="w-3.5 h-3.5 text-[#ECC86C]" /> },
+              { id: 'journey', label: 'The Journey', icon: <FolderGit2 className="w-3.5 h-3.5 text-[#FFD2F4]" /> },
             ].map((cat) => (
               <button
                 key={cat.id}
@@ -193,10 +193,10 @@ export default function NoticeBoardApp() {
                   if (soundEnabled) SoundFX.playSnap();
                   setActiveCategory(cat.id as any);
                 }}
-                className={`flex items-center gap-2.5 px-2.5 py-2 text-xs transition-all rounded-none border ${
+                className={`flex items-center gap-2.5 px-2.5 py-2 text-xs transition-all rounded-lg border ${
                   activeCategory === cat.id
-                    ? 'bg-slate-800 text-white border-slate-700 font-semibold shadow-xs'
-                    : 'bg-transparent text-slate-400 border-transparent hover:bg-slate-800/60 hover:text-slate-200'
+                    ? 'bg-[#254A7A] text-[#F0D79A] border-[#D4B06A]/40 font-bold shadow-xs'
+                    : 'bg-transparent text-[#C7D2E0] border-transparent hover:bg-[#254A7A]/30 hover:text-white'
                 } ${!sidebarOpen ? 'justify-center' : ''}`}
                 title={cat.label}
               >
@@ -208,37 +208,37 @@ export default function NoticeBoardApp() {
         </div>
 
         {sidebarOpen && (
-          <div className="p-2 bg-slate-950 border border-slate-800 text-[10px] font-mono text-slate-400">
-            SYS_STATUS: <span className="text-emerald-400 font-bold">ONLINE</span>
+          <div className="p-2 bg-[#0A1026]/70 border border-white/10 rounded-lg text-[10px] font-ui text-[#C7D2E0]">
+            SYS_STATUS: <span className="text-[#3EB9A8] font-bold">ONLINE</span>
           </div>
         )}
       </aside>
 
       {/* 2. MAIN NOTICE BOARD CONTENT AREA */}
-      <main className="flex-1 flex flex-col overflow-y-auto p-4 bg-[#F8F9FA]">
+      <main className="flex-1 flex flex-col overflow-y-auto p-4 bg-[#0A1026]/50">
         
         {/* Header Banner */}
-        <div className="mb-4 bg-white p-4 border border-slate-300 shadow-2xs flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+        <div className="mb-4 bg-[#142B52]/80 backdrop-blur-xl p-4 border border-white/10 rounded-xl shadow-cosmic-low flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
           <div>
             <div className="flex items-center gap-2 mb-1">
-              <span className="text-[10px] font-mono uppercase bg-slate-900 text-white px-2 py-0.5 rounded-none font-bold">
+              <span className="text-[10px] font-ui uppercase bg-[#254A7A] text-[#F0D79A] border border-[#D4B06A]/30 px-2 py-0.5 rounded font-bold">
                 CHRONICLE (§5.3) // CIVIC NOTICE BOARD & QUEST ENGINE
               </span>
-              <span className="text-[10px] font-mono text-slate-500">// Aureline Civic Grid</span>
+              <span className="text-[10px] font-ui text-[#C7D2E0]">// Aureline Civic Grid</span>
             </div>
-            <h1 className="text-lg font-bold text-[#2C3E50]">
+            <h1 className="text-base font-display font-bold text-[#F8F6EE]">
               Synchronized Life, Missions & Quests Directory
             </h1>
           </div>
-          <div className="flex items-center gap-4 text-right font-mono text-xs text-slate-500">
+          <div className="flex items-center gap-4 text-right font-ui text-xs text-[#C7D2E0]">
             <div>
-              <div className="text-[10px] text-slate-400">CREDITS</div>
-              <div className="font-bold text-amber-600">{player?.credits ?? 500} ₢</div>
+              <div className="text-[10px] text-[#C7D2E0]/70">CREDITS</div>
+              <div className="font-bold text-[#D4B06A]">{player?.credits ?? 500} ₢</div>
             </div>
-            <div className="h-6 w-[1px] bg-slate-200" />
+            <div className="h-6 w-[1px] bg-white/10" />
             <div>
-              <div className="text-[10px] text-slate-400">BITS</div>
-              <div className="font-bold text-cyan-600">{player?.bits ?? 25} ◈</div>
+              <div className="text-[10px] text-[#C7D2E0]/70">BITS</div>
+              <div className="font-bold text-[#3EB9A8]">{player?.bits ?? 25} ◈</div>
             </div>
           </div>
         </div>

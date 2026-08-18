@@ -1,45 +1,112 @@
+/**
+ * MIRAVERSEOSX Master Theme & Styling Tokens (§3 & §4)
+ * Visual Philosophy: "Celestial Glass" & "Nova Glass" Framework
+ */
+
 :root {
-  --canvas-moon: #090e1a;
-  --canvas-vapor: #131b2e;
-  --glass-bg: #0f172a;
-  --glass-strong: #141e33;
-  --glass-border: #1e293b;
-  --glass-blur: 0px;
+  /* ==========================================================================
+     1. MASTER TYPOGRAPHY VARIABLES (§2)
+     ========================================================================== */
+  --font-display: 'Cinzel', 'Playfair Display', 'Georgia', serif;
+  --font-ui: 'Corbel', 'Carlito', 'Segoe UI', system-ui, -apple-system, sans-serif;
+  --font-lore: 'Alice', 'Georgia', serif;
+  --font-script: 'Great Vibes', 'Cookie', cursive;
 
-  --midnight-indigo: #f8fafc;
-  --stardust-navy: #0d1533;
-  --azurite-jade: #10b981;
-  --starlight-violet: #818cf8;
-  --aurora-pink: #f472b6;
-  --blush-lavender: #c084fc;
-  --mauve-melody: #a855f7;
-  --system-gold: #fbbf24;
-  --system-silver: #94a3b8;
+  /* Map Bootstrap 5.3 Typography */
+  --bs-body-font-family: var(--font-ui);
+  --bs-font-sans-serif: var(--font-ui);
+  --bs-body-font-size: 0.875rem;
+  --bs-body-font-weight: 400;
+  --bs-body-line-height: 1.5;
 
-  --ui-navy-950: #090e1a;
-  --ui-navy-900: #0f172a;
-  --ui-violet-600: #6366f1;
-  --ui-violet-100: #1e1b4b;
-  --ui-teal-600: #10b981;
-  --ui-amber-500: #f59e0b;
-  --ui-red-600: #ef4444;
-  --ui-surface: #0f172a;
-  --ui-surface-muted: #1e293b;
-  --ui-border: #1e293b;
-  --ui-border-strong: #334155;
-  --ui-shadow-low: 0 4px 12px rgba(0, 0, 0, 0.4);
-  --ui-shadow-high: 0 20px 40px rgba(0, 0, 0, 0.6);
-  --ui-toolbar-height: 52px;
-  --ui-radius-sm: 6px;
-  --ui-radius-md: 10px;
-  --ui-radius-lg: 14px;
+  /* ==========================================================================
+     2. GLOBAL OS BASE — "CELESTIAL NIGHT" (§3.1)
+     ========================================================================== */
+  --color-deep-space: #0A1026;
+  --color-midnight: #142B52;
+  --color-constellation: #254A7A;
+  --color-moonlight-slate: #5D7EA8;
+  --color-starlight-gold: #D4B06A;
+  --color-soft-gold: #F0D79A;
+  --color-ivory-white: #F8F6EE;
+  --color-starlight-mist: #C7D2E0;
 
-  --lavender: #c084fc;
-  --rose: #f472b6;
-  --purple: #818cf8;
-  --deep-blue: #0f172a;
+  /* ==========================================================================
+     3. SECTOR & INSTITUTIONAL PALETTES (§3.2)
+     ========================================================================== */
+  /* Nephele / Arcane Archives & Nether Systems */
+  --nephele-lavender: #E1DAFB;
+  --nephele-frost: #FFD2F4;
+  --nephele-glaucous: #758AD1;
+  --nephele-persian: #4D3EA3;
+  --nephele-violet: #450C3F;
 
-  --radius-window: 0px;
-  --radius-card: 0px;
-  --shadow-window: var(--ui-shadow-high);
+  /* Faith Medical / Arcadia Ecological Wardens */
+  --faith-dark-jungle: #1E201F;
+  --faith-jungle: #193A31;
+  --faith-green-cyan: #1D6C61;
+  --faith-verdigris: #3EB9A8;
+  --faith-forest: #5AA371;
+
+  /* Orynvell Imperial & High Council */
+  --orynvell-cream: #FFFDF7;
+  --orynvell-gold: #ECC86C;
+  --orynvell-aether: #1B3358;
+
+  /* ==========================================================================
+     4. NOVA GLASS FRAMEWORK & ELEVATION (§4)
+     ========================================================================== */
+  /* Surface Fills with High Alpha */
+  --glass-fill-base: rgba(20, 43, 82, 0.72);
+  --glass-fill-deep: rgba(10, 16, 38, 0.85);
+  --glass-fill-card: rgba(37, 74, 122, 0.45);
+  --glass-fill-input: rgba(10, 16, 38, 0.60);
+  --glass-fill-hover: rgba(37, 74, 122, 0.65);
+
+  /* Frost & Starlight Borders */
+  --glass-border-frost: rgba(255, 255, 255, 0.18);
+  --glass-border-gold: rgba(212, 176, 106, 0.35);
+  --glass-border-hover: rgba(240, 215, 154, 0.50);
+
+  /* Blurs & Radii */
+  --glass-blur-std: 20px;
+  --glass-blur-heavy: 28px;
+  --radius-window: 14px;
+  --radius-card: 10px;
+  --radius-pill: 9999px;
+
+  /* Shadow & Glow Hierarchy */
+  --shadow-cosmic-low: 0 2px 10px rgba(10, 16, 38, 0.40);
+  --shadow-cosmic-std: 0 16px 40px rgba(10, 16, 38, 0.65);
+  --shadow-cosmic-deep: 0 28px 70px rgba(10, 16, 38, 0.85);
+  --glow-starlight: 0 0 16px rgba(212, 176, 106, 0.45);
+  --glow-verdigris: 0 0 16px rgba(62, 185, 168, 0.45);
+  --glow-violet: 0 0 16px rgba(117, 138, 209, 0.45);
+
+  /* ==========================================================================
+     5. BOOTSTRAP 5.3 THEME VARIABLE BRIDGING
+     ========================================================================== */
+  --bs-primary: #D4B06A;
+  --bs-primary-rgb: 212, 176, 106;
+  --bs-secondary: #254A7A;
+  --bs-secondary-rgb: 37, 74, 122;
+  --bs-success: #3EB9A8;
+  --bs-success-rgb: 62, 185, 168;
+  --bs-info: #758AD1;
+  --bs-info-rgb: 117, 138, 209;
+  --bs-warning: #ECC86C;
+  --bs-warning-rgb: 236, 200, 108;
+  --bs-danger: #e11d48;
+  --bs-danger-rgb: 225, 29, 72;
+  --bs-light: #F8F6EE;
+  --bs-light-rgb: 248, 246, 238;
+  --bs-dark: #0A1026;
+  --bs-dark-rgb: 10, 16, 38;
+
+  --bs-body-color: var(--color-ivory-white);
+  --bs-body-bg: transparent;
+  --bs-card-bg: var(--glass-fill-base);
+  --bs-card-border-color: var(--glass-border-frost);
+  --bs-border-radius: var(--radius-card);
+  --bs-border-radius-lg: var(--radius-window);
 }

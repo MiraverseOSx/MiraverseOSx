@@ -27,40 +27,39 @@ export function FaithMedPortal() {
     };
 
     return (
-        <div className="p-6 space-y-6 bg-white min-h-full text-slate-800 font-sans select-none">
-            <header className="flex items-center justify-between border-b border-emerald-100 pb-4">
+        <div className="p-6 space-y-6 bg-[#0A1026]/90 backdrop-blur-xl min-h-full text-[#F8F6EE] font-ui select-none">
+            <header className="flex items-center justify-between border-b border-[#3EB9A8]/30 pb-4">
                 <div className="flex items-center gap-3">
-                    <div className="h-10 w-10 rounded-xl bg-emerald-500 text-white flex items-center justify-center font-bold">
+                    <div className="h-10 w-10 rounded-xl bg-[#1D6C61] text-[#F8F6EE] flex items-center justify-center font-bold shadow-glow-verdigris">
                         <Activity size={22} />
                     </div>
                     <div>
-                        <h1 className="text-xl font-bold text-slate-900">Faith Medical Group</h1>
-                        <p className="text-xs text-emerald-600 font-mono">Civic Health & Telemetry Intranet</p>
+                        <h1 className="text-xl font-bold font-display text-[#F8F6EE]">Faith Medical Group</h1>
+                        <p className="text-xs text-[#3EB9A8] font-ui">Civic Health & Telemetry Intranet // faithmed.aure</p>
                     </div>
                 </div>
-                <div className="text-right text-xs font-mono">
-                    <div className="text-slate-400">Patient Baseline</div>
-                    <div className="text-emerald-600 font-bold">Aura Integrity: {player?.auraHealth || 100}%</div>
+                <div className="text-right text-xs font-ui">
+                    <div className="text-[#C7D2E0]">Patient Baseline</div>
+                    <div className="text-[#3EB9A8] font-bold">Aura Integrity: {player?.auraHealth || 100}%</div>
                 </div>
             </header>
 
             {/* Aura Telemetry Scanner Banner */}
-            <div className="p-5 border border-emerald-200 bg-emerald-50/60 rounded-2xl flex items-center justify-between">
+            <div className="p-5 border border-[#3EB9A8]/40 bg-[#193A31]/60 rounded-2xl flex items-center justify-between shadow-cosmic-low">
                 <div className="space-y-1">
-                    <h2 className="text-sm font-bold text-emerald-900 flex items-center gap-2">
-                        <Activity size={18} className="text-emerald-600" /> Mandatory Baseline Aura Diagnostic
+                    <h2 className="text-sm font-bold text-[#F8F6EE] flex items-center gap-2 font-display">
+                        <Activity size={18} className="text-[#3EB9A8]" /> Mandatory Baseline Aura Diagnostic
                     </h2>
-                    <p className="text-xs text-emerald-700">
+                    <p className="text-xs text-[#C7D2E0]">
                         Execute telemetry scan to restore Aura Integrity, purge Veilwilt exposure, and claim health stipend.
                     </p>
                 </div>
                 <button
                     onClick={handleIntakeScan}
                     disabled={scanned}
-                    className="px-5 py-2.5 bg-emerald-600 hover:bg-emerald-500 disabled:bg-slate-300 text-white rounded-xl text-xs font-bold transition shadow-md flex items-center gap-2"
+                    className="px-5 py-2.5 bg-[#1D6C61] hover:bg-[#3EB9A8] hover:text-[#0A1026] disabled:bg-slate-700 text-white rounded-xl text-xs font-bold transition-all shadow-md flex items-center gap-2 font-ui hover:-translate-y-0.5"
                 >
-                    {scanned ? <CheckCircle2 size={16} /> : <RefreshCw size={16} />}
-                    <span>{scanned ? 'Scan Completed (+150 ₡)' : 'Execute Telemetry Scan'}</span>
+                    {scanned ? '✓ Telemetry Calibrated' : 'Run Diagnostic Scan (+150 ₢)'}
                 </button>
             </div>
 

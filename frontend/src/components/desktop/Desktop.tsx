@@ -89,25 +89,25 @@ export default function Desktop() {
   return (
     <main
       ref={workspaceRef}
-      className="os-desktop relative flex h-screen w-screen flex-col overflow-hidden select-none font-sans text-white bg-[#0a0817]"
+      className="celestial-nebula-bg constellation-sparkles relative flex h-screen w-screen flex-col overflow-hidden select-none font-ui text-[#F8F6EE]"
     >
-      {/* 1. PRISTINE BACKGROUND WITH PROMINENT LAVENDER & GOLD GLOWING EMBLEM */}
+      {/* 1. PRISTINE BACKGROUND WITH CELESTIAL EMBLEM & STARBURSTS */}
       <div className="pointer-events-none absolute inset-0 z-0 flex flex-col items-center justify-center">
-        {/* Soft Lavender & Gold Radial Ambient Aura */}
-        <div className="absolute h-[520px] w-[520px] rounded-full bg-[#7c3aed]/15 blur-[140px]" />
-        <div className="absolute h-[320px] w-[320px] rounded-full bg-[#f59e0b]/10 blur-[100px]" />
+        {/* Soft Starlight Gold & Nebula Ambient Aura */}
+        <div className="absolute h-[560px] w-[560px] rounded-full bg-[#D4B06A]/10 blur-[150px]" />
+        <div className="absolute h-[340px] w-[340px] rounded-full bg-[#254A7A]/25 blur-[120px]" />
         
         {/* Prominent Logo & Typographic Brand */}
-        <div className="relative flex flex-col items-center text-center opacity-85 select-none">
+        <div className="relative flex flex-col items-center text-center opacity-90 select-none">
           <img
             src={logoIcon}
             alt="MIRAVERSE OS Emblem"
-            className="h-44 w-44 md:h-56 md:w-56 object-contain drop-shadow-[0_0_45px_rgba(196,181,253,0.35)] filter brightness-110"
+            className="h-44 w-44 md:h-56 md:w-56 object-contain drop-shadow-[0_0_50px_rgba(212,176,106,0.35)] filter brightness-110"
           />
-          <h1 className="mt-4 font-serif font-bold text-lg md:text-2xl tracking-[0.28em] text-[#fef9c3] uppercase drop-shadow-[0_2px_10px_rgba(0,0,0,0.5)]">
+          <h1 className="mt-4 font-display font-bold text-lg md:text-2xl tracking-[0.28em] text-[#F8F6EE] uppercase drop-shadow-[0_2px_12px_rgba(10,16,38,0.7)]">
             MIRAVERSE OS x
           </h1>
-          <p className="mt-1 text-[10px] md:text-xs font-mono tracking-[0.35em] text-[#c4b5fd] uppercase">
+          <p className="mt-1 text-[10px] md:text-xs font-ui tracking-[0.35em] text-[#C7D2E0] uppercase font-semibold">
             Celestial Operating System // Aureline
           </p>
         </div>

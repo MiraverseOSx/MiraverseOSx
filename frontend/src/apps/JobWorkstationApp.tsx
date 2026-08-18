@@ -134,55 +134,55 @@ export default function JobWorkstationApp() {
   };
 
   return (
-    <div className="flex flex-col h-full bg-[#0a0d18] text-slate-100 font-sans select-none overflow-hidden border border-slate-700/60 shadow-2xl">
+    <div className="flex flex-col h-full bg-[#0A1026]/90 backdrop-blur-xl text-[#F8F6EE] font-ui select-none overflow-hidden border border-white/10 shadow-2xl">
       
       {/* ─── 10.1A UNIFIED FEDERAL WORKNET AUTHENTICATION HEADER ─── */}
-      <header className="flex items-center justify-between px-6 py-3 bg-[#0d1224] border-b border-indigo-900/60 shadow-md">
+      <header className="flex items-center justify-between px-6 py-3 bg-[#142B52]/80 border-b border-white/10 shadow-md">
         <div className="flex items-center gap-3.5">
-          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-indigo-500/10 border border-indigo-500/40 text-indigo-400 shadow-[0_0_15px_rgba(99,102,241,0.2)]">
+          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#254A7A]/40 border border-[#D4B06A]/40 text-[#D4B06A] shadow-[0_0_15px_rgba(212,176,106,0.2)]">
             <Fingerprint size={22} className="animate-pulse" />
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <span className="text-[10px] font-mono uppercase bg-indigo-600 text-white px-2 py-0.5 font-bold rounded tracking-widest shadow-xs">
+              <span className="text-[10px] font-ui uppercase bg-[#254A7A] text-[#F0D79A] border border-[#D4B06A]/30 px-2 py-0.5 font-bold rounded tracking-wider shadow-xs">
                 WORKNET §10.1A // FEDERAL ACCESS LAYER
               </span>
-              <span className="text-[11px] text-emerald-400 font-mono flex items-center gap-1 font-semibold">
-                <span className="h-2 w-2 rounded-full bg-emerald-400 animate-ping inline-block" /> AUTHENTICATED
+              <span className="text-[11px] text-[#3EB9A8] font-ui flex items-center gap-1 font-semibold">
+                <span className="h-2 w-2 rounded-full bg-[#3EB9A8] animate-ping inline-block" /> AUTHENTICATED
               </span>
-              <span className="text-[11px] text-indigo-300/80 font-mono">
+              <span className="text-[11px] text-[#C7D2E0] font-ui">
                 BCL-{clearanceTier} (Level {player?.level || 1})
               </span>
             </div>
-            <h1 className="text-sm font-bold text-slate-100 mt-0.5 tracking-tight flex items-center gap-2">
+            <h1 className="text-sm font-display font-bold text-[#F8F6EE] mt-0.5 tracking-tight flex items-center gap-2">
               <span>{currentStationInfo.org}</span>
-              <ChevronRight size={14} className="text-indigo-400" />
-              <span className="text-indigo-300 font-semibold">{currentStationInfo.name}</span>
+              <ChevronRight size={14} className="text-[#D4B06A]" />
+              <span className="text-[#F0D79A] font-semibold">{currentStationInfo.name}</span>
             </h1>
           </div>
         </div>
 
         {/* Dual Currency & Federal Telemetry */}
-        <div className="flex items-center gap-5 text-xs font-mono">
+        <div className="flex items-center gap-5 text-xs font-ui">
           <div className="text-right">
-            <div className="text-slate-400 text-[10px] uppercase tracking-wider">Primary Currency</div>
-            <div className="text-amber-400 font-bold font-mono text-sm flex items-center justify-end gap-1">
+            <div className="text-[#C7D2E0] text-[10px] uppercase tracking-wider">Primary Currency</div>
+            <div className="text-[#D4B06A] font-bold font-ui text-sm flex items-center justify-end gap-1">
               <span>{player?.credits ?? 500}</span>
-              <span className="text-amber-300 text-[11px]">₢ CREDITS</span>
+              <span className="text-[#F0D79A] text-[11px]">₢ CREDITS</span>
             </div>
           </div>
-          <div className="h-8 w-[1px] bg-slate-800" />
+          <div className="h-8 w-[1px] bg-white/10" />
           <div className="text-right">
-            <div className="text-slate-400 text-[10px] uppercase tracking-wider">Secondary Rare Currency</div>
-            <div className="text-cyan-400 font-bold font-mono text-sm flex items-center justify-end gap-1">
+            <div className="text-[#C7D2E0] text-[10px] uppercase tracking-wider">Secondary Rare Currency</div>
+            <div className="text-[#3EB9A8] font-bold font-ui text-sm flex items-center justify-end gap-1">
               <span>{player?.bits ?? 25}</span>
-              <span className="text-cyan-300 text-[11px]">◈ BITS</span>
+              <span className="text-[#5AA371] text-[11px]">◈ BITS</span>
             </div>
           </div>
-          <div className="h-8 w-[1px] bg-slate-800" />
+          <div className="h-8 w-[1px] bg-white/10" />
           <div className="text-right">
-            <div className="text-slate-400 text-[10px] uppercase tracking-wider">Shift Resolved</div>
-            <div className="text-emerald-400 font-bold">{completedCount} / {missions.length}</div>
+            <div className="text-[#C7D2E0] text-[10px] uppercase tracking-wider">Shift Resolved</div>
+            <div className="text-[#3EB9A8] font-bold">{completedCount} / {missions.length}</div>
           </div>
         </div>
       </header>

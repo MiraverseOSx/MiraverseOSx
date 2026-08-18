@@ -1,151 +1,312 @@
-.os-desktop {
-  background:
-    radial-gradient(circle at 12% 18%, rgba(255, 255, 255, 0.9) 0 1px, transparent 1.8px),
-    radial-gradient(circle at 77% 14%, rgba(255, 255, 255, 0.82) 0 1px, transparent 1.7px),
-    radial-gradient(circle at 63% 72%, rgba(48, 59, 103, 0.16) 0 1px, transparent 1.8px),
-    radial-gradient(circle at 28% 84%, rgba(255, 255, 255, 0.76) 0 1px, transparent 1.6px),
-    radial-gradient(ellipse at 18% 10%, rgba(255, 255, 255, 0.82), transparent 38%),
-    radial-gradient(ellipse at 82% 78%, rgba(185, 190, 202, 0.44), transparent 46%),
-    linear-gradient(138deg, #d8dbe2 0%, #aeb4c0 48%, #c9cdd5 100%);
-  background-size: 170px 170px, 230px 230px, 190px 190px, 260px 260px, auto, auto, auto;
-  min-height: 100vh;
+/**
+ * MIRAVERSEOSX Master Theme & Styling Engine (§1 - §7)
+ * Celestial Glass & Nova Glass Styling with Bootstrap 5.3 Synergy
+ */
+
+@import './tokens.css';
+
+/* ==========================================================================
+   1. MASTER TYPOGRAPHY UTILITIES (§2)
+   ========================================================================== */
+.font-display, h1, h2, h3, .window-title, .modal-title {
+  font-family: var(--font-display);
+  letter-spacing: 0.04em;
 }
 
-.os-desktop::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  background:
-    linear-gradient(115deg, transparent 0 26%, rgba(255, 255, 255, 0.2) 43%, transparent 62%),
-    radial-gradient(ellipse at center, rgba(255, 255, 255, 0.08), rgba(61, 70, 94, 0.16));
-  mix-blend-mode: screen;
-  opacity: 0.72;
+.font-ui, body, button, input, select, textarea, .nav-link, .badge, .btn {
+  font-family: var(--font-ui);
 }
 
-.command-stars {
-  background-image:
-    radial-gradient(circle at 12% 18%, rgba(255, 255, 255, .9) 0 1px, transparent 1.6px),
-    radial-gradient(circle at 72% 26%, rgba(184, 198, 255, .84) 0 1px, transparent 1.5px),
-    radial-gradient(circle at 35% 76%, rgba(255, 255, 255, .72) 0 1px, transparent 1.5px),
-    radial-gradient(circle at 88% 80%, rgba(151, 169, 235, .72) 0 1px, transparent 1.6px);
-  background-size: 96px 96px, 132px 132px, 118px 118px, 150px 150px;
-  animation: command-star-drift 24s linear infinite;
+.font-lore, .lore-entry, .archive-text, .dialogue-box {
+  font-family: var(--font-lore);
+  line-height: 1.7;
 }
 
-.command-stars::before,
-.command-stars::after {
-  content: '';
-  position: absolute;
-  inset: -45% 0 0;
-  pointer-events: none;
-  background-image:
-    linear-gradient(165deg, transparent 0 46%, rgba(210, 216, 226, .72) 48%, transparent 50%),
-    linear-gradient(165deg, transparent 0 47%, rgba(143, 153, 174, .5) 48.5%, transparent 50%),
-    linear-gradient(165deg, transparent 0 47%, rgba(234, 238, 244, .66) 48%, transparent 49%);
-  background-size: 170px 290px, 240px 360px, 310px 430px;
-  opacity: .52;
-  animation: falling-grey-stars 10s linear infinite;
+.font-script, .seal-text, .rite-signature {
+  font-family: var(--font-script);
 }
 
-.command-stars::after {
-  background-size: 230px 370px, 320px 460px, 400px 540px;
-  opacity: .28;
-  animation-duration: 17s;
-  animation-delay: -7s;
+/* ==========================================================================
+   2. NOVA GLASS WINDOW CONTAINER & SURFACES (§4.1)
+   ========================================================================== */
+.nova-glass {
+  background: var(--glass-fill-base);
+  backdrop-filter: blur(var(--glass-blur-std)) saturate(150%);
+  -webkit-backdrop-filter: blur(var(--glass-blur-std)) saturate(150%);
+  border: 1px solid var(--glass-border-frost);
+  border-radius: var(--radius-window);
+  box-shadow: var(--shadow-cosmic-std);
+  color: var(--color-ivory-white);
+  transition: transform 0.28s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.28s ease, border-color 0.28s ease;
 }
 
-.navy-cosmic-shell {
-  position: relative;
-  isolation: isolate;
-  background:
-    radial-gradient(ellipse at 48% 18%, rgba(84, 101, 158, .34), transparent 42%),
-    radial-gradient(ellipse at 78% 82%, rgba(110, 119, 143, .18), transparent 46%),
-    linear-gradient(155deg, rgba(19, 31, 72, .96), rgba(7, 14, 39, .98));
-  border-color: transparent !important;
-  box-shadow: none;
+.nova-glass-card {
+  background: var(--glass-fill-card);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--glass-border-frost);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-cosmic-low);
+  transition: all 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
-.navy-cosmic-shell::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  pointer-events: none;
-  background:
-    radial-gradient(circle at 14% 22%, rgba(225, 230, 239, .72) 0 1px, transparent 1.8px),
-    radial-gradient(circle at 74% 16%, rgba(155, 166, 190, .62) 0 1px, transparent 1.8px),
-    radial-gradient(circle at 38% 72%, rgba(234, 238, 244, .58) 0 1px, transparent 1.7px),
-    radial-gradient(circle at 88% 84%, rgba(139, 149, 171, .58) 0 1px, transparent 1.8px);
-  background-size: 128px 128px, 183px 183px, 156px 156px, 220px 220px;
-  opacity: .52;
-  animation: command-star-drift 34s linear infinite;
+.nova-glass-card:hover {
+  background: var(--glass-fill-hover);
+  border-color: var(--glass-border-gold);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(10, 16, 38, 0.45);
 }
 
-.misty-navy-panel {
-  position: relative;
-  isolation: isolate;
-  color: #e8edf8;
-  background:
-    linear-gradient(160deg, rgba(56, 70, 101, .84), rgba(20, 31, 65, .9)),
-    radial-gradient(ellipse at 30% 12%, rgba(220, 227, 237, .2), transparent 42%);
-  border-color: transparent !important;
-  box-shadow: none;
+/* ==========================================================================
+   3. DYNAMIC SECTOR CHROMES (§3.2 & §4)
+   ========================================================================== */
+/* Global / Celestial Night (Default) */
+.sector-celestial {
+  --sector-accent: var(--color-starlight-gold);
+  --sector-glow: var(--glow-starlight);
+  --sector-header-bg: rgba(20, 43, 82, 0.88);
+  border-color: var(--glass-border-gold);
 }
 
-.misty-navy-panel::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  pointer-events: none;
-  background:
-    radial-gradient(ellipse at 18% 15%, rgba(222, 228, 237, .18), transparent 35%),
-    radial-gradient(ellipse at 80% 75%, rgba(145, 157, 180, .16), transparent 42%),
-    linear-gradient(118deg, transparent 22%, rgba(213, 220, 231, .08) 48%, transparent 72%);
+/* Nephele / Arcane Archives & Comms */
+.sector-nephele {
+  --sector-accent: var(--nephele-lavender);
+  --sector-glow: var(--glow-violet);
+  --sector-header-bg: rgba(69, 12, 63, 0.85);
+  border-color: rgba(225, 218, 251, 0.30);
+}
+.sector-nephele .window-header-accent {
+  background: linear-gradient(90deg, #4D3EA3, #758AD1);
 }
 
-@keyframes command-star-drift {
-  from {
-    background-position: 0 0, 0 0, 0 0, 0 0;
-  }
-
-  to {
-    background-position: 30px 120px, -45px 190px, 65px 150px, -30px 220px;
-  }
+/* Faith Medical & Arcadia Wardens */
+.sector-faith {
+  --sector-accent: var(--faith-verdigris);
+  --sector-glow: var(--glow-verdigris);
+  --sector-header-bg: rgba(25, 58, 49, 0.85);
+  border-color: rgba(62, 185, 168, 0.35);
+}
+.sector-faith .window-header-accent {
+  background: linear-gradient(90deg, #193A31, #3EB9A8);
 }
 
-@keyframes falling-grey-stars {
-  from {
-    transform: translate3d(0, -28%, 0);
-  }
-
-  to {
-    transform: translate3d(-28px, 52%, 0);
-  }
+/* Orynvell Imperial & High Council */
+.sector-orynvell {
+  --sector-accent: var(--orynvell-gold);
+  --sector-glow: var(--glow-starlight);
+  --sector-header-bg: rgba(27, 51, 88, 0.90);
+  border-color: rgba(236, 200, 108, 0.40);
+}
+.sector-orynvell .window-header-accent {
+  background: linear-gradient(90deg, #1B3358, #ECC86C);
 }
 
-@media (prefers-reduced-motion: reduce) {
+/* ==========================================================================
+   4. BOOTSTRAP 5.3 COMPONENT INFUSION (Cheatsheet Synergy)
+   ========================================================================== */
 
-  .command-stars,
-  .command-stars::before,
-  .command-stars::after,
-  .navy-cosmic-shell::before {
-    animation: none;
-  }
+/* Bootstrap Buttons */
+.btn-celestial, .btn-primary {
+  background: rgba(37, 74, 122, 0.70) !important;
+  border: 1px solid var(--color-starlight-gold) !important;
+  color: var(--color-ivory-white) !important;
+  border-radius: var(--radius-card) !important;
+  font-family: var(--font-ui) !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.03em !important;
+  padding: 0.5rem 1rem !important;
+  backdrop-filter: blur(8px) !important;
+  transition: all 0.25s cubic-bezier(0.2, 0.8, 0.2, 1) !important;
 }
 
-.os-window {
-  width: 100%;
-  height: 100%;
-  min-width: 0;
-  min-height: 0;
-  background: var(--glass-bg);
-  backdrop-filter: blur(var(--glass-blur));
-  border: 1px solid var(--glass-border);
-  border-radius: 0;
-  box-shadow: var(--shadow-window);
+.btn-celestial:hover, .btn-primary:hover {
+  background: rgba(212, 176, 106, 0.25) !important;
+  border-color: var(--color-soft-gold) !important;
+  box-shadow: var(--glow-starlight) !important;
+  transform: translateY(-2px) !important;
+  color: #ffffff !important;
+}
+
+.btn-celestial:active, .btn-primary:active {
+  transform: translateY(0) !important;
+  background: rgba(212, 176, 106, 0.40) !important;
+}
+
+.btn-outline-gold {
+  background: transparent !important;
+  border: 1px solid var(--color-starlight-gold) !important;
+  color: var(--color-soft-gold) !important;
+  border-radius: var(--radius-card) !important;
+  transition: all 0.25s ease !important;
+}
+.btn-outline-gold:hover {
+  background: rgba(212, 176, 106, 0.20) !important;
+  box-shadow: var(--glow-starlight) !important;
+  color: #ffffff !important;
+  transform: translateY(-1px) !important;
+}
+
+/* Bootstrap Badges */
+.badge-gold {
+  background: rgba(212, 176, 106, 0.18);
+  border: 1px solid rgba(212, 176, 106, 0.45);
+  color: var(--color-soft-gold);
+  border-radius: var(--radius-pill);
+  font-family: var(--font-ui);
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  padding: 0.25rem 0.65rem;
+}
+
+.badge-verdigris {
+  background: rgba(62, 185, 168, 0.18);
+  border: 1px solid rgba(62, 185, 168, 0.45);
+  color: var(--faith-verdigris);
+  border-radius: var(--radius-pill);
+  font-family: var(--font-ui);
+  font-weight: 700;
+  padding: 0.25rem 0.65rem;
+}
+
+.badge-violet {
+  background: rgba(117, 138, 209, 0.18);
+  border: 1px solid rgba(117, 138, 209, 0.45);
+  color: var(--nephele-lavender);
+  border-radius: var(--radius-pill);
+  font-family: var(--font-ui);
+  font-weight: 700;
+  padding: 0.25rem 0.65rem;
+}
+
+/* Bootstrap Cards */
+.card {
+  background: var(--glass-fill-base) !important;
+  backdrop-filter: blur(16px) !important;
+  -webkit-backdrop-filter: blur(16px) !important;
+  border: 1px solid var(--glass-border-frost) !important;
+  border-radius: var(--radius-card) !important;
+  color: var(--color-ivory-white) !important;
+  box-shadow: var(--shadow-cosmic-low) !important;
+}
+
+.card-header {
+  background: rgba(10, 16, 38, 0.50) !important;
+  border-bottom: 1px solid var(--glass-border-frost) !important;
+  font-family: var(--font-display) !important;
+  color: var(--color-soft-gold) !important;
+}
+
+/* Bootstrap Forms */
+.form-control, .form-select {
+  background-color: var(--glass-fill-input) !important;
+  border: 1px solid var(--glass-border-frost) !important;
+  color: var(--color-ivory-white) !important;
+  border-radius: var(--radius-card) !important;
+  font-family: var(--font-ui) !important;
+  transition: all 0.2s ease !important;
+}
+
+.form-control:focus, .form-select:focus {
+  background-color: rgba(10, 16, 38, 0.85) !important;
+  border-color: var(--color-starlight-gold) !important;
+  box-shadow: 0 0 0 0.2rem rgba(212, 176, 106, 0.25) !important;
+  color: #ffffff !important;
+}
+
+/* Bootstrap Progress Bars */
+.progress {
+  background-color: rgba(10, 16, 38, 0.70) !important;
+  border: 1px solid var(--glass-border-frost) !important;
+  border-radius: var(--radius-pill) !important;
   overflow: hidden;
-  display: flex;
-  flex-direction: column;
+}
+
+.progress-bar {
+  background: linear-gradient(90deg, var(--color-starlight-gold), var(--color-soft-gold)) !important;
+  box-shadow: var(--glow-starlight);
+}
+
+.progress-bar-verdigris {
+  background: linear-gradient(90deg, var(--faith-green-cyan), var(--faith-verdigris)) !important;
+  box-shadow: var(--glow-verdigris);
+}
+
+/* Bootstrap Tables */
+.table {
+  color: var(--color-ivory-white) !important;
+  border-color: var(--glass-border-frost) !important;
+  font-family: var(--font-ui) !important;
+}
+
+.table th {
+  font-family: var(--font-display);
+  color: var(--color-soft-gold);
+  border-bottom: 1px solid var(--glass-border-gold) !important;
+  background: rgba(10, 16, 38, 0.40);
+}
+
+.table td {
+  border-color: var(--glass-border-frost) !important;
+}
+
+/* Bootstrap Nav Tabs */
+.nav-tabs {
+  border-bottom: 1px solid var(--glass-border-frost) !important;
+}
+
+.nav-tabs .nav-link {
+  color: var(--color-starlight-mist) !important;
+  border: none !important;
+  border-bottom: 2px solid transparent !important;
+  font-family: var(--font-ui) !important;
+  font-weight: 600 !important;
+  transition: all 0.2s ease !important;
+}
+
+.nav-tabs .nav-link:hover {
+  color: var(--color-soft-gold) !important;
+}
+
+.nav-tabs .nav-link.active {
+  background: transparent !important;
+  color: var(--color-starlight-gold) !important;
+  border-bottom: 2px solid var(--color-starlight-gold) !important;
+}
+
+/* ==========================================================================
+   5. CELESTIAL AMBIENT EFFECTS & ANIMATIONS (§1 & §7)
+   ========================================================================== */
+.celestial-nebula-bg {
+  background-color: var(--color-deep-space);
+  background-image:
+    radial-gradient(ellipse at 15% 20%, rgba(37, 74, 122, 0.45) 0%, transparent 45%),
+    radial-gradient(ellipse at 85% 80%, rgba(69, 12, 63, 0.40) 0%, transparent 50%),
+    radial-gradient(ellipse at 50% 50%, rgba(20, 43, 82, 0.35) 0%, transparent 60%);
+  background-attachment: fixed;
+  background-size: cover;
+}
+
+.constellation-sparkles {
+  background-image:
+    radial-gradient(circle at 10% 15%, rgba(248, 246, 238, 0.85) 0 1px, transparent 1.8px),
+    radial-gradient(circle at 75% 18%, rgba(212, 176, 106, 0.90) 0 1px, transparent 1.7px),
+    radial-gradient(circle at 35% 82%, rgba(225, 218, 251, 0.80) 0 1px, transparent 1.6px),
+    radial-gradient(circle at 88% 75%, rgba(240, 215, 154, 0.75) 0 1px, transparent 1.7px),
+    radial-gradient(circle at 55% 45%, rgba(248, 246, 238, 0.95) 0 1.2px, transparent 2px);
+  background-size: 180px 180px, 240px 240px, 210px 210px, 280px 280px, 320px 320px;
+  animation: constellation-drift 40s linear infinite;
+}
+
+@keyframes constellation-drift {
+  0% { background-position: 0 0, 0 0, 0 0, 0 0, 0 0; }
+  100% { background-position: 180px 180px, -240px 240px, 210px -210px, -280px -280px, 320px 320px; }
+}
+
+.luminous-pulse {
+  animation: breathing-glow 3.5s ease-in-out infinite alternate;
+}
+
+@keyframes breathing-glow {
+  0% { filter: drop-shadow(0 0 4px rgba(212, 176, 106, 0.25)); }
+  100% { filter: drop-shadow(0 0 14px rgba(212, 176, 106, 0.65)); }
 }

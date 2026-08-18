@@ -13,6 +13,54 @@ export interface WindowProps {
   windowIndex?: number;
 }
 
+// Sector Chrome Determination (§3.2 & §4)
+function getSectorChrome(appId: string) {
+  const id = appId?.toLowerCase() || '';
+  if (id.includes('faith') || id.includes('vital') || id.includes('warden')) {
+    return {
+      sector: 'faith',
+      activeBorder: 'border-[#3EB9A8]/50 shadow-[0_16px_44px_rgba(10,16,38,0.70),0_0_24px_rgba(62,185,168,0.25)]',
+      inactiveBorder: 'border-[#1D6C61]/35 shadow-[0_10px_30px_rgba(10,16,38,0.55)]',
+      activeHeader: 'bg-gradient-to-r from-[#193A31]/95 via-[#1D6C61]/90 to-[#193A31]/95 border-b border-[#3EB9A8]/40 text-[#F8F6EE]',
+      inactiveHeader: 'bg-[#193A31]/80 border-b border-[#1D6C61]/30 text-[#C7D2E0]/70',
+      iconColor: 'text-[#3EB9A8]',
+      accentBg: 'bg-[#142B52]/80',
+    };
+  }
+  if (id.includes('comms') || id.includes('spellforge') || id.includes('nephele') || id.includes('pulse')) {
+    return {
+      sector: 'nephele',
+      activeBorder: 'border-[#E1DAFB]/50 shadow-[0_16px_44px_rgba(10,16,38,0.70),0_0_24px_rgba(117,138,209,0.25)]',
+      inactiveBorder: 'border-[#4D3EA3]/40 shadow-[0_10px_30px_rgba(10,16,38,0.55)]',
+      activeHeader: 'bg-gradient-to-r from-[#450C3F]/95 via-[#4D3EA3]/90 to-[#450C3F]/95 border-b border-[#E1DAFB]/35 text-[#F8F6EE]',
+      inactiveHeader: 'bg-[#450C3F]/80 border-b border-[#4D3EA3]/30 text-[#C7D2E0]/70',
+      iconColor: 'text-[#E1DAFB]',
+      accentBg: 'bg-[#142B52]/80',
+    };
+  }
+  if (id.includes('jobs') || id.includes('passport') || id.includes('gov') || id.includes('board') || id.includes('lore')) {
+    return {
+      sector: 'orynvell',
+      activeBorder: 'border-[#ECC86C]/50 shadow-[0_16px_44px_rgba(10,16,38,0.70),0_0_24px_rgba(236,200,108,0.25)]',
+      inactiveBorder: 'border-[#ECC86C]/25 shadow-[0_10px_30px_rgba(10,16,38,0.55)]',
+      activeHeader: 'bg-gradient-to-r from-[#1B3358]/95 via-[#254A7A]/90 to-[#1B3358]/95 border-b border-[#ECC86C]/40 text-[#FFFDF7]',
+      inactiveHeader: 'bg-[#1B3358]/80 border-b border-[#ECC86C]/20 text-[#C7D2E0]/70',
+      iconColor: 'text-[#ECC86C]',
+      accentBg: 'bg-[#142B52]/80',
+    };
+  }
+  // Default: Celestial Night (§3.1)
+  return {
+    sector: 'celestial',
+    activeBorder: 'border-[#D4B06A]/50 shadow-[0_16px_44px_rgba(10,16,38,0.75),0_0_24px_rgba(212,176,106,0.25)]',
+    inactiveBorder: 'border-white/15 shadow-[0_10px_30px_rgba(10,16,38,0.55)]',
+    activeHeader: 'bg-gradient-to-r from-[#142B52]/95 via-[#254A7A]/90 to-[#142B52]/95 border-b border-[#D4B06A]/35 text-[#F8F6EE]',
+    inactiveHeader: 'bg-[#142B52]/80 border-b border-white/10 text-[#C7D2E0]/70',
+    iconColor: 'text-[#D4B06A]',
+    accentBg: 'bg-[#142B52]/80',
+  };
+}
+
 export default function Window({ win, isFocusMode = false, windowIndex = 0 }: WindowProps) {
   const focusWindow = useOSStore((s) => s.focusWindow);
   const closeWindow = useOSStore((s) => s.closeWindow);
@@ -26,6 +74,7 @@ export default function Window({ win, isFocusMode = false, windowIndex = 0 }: Wi
   const Body = getContent(win.contentKey || win.id);
   const isActive = activeWindowId === win.id;
   const windowOffset = win.windowOffset || { x: 0, y: 0 };
+  const chrome = getSectorChrome(win.id);
 
   const [windowGeometry, setWindowGeometry] = useState({
     width: 1040,
@@ -92,14 +141,12 @@ export default function Window({ win, isFocusMode = false, windowIndex = 0 }: Wi
       dragElastic={0}
       dragSnapToOrigin
       onDragEnd={handleDragEnd}
-      initial={{ opacity: 0, scale: 0.96 }}
-      animate={{ opacity: 1, scale: 1 }}
-      exit={{ opacity: 0, scale: 0.96 }}
-      transition={{ duration: 0.12 }}
-      className={`fixed flex flex-col overflow-hidden select-none rounded-2xl border transition-shadow ${
-        isActive
-          ? 'border-[#c4b5fd]/50 bg-[#0f0b1f] shadow-[0_20px_60px_rgba(0,0,0,0.8),0_0_30px_rgba(196,181,253,0.18)]'
-          : 'border-[#2c204d]/70 bg-[#0c081a] shadow-[0_12px_40px_rgba(0,0,0,0.6)] opacity-95'
+      initial={{ opacity: 0, scale: 0.96, y: 10 }}
+      animate={{ opacity: 1, scale: 1, y: 0 }}
+      exit={{ opacity: 0, scale: 0.96, y: 8 }}
+      transition={{ duration: 0.28, ease: [0.2, 0.8, 0.2, 1] }}
+      className={`fixed flex flex-col overflow-hidden select-none rounded-2xl border backdrop-blur-2xl bg-[#142B52]/80 transition-all duration-300 ${
+        isActive ? chrome.activeBorder : chrome.inactiveBorder
       }`}
       style={{
         ...(win.isMaximized ? maximizedStyle : normalStyle),
@@ -109,12 +156,10 @@ export default function Window({ win, isFocusMode = false, windowIndex = 0 }: Wi
       }}
       onMouseDown={() => focusWindow(win.id)}
     >
-      {/* Title Bar */}
+      {/* ─── 4.1 "NOVA GLASS" TITLE BAR WITH SECTOR CHROMING ─── */}
       <div
-        className={`flex h-9 shrink-0 items-center justify-between px-3.5 border-b font-sans transition ${
-          isActive
-            ? 'bg-[#181132] border-[#392666] text-[#fef9c3]'
-            : 'bg-[#100b22] border-[#22173f] text-[#c4b5fd]/70'
+        className={`flex h-10 shrink-0 items-center justify-between px-4 transition-colors ${
+          isActive ? chrome.activeHeader : chrome.inactiveHeader
         }`}
         style={{ cursor: win.isMaximized ? 'default' : 'grab' }}
         onPointerDown={startDrag}
@@ -123,9 +168,9 @@ export default function Window({ win, isFocusMode = false, windowIndex = 0 }: Wi
           toggleMaximize(win.id);
         }}
       >
-        <div className="flex items-center gap-2">
-          <Sparkles size={13} className={isActive ? 'text-[#fde047]' : 'text-[#a78bfa]'} />
-          <span className="font-bold text-xs tracking-wider uppercase font-mono">
+        <div className="flex items-center gap-2.5">
+          <Sparkles size={14} className={`${chrome.iconColor} ${isActive ? 'animate-pulse' : 'opacity-70'}`} />
+          <span className="font-display font-bold text-xs tracking-wider uppercase text-[#F8F6EE] drop-shadow-xs">
             {win.title || win.id}
           </span>
         </div>
@@ -138,7 +183,7 @@ export default function Window({ win, isFocusMode = false, windowIndex = 0 }: Wi
               if (soundEnabled) SoundFX.playSnap();
               toggleMinimize(win.id);
             }}
-            className="p-1 rounded-md text-slate-400 hover:text-white hover:bg-white/10 transition"
+            className="p-1 rounded-md text-[#C7D2E0] hover:text-[#F8F6EE] hover:bg-white/15 transition-all hover:-translate-y-0.5"
             title="Minimize"
           >
             <Minus size={13} />
@@ -149,7 +194,7 @@ export default function Window({ win, isFocusMode = false, windowIndex = 0 }: Wi
               if (soundEnabled) SoundFX.playSnap();
               toggleMaximize(win.id);
             }}
-            className="p-1 rounded-md text-slate-400 hover:text-[#fef08a] hover:bg-white/10 transition"
+            className="p-1 rounded-md text-[#C7D2E0] hover:text-[#F0D79A] hover:bg-white/15 transition-all hover:-translate-y-0.5"
             title="Maximize"
           >
             <Square size={12} />
@@ -160,17 +205,17 @@ export default function Window({ win, isFocusMode = false, windowIndex = 0 }: Wi
               if (soundEnabled) SoundFX.playSnap();
               closeWindow(win.id);
             }}
-            className="p-1 rounded-md text-slate-400 hover:text-rose-400 hover:bg-rose-500/20 transition"
+            className="p-1 rounded-md text-[#C7D2E0] hover:text-rose-300 hover:bg-rose-500/25 transition-all hover:-translate-y-0.5"
             title="Close"
           >
-            <X size={13} />
+            <X size={14} />
           </button>
         </div>
       </div>
 
-      {/* Window Body Container */}
-      <div className="min-h-0 min-w-0 flex-1 overflow-hidden select-text bg-[#0b0818] text-white">
-        <Body onTabBarPointerDown={startDrag} />
+      {/* ─── 4.1 CONTENT SURFACE AREA WITH FROSTED BACKDROP ─── */}
+      <div className="flex-1 overflow-hidden relative min-h-0 bg-[#0A1026]/60 backdrop-blur-md">
+        <Body />
       </div>
     </motion.div>
   );
