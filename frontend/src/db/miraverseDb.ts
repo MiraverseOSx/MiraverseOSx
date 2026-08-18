@@ -3,8 +3,8 @@
  * Interfaces, Portals, Career Systems & Missions Database
  */
 
-import careersData from '../data/Careers.json';
-import missionsData from '../data/Missions.json';
+import careersData from '../data/careers.json';
+import missionsData from '../data/missions.json';
 import { CareerTrackInfo, WorknetMission } from '../types';
 
 export interface AppMetadata {
