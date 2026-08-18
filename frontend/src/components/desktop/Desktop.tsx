@@ -17,7 +17,7 @@ import AppLauncherModal from './AppLauncherModal';
 import SanctuaryOverlay from './SanctuaryOverlay';
 import ToastViewport from '../widgets/ToastViewport';
 import logoIcon from '../../assets/images/logo_icon.png';
-import { ChevronLeft, ChevronRight, User, Globe } from 'lucide-react';
+import { ChevronLeft, ChevronRight, User, Globe, Sparkles } from 'lucide-react';
 import { useSystemStore } from '../../store/useSystemStore';
 import { SoundFX } from '../../utils/audio';
 
@@ -89,31 +89,32 @@ export default function Desktop() {
   return (
     <main
       ref={workspaceRef}
-      className="os-desktop relative flex h-screen w-screen flex-col overflow-hidden select-none font-sans text-slate-100 bg-[#080d1a]"
+      className="os-desktop relative flex h-screen w-screen flex-col overflow-hidden select-none font-sans text-white bg-[#0a0817]"
     >
-      {/* 1. PRISTINE BACKGROUND WITH PROMINENT LOGO & AMBIENT GLOW */}
+      {/* 1. PRISTINE BACKGROUND WITH PROMINENT LAVENDER & GOLD GLOWING EMBLEM */}
       <div className="pointer-events-none absolute inset-0 z-0 flex flex-col items-center justify-center">
-        {/* Soft Radial Ambient Aura */}
-        <div className="absolute h-[500px] w-[500px] rounded-full bg-indigo-600/10 blur-[120px]" />
+        {/* Soft Lavender & Gold Radial Ambient Aura */}
+        <div className="absolute h-[520px] w-[520px] rounded-full bg-[#7c3aed]/15 blur-[140px]" />
+        <div className="absolute h-[320px] w-[320px] rounded-full bg-[#f59e0b]/10 blur-[100px]" />
         
-        {/* Prominent Emblem Logo */}
-        <div className="relative flex flex-col items-center text-center opacity-80 select-none">
+        {/* Prominent Logo & Typographic Brand */}
+        <div className="relative flex flex-col items-center text-center opacity-85 select-none">
           <img
             src={logoIcon}
             alt="MIRAVERSE OS Emblem"
-            className="h-44 w-44 md:h-56 md:w-56 object-contain drop-shadow-[0_0_40px_rgba(99,102,241,0.25)] filter brightness-110"
+            className="h-44 w-44 md:h-56 md:w-56 object-contain drop-shadow-[0_0_45px_rgba(196,181,253,0.35)] filter brightness-110"
           />
-          <h1 className="mt-4 font-serif font-bold text-lg md:text-xl tracking-[0.25em] text-[#d6defa] uppercase">
+          <h1 className="mt-4 font-serif font-bold text-lg md:text-2xl tracking-[0.28em] text-[#fef9c3] uppercase drop-shadow-[0_2px_10px_rgba(0,0,0,0.5)]">
             MIRAVERSE OS x
           </h1>
-          <p className="mt-1 text-[10px] md:text-xs font-mono tracking-[0.3em] text-[#7888b8] uppercase">
+          <p className="mt-1 text-[10px] md:text-xs font-mono tracking-[0.35em] text-[#c4b5fd] uppercase">
             Celestial Operating System // Aureline
           </p>
         </div>
       </div>
 
-      {/* Ambient Particle Overlay */}
-      <div className="pointer-events-none absolute inset-0 z-0 opacity-20">
+      {/* Ambient Celestial Particle Overlay */}
+      <div className="pointer-events-none absolute inset-0 z-0 opacity-25">
         <SparklesCanvas />
       </div>
 
@@ -123,10 +124,10 @@ export default function Desktop() {
         {!areSidebarsVisible && (
           <button
             onClick={handleToggleSidebars}
-            className="absolute left-0 top-1/2 -translate-y-1/2 z-30 h-16 w-3 rounded-r-md bg-[#16203a]/60 hover:bg-sky-600/80 border-r border-y border-[#26355d] text-slate-400 hover:text-white transition flex items-center justify-center shadow-md group"
+            className="absolute left-0 top-1/2 -translate-y-1/2 z-30 h-16 w-3.5 rounded-r-lg bg-[#1f1740]/70 hover:bg-[#7c3aed] border-r border-y border-[#c4b5fd]/30 text-[#c4b5fd] hover:text-white transition flex items-center justify-center shadow-lg group"
             title="Reveal Identity Vitals (Click or Toggle)"
           >
-            <ChevronRight size={10} className="group-hover:translate-x-0.5 transition-transform" />
+            <ChevronRight size={12} className="group-hover:translate-x-0.5 transition-transform" />
           </button>
         )}
 
@@ -134,10 +135,10 @@ export default function Desktop() {
         {!areSidebarsVisible && (
           <button
             onClick={handleToggleSidebars}
-            className="absolute right-0 top-1/2 -translate-y-1/2 z-30 h-16 w-3 rounded-l-md bg-[#16203a]/60 hover:bg-sky-600/80 border-l border-y border-[#26355d] text-slate-400 hover:text-white transition flex items-center justify-center shadow-md group"
+            className="absolute right-0 top-1/2 -translate-y-1/2 z-30 h-16 w-3.5 rounded-l-lg bg-[#1f1740]/70 hover:bg-[#7c3aed] border-l border-y border-[#c4b5fd]/30 text-[#c4b5fd] hover:text-white transition flex items-center justify-center shadow-lg group"
             title="Reveal Progression Panel (Click or Toggle)"
           >
-            <ChevronLeft size={10} className="group-hover:-translate-x-0.5 transition-transform" />
+            <ChevronLeft size={12} className="group-hover:-translate-x-0.5 transition-transform" />
           </button>
         )}
 
@@ -149,7 +150,7 @@ export default function Desktop() {
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: -300 }}
               transition={{ type: 'spring', damping: 26, stiffness: 280 }}
-              className="absolute left-0 top-0 bottom-14 z-30 w-72 shadow-2xl border-r border-[#223158] bg-[#0c1222] overflow-y-auto"
+              className="absolute left-0 top-0 bottom-16 z-30 w-72 shadow-2xl border-r border-[#3e2c6e] bg-[#100c22] overflow-y-auto"
             >
               <IdentityVitals
                 onOpenCitizenRecord={() => openAppById('passport')}
@@ -167,7 +168,7 @@ export default function Desktop() {
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: 300 }}
               transition={{ type: 'spring', damping: 26, stiffness: 280 }}
-              className="absolute right-0 top-0 bottom-14 z-30 w-72 shadow-2xl border-l border-[#223158] bg-[#0c1222] overflow-y-auto"
+              className="absolute right-0 top-0 bottom-16 z-30 w-72 shadow-2xl border-l border-[#3e2c6e] bg-[#100c22] overflow-y-auto"
             >
               <ProgressionPanel />
             </motion.div>
@@ -192,7 +193,7 @@ export default function Desktop() {
 
       {/* Modals & Overlays */}
       {isPhoneOpen && (
-        <div className="fixed bottom-16 right-6 z-50 shadow-2xl">
+        <div className="fixed bottom-20 right-6 z-50 shadow-2xl">
           <PhoneWidget />
         </div>
       )}
@@ -205,7 +206,7 @@ export default function Desktop() {
         <SignalPlayerModal onClose={() => setIsSignalPlayerOpen(false)} />
       )}
 
-      {/* Refined App Launcher Modal */}
+      {/* Refined Lavender & Gold App Launcher Modal */}
       <AppLauncherModal
         isOpen={isLauncherOpen}
         onClose={() => setIsLauncherOpen(false)}

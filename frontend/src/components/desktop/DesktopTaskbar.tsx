@@ -30,7 +30,7 @@ export default function DesktopTaskbar({
   const timeSegments = ['Morning', 'Afternoon', 'Evening', 'Night'];
 
   const getAppMeta = (id: string) => {
-    return APPS_DIRECTORY.find((a) => a.id === id) || { label: id, icon: Grid, color: 'text-slate-300' };
+    return APPS_DIRECTORY.find((a) => a.id === id) || { label: id, icon: Grid, color: 'text-purple-300' };
   };
 
   const handleToggleSound = () => {
@@ -39,27 +39,27 @@ export default function DesktopTaskbar({
   };
 
   return (
-    <nav className="fixed bottom-3.5 left-1/2 -translate-x-1/2 z-40 flex items-center justify-between gap-3 h-11 px-3 bg-[#0a0f1df0] backdrop-blur-2xl border border-[#1e2a4a] rounded-xl shadow-[0_12px_40px_rgba(0,0,0,0.65)] select-none font-sans text-xs text-slate-100 max-w-[96vw]">
+    <nav className="fixed bottom-4 left-1/2 -translate-x-1/2 z-40 flex items-center justify-between gap-3 h-12 px-3.5 bg-[#120f24f0] backdrop-blur-2xl border border-[#c4b5fd]/25 rounded-2xl shadow-[0_16px_50px_rgba(0,0,0,0.7),0_0_20px_rgba(196,181,253,0.12)] select-none font-sans text-xs text-white max-w-[96vw]">
       
-      {/* 1. LEFT: SLENDER APP LAUNCHER BUTTON */}
+      {/* 1. LEFT: GILDED LAVENDER APP LAUNCHER BUTTON */}
       <div className="flex items-center gap-1.5">
         <button
           onClick={() => {
             if (soundEnabled) SoundFX.playSnap();
             onOpenLauncher();
           }}
-          className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-[#141d36] hover:bg-[#1c294c] border border-[#24335c] text-sky-300 font-mono text-xs font-semibold transition active:scale-95 group"
-          title="App Directory (Ctrl+Space)"
+          className="flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-[#7c3aed] via-[#9333ea] to-[#d97706] hover:from-[#6d28d9] hover:to-[#b45309] border border-[#fef08a]/40 text-[#fef9c3] font-mono text-xs font-bold transition shadow-[0_2px_12px_rgba(217,119,6,0.3)] active:scale-95 group"
+          title="Open Application Directory (Ctrl+Space)"
         >
-          <LayoutGrid size={14} className="text-sky-400 group-hover:rotate-45 transition-transform" />
-          <span className="tracking-wide">Apps</span>
+          <Sparkles size={14} className="text-[#fde047] group-hover:rotate-12 transition-transform" />
+          <span className="tracking-wider">Apps</span>
         </button>
       </div>
 
-      {/* 2. CENTER: RUNNING WINDOW ICONS WITH ACTIVE GLOW DOTS */}
-      <div className="flex items-center gap-1 px-2 border-l border-r border-[#16213a] min-h-[28px]">
+      {/* 2. CENTER: RUNNING WINDOW ICONS WITH PASTEL GLOW DOTS */}
+      <div className="flex items-center gap-1.5 px-2.5 border-l border-r border-[#3b2d64]/60 min-h-[30px]">
         {windows.length === 0 ? (
-          <span className="text-[10px] font-mono text-slate-500 px-2 italic">Workspace Idle</span>
+          <span className="text-[11px] font-mono text-[#a78bfa]/60 px-2 italic">Aureline Space Idle</span>
         ) : (
           windows.map((win) => {
             const meta = getAppMeta(win.id);
@@ -73,18 +73,18 @@ export default function DesktopTaskbar({
                   if (soundEnabled) SoundFX.playSnap();
                   toggleApp(win);
                 }}
-                className={`relative flex flex-col items-center justify-center h-7 w-8 rounded-lg transition group ${
+                className={`relative flex flex-col items-center justify-center h-8 w-9 rounded-xl transition group ${
                   isFocused
-                    ? 'bg-[#16213e] text-sky-300 border border-[#2b3a67] shadow-xs'
-                    : 'text-slate-400 hover:text-slate-200 hover:bg-[#12192e]'
+                    ? 'bg-[#261e47] text-[#fef08a] border border-[#c4b5fd]/50 shadow-[0_0_12px_rgba(196,181,253,0.25)]'
+                    : 'text-[#c4b5fd]/70 hover:text-white hover:bg-[#1e1738]'
                 }`}
                 title={`${meta.label} (${isFocused ? 'Active' : 'Minimized'})`}
               >
-                <Icon size={15} className={isFocused ? meta.color : 'text-slate-400'} />
-                {/* Active Indicator Dot */}
+                <Icon size={16} className={isFocused ? 'text-[#fef08a]' : 'text-[#c4b5fd]'} />
+                {/* Glowing Lavender/Gold Status Dot */}
                 <span
                   className={`absolute bottom-0.5 h-1 w-1 rounded-full ${
-                    isFocused ? 'bg-sky-400 shadow-[0_0_6px_#38bdf8]' : 'bg-slate-500'
+                    isFocused ? 'bg-[#fde047] shadow-[0_0_8px_#fde047]' : 'bg-[#7c3aed]'
                   }`}
                 />
               </button>
@@ -93,7 +93,7 @@ export default function DesktopTaskbar({
         )}
       </div>
 
-      {/* 3. RIGHT: REFINED SYSTEM TRAY */}
+      {/* 3. RIGHT: PASTEL GOLD & LAVENDER SYSTEM TRAY */}
       <div className="flex items-center gap-1.5">
         {/* Subtle Sidebar Toggle */}
         <button
@@ -101,14 +101,14 @@ export default function DesktopTaskbar({
             if (soundEnabled) SoundFX.playSnap();
             onToggleSidebars();
           }}
-          className={`p-1.5 rounded-lg border transition ${
+          className={`p-1.5 rounded-xl border transition ${
             areSidebarsVisible
-              ? 'bg-[#182342] text-amber-300 border-amber-500/40 shadow-xs'
-              : 'bg-[#10172c] hover:bg-[#16213e] text-slate-400 hover:text-slate-200 border-[#1c2744]'
+              ? 'bg-[#2c2254] text-[#fef08a] border-[#fde047]/50 shadow-xs'
+              : 'bg-[#181330] hover:bg-[#251d45] text-[#c4b5fd] hover:text-white border-[#382b60]'
           }`}
           title={areSidebarsVisible ? 'Hide Side Panels' : 'Show Side Panels (Vitals & Progression)'}
         >
-          <Sidebar size={14} className={areSidebarsVisible ? 'text-amber-400' : 'text-slate-400'} />
+          <Sidebar size={14} className={areSidebarsVisible ? 'text-[#fde047]' : 'text-[#c4b5fd]'} />
         </button>
 
         {/* Smartphone Toggle */}
@@ -117,8 +117,8 @@ export default function DesktopTaskbar({
             if (soundEnabled) SoundFX.playSnap();
             onTogglePhone();
           }}
-          className="p-1.5 rounded-lg bg-[#10172c] hover:bg-[#16213e] text-slate-400 hover:text-amber-400 border border-[#1c2744] transition"
-          title="Toggle Smartphone"
+          className="p-1.5 rounded-xl bg-[#181330] hover:bg-[#251d45] text-[#c4b5fd] hover:text-[#fde047] border border-[#382b60] transition"
+          title="Toggle Smartphone Simulator"
         >
           <Smartphone size={14} />
         </button>
@@ -126,25 +126,25 @@ export default function DesktopTaskbar({
         {/* Sound Toggle */}
         <button
           onClick={handleToggleSound}
-          className="p-1.5 rounded-lg bg-[#10172c] hover:bg-[#16213e] text-slate-400 hover:text-sky-400 border border-[#1c2744] transition"
-          title={soundEnabled ? 'Mute' : 'Unmute'}
+          className="p-1.5 rounded-xl bg-[#181330] hover:bg-[#251d45] text-[#c4b5fd] hover:text-white border border-[#382b60] transition"
+          title={soundEnabled ? 'Mute Audio' : 'Unmute Audio'}
         >
-          {soundEnabled ? <Volume2 size={14} /> : <VolumeX size={14} className="text-rose-400" />}
+          {soundEnabled ? <Volume2 size={14} className="text-[#a7f3d0]" /> : <VolumeX size={14} className="text-[#fda4af]" />}
         </button>
 
         {/* MAI Voice Assistant Dock */}
         <MAIDock />
 
-        {/* Live Sys-Cycle Clock */}
-        <div className="hidden sm:flex items-center gap-1.5 px-2 py-1 rounded-lg bg-[#070b16] border border-[#16213a] text-[10px] font-mono text-slate-400">
-          <Clock size={11} className="text-sky-400" />
-          <span>C{cycle} • {timeSegments[timeSegmentIndex]}</span>
+        {/* Live Sys-Cycle Clock with Gold Accents */}
+        <div className="hidden sm:flex items-center gap-1.5 px-3 py-1 rounded-xl bg-[#0d0a1c] border border-[#382b60] text-[11px] font-mono text-[#f3e8ff]">
+          <Clock size={11} className="text-[#fde047]" />
+          <span>C{cycle} • <strong className="text-[#fef08a]">{timeSegments[timeSegmentIndex]}</strong></span>
         </div>
 
         {/* Power / Logout */}
         <button
           onClick={logoutUser}
-          className="p-1.5 rounded-lg bg-rose-950/30 hover:bg-rose-900/50 text-rose-400 border border-rose-900/40 transition"
+          className="p-1.5 rounded-xl bg-[#351229]/40 hover:bg-[#4c1638]/70 text-[#f472b6] hover:text-[#fb7185] border border-[#831843]/50 transition"
           title="Logout"
         >
           <Power size={13} />

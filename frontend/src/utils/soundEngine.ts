@@ -51,7 +51,7 @@ class SoundEngine {
     try {
       const audio = new Audio(`/sounds/${filename}`);
       audio.volume = volume;
-      audio.play().catch(() => {});
+      audio.play().catch(() => { });
     } catch (e) {
       // Fallback silently if audio fails
     }
@@ -188,6 +188,35 @@ class SoundEngine {
       osc.start(now + i * 0.06);
       osc.stop(now + i * 0.06 + 0.25);
     });
+  }
+
+  // Soft UI snap / focus switch
+  playTick(): void {
+    if (this.isMuted) return;
+    this.ensureContext();
+    if (!this.ctx || !this.masterGain) return;
+
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(780, now);
+    osc.frequency.exponentialRampToValueAtTime(320, now + 0.035);
+
+    gain.gain.setValueAtTime(0.06, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.035);
+
+    osc.connect(gain);
+    gain.connect(this.masterGain);
+
+    osc.start(now);
+    osc.stop(now + 0.035);
+  }
+
+  // UI chime alias for window-open / system alert cadence
+  playChime(): void {
+    this.playWindowOpen();
   }
 }
 

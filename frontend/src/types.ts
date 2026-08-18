@@ -103,9 +103,63 @@ export interface NoticeBoardQuest {
   rewards: {
     xp: number;
     credits: number;
+    bits?: number;
     item?: string;
   };
   status: 'Available' | 'In Progress' | 'Completed' | 'Failed';
+}
+
+/** WORKNET & Career Systems (§10) */
+export type CareerId = 
+  | 'archivist' 
+  | 'engineer' 
+  | 'diplomat' 
+  | 'enforcer' 
+  | 'artist' 
+  | 'medical' 
+  | 'warden' 
+  | 'finance' 
+  | 'questnotice';
+
+export type MissionType = 
+  | 'Work Shifts' 
+  | 'Special Assignments' 
+  | 'Career Development' 
+  | 'Field Operations' 
+  | 'QUESTNOTICE';
+
+export interface CareerTrackInfo {
+  id: CareerId;
+  name: string;
+  category: string;
+  primaryWorkplaces: string[];
+  duties: string[];
+  requirements: string;
+  primaryAttribute: string;
+  gameplayConnections: string;
+  baseSalaryCredits: number;
+  tierTitles: string[];
+}
+
+export interface WorknetMission {
+  id: string;
+  type: MissionType;
+  track: string;
+  department: string;
+  title: string;
+  location: string;
+  workplace: string;
+  severity: 'Routine' | 'Elevated' | 'Critical';
+  description: string;
+  targetSubject?: string;
+  threatOrSymptom?: string;
+  requiredAction: string;
+  rewardCredits: number;
+  rewardBits: number;
+  rewardXP: number;
+  primaryAttribute: string;
+  permittedTools: string[];
+  completed?: boolean;
 }
 
 /** MAI Agent Orchestrator Payloads */
@@ -120,3 +174,4 @@ export interface AgentQueryResponse {
   source: string;
   toolResult?: Record<string, unknown> | null;
 }
+

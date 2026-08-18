@@ -1,1 +1,267 @@
-[]
+[
+  {
+    "id": "archivist",
+    "name": "Archivist / Researcher",
+    "category": "Scholastic & Intelligence",
+    "primaryWorkplaces": [
+      "Aureline City Library",
+      "Meridion Public Archives",
+      "Royal Historic Society"
+    ],
+    "duties": [
+      "Shelving and cataloging physical and digital records",
+      "Public-record inquiries and lineage genealogy searches",
+      "Restoration of degraded data drives and Purge-era manuscripts",
+      "Classified dynastic archive requests and Council file indexing",
+      "Research support for AETHERCORE and PRISM lore discovery"
+    ],
+    "requirements": "Library access is open early. Public Archives require basic research authorization. Royal Historic Society work requires trust, credentials, or story clearance.",
+    "primaryAttribute": "Intellect",
+    "gameplayConnections": "Builds Intellect, unlocks archive quests, supports PRISM lore discovery, and connects to public records, royal records, and AETHERCORE research.",
+    "baseSalaryCredits": 180,
+    "tierTitles": [
+      "Junior Indexer",
+      "Archive Cataloger",
+      "Senior Research Associate",
+      "Restricted Codex Curator",
+      "Royal Archivist",
+      "Grand Master of Records"
+    ]
+  },
+  {
+    "id": "engineer",
+    "name": "Systems Engineer",
+    "category": "Technical & Infrastructure",
+    "primaryWorkplaces": [
+      "Tech Labs",
+      "Institutional Terminals",
+      "Secure WORKNET Stations",
+      "Contractor Posts"
+    ],
+    "duties": [
+      "Debugging kernel threads and circuit diagnostics",
+      "Interface repair and terminal hardware maintenance",
+      "Security tool design and system optimization",
+      "System audits and anomaly troubleshooting",
+      "PRISM patch integration and isolation"
+    ],
+    "requirements": "Requires technical skill, task certification, or workplace permission depending on assignment sensitivity.",
+    "primaryAttribute": "Intellect & Creativity",
+    "gameplayConnections": "Builds Intellect and Creativity, supports interface customization, hidden data routes, and systems-based quests.",
+    "baseSalaryCredits": 220,
+    "tierTitles": [
+      "Terminal Technician",
+      "Hardware Integrator",
+      "Systems Architect",
+      "Lead Cyber Engineer",
+      "Infrastructure Director",
+      "Chief Systems Synthesizer"
+    ]
+  },
+  {
+    "id": "diplomat",
+    "name": "Council Diplomat",
+    "category": "Governance & Diplomacy",
+    "primaryWorkplaces": [
+      "Civic Offices",
+      "Council-Adjacent Departments",
+      "Diplomatic Venues",
+      "Public Hearings"
+    ],
+    "duties": [
+      "Briefing preparation for regional ambassadors",
+      "Citizen mediation and interdepartmental communications",
+      "Formal diplomatic correspondence and treaty archiving",
+      "Meeting support and public hearing transcription",
+      "Cross-realm policy research and protocol harmonization"
+    ],
+    "requirements": "Requires communication skill, reputation for reliability, and access to civic work postings or official internships.",
+    "primaryAttribute": "Influence & Empathy",
+    "gameplayConnections": "Builds Influence and Empathy, opens political quests, civic reputation events, and negotiation-based outcomes.",
+    "baseSalaryCredits": 250,
+    "tierTitles": [
+      "Civic Intern",
+      "Diplomatic Attaché",
+      "Council Mediator",
+      "Senior Envoy",
+      "High Commissioner",
+      "Plenipotentiary Ambassador"
+    ]
+  },
+  {
+    "id": "enforcer",
+    "name": "Enforcer / Guardian",
+    "category": "Security & Defense",
+    "primaryWorkplaces": [
+      "Security Offices",
+      "City Patrol Posts",
+      "Training Grounds",
+      "Emergency Response Stations"
+    ],
+    "duties": [
+      "Sector patrol support and checkpoint screening",
+      "Hazard response and perimeter containment assistance",
+      "VIP and asset transport escort duty",
+      "Emergency drill execution and public safety enforcement",
+      "Rapid threat neutralization during systemic breaches"
+    ],
+    "requirements": "Requires physical readiness, safety certification, and assignment approval for higher-risk duties.",
+    "primaryAttribute": "Resilience",
+    "gameplayConnections": "Builds Resilience, supports conflict encounters, emergency-response quests, and sector safety events.",
+    "baseSalaryCredits": 240,
+    "tierTitles": [
+      "Patrol Trainee",
+      "District Guardian",
+      "Tactical Enforcer",
+      "Strike Unit Specialist",
+      "Defense Commander",
+      "Warden of the Shield"
+    ]
+  },
+  {
+    "id": "artist",
+    "name": "Artist / Performer",
+    "category": "Culture & Media",
+    "primaryWorkplaces": [
+      "The Velvet",
+      "Public Stages",
+      "Media Venues",
+      "Street Performance Spaces",
+      "Commissioned Events"
+    ],
+    "duties": [
+      "Stage and live sonic performances",
+      "Commissioned visual art and holographic installations",
+      "Music gigs, soundscapes, and fashion styling",
+      "Event hosting and promotional media appearances",
+      "Cultural storytelling and Mai.space broadcast campaigns"
+    ],
+    "requirements": "Open to player participation through auditions, public postings, commissions, or social opportunities.",
+    "primaryAttribute": "Creativity & Influence",
+    "gameplayConnections": "Builds Creativity and Influence, generates CREDITS, unlocks social events, and affects public reputation.",
+    "baseSalaryCredits": 200,
+    "tierTitles": [
+      "Street Busker",
+      "Venue Performer",
+      "Resident Artist",
+      "Celebrated Maestro",
+      "Cultural Luminary",
+      "Paragon of the Arts"
+    ]
+  },
+  {
+    "id": "medical",
+    "name": "Healer / Medical Support",
+    "category": "Healthcare & Wellness",
+    "primaryWorkplaces": [
+      "Faith Medical Group Clinics",
+      "Wellness Centers",
+      "Emergency Care Stations"
+    ],
+    "duties": [
+      "Patient intake and biometric baseline calibration",
+      "Wellness diagnostics and clinical treatment support",
+      "Health record maintenance and restorative supply prep",
+      "Veil exposure monitoring and bio-aura stabilization",
+      "Emotional counseling and psychological resonance care"
+    ],
+    "requirements": "Requires clinic access, wellness training, and permission for patient-facing or sensitive medical tasks.",
+    "primaryAttribute": "Empathy",
+    "gameplayConnections": "Builds Empathy, connects to VITALS, supports healing quests, and improves wellness-related outcomes.",
+    "baseSalaryCredits": 210,
+    "tierTitles": [
+      "Clinical Aide",
+      "Triage Specialist",
+      "Bio-Aura Practitioner",
+      "Senior Attending Healer",
+      "Chief Medical Director",
+      "Grand Sanctum Physician"
+    ]
+  },
+  {
+    "id": "warden",
+    "name": "Ecological Warden",
+    "category": "Ecosystem & Environment",
+    "primaryWorkplaces": [
+      "Gardens",
+      "Arcadia Sites",
+      "Environmental Offices",
+      "Field Stations"
+    ],
+    "duties": [
+      "Plant and botanical care in climate-controlled domes",
+      "Ecological surveys and soil contamination audits",
+      "Habitat restoration work and irrigation maintenance",
+      "Wildlife telemetry monitoring and flora sampling",
+      "Field environmental health reporting and anomalous bio-scans"
+    ],
+    "requirements": "Requires access to environmental sites and practical field readiness for higher-risk zones.",
+    "primaryAttribute": "Empathy & Resilience",
+    "gameplayConnections": "Builds Empathy and Resilience, supports nature quests, resource gathering, and environmental world-state changes.",
+    "baseSalaryCredits": 190,
+    "tierTitles": [
+      "Botanical Assistant",
+      "Reserve Ranger",
+      "Ecological Conservator",
+      "Senior Habitat Warden",
+      "Chief Biome Overseer",
+      "Guardian of Arcadia"
+    ]
+  },
+  {
+    "id": "finance",
+    "name": "Finance Clerk / Banking Support",
+    "category": "Finance & Commerce",
+    "primaryWorkplaces": [
+      "Oryn Department of Finance",
+      "Banking Counters",
+      "Treasury Portals"
+    ],
+    "duties": [
+      "Citizen bank account support and identity verification",
+      "Salary direct deposit processing and ledger balancing",
+      "Rent payment debit processing and housing subsidies",
+      "Municipal tax records and scholarship disbursements",
+      "Commercial business permits and fraud audit investigations"
+    ],
+    "requirements": "Requires clerical authorization, finance-system access, and reliability checks for sensitive records.",
+    "primaryAttribute": "Intellect & Influence",
+    "gameplayConnections": "Builds Intellect and Influence, connects to CREDITS, rent, taxes, permits, scholarships, and economy quests.",
+    "baseSalaryCredits": 230,
+    "tierTitles": [
+      "Ledger Clerk",
+      "Accounts Auditor",
+      "Treasury Specialist",
+      "Senior Fiscal Analyst",
+      "Chief Comptroller",
+      "Master of the Treasury"
+    ]
+  },
+  {
+    "id": "questnotice",
+    "name": "QUESTNOTICE Odd Jobs",
+    "category": "Civic & Gig Economy",
+    "primaryWorkplaces": [
+      "Questnotice Postings Across Aureline & Outer Sectors"
+    ],
+    "duties": [
+      "Errands and express parcel deliveries across districts",
+      "Lost-item searches and missing pet traces",
+      "Municipal sanitation and debris cleanup tasks",
+      "Public library assistance and local shop support",
+      "Low-risk citizen favors and community errands"
+    ],
+    "requirements": "Available broadly from early play unless a posting lists a specific location, time, skill, or access requirement.",
+    "primaryAttribute": "Versatile XP",
+    "gameplayConnections": "Provides flexible income, skill practice, local reputation, exploration prompts, and low-pressure side content.",
+    "baseSalaryCredits": 100,
+    "tierTitles": [
+      "Neighborhood Helper",
+      "Reliable Courier",
+      "District Problem-Solver",
+      "Civic Handyperson",
+      "Master Expediter",
+      "Aureline Fixer"
+    ]
+  }
+]

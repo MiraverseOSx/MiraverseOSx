@@ -34,7 +34,9 @@ export default function HousingApp() {
 
     const player = useOSStore((s) => s.gameplay.player);
     const credits = player?.credits || 0;
+    const bits = player?.bits || 0;
     const addCredits = useOSStore((s) => s.addCredits);
+    const addBits = useOSStore((s) => s.addBits);
     const addXP = useOSStore((s) => s.addXP);
 
     const handleRest = () => {
@@ -58,29 +60,41 @@ export default function HousingApp() {
         setTimeout(() => setRestMessage(null), 3000);
     };
 
-    const handleBuyUpgrade = (u: RoomUpgrade) => {
-        if (credits < u.cost) {
-            setRestMessage(`⚠️ Insufficient credits! You need ${u.cost} credits.`);
-            setTimeout(() => setRestMessage(null), 3000);
-            return;
+    const handleBuyUpgrade = (upgradeId: string, cost: number, bitCost: number = 0) => {
+        if (bitCost > 0) {
+            if (bits < bitCost) {
+                setRestMessage(`⚠️ Insufficient BITS! Requires ${bitCost} ◈ BITS.`);
+                setTimeout(() => setRestMessage(null), 3000);
+                return;
+            }
+            addBits(-bitCost);
+        } else {
+            if (credits < cost) {
+                setRestMessage(`⚠️ Insufficient CREDITS! Requires ${cost} ₢ Credits.`);
+                setTimeout(() => setRestMessage(null), 3000);
+                return;
+            }
+            addCredits(-cost);
         }
-        addCredits(-u.cost);
-        setUpgrades((prev) => prev.map((item) => (item.id === u.id ? { ...item, unlocked: true } : item)));
-        setRestMessage(`✨ Installed upgrade: ${u.name}!`);
-        setTimeout(() => setRestMessage(null), 3000);
+
+        setUpgrades((prev) =>
+            prev.map((u) => (u.id === upgradeId ? { ...u, unlocked: true } : u))
+        );
+        setRestMessage(`✨ Upgrade unlocked! Your room comfort and social attributes increased.`);
+        setTimeout(() => setRestMessage(null), 3500);
     };
 
     return (
-        <div className="flex flex-col h-full bg-[#f4f6fa] text-[#1c2438] font-sans select-none overflow-hidden">
-            {/* Header Toolbar */}
-            <div className="flex items-center justify-between px-6 py-4 bg-[#ffffff] border-b border-[#d8dce8] shadow-xs">
+        <div className="flex flex-col h-full bg-[#f4f6fa] text-slate-800 font-sans select-none overflow-hidden">
+            {/* 1. Header Bar */}
+            <div className="flex items-center justify-between px-6 py-4 bg-[#ffffff] border-b border-[#e2e6f0] shadow-xs">
                 <div className="flex items-center gap-3">
-                    <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-indigo-50 border border-indigo-200 text-indigo-600">
-                        <Home size={18} />
+                    <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-indigo-50 border border-indigo-200 text-indigo-600">
+                        <Home size={20} />
                     </div>
                     <div>
                         <h2 className="text-base font-bold tracking-wider text-[#1e2640] uppercase font-mono">
-                            AURELINE RESIDENTIAL QUARTERS // DORM 4B
+                            HOMECRAFT (§5.3) // RESIDENTIAL SPACE GRID EDITOR
                         </h2>
                         <div className="flex items-center gap-3 text-xs text-slate-500 font-mono mt-0.5">
                             <span>Assigned House: <strong className="text-indigo-600 font-bold">Vector House</strong></span>
@@ -88,6 +102,8 @@ export default function HousingApp() {
                             <span>Stamina: <strong className="text-emerald-600">{stamina} / 100</strong></span>
                             <span>•</span>
                             <span>Credits: <strong className="text-amber-600">{credits} ₢</strong></span>
+                            <span>•</span>
+                            <span>Bits: <strong className="text-cyan-600">{bits} ◈</strong></span>
                         </div>
                     </div>
                 </div>
@@ -260,8 +276,12 @@ export default function HousingApp() {
                 {activeTab === 'upgrades' && (
                     <div className="space-y-4">
                         <div className="flex justify-between items-center mb-2">
-                            <h3 className="font-bold text-sm text-[#1e2640] font-mono uppercase">Dormitory Upgrades & Expansions</h3>
-                            <span className="text-xs text-slate-500 font-mono">Available Balance: {credits} ₢</span>
+                            <h3 className="font-bold text-sm text-[#1e2640] font-mono uppercase">HOMECRAFT Upgrades & Expansions</h3>
+                            <div className="flex items-center gap-3 text-xs font-mono">
+                                <span>Balance: <strong className="text-amber-600 font-bold">{credits} ₢</strong></span>
+                                <span>•</span>
+                                <span><strong className="text-cyan-600 font-bold">{bits} ◈ BITS</strong></span>
+                            </div>
                         </div>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             {upgrades.map((u) => (
@@ -286,7 +306,7 @@ export default function HousingApp() {
                                             </span>
                                         ) : (
                                             <button
-                                                onClick={() => handleBuyUpgrade(u)}
+                                                onClick={() => handleBuyUpgrade(u.id, u.cost)}
                                                 className="px-3 py-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white font-mono text-xs font-bold transition shadow-xs"
                                             >
                                                 Purchase Upgrade

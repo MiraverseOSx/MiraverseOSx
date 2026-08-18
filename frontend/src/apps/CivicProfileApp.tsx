@@ -548,8 +548,12 @@ export default function CivicProfileApp() {
                           <span className="font-bold text-purple-300">{player?.lineageClass || 'Unassigned Lineage'}</span>
                         </div>
                         <div className="flex justify-between border-b border-white/10 pb-1.5">
-                          <span className="text-slate-400">Municipal Credits:</span>
-                          <span className="font-bold text-emerald-400 font-mono">₡ {player?.credits || 100}</span>
+                          <span className="text-slate-400">Primary Economy:</span>
+                          <span className="font-bold text-amber-400 font-mono">{player?.credits || 500} ₢ CREDITS</span>
+                        </div>
+                        <div className="flex justify-between border-b border-white/10 pb-1.5">
+                          <span className="text-slate-400">Secondary Rare:</span>
+                          <span className="font-bold text-cyan-400 font-mono">{player?.bits || 25} ◈ BITS</span>
                         </div>
                       </div>
 
@@ -569,9 +573,13 @@ export default function CivicProfileApp() {
               <div className="rounded-3xl border border-slate-200 bg-white p-5 shadow-xs space-y-3">
                 <div className="flex justify-between items-center border-b border-slate-100 pb-2">
                   <h3 className="text-xs font-bold text-[#1d2650] uppercase tracking-wider flex items-center gap-2">
-                    <Package size={15} className="text-[#5f6ab0]" /> Inventory Backpack ({(player?.rewardItems || []).length} Items)
+                    <Package size={15} className="text-[#5f6ab0]" /> VAULT / Inventory Backpack ({(player?.rewardItems || []).length} Items)
                   </h3>
-                  <span className="font-mono text-xs font-bold text-emerald-700">₡ {player?.credits || 0} Credits</span>
+                  <div className="flex items-center gap-3 font-mono text-xs">
+                    <span className="font-bold text-amber-600">{player?.credits || 0} ₢ Credits</span>
+                    <span>•</span>
+                    <span className="font-bold text-cyan-600">{player?.bits || 0} ◈ Bits</span>
+                  </div>
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">

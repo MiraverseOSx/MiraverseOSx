@@ -6,7 +6,8 @@ import SearchResults from './SearchResults';
 import AureSuiteApp from './AureSuiteApp';
 import {
     FaithMedPortal, DGAPortal, CyacademyPortal, OrynvellRecordsPortal,
-    BankPortal, ShippingPortal, DarkWebOnionPortal, MaiSpacePortal
+    BankPortal, ShippingPortal, DarkWebOnionPortal, MaiSpacePortal,
+    CivinetPortal, QuestNoticePortal, RoyalHistoryPortal
 } from './Portals';
 import { PORTALS } from './constants';
 import { useOSStore } from '../../store/useOSStore';
@@ -33,6 +34,21 @@ function ContentFrame({ url, openTab, navigateTab }) {
         return <SearchHome openTab={openTab} navigateTab={navigateTab} />;
     }
 
+    // CIVINET Municipal Services Hub
+    if (domain === 'civinet.mer' || domain === 'civinet.aure' || domain === 'civinet') {
+        return <CivinetPortal />;
+    }
+
+    // QUESTNOTICE Civic Notice Tracker
+    if (domain === 'questnotice.mer' || domain === 'questnotice.aure' || domain === 'questnotice') {
+        return <QuestNoticePortal />;
+    }
+
+    // Royal Historic Society
+    if (domain === 'royalhistory.mer' || domain === 'royalhistory.aure' || domain === 'royalhistory') {
+        return <RoyalHistoryPortal />;
+    }
+
     // Faith Medical Intranet
     if (domain === 'faithmed.aure') {
         return <FaithMedPortal />;
@@ -53,8 +69,8 @@ function ContentFrame({ url, openTab, navigateTab }) {
         return <OrynvellRecordsPortal />;
     }
 
-    // First Orynvell Bank
-    if (domain === 'bank.aure') {
+    // First Orynvell Bank & Treasury
+    if (domain === 'bank.aure' || domain === 'finance.oryn.gov' || domain === 'finance.mer') {
         return <BankPortal />;
     }
 

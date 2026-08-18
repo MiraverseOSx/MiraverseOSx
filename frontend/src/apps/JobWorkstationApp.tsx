@@ -2,484 +2,445 @@ import React, { useState, useEffect } from 'react';
 import { useOSStore } from '../store/useOSStore';
 import { useSystemStore } from '../store/useSystemStore';
 import { SoundFX } from '../utils/audio';
+import { miraverseDb, DGA_DIVISIONS, ORGANIZATIONS } from '../db/miraverseDb';
+import { WorknetMission, MissionType } from '../types';
 import {
   Briefcase, Activity, ShieldAlert, Search, Radio, CheckCircle2, Clock, 
   Send, Users, MapPin, Truck, AlertTriangle, Play, Pause, RefreshCw, 
-  Award, FileText, ChevronRight, DollarSign, Zap, Stethoscope, Compass, Lock
+  Award, FileText, ChevronRight, DollarSign, Zap, Stethoscope, Compass, Lock,
+  Building, BookOpen, Cpu, Sparkles, Key, Landmark, Shield, Terminal, ArrowRight,
+  Fingerprint, Layers, Database
 } from 'lucide-react';
 
-export type CareerTrack = 'medical' | 'dga' | 'gov';
+export type WorkplaceStationId = 
+  | 'dga'
+  | 'faithmed'
+  | 'finance'
+  | 'archives'
+  | 'diplomat'
+  | 'engineer'
+  | 'warden'
+  | 'artist'
+  | 'questnotice';
 
-export interface JobShiftEvent {
-  id: string;
-  track: CareerTrack;
-  title: string;
-  location: string;
-  severity: 'Routine' | 'Elevated' | 'Critical';
-  summary: string;
-  patientOrSubject?: string;
-  symptomsOrThreat?: string;
-  requiredAction: string;
-  completed: boolean;
-  rewardXP: number;
-  salaryCredits: number;
-}
-
-const INITIAL_SHIFT_EVENTS: JobShiftEvent[] = [
-  // Faith Medical Group Shift
-  {
-    id: 'med-01',
-    track: 'medical',
-    title: 'Triage Patient: Neural Desynchronization',
-    location: 'Faith Medical Campus - Ward 04',
-    severity: 'Elevated',
-    summary: 'A Cyacademy student was admitted following high-stress spell synthesis with severe Veilwilt symptoms.',
-    patientOrSubject: 'Student S. Mercer (Vertex House)',
-    symptomsOrThreat: 'Aura Greying, 39.1°C Thermal Flux, Memory Fragmentation',
-    requiredAction: 'Apply warm-essence stabilizing compress and synchronize telemetry.',
-    completed: false,
-    rewardXP: 140,
-    salaryCredits: 200,
-  },
-  {
-    id: 'med-02',
-    track: 'medical',
-    title: 'Emergency Frostlung Thermal Thaw',
-    location: 'Faith Medical Campus - Trauma Lab',
-    severity: 'Critical',
-    summary: 'Citizen exposed to cryo-leak in Old Factory Ward sub-levels requires immediate bronchial thaw.',
-    patientOrSubject: 'Technician K. Vance',
-    symptomsOrThreat: 'Crystallized breath, -14.2% Aura integrity',
-    requiredAction: 'Administer Kaji Ignis-essence infusion.',
-    completed: false,
-    rewardXP: 220,
-    salaryCredits: 350,
-  },
-
-  // DGA Security & Dispatch Shift
-  {
-    id: 'dga-01',
-    track: 'dga',
-    title: 'Containment Callout: Sub-Aureline Data Bleed',
-    location: 'Sub-Aureline Maintenance Tunnel 09',
-    severity: 'Critical',
-    summary: 'PRISM corruption thread PID 512 is leaking raw memory into physical subway signals.',
-    patientOrSubject: 'PRISM Incursion Vector',
-    symptomsOrThreat: 'Distorted reality physics, power flicker, signal hijack',
-    requiredAction: 'Deploy Hazmat-01 & Patrol-12 squads with Seal Lock protocols.',
-    completed: false,
-    rewardXP: 280,
-    salaryCredits: 400,
-  },
-  {
-    id: 'dga-02',
-    track: 'dga',
-    title: 'District Surveillance Sweep: Glassline Towers',
-    location: 'Glassline District Tram Hub',
-    severity: 'Routine',
-    summary: 'Inspect mesh network relays for unauthorized packet tapping by underground Netrunners.',
-    patientOrSubject: 'Public Relay #GL-44',
-    symptomsOrThreat: 'Encrypted packet rerouting detected',
-    requiredAction: 'Re-flash firmware with DGA Directive 14-B compliance keys.',
-    completed: false,
-    rewardXP: 100,
-    salaryCredits: 150,
-  },
-
-  // Governmental Civic Investigation Shift
-  {
-    id: 'gov-01',
-    track: 'gov',
-    title: 'Civic File Audit: Lineage Records Verification',
-    location: 'Aureline Civic Identity Bureau',
-    severity: 'Routine',
-    summary: 'Cross-examine incoming resident registration packets against Purge-era census databases.',
-    patientOrSubject: 'Provisional Registrations Batch #88',
-    symptomsOrThreat: 'Unresolved Lightborn genealogical markers',
-    requiredAction: 'Certify provisional status and issue citizen ID barcode.',
-    completed: false,
-    rewardXP: 120,
-    salaryCredits: 180,
-  },
-  {
-    id: 'gov-02',
-    track: 'gov',
-    title: 'Diplomatic Briefing: Meridion Delegation Arrival',
-    location: 'Municipal Chamber Room 02',
-    severity: 'Elevated',
-    summary: 'Coordinate seasonal transit clearances and security escorts for Fross and Lumia ambassadors.',
-    patientOrSubject: 'Ambassador Holly (Fross) & Lucia Envoy',
-    symptomsOrThreat: 'High political friction over elemental module allocations',
-    requiredAction: 'Draft mutual protocol agreement and archive sign-offs.',
-    completed: false,
-    rewardXP: 200,
-    salaryCredits: 300,
-  },
+const STATIONS: { id: WorkplaceStationId; name: string; org: string; icon: any; color: string; bg: string; border: string; desc: string }[] = [
+  { id: 'dga', name: 'DGA Tactical Console', org: 'Dept. of Global Affairs', icon: Shield, color: 'text-purple-400', bg: 'bg-purple-950/60', border: 'border-purple-600/40', desc: 'Shield defense, Eyes intelligence & Blackout glitch containment' },
+  { id: 'faithmed', name: 'Faith Medical Triage Desk', org: 'Faith Medical Group', icon: Stethoscope, color: 'text-emerald-400', bg: 'bg-emerald-950/60', border: 'border-emerald-600/40', desc: 'Clinical intake, Veil exposure stabilization & VITALS diagnostics' },
+  { id: 'finance', name: 'Oryn Treasury Terminal', org: 'Oryn Dept. of Finance', icon: Landmark, color: 'text-amber-400', bg: 'bg-amber-950/60', border: 'border-amber-600/40', desc: 'Ledger audits, salary disbursements, tax records & scholarships' },
+  { id: 'archives', name: 'Archival Research Node', org: 'City Library & Royal Society', icon: BookOpen, color: 'text-cyan-400', bg: 'bg-cyan-950/60', border: 'border-cyan-600/40', desc: 'Purge manuscripts, sealed Council files & AETHERCORE codices' },
+  { id: 'engineer', name: 'Systems Engineering Deck', org: 'Tech Labs & Infrastructure', icon: Cpu, color: 'text-blue-400', bg: 'bg-blue-950/60', border: 'border-blue-600/40', desc: 'Terminal repairs, circuit soldering, PRISM isolation & tool design' },
+  { id: 'diplomat', name: 'Council Chambers Desk', org: 'Civic Administration & Council', icon: Building, color: 'text-indigo-400', bg: 'bg-indigo-950/60', border: 'border-indigo-600/40', desc: 'Citizen mediation, regional treaties, dispatches & public hearings' },
+  { id: 'warden', name: 'Arcadia Biosphere Post', org: 'Ecological Reserve', icon: Compass, color: 'text-teal-400', bg: 'bg-teal-950/60', border: 'border-teal-600/40', desc: 'Botanical dome assays, flora sampling & environmental health' },
+  { id: 'artist', name: 'The Velvet Cultural Studio', org: 'Media & Performance Guild', icon: Sparkles, color: 'text-rose-400', bg: 'bg-rose-950/60', border: 'border-rose-600/40', desc: 'Music performances, visual holographic exhibits & media broadcasts' },
+  { id: 'questnotice', name: 'QUESTNOTICE Civic Dispatch', org: 'Aureline Public Notice Board', icon: Briefcase, color: 'text-yellow-400', bg: 'bg-yellow-950/60', border: 'border-yellow-600/40', desc: 'Neighborhood odd jobs, deliveries, errands & rapid civic help' },
 ];
 
 export default function JobWorkstationApp() {
   const { soundEnabled } = useSystemStore();
-  const [activeTab, setActiveTab] = useState<CareerTrack | 'stats'>('medical');
-  const [events, setEvents] = useState<JobShiftEvent[]>(INITIAL_SHIFT_EVENTS);
-  const [selectedEventId, setSelectedEventId] = useState<string>('med-01');
-  const [shiftActive, setShiftActive] = useState<boolean>(true);
-  const [selectedUnits, setSelectedUnits] = useState<string[]>(['Patrol-12', 'Medic-04']);
+  const [activeStation, setActiveStation] = useState<WorkplaceStationId>('dga');
+  const [activeMissionType, setActiveMissionType] = useState<string>('All');
+  const [missions, setMissions] = useState<WorknetMission[]>(() => miraverseDb.getMissions());
+  const [selectedMissionId, setSelectedMissionId] = useState<string>('ms-spec-01');
+  const [dgaBranchFilter, setDgaBranchFilter] = useState<'All' | 'Shield' | 'Eyes' | 'Blackout Team'>('All');
   const [actionFeedback, setActionFeedback] = useState<string | null>(null);
+  const [clearanceTier, setClearanceTier] = useState<number>(2);
 
   const player = useOSStore((s) => s.gameplay.player);
   const addCredits = useOSStore((s) => s.addCredits);
+  const addBits = useOSStore((s) => s.addBits);
   const addXP = useOSStore((s) => s.addXP);
+  const addCareerXP = useOSStore((s) => s.addCareerXP);
 
-  const currentEvents = events.filter((e) => e.track === activeTab);
-  const selectedEvent = events.find((e) => e.id === selectedEventId) || currentEvents[0] || null;
+  const currentStationInfo = STATIONS.find((s) => s.id === activeStation) || STATIONS[0];
 
-  const completedCount = events.filter((e) => e.completed).length;
-  const totalEarnings = events.filter((e) => e.completed).reduce((acc, curr) => acc + curr.salaryCredits, 0);
+  // Filter missions by active workstation & mission type
+  const filteredMissions = missions.filter((m) => {
+    // Station track matching
+    let stationMatch = false;
+    if (activeStation === 'dga') stationMatch = m.track === 'dga' || m.department.includes('DGA');
+    else if (activeStation === 'faithmed') stationMatch = m.track === 'medical';
+    else if (activeStation === 'finance') stationMatch = m.track === 'finance';
+    else if (activeStation === 'archives') stationMatch = m.track === 'archivist';
+    else if (activeStation === 'engineer') stationMatch = m.track === 'engineer';
+    else if (activeStation === 'diplomat') stationMatch = m.track === 'diplomat';
+    else if (activeStation === 'warden') stationMatch = m.track === 'warden';
+    else if (activeStation === 'artist') stationMatch = m.track === 'artist';
+    else if (activeStation === 'questnotice') stationMatch = m.track === 'questnotice' || m.type === 'QUESTNOTICE';
+    else stationMatch = true;
 
-  const handleResolveEvent = (eventId: string) => {
+    // Mission type matching
+    const typeMatch = activeMissionType === 'All' || m.type === activeMissionType;
+
+    // DGA Sub-branch filter
+    let branchMatch = true;
+    if (activeStation === 'dga' && dgaBranchFilter !== 'All') {
+      branchMatch = m.department.includes(dgaBranchFilter);
+    }
+
+    return stationMatch && typeMatch && branchMatch;
+  });
+
+  const selectedMission = missions.find((m) => m.id === selectedMissionId) || filteredMissions[0] || missions[0];
+
+  const completedCount = missions.filter((m) => m.completed).length;
+  const totalCreditsEarned = missions.filter((m) => m.completed).reduce((acc, curr) => acc + curr.rewardCredits, 0);
+  const totalBitsEarned = missions.filter((m) => m.completed).reduce((acc, curr) => acc + (curr.rewardBits || 0), 0);
+
+  const handleExecuteMission = (missionId: string) => {
     if (soundEnabled) SoundFX.playButtonTap();
-    setEvents((prev) =>
-      prev.map((e) => {
-        if (e.id === eventId && !e.completed) {
-          addCredits(e.salaryCredits);
-          addXP(e.rewardXP);
+    setMissions((prev) =>
+      prev.map((m) => {
+        if (m.id === missionId && !m.completed) {
+          addCredits(m.rewardCredits);
+          if (m.rewardBits) addBits(m.rewardBits);
+          addXP(m.rewardXP);
+          addCareerXP(m.track, m.rewardXP);
+
           if (soundEnabled) SoundFX.playSuccess();
-          setActionFeedback(`✅ Completed: ${e.title}! Earned +${e.salaryCredits} ₢ and +${e.rewardXP} Career XP.`);
-          setTimeout(() => setActionFeedback(null), 4000);
-          return { ...e, completed: true };
+          const bitMsg = m.rewardBits ? ` + ${m.rewardBits} ◈ BITS` : '';
+          setActionFeedback(`✅ Assignment Completed: "${m.title}"! Received +${m.rewardCredits} ₢ CREDITS${bitMsg}, and +${m.rewardXP} Career XP.`);
+          setTimeout(() => setActionFeedback(null), 5000);
+          return { ...m, completed: true };
         }
-        return e;
+        return m;
       })
     );
   };
 
-  const toggleUnit = (unit: string) => {
-    if (selectedUnits.includes(unit)) {
-      setSelectedUnits(selectedUnits.filter((u) => u !== unit));
-    } else {
-      setSelectedUnits([...selectedUnits, unit]);
-    }
-  };
-
   return (
-    <div className="flex flex-col h-full bg-[#f8f9fa] text-slate-800 font-sans select-none overflow-hidden border border-slate-300">
+    <div className="flex flex-col h-full bg-[#0a0d18] text-slate-100 font-sans select-none overflow-hidden border border-slate-700/60 shadow-2xl">
       
-      {/* 1. TOP SHIFT HEADER & STATUS BAR */}
-      <header className="flex items-center justify-between px-6 py-3.5 bg-slate-900 text-white border-b border-slate-800 shadow-xs">
-        <div className="flex items-center gap-3">
-          <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-400">
-            <Briefcase size={18} />
+      {/* ─── 10.1A UNIFIED FEDERAL WORKNET AUTHENTICATION HEADER ─── */}
+      <header className="flex items-center justify-between px-6 py-3 bg-[#0d1224] border-b border-indigo-900/60 shadow-md">
+        <div className="flex items-center gap-3.5">
+          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-indigo-500/10 border border-indigo-500/40 text-indigo-400 shadow-[0_0_15px_rgba(99,102,241,0.2)]">
+            <Fingerprint size={22} className="animate-pulse" />
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <span className="text-[10px] font-mono uppercase bg-amber-500 text-slate-950 px-2 py-0.2 font-bold rounded">
-                CAREER WORKSTATION // AURELINE MUNICIPAL
+              <span className="text-[10px] font-mono uppercase bg-indigo-600 text-white px-2 py-0.5 font-bold rounded tracking-widest shadow-xs">
+                WORKNET §10.1A // FEDERAL ACCESS LAYER
               </span>
-              <span className="text-xs text-slate-400 font-mono">§5E Official Shift Terminal</span>
+              <span className="text-[11px] text-emerald-400 font-mono flex items-center gap-1 font-semibold">
+                <span className="h-2 w-2 rounded-full bg-emerald-400 animate-ping inline-block" /> AUTHENTICATED
+              </span>
+              <span className="text-[11px] text-indigo-300/80 font-mono">
+                BCL-{clearanceTier} (Level {player?.level || 1})
+              </span>
             </div>
-            <h1 className="text-sm font-bold text-slate-100 mt-0.5">
-              Professional Service Operations & Incident Dispatch
+            <h1 className="text-sm font-bold text-slate-100 mt-0.5 tracking-tight flex items-center gap-2">
+              <span>{currentStationInfo.org}</span>
+              <ChevronRight size={14} className="text-indigo-400" />
+              <span className="text-indigo-300 font-semibold">{currentStationInfo.name}</span>
             </h1>
           </div>
         </div>
 
-        {/* Global Shift Telemetry */}
-        <div className="flex items-center gap-4 text-xs font-mono">
+        {/* Dual Currency & Federal Telemetry */}
+        <div className="flex items-center gap-5 text-xs font-mono">
           <div className="text-right">
-            <div className="text-slate-400 text-[10px]">CURRENT SHIFT EARNINGS</div>
-            <div className="text-emerald-400 font-bold font-mono">+{totalEarnings} ₢ Earned</div>
+            <div className="text-slate-400 text-[10px] uppercase tracking-wider">Primary Currency</div>
+            <div className="text-amber-400 font-bold font-mono text-sm flex items-center justify-end gap-1">
+              <span>{player?.credits ?? 500}</span>
+              <span className="text-amber-300 text-[11px]">₢ CREDITS</span>
+            </div>
           </div>
-          <div className="h-7 w-[1px] bg-slate-800" />
+          <div className="h-8 w-[1px] bg-slate-800" />
           <div className="text-right">
-            <div className="text-slate-400 text-[10px]">TASKS RESOLVED</div>
-            <div className="text-amber-400 font-bold">{completedCount} / {events.length}</div>
+            <div className="text-slate-400 text-[10px] uppercase tracking-wider">Secondary Rare Currency</div>
+            <div className="text-cyan-400 font-bold font-mono text-sm flex items-center justify-end gap-1">
+              <span>{player?.bits ?? 25}</span>
+              <span className="text-cyan-300 text-[11px]">◈ BITS</span>
+            </div>
+          </div>
+          <div className="h-8 w-[1px] bg-slate-800" />
+          <div className="text-right">
+            <div className="text-slate-400 text-[10px] uppercase tracking-wider">Shift Resolved</div>
+            <div className="text-emerald-400 font-bold">{completedCount} / {missions.length}</div>
           </div>
         </div>
       </header>
 
-      {/* 2. CAREER TRACK NAVIGATION BAR */}
-      <div className="flex items-center justify-between px-6 py-2 bg-slate-100 border-b border-slate-300">
-        <div className="flex items-center gap-2">
-          <button
-            onClick={() => { setActiveTab('medical'); setSelectedEventId('med-01'); }}
-            className={`flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-xs font-bold font-mono transition ${
-              activeTab === 'medical'
-                ? 'bg-emerald-600 text-white shadow-xs'
-                : 'bg-white text-slate-700 hover:bg-slate-200 border border-slate-300'
-            }`}
-          >
-            <Stethoscope size={14} />
-            <span>Faith Medical (Jade)</span>
-          </button>
-
-          <button
-            onClick={() => { setActiveTab('dga'); setSelectedEventId('dga-01'); }}
-            className={`flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-xs font-bold font-mono transition ${
-              activeTab === 'dga'
-                ? 'bg-purple-600 text-white shadow-xs'
-                : 'bg-white text-slate-700 hover:bg-slate-200 border border-slate-300'
-            }`}
-          >
-            <Radio size={14} />
-            <span>DGA Dispatch (Purple)</span>
-          </button>
-
-          <button
-            onClick={() => { setActiveTab('gov'); setSelectedEventId('gov-01'); }}
-            className={`flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-xs font-bold font-mono transition ${
-              activeTab === 'gov'
-                ? 'bg-blue-600 text-white shadow-xs'
-                : 'bg-white text-slate-700 hover:bg-slate-200 border border-slate-300'
-            }`}
-          >
-            <Search size={14} />
-            <span>Civic Investigation (Navy)</span>
-          </button>
-
-          <button
-            onClick={() => setActiveTab('stats')}
-            className={`flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-xs font-bold font-mono transition ${
-              activeTab === 'stats'
-                ? 'bg-slate-800 text-white shadow-xs'
-                : 'bg-white text-slate-700 hover:bg-slate-200 border border-slate-300'
-            }`}
-          >
-            <Activity size={14} />
-            <span>Supervisor Analytics</span>
-          </button>
-        </div>
-
-        <span className="text-[11px] font-mono text-slate-500">
-          Clearance Level: <strong className="text-slate-800">Tier 1 Certified Responder</strong>
-        </span>
+      {/* ─── WORKPLACE TERMINAL SELECTOR STRIP ─── */}
+      <div className="flex items-center gap-1.5 px-4 py-2 bg-[#090d1c] border-b border-slate-800 overflow-x-auto scrollbar-none">
+        {STATIONS.map((station) => {
+          const Icon = station.icon;
+          const isActive = activeStation === station.id;
+          return (
+            <button
+              key={station.id}
+              onClick={() => {
+                if (soundEnabled) SoundFX.playButtonTap();
+                setActiveStation(station.id);
+              }}
+              className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-mono whitespace-nowrap transition-all border ${
+                isActive
+                  ? `${station.bg} ${station.color} ${station.border} shadow-md font-bold scale-[1.02]`
+                  : 'bg-slate-900/50 text-slate-400 border-slate-800 hover:bg-slate-800 hover:text-slate-200'
+              }`}
+            >
+              <Icon size={14} className={isActive ? station.color : 'text-slate-500'} />
+              <span>{station.name.split(' ')[0]}</span>
+            </button>
+          );
+        })}
       </div>
 
-      {/* Action Notification Banner */}
-      {actionFeedback && (
-        <div className="bg-emerald-50 border-b border-emerald-200 px-6 py-2 text-xs font-mono text-emerald-900 font-bold flex items-center justify-between">
-          <span>{actionFeedback}</span>
+      {/* ─── DGA SUB-BRANCH CONTROLS (IF DGA CONSOLE ACTIVE) ─── */}
+      {activeStation === 'dga' && (
+        <div className="flex items-center justify-between px-6 py-2 bg-purple-950/30 border-b border-purple-900/40 text-xs font-mono">
+          <div className="flex items-center gap-2">
+            <span className="text-purple-300 font-bold text-[11px]">§10.1B DGA DIVISIONS:</span>
+            {(['All', 'Shield', 'Eyes', 'Blackout Team'] as const).map((branch) => (
+              <button
+                key={branch}
+                onClick={() => setDgaBranchFilter(branch)}
+                className={`px-2.5 py-1 rounded text-[11px] font-semibold transition ${
+                  dgaBranchFilter === branch
+                    ? 'bg-purple-600 text-white shadow-xs'
+                    : 'bg-purple-900/40 text-purple-300 hover:bg-purple-800/40'
+                }`}
+              >
+                {branch}
+              </button>
+            ))}
+          </div>
+          <div className="text-[11px] text-purple-300/80">
+            Active Nodes: SOC, RRB, PSD, ETG | SIGINT, HUMINT, RGA, CIIS | Blackout
+          </div>
         </div>
       )}
 
-      {/* 3. WORKSTATION MAIN SPLIT VIEW */}
-      <div className="flex-1 grid grid-cols-12 min-h-0 overflow-hidden">
-        
-        {/* LEFT COLUMN: ACTIVE INCIDENTS LIST */}
-        {activeTab !== 'stats' ? (
-          <>
-            <div className="col-span-5 border-r border-slate-300 bg-white p-4 overflow-y-auto space-y-3">
-              <div className="flex justify-between items-center mb-1">
-                <span className="text-[10px] font-mono uppercase text-slate-500 font-bold">
-                  Active Shift Assignments ({currentEvents.length})
-                </span>
-                <span className="text-[10px] font-mono text-slate-400">Auto-Refreshed</span>
-              </div>
+      {/* ─── ACTION FEEDBACK TOAST ─── */}
+      {actionFeedback && (
+        <div className="mx-6 mt-3 px-4 py-2.5 bg-emerald-950/90 border border-emerald-500/60 rounded-xl text-emerald-200 text-xs font-mono shadow-lg flex items-center justify-between animate-fadeIn">
+          <div className="flex items-center gap-2">
+            <CheckCircle2 size={16} className="text-emerald-400 shrink-0" />
+            <span>{actionFeedback}</span>
+          </div>
+          <span className="text-[10px] text-emerald-400/80 uppercase">Telemetry Synchronized</span>
+        </div>
+      )}
 
-              {currentEvents.map((evt) => {
-                const isSelected = evt.id === selectedEvent?.id;
+      {/* ─── MAIN WORKNET SPLIT INTERFACE ─── */}
+      <div className="flex-1 flex overflow-hidden p-6 gap-6">
+        
+        {/* LEFT PANE: 10.2 MISSION TAXONOMY & DISPATCH LIST */}
+        <div className="w-1/2 flex flex-col bg-[#0f1426] border border-slate-800 rounded-2xl overflow-hidden shadow-lg">
+          
+          {/* Mission Type Tab Filters */}
+          <div className="flex items-center justify-between p-3.5 bg-slate-900/80 border-b border-slate-800">
+            <div className="flex items-center gap-1.5 overflow-x-auto scrollbar-none">
+              {(['All', 'Work Shifts', 'Special Assignments', 'Career Development', 'Field Operations', 'QUESTNOTICE'] as const).map((type) => (
+                <button
+                  key={type}
+                  onClick={() => setActiveMissionType(type)}
+                  className={`px-2.5 py-1 rounded-lg text-[11px] font-mono whitespace-nowrap transition ${
+                    activeMissionType === type
+                      ? 'bg-indigo-600 text-white font-bold'
+                      : 'bg-slate-800/60 text-slate-400 hover:bg-slate-700 hover:text-slate-200'
+                  }`}
+                >
+                  {type}
+                </button>
+              ))}
+            </div>
+            <span className="text-[11px] text-slate-400 font-mono ml-2">
+              {filteredMissions.length} Available
+            </span>
+          </div>
+
+          {/* Missions Scroll List */}
+          <div className="flex-1 overflow-y-auto p-3 space-y-2.5">
+            {filteredMissions.length === 0 ? (
+              <div className="text-center py-12 text-slate-500 font-mono text-xs">
+                No active assignments for this workstation filter. Switch station or mission category.
+              </div>
+            ) : (
+              filteredMissions.map((m) => {
+                const isSelected = selectedMission?.id === m.id;
+                const isCritical = m.severity === 'Critical';
                 return (
                   <div
-                    key={evt.id}
+                    key={m.id}
                     onClick={() => {
-                      if (soundEnabled) SoundFX.playSnap();
-                      setSelectedEventId(evt.id);
+                      if (soundEnabled) SoundFX.playButtonTap();
+                      setSelectedMissionId(m.id);
                     }}
-                    className={`p-3.5 border rounded-lg cursor-pointer transition flex flex-col justify-between ${
+                    className={`p-3.5 rounded-xl border transition cursor-pointer ${
                       isSelected
-                        ? 'border-slate-800 bg-slate-50 shadow-xs'
-                        : 'border-slate-200 hover:border-slate-400 bg-white'
-                    } ${evt.completed ? 'opacity-60 bg-slate-50' : ''}`}
+                        ? 'bg-indigo-950/60 border-indigo-500/70 shadow-md ring-1 ring-indigo-500/30'
+                        : 'bg-slate-900/40 border-slate-800/80 hover:bg-slate-800/50 hover:border-slate-700'
+                    }`}
                   >
-                    <div>
-                      <div className="flex items-center justify-between mb-1">
-                        <span className={`text-[10px] font-mono font-bold px-2 py-0.2 rounded border ${
-                          evt.severity === 'Critical' ? 'bg-rose-50 text-rose-700 border-rose-200' :
-                          evt.severity === 'Elevated' ? 'bg-amber-50 text-amber-700 border-amber-200' :
-                          'bg-slate-100 text-slate-700 border-slate-200'
-                        }`}>
-                          {evt.severity}
-                        </span>
-                        <span className="text-xs font-mono font-bold text-amber-600">+{evt.salaryCredits} ₢</span>
+                    <div className="flex items-start justify-between gap-2">
+                      <div className="space-y-1">
+                        <div className="flex items-center gap-2">
+                          <span className={`text-[9px] font-mono uppercase px-1.5 py-0.5 rounded font-bold ${
+                            isCritical ? 'bg-rose-500/20 text-rose-300 border border-rose-500/40' : 'bg-slate-800 text-slate-300'
+                          }`}>
+                            {m.type}
+                          </span>
+                          <span className="text-[10px] text-slate-400 font-mono">{m.department}</span>
+                        </div>
+                        <h4 className={`text-xs font-bold ${isSelected ? 'text-indigo-200' : 'text-slate-200'}`}>
+                          {m.title}
+                        </h4>
                       </div>
-                      <h4 className={`text-xs font-bold text-slate-900 mt-1 ${evt.completed ? 'line-through text-slate-400' : ''}`}>
-                        {evt.title}
-                      </h4>
-                      <p className="text-[11px] text-slate-500 mt-1 line-clamp-2">{evt.summary}</p>
+
+                      {/* Status / Check */}
+                      <div>
+                        {m.completed ? (
+                          <span className="px-2 py-0.5 rounded bg-emerald-950 text-emerald-400 border border-emerald-600/40 text-[10px] font-mono font-bold flex items-center gap-1">
+                            <CheckCircle2 size={12} /> CLEARED
+                          </span>
+                        ) : (
+                          <span className={`px-2 py-0.5 rounded text-[10px] font-mono font-bold ${
+                            isCritical ? 'bg-rose-950 text-rose-400 border border-rose-700/40' : 'bg-slate-800 text-slate-400'
+                          }`}>
+                            {m.severity}
+                          </span>
+                        )}
+                      </div>
                     </div>
 
-                    <div className="flex items-center justify-between pt-2 mt-2 border-t border-slate-100 text-[10px] font-mono text-slate-400">
-                      <span className="flex items-center gap-1">
-                        <MapPin size={11} /> {evt.location.split('-')[0]}
-                      </span>
-                      {evt.completed ? (
-                        <span className="text-emerald-600 font-bold flex items-center gap-1">
-                          <CheckCircle2 size={11} /> RESOLVED
-                        </span>
-                      ) : (
-                        <span className="text-amber-600 font-bold">ACTION PENDING</span>
+                    {/* Reward chips */}
+                    <div className="mt-2.5 flex items-center gap-3 text-[11px] font-mono">
+                      <span className="text-amber-400 font-bold">+{m.rewardCredits} ₢</span>
+                      {m.rewardBits > 0 && (
+                        <span className="text-cyan-400 font-bold">+{m.rewardBits} ◈ BITS</span>
                       )}
+                      <span className="text-indigo-300">+{m.rewardXP} XP</span>
+                      <span className="text-slate-500 text-[10px] ml-auto">{m.location.split('-')[0]}</span>
                     </div>
                   </div>
                 );
-              })}
-            </div>
-
-            {/* RIGHT COLUMN: WORKBENCH & ACTION TERMINAL */}
-            <div className="col-span-7 p-6 overflow-y-auto bg-[#fafafa] flex flex-col justify-between">
-              {selectedEvent ? (
-                <div className="space-y-6">
-                  {/* Event Detail Card */}
-                  <div className="bg-white p-5 rounded-xl border border-slate-300 shadow-2xs space-y-3">
-                    <div className="flex justify-between items-start">
-                      <div>
-                        <span className="text-[10px] font-mono uppercase text-slate-500 font-bold">
-                          INCIDENT PROTOCOL // {selectedEvent.id.toUpperCase()}
-                        </span>
-                        <h2 className="text-base font-bold text-slate-900 mt-0.5">{selectedEvent.title}</h2>
-                      </div>
-                      <span className="text-xs font-mono font-bold text-emerald-600 bg-emerald-50 px-2.5 py-1 rounded border border-emerald-200">
-                        +{selectedEvent.rewardXP} Career XP
-                      </span>
-                    </div>
-
-                    <p className="text-xs text-slate-700 leading-relaxed">{selectedEvent.summary}</p>
-
-                    <div className="grid grid-cols-2 gap-3 pt-3 border-t border-slate-100 text-xs font-mono">
-                      <div className="p-3 bg-slate-50 rounded-lg border border-slate-200">
-                        <span className="text-slate-400 text-[10px] block">SUBJECT / TARGET</span>
-                        <strong className="text-slate-800">{selectedEvent.patientOrSubject}</strong>
-                      </div>
-                      <div className="p-3 bg-slate-50 rounded-lg border border-slate-200">
-                        <span className="text-slate-400 text-[10px] block">OBSERVED SYMPTOM / THREAT</span>
-                        <strong className="text-rose-700">{selectedEvent.symptomsOrThreat}</strong>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Operational Controls / Tactical Units */}
-                  {selectedEvent.track === 'dga' && (
-                    <div className="bg-white p-4 rounded-xl border border-slate-300 space-y-3">
-                      <h4 className="text-xs font-bold text-slate-800 font-mono uppercase flex items-center gap-2">
-                        <Truck size={14} className="text-purple-600" />
-                        Tactical Response Units Available
-                      </h4>
-                      <div className="grid grid-cols-2 gap-2 text-xs font-mono">
-                        {['Patrol-12', 'Medic-04', 'Hazmat-01', 'Rescue-02'].map((unit) => {
-                          const isSelected = selectedUnits.includes(unit);
-                          return (
-                            <button
-                              key={unit}
-                              onClick={() => toggleUnit(unit)}
-                              className={`p-2.5 rounded-lg border text-left flex justify-between items-center transition ${
-                                isSelected
-                                  ? 'bg-purple-50 border-purple-300 text-purple-900 font-bold'
-                                  : 'bg-slate-50 border-slate-200 text-slate-600'
-                              }`}
-                            >
-                              <span>{unit}</span>
-                              <span className="text-[10px]">{isSelected ? 'ASSIGNED' : 'STANDBY'}</span>
-                            </button>
-                          );
-                        })}
-                      </div>
-                    </div>
-                  )}
-
-                  {/* Resolution Directive */}
-                  <div className="p-4 rounded-xl bg-amber-50/70 border border-amber-200 space-y-1">
-                    <span className="text-[10px] font-mono uppercase text-amber-900 font-bold block">
-                      REQUIRED INTERVENTION PROTOCOL
-                    </span>
-                    <p className="text-xs text-amber-950 font-medium leading-relaxed">
-                      {selectedEvent.requiredAction}
-                    </p>
-                  </div>
-                </div>
-              ) : (
-                <div className="text-center py-20 text-slate-400 text-xs font-mono">
-                  Select an incident protocol from the queue.
-                </div>
-              )}
-
-              {/* Bottom Submit Action */}
-              {selectedEvent && (
-                <div className="pt-4 border-t border-slate-200 mt-6 flex justify-between items-center">
-                  <span className="text-xs font-mono text-slate-500">
-                    Salary Compensation: <strong className="text-slate-900">+{selectedEvent.salaryCredits} ₢</strong>
-                  </span>
-                  <button
-                    onClick={() => handleResolveEvent(selectedEvent.id)}
-                    disabled={selectedEvent.completed}
-                    className={`px-6 py-2.5 rounded-xl font-mono text-xs font-bold transition shadow-sm flex items-center gap-2 ${
-                      selectedEvent.completed
-                        ? 'bg-slate-200 text-slate-500 cursor-not-allowed'
-                        : activeTab === 'medical'
-                        ? 'bg-emerald-600 hover:bg-emerald-500 text-white active:scale-95'
-                        : activeTab === 'dga'
-                        ? 'bg-purple-600 hover:bg-purple-500 text-white active:scale-95'
-                        : 'bg-blue-600 hover:bg-blue-500 text-white active:scale-95'
-                    }`}
-                  >
-                    {selectedEvent.completed ? (
-                      <>
-                        <CheckCircle2 size={15} />
-                        <span>Shift Report Filed</span>
-                      </>
-                    ) : (
-                      <>
-                        <Send size={15} />
-                        <span>Execute Protocol & File Report</span>
-                      </>
-                    )}
-                  </button>
-                </div>
-              )}
-            </div>
-          </>
-        ) : (
-          /* SUPERVISOR STATS TAB */
-          <div className="col-span-12 p-6 overflow-y-auto space-y-6 bg-white">
-            <div>
-              <h3 className="text-sm font-bold text-slate-900 font-mono uppercase">
-                Career Performance & Supervisory Metrics (§5E)
-              </h3>
-              <p className="text-xs text-slate-500 mt-0.5">
-                Overview of career identity, recurring mission throughput, and municipal stipend balances.
-              </p>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <div className="p-5 rounded-xl bg-slate-50 border border-slate-200 space-y-1">
-                <span className="text-[10px] font-mono text-slate-400 uppercase">Total Shift Revenue</span>
-                <div className="text-2xl font-bold font-mono text-emerald-600">{totalEarnings} ₢</div>
-                <p className="text-[11px] text-slate-500">Credited to Aureline municipal balance.</p>
-              </div>
-
-              <div className="p-5 rounded-xl bg-slate-50 border border-slate-200 space-y-1">
-                <span className="text-[10px] font-mono text-slate-400 uppercase">Incidents Cleared</span>
-                <div className="text-2xl font-bold font-mono text-purple-600">{completedCount} / {events.length}</div>
-                <p className="text-[11px] text-slate-500">100% resolution accuracy rating.</p>
-              </div>
-
-              <div className="p-5 rounded-xl bg-slate-50 border border-slate-200 space-y-1">
-                <span className="text-[10px] font-mono text-slate-400 uppercase">Civic Standing</span>
-                <div className="text-2xl font-bold font-mono text-blue-600">Tier 1 Certified</div>
-                <p className="text-[11px] text-slate-500">Unlocks restricted district ward access.</p>
-              </div>
-            </div>
-
-            <div className="p-5 rounded-xl bg-slate-900 text-white border border-slate-800 space-y-3">
-              <h4 className="text-xs font-bold text-amber-400 font-mono uppercase">
-                Continuous Multi-Agent Shift Scheduler
-              </h4>
-              <p className="text-xs text-slate-300 leading-relaxed">
-                The supervisor daemon automatically injects dynamic emergency callouts based on your Sys-Cycle schedule and active Veil corruption levels. Complete shift assignments to advance your standing across Faith Medical, DGA, and Governmental career ladders.
-              </p>
-            </div>
+              })
+            )}
           </div>
-        )}
+        </div>
+
+        {/* RIGHT PANE: ACTIVE MISSION TELEMETRY & ACTION EXECUTION */}
+        <div className="w-1/2 flex flex-col bg-[#0f1426] border border-slate-800 rounded-2xl overflow-hidden shadow-lg">
+          {selectedMission ? (
+            <div className="flex-1 flex flex-col p-5 overflow-y-auto space-y-4">
+              
+              {/* Mission Header */}
+              <div className="border-b border-slate-800 pb-3.5 space-y-2">
+                <div className="flex items-center justify-between">
+                  <span className="text-[10px] font-mono uppercase bg-indigo-900/60 text-indigo-300 px-2 py-0.5 rounded font-bold border border-indigo-700/50">
+                    {selectedMission.department}
+                  </span>
+                  <span className="text-xs text-slate-400 font-mono flex items-center gap-1">
+                    <MapPin size={13} className="text-indigo-400" /> {selectedMission.location}
+                  </span>
+                </div>
+                <h2 className="text-base font-bold text-slate-100">
+                  {selectedMission.title}
+                </h2>
+                <p className="text-xs text-slate-300 leading-relaxed font-sans">
+                  {selectedMission.description}
+                </p>
+              </div>
+
+              {/* Subject & Threat Matrix */}
+              <div className="grid grid-cols-2 gap-3 font-mono text-xs">
+                <div className="p-3 bg-slate-900/60 border border-slate-800 rounded-xl space-y-1">
+                  <div className="text-[10px] text-slate-400 uppercase">Target / Subject</div>
+                  <div className="font-semibold text-slate-200">{selectedMission.targetSubject || 'General Institutional Asset'}</div>
+                </div>
+                <div className="p-3 bg-slate-900/60 border border-slate-800 rounded-xl space-y-1">
+                  <div className="text-[10px] text-slate-400 uppercase">Anomaly / Threat Vector</div>
+                  <div className="font-semibold text-rose-300">{selectedMission.threatOrSymptom || 'Standard Workplace Procedure'}</div>
+                </div>
+              </div>
+
+              {/* Permitted Institutional Tools */}
+              <div className="p-3.5 bg-slate-900/40 border border-slate-800/80 rounded-xl space-y-2">
+                <div className="text-[10px] text-indigo-300 font-mono uppercase font-bold flex items-center gap-1.5">
+                  <Key size={13} /> Permitted Institutional Clearance Tools (§10.1A)
+                </div>
+                <div className="flex flex-wrap gap-1.5">
+                  {selectedMission.permittedTools.map((tool) => (
+                    <span
+                      key={tool}
+                      className="px-2.5 py-1 bg-indigo-950/80 border border-indigo-700/50 text-indigo-300 rounded-lg text-[11px] font-mono flex items-center gap-1"
+                    >
+                      <Zap size={11} className="text-amber-400" /> {tool}
+                    </span>
+                  ))}
+                </div>
+              </div>
+
+              {/* Execution Protocol Box */}
+              <div className="p-4 bg-indigo-950/30 border border-indigo-800/50 rounded-xl space-y-2">
+                <div className="text-[11px] font-bold text-indigo-200 font-mono flex items-center gap-1.5">
+                  <Terminal size={14} className="text-indigo-400" /> Authorized Execution Directive
+                </div>
+                <p className="text-xs text-indigo-200/90 leading-relaxed font-mono">
+                  {selectedMission.requiredAction}
+                </p>
+              </div>
+
+              {/* Compensation Summary & Action Button */}
+              <div className="mt-auto pt-3 border-t border-slate-800 space-y-3">
+                <div className="flex items-center justify-between text-xs font-mono px-1">
+                  <div className="text-slate-400">Total Compensation:</div>
+                  <div className="flex items-center gap-3 font-bold">
+                    <span className="text-amber-400">+{selectedMission.rewardCredits} ₢ CREDITS</span>
+                    {selectedMission.rewardBits > 0 && (
+                      <span className="text-cyan-400">+{selectedMission.rewardBits} ◈ BITS</span>
+                    )}
+                    <span className="text-indigo-300">+{selectedMission.rewardXP} XP ({selectedMission.primaryAttribute})</span>
+                  </div>
+                </div>
+
+                <button
+                  onClick={() => handleExecuteMission(selectedMission.id)}
+                  disabled={selectedMission.completed}
+                  className={`w-full py-3 rounded-xl font-bold font-mono text-xs transition flex items-center justify-center gap-2 shadow-lg ${
+                    selectedMission.completed
+                      ? 'bg-slate-800 text-slate-400 cursor-not-allowed border border-slate-700'
+                      : 'bg-gradient-to-r from-indigo-600 to-indigo-700 hover:from-indigo-500 hover:to-indigo-600 text-white shadow-indigo-500/20 active:scale-[0.99]'
+                  }`}
+                >
+                  {selectedMission.completed ? (
+                    <>
+                      <CheckCircle2 size={16} className="text-emerald-400" />
+                      <span>Directive Finalized & Cleared</span>
+                    </>
+                  ) : (
+                    <>
+                      <Play size={15} />
+                      <span>Execute Work Directive & Claim Payout</span>
+                    </>
+                  )}
+                </button>
+              </div>
+
+            </div>
+          ) : (
+            <div className="flex-1 flex flex-col items-center justify-center p-6 text-slate-500 font-mono text-xs">
+              Select an assignment on the left to review operational telemetry and clearance requirements.
+            </div>
+          )}
+        </div>
 
       </div>
+
+      {/* ─── FOOTER BAR: MERIDION WORKNET PROTOCOL LOG ─── */}
+      <footer className="flex items-center justify-between px-6 py-2 bg-[#090d1a] border-t border-slate-800 text-[11px] font-mono text-slate-400">
+        <div className="flex items-center gap-4">
+          <span>STATION ID: <strong>WK-M4-{activeStation.toUpperCase()}-09</strong></span>
+          <span>•</span>
+          <span>LATENCY: <strong>1.4ms (Meridion Mesh)</strong></span>
+          <span>•</span>
+          <span>GOV DIRECTIVE: <strong>14-B COMPLIANT</strong></span>
+        </div>
+        <div className="flex items-center gap-2 text-indigo-300 font-semibold">
+          <span>FEDERAL EMPLOYMENT ACCESS LAYER</span>
+        </div>
+      </footer>
 
     </div>
   );

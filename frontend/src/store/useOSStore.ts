@@ -74,6 +74,7 @@ export interface OSStoreState {
   updateSession: (gameId: string, sessionData: Record<string, any>) => void;
   endSession: (gameId: string) => void;
   addCredits: (amount: number) => void;
+  addBits: (amount: number) => void;
   addXP: (amount: number) => void;
   completeActivity: (id: string) => void;
   claimCommsAttachment: (commId: string, credits?: number, xp?: number) => void;
@@ -344,6 +345,7 @@ export const useOSStore = create<OSStoreState>((set) => ({
     player: {
       level: 1,
       credits: 500,
+      bits: 25,
       xp: 0,
       rewardItems: [],
       completedQuests: [],
@@ -394,8 +396,16 @@ export const useOSStore = create<OSStoreState>((set) => ({
         Cryptography: { level: 1, xp: 0 },
       },
       careers: {
-        medical: { rankIndex: 0, xp: 0, title: 'Faith Medical Healthcare & Diagnostics' },
-        dga: { rankIndex: 0, xp: 0, title: 'DGA Security & Containment Ops' },
+        archivist: { rankIndex: 0, xp: 0, title: 'Archivist / Researcher' },
+        engineer: { rankIndex: 0, xp: 0, title: 'Systems Engineer' },
+        diplomat: { rankIndex: 0, xp: 0, title: 'Council Diplomat' },
+        enforcer: { rankIndex: 0, xp: 0, title: 'Enforcer / Guardian' },
+        artist: { rankIndex: 0, xp: 0, title: 'Artist / Performer' },
+        medical: { rankIndex: 0, xp: 0, title: 'Healer / Medical Support' },
+        warden: { rankIndex: 0, xp: 0, title: 'Ecological Warden' },
+        finance: { rankIndex: 0, xp: 0, title: 'Finance Clerk / Banking Support' },
+        questnotice: { rankIndex: 0, xp: 0, title: 'QUESTNOTICE Odd Jobs' },
+        dga: { rankIndex: 0, xp: 0, title: 'Department of Global Affairs' },
         gov: { rankIndex: 0, xp: 0, title: 'Governmental Civic Administration' },
       },
       starterPhase: 0,
@@ -547,6 +557,17 @@ export const useOSStore = create<OSStoreState>((set) => ({
         player: {
           ...state.gameplay.player,
           credits: Math.max(0, state.gameplay.player.credits + amount),
+        },
+      },
+    })),
+
+  addBits: (amount) =>
+    set((state) => ({
+      gameplay: {
+        ...state.gameplay,
+        player: {
+          ...state.gameplay.player,
+          bits: Math.max(0, (state.gameplay.player.bits || 0) + amount),
         },
       },
     })),
@@ -1106,37 +1127,58 @@ export const useOSStore = create<OSStoreState>((set) => ({
     };
   }),
 
-  toggleApp: (app) => set((state) => {
+  toggleApp: (appOrId: any) => set((state) => {
+    const appId = typeof appOrId === 'string' ? appOrId : appOrId?.id;
+    if (!appId) return state;
+    const appObj = typeof appOrId === 'object' ? appOrId : {};
+    
     const maxZ = Math.max(100, ...state.windows.map((w) => w.zIndex || 100));
-    const existing = state.windows.find((w) => w.id === app.id);
+    const existing = state.windows.find((w) => w.id === appId);
     if (existing) {
-      if (state.activeWindowId === app.id && !existing.isMinimized) {
+      if (state.activeWindowId === appId && !existing.isMinimized) {
         return {
           windows: state.windows.map((w) =>
-            w.id === app.id ? { ...w, isMinimized: true } : w
+            w.id === appId ? { ...w, isMinimized: true } : w
           ),
-          activeWindowId: state.windows.filter((w) => w.id !== app.id && !w.isMinimized).sort((a, b) => b.zIndex - a.zIndex)[0]?.id || null,
+          activeWindowId: state.windows.filter((w) => w.id !== appId && !w.isMinimized).sort((a, b) => b.zIndex - a.zIndex)[0]?.id || null,
         };
       }
       return {
         windows: state.windows.map((w) =>
-          w.id === app.id ? { ...w, size: DEFAULT_WINDOW_SIZE, zIndex: maxZ + 1, isMinimized: false } : w
+          w.id === appId ? { ...w, zIndex: maxZ + 1, isMinimized: false } : w
         ),
-        activeWindowId: app.id,
+        activeWindowId: appId,
       };
     }
 
+    const appTitles: Record<string, string> = {
+      jobs: 'Career Workstation',
+      board: 'Master Notice Board',
+      process: 'Process Monitor',
+      housing: 'Residential Dorm 4B',
+      spellforge: 'SpellForge Matrix',
+      browser: 'Net Browser',
+      mail: 'AureMail Mailbox',
+      comms: 'Comms Portal',
+      passport: 'Citizen Record',
+      pulse: 'Mai.space Network',
+      files: 'File Explorer',
+      lore: 'Lore Explorer (Cloud)',
+      terminal: 'System Terminal',
+      settings: 'System Settings',
+    };
+
     const newWindow: OSWindow = {
-      title: app.title,
-      contentKey: app.contentKey,
-      ...app,
-      id: app.id || Math.random().toString(36).substr(2, 9),
+      title: appObj.title || appTitles[appId] || appId,
+      contentKey: appObj.contentKey || appId,
+      ...appObj,
+      id: appId,
       zIndex: maxZ + 1,
       isMinimized: false,
-      isMaximized: app.isMaximized ?? false,
-      position: app.position || spawnPosition(state.windows.length),
+      isMaximized: appObj.isMaximized ?? false,
+      position: appObj.position || spawnPosition(state.windows.length),
       windowOffset: { x: 0, y: 0 },
-      size: app.size || DEFAULT_WINDOW_SIZE,
+      size: appObj.size || DEFAULT_WINDOW_SIZE,
     };
     return {
       windows: [...state.windows, newWindow],

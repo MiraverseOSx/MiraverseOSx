@@ -21,11 +21,14 @@ export interface SampleArchive {
 
 export const PORTALS: Record<string, PortalInfo> = {
     'versenet.aure': { title: 'Versenet Search Engine', category: 'Search Engine', icon: Globe, accent: 'green', domain: 'versenet.aure' },
+    'civinet.mer': { title: 'CIVINET Municipal Services Hub', category: 'Civic Governance', icon: Landmark, accent: 'indigo', domain: 'civinet.mer' },
+    'questnotice.mer': { title: 'QUESTNOTICE Civic Notice Tracker', category: 'Public Errands', icon: FileText, accent: 'amber', domain: 'questnotice.mer' },
+    'royalhistory.mer': { title: 'Royal Historic Society', category: 'Restricted Archive', icon: BookOpen, accent: 'cyan', domain: 'royalhistory.mer' },
     'faithmed.aure': { title: 'Faith Medical Group', category: 'Medical Intranet', icon: Activity, accent: 'emerald', domain: 'faithmed.aure' },
     'dga.gov': { title: 'Department of Global Affairs', category: 'Global Affairs', icon: Shield, accent: 'blue', domain: 'dga.gov' },
     'cyacademy.edu': { title: 'Cycademy of Sciences', category: 'Academic Portal', icon: Building, accent: 'purple', domain: 'cyacademy.edu' },
     'records.orynvell.gov': { title: 'Orynvell Public Records', category: 'Legal & Deeds', icon: FileText, accent: 'amber', domain: 'records.orynvell.gov' },
-    'bank.aure': { title: 'First Orynvell Bank', category: 'Financial Portal', icon: Landmark, accent: 'indigo', domain: 'bank.aure' },
+    'bank.aure': { title: 'First Orynvell Bank & Treasury', category: 'Financial Portal', icon: Landmark, accent: 'indigo', domain: 'bank.aure' },
     'shipping.aure': { title: 'CargoTrack Logistics', category: 'Cargo & Logistics', icon: Truck, accent: 'orange', domain: 'shipping.aure' },
     'vectornet.onion': { title: 'Vector DarkNet', category: 'Anonymized Darkweb', icon: Eye, accent: 'cyan', domain: 'vectornet.onion' },
     'auresuite.aure': { title: 'AureSuite Cloud Workspace', category: 'Cloud Tools Hub', icon: Grid, accent: 'rose', domain: 'auresuite.aure' },

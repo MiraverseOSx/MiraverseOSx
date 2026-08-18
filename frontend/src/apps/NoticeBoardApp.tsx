@@ -28,6 +28,7 @@ interface NoticeItem {
   tag: string;
   rewardXP?: number;
   rewardCredits?: number;
+  rewardBits?: number;
 }
 
 export default function NoticeBoardApp() {
@@ -37,6 +38,8 @@ export default function NoticeBoardApp() {
   
   const addXP = useOSStore((s) => s.addXP);
   const addCredits = useOSStore((s) => s.addCredits);
+  const addBits = useOSStore((s) => s.addBits);
+  const player = useOSStore((s) => s.gameplay.player);
 
   // Initial Aureline Systems Notice Data based on your lore specification
   const [notices, setNotices] = useState<NoticeItem[]>([
@@ -51,6 +54,7 @@ export default function NoticeBoardApp() {
       tag: 'DGA-01',
       rewardXP: 100,
       rewardCredits: 150,
+      rewardBits: 0,
     },
     {
       id: 'n-02',
@@ -63,6 +67,7 @@ export default function NoticeBoardApp() {
       tag: 'PRISM-WARN',
       rewardXP: 250,
       rewardCredits: 300,
+      rewardBits: 2,
     },
     {
       id: 'n-03',
@@ -75,6 +80,7 @@ export default function NoticeBoardApp() {
       tag: 'RES-04',
       rewardXP: 50,
       rewardCredits: 75,
+      rewardBits: 0,
     },
     {
       id: 'n-04',
@@ -87,6 +93,7 @@ export default function NoticeBoardApp() {
       tag: 'ORYNVELL',
       rewardXP: 500,
       rewardCredits: 600,
+      rewardBits: 5,
     },
     {
       id: 'n-05',
@@ -99,6 +106,7 @@ export default function NoticeBoardApp() {
       tag: 'VEIL-CORE',
       rewardXP: 1000,
       rewardCredits: 1200,
+      rewardBits: 10,
     },
     {
       id: 'n-06',
@@ -111,6 +119,7 @@ export default function NoticeBoardApp() {
       tag: 'HEALTH',
       rewardXP: 75,
       rewardCredits: 100,
+      rewardBits: 0,
     }
   ]);
 
@@ -123,6 +132,7 @@ export default function NoticeBoardApp() {
           if (nextState) {
             if (n.rewardXP) addXP(n.rewardXP);
             if (n.rewardCredits) addCredits(n.rewardCredits);
+            if (n.rewardBits) addBits(n.rewardBits);
             SoundFX.playSuccess();
           }
           return { ...n, completed: nextState };
@@ -212,16 +222,24 @@ export default function NoticeBoardApp() {
           <div>
             <div className="flex items-center gap-2 mb-1">
               <span className="text-[10px] font-mono uppercase bg-slate-900 text-white px-2 py-0.5 rounded-none font-bold">
-                NOTICE BOARD ACCESS GRANTED
+                CHRONICLE (§5.3) // CIVIC NOTICE BOARD & QUEST ENGINE
               </span>
-              <span className="text-[10px] font-mono text-slate-500">// Aureline Systems Framework</span>
+              <span className="text-[10px] font-mono text-slate-500">// Aureline Civic Grid</span>
             </div>
             <h1 className="text-lg font-bold text-[#2C3E50]">
-              Synchronized Life & Task Directory
+              Synchronized Life, Missions & Quests Directory
             </h1>
           </div>
-          <div className="text-right font-mono text-xs text-slate-500">
-            Active Entries: <strong className="text-slate-900">{filteredNotices.length}</strong>
+          <div className="flex items-center gap-4 text-right font-mono text-xs text-slate-500">
+            <div>
+              <div className="text-[10px] text-slate-400">CREDITS</div>
+              <div className="font-bold text-amber-600">{player?.credits ?? 500} ₢</div>
+            </div>
+            <div className="h-6 w-[1px] bg-slate-200" />
+            <div>
+              <div className="text-[10px] text-slate-400">BITS</div>
+              <div className="font-bold text-cyan-600">{player?.bits ?? 25} ◈</div>
+            </div>
           </div>
         </div>
 

@@ -1,4 +1,4 @@
-import { Folder, Mail, MessageSquare, Terminal, Globe, Settings, Sparkles, UserCheck, Radio, Award, BookOpen, Cpu, Home, Briefcase, LucideIcon } from 'lucide-react';
+import { Folder, Mail, MessageSquare, Terminal, Globe, Settings, Sparkles, UserCheck, Radio, Award, BookOpen, Cpu, Home, Briefcase, Activity, Package, Building, LucideIcon } from 'lucide-react';
 import { miraverseDb, AppMetadata } from '../db/miraverseDb';
 
 export interface RegisteredApp extends AppMetadata {
@@ -27,6 +27,9 @@ const ICON_MAP: Record<string, LucideIcon> = {
   process: Cpu,
   housing: Home,
   jobs: Briefcase,
+  vitals: Activity,
+  vault: Package,
+  campus: Building,
   lore: BookOpen,
   settings: Settings,
 };
