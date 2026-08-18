@@ -19,47 +19,48 @@ export default {
         mono: ['Corbel', 'Carlito', 'Segoe UI', 'sans-serif'], // Fallback mapped to Corbel
       },
       colors: {
-        // 3.1 Global OS Base — "Celestial Night"
+        // 3.1 Global OS Base — Luminous "Celestial Night" (Zero Muddy Blacks)
         celestial: {
-          deep: '#0A1026',        // Deep Space
-          midnight: '#142B52',    // Midnight Blue
-          constellation: '#254A7A',// Constellation Blue
-          slate: '#5D7EA8',       // Moonlight Slate
-          gold: '#D4B06A',        // Starlight Gold (Primary Accent)
-          softgold: '#F0D79A',    // Soft Gold
-          ivory: '#F8F6EE',       // Ivory White (Primary Text)
-          mist: '#C7D2E0',        // Starlight Mist (Secondary Text)
+          deep: '#142850',         // Cosmic Sapphire
+          midnight: '#1E3D75',     // Luminous Midnight Blue
+          constellation: '#315D9E',// Constellation Azure
+          slate: '#7B9CC4',        // Moonlight Slate
+          gold: '#E5C370',         // Radiant Starlight Gold
+          softgold: '#FBE6AB',     // Soft Luminous Gold
+          ivory: '#FFFFFF',        // Pure Crisp White
+          mist: '#D5E2F5',         // High-Contrast Crisp Mist
+          card: 'rgba(255, 255, 255, 0.12)',
         },
         // 3.2 Sector: Nephele / Arcane Archives & Nether Systems
         nephele: {
-          lavender: '#E1DAFB',
-          frost: '#FFD2F4',
-          glaucous: '#758AD1',
-          persian: '#4D3EA3',
-          violet: '#450C3F',
+          lavender: '#EDE7FF',
+          frost: '#FFE2F9',
+          glaucous: '#8FA2E6',
+          persian: '#624BC7',
+          violet: '#581D5E',
         },
         // 3.2 Sector: Faith Medical / Arcadia Ecological Wardens
         faith: {
-          darkjungle: '#1E201F',
-          jungle: '#193A31',
-          greencyan: '#1D6C61',
-          verdigris: '#3EB9A8',
-          forest: '#5AA371',
+          darkjungle: '#1D3B34',
+          jungle: '#245448',
+          greencyan: '#2A8B7D',
+          verdigris: '#4CD6C4',
+          forest: '#6EC087',
         },
         // 3.2 Sector: Orynvell Imperial & High Council
         orynvell: {
           cream: '#FFFDF7',
-          gold: '#ECC86C',
-          aether: '#1B3358',
+          gold: '#F5D378',
+          aether: '#24467D',
         },
       },
       boxShadow: {
-        'cosmic-low': '0 2px 8px rgba(10, 16, 38, 0.35)',
-        'cosmic-std': '0 12px 36px rgba(10, 16, 38, 0.60)',
-        'cosmic-deep': '0 24px 60px rgba(10, 16, 38, 0.75)',
-        'glow-gold': '0 0 16px rgba(212, 176, 106, 0.45)',
-        'glow-verdigris': '0 0 16px rgba(62, 185, 168, 0.45)',
-        'glow-violet': '0 0 16px rgba(117, 138, 209, 0.45)',
+        'cosmic-low': '0 4px 14px rgba(12, 25, 54, 0.35)',
+        'cosmic-std': '0 16px 44px rgba(12, 25, 54, 0.55)',
+        'cosmic-deep': '0 28px 70px rgba(12, 25, 54, 0.70)',
+        'glow-gold': '0 0 18px rgba(229, 195, 112, 0.55)',
+        'glow-verdigris': '0 0 18px rgba(76, 214, 196, 0.55)',
+        'glow-violet': '0 0 18px rgba(143, 162, 230, 0.55)',
       },
       backdropBlur: {
         'nova': '20px',

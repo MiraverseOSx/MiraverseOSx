@@ -17,27 +17,27 @@ export interface AppLauncherModalProps {
 
 export const APPS_DIRECTORY = [
   // 5.3 Personal Apps & Tools
-  { id: 'passport', label: 'MIRROR // Citizen Matrix', category: 'Personal Apps', icon: UserCheck, color: 'text-[#F0D79A]', border: 'border-[#D4B06A]/40', desc: 'Identity initialization, appearance, pronouns, wardrobe & telemetry calibration' },
-  { id: 'housing', label: 'HOMECRAFT // Residential', category: 'Personal Apps', icon: Home, color: 'text-[#E1DAFB]', border: 'border-[#758AD1]/40', desc: 'Residential grid editor, furniture layout, room expansion & rest' },
+  { id: 'passport', label: 'MIRROR // Citizen Matrix', category: 'Personal Apps', icon: UserCheck, color: 'text-[#FBE6AB]', border: 'border-[#E5C370]/50', desc: 'Identity initialization, appearance, pronouns, wardrobe & telemetry calibration' },
+  { id: 'housing', label: 'HOMECRAFT // Residential', category: 'Personal Apps', icon: Home, color: 'text-[#EDE7FF]', border: 'border-[#8FA2E6]/50', desc: 'Residential grid editor, furniture layout, room expansion & rest' },
   
   // 5.3 Workplace & Career Portals
-  { id: 'jobs', label: 'WORKNET // Federal Access', category: 'Workplace Portals', icon: Briefcase, color: 'text-[#D4B06A]', border: 'border-[#D4B06A]/40', desc: 'Centralized federal work access across DGA, Faith Medical, Finance & Archives' },
-  { id: 'comms', label: 'COMMS // Institutional Network', category: 'Workplace Portals', icon: MessageSquare, color: 'text-[#3EB9A8]', border: 'border-[#3EB9A8]/40', desc: 'Dual-pane instant messaging mesh & encrypted Cyacademy/Career inbox' },
+  { id: 'jobs', label: 'WORKNET // Federal Access', category: 'Workplace Portals', icon: Briefcase, color: 'text-[#E5C370]', border: 'border-[#E5C370]/50', desc: 'Centralized federal work access across DGA, Faith Medical, Finance & Archives' },
+  { id: 'comms', label: 'COMMS // Institutional Network', category: 'Workplace Portals', icon: MessageSquare, color: 'text-[#4CD6C4]', border: 'border-[#4CD6C4]/50', desc: 'Dual-pane instant messaging mesh & encrypted Cyacademy/Career inbox' },
   
   // 5.3 Civic Subsystems & Notice Boards
-  { id: 'board', label: 'CHRONICLE // Notice Board', category: 'Civic Subsystems', icon: Bookmark, color: 'text-[#5AA371]', border: 'border-[#5AA371]/40', desc: 'Central notice board, active quests, missions, adventures & lore codices' },
-  { id: 'pulse', label: 'PULSE // Faction Telemetry', category: 'Civic Subsystems', icon: Radio, color: 'text-[#FFD2F4]', border: 'border-[#FFD2F4]/40', desc: 'Faction matrix tracker, regional announcements & social broadcast feed' },
+  { id: 'board', label: 'CHRONICLE // Notice Board', category: 'Civic Subsystems', icon: Bookmark, color: 'text-[#6EC087]', border: 'border-[#6EC087]/50', desc: 'Central notice board, active quests, missions, adventures & lore codices' },
+  { id: 'pulse', label: 'PULSE // Faction Telemetry', category: 'Civic Subsystems', icon: Radio, color: 'text-[#FFE2F9]', border: 'border-[#FFE2F9]/50', desc: 'Faction matrix tracker, regional announcements & social broadcast feed' },
   
   // 5.3 Public Versenet Websites & Navigation
-  { id: 'browser', label: 'VERSENET // Browser Terminal', category: 'Versenet Web', icon: Globe, color: 'text-[#758AD1]', border: 'border-[#758AD1]/40', desc: 'Public website network: CIVINET, QUESTNOTICE, Faith Med, DGA & Archives' },
+  { id: 'browser', label: 'VERSENET // Browser Terminal', category: 'Versenet Web', icon: Globe, color: 'text-[#8FA2E6]', border: 'border-[#8FA2E6]/50', desc: 'Public website network: CIVINET, QUESTNOTICE, Faith Med, DGA & Archives' },
   
   // Storage, Security & Utility
-  { id: 'spellforge', label: 'SpellForge Protocol Matrix', category: 'Security & Tools', icon: Sparkles, color: 'text-[#E1DAFB]', border: 'border-[#E1DAFB]/40', desc: 'Elemental protocol synthesis, reality stabilization & firewall weaving' },
-  { id: 'process', label: 'Process Monitor (PRISM)', category: 'Security & Tools', icon: Cpu, color: 'text-[#C7D2E0]', border: 'border-[#5D7EA8]/40', desc: 'Kernel thread inspector, origin tracer & PRISM corruption isolation' },
-  { id: 'terminal', label: 'System Terminal', category: 'Security & Tools', icon: Terminal, color: 'text-[#3EB9A8]', border: 'border-[#3EB9A8]/40', desc: 'Command line execution shell & direct live SQL query engine' },
-  { id: 'files', label: 'File Explorer', category: 'Storage & Registry', icon: Folder, color: 'text-[#F0D79A]', border: 'border-[#D4B06A]/40', desc: 'Local documents, Purge archives, canonical file types & map rasters' },
-  { id: 'lore', label: 'Lore Explorer (Cloud)', category: 'Storage & Registry', icon: BookOpen, color: 'text-[#E1DAFB]', border: 'border-[#758AD1]/40', desc: 'Live synchronized Appwrite Cloud lore database & character registries' },
-  { id: 'settings', label: 'System Settings', category: 'Storage & Registry', icon: Settings, color: 'text-[#C7D2E0]', border: 'border-[#5D7EA8]/40', desc: 'Theme personalization, sound synthesizer & OS preferences' },
+  { id: 'spellforge', label: 'SpellForge Protocol Matrix', category: 'Security & Tools', icon: Sparkles, color: 'text-[#EDE7FF]', border: 'border-[#EDE7FF]/50', desc: 'Elemental protocol synthesis, reality stabilization & firewall weaving' },
+  { id: 'process', label: 'Process Monitor (PRISM)', category: 'Security & Tools', icon: Cpu, color: 'text-[#D5E2F5]', border: 'border-[#7B9CC4]/50', desc: 'Kernel thread inspector, origin tracer & PRISM corruption isolation' },
+  { id: 'terminal', label: 'System Terminal', category: 'Security & Tools', icon: Terminal, color: 'text-[#4CD6C4]', border: 'border-[#4CD6C4]/50', desc: 'Command line execution shell & direct live SQL query engine' },
+  { id: 'files', label: 'File Explorer', category: 'Storage & Registry', icon: Folder, color: 'text-[#FBE6AB]', border: 'border-[#E5C370]/50', desc: 'Local documents, Purge archives, canonical file types & map rasters' },
+  { id: 'lore', label: 'Lore Explorer (Cloud)', category: 'Storage & Registry', icon: BookOpen, color: 'text-[#EDE7FF]', border: 'border-[#8FA2E6]/50', desc: 'Live synchronized Appwrite Cloud lore database & character registries' },
+  { id: 'settings', label: 'System Settings', category: 'Storage & Registry', icon: Settings, color: 'text-[#D5E2F5]', border: 'border-[#7B9CC4]/50', desc: 'Theme personalization, sound synthesizer & OS preferences' },
 ];
 
 export default function AppLauncherModal({ isOpen, onClose }: AppLauncherModalProps) {
@@ -80,13 +80,13 @@ export default function AppLauncherModal({ isOpen, onClose }: AppLauncherModalPr
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 select-none">
-      {/* Soft Ambient Backdrop */}
+      {/* Luminous Ambient Backdrop */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
         onClick={onClose}
-        className="absolute inset-0 bg-[#0A1026]/80 backdrop-blur-xl transition-opacity"
+        className="absolute inset-0 bg-[#142850]/75 backdrop-blur-xl transition-opacity"
       />
 
       {/* ─── 4.1 NOVA GLASS LAUNCHER CONTAINER ─── */}
@@ -95,25 +95,25 @@ export default function AppLauncherModal({ isOpen, onClose }: AppLauncherModalPr
         animate={{ opacity: 1, scale: 1, y: 0 }}
         exit={{ opacity: 0, scale: 0.96, y: 10 }}
         transition={{ type: 'spring', damping: 28, stiffness: 350 }}
-        className="relative z-10 w-full max-w-2xl bg-[#142B52]/90 backdrop-blur-2xl border border-white/20 shadow-[0_24px_80px_rgba(10,16,38,0.90),0_0_35px_rgba(212,176,106,0.15)] rounded-2xl overflow-hidden font-ui text-[#F8F6EE] flex flex-col max-h-[580px]"
+        className="relative z-10 w-full max-w-2xl bg-[#1E3D75]/92 backdrop-blur-2xl border border-white/30 shadow-[0_24px_80px_rgba(12,25,54,0.75),0_0_35px_rgba(229,195,112,0.25)] rounded-2xl overflow-hidden font-ui text-[#FFFFFF] flex flex-col max-h-[580px]"
       >
         {/* Header */}
-        <div className="p-4 border-b border-white/10 bg-[#0A1026]/80 space-y-3">
+        <div className="p-4 border-b border-white/15 bg-[#142850]/85 space-y-3">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <Star size={14} className="text-[#D4B06A]" />
-              <span className="text-[11px] font-display font-bold tracking-[0.18em] text-[#F0D79A] uppercase">
+              <Star size={14} className="text-[#E5C370]" />
+              <span className="text-[11px] font-display font-bold tracking-[0.18em] text-[#FBE6AB] uppercase">
                 MIRAVERSEOSX // 5.3 LAYERED INTERFACE GRID
               </span>
             </div>
             
             {/* Dual Currency Badge in Launcher */}
             <div className="flex items-center gap-3 font-ui text-xs">
-              <span className="text-[#D4B06A] font-bold">{player?.credits ?? 500} ₢ CREDITS</span>
-              <span className="text-[#3EB9A8] font-bold">{player?.bits ?? 25} ◈ BITS</span>
+              <span className="text-[#E5C370] font-bold">{player?.credits ?? 500} ₢ CREDITS</span>
+              <span className="text-[#4CD6C4] font-bold">{player?.bits ?? 25} ◈ BITS</span>
               <button
                 onClick={onClose}
-                className="text-[#C7D2E0] hover:text-white transition p-1 rounded-lg hover:bg-white/10 ml-2"
+                className="text-[#D5E2F5] hover:text-white transition p-1 rounded-lg hover:bg-white/20 ml-2"
                 title="Close"
               >
                 <X size={16} />
@@ -123,13 +123,13 @@ export default function AppLauncherModal({ isOpen, onClose }: AppLauncherModalPr
 
           {/* Search Bar with Starlight Gold Focus Ring */}
           <div className="relative flex items-center">
-            <Search size={15} className="absolute left-3.5 text-[#C7D2E0]" />
+            <Search size={15} className="absolute left-3.5 text-[#D5E2F5]" />
             <input
               type="text"
               placeholder="Search applications, protocols, and services..."
               value={query}
               onChange={(e) => setQuery(e.target.value)}
-              className="w-full h-10 pl-10 pr-4 rounded-xl bg-[#0A1026]/70 border border-[#254A7A] text-xs text-[#F8F6EE] placeholder-[#C7D2E0]/60 font-ui focus:outline-none focus:border-[#D4B06A] focus:ring-1 focus:ring-[#D4B06A]/60 transition"
+              className="w-full h-10 pl-10 pr-4 rounded-xl bg-[#142850]/80 border border-[#315D9E] text-xs text-[#FFFFFF] placeholder-[#D5E2F5]/70 font-ui focus:outline-none focus:border-[#E5C370] focus:ring-1 focus:ring-[#E5C370]/60 transition"
               autoFocus
             />
           </div>
@@ -145,8 +145,8 @@ export default function AppLauncherModal({ isOpen, onClose }: AppLauncherModalPr
                 }}
                 className={`px-3 py-1 rounded-lg transition whitespace-nowrap ${
                   activeCategory === cat
-                    ? 'bg-gradient-to-r from-[#D4B06A] via-[#ECC86C] to-[#254A7A] text-[#0A1026] font-bold shadow-xs border border-white/30'
-                    : 'text-[#C7D2E0] hover:text-white hover:bg-[#254A7A]/50'
+                    ? 'bg-gradient-to-r from-[#E5C370] via-[#F5D378] to-[#315D9E] text-[#0E1A33] font-bold shadow-xs border border-white/40'
+                    : 'text-[#D5E2F5] hover:text-white hover:bg-[#315D9E]/50'
                 }`}
               >
                 {cat}
@@ -163,19 +163,19 @@ export default function AppLauncherModal({ isOpen, onClose }: AppLauncherModalPr
               <button
                 key={app.id}
                 onClick={() => handleLaunch(app.id)}
-                className="p-3 rounded-xl bg-[#254A7A]/30 hover:bg-[#254A7A]/60 border border-white/10 hover:border-[#D4B06A]/50 text-left transition-all flex items-center justify-between group active:scale-[0.98] hover:-translate-y-0.5"
+                className="p-3 rounded-xl bg-[#24467D]/40 hover:bg-[#315D9E]/70 border border-white/20 hover:border-[#E5C370]/60 text-left transition-all flex items-center justify-between group active:scale-[0.98] hover:-translate-y-0.5 shadow-cosmic-low"
               >
                 <div className="flex items-center gap-3 min-w-0">
-                  <div className={`flex h-9 w-9 items-center justify-center rounded-lg bg-[#0A1026]/70 border ${app.border} text-white group-hover:scale-105 transition-transform shrink-0`}>
+                  <div className={`flex h-9 w-9 items-center justify-center rounded-lg bg-[#142850]/85 border ${app.border} text-white group-hover:scale-105 transition-transform shrink-0`}>
                     <Icon size={18} className={app.color} />
                   </div>
                   <div className="min-w-0">
                     <div className="flex items-center gap-2">
-                      <span className="font-bold text-xs text-[#F8F6EE] group-hover:text-[#F0D79A] truncate">
+                      <span className="font-bold text-xs text-[#FFFFFF] group-hover:text-[#FBE6AB] truncate">
                         {app.label}
                       </span>
                     </div>
-                    <p className="text-[10px] text-[#C7D2E0]/80 truncate mt-0.5 leading-normal">
+                    <p className="text-[10px] text-[#D5E2F5]/90 truncate mt-0.5 leading-normal">
                       {app.desc}
                     </p>
                   </div>

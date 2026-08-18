@@ -252,65 +252,63 @@ export default function NoticeBoardApp() {
               <Terminal className="w-3.5 h-3.5 text-slate-700" />
               Primary Protocol Stream ({activeCategory.toUpperCase()})
             </h3>
-
             {filteredNotices.length === 0 ? (
-              <div className="p-8 text-center bg-white border border-dashed border-slate-300 text-xs text-slate-400">
+              <div className="p-8 text-center bg-[#142850]/70 border border-dashed border-white/20 text-xs text-[#D5E2F5] rounded-xl font-ui">
                 No active directives found under this protocol category.
               </div>
             ) : (
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 {filteredNotices.map((notice, index) => {
-                  // Create visual diversity by varying card heights and background borders based on index
                   const isWideCard = index % 3 === 0;
                   return (
                     <div 
                       key={notice.id}
-                      className={`bg-white p-4 border transition-all flex flex-col justify-between rounded-none shadow-2xs hover:shadow-md ${
-                        notice.completed ? 'opacity-60 border-slate-200 bg-slate-50' : 'border-slate-300 hover:border-slate-500'
-                      } ${isWideCard ? 'sm:col-span-2 bg-gradient-to-r from-white via-white to-slate-50/50' : 'col-span-1'}`}
+                      className={`p-4 border transition-all flex flex-col justify-between rounded-xl shadow-cosmic-low hover:shadow-md ${
+                        notice.completed ? 'opacity-65 border-white/10 bg-[#1E3D75]/40' : 'border-white/20 bg-[#24467D]/40 hover:bg-[#315D9E]/60 hover:border-[#E5C370]/60'
+                      } ${isWideCard ? 'sm:col-span-2 bg-gradient-to-r from-[#24467D]/50 via-[#315D9E]/40 to-[#24467D]/50' : 'col-span-1'}`}
                     >
                       <div>
                         {/* Card Top Meta */}
                         <div className="flex items-center justify-between mb-2">
-                          <span className="text-[10px] font-mono uppercase px-1.5 py-0.2 bg-slate-100 text-slate-700 border border-slate-200 font-bold">
+                          <span className="text-[10px] font-ui uppercase px-2 py-0.5 bg-[#142850]/80 text-[#FBE6AB] border border-[#E5C370]/40 rounded font-bold">
                             {notice.tag}
                           </span>
-                          <span className={`text-[10px] font-mono font-bold px-2 py-0.5 border ${
-                            notice.priority === 'Critical' ? 'bg-red-50 text-red-700 border-red-200' :
-                            notice.priority === 'Elevated' ? 'bg-amber-50 text-amber-800 border-amber-200' :
-                            notice.priority === 'Archival' ? 'bg-purple-50 text-purple-800 border-purple-200' :
-                            'bg-slate-100 text-slate-700 border-slate-200'
+                          <span className={`text-[10px] font-ui font-bold px-2 py-0.5 rounded border ${
+                            notice.priority === 'Critical' ? 'bg-rose-900/60 text-rose-200 border-rose-400/50' :
+                            notice.priority === 'Elevated' ? 'bg-amber-900/60 text-[#FBE6AB] border-amber-400/50' :
+                            notice.priority === 'Archival' ? 'bg-purple-900/60 text-[#EDE7FF] border-purple-400/50' :
+                            'bg-[#1E3D75] text-[#D5E2F5] border-white/15'
                           }`}>
                             {notice.priority}
                           </span>
                         </div>
 
                         {/* Title & Description */}
-                        <h4 className={`text-sm font-bold text-[#2C3E50] mb-1 ${notice.completed ? 'line-through text-slate-400' : ''}`}>
+                        <h4 className={`text-sm font-bold font-display text-[#FFFFFF] mb-1 ${notice.completed ? 'line-through text-[#D5E2F5]/60' : ''}`}>
                           {notice.title}
                         </h4>
-                        <p className="text-xs text-slate-600 leading-relaxed mb-4">
+                        <p className="text-xs text-[#D5E2F5] leading-relaxed mb-4 font-ui">
                           {notice.description}
                         </p>
                       </div>
 
                       {/* Card Footer with Status Toggle */}
-                      <div className="pt-3 border-t border-slate-100 flex items-center justify-between">
+                      <div className="pt-3 border-t border-white/15 flex items-center justify-between">
                         <button
                           onClick={() => toggleNoticeCompletion(notice.id)}
-                          className="flex items-center gap-1.5 text-xs font-mono font-medium text-slate-700 hover:text-slate-900 transition-colors"
+                          className="flex items-center gap-1.5 text-xs font-ui font-medium text-[#D5E2F5] hover:text-[#FFFFFF] transition-colors"
                         >
                           {notice.completed ? (
-                            <CheckSquare className="w-4 h-4 text-emerald-600" />
+                            <CheckSquare className="w-4 h-4 text-[#4CD6C4]" />
                           ) : (
-                            <Square className="w-4 h-4 text-slate-400 hover:text-slate-700" />
+                            <Square className="w-4 h-4 text-[#D5E2F5]/60 hover:text-white" />
                           )}
-                          <span className={notice.completed ? 'line-through text-slate-400' : ''}>
+                          <span className={notice.completed ? 'line-through text-[#D5E2F5]/60 font-bold' : 'font-bold'}>
                             {notice.completed ? 'Protocol Fulfilled' : 'Mark Complete'}
                           </span>
                         </button>
-                        <span className="text-[10px] font-mono uppercase text-slate-400">
-                          {notice.category}
+                        <span className="text-[10px] font-ui uppercase text-[#FBE6AB] font-semibold">
+                          +{notice.rewardCredits} ₢ {notice.rewardBits ? `+ ${notice.rewardBits} ◈` : ''}
                         </span>
                       </div>
                     </div>
@@ -324,56 +322,55 @@ export default function NoticeBoardApp() {
           <div className="space-y-4">
             
             {/* Pinned Priority Section */}
-            <div className="bg-white border-2 border-amber-500/80 p-4 rounded-none shadow-sm relative overflow-hidden">
-              <div className="absolute top-0 right-0 bg-amber-500 text-slate-950 font-mono text-[9px] font-bold px-2 py-0.5 flex items-center gap-1">
-                <Pin className="w-3 h-3 fill-slate-950" /> PINNED PRIORITY
+            <div className="bg-[#24467D]/50 border-2 border-[#E5C370]/80 p-4 rounded-xl shadow-cosmic-std relative overflow-hidden backdrop-blur-xl">
+              <div className="absolute top-0 right-0 bg-[#E5C370] text-[#0E1A33] font-ui text-[9px] font-bold px-2 py-0.5 flex items-center gap-1 rounded-bl-lg shadow-xs">
+                <Pin className="w-3 h-3 fill-[#0E1A33]" /> PINNED PRIORITY
               </div>
               
-              <h3 className="text-xs font-bold uppercase tracking-wider text-slate-900 font-mono mb-3 flex items-center gap-1.5">
-                <ShieldAlert className="w-4 h-4 text-amber-600" />
+              <h3 className="text-xs font-bold uppercase tracking-wider text-[#FFFFFF] font-display mb-3 flex items-center gap-1.5">
+                <ShieldAlert className="w-4 h-4 text-[#E5C370]" />
                 Critical Aureline Directives
               </h3>
 
               <div className="space-y-2.5">
                 {pinnedNotices.length === 0 ? (
-                  <p className="text-xs text-slate-400 italic">No pinned notices currently requiring attention.</p>
+                  <p className="text-xs text-[#D5E2F5]/70 italic">No urgent directives pinned at this cycle.</p>
                 ) : (
-                  pinnedNotices.map((pin) => (
-                    <div key={pin.id} className="p-2.5 bg-amber-50/60 border border-amber-200 text-xs">
-                      <div className="font-bold text-slate-900 mb-1">{pin.title}</div>
-                      <p className="text-[11px] text-slate-600 leading-normal">{pin.description}</p>
+                  pinnedNotices.map((pn) => (
+                    <div 
+                      key={pn.id} 
+                      onClick={() => toggleNoticeCompletion(pn.id)}
+                      className="p-2.5 bg-[#1E3D75]/70 hover:bg-[#315D9E]/70 border border-white/20 rounded-lg cursor-pointer transition flex items-center justify-between group"
+                    >
+                      <div className="min-w-0 pr-2">
+                        <span className="text-[9px] font-ui uppercase px-1.5 py-0.2 bg-[#E5C370] text-[#0E1A33] font-bold rounded">
+                          {pn.priority}
+                        </span>
+                        <div className="text-xs font-bold text-[#FFFFFF] group-hover:text-[#FBE6AB] truncate mt-1 font-display">
+                          {pn.title}
+                        </div>
+                      </div>
+                      <span className="text-[10px] text-[#4CD6C4] font-ui font-bold shrink-0">
+                        +{pn.rewardXP} XP
+                      </span>
                     </div>
                   ))
                 )}
               </div>
             </div>
 
-            {/* Quick System Telemetry Widget */}
-            <div className="bg-slate-900 text-white p-4 rounded-none border border-slate-800 shadow-sm">
-              <h3 className="text-xs font-bold uppercase tracking-wider text-slate-300 font-mono mb-2 flex items-center gap-1.5">
-                <Clock className="w-3.5 h-3.5 text-indigo-400" />
-                System Framework Status
-              </h3>
-              <div className="space-y-2 text-xs font-mono">
-                <div className="flex justify-between py-1 border-b border-slate-800 text-slate-300">
-                  <span>Framework:</span>
-                  <span className="text-emerald-400">AurelineOS v4.2</span>
-                </div>
-                <div className="flex justify-between py-1 border-b border-slate-800 text-slate-300">
-                  <span>Veil Stability:</span>
-                  <span className="text-amber-400">Nominal (94.2%)</span>
-                </div>
-                <div className="flex justify-between py-1 text-slate-300">
-                  <span>Tasks Completed:</span>
-                  <span className="text-indigo-400">{notices.filter(n => n.completed).length} / {notices.length}</span>
-                </div>
-              </div>
+            {/* Quick Lore & Protocol Dispatch Widget */}
+            <div className="bg-[#142850]/80 border border-white/20 p-4 rounded-xl space-y-2 backdrop-blur-xl">
+              <h4 className="text-xs font-bold font-display uppercase tracking-wider text-[#FBE6AB] flex items-center gap-1.5">
+                <Compass className="w-3.5 h-3.5 text-[#4CD6C4]" />
+                Aureline Dispatch Advisory
+              </h4>
+              <p className="text-xs text-[#D5E2F5] leading-relaxed font-ui">
+                Civic tasks refresh at every Morning and Evening time segment shift. Ensure Biometric Clearance verification via MIRROR is active for classified assignments.
+              </p>
             </div>
-
           </div>
-
         </div>
-
       </main>
     </div>
   );

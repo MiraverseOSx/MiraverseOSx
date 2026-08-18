@@ -85,35 +85,35 @@ export default function HousingApp() {
     };
 
     return (
-        <div className="flex flex-col h-full bg-[#0A1026]/90 backdrop-blur-xl text-[#F8F6EE] font-ui select-none overflow-hidden border border-white/10 shadow-2xl">
+        <div className="flex flex-col h-full bg-[#1E3D75]/90 backdrop-blur-xl text-[#FFFFFF] font-ui select-none overflow-hidden border border-white/20 shadow-2xl">
             {/* Header */}
-            <div className="flex items-center justify-between px-6 py-4 bg-[#142B52]/80 border-b border-white/10 shadow-xs">
+            <div className="flex items-center justify-between px-6 py-4 bg-[#142850]/80 border-b border-white/15 shadow-xs">
                 <div className="flex items-center gap-3">
-                    <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#254A7A]/40 border border-[#D4B06A]/40 text-[#D4B06A]">
+                    <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#315D9E]/60 border border-[#E5C370]/50 text-[#E5C370]">
                         <Home size={20} />
                     </div>
                     <div>
-                        <h2 className="text-base font-bold tracking-wider text-[#F8F6EE] uppercase font-display">
+                        <h2 className="text-base font-bold tracking-wider text-[#FFFFFF] uppercase font-display">
                             HOMECRAFT (§5.3) // RESIDENTIAL SPACE GRID EDITOR
                         </h2>
-                        <div className="flex items-center gap-3 text-xs text-[#C7D2E0] font-ui mt-0.5">
-                            <span>Assigned House: <strong className="text-[#F0D79A] font-bold">Vector House</strong></span>
+                        <div className="flex items-center gap-3 text-xs text-[#D5E2F5] font-ui mt-0.5">
+                            <span>Assigned House: <strong className="text-[#FBE6AB] font-bold">Vector House</strong></span>
                             <span>•</span>
-                            <span>Stamina: <strong className="text-[#3EB9A8]">{stamina} / 100</strong></span>
+                            <span>Stamina: <strong className="text-[#4CD6C4] font-bold">{stamina} / 100</strong></span>
                             <span>•</span>
-                            <span>Credits: <strong className="text-[#D4B06A]">{credits} ₢</strong></span>
+                            <span>Credits: <strong className="text-[#E5C370] font-bold">{credits} ₢</strong></span>
                             <span>•</span>
-                            <span>Bits: <strong className="text-[#3EB9A8]">{bits} ◈</strong></span>
+                            <span>Bits: <strong className="text-[#4CD6C4] font-bold">{bits} ◈</strong></span>
                         </div>
                     </div>
                 </div>
 
                 {/* Tab Navigation */}
-                <div className="flex items-center bg-[#0A1026]/60 p-1 rounded-lg border border-white/10">
+                <div className="flex items-center bg-[#142850]/70 p-1 rounded-lg border border-white/15">
                     <button
                         onClick={() => setActiveTab('room')}
                         className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-semibold transition ${
-                            activeTab === 'room' ? 'bg-[#254A7A] text-[#F0D79A] shadow-xs border border-[#D4B06A]/40' : 'text-[#C7D2E0] hover:text-white'
+                            activeTab === 'room' ? 'bg-[#315D9E] text-[#FBE6AB] shadow-xs border border-[#E5C370]/70 font-bold' : 'text-[#D5E2F5] hover:text-white'
                         }`}
                     >
                         <Bed size={13} />
@@ -122,7 +122,7 @@ export default function HousingApp() {
                     <button
                         onClick={() => setActiveTab('board')}
                         className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-semibold transition ${
-                            activeTab === 'board' ? 'bg-[#254A7A] text-[#F0D79A] shadow-xs border border-[#D4B06A]/40' : 'text-[#C7D2E0] hover:text-white'
+                            activeTab === 'board' ? 'bg-[#315D9E] text-[#FBE6AB] shadow-xs border border-[#E5C370]/70 font-bold' : 'text-[#D5E2F5] hover:text-white'
                         }`}
                     >
                         <Pin size={13} />
@@ -131,7 +131,7 @@ export default function HousingApp() {
                     <button
                         onClick={() => setActiveTab('upgrades')}
                         className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-semibold transition ${
-                            activeTab === 'upgrades' ? 'bg-[#254A7A] text-[#F0D79A] shadow-xs border border-[#D4B06A]/40' : 'text-[#C7D2E0] hover:text-white'
+                            activeTab === 'upgrades' ? 'bg-[#315D9E] text-[#FBE6AB] shadow-xs border border-[#E5C370]/70 font-bold' : 'text-[#D5E2F5] hover:text-white'
                         }`}
                     >
                         <Sparkles size={13} />
@@ -140,7 +140,7 @@ export default function HousingApp() {
                     <button
                         onClick={() => setActiveTab('dreams')}
                         className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-semibold transition ${
-                            activeTab === 'dreams' ? 'bg-[#254A7A] text-[#F0D79A] shadow-xs border border-[#D4B06A]/40' : 'text-[#C7D2E0] hover:text-white'
+                            activeTab === 'dreams' ? 'bg-[#315D9E] text-[#FBE6AB] shadow-xs border border-[#E5C370]/70 font-bold' : 'text-[#D5E2F5] hover:text-white'
                         }`}
                     >
                         <Moon size={13} />
@@ -151,13 +151,13 @@ export default function HousingApp() {
 
             {/* Notification alert */}
             {restMessage && (
-                <div className="bg-[#254A7A]/70 border-b border-[#D4B06A]/30 px-6 py-2 text-xs font-ui text-[#F0D79A] font-semibold flex items-center justify-between">
+                <div className="bg-[#315D9E]/80 border-b border-[#E5C370]/40 px-6 py-2 text-xs font-ui text-[#FBE6AB] font-semibold flex items-center justify-between">
                     <span>{restMessage}</span>
                 </div>
             )}
 
             {/* Main Content Area */}
-            <div className="flex-1 p-6 overflow-y-auto bg-[#0A1026]/50">
+            <div className="flex-1 p-6 overflow-y-auto bg-[#142850]/65">
                 {/* ROOM HUB TAB */}
                 {activeTab === 'room' && (
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">

@@ -16,45 +16,8 @@ export default function MeridionLandingPage({ onSignIn, onEnroll, onDirectLaunch
       {/* Dynamic Starfield Background Canvas */}
       <SparklesCanvas />
 
-      {/* ── TOP IMMERSIVE HEADER BAR ── */}
-      <header className="sticky top-0 left-0 right-0 z-50 flex h-16 items-center justify-between px-8 border-b border-purple-500/20 bg-[#070514]/90 backdrop-blur-md">
-        <div className="flex items-center gap-3">
-          <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-purple-500/20 border border-purple-400/40 text-purple-300 shadow-[0_0_15px_rgba(168,85,247,0.3)]">
-            <Sparkles size={18} />
-          </div>
-          <div>
-            <span className="font-serif-y2k text-xl font-bold tracking-widest text-purple-200">MERIDION</span>
-            <span className="ml-2 text-[9px] font-mono tracking-[0.25em] text-purple-400/80 uppercase">CELESTIAL REALM</span>
-          </div>
-        </div>
-
-        {/* Top Quick Action Buttons */}
-        <div className="flex items-center gap-3">
-          {onDirectLaunch && (
-            <button
-              onClick={onDirectLaunch}
-              className="px-3.5 py-1.5 rounded-xl text-xs font-mono font-semibold text-cyan-300 hover:text-white hover:bg-cyan-900/40 transition border border-cyan-500/40 flex items-center gap-1.5"
-            >
-              ⚡ Launch Desktop OS
-            </button>
-          )}
-          <button
-            onClick={onSignIn}
-            className="px-4 py-2 rounded-xl text-xs font-semibold text-purple-200 hover:text-white hover:bg-purple-900/30 transition border border-purple-500/30"
-          >
-            Sign In
-          </button>
-          <button
-            onClick={onEnroll}
-            className="px-5 py-2 rounded-xl text-xs font-bold text-white bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 transition shadow-[0_0_20px_rgba(168,85,247,0.4)]"
-          >
-            Enroll into Citizen Registry
-          </button>
-        </div>
-      </header>
-
       {/* ── HERO SECTION: MAC-STYLE PURPLE WORLD OF MERIDION ── */}
-      <section className="relative z-10 flex min-h-[calc(100vh-4rem)] w-full flex-col items-center justify-center py-12 px-6">
+      <section className="relative z-10 flex min-h-screen w-full flex-col items-center justify-center py-12 px-6">
         {/* Ambient Purple Radial Glows */}
         <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 h-[600px] w-[800px] bg-purple-600/15 rounded-full blur-[140px] pointer-events-none" />
         <div className="absolute top-1/3 right-10 h-[400px] w-[400px] bg-indigo-600/15 rounded-full blur-[120px] pointer-events-none" />
@@ -89,12 +52,6 @@ export default function MeridionLandingPage({ onSignIn, onEnroll, onDirectLaunch
 
             {/* Dark Purple Gradient Overlay */}
             <div className="absolute inset-0 bg-gradient-to-t from-[#090518] via-[#090518]/40 to-transparent" />
-
-            {/* Floating Top Badge */}
-            <div className="absolute top-6 left-6 inline-flex items-center gap-2 rounded-full border border-purple-300/30 bg-purple-950/60 px-3.5 py-1.5 backdrop-blur-md text-[10px] font-mono tracking-wider text-purple-200">
-              <span className="h-2 w-2 rounded-full bg-purple-400 animate-pulse" />
-              <span>LIVE WORLD • MERIDION VIDEO FEED</span>
-            </div>
           </div>
 
           {/* Hero Content Overlay & CTA Block */}

@@ -24,11 +24,12 @@ body {
    2. CELESTIAL DESKTOP & NOVA GLASS BACKDROPS (§1 & §4)
    ========================================================================== */
 .bg-meridion-desktop {
-  background-color: #0A1026;
+  background-color: #142850;
   background-image: 
-    radial-gradient(ellipse at 15% 20%, rgba(37, 74, 122, 0.45) 0%, transparent 45%),
-    radial-gradient(ellipse at 85% 80%, rgba(69, 12, 63, 0.40) 0%, transparent 50%),
-    radial-gradient(ellipse at 50% 50%, rgba(20, 43, 82, 0.35) 0%, transparent 60%);
+    radial-gradient(ellipse at 15% 20%, rgba(49, 93, 158, 0.65) 0%, transparent 50%),
+    radial-gradient(ellipse at 85% 80%, rgba(98, 75, 199, 0.50) 0%, transparent 55%),
+    radial-gradient(ellipse at 50% 40%, rgba(229, 195, 112, 0.22) 0%, transparent 50%),
+    radial-gradient(ellipse at 50% 90%, rgba(42, 139, 125, 0.40) 0%, transparent 60%);
   background-size: cover;
   background-attachment: fixed;
 }
@@ -37,8 +38,8 @@ body {
 .mira-flat-card, .meridion-card {
   background: var(--glass-fill-base);
   border: 1px solid var(--glass-border-frost);
-  backdrop-filter: blur(var(--glass-blur-std)) saturate(150%);
-  -webkit-backdrop-filter: blur(var(--glass-blur-std)) saturate(150%);
+  backdrop-filter: blur(var(--glass-blur-std)) saturate(160%);
+  -webkit-backdrop-filter: blur(var(--glass-blur-std)) saturate(160%);
   border-radius: var(--radius-card);
   box-shadow: var(--shadow-cosmic-std);
   color: var(--color-ivory-white);
@@ -50,9 +51,9 @@ body {
   background: var(--glass-fill-hover);
 }
 
-/* Hologram Panels with Starlight Glow */
+/* Hologram Panels with Radiant Starlight Glow */
 .hologram-panel {
-  background: rgba(20, 43, 82, 0.80);
+  background: rgba(30, 61, 117, 0.85);
   border: 1px solid var(--color-starlight-gold);
   box-shadow: var(--glow-starlight);
   backdrop-filter: blur(16px);
@@ -61,13 +62,13 @@ body {
 
 .holo-grid {
   background-image:
-    linear-gradient(rgba(212, 176, 106, 0.08) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(212, 176, 106, 0.08) 1px, transparent 1px);
+    linear-gradient(rgba(229, 195, 112, 0.12) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(229, 195, 112, 0.12) 1px, transparent 1px);
   background-size: 28px 28px;
 }
 
 /* ==========================================================================
-   3. TRANSLUCENT CELESTIAL SCROLLBARS
+   3. TRANSLUCENT CELESTIAL SCROLLBARS (Crisp & Visible)
    ========================================================================== */
 ::-webkit-scrollbar {
   width: 6px;
@@ -75,14 +76,14 @@ body {
 }
 
 ::-webkit-scrollbar-track {
-  background: rgba(10, 16, 38, 0.60);
+  background: rgba(20, 40, 80, 0.50);
   border-radius: 9999px;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--color-moonlight-slate);
+  background: rgba(123, 156, 196, 0.75);
   border-radius: 9999px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.25);
 }
 
 ::-webkit-scrollbar-thumb:hover {
@@ -105,8 +106,8 @@ body {
 .celestial-divider::after {
   content: '';
   flex: 1;
-  border-bottom: 1px solid rgba(212, 176, 106, 0.25);
-  background: linear-gradient(90deg, transparent, rgba(212, 176, 106, 0.35), transparent);
+  border-bottom: 1px solid rgba(229, 195, 112, 0.35);
+  background: linear-gradient(90deg, transparent, rgba(229, 195, 112, 0.45), transparent);
 }
 
 .celestial-divider:not(:empty)::before {

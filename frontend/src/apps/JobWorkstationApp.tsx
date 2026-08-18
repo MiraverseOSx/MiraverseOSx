@@ -179,41 +179,36 @@ export default function JobWorkstationApp() {
               <span className="text-[#5AA371] text-[11px]">◈ BITS</span>
             </div>
           </div>
-          <div className="h-8 w-[1px] bg-white/10" />
-          <div className="text-right">
-            <div className="text-[#C7D2E0] text-[10px] uppercase tracking-wider">Shift Resolved</div>
-            <div className="text-[#3EB9A8] font-bold">{completedCount} / {missions.length}</div>
-          </div>
         </div>
       </header>
 
       {/* ─── ⚡ ROOT ADMIN TESTING & DEBUG TOOLBAR (ADMINS ONLY) ─── */}
       {player?.isAdmin && (
-        <div className="flex items-center justify-between px-6 py-2 bg-gradient-to-r from-amber-950/80 via-indigo-950/80 to-purple-950/80 border-b border-amber-500/40 text-xs font-mono">
+        <div className="flex items-center justify-between px-6 py-2 bg-gradient-to-r from-[#24467D]/95 via-[#1E3D75]/95 to-[#315D9E]/95 border-b border-[#E5C370]/50 text-xs font-ui">
           <div className="flex items-center gap-2">
-            <span className="px-2 py-0.5 rounded bg-amber-500 text-slate-950 font-bold text-[10px] tracking-wider uppercase flex items-center gap-1">
+            <span className="px-2.5 py-0.5 rounded-md bg-[#E5C370] text-[#0E1A33] font-bold text-[10px] tracking-wider uppercase flex items-center gap-1 shadow-xs">
               <Zap size={11} /> ROOT ADMIN DEBUG PANEL
             </span>
-            <span className="text-amber-200 text-[11px]">Unrestricted Access Across All 9 Institutions</span>
+            <span className="text-[#FBE6AB] text-[11px]">Unrestricted Access Across All 9 Institutions</span>
           </div>
           <div className="flex items-center gap-2">
             <button
               onClick={handleAdminResetMissions}
-              className="px-2.5 py-1 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded text-[11px] font-bold transition flex items-center gap-1"
+              className="px-3 py-1 bg-[#142850]/80 hover:bg-[#315D9E] text-[#FFFFFF] rounded-lg text-[11px] font-bold transition border border-white/20 flex items-center gap-1 shadow-xs"
               title="Reset all assignments to uncompleted for re-testing"
             >
               <RefreshCw size={12} /> Reset Missions
             </button>
             <button
               onClick={handleAdminCompleteAll}
-              className="px-2.5 py-1 bg-emerald-700 hover:bg-emerald-600 text-white rounded text-[11px] font-bold transition flex items-center gap-1"
+              className="px-3 py-1 bg-[#2A8B7D] hover:bg-[#4CD6C4] hover:text-[#0E1A33] text-white rounded-lg text-[11px] font-bold transition flex items-center gap-1 shadow-xs"
               title="Instantly execute all directives and credit rewards"
             >
               <CheckCircle2 size={12} /> Resolve All
             </button>
             <button
               onClick={handleAdminAddFunds}
-              className="px-2.5 py-1 bg-amber-600 hover:bg-amber-500 text-white rounded text-[11px] font-bold transition flex items-center gap-1"
+              className="px-3 py-1 bg-gradient-to-r from-[#E5C370] to-[#D4A84D] text-[#0E1A33] hover:from-[#FBE6AB] hover:to-[#E5C370] rounded-lg text-[11px] font-bold transition flex items-center gap-1 shadow-xs"
               title="Grant +10,000 Credits and +1,000 Bits"
             >
               <DollarSign size={12} /> +10k ₢ / +1k ◈
@@ -223,7 +218,7 @@ export default function JobWorkstationApp() {
       )}
 
       {/* ─── WORKPLACE TERMINAL SELECTOR STRIP ─── */}
-      <div className="flex items-center gap-1.5 px-4 py-2 bg-[#090d1c] border-b border-slate-800 overflow-x-auto scrollbar-none">
+      <div className="flex items-center gap-1.5 px-4 py-2 bg-[#142850]/80 border-b border-white/15 overflow-x-auto scrollbar-none">
         {STATIONS.map((station) => {
           const Icon = station.icon;
           const isActive = activeStation === station.id;
@@ -234,13 +229,13 @@ export default function JobWorkstationApp() {
                 if (soundEnabled) SoundFX.playButtonTap();
                 setActiveStation(station.id);
               }}
-              className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-mono whitespace-nowrap transition-all border ${
+              className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-ui whitespace-nowrap transition-all border ${
                 isActive
-                  ? `${station.bg} ${station.color} ${station.border} shadow-md font-bold scale-[1.02]`
-                  : 'bg-slate-900/50 text-slate-400 border-slate-800 hover:bg-slate-800 hover:text-slate-200'
+                  ? 'bg-[#315D9E] text-[#FBE6AB] border-[#E5C370]/70 shadow-md font-bold scale-[1.02]'
+                  : 'bg-[#1E3D75]/40 text-[#D5E2F5] border-white/10 hover:bg-[#315D9E]/40 hover:text-white'
               }`}
             >
-              <Icon size={14} className={isActive ? station.color : 'text-slate-500'} />
+              <Icon size={14} className={isActive ? 'text-[#FBE6AB]' : 'text-[#D5E2F5]'} />
               <span>{station.name.split(' ')[0]}</span>
             </button>
           );
@@ -249,37 +244,37 @@ export default function JobWorkstationApp() {
 
       {/* ─── DGA SUB-BRANCH CONTROLS (IF DGA CONSOLE ACTIVE) ─── */}
       {activeStation === 'dga' && (
-        <div className="flex items-center justify-between px-6 py-2 bg-purple-950/30 border-b border-purple-900/40 text-xs font-mono">
+        <div className="flex items-center justify-between px-6 py-2 bg-[#581D5E]/40 border-b border-[#EDE7FF]/25 text-xs font-ui">
           <div className="flex items-center gap-2">
-            <span className="text-purple-300 font-bold text-[11px]">§10.1B DGA DIVISIONS:</span>
+            <span className="text-[#EDE7FF] font-bold text-[11px]">§10.1B DGA DIVISIONS:</span>
             {(['All', 'Shield', 'Eyes', 'Blackout Team'] as const).map((branch) => (
               <button
                 key={branch}
                 onClick={() => setDgaBranchFilter(branch)}
-                className={`px-2.5 py-1 rounded text-[11px] font-semibold transition ${
+                className={`px-2.5 py-1 rounded-lg text-[11px] font-semibold transition ${
                   dgaBranchFilter === branch
-                    ? 'bg-purple-600 text-white shadow-xs'
-                    : 'bg-purple-900/40 text-purple-300 hover:bg-purple-800/40'
+                    ? 'bg-[#624BC7] text-white shadow-xs font-bold border border-white/30'
+                    : 'bg-[#581D5E]/60 text-[#EDE7FF] hover:bg-[#624BC7]/50'
                 }`}
               >
                 {branch}
               </button>
             ))}
           </div>
-          <div className="text-[11px] text-purple-300/80">
-            Active Nodes: SOC, RRB, PSD, ETG | SIGINT, HUMINT, RGA, CIIS | Blackout
+          <div className="text-[11px] text-[#EDE7FF]/90 font-ui">
+            Active Nodes: SOC, RRB, PSD, ETG | SIGINT, HUMINT, RGA, CIIS | Blackout Team
           </div>
         </div>
       )}
 
       {/* ─── ACTION FEEDBACK TOAST ─── */}
       {actionFeedback && (
-        <div className="mx-6 mt-3 px-4 py-2.5 bg-emerald-950/90 border border-emerald-500/60 rounded-xl text-emerald-200 text-xs font-mono shadow-lg flex items-center justify-between animate-fadeIn">
+        <div className="mx-6 mt-3 px-4 py-2.5 bg-[#245448]/95 border border-[#4CD6C4]/60 rounded-xl text-[#FFFFFF] text-xs font-ui shadow-lg flex items-center justify-between animate-fadeIn">
           <div className="flex items-center gap-2">
-            <CheckCircle2 size={16} className="text-emerald-400 shrink-0" />
+            <CheckCircle2 size={16} className="text-[#4CD6C4] shrink-0" />
             <span>{actionFeedback}</span>
           </div>
-          <span className="text-[10px] text-emerald-400/80 uppercase">Telemetry Synchronized</span>
+          <span className="text-[10px] text-[#4CD6C4] uppercase font-bold">Telemetry Synchronized</span>
         </div>
       )}
 
@@ -287,26 +282,26 @@ export default function JobWorkstationApp() {
       <div className="flex-1 flex overflow-hidden p-6 gap-6">
         
         {/* LEFT PANE: 10.2 MISSION TAXONOMY & DISPATCH LIST */}
-        <div className="w-1/2 flex flex-col bg-[#0f1426] border border-slate-800 rounded-2xl overflow-hidden shadow-lg">
+        <div className="w-1/2 flex flex-col bg-[#142850]/80 border border-white/20 rounded-2xl overflow-hidden shadow-lg backdrop-blur-xl">
           
           {/* Mission Type Tab Filters */}
-          <div className="flex items-center justify-between p-3.5 bg-slate-900/80 border-b border-slate-800">
+          <div className="flex items-center justify-between p-3.5 bg-[#1E3D75]/90 border-b border-white/15">
             <div className="flex items-center gap-1.5 overflow-x-auto scrollbar-none">
               {(['All', 'Work Shifts', 'Special Assignments', 'Career Development', 'Field Operations', 'QUESTNOTICE'] as const).map((type) => (
                 <button
                   key={type}
                   onClick={() => setActiveMissionType(type)}
-                  className={`px-2.5 py-1 rounded-lg text-[11px] font-mono whitespace-nowrap transition ${
+                  className={`px-2.5 py-1 rounded-lg text-[11px] font-ui whitespace-nowrap transition ${
                     activeMissionType === type
-                      ? 'bg-indigo-600 text-white font-bold'
-                      : 'bg-slate-800/60 text-slate-400 hover:bg-slate-700 hover:text-slate-200'
+                      ? 'bg-[#E5C370] text-[#0E1A33] font-bold shadow-xs'
+                      : 'bg-[#142850]/60 text-[#D5E2F5] hover:bg-[#315D9E]/60 hover:text-white'
                   }`}
                 >
                   {type}
                 </button>
               ))}
             </div>
-            <span className="text-[11px] text-slate-400 font-mono ml-2">
+            <span className="text-[11px] text-[#D5E2F5] font-ui ml-2">
               {filteredMissions.length} Available
             </span>
           </div>
@@ -314,7 +309,7 @@ export default function JobWorkstationApp() {
           {/* Missions Scroll List */}
           <div className="flex-1 overflow-y-auto p-3 space-y-2.5">
             {filteredMissions.length === 0 ? (
-              <div className="text-center py-12 text-slate-500 font-mono text-xs">
+              <div className="text-center py-12 text-[#D5E2F5]/70 font-ui text-xs">
                 No active assignments for this workstation filter. Switch station or mission category.
               </div>
             ) : (
@@ -330,21 +325,21 @@ export default function JobWorkstationApp() {
                     }}
                     className={`p-3.5 rounded-xl border transition cursor-pointer ${
                       isSelected
-                        ? 'bg-indigo-950/60 border-indigo-500/70 shadow-md ring-1 ring-indigo-500/30'
-                        : 'bg-slate-900/40 border-slate-800/80 hover:bg-slate-800/50 hover:border-slate-700'
+                        ? 'bg-[#315D9E]/85 border-[#E5C370]/80 shadow-md ring-1 ring-[#E5C370]/40 text-[#FFFFFF]'
+                        : 'bg-[#24467D]/40 border-white/15 hover:bg-[#315D9E]/50 hover:border-white/30 text-[#FFFFFF]'
                     }`}
                   >
                     <div className="flex items-start justify-between gap-2">
                       <div className="space-y-1">
                         <div className="flex items-center gap-2">
-                          <span className={`text-[9px] font-mono uppercase px-1.5 py-0.5 rounded font-bold ${
-                            isCritical ? 'bg-rose-500/20 text-rose-300 border border-rose-500/40' : 'bg-slate-800 text-slate-300'
+                          <span className={`text-[9px] font-ui uppercase px-1.5 py-0.5 rounded font-bold ${
+                            isCritical ? 'bg-rose-500/25 text-rose-200 border border-rose-400/50' : 'bg-[#1E3D75] text-[#D5E2F5]'
                           }`}>
                             {m.type}
                           </span>
-                          <span className="text-[10px] text-slate-400 font-mono">{m.department}</span>
+                          <span className="text-[10px] text-[#D5E2F5] font-ui">{m.department}</span>
                         </div>
-                        <h4 className={`text-xs font-bold ${isSelected ? 'text-indigo-200' : 'text-slate-200'}`}>
+                        <h4 className={`text-xs font-bold ${isSelected ? 'text-[#FBE6AB]' : 'text-[#FFFFFF]'}`}>
                           {m.title}
                         </h4>
                       </div>
@@ -352,12 +347,12 @@ export default function JobWorkstationApp() {
                       {/* Status / Check */}
                       <div>
                         {m.completed ? (
-                          <span className="px-2 py-0.5 rounded bg-emerald-950 text-emerald-400 border border-emerald-600/40 text-[10px] font-mono font-bold flex items-center gap-1">
+                          <span className="px-2 py-0.5 rounded bg-[#245448] text-[#4CD6C4] border border-[#4CD6C4]/60 text-[10px] font-ui font-bold flex items-center gap-1">
                             <CheckCircle2 size={12} /> CLEARED
                           </span>
                         ) : (
-                          <span className={`px-2 py-0.5 rounded text-[10px] font-mono font-bold ${
-                            isCritical ? 'bg-rose-950 text-rose-400 border border-rose-700/40' : 'bg-slate-800 text-slate-400'
+                          <span className={`px-2 py-0.5 rounded text-[10px] font-ui font-bold ${
+                            isCritical ? 'bg-rose-900/60 text-rose-200 border border-rose-500/50' : 'bg-[#1E3D75] text-[#D5E2F5]'
                           }`}>
                             {m.severity}
                           </span>
@@ -366,13 +361,13 @@ export default function JobWorkstationApp() {
                     </div>
 
                     {/* Reward chips */}
-                    <div className="mt-2.5 flex items-center gap-3 text-[11px] font-mono">
-                      <span className="text-amber-400 font-bold">+{m.rewardCredits} ₢</span>
+                    <div className="mt-2.5 flex items-center gap-3 text-[11px] font-ui">
+                      <span className="text-[#E5C370] font-bold">+{m.rewardCredits} ₢</span>
                       {m.rewardBits > 0 && (
-                        <span className="text-cyan-400 font-bold">+{m.rewardBits} ◈ BITS</span>
+                        <span className="text-[#4CD6C4] font-bold">+{m.rewardBits} ◈ BITS</span>
                       )}
-                      <span className="text-indigo-300">+{m.rewardXP} XP</span>
-                      <span className="text-slate-500 text-[10px] ml-auto">{m.location.split('-')[0]}</span>
+                      <span className="text-[#D5E2F5]">+{m.rewardXP} XP</span>
+                      <span className="text-[#D5E2F5]/70 text-[10px] ml-auto">{m.location.split('-')[0]}</span>
                     </div>
                   </div>
                 );
@@ -382,92 +377,92 @@ export default function JobWorkstationApp() {
         </div>
 
         {/* RIGHT PANE: ACTIVE MISSION TELEMETRY & ACTION EXECUTION */}
-        <div className="w-1/2 flex flex-col bg-[#0f1426] border border-slate-800 rounded-2xl overflow-hidden shadow-lg">
+        <div className="w-1/2 flex flex-col bg-[#142850]/80 border border-white/20 rounded-2xl overflow-hidden shadow-lg backdrop-blur-xl">
           {selectedMission ? (
             <div className="flex-1 flex flex-col p-5 overflow-y-auto space-y-4">
               
               {/* Mission Header */}
-              <div className="border-b border-slate-800 pb-3.5 space-y-2">
+              <div className="border-b border-white/15 pb-3.5 space-y-2">
                 <div className="flex items-center justify-between">
-                  <span className="text-[10px] font-mono uppercase bg-indigo-900/60 text-indigo-300 px-2 py-0.5 rounded font-bold border border-indigo-700/50">
+                  <span className="text-[10px] font-ui uppercase bg-[#315D9E]/70 text-[#FBE6AB] px-2 py-0.5 rounded font-bold border border-[#E5C370]/40">
                     {selectedMission.department}
                   </span>
-                  <span className="text-xs text-slate-400 font-mono flex items-center gap-1">
-                    <MapPin size={13} className="text-indigo-400" /> {selectedMission.location}
+                  <span className="text-xs text-[#D5E2F5] font-ui flex items-center gap-1">
+                    <MapPin size={13} className="text-[#E5C370]" /> {selectedMission.location}
                   </span>
                 </div>
-                <h2 className="text-base font-bold text-slate-100">
+                <h2 className="text-base font-bold font-display text-[#FFFFFF]">
                   {selectedMission.title}
                 </h2>
-                <p className="text-xs text-slate-300 leading-relaxed font-sans">
+                <p className="text-xs text-[#D5E2F5] leading-relaxed font-ui">
                   {selectedMission.description}
                 </p>
               </div>
 
               {/* Subject & Threat Matrix */}
-              <div className="grid grid-cols-2 gap-3 font-mono text-xs">
-                <div className="p-3 bg-slate-900/60 border border-slate-800 rounded-xl space-y-1">
-                  <div className="text-[10px] text-slate-400 uppercase">Target / Subject</div>
-                  <div className="font-semibold text-slate-200">{selectedMission.targetSubject || 'General Institutional Asset'}</div>
+              <div className="grid grid-cols-2 gap-3 font-ui text-xs">
+                <div className="p-3 bg-[#1E3D75]/60 border border-white/15 rounded-xl space-y-1">
+                  <div className="text-[10px] text-[#D5E2F5]/80 uppercase">Target / Subject</div>
+                  <div className="font-semibold text-[#FFFFFF]">{selectedMission.targetSubject || 'General Institutional Asset'}</div>
                 </div>
-                <div className="p-3 bg-slate-900/60 border border-slate-800 rounded-xl space-y-1">
-                  <div className="text-[10px] text-slate-400 uppercase">Anomaly / Threat Vector</div>
-                  <div className="font-semibold text-rose-300">{selectedMission.threatOrSymptom || 'Standard Workplace Procedure'}</div>
+                <div className="p-3 bg-[#1E3D75]/60 border border-white/15 rounded-xl space-y-1">
+                  <div className="text-[10px] text-[#D5E2F5]/80 uppercase">Anomaly / Threat Vector</div>
+                  <div className="font-semibold text-rose-200">{selectedMission.threatOrSymptom || 'Standard Workplace Procedure'}</div>
                 </div>
               </div>
 
               {/* Permitted Institutional Tools */}
-              <div className="p-3.5 bg-slate-900/40 border border-slate-800/80 rounded-xl space-y-2">
-                <div className="text-[10px] text-indigo-300 font-mono uppercase font-bold flex items-center gap-1.5">
+              <div className="p-3.5 bg-[#1E3D75]/50 border border-white/15 rounded-xl space-y-2">
+                <div className="text-[10px] text-[#FBE6AB] font-ui uppercase font-bold flex items-center gap-1.5">
                   <Key size={13} /> Permitted Institutional Clearance Tools (§10.1A)
                 </div>
                 <div className="flex flex-wrap gap-1.5">
                   {selectedMission.permittedTools.map((tool) => (
                     <span
                       key={tool}
-                      className="px-2.5 py-1 bg-indigo-950/80 border border-indigo-700/50 text-indigo-300 rounded-lg text-[11px] font-mono flex items-center gap-1"
+                      className="px-2.5 py-1 bg-[#315D9E]/70 border border-white/20 text-[#FFFFFF] rounded-lg text-[11px] font-ui flex items-center gap-1"
                     >
-                      <Zap size={11} className="text-amber-400" /> {tool}
+                      <Zap size={11} className="text-[#E5C370]" /> {tool}
                     </span>
                   ))}
                 </div>
               </div>
 
               {/* Execution Protocol Box */}
-              <div className="p-4 bg-indigo-950/30 border border-indigo-800/50 rounded-xl space-y-2">
-                <div className="text-[11px] font-bold text-indigo-200 font-mono flex items-center gap-1.5">
-                  <Terminal size={14} className="text-indigo-400" /> Authorized Execution Directive
+              <div className="p-4 bg-[#315D9E]/40 border border-[#E5C370]/40 rounded-xl space-y-2">
+                <div className="text-[11px] font-bold text-[#FBE6AB] font-ui flex items-center gap-1.5">
+                  <Terminal size={14} className="text-[#E5C370]" /> Authorized Execution Directive
                 </div>
-                <p className="text-xs text-indigo-200/90 leading-relaxed font-mono">
+                <p className="text-xs text-[#FFFFFF] leading-relaxed font-ui">
                   {selectedMission.requiredAction}
                 </p>
               </div>
 
               {/* Compensation Summary & Action Button */}
-              <div className="mt-auto pt-3 border-t border-slate-800 space-y-3">
-                <div className="flex items-center justify-between text-xs font-mono px-1">
-                  <div className="text-slate-400">Total Compensation:</div>
+              <div className="mt-auto pt-3 border-t border-white/15 space-y-3">
+                <div className="flex items-center justify-between text-xs font-ui px-1">
+                  <div className="text-[#D5E2F5]">Total Compensation:</div>
                   <div className="flex items-center gap-3 font-bold">
-                    <span className="text-amber-400">+{selectedMission.rewardCredits} ₢ CREDITS</span>
+                    <span className="text-[#E5C370]">+{selectedMission.rewardCredits} ₢ CREDITS</span>
                     {selectedMission.rewardBits > 0 && (
-                      <span className="text-cyan-400">+{selectedMission.rewardBits} ◈ BITS</span>
+                      <span className="text-[#4CD6C4]">+{selectedMission.rewardBits} ◈ BITS</span>
                     )}
-                    <span className="text-indigo-300">+{selectedMission.rewardXP} XP ({selectedMission.primaryAttribute})</span>
+                    <span className="text-[#D5E2F5]">+{selectedMission.rewardXP} XP ({selectedMission.primaryAttribute})</span>
                   </div>
                 </div>
 
                 <button
                   onClick={() => handleExecuteMission(selectedMission.id)}
                   disabled={selectedMission.completed}
-                  className={`w-full py-3 rounded-xl font-bold font-mono text-xs transition flex items-center justify-center gap-2 shadow-lg ${
+                  className={`w-full py-3 rounded-xl font-bold font-ui text-xs transition flex items-center justify-center gap-2 shadow-lg ${
                     selectedMission.completed
-                      ? 'bg-slate-800 text-slate-400 cursor-not-allowed border border-slate-700'
-                      : 'bg-gradient-to-r from-indigo-600 to-indigo-700 hover:from-indigo-500 hover:to-indigo-600 text-white shadow-indigo-500/20 active:scale-[0.99]'
+                      ? 'bg-[#24467D] text-[#D5E2F5] cursor-not-allowed border border-white/20'
+                      : 'bg-gradient-to-r from-[#E5C370] via-[#F5D378] to-[#D4A84D] hover:from-[#FBE6AB] hover:to-[#E5C370] text-[#0E1A33] font-bold shadow-[0_4px_16px_rgba(229,195,112,0.45)] active:scale-[0.99] hover:-translate-y-0.5'
                   }`}
                 >
                   {selectedMission.completed ? (
                     <>
-                      <CheckCircle2 size={16} className="text-emerald-400" />
+                      <CheckCircle2 size={16} className="text-[#4CD6C4]" />
                       <span>Directive Finalized & Cleared</span>
                     </>
                   ) : (
@@ -481,7 +476,7 @@ export default function JobWorkstationApp() {
 
             </div>
           ) : (
-            <div className="flex-1 flex flex-col items-center justify-center p-6 text-slate-500 font-mono text-xs">
+            <div className="flex-1 flex flex-col items-center justify-center p-6 text-[#D5E2F5]/70 font-ui text-xs">
               Select an assignment on the left to review operational telemetry and clearance requirements.
             </div>
           )}
@@ -490,7 +485,7 @@ export default function JobWorkstationApp() {
       </div>
 
       {/* ─── FOOTER BAR: MERIDION WORKNET PROTOCOL LOG ─── */}
-      <footer className="flex items-center justify-between px-6 py-2 bg-[#090d1a] border-t border-slate-800 text-[11px] font-mono text-slate-400">
+      <footer className="flex items-center justify-between px-6 py-2 bg-[#142850]/90 border-t border-white/15 text-[11px] font-ui text-[#D5E2F5]">
         <div className="flex items-center gap-4">
           <span>STATION ID: <strong>WK-M4-{activeStation.toUpperCase()}-09</strong></span>
           <span>•</span>
@@ -498,7 +493,7 @@ export default function JobWorkstationApp() {
           <span>•</span>
           <span>GOV DIRECTIVE: <strong>14-B COMPLIANT</strong></span>
         </div>
-        <div className="flex items-center gap-2 text-indigo-300 font-semibold">
+        <div className="flex items-center gap-2 text-[#FBE6AB] font-semibold">
           <span>FEDERAL EMPLOYMENT ACCESS LAYER</span>
         </div>
       </footer>
@@ -506,3 +501,4 @@ export default function JobWorkstationApp() {
     </div>
   );
 }
+

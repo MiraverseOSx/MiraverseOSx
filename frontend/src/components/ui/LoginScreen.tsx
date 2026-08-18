@@ -85,49 +85,8 @@ export default function LoginScreen({ onLoginSuccess, initialMode = 'login', onB
         >
           <source src={activeVideo.src} type="video/mp4" />
         </video>
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(11,7,30,0.5)_0%,rgba(4,2,12,0.92)_85%)]" />
-        <div className="absolute inset-0 pointer-events-none opacity-20 holo-grid" />
-      </div>
-
-      {/* Top Controls: Return Button & Video Feed Switcher */}
-      <div className="absolute top-6 left-6 right-6 z-30 flex items-center justify-between pointer-events-auto">
-        {onBackToLanding ? (
-          <button
-            onClick={onBackToLanding}
-            className="flex items-center gap-2 rounded-xl border border-purple-500/50 bg-[#160d33] px-4 py-2 text-xs font-semibold text-purple-200 hover:text-white hover:bg-purple-900 transition shadow-md"
-          >
-            ← Return to Meridion Realm
-          </button>
-        ) : <div />}
-
-        {/* Video Feed Switcher Controls */}
-        <div className="flex items-center gap-2 bg-[#090e1a] p-1.5 rounded-2xl border border-white/20 shadow-md">
-          <div className="text-[10px] font-mono text-cyan-300 px-2 flex items-center gap-1.5">
-            <Eye size={13} className="text-cyan-400 animate-pulse" />
-            <span>Feed:</span>
-          </div>
-          {VIDEO_FEEDS.map((vf) => (
-            <button
-              key={vf.id}
-              onClick={() => setActiveVideoId(vf.id)}
-              className={`px-2.5 py-1 rounded-xl text-[10px] font-mono font-bold transition ${
-                activeVideoId === vf.id
-                  ? 'bg-cyan-500 text-black shadow-sm'
-                  : 'text-white/60 hover:text-white hover:bg-white/10'
-              }`}
-              title={vf.name}
-            >
-              {vf.id.toUpperCase()}
-            </button>
-          ))}
-          <button
-            onClick={() => setIsMuted(!isMuted)}
-            className="p-1 rounded-xl text-white/60 hover:text-white transition ml-1"
-            title={isMuted ? 'Unmute Background Audio' : 'Mute Background Audio'}
-          >
-            {isMuted ? <VolumeX size={14} /> : <Volume2 size={14} className="text-cyan-300" />}
-          </button>
-        </div>
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(49,93,158,0.35)_0%,rgba(20,40,80,0.85)_85%)]" />
+        <div className="absolute inset-0 pointer-events-none opacity-25 holo-grid" />
       </div>
 
       {/* ── MAIN HOLOGRAPHIC LOGIN & BOOT CONTAINER ── */}
@@ -135,34 +94,34 @@ export default function LoginScreen({ onLoginSuccess, initialMode = 'login', onB
         initial={{ opacity: 0, scale: 0.95, y: 15 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
         transition={{ duration: 0.4 }}
-        className="relative z-20 w-full max-w-md rounded-3xl hologram-panel p-8 shadow-2xl animate-holo-flicker text-white border border-cyan-400/30"
+        className="relative z-20 w-full max-w-md rounded-3xl bg-[#1E3D75]/92 backdrop-blur-2xl p-8 shadow-[0_24px_80px_rgba(12,25,54,0.75),0_0_35px_rgba(229,195,112,0.25)] text-white border border-white/30 font-ui"
       >
         {/* Header Branding */}
         <div className="text-center space-y-2 mb-6">
-          <div className="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-cyan-500/20 border border-cyan-400/40 text-cyan-300 shadow-[0_0_20px_rgba(6,182,212,0.3)]">
+          <div className="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-[#315D9E]/60 border border-[#E5C370]/50 text-[#E5C370] shadow-[0_0_20px_rgba(229,195,112,0.35)]">
             <Sparkles size={24} />
           </div>
           <div>
-            <h1 className="font-serif-y2k text-3xl font-bold tracking-wide text-cyan-300 drop-shadow-[0_0_10px_rgba(34,211,238,0.3)]">
+            <h1 className="font-display text-3xl font-bold tracking-wide text-[#FFFFFF] drop-shadow-[0_0_12px_rgba(229,195,112,0.35)]">
               MIRAVERSE OS
             </h1>
-            <p className="text-[10px] font-mono tracking-[0.25em] text-cyan-200/70 mt-1 uppercase">
-              CELESTIAL OPERATING SYSTEM • BOOT VER 5.2
+            <p className="text-[10px] font-ui tracking-[0.25em] text-[#FBE6AB] mt-1 uppercase font-bold">
+              CELESTIAL OPERATING SYSTEM • BOOT VER 5.3
             </p>
           </div>
         </div>
 
         {/* Tab Switcher: Login / Register */}
-        <div className="grid grid-cols-2 gap-1 rounded-xl bg-black/50 p-1 border border-white/10 mb-6 text-xs font-semibold">
+        <div className="grid grid-cols-2 gap-1 rounded-xl bg-[#142850]/80 p-1 border border-white/15 mb-6 text-xs font-semibold">
           <button
             onClick={() => setMode('login')}
-            className={`py-2 rounded-lg transition ${mode === 'login' ? 'bg-cyan-500 text-black font-bold shadow-md' : 'text-white/60 hover:text-white'}`}
+            className={`py-2 rounded-lg transition ${mode === 'login' ? 'bg-[#E5C370] text-[#0E1A33] font-bold shadow-md' : 'text-white/70 hover:text-white'}`}
           >
             Sign In
           </button>
           <button
             onClick={() => setMode('register')}
-            className={`py-2 rounded-lg transition ${mode === 'register' ? 'bg-cyan-500 text-black font-bold shadow-md' : 'text-white/60 hover:text-white'}`}
+            className={`py-2 rounded-lg transition ${mode === 'register' ? 'bg-[#E5C370] text-[#0E1A33] font-bold shadow-md' : 'text-white/70 hover:text-white'}`}
           >
             Register Asset
           </button>
@@ -171,16 +130,30 @@ export default function LoginScreen({ onLoginSuccess, initialMode = 'login', onB
         {/* Login / Register Form */}
         <form onSubmit={handleStandardLogin} className="space-y-4">
           <div className="space-y-1.5">
-            <label className="text-[10px] font-mono text-cyan-300/80 uppercase tracking-wider flex items-center gap-1">
+            <label className="text-[10px] font-ui text-[#FBE6AB] uppercase tracking-wider flex items-center gap-1 font-bold">
               <User size={12} /> Asset Handle / Username
             </label>
             <Input
               type="text"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
-              placeholder="Enter your student/citizen ID..."
-              className="bg-black/60 border-cyan-500/30 text-cyan-200 placeholder:text-white/30 text-xs focus:border-cyan-400"
+              placeholder="e.g. CY-9021-PLAYER or admin"
               required
+              className="bg-[#142850]/85 border-[#315D9E] text-white placeholder-[#D5E2F5]/60 font-ui"
+            />
+          </div>
+
+          <div className="space-y-1.5">
+            <label className="text-[10px] font-ui text-[#FBE6AB] uppercase tracking-wider flex items-center gap-1 font-bold">
+              <Key size={12} /> Cipher Passkey
+            </label>
+            <Input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="••••••••"
+              required
+              className="bg-[#142850]/85 border-[#315D9E] text-white placeholder-[#D5E2F5]/60 font-ui"
             />
           </div>
 

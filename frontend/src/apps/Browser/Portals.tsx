@@ -27,7 +27,7 @@ export function FaithMedPortal() {
     };
 
     return (
-        <div className="p-6 space-y-6 bg-[#0A1026]/90 backdrop-blur-xl min-h-full text-[#F8F6EE] font-ui select-none">
+        <div className="p-6 space-y-6 bg-[#142850]/80 backdrop-blur-xl min-h-full text-[#FFFFFF] font-ui select-none">
             <header className="flex items-center justify-between border-b border-[#3EB9A8]/30 pb-4">
                 <div className="flex items-center gap-3">
                     <div className="h-10 w-10 rounded-xl bg-[#1D6C61] text-[#F8F6EE] flex items-center justify-center font-bold shadow-glow-verdigris">

@@ -1,6 +1,7 @@
 /**
  * MIRAVERSEOSX Master Theme & Styling Tokens (§3 & §4)
  * Visual Philosophy: "Celestial Glass" & "Nova Glass" Framework
+ * Luminous & High-Contrast Celestial Palette (Zero Muddy Blacks)
  */
 
 :root {
@@ -12,7 +13,7 @@
   --font-lore: 'Alice', 'Georgia', serif;
   --font-script: 'Great Vibes', 'Cookie', cursive;
 
-  /* Map Bootstrap 5.3 Typography */
+  /* Bootstrap 5.3 Typography Bridge */
   --bs-body-font-family: var(--font-ui);
   --bs-font-sans-serif: var(--font-ui);
   --bs-body-font-size: 0.875rem;
@@ -20,88 +21,89 @@
   --bs-body-line-height: 1.5;
 
   /* ==========================================================================
-     2. GLOBAL OS BASE — "CELESTIAL NIGHT" (§3.1)
+     2. GLOBAL OS BASE — LUMINOUS "CELESTIAL NIGHT" (§3.1)
      ========================================================================== */
-  --color-deep-space: #0A1026;
-  --color-midnight: #142B52;
-  --color-constellation: #254A7A;
-  --color-moonlight-slate: #5D7EA8;
-  --color-starlight-gold: #D4B06A;
-  --color-soft-gold: #F0D79A;
-  --color-ivory-white: #F8F6EE;
-  --color-starlight-mist: #C7D2E0;
+  --color-deep-space: #142850;        /* Royal Cosmic Sapphire (Never pitch black) */
+  --color-midnight: #1E3D75;          /* Luminous Midnight Blue */
+  --color-constellation: #315D9E;     /* Constellation Azure */
+  --color-moonlight-slate: #7B9CC4;   /* Moonlight Slate */
+  --color-starlight-gold: #E5C370;    /* Radiant Starlight Gold */
+  --color-soft-gold: #FBE6AB;         /* Soft Luminous Gold */
+  --color-ivory-white: #FFFFFF;       /* Pure Crisp White Text */
+  --color-starlight-mist: #D5E2F5;    /* High-Contrast Crisp Mist */
 
   /* ==========================================================================
-     3. SECTOR & INSTITUTIONAL PALETTES (§3.2)
+     3. SECTOR & INSTITUTIONAL PALETTES (§3.2) - LIGHTENED & VIBRANT
      ========================================================================== */
   /* Nephele / Arcane Archives & Nether Systems */
-  --nephele-lavender: #E1DAFB;
-  --nephele-frost: #FFD2F4;
-  --nephele-glaucous: #758AD1;
-  --nephele-persian: #4D3EA3;
-  --nephele-violet: #450C3F;
+  --nephele-lavender: #EDE7FF;
+  --nephele-frost: #FFE2F9;
+  --nephele-glaucous: #8FA2E6;
+  --nephele-persian: #624BC7;
+  --nephele-violet: #581D5E;
 
   /* Faith Medical / Arcadia Ecological Wardens */
-  --faith-dark-jungle: #1E201F;
-  --faith-jungle: #193A31;
-  --faith-green-cyan: #1D6C61;
-  --faith-verdigris: #3EB9A8;
-  --faith-forest: #5AA371;
+  --faith-dark-jungle: #1D3B34;
+  --faith-jungle: #245448;
+  --faith-green-cyan: #2A8B7D;
+  --faith-verdigris: #4CD6C4;
+  --faith-forest: #6EC087;
 
   /* Orynvell Imperial & High Council */
   --orynvell-cream: #FFFDF7;
-  --orynvell-gold: #ECC86C;
-  --orynvell-aether: #1B3358;
+  --orynvell-gold: #F5D378;
+  --orynvell-aether: #24467D;
 
   /* ==========================================================================
-     4. NOVA GLASS FRAMEWORK & ELEVATION (§4)
+     4. NOVA GLASS FRAMEWORK & HIGH-ALPHA SURFACES (§4)
      ========================================================================== */
-  /* Surface Fills with High Alpha */
-  --glass-fill-base: rgba(20, 43, 82, 0.72);
-  --glass-fill-deep: rgba(10, 16, 38, 0.85);
-  --glass-fill-card: rgba(37, 74, 122, 0.45);
-  --glass-fill-input: rgba(10, 16, 38, 0.60);
-  --glass-fill-hover: rgba(37, 74, 122, 0.65);
+  /* Luminous Translucent Fills */
+  --glass-fill-base: rgba(30, 61, 117, 0.75);
+  --glass-fill-deep: rgba(20, 40, 80, 0.85);
+  --glass-fill-card: rgba(255, 255, 255, 0.12);
+  --glass-fill-card-hover: rgba(255, 255, 255, 0.20);
+  --glass-fill-input: rgba(20, 40, 80, 0.65);
+  --glass-fill-hover: rgba(49, 93, 158, 0.65);
 
-  /* Frost & Starlight Borders */
-  --glass-border-frost: rgba(255, 255, 255, 0.18);
-  --glass-border-gold: rgba(212, 176, 106, 0.35);
-  --glass-border-hover: rgba(240, 215, 154, 0.50);
+  /* Frost & Starlight Borders with High Visibility */
+  --glass-border-frost: rgba(255, 255, 255, 0.24);
+  --glass-border-gold: rgba(229, 195, 112, 0.50);
+  --glass-border-hover: rgba(251, 230, 171, 0.70);
 
   /* Blurs & Radii */
-  --glass-blur-std: 20px;
-  --glass-blur-heavy: 28px;
-  --radius-window: 14px;
-  --radius-card: 10px;
+  --glass-blur-std: 18px;
+  --glass-blur-heavy: 24px;
+  --radius-window: 16px;
+  --radius-card: 12px;
   --radius-pill: 9999px;
 
-  /* Shadow & Glow Hierarchy */
-  --shadow-cosmic-low: 0 2px 10px rgba(10, 16, 38, 0.40);
-  --shadow-cosmic-std: 0 16px 40px rgba(10, 16, 38, 0.65);
-  --shadow-cosmic-deep: 0 28px 70px rgba(10, 16, 38, 0.85);
-  --glow-starlight: 0 0 16px rgba(212, 176, 106, 0.45);
-  --glow-verdigris: 0 0 16px rgba(62, 185, 168, 0.45);
-  --glow-violet: 0 0 16px rgba(117, 138, 209, 0.45);
+  /* Luminous Shadows (Deep Blue / Gold Tints, No Muddy Black) */
+  --shadow-cosmic-low: 0 4px 14px rgba(12, 25, 54, 0.35);
+  --shadow-cosmic-std: 0 16px 44px rgba(12, 25, 54, 0.55);
+  --shadow-cosmic-deep: 0 28px 70px rgba(12, 25, 54, 0.70);
+  --glow-starlight: 0 0 18px rgba(229, 195, 112, 0.55);
+  --glow-verdigris: 0 0 18px rgba(76, 214, 196, 0.55);
+  --glow-violet: 0 0 18px rgba(143, 162, 230, 0.55);
 
   /* ==========================================================================
      5. BOOTSTRAP 5.3 THEME VARIABLE BRIDGING
      ========================================================================== */
-  --bs-primary: #D4B06A;
-  --bs-primary-rgb: 212, 176, 106;
-  --bs-secondary: #254A7A;
-  --bs-secondary-rgb: 37, 74, 122;
-  --bs-success: #3EB9A8;
-  --bs-success-rgb: 62, 185, 168;
-  --bs-info: #758AD1;
-  --bs-info-rgb: 117, 138, 209;
-  --bs-warning: #ECC86C;
-  --bs-warning-rgb: 236, 200, 108;
-  --bs-danger: #e11d48;
-  --bs-danger-rgb: 225, 29, 72;
-  --bs-light: #F8F6EE;
-  --bs-light-rgb: 248, 246, 238;
-  --bs-dark: #0A1026;
-  --bs-dark-rgb: 10, 16, 38;
+  --bs-primary: #E5C370;
+  --bs-primary-rgb: 229, 195, 112;
+  --bs-secondary: #315D9E;
+  --bs-secondary-rgb: 49, 93, 158;
+  --bs-success: #4CD6C4;
+  --bs-success-rgb: 76, 214, 196;
+  --bs-info: #8FA2E6;
+  --bs-info-rgb: 143, 162, 230;
+  --bs-warning: #F5D378;
+  --bs-warning-rgb: 245, 211, 120;
+  --bs-danger: #F43F5E;
+  --bs-danger-rgb: 244, 63, 94;
+  --bs-light: #F8FAFC;
+  --bs-light-rgb: 248, 250, 252;
+  --bs-dark: #142850;
+  --bs-dark-rgb: 20, 40, 80;
 
   --bs-body-color: var(--color-ivory-white);
   --bs-body-bg: transparent;
