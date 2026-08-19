@@ -82,18 +82,18 @@ export default function SpellForgeApp() {
   };
 
   return (
-    <div className="flex flex-col h-full bg-[#0a0d18] text-[#d6defa] font-sans select-none overflow-hidden">
+    <div className="flex flex-col h-full bg-[#FAFBFD] text-slate-800 font-sans select-none overflow-hidden">
       {/* Top Header Toolbar */}
-      <div className="flex items-center justify-between px-6 py-4 bg-[#070912] border-b border-[#1b233d]">
+      <div className="flex items-center justify-between px-6 py-4 bg-white border-b border-slate-200 shadow-xs">
         <div className="flex items-center gap-3">
-          <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-purple-500/10 border border-purple-500/30 text-purple-400">
+          <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-purple-50 border border-purple-200 text-purple-700">
             <Sparkles size={18} />
           </div>
           <div>
-            <h2 className="text-base font-bold tracking-wider text-purple-300 font-mono uppercase">
+            <h2 className="text-base font-bold tracking-wider text-slate-900 font-mono uppercase">
               SPELLFORGE // PROTOCOL COMPILER
             </h2>
-            <p className="text-xs text-slate-400 font-mono">
+            <p className="text-xs text-slate-500 font-mono">
               Combine code modules to stabilize reality and forge spells for the Digital Veil.
             </p>
           </div>
@@ -103,7 +103,7 @@ export default function SpellForgeApp() {
       {/* Workspace Split */}
       <div className="flex-1 grid grid-cols-12 min-h-0 overflow-hidden">
         {/* Module Inventory Tray */}
-        <div className="col-span-4 border-r border-[#1b233d] p-5 overflow-y-auto space-y-3 bg-[#080b15]">
+        <div className="col-span-4 border-r border-slate-200 p-5 overflow-y-auto space-y-3 bg-slate-50">
           <div className="text-[10px] font-mono text-slate-500 uppercase tracking-wider mb-2">Module Inventory (11 Modules)</div>
           {MODULES_INVENTORY.map((mod) => {
             const Icon = mod.icon;
@@ -118,16 +118,16 @@ export default function SpellForgeApp() {
                   else if (!selectedSlotB && selectedSlotA.id !== mod.id) setSelectedSlotB(mod);
                   else setSelectedSlotA(mod);
                 }}
-                className={`p-3.5 rounded-xl border cursor-pointer transition flex items-center justify-between ${
+                className={`p-3.5 rounded-xl border cursor-pointer transition flex items-center justify-between shadow-xs ${
                   isSlotA
-                    ? 'bg-purple-950/40 border-purple-500 text-purple-200'
+                    ? 'bg-purple-50 border-purple-300 text-purple-950 font-bold'
                     : isSlotB
-                    ? 'bg-sky-950/40 border-sky-500 text-sky-200'
-                    : 'bg-[#0f1424] border-[#1f2947] hover:border-slate-600 text-slate-300'
+                    ? 'bg-sky-50 border-sky-300 text-sky-950 font-bold'
+                    : 'bg-white border-slate-200 hover:border-slate-300 text-slate-800'
                 }`}
               >
                 <div className="flex items-center gap-3">
-                  <div className="p-2 rounded-lg bg-[#141b30] border border-[#253256] text-slate-300">
+                  <div className="p-2 rounded-lg bg-slate-100 border border-slate-200 text-slate-700">
                     <Icon size={16} />
                   </div>
                   <div>
@@ -136,7 +136,7 @@ export default function SpellForgeApp() {
                   </div>
                 </div>
                 <div className="text-right">
-                  <span className="text-xs font-mono font-bold text-amber-400">{mod.power} PWR</span>
+                  <span className="text-xs font-mono font-bold text-amber-700">{mod.power} PWR</span>
                 </div>
               </div>
             );
@@ -144,34 +144,34 @@ export default function SpellForgeApp() {
         </div>
 
         {/* Forge Assembly Workbench */}
-        <div className="col-span-8 p-6 flex flex-col justify-between overflow-y-auto bg-[#0b0e1c]">
+        <div className="col-span-8 p-6 flex flex-col justify-between overflow-y-auto bg-[#FAFBFD]">
           <div className="space-y-6">
             <div className="grid grid-cols-2 gap-6">
               {/* Primary Slot */}
-              <div className="p-5 rounded-2xl bg-[#0f1426] border border-[#243054] space-y-3">
-                <div className="text-[10px] font-mono text-purple-400 uppercase tracking-wider">Primary Module Slot</div>
+              <div className="p-5 rounded-2xl bg-white border border-slate-200 space-y-3 shadow-xs">
+                <div className="text-[10px] font-mono text-purple-700 uppercase tracking-wider font-bold">Primary Module Slot</div>
                 {selectedSlotA ? (
                   <div>
-                    <h3 className="font-bold text-base text-purple-200 font-mono">{selectedSlotA.name}</h3>
-                    <p className="text-xs text-slate-400 mt-1">{selectedSlotA.description}</p>
+                    <h3 className="font-bold text-base text-purple-950 font-mono">{selectedSlotA.name}</h3>
+                    <p className="text-xs text-slate-600 mt-1">{selectedSlotA.description}</p>
                     <div className="text-xs font-mono text-slate-500 mt-2">Region: {selectedSlotA.region} | Power: {selectedSlotA.power}</div>
                   </div>
                 ) : (
-                  <div className="text-xs text-slate-600 font-mono py-4">Click an inventory module to insert</div>
+                  <div className="text-xs text-slate-400 font-mono py-4">Click an inventory module to insert</div>
                 )}
               </div>
 
               {/* Secondary Slot */}
-              <div className="p-5 rounded-2xl bg-[#0f1426] border border-[#243054] space-y-3">
-                <div className="text-[10px] font-mono text-sky-400 uppercase tracking-wider">Secondary Logic Slot</div>
+              <div className="p-5 rounded-2xl bg-white border border-slate-200 space-y-3 shadow-xs">
+                <div className="text-[10px] font-mono text-sky-700 uppercase tracking-wider font-bold">Secondary Logic Slot</div>
                 {selectedSlotB ? (
                   <div>
-                    <h3 className="font-bold text-base text-sky-200 font-mono">{selectedSlotB.name}</h3>
-                    <p className="text-xs text-slate-400 mt-1">{selectedSlotB.description}</p>
+                    <h3 className="font-bold text-base text-sky-950 font-mono">{selectedSlotB.name}</h3>
+                    <p className="text-xs text-slate-600 mt-1">{selectedSlotB.description}</p>
                     <div className="text-xs font-mono text-slate-500 mt-2">Region: {selectedSlotB.region} | Power: {selectedSlotB.power}</div>
                   </div>
                 ) : (
-                  <div className="text-xs text-slate-600 font-mono py-4">Click an inventory module to insert</div>
+                  <div className="text-xs text-slate-400 font-mono py-4">Click an inventory module to insert</div>
                 )}
               </div>
             </div>
@@ -190,29 +190,29 @@ export default function SpellForgeApp() {
 
             {/* Result Display */}
             {forgeResult && (
-              <div className="p-5 rounded-2xl bg-purple-950/30 border border-purple-500/50 space-y-2">
+              <div className="p-5 rounded-2xl bg-purple-50 border border-purple-200 space-y-2 shadow-xs">
                 <div className="flex items-center justify-between">
-                  <span className="text-[10px] font-mono font-bold text-purple-400 uppercase">SYNTHESIS SUCCESSFUL</span>
-                  <span className="text-xs font-mono font-bold text-amber-400">{forgeResult.power} PROTOCOL POWER</span>
+                  <span className="text-[10px] font-mono font-bold text-purple-700 uppercase">SYNTHESIS SUCCESSFUL</span>
+                  <span className="text-xs font-mono font-bold text-amber-800">{forgeResult.power} PROTOCOL POWER</span>
                 </div>
-                <h4 className="text-lg font-bold text-purple-100 font-mono">{forgeResult.name}</h4>
-                <div className="text-xs text-purple-300 font-mono">{forgeResult.type}</div>
-                <p className="text-xs text-slate-300 mt-1">{forgeResult.desc}</p>
+                <h4 className="text-lg font-bold text-purple-950 font-mono">{forgeResult.name}</h4>
+                <div className="text-xs text-purple-700 font-mono">{forgeResult.type}</div>
+                <p className="text-xs text-slate-700 mt-1">{forgeResult.desc}</p>
               </div>
             )}
           </div>
 
           {/* Compiled Spell Log */}
-          <div className="mt-6 pt-4 border-t border-[#1b233d]">
+          <div className="mt-6 pt-4 border-t border-slate-200">
             <div className="text-[10px] font-mono text-slate-500 uppercase tracking-wider mb-2">Compiled Protocol History</div>
             <div className="space-y-2">
               {forgedHistory.map((item, idx) => (
-                <div key={idx} className="p-3 rounded-lg bg-[#0f1424] border border-[#1f2947] flex justify-between items-center text-xs font-mono">
+                <div key={idx} className="p-3 rounded-lg bg-white border border-slate-200 flex justify-between items-center text-xs font-mono shadow-xs">
                   <div>
-                    <span className="font-bold text-purple-300">{item.name}</span>
+                    <span className="font-bold text-purple-950">{item.name}</span>
                     <span className="text-slate-500 ml-2">({item.combo})</span>
                   </div>
-                  <span className="text-emerald-400 font-bold">READY TO CAST</span>
+                  <span className="text-emerald-700 font-bold">READY TO CAST</span>
                 </div>
               ))}
             </div>

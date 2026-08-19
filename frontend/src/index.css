@@ -7,7 +7,7 @@
 @tailwind utilities;
 
 /* ==========================================================================
-   1. MASTER BASE LAYOUT & TYPOGRAPHY (§1 & §2)
+   1. MASTER BASE LAYOUT & TYPOGRAPHY
    ========================================================================== */
 body {
   margin: 0;
@@ -16,20 +16,20 @@ body {
   -moz-osx-font-smoothing: grayscale;
   overflow: hidden;
   user-select: none;
-  background-color: var(--color-deep-space);
-  color: var(--color-ivory-white);
+  background-color: var(--color-canvas-bg);
+  color: var(--color-text-primary);
 }
 
 /* ==========================================================================
-   2. CELESTIAL DESKTOP & NOVA GLASS BACKDROPS (§1 & §4)
+   2. LIGHT PASTEL CELESTIAL DESKTOP CANVAS
    ========================================================================== */
 .bg-meridion-desktop {
-  background-color: #142850;
+  background-color: #F4F6FB;
   background-image: 
-    radial-gradient(ellipse at 15% 20%, rgba(49, 93, 158, 0.65) 0%, transparent 50%),
-    radial-gradient(ellipse at 85% 80%, rgba(98, 75, 199, 0.50) 0%, transparent 55%),
-    radial-gradient(ellipse at 50% 40%, rgba(229, 195, 112, 0.22) 0%, transparent 50%),
-    radial-gradient(ellipse at 50% 90%, rgba(42, 139, 125, 0.40) 0%, transparent 60%);
+    radial-gradient(ellipse at 15% 20%, rgba(224, 242, 254, 0.85) 0%, transparent 55%),
+    radial-gradient(ellipse at 85% 75%, rgba(237, 233, 254, 0.80) 0%, transparent 55%),
+    radial-gradient(ellipse at 50% 35%, rgba(254, 243, 199, 0.70) 0%, transparent 50%),
+    radial-gradient(ellipse at 50% 90%, rgba(220, 252, 231, 0.65) 0%, transparent 60%);
   background-size: cover;
   background-attachment: fixed;
 }
@@ -37,38 +37,29 @@ body {
 /* Nova Glass Windows & Panels */
 .mira-flat-card, .meridion-card {
   background: var(--glass-fill-base);
-  border: 1px solid var(--glass-border-frost);
-  backdrop-filter: blur(var(--glass-blur-std)) saturate(160%);
-  -webkit-backdrop-filter: blur(var(--glass-blur-std)) saturate(160%);
+  border: 1px solid var(--color-border-subtle);
+  backdrop-filter: blur(var(--glass-blur-std)) saturate(150%);
+  -webkit-backdrop-filter: blur(var(--glass-blur-std)) saturate(150%);
   border-radius: var(--radius-card);
-  box-shadow: var(--shadow-cosmic-std);
-  color: var(--color-ivory-white);
+  box-shadow: var(--shadow-light-std);
+  color: var(--color-text-primary);
   transition: border-color 200ms ease, background-color 200ms ease, transform 200ms ease;
 }
 
 .mira-flat-card:hover, .meridion-card:hover {
-  border-color: var(--glass-border-gold);
-  background: var(--glass-fill-hover);
-}
-
-/* Hologram Panels with Radiant Starlight Glow */
-.hologram-panel {
-  background: rgba(30, 61, 117, 0.85);
-  border: 1px solid var(--color-starlight-gold);
-  box-shadow: var(--glow-starlight);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+  border-color: var(--color-border-strong);
+  background: #FFFFFF;
 }
 
 .holo-grid {
   background-image:
-    linear-gradient(rgba(229, 195, 112, 0.12) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(229, 195, 112, 0.12) 1px, transparent 1px);
+    linear-gradient(rgba(148, 163, 184, 0.15) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(148, 163, 184, 0.15) 1px, transparent 1px);
   background-size: 28px 28px;
 }
 
 /* ==========================================================================
-   3. TRANSLUCENT CELESTIAL SCROLLBARS (Crisp & Visible)
+   3. TRANSLUCENT SCROLLBARS (Light Mode)
    ========================================================================== */
 ::-webkit-scrollbar {
   width: 6px;
@@ -76,44 +67,40 @@ body {
 }
 
 ::-webkit-scrollbar-track {
-  background: rgba(20, 40, 80, 0.50);
+  background: rgba(241, 245, 249, 0.6);
   border-radius: 9999px;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(123, 156, 196, 0.75);
+  background: rgba(203, 213, 225, 0.85);
   border-radius: 9999px;
-  border: 1px solid rgba(255, 255, 255, 0.25);
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--color-starlight-gold);
-  box-shadow: var(--glow-starlight);
+  background: rgba(148, 163, 184, 0.95);
 }
 
 /* ==========================================================================
-   4. SECTOR DIVIDERS (§6)
+   4. SECTOR DIVIDERS
    ========================================================================== */
 .celestial-divider {
   display: flex;
   align-items: center;
   text-align: center;
-  margin: 1.25rem 0;
-  color: var(--color-starlight-mist);
+  color: var(--color-text-muted);
 }
 
 .celestial-divider::before,
 .celestial-divider::after {
   content: '';
   flex: 1;
-  border-bottom: 1px solid rgba(229, 195, 112, 0.35);
-  background: linear-gradient(90deg, transparent, rgba(229, 195, 112, 0.45), transparent);
+  border-bottom: 1px solid var(--color-border-subtle);
 }
 
 .celestial-divider:not(:empty)::before {
-  margin-right: 0.75rem;
+  margin-right: 1em;
 }
 
 .celestial-divider:not(:empty)::after {
-  margin-left: 0.75rem;
+  margin-left: 1em;
 }

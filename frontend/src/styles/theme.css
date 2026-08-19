@@ -1,6 +1,7 @@
 /**
  * MIRAVERSEOSX Master Theme & Styling Engine (§1 - §7)
- * Luminous Celestial Glass & Nova Glass Styling (Zero Pitch-Black Surfaces)
+ * Light Pastel Realistic Operating System Theme
+ * Clean, High-Contrast Obsidian Typography on Frosted Pearlescent Surfaces
  */
 
 @import './tokens.css';
@@ -10,18 +11,19 @@
    ========================================================================== */
 .font-display, h1, h2, h3, .window-title, .modal-title {
   font-family: var(--font-display);
-  letter-spacing: 0.04em;
-  color: var(--color-ivory-white);
+  letter-spacing: 0.03em;
+  color: var(--color-text-primary);
 }
 
 .font-ui, body, button, input, select, textarea, .nav-link, .badge, .btn {
   font-family: var(--font-ui);
+  color: var(--color-text-primary);
 }
 
 .font-lore, .lore-entry, .archive-text, .dialogue-box {
   font-family: var(--font-lore);
   line-height: 1.75;
-  color: var(--color-ivory-white);
+  color: var(--color-text-secondary);
 }
 
 .font-script, .seal-text, .rite-signature {
@@ -29,270 +31,177 @@
 }
 
 /* ==========================================================================
-   2. NOVA GLASS WINDOW CONTAINER & SURFACES (§4.1)
+   2. LIGHT NOVA GLASS WINDOW CONTAINER & SURFACES (§4.1)
    ========================================================================== */
 .nova-glass {
   background: var(--glass-fill-base);
-  backdrop-filter: blur(var(--glass-blur-std)) saturate(160%);
-  -webkit-backdrop-filter: blur(var(--glass-blur-std)) saturate(160%);
-  border: 1px solid var(--glass-border-frost);
+  backdrop-filter: blur(var(--glass-blur-std)) saturate(150%);
+  -webkit-backdrop-filter: blur(var(--glass-blur-std)) saturate(150%);
+  border: 1px solid var(--color-border-subtle);
   border-radius: var(--radius-window);
-  box-shadow: var(--shadow-cosmic-std);
-  color: var(--color-ivory-white);
+  box-shadow: var(--shadow-light-window);
+  color: var(--color-text-primary);
   transition: transform 0.28s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.28s ease, border-color 0.28s ease;
 }
 
 .nova-glass-card {
-  background: var(--glass-fill-card);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-  border: 1px solid var(--glass-border-frost);
+  background: #FFFFFF;
+  border: 1px solid var(--color-border-subtle);
   border-radius: var(--radius-card);
-  box-shadow: var(--shadow-cosmic-low);
-  color: var(--color-ivory-white);
-  transition: all 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
+  box-shadow: var(--shadow-light-low);
+  color: var(--color-text-primary);
+  transition: all 0.22s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
 .nova-glass-card:hover {
-  background: var(--glass-fill-card-hover);
-  border-color: var(--glass-border-gold);
+  background: #FFFFFF;
+  border-color: var(--color-border-strong);
   transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(12, 25, 54, 0.45);
+  box-shadow: var(--shadow-light-std);
+}
+
+/* Pastel Tinted Accent Cards */
+.card-pastel-gold {
+  background: var(--pastel-gold-bg);
+  border: 1px solid var(--pastel-gold-border);
+  color: var(--pastel-gold-text);
+}
+.card-pastel-mint {
+  background: var(--pastel-mint-bg);
+  border: 1px solid var(--pastel-mint-border);
+  color: var(--pastel-mint-text);
+}
+.card-pastel-lavender {
+  background: var(--pastel-lavender-bg);
+  border: 1px solid var(--pastel-lavender-border);
+  color: var(--pastel-lavender-text);
+}
+.card-pastel-sky {
+  background: var(--pastel-sky-bg);
+  border: 1px solid var(--pastel-sky-border);
+  color: var(--pastel-sky-text);
+}
+.card-pastel-rose {
+  background: var(--pastel-rose-bg);
+  border: 1px solid var(--pastel-rose-border);
+  color: var(--pastel-rose-text);
 }
 
 /* ==========================================================================
-   3. DYNAMIC SECTOR CHROMES (§3.2 & §4)
+   3. DYNAMIC SECTOR CHROMES (LIGHT PASTEL)
    ========================================================================== */
-/* Global / Celestial Night (Default) */
+/* Global / Celestial (Default) */
 .sector-celestial {
-  --sector-accent: var(--color-starlight-gold);
-  --sector-glow: var(--glow-starlight);
-  --sector-header-bg: rgba(30, 61, 117, 0.92);
-  border-color: var(--glass-border-gold);
+  --sector-accent: #0284C7;
+  --sector-header-bg: #F8FAFC;
+  border-color: #E2E8F0;
 }
 
 /* Nephele / Arcane Archives & Comms */
 .sector-nephele {
-  --sector-accent: var(--nephele-lavender);
-  --sector-glow: var(--glow-violet);
-  --sector-header-bg: rgba(88, 29, 94, 0.90);
-  border-color: rgba(237, 231, 255, 0.40);
-}
-.sector-nephele .window-header-accent {
-  background: linear-gradient(90deg, #624BC7, #8FA2E6);
+  --sector-accent: #7C3AED;
+  --sector-header-bg: #FAF5FF;
+  border-color: #DDD6FE;
 }
 
 /* Faith Medical & Arcadia Wardens */
 .sector-faith {
-  --sector-accent: var(--faith-verdigris);
-  --sector-glow: var(--glow-verdigris);
-  --sector-header-bg: rgba(36, 84, 72, 0.90);
-  border-color: rgba(76, 214, 196, 0.45);
-}
-.sector-faith .window-header-accent {
-  background: linear-gradient(90deg, #245448, #4CD6C4);
+  --sector-accent: #16A34A;
+  --sector-header-bg: #F0FDF4;
+  border-color: #BBF7D0;
 }
 
 /* Orynvell Imperial & High Council */
 .sector-orynvell {
-  --sector-accent: var(--orynvell-gold);
-  --sector-glow: var(--glow-starlight);
-  --sector-header-bg: rgba(36, 70, 125, 0.92);
-  border-color: rgba(245, 211, 120, 0.50);
-}
-.sector-orynvell .window-header-accent {
-  background: linear-gradient(90deg, #24467D, #F5D378);
+  --sector-accent: #D97706;
+  --sector-header-bg: #FFFDF5;
+  border-color: #FDE68A;
 }
 
 /* ==========================================================================
-   4. BOOTSTRAP 5.3 COMPONENT INFUSION - RADIANT & HIGH CONTRAST
+   4. CELESTIAL BUTTONS & INTERACTIVE PILLS
    ========================================================================== */
-
-/* Radiant Starlight Buttons */
-.btn-celestial, .btn-primary {
-  background: linear-gradient(135deg, #E5C370 0%, #D4A84D 100%) !important;
-  border: 1px solid #FFF5D0 !important;
-  color: #0E1A33 !important;
-  border-radius: var(--radius-card) !important;
-  font-family: var(--font-ui) !important;
-  font-weight: 700 !important;
-  letter-spacing: 0.03em !important;
-  padding: 0.5rem 1.15rem !important;
-  box-shadow: 0 4px 14px rgba(229, 195, 112, 0.40) !important;
-  transition: all 0.25s cubic-bezier(0.2, 0.8, 0.2, 1) !important;
-}
-
-.btn-celestial:hover, .btn-primary:hover {
-  background: linear-gradient(135deg, #FBE6AB 0%, #E5C370 100%) !important;
-  border-color: #FFFFFF !important;
-  box-shadow: 0 6px 20px rgba(229, 195, 112, 0.60) !important;
-  transform: translateY(-2px) !important;
-  color: #081020 !important;
-}
-
-.btn-celestial:active, .btn-primary:active {
-  transform: translateY(0) !important;
-  box-shadow: 0 2px 8px rgba(229, 195, 112, 0.30) !important;
-}
-
-.btn-outline-gold {
-  background: rgba(255, 255, 255, 0.12) !important;
-  border: 1px solid var(--color-starlight-gold) !important;
-  color: var(--color-soft-gold) !important;
-  border-radius: var(--radius-card) !important;
-  font-weight: 600 !important;
-  transition: all 0.25s ease !important;
-}
-.btn-outline-gold:hover {
-  background: rgba(229, 195, 112, 0.28) !important;
-  box-shadow: var(--glow-starlight) !important;
-  color: #FFFFFF !important;
-  transform: translateY(-1px) !important;
-}
-
-.btn-ghost-celestial {
-  background: rgba(255, 255, 255, 0.14) !important;
-  border: 1px solid rgba(255, 255, 255, 0.25) !important;
-  color: #FFFFFF !important;
-  border-radius: var(--radius-card) !important;
-  transition: all 0.2s ease !important;
-}
-.btn-ghost-celestial:hover {
-  background: rgba(255, 255, 255, 0.26) !important;
-  border-color: #FFFFFF !important;
-  color: #FFFFFF !important;
-}
-
-/* Luminous Badges with Crisp Text */
-.badge-gold {
-  background: rgba(229, 195, 112, 0.25);
-  border: 1px solid rgba(229, 195, 112, 0.60);
-  color: #FFFFFF;
-  border-radius: var(--radius-pill);
+.btn-celestial {
   font-family: var(--font-ui);
-  font-weight: 700;
-  letter-spacing: 0.04em;
-  padding: 0.25rem 0.65rem;
+  font-weight: 600;
+  border-radius: var(--radius-card);
+  padding: 0.5rem 1rem;
+  background: #FFFFFF;
+  color: var(--color-text-primary);
+  border: 1px solid var(--color-border-strong);
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.06);
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
 }
 
-.badge-verdigris {
-  background: rgba(76, 214, 196, 0.25);
-  border: 1px solid rgba(76, 214, 196, 0.60);
-  color: #FFFFFF;
-  border-radius: var(--radius-pill);
-  font-family: var(--font-ui);
-  font-weight: 700;
-  padding: 0.25rem 0.65rem;
+.btn-celestial:hover {
+  background: #F8FAFC;
+  border-color: #94A3B8;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08);
 }
 
-.badge-violet {
-  background: rgba(143, 162, 230, 0.25);
-  border: 1px solid rgba(143, 162, 230, 0.60);
-  color: #FFFFFF;
-  border-radius: var(--radius-pill);
-  font-family: var(--font-ui);
-  font-weight: 700;
-  padding: 0.25rem 0.65rem;
+.btn-celestial-gold {
+  background: linear-gradient(135deg, #FEF3C7, #FDE68A);
+  color: #78350F;
+  border: 1px solid #FCD34D;
+  box-shadow: 0 2px 8px rgba(217, 119, 6, 0.15);
+}
+.btn-celestial-gold:hover {
+  background: linear-gradient(135deg, #FDE68A, #FBBF24);
+  color: #451A03;
+  transform: translateY(-1px);
 }
 
-/* Frosted Glass Cards */
-.card {
-  background: var(--glass-fill-base) !important;
-  backdrop-filter: blur(16px) !important;
-  -webkit-backdrop-filter: blur(16px) !important;
-  border: 1px solid var(--glass-border-frost) !important;
-  border-radius: var(--radius-card) !important;
-  color: var(--color-ivory-white) !important;
-  box-shadow: var(--shadow-cosmic-low) !important;
+.btn-celestial-mint {
+  background: linear-gradient(135deg, #DCFCE7, #BBF7D0);
+  color: #14532D;
+  border: 1px solid #86EFAC;
+}
+.btn-celestial-mint:hover {
+  background: linear-gradient(135deg, #BBF7D0, #4ADE80);
+  color: #052E16;
 }
 
-.card-header {
-  background: rgba(20, 40, 80, 0.50) !important;
-  border-bottom: 1px solid var(--glass-border-frost) !important;
-  font-family: var(--font-display) !important;
-  color: var(--color-soft-gold) !important;
-  font-weight: 700 !important;
+.btn-celestial-lavender {
+  background: linear-gradient(135deg, #EDE9FE, #DDD6FE);
+  color: #4C1D95;
+  border: 1px solid #C4B5FD;
 }
-
-/* Luminous Inputs */
-.form-control, .form-select {
-  background-color: var(--glass-fill-input) !important;
-  border: 1px solid var(--glass-border-frost) !important;
-  color: #FFFFFF !important;
-  border-radius: var(--radius-card) !important;
-  font-family: var(--font-ui) !important;
-  transition: all 0.2s ease !important;
-}
-
-.form-control:focus, .form-select:focus {
-  background-color: rgba(20, 40, 80, 0.85) !important;
-  border-color: var(--color-starlight-gold) !important;
-  box-shadow: 0 0 0 0.2rem rgba(229, 195, 112, 0.35) !important;
-  color: #FFFFFF !important;
-}
-
-/* Radiant Progress Bars */
-.progress {
-  background-color: rgba(20, 40, 80, 0.65) !important;
-  border: 1px solid var(--glass-border-frost) !important;
-  border-radius: var(--radius-pill) !important;
-  overflow: hidden;
-}
-
-.progress-bar {
-  background: linear-gradient(90deg, #E5C370, #FBE6AB) !important;
-  box-shadow: var(--glow-starlight);
-}
-
-.progress-bar-verdigris {
-  background: linear-gradient(90deg, #2A8B7D, #4CD6C4) !important;
-  box-shadow: var(--glow-verdigris);
-}
-
-/* Tables */
-.table {
-  color: #FFFFFF !important;
-  border-color: var(--glass-border-frost) !important;
-  font-family: var(--font-ui) !important;
-}
-
-.table th {
-  font-family: var(--font-display);
-  color: var(--color-soft-gold);
-  border-bottom: 1px solid var(--glass-border-gold) !important;
-  background: rgba(20, 40, 80, 0.50);
-}
-
-.table td {
-  border-color: var(--glass-border-frost) !important;
-}
-
-/* Nav Tabs */
-.nav-tabs {
-  border-bottom: 1px solid var(--glass-border-frost) !important;
-}
-
-.nav-tabs .nav-link {
-  color: var(--color-starlight-mist) !important;
-  border: none !important;
-  border-bottom: 2px solid transparent !important;
-  font-family: var(--font-ui) !important;
-  font-weight: 600 !important;
-  transition: all 0.2s ease !important;
-}
-
-.nav-tabs .nav-link:hover {
-  color: #FFFFFF !important;
-}
-
-.nav-tabs .nav-link.active {
-  background: transparent !important;
-  color: var(--color-starlight-gold) !important;
-  border-bottom: 2px solid var(--color-starlight-gold) !important;
+.btn-celestial-lavender:hover {
+  background: linear-gradient(135deg, #DDD6FE, #A78BFA);
+  color: #2E1065;
 }
 
 /* ==========================================================================
-   5. LUMINOUS CELESTIAL BACKDROP (No pitch black)
+   5. LIGHT PASTEL FORM CONTROLS & INPUTS
+   ========================================================================== */
+.celestial-input {
+  background: #FFFFFF;
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-card);
+  color: var(--color-text-primary);
+  padding: 0.5rem 0.85rem;
+  font-family: var(--font-ui);
+  transition: all 0.2s ease;
+  outline: none;
+}
+
+.celestial-input:focus {
+  border-color: #0284C7;
+  box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.15);
+  background: #FFFFFF;
+}
+
+.celestial-input::placeholder {
+  color: #94A3B8;
+}
+
+/* ==========================================================================
+   6. CELESTIAL BACKDROP & CONSTELLATION STYLES
    ========================================================================== */
 .celestial-nebula-bg {
   background-color: #142850;
@@ -316,16 +225,18 @@
   animation: constellation-drift 40s linear infinite;
 }
 
-@keyframes constellation-drift {
-  0% { background-position: 0 0, 0 0, 0 0, 0 0, 0 0; }
-  100% { background-position: 180px 180px, -240px 240px, 210px -210px, -280px -280px, 320px 320px; }
+/* Light Mode Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 7px;
+  height: 7px;
 }
-
-.luminous-pulse {
-  animation: breathing-glow 3.5s ease-in-out infinite alternate;
+::-webkit-scrollbar-track {
+  background: rgba(241, 245, 249, 0.8);
 }
-
-@keyframes breathing-glow {
-  0% { filter: drop-shadow(0 0 4px rgba(229, 195, 112, 0.35)); }
-  100% { filter: drop-shadow(0 0 16px rgba(229, 195, 112, 0.75)); }
+::-webkit-scrollbar-thumb {
+  background: rgba(203, 213, 225, 0.9);
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(148, 163, 184, 0.95);
 }

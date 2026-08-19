@@ -1,7 +1,7 @@
 /**
  * MIRAVERSEOSX Master Theme & Styling Tokens (§3 & §4)
- * Visual Philosophy: "Celestial Glass" & "Nova Glass" Framework
- * Luminous & High-Contrast Celestial Palette (Zero Muddy Blacks)
+ * Visual Philosophy: "Celestial Glass" & "Light Pastel Realistic OS"
+ * Crisp, Luminous, High-Contrast Light Theme with Soft Realistic Pastels
  */
 
 :root {
@@ -21,94 +21,96 @@
   --bs-body-line-height: 1.5;
 
   /* ==========================================================================
-     2. GLOBAL OS BASE — LUMINOUS "CELESTIAL NIGHT" (§3.1)
+     2. GLOBAL LIGHT PASTEL BASE & HIGH-CONTRAST TEXT
      ========================================================================== */
-  --color-deep-space: #142850;        /* Royal Cosmic Sapphire (Never pitch black) */
-  --color-midnight: #1E3D75;          /* Luminous Midnight Blue */
-  --color-constellation: #315D9E;     /* Constellation Azure */
-  --color-moonlight-slate: #7B9CC4;   /* Moonlight Slate */
-  --color-starlight-gold: #E5C370;    /* Radiant Starlight Gold */
-  --color-soft-gold: #FBE6AB;         /* Soft Luminous Gold */
-  --color-ivory-white: #FFFFFF;       /* Pure Crisp White Text */
-  --color-starlight-mist: #D5E2F5;    /* High-Contrast Crisp Mist */
+  --color-canvas-bg: #F4F6FB;          /* Soft pearlescent celestial canvas */
+  --color-canvas-gradient: #EBF0F9;    /* Soft ambient sky tone */
+  --color-surface-white: #FFFFFF;      /* Pure Crisp White */
+  --color-surface-card: #FAFBFD;       /* Elevated Card Surface */
+  --color-surface-subtle: #F1F4F9;     /* Subtle Secondary Surface */
+  
+  --color-text-primary: #0F172A;       /* Obsidian Slate Primary Text (High Contrast) */
+  --color-text-secondary: #334155;     /* Slate 700 Secondary Text */
+  --color-text-muted: #64748B;         /* Slate 500 Muted Text */
+  --color-border-subtle: #E2E8F0;      /* Slate 200 Subtle Border */
+  --color-border-strong: #CBD5E1;      /* Slate 300 Strong Border */
 
   /* ==========================================================================
-     3. SECTOR & INSTITUTIONAL PALETTES (§3.2) - LIGHTENED & VIBRANT
+     3. REALISTIC LIGHT PASTEL ACCENT PALETTES
      ========================================================================== */
-  /* Nephele / Arcane Archives & Nether Systems */
-  --nephele-lavender: #EDE7FF;
-  --nephele-frost: #FFE2F9;
-  --nephele-glaucous: #8FA2E6;
-  --nephele-persian: #624BC7;
-  --nephele-violet: #581D5E;
+  /* Pastel Gold & Amber (Orynvell Treasury & Royal Archives) */
+  --pastel-gold-bg: #FEF3C7;
+  --pastel-gold-border: #FDE68A;
+  --pastel-gold-text: #78350F;
+  --pastel-gold-accent: #D97706;
 
-  /* Faith Medical / Arcadia Ecological Wardens */
-  --faith-dark-jungle: #1D3B34;
-  --faith-jungle: #245448;
-  --faith-green-cyan: #2A8B7D;
-  --faith-verdigris: #4CD6C4;
-  --faith-forest: #6EC087;
+  /* Pastel Sage & Emerald (Faith Medical & Arcadia Wardens) */
+  --pastel-mint-bg: #DCFCE7;
+  --pastel-mint-border: #BBF7D0;
+  --pastel-mint-text: #14532D;
+  --pastel-mint-accent: #16A34A;
 
-  /* Orynvell Imperial & High Council */
-  --orynvell-cream: #FFFDF7;
-  --orynvell-gold: #F5D378;
-  --orynvell-aether: #24467D;
+  /* Pastel Lavender & Lilac (Nephele Arcanum & Comms) */
+  --pastel-lavender-bg: #EDE9FE;
+  --pastel-lavender-border: #DDD6FE;
+  --pastel-lavender-text: #4C1D95;
+  --pastel-lavender-accent: #7C3AED;
+
+  /* Pastel Sky & Azure (Celestial Web & Browser) */
+  --pastel-sky-bg: #E0F2FE;
+  --pastel-sky-border: #BAE6FD;
+  --pastel-sky-text: #0C4A6E;
+  --pastel-sky-accent: #0284C7;
+
+  /* Pastel Rose & Coral (Culture & Velvet Studio) */
+  --pastel-rose-bg: #FFE4E6;
+  --pastel-rose-border: #FECDD3;
+  --pastel-rose-text: #881337;
+  --pastel-rose-accent: #E11D48;
 
   /* ==========================================================================
-     4. NOVA GLASS FRAMEWORK & HIGH-ALPHA SURFACES (§4)
+     4. NOVA GLASS FRAMEWORK — LIGHT PASTEL TRANSLUCENCY
      ========================================================================== */
-  /* Luminous Translucent Fills */
-  --glass-fill-base: rgba(30, 61, 117, 0.75);
-  --glass-fill-deep: rgba(20, 40, 80, 0.85);
-  --glass-fill-card: rgba(255, 255, 255, 0.12);
-  --glass-fill-card-hover: rgba(255, 255, 255, 0.20);
-  --glass-fill-input: rgba(20, 40, 80, 0.65);
-  --glass-fill-hover: rgba(49, 93, 158, 0.65);
+  --glass-fill-base: rgba(255, 255, 255, 0.92);
+  --glass-fill-deep: rgba(248, 250, 252, 0.95);
+  --glass-fill-card: rgba(255, 255, 255, 0.85);
+  --glass-fill-card-hover: rgba(255, 255, 255, 0.98);
+  --glass-fill-input: rgba(255, 255, 255, 0.90);
+  --glass-fill-hover: rgba(241, 245, 249, 0.85);
 
-  /* Frost & Starlight Borders with High Visibility */
-  --glass-border-frost: rgba(255, 255, 255, 0.24);
-  --glass-border-gold: rgba(229, 195, 112, 0.50);
-  --glass-border-hover: rgba(251, 230, 171, 0.70);
+  --glass-border-frost: rgba(226, 232, 240, 0.85);
+  --glass-border-gold: rgba(245, 211, 120, 0.75);
+  --glass-border-hover: rgba(148, 163, 184, 0.80);
 
-  /* Blurs & Radii */
-  --glass-blur-std: 18px;
-  --glass-blur-heavy: 24px;
+  --glass-blur-std: 20px;
+  --glass-blur-heavy: 28px;
   --radius-window: 16px;
   --radius-card: 12px;
   --radius-pill: 9999px;
 
-  /* Luminous Shadows (Deep Blue / Gold Tints, No Muddy Black) */
-  --shadow-cosmic-low: 0 4px 14px rgba(12, 25, 54, 0.35);
-  --shadow-cosmic-std: 0 16px 44px rgba(12, 25, 54, 0.55);
-  --shadow-cosmic-deep: 0 28px 70px rgba(12, 25, 54, 0.70);
-  --glow-starlight: 0 0 18px rgba(229, 195, 112, 0.55);
-  --glow-verdigris: 0 0 18px rgba(76, 214, 196, 0.55);
-  --glow-violet: 0 0 18px rgba(143, 162, 230, 0.55);
+  /* Realistic OS Shadows */
+  --shadow-light-low: 0 2px 8px rgba(15, 23, 42, 0.05);
+  --shadow-light-std: 0 10px 30px rgba(15, 23, 42, 0.08), 0 1px 3px rgba(15, 23, 42, 0.04);
+  --shadow-light-window: 0 24px 60px rgba(15, 23, 42, 0.12), 0 2px 6px rgba(15, 23, 42, 0.04);
 
   /* ==========================================================================
-     5. BOOTSTRAP 5.3 THEME VARIABLE BRIDGING
+     5. BOOTSTRAP 5.3 THEME VARIABLE BRIDGING (LIGHT MODE)
      ========================================================================== */
-  --bs-primary: #E5C370;
-  --bs-primary-rgb: 229, 195, 112;
-  --bs-secondary: #315D9E;
-  --bs-secondary-rgb: 49, 93, 158;
-  --bs-success: #4CD6C4;
-  --bs-success-rgb: 76, 214, 196;
-  --bs-info: #8FA2E6;
-  --bs-info-rgb: 143, 162, 230;
-  --bs-warning: #F5D378;
-  --bs-warning-rgb: 245, 211, 120;
-  --bs-danger: #F43F5E;
-  --bs-danger-rgb: 244, 63, 94;
+  --bs-body-bg: #FAFBFD;
+  --bs-body-color: #0F172A;
+  --bs-primary: #D97706;
+  --bs-primary-rgb: 217, 119, 6;
+  --bs-secondary: #475569;
+  --bs-secondary-rgb: 71, 85, 105;
+  --bs-success: #16A34A;
+  --bs-success-rgb: 22, 163, 74;
+  --bs-info: #0284C7;
+  --bs-info-rgb: 2, 132, 199;
+  --bs-warning: #D97706;
+  --bs-warning-rgb: 217, 119, 6;
+  --bs-danger: #E11D48;
+  --bs-danger-rgb: 225, 29, 72;
   --bs-light: #F8FAFC;
-  --bs-light-rgb: 248, 250, 252;
-  --bs-dark: #142850;
-  --bs-dark-rgb: 20, 40, 80;
-
-  --bs-body-color: var(--color-ivory-white);
-  --bs-body-bg: transparent;
-  --bs-card-bg: var(--glass-fill-base);
-  --bs-card-border-color: var(--glass-border-frost);
-  --bs-border-radius: var(--radius-card);
-  --bs-border-radius-lg: var(--radius-window);
+  --bs-dark: #0F172A;
+  --bs-border-color: #E2E8F0;
 }

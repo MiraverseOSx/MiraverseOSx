@@ -85,35 +85,35 @@ export default function HousingApp() {
     };
 
     return (
-        <div className="flex flex-col h-full bg-[#1E3D75]/90 backdrop-blur-xl text-[#FFFFFF] font-ui select-none overflow-hidden border border-white/20 shadow-2xl">
+        <div className="flex flex-col h-full bg-[#FAFBFD] text-slate-800 font-ui select-none overflow-hidden">
             {/* Header */}
-            <div className="flex items-center justify-between px-6 py-4 bg-[#142850]/80 border-b border-white/15 shadow-xs">
+            <div className="flex items-center justify-between px-6 py-4 bg-white border-b border-slate-200 shadow-xs">
                 <div className="flex items-center gap-3">
-                    <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#315D9E]/60 border border-[#E5C370]/50 text-[#E5C370]">
+                    <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-indigo-50 border border-indigo-200 text-indigo-700 shadow-xs">
                         <Home size={20} />
                     </div>
                     <div>
-                        <h2 className="text-base font-bold tracking-wider text-[#FFFFFF] uppercase font-display">
+                        <h2 className="text-base font-bold tracking-wider text-slate-900 uppercase font-display">
                             HOMECRAFT (§5.3) // RESIDENTIAL SPACE GRID EDITOR
                         </h2>
-                        <div className="flex items-center gap-3 text-xs text-[#D5E2F5] font-ui mt-0.5">
-                            <span>Assigned House: <strong className="text-[#FBE6AB] font-bold">Vector House</strong></span>
+                        <div className="flex items-center gap-3 text-xs text-slate-500 font-ui mt-0.5">
+                            <span>Assigned House: <strong className="text-indigo-900 font-bold">Vector House</strong></span>
                             <span>•</span>
-                            <span>Stamina: <strong className="text-[#4CD6C4] font-bold">{stamina} / 100</strong></span>
+                            <span>Stamina: <strong className="text-emerald-700 font-bold">{stamina} / 100</strong></span>
                             <span>•</span>
-                            <span>Credits: <strong className="text-[#E5C370] font-bold">{credits} ₢</strong></span>
+                            <span>Credits: <strong className="text-amber-800 font-bold">{credits} ₢</strong></span>
                             <span>•</span>
-                            <span>Bits: <strong className="text-[#4CD6C4] font-bold">{bits} ◈</strong></span>
+                            <span>Bits: <strong className="text-emerald-700 font-bold">{bits} ◈</strong></span>
                         </div>
                     </div>
                 </div>
 
                 {/* Tab Navigation */}
-                <div className="flex items-center bg-[#142850]/70 p-1 rounded-lg border border-white/15">
+                <div className="flex items-center bg-slate-100 p-1 rounded-xl border border-slate-200">
                     <button
                         onClick={() => setActiveTab('room')}
-                        className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-semibold transition ${
-                            activeTab === 'room' ? 'bg-[#315D9E] text-[#FBE6AB] shadow-xs border border-[#E5C370]/70 font-bold' : 'text-[#D5E2F5] hover:text-white'
+                        className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition ${
+                            activeTab === 'room' ? 'bg-white text-indigo-950 shadow-xs border border-slate-200 font-bold' : 'text-slate-600 hover:text-slate-900'
                         }`}
                     >
                         <Bed size={13} />
@@ -121,8 +121,8 @@ export default function HousingApp() {
                     </button>
                     <button
                         onClick={() => setActiveTab('board')}
-                        className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-semibold transition ${
-                            activeTab === 'board' ? 'bg-[#315D9E] text-[#FBE6AB] shadow-xs border border-[#E5C370]/70 font-bold' : 'text-[#D5E2F5] hover:text-white'
+                        className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition ${
+                            activeTab === 'board' ? 'bg-white text-indigo-950 shadow-xs border border-slate-200 font-bold' : 'text-slate-600 hover:text-slate-900'
                         }`}
                     >
                         <Pin size={13} />
@@ -130,8 +130,8 @@ export default function HousingApp() {
                     </button>
                     <button
                         onClick={() => setActiveTab('upgrades')}
-                        className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-semibold transition ${
-                            activeTab === 'upgrades' ? 'bg-[#315D9E] text-[#FBE6AB] shadow-xs border border-[#E5C370]/70 font-bold' : 'text-[#D5E2F5] hover:text-white'
+                        className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition ${
+                            activeTab === 'upgrades' ? 'bg-white text-indigo-950 shadow-xs border border-slate-200 font-bold' : 'text-slate-600 hover:text-slate-900'
                         }`}
                     >
                         <Sparkles size={13} />
@@ -139,8 +139,8 @@ export default function HousingApp() {
                     </button>
                     <button
                         onClick={() => setActiveTab('dreams')}
-                        className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-semibold transition ${
-                            activeTab === 'dreams' ? 'bg-[#315D9E] text-[#FBE6AB] shadow-xs border border-[#E5C370]/70 font-bold' : 'text-[#D5E2F5] hover:text-white'
+                        className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition ${
+                            activeTab === 'dreams' ? 'bg-white text-indigo-950 shadow-xs border border-slate-200 font-bold' : 'text-slate-600 hover:text-slate-900'
                         }`}
                     >
                         <Moon size={13} />
@@ -151,25 +151,25 @@ export default function HousingApp() {
 
             {/* Notification alert */}
             {restMessage && (
-                <div className="bg-[#315D9E]/80 border-b border-[#E5C370]/40 px-6 py-2 text-xs font-ui text-[#FBE6AB] font-semibold flex items-center justify-between">
+                <div className="bg-amber-50 border-b border-amber-200 px-6 py-2 text-xs font-ui text-amber-900 font-semibold flex items-center justify-between">
                     <span>{restMessage}</span>
                 </div>
             )}
 
             {/* Main Content Area */}
-            <div className="flex-1 p-6 overflow-y-auto bg-[#142850]/65">
+            <div className="flex-1 p-6 overflow-y-auto bg-[#FAFBFD]">
                 {/* ROOM HUB TAB */}
                 {activeTab === 'room' && (
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                         {/* Bed Station */}
-                        <div className="bg-[#ffffff] p-6 rounded-2xl border border-[#d8dce8] shadow-xs flex flex-col justify-between space-y-4">
+                        <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-xs flex flex-col justify-between space-y-4">
                             <div>
                                 <div className="flex items-center justify-between mb-2">
-                                    <div className="flex items-center gap-2 text-indigo-600 font-bold font-mono">
+                                    <div className="flex items-center gap-2 text-indigo-700 font-bold font-mono">
                                         <Bed size={16} />
                                         <span>BED / REST STATION</span>
                                     </div>
-                                    <span className="text-[11px] font-mono text-emerald-600 font-bold bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
+                                    <span className="text-[11px] font-mono text-emerald-700 font-bold bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
                                         READY
                                     </span>
                                 </div>
@@ -179,7 +179,7 @@ export default function HousingApp() {
                             </div>
                             <button
                                 onClick={handleRest}
-                                className="w-full py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-mono text-xs font-bold transition shadow-xs active:scale-95 flex items-center justify-center gap-2"
+                                className="w-full py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-mono text-xs font-bold transition shadow-xs active:scale-95 flex items-center justify-center gap-2"
                             >
                                 <Moon size={14} />
                                 <span>Rest / Sleep Sys-Cycle</span>
@@ -187,14 +187,14 @@ export default function HousingApp() {
                         </div>
 
                         {/* Study Station */}
-                        <div className="bg-[#ffffff] p-6 rounded-2xl border border-[#d8dce8] shadow-xs flex flex-col justify-between space-y-4">
+                        <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-xs flex flex-col justify-between space-y-4">
                             <div>
                                 <div className="flex items-center justify-between mb-2">
-                                    <div className="flex items-center gap-2 text-sky-600 font-bold font-mono">
+                                    <div className="flex items-center gap-2 text-sky-700 font-bold font-mono">
                                         <BookOpen size={16} />
                                         <span>STUDY DESK & TERMINAL</span>
                                     </div>
-                                    <span className="text-[11px] font-mono text-sky-600 font-bold bg-sky-50 px-2 py-0.5 rounded border border-sky-200">
+                                    <span className="text-[11px] font-mono text-sky-700 font-bold bg-sky-50 px-2 py-0.5 rounded border border-sky-200">
                                         -20 STAMINA
                                     </span>
                                 </div>
@@ -204,7 +204,7 @@ export default function HousingApp() {
                             </div>
                             <button
                                 onClick={handleStudy}
-                                className="w-full py-2.5 rounded-xl bg-[#1e2640] hover:bg-[#2b3658] text-white font-mono text-xs font-bold transition shadow-xs active:scale-95 flex items-center justify-center gap-2"
+                                className="w-full py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-mono text-xs font-bold transition shadow-xs active:scale-95 flex items-center justify-center gap-2"
                             >
                                 <Coffee size={14} />
                                 <span>Study Coursework (+120 XP)</span>
@@ -212,10 +212,10 @@ export default function HousingApp() {
                         </div>
 
                         {/* Dorm Storage & Safe */}
-                        <div className="bg-[#ffffff] p-6 rounded-2xl border border-[#d8dce8] shadow-xs flex flex-col justify-between space-y-4">
+                        <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-xs flex flex-col justify-between space-y-4">
                             <div>
                                 <div className="flex items-center justify-between mb-2">
-                                    <div className="flex items-center gap-2 text-amber-600 font-bold font-mono">
+                                    <div className="flex items-center gap-2 text-amber-800 font-bold font-mono">
                                         <Box size={16} />
                                         <span>SECURE STORAGE VAULT</span>
                                     </div>
@@ -234,7 +234,7 @@ export default function HousingApp() {
                                 </div>
                                 <div className="p-2 rounded bg-slate-50 border border-slate-200 flex justify-between text-slate-700">
                                     <span>• Purge_Record_01.arch</span>
-                                    <span className="text-purple-600">ARCH</span>
+                                    <span className="text-purple-700">ARCH</span>
                                 </div>
                             </div>
                         </div>
@@ -245,24 +245,24 @@ export default function HousingApp() {
                 {activeTab === 'board' && (
                     <div className="space-y-4">
                         <div className="flex justify-between items-center mb-2">
-                            <h3 className="font-bold text-sm text-[#1e2640] font-mono uppercase">Pinned Memos & Campus Reminders</h3>
+                            <h3 className="font-bold text-sm text-slate-900 font-mono uppercase">Pinned Memos & Campus Reminders</h3>
                             <span className="text-xs text-slate-500 font-mono">2 Active Notices</span>
                         </div>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div className="bg-[#fffdf2] p-5 rounded-xl border border-[#f0e6c0] shadow-xs space-y-2">
-                                <div className="flex items-center justify-between text-amber-900 font-bold text-xs font-mono">
+                            <div className="bg-amber-50/70 p-5 rounded-xl border border-amber-200 shadow-xs space-y-2">
+                                <div className="flex items-center justify-between text-amber-950 font-bold text-xs font-mono">
                                     <span>📍 DEAN CASSIAN ROOK ORIENTATION</span>
-                                    <span className="text-[10px] bg-amber-100 px-2 py-0.5 rounded">DAY 1</span>
+                                    <span className="text-[10px] bg-amber-200/80 text-amber-950 font-bold px-2 py-0.5 rounded">DAY 1</span>
                                 </div>
                                 <p className="text-xs text-slate-700 leading-relaxed">
                                     All newly arrived citizens must complete the CITIZEN_REGISTRATION_FORM.osform and confirm their temporary dormitory assignment before attending morning Syntax classes.
                                 </p>
                             </div>
 
-                            <div className="bg-[#f0f7ff] p-5 rounded-xl border border-[#cfe2ff] shadow-xs space-y-2">
-                                <div className="flex items-center justify-between text-sky-900 font-bold text-xs font-mono">
+                            <div className="bg-sky-50/70 p-5 rounded-xl border border-sky-200 shadow-xs space-y-2">
+                                <div className="flex items-center justify-between text-sky-950 font-bold text-xs font-mono">
                                     <span>🏥 FAITH MEDICAL DIRECTIVE</span>
-                                    <span className="text-[10px] bg-sky-100 px-2 py-0.5 rounded">MANDATORY</span>
+                                    <span className="text-[10px] bg-sky-200/80 text-sky-950 font-bold px-2 py-0.5 rounded">MANDATORY</span>
                                 </div>
                                 <p className="text-xs text-slate-700 leading-relaxed">
                                     Veilwilt symptoms have been reported across the Old Factory Ward. Complete the FAITH_PATIENT_INTAKE.osform to receive an aura baseline stabilizer.
@@ -276,38 +276,38 @@ export default function HousingApp() {
                 {activeTab === 'upgrades' && (
                     <div className="space-y-4">
                         <div className="flex justify-between items-center mb-2">
-                            <h3 className="font-bold text-sm text-[#1e2640] font-mono uppercase">HOMECRAFT Upgrades & Expansions</h3>
+                            <h3 className="font-bold text-sm text-slate-900 font-mono uppercase">HOMECRAFT Upgrades & Expansions</h3>
                             <div className="flex items-center gap-3 text-xs font-mono">
-                                <span>Balance: <strong className="text-amber-600 font-bold">{credits} ₢</strong></span>
+                                <span>Balance: <strong className="text-amber-800 font-bold">{credits} ₢</strong></span>
                                 <span>•</span>
-                                <span><strong className="text-cyan-600 font-bold">{bits} ◈ BITS</strong></span>
+                                <span><strong className="text-emerald-700 font-bold">{bits} ◈ BITS</strong></span>
                             </div>
                         </div>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             {upgrades.map((u) => (
                                 <div
                                     key={u.id}
-                                    className="bg-[#ffffff] p-5 rounded-xl border border-[#d8dce8] shadow-xs flex flex-col justify-between space-y-3"
+                                    className="bg-white p-5 rounded-xl border border-slate-200 shadow-xs flex flex-col justify-between space-y-3"
                                 >
                                     <div>
                                         <div className="flex justify-between items-start mb-1">
-                                            <h4 className="font-bold text-sm text-[#1e2640]">{u.name}</h4>
+                                            <h4 className="font-bold text-sm text-slate-900">{u.name}</h4>
                                             <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded bg-slate-100 text-slate-600 border border-slate-200">
                                                 {u.category}
                                             </span>
                                         </div>
                                         <p className="text-xs text-slate-600 leading-relaxed">{u.effect}</p>
                                     </div>
-                                    <div className="flex items-center justify-between pt-3 border-t border-[#f0f2f8]">
-                                        <span className="text-xs font-mono font-bold text-amber-600">{u.cost} ₢</span>
+                                    <div className="flex items-center justify-between pt-3 border-t border-slate-100">
+                                        <span className="text-xs font-mono font-bold text-amber-800">{u.cost} ₢</span>
                                         {u.unlocked ? (
-                                            <span className="text-xs font-mono font-bold text-emerald-600 flex items-center gap-1">
+                                             <span className="text-xs font-mono font-bold text-emerald-700 flex items-center gap-1">
                                                 <CheckCircle2 size={13} /> INSTALLED
                                             </span>
                                         ) : (
                                             <button
                                                 onClick={() => handleBuyUpgrade(u.id, u.cost)}
-                                                className="px-3 py-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white font-mono text-xs font-bold transition shadow-xs"
+                                                className="px-3 py-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white font-mono text-xs font-bold transition shadow-xs"
                                             >
                                                 Purchase Upgrade
                                             </button>
@@ -323,14 +323,14 @@ export default function HousingApp() {
                 {activeTab === 'dreams' && (
                     <div className="space-y-4">
                         <div className="flex justify-between items-center mb-2">
-                            <h3 className="font-bold text-sm text-[#1e2640] font-mono uppercase">Veil DreamLogs // Subconscious Telemetry</h3>
-                            <span className="text-xs text-purple-600 font-mono font-bold">Lightborn Signal Active</span>
+                            <h3 className="font-bold text-sm text-slate-900 font-mono uppercase">Veil DreamLogs // Subconscious Telemetry</h3>
+                            <span className="text-xs text-purple-700 font-mono font-bold">Lightborn Signal Active</span>
                         </div>
                         <div className="space-y-3">
                             {dreamLogs.map((log, index) => (
                                 <div
                                     key={index}
-                                    className="bg-[#faf5ff] p-4 rounded-xl border border-[#e9d5ff] font-mono text-xs text-purple-950 leading-relaxed shadow-xs"
+                                    className="bg-purple-50/70 p-4 rounded-xl border border-purple-200 font-mono text-xs text-purple-950 leading-relaxed shadow-xs"
                                 >
                                     {log}
                                 </div>

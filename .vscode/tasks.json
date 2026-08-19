@@ -2,7 +2,17 @@
 	"version": "2.0.0",
 	"tasks": [
 		{
-			"label": "build",
+			"label": "build:frontend",
+			"type": "shell",
+			"command": "npm",
+			"args": ["run", "build", "--prefix", "frontend"],
+			"options": {
+				"cwd": "${workspaceFolder}"
+			},
+			"problemMatcher": []
+		},
+		{
+			"label": "build:backend",
 			"command": "dotnet",
 			"type": "process",
 			"args": [
@@ -10,6 +20,15 @@
 				"${workspaceFolder}/MiraverseOSx.csproj",
 				"/property:GenerateFullPaths=true",
 				"/consoleloggerparameters:NoSummary"
+			],
+			"problemMatcher": "$msCompile"
+		},
+		{
+			"label": "build",
+			"dependsOrder": "sequence",
+			"dependsOn": [
+				"build:frontend",
+				"build:backend"
 			],
 			"problemMatcher": "$msCompile",
 			"group": {
@@ -23,14 +42,38 @@
 			"command": "npm",
 			"args": [
 				"run",
-				"dev"
+				"dev",
+				"--prefix",
+				"frontend"
 			],
 			"options": {
 				"cwd": "${workspaceFolder}"
 			},
 			"isBackground": true,
-			"problemMatcher": [],
+			"problemMatcher": {
+				"pattern": {
+					"regexp": "^$"
+				},
+				"background": {
+					"activeOnStart": true,
+					"beginsPattern": ".*VITE.*",
+					"endsPattern": ".*ready in.*"
+				}
+			},
 			"group": "none"
+		},
+		{
+			"label": "Start Full Stack (Backend + Frontend)",
+			"type": "shell",
+			"command": "npm",
+			"args": [
+				"start"
+			],
+			"options": {
+				"cwd": "${workspaceFolder}"
+			},
+			"isBackground": true,
+			"problemMatcher": []
 		}
 	]
 }

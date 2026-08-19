@@ -92,40 +92,40 @@ export default function ProcessMonitorApp() {
     );
 
     return (
-        <div className="flex flex-col h-full bg-[#0d1322] text-[#d4daf0] font-sans select-none overflow-hidden">
+        <div className="flex flex-col h-full bg-[#FAFBFD] text-slate-800 font-sans select-none overflow-hidden">
             {/* Top Toolbar */}
-            <div className="flex items-center justify-between px-6 py-3.5 bg-[#090e1a] border-b border-[#1f2b48]">
+            <div className="flex items-center justify-between px-6 py-3.5 bg-white border-b border-slate-200 shadow-xs">
                 <div className="flex items-center gap-3">
-                    <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-sky-500/10 border border-sky-500/30 text-sky-400">
+                    <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-sky-50 border border-sky-200 text-sky-700">
                         <Cpu size={16} />
                     </div>
                     <div>
-                        <h2 className="text-sm font-bold tracking-wider text-sky-300 font-mono uppercase">
+                        <h2 className="text-sm font-bold tracking-wider text-slate-900 font-mono uppercase">
                             PROCESS MONITOR // DIGITAL DEFENSE CORE
                         </h2>
-                        <div className="flex items-center gap-3 text-[11px] text-slate-400 font-mono">
-                            <span>OS Threat Level: <strong className="text-amber-400">{prismCorruption.toFixed(1)}% CORRUPTION</strong></span>
+                        <div className="flex items-center gap-3 text-[11px] text-slate-500 font-mono">
+                            <span>OS Threat Level: <strong className="text-amber-700 font-bold">{prismCorruption.toFixed(1)}% CORRUPTION</strong></span>
                             <span>•</span>
-                            <span>Active Threads: <strong className="text-slate-200">{processes.length}</strong></span>
+                            <span>Active Threads: <strong className="text-slate-900 font-bold">{processes.length}</strong></span>
                         </div>
                     </div>
                 </div>
 
                 <div className="flex items-center gap-3">
                     <div className="relative">
-                        <Search size={13} className="absolute left-2.5 top-1/2 -translate-y-1/2 text-slate-500" />
+                        <Search size={13} className="absolute left-2.5 top-1/2 -translate-y-1/2 text-slate-400" />
                         <input
                             type="text"
                             placeholder="Filter processes..."
                             value={filterQuery}
                             onChange={(e) => setFilterQuery(e.target.value)}
-                            className="h-8 w-48 rounded-lg bg-[#131b2e] border border-[#233254] pl-8 pr-3 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-sky-500 font-mono"
+                            className="h-8 w-48 rounded-lg bg-slate-50 border border-slate-200 pl-8 pr-3 text-xs text-slate-800 placeholder-slate-400 focus:outline-none focus:border-sky-500 font-mono"
                         />
                     </div>
                     <button
                         onClick={handleDeepScan}
                         disabled={isScanning}
-                        className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-sky-600 hover:bg-sky-500 text-white text-xs font-mono font-semibold transition shadow-xs active:scale-95 disabled:opacity-50"
+                        className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-sky-600 hover:bg-sky-700 text-white text-xs font-mono font-semibold transition shadow-xs active:scale-95 disabled:opacity-50"
                     >
                         <RefreshCw size={13} className={isScanning ? 'animate-spin' : ''} />
                         <span>{isScanning ? 'Scanning...' : 'Deep Scan'}</span>
@@ -136,9 +136,9 @@ export default function ProcessMonitorApp() {
             {/* Split View Workspace */}
             <div className="flex-1 grid grid-cols-12 min-h-0 overflow-hidden">
                 {/* Process List Table */}
-                <div className="col-span-8 border-r border-[#1f2b48] overflow-y-auto">
+                <div className="col-span-8 border-r border-slate-200 overflow-y-auto bg-white">
                     <table className="w-full text-left text-xs font-mono">
-                        <thead className="sticky top-0 bg-[#0c1220] border-b border-[#1f2b48] text-slate-400 text-[10px] uppercase tracking-wider">
+                        <thead className="sticky top-0 bg-slate-50 border-b border-slate-200 text-slate-600 text-[10px] uppercase tracking-wider">
                             <tr>
                                 <th className="py-2.5 px-4">PID</th>
                                 <th className="py-2.5 px-4">Process Name</th>
@@ -148,7 +148,7 @@ export default function ProcessMonitorApp() {
                                 <th className="py-2.5 px-4">Status</th>
                             </tr>
                         </thead>
-                        <tbody className="divide-y divide-[#162138]">
+                        <tbody className="divide-y divide-slate-100">
                             {filtered.map((p) => {
                                 const isSelected = p.pid === selectedPid;
                                 return (
@@ -157,27 +157,27 @@ export default function ProcessMonitorApp() {
                                         onClick={() => setSelectedPid(p.pid)}
                                         className={`cursor-pointer transition ${
                                             isSelected
-                                                ? 'bg-[#182440] text-sky-200'
-                                                : 'hover:bg-[#121a2e] text-slate-300'
+                                                ? 'bg-sky-50 text-sky-950 font-bold'
+                                                : 'hover:bg-slate-50 text-slate-700'
                                         }`}
                                     >
-                                        <td className="py-3 px-4 text-slate-500">{p.pid}</td>
+                                        <td className="py-3 px-4 text-slate-400">{p.pid}</td>
                                         <td className="py-3 px-4 font-bold flex items-center gap-2">
                                             {p.isCorrupted && !p.isQuarantined && (
-                                                <AlertTriangle size={13} className="text-rose-400 animate-pulse" />
+                                                <AlertTriangle size={13} className="text-rose-600 animate-pulse" />
                                             )}
-                                            {p.isQuarantined && <Lock size={13} className="text-emerald-400" />}
-                                            {!p.isCorrupted && !p.isQuarantined && <CheckCircle size={13} className="text-sky-400" />}
-                                            <span className={p.impossibleOrigin ? 'text-purple-300 underline' : ''}>{p.name}</span>
+                                            {p.isQuarantined && <Lock size={13} className="text-emerald-600" />}
+                                            {!p.isCorrupted && !p.isQuarantined && <CheckCircle size={13} className="text-sky-600" />}
+                                            <span className={p.impossibleOrigin ? 'text-purple-700 underline font-bold' : ''}>{p.name}</span>
                                         </td>
                                         <td className="py-3 px-4">
                                             <span
-                                                className={`text-[10px] px-2 py-0.5 rounded border ${
+                                                className={`text-[10px] px-2 py-0.5 rounded border font-semibold ${
                                                     p.origin === 'PRISM'
-                                                        ? 'bg-rose-950/60 text-rose-300 border-rose-700'
+                                                        ? 'bg-rose-50 text-rose-800 border-rose-200'
                                                         : p.origin === 'AETHERCORE'
-                                                        ? 'bg-purple-950/60 text-purple-300 border-purple-700'
-                                                        : 'bg-slate-800 text-slate-300 border-slate-700'
+                                                        ? 'bg-purple-50 text-purple-800 border-purple-200'
+                                                        : 'bg-slate-100 text-slate-700 border-slate-200'
                                                 }`}
                                             >
                                                 {p.origin}
@@ -187,11 +187,11 @@ export default function ProcessMonitorApp() {
                                         <td className="py-3 px-4">{p.memoryMb} MB</td>
                                         <td className="py-3 px-4">
                                             {p.isQuarantined ? (
-                                                <span className="text-emerald-400 font-bold">QUARANTINED</span>
+                                                <span className="text-emerald-700 font-bold">QUARANTINED</span>
                                             ) : p.isCorrupted ? (
-                                                <span className="text-rose-400 font-bold animate-pulse">MALWARE</span>
+                                                <span className="text-rose-700 font-bold animate-pulse">MALWARE</span>
                                             ) : (
-                                                <span className="text-slate-400">ACTIVE</span>
+                                                <span className="text-slate-500">ACTIVE</span>
                                             )}
                                         </td>
                                     </tr>
@@ -202,43 +202,43 @@ export default function ProcessMonitorApp() {
                 </div>
 
                 {/* Process Details & Diagnostic Actions */}
-                <div className="col-span-4 flex flex-col justify-between p-5 bg-[#0a0f1d] overflow-y-auto">
+                <div className="col-span-4 flex flex-col justify-between p-5 bg-slate-50 overflow-y-auto">
                     {selectedProcess ? (
                         <div className="space-y-4">
                             <div>
-                                <div className="text-[10px] font-mono text-slate-500 uppercase tracking-widest">THREAD INSPECTION</div>
-                                <h3 className="text-lg font-bold text-sky-200 font-mono mt-0.5">{selectedProcess.name}</h3>
-                                <p className="text-xs text-slate-400 mt-1">{selectedProcess.description}</p>
+                                <div className="text-[10px] font-mono text-slate-500 uppercase tracking-widest font-bold">THREAD INSPECTION</div>
+                                <h3 className="text-lg font-bold text-slate-900 font-mono mt-0.5">{selectedProcess.name}</h3>
+                                <p className="text-xs text-slate-600 mt-1">{selectedProcess.description}</p>
                             </div>
 
                             {selectedProcess.impossibleOrigin && (
-                                <div className="p-3 rounded-lg bg-purple-950/40 border border-purple-500/40 text-purple-200 text-xs font-mono">
-                                    <strong className="text-purple-300">⚡ AETHERCORE ARTIFACT:</strong> This process points to the erased pre-code operating system that altered physical reality.
+                                <div className="p-3 rounded-lg bg-purple-50 border border-purple-200 text-purple-950 text-xs font-mono shadow-xs">
+                                    <strong className="text-purple-800">⚡ AETHERCORE ARTIFACT:</strong> This process points to the erased pre-code operating system that altered physical reality.
                                 </div>
                             )}
 
                             {selectedProcess.isCorrupted && !selectedProcess.isQuarantined && (
-                                <div className="p-3 rounded-lg bg-rose-950/40 border border-rose-500/40 text-rose-200 text-xs font-mono">
-                                    <strong className="text-rose-400">⚠️ ACTIVE DATA BLEED:</strong> Consuming system credits and attempting memory hijacking.
+                                <div className="p-3 rounded-lg bg-rose-50 border border-rose-200 text-rose-950 text-xs font-mono shadow-xs">
+                                    <strong className="text-rose-700">⚠️ ACTIVE DATA BLEED:</strong> Consuming system credits and attempting memory hijacking.
                                 </div>
                             )}
 
-                            <div className="space-y-2 text-xs font-mono pt-2 border-t border-[#1f2b48]">
+                            <div className="space-y-2 text-xs font-mono pt-2 border-t border-slate-200">
                                 <div className="flex justify-between">
                                     <span className="text-slate-500">Process ID:</span>
-                                    <span className="text-slate-200">{selectedProcess.pid}</span>
+                                    <span className="text-slate-900 font-bold">{selectedProcess.pid}</span>
                                 </div>
                                 <div className="flex justify-between">
                                     <span className="text-slate-500">Origin Domain:</span>
-                                    <span className="text-slate-200">{selectedProcess.origin}</span>
+                                    <span className="text-slate-900 font-bold">{selectedProcess.origin}</span>
                                 </div>
                                 <div className="flex justify-between">
                                     <span className="text-slate-500">Memory Allocation:</span>
-                                    <span className="text-slate-200">{selectedProcess.memoryMb} MB</span>
+                                    <span className="text-slate-900 font-bold">{selectedProcess.memoryMb} MB</span>
                                 </div>
                                 <div className="flex justify-between">
                                     <span className="text-slate-500">Threat Rating:</span>
-                                    <span className={selectedProcess.threatLevel === 'Critical' ? 'text-rose-400 font-bold' : 'text-slate-200'}>
+                                    <span className={selectedProcess.threatLevel === 'Critical' ? 'text-rose-700 font-bold' : 'text-slate-900 font-bold'}>
                                         {selectedProcess.threatLevel}
                                     </span>
                                 </div>
@@ -249,7 +249,7 @@ export default function ProcessMonitorApp() {
                                 {selectedProcess.isCorrupted && !selectedProcess.isQuarantined && (
                                     <button
                                         onClick={() => handleQuarantine(selectedProcess.pid)}
-                                        className="w-full py-2.5 rounded-lg bg-rose-600 hover:bg-rose-500 text-white font-mono text-xs font-bold transition flex items-center justify-center gap-2 shadow-sm"
+                                        className="w-full py-2.5 rounded-lg bg-rose-600 hover:bg-rose-700 text-white font-mono text-xs font-bold transition flex items-center justify-center gap-2 shadow-xs"
                                     >
                                         <Lock size={14} />
                                         <span>Quarantine Malicious Thread</span>
@@ -257,7 +257,7 @@ export default function ProcessMonitorApp() {
                                 )}
                                 <button
                                     onClick={() => handleTrace(selectedProcess)}
-                                    className="w-full py-2 rounded-lg bg-[#182440] hover:bg-[#203054] text-sky-200 font-mono text-xs font-semibold border border-[#2c3d66] transition flex items-center justify-center gap-2"
+                                    className="w-full py-2 rounded-lg bg-white hover:bg-slate-100 text-slate-800 font-mono text-xs font-semibold border border-slate-200 transition flex items-center justify-center gap-2 shadow-xs"
                                 >
                                     <Terminal size={14} />
                                     <span>Trace Sub-Level Route</span>
@@ -265,18 +265,18 @@ export default function ProcessMonitorApp() {
                             </div>
                         </div>
                     ) : (
-                        <div className="text-slate-500 text-xs font-mono text-center py-12">
+                        <div className="text-slate-400 text-xs font-mono text-center py-12">
                             Select a process to inspect telemetry.
                         </div>
                     )}
 
                     {/* Console Activity Log */}
-                    <div className="mt-6 pt-4 border-t border-[#1f2b48]">
-                        <div className="text-[10px] font-mono text-slate-500 uppercase tracking-wider mb-2">Live Kernel Telemetry</div>
-                        <div className="bg-[#050811] p-3 rounded-lg border border-[#162138] h-36 overflow-y-auto font-mono text-[11px] text-slate-400 space-y-1">
+                    <div className="mt-6 pt-4 border-t border-slate-200">
+                        <div className="text-[10px] font-mono text-slate-500 uppercase tracking-wider mb-2 font-bold">Live Kernel Telemetry</div>
+                        <div className="bg-white p-3 rounded-lg border border-slate-200 h-36 overflow-y-auto font-mono text-[11px] text-slate-600 space-y-1 shadow-xs">
                             {actionLog.map((log, idx) => (
                                 <div key={idx} className="leading-tight">
-                                    <span className="text-slate-600">[{new Date().toLocaleTimeString()}]</span> {log}
+                                    <span className="text-slate-400">[{new Date().toLocaleTimeString()}]</span> {log}
                                 </div>
                             ))}
                         </div>

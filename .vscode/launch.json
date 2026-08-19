@@ -16,8 +16,9 @@
             "name": "Web: Launch Vite Frontend (Chrome)",
             "type": "chrome",
             "request": "launch",
-            "url": "http://localhost:5173",
-            "webRoot": "${workspaceFolder}"
+            "url": "http://localhost:3000",
+            "preLaunchTask": "Start Vite dev server",
+            "webRoot": "${workspaceFolder}/frontend"
         },
         {
             "name": "SWA: Run Cloud Deployment Emulator",

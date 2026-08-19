@@ -157,23 +157,23 @@ export default function CivicProfileApp() {
   ];
 
   return (
-    <div className="flex h-full w-full flex-col bg-[#1E3D75]/90 backdrop-blur-xl text-[#FFFFFF] p-5 text-xs select-none overflow-y-auto font-ui">
+    <div className="flex h-full w-full flex-col bg-[#FAFBFD] text-slate-800 p-5 text-xs select-none overflow-y-auto font-ui">
       {/* Header */}
-      <div className="flex items-center justify-between border-b border-white/15 pb-3 mb-4 bg-[#142850]/80 -mx-5 -mt-5 px-5 pt-4 rounded-t-xl">
+      <div className="flex items-center justify-between border-b border-slate-200 pb-3 mb-4 bg-white -mx-5 -mt-5 px-5 pt-4 rounded-t-xl shadow-xs">
         <div>
-          <h2 className="text-base font-bold text-[#FFFFFF] font-display flex items-center gap-2">
-            <User size={18} className="text-[#E5C370]" /> MIRROR (§5.3) // CITIZEN IDENTITY MATRIX & VITALS
+          <h2 className="text-base font-bold text-slate-900 font-display flex items-center gap-2">
+            <User size={18} className="text-amber-700" /> MIRROR (§5.3) // CITIZEN IDENTITY MATRIX & VITALS
           </h2>
-          <p className="text-[11px] text-[#D5E2F5]">Official Identity Record, Inventory Backpack & Telemetry Calibration</p>
+          <p className="text-[11px] text-slate-500">Official Identity Record, Inventory Backpack & Telemetry Calibration</p>
         </div>
 
         {/* Sub-Tabs Navigation */}
         {dgaVerified && (
-          <div className="flex items-center gap-1 bg-[#142850]/80 border border-white/20 rounded-xl p-1 shadow-xs">
+          <div className="flex items-center gap-1 bg-slate-100 border border-slate-200 rounded-xl p-1 shadow-xs">
             <button
               onClick={() => setActiveTab('record')}
               className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition ${
-                activeTab === 'record' ? 'bg-[#315D9E] text-[#FBE6AB] border border-[#E5C370]/70 font-bold shadow-xs' : 'text-[#D5E2F5] hover:bg-[#315D9E]/40 hover:text-white'
+                activeTab === 'record' ? 'bg-white text-indigo-950 border border-slate-300 font-bold shadow-xs' : 'text-slate-600 hover:text-slate-900'
               }`}
             >
               🆔 Record
@@ -181,7 +181,7 @@ export default function CivicProfileApp() {
             <button
               onClick={() => setActiveTab('inventory')}
               className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition ${
-                activeTab === 'inventory' ? 'bg-[#315D9E] text-[#FBE6AB] border border-[#E5C370]/70 font-bold shadow-xs' : 'text-[#D5E2F5] hover:bg-[#315D9E]/40 hover:text-white'
+                activeTab === 'inventory' ? 'bg-white text-indigo-950 border border-slate-300 font-bold shadow-xs' : 'text-slate-600 hover:text-slate-900'
               }`}
             >
               🎒 VAULT
@@ -189,7 +189,7 @@ export default function CivicProfileApp() {
             <button
               onClick={() => setActiveTab('skills')}
               className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition ${
-                activeTab === 'skills' ? 'bg-[#315D9E] text-[#FBE6AB] border border-[#E5C370]/70 font-bold shadow-xs' : 'text-[#D5E2F5] hover:bg-[#315D9E]/40 hover:text-white'
+                activeTab === 'skills' ? 'bg-white text-indigo-950 border border-slate-300 font-bold shadow-xs' : 'text-slate-600 hover:text-slate-900'
               }`}
             >
               ⚡ Skills (9)
@@ -197,7 +197,7 @@ export default function CivicProfileApp() {
             <button
               onClick={() => setActiveTab('clubs')}
               className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition ${
-                activeTab === 'clubs' ? 'bg-[#315D9E] text-[#FBE6AB] border border-[#E5C370]/70 font-bold shadow-xs' : 'text-[#D5E2F5] hover:bg-[#315D9E]/40 hover:text-white'
+                activeTab === 'clubs' ? 'bg-white text-indigo-950 border border-slate-300 font-bold shadow-xs' : 'text-slate-600 hover:text-slate-900'
               }`}
             >
               🏛️ Clubs
@@ -205,7 +205,7 @@ export default function CivicProfileApp() {
             <button
               onClick={() => setActiveTab('dorm')}
               className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition ${
-                activeTab === 'dorm' ? 'bg-[#315D9E] text-[#FBE6AB] border border-[#E5C370]/70 font-bold shadow-xs' : 'text-[#D5E2F5] hover:bg-[#315D9E]/40 hover:text-white'
+                activeTab === 'dorm' ? 'bg-white text-indigo-950 border border-slate-300 font-bold shadow-xs' : 'text-slate-600 hover:text-slate-900'
               }`}
             >
               🏠 Dorm
@@ -213,7 +213,7 @@ export default function CivicProfileApp() {
             <button
               onClick={() => setActiveTab('loops')}
               className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition ${
-                activeTab === 'loops' ? 'bg-[#315D9E] text-[#FBE6AB] border border-[#E5C370]/70 font-bold shadow-xs' : 'text-[#D5E2F5] hover:bg-[#315D9E]/40 hover:text-white'
+                activeTab === 'loops' ? 'bg-white text-indigo-950 border border-slate-300 font-bold shadow-xs' : 'text-slate-600 hover:text-slate-900'
               }`}
             >
               🔄 App Loops (6.5)

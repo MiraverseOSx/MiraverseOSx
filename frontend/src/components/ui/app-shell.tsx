@@ -2,7 +2,12 @@ import React from 'react';
 import { Search } from 'lucide-react';
 import { twMerge } from 'tailwind-merge';
 
-export function AppShell({ children, className }) {
+export interface AppShellProps {
+    children: React.ReactNode;
+    className?: string;
+}
+
+export function AppShell({ children, className }: AppShellProps) {
     return (
         <section className={twMerge('app-shell', className)}>
             {children}
@@ -10,7 +15,15 @@ export function AppShell({ children, className }) {
     );
 }
 
-export function AppToolbar({ icon: Icon, title, subtitle, actions, className }) {
+export interface AppToolbarProps {
+    icon?: React.ElementType;
+    title: React.ReactNode;
+    subtitle?: React.ReactNode;
+    actions?: React.ReactNode;
+    className?: string;
+}
+
+export function AppToolbar({ icon: Icon, title, subtitle, actions, className }: AppToolbarProps) {
     return (
         <header className={twMerge('app-toolbar', className)}>
             <div className="flex min-w-0 items-center gap-3">
@@ -29,7 +42,13 @@ export function AppToolbar({ icon: Icon, title, subtitle, actions, className }) 
     );
 }
 
-export function AppSidebar({ children, className, label }) {
+export interface AppSidebarProps {
+    children: React.ReactNode;
+    className?: string;
+    label?: string;
+}
+
+export function AppSidebar({ children, className, label }: AppSidebarProps) {
     return (
         <aside className={twMerge('app-sidebar', className)} aria-label={label}>
             {children}
@@ -37,11 +56,24 @@ export function AppSidebar({ children, className, label }) {
     );
 }
 
-export function AppPane({ children, className, as: Component = 'section' }) {
+export interface AppPaneProps {
+    children: React.ReactNode;
+    className?: string;
+    as?: React.ElementType;
+}
+
+export function AppPane({ children, className, as: Component = 'section' }: AppPaneProps) {
     return <Component className={twMerge('app-pane', className)}>{children}</Component>;
 }
 
-export function PaneHeader({ title, meta, children, className }) {
+export interface PaneHeaderProps {
+    title: React.ReactNode;
+    meta?: React.ReactNode;
+    children?: React.ReactNode;
+    className?: string;
+}
+
+export function PaneHeader({ title, meta, children, className }: PaneHeaderProps) {
     return (
         <div className={twMerge('app-pane-header', className)}>
             <div className="min-w-0">
@@ -53,7 +85,15 @@ export function PaneHeader({ title, meta, children, className }) {
     );
 }
 
-export function SearchField({ value, onChange, placeholder = 'Search…', label = 'Search', className }) {
+export interface SearchFieldProps {
+    value: string;
+    onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    placeholder?: string;
+    label?: string;
+    className?: string;
+}
+
+export function SearchField({ value, onChange, placeholder = 'Search…', label = 'Search', className }: SearchFieldProps) {
     return (
         <label className={twMerge('app-search', className)}>
             <span className="sr-only">{label}</span>
@@ -63,11 +103,24 @@ export function SearchField({ value, onChange, placeholder = 'Search…', label 
     );
 }
 
-export function StatusBadge({ children, tone = 'neutral', className }) {
+export interface StatusBadgeProps {
+    children: React.ReactNode;
+    tone?: 'neutral' | 'info' | 'success' | 'warning' | 'danger';
+    className?: string;
+}
+
+export function StatusBadge({ children, tone = 'neutral', className }: StatusBadgeProps) {
     return <span className={twMerge('app-status-badge', `app-status-badge--${tone}`, className)}>{children}</span>;
 }
 
-export function EmptyState({ icon: Icon, title, description, className }) {
+export interface EmptyStateProps {
+    icon?: React.ElementType;
+    title: React.ReactNode;
+    description?: React.ReactNode;
+    className?: string;
+}
+
+export function EmptyState({ icon: Icon, title, description, className }: EmptyStateProps) {
     return (
         <div className={twMerge('app-empty-state', className)} role="status">
             {Icon && <Icon size={28} aria-hidden="true" />}

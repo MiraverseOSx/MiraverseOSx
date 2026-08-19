@@ -98,82 +98,85 @@ export default function FileExplorerApp() {
 
   const getFileIcon = (type) => {
     switch (type) {
-      case 'osform': return <FileText size={16} className="text-[#f4d35e]" />;
+      case 'osform': return <FileText size={16} className="text-amber-700" />;
       case 'txt':
-      case 'doc': return <FileText size={16} className="text-purple-200" />;
-      case 'log': return <FileText size={16} className="text-[#e29578]" />;
-      case 'map': return <Map size={16} className="text-amber-300" />;
+      case 'doc': return <FileText size={16} className="text-indigo-700" />;
+      case 'log': return <FileText size={16} className="text-amber-800" />;
+      case 'map': return <Map size={16} className="text-amber-700" />;
       case 'node':
-      case 'grid': return <MapPin size={16} className="text-rose-300" />;
-      case 'mod': return <Zap size={16} className="text-[#f4d35e]" />;
-      case 'spell': return <Zap size={16} className="text-rose-400" />;
-      case 'veil': return <Zap size={16} className="text-pink-300" />;
-      case 'diag': return <Activity size={16} className="text-amber-400" />;
-      case 'aura': return <Activity size={16} className="text-rose-300" />;
+      case 'grid': return <MapPin size={16} className="text-rose-700" />;
+      case 'mod': return <Zap size={16} className="text-amber-700" />;
+      case 'spell': return <Zap size={16} className="text-rose-700" />;
+      case 'veil': return <Zap size={16} className="text-purple-700" />;
+      case 'diag': return <Activity size={16} className="text-emerald-700" />;
+      case 'aura': return <Activity size={16} className="text-rose-700" />;
       case 'sig':
-      case 'wav': return <Radio size={16} className="text-purple-300" />;
-      case 'sys': return <Cpu size={16} className="text-slate-300" />;
+      case 'wav': return <Radio size={16} className="text-purple-700" />;
+      case 'sys': return <Cpu size={16} className="text-slate-700" />;
       case 'prism':
-      case 'corrupt': return <ShieldAlert size={16} className="text-rose-400" />;
-      default: return <FileText size={16} className="text-[#e29578]" />;
+      case 'corrupt': return <ShieldAlert size={16} className="text-rose-700" />;
+      default: return <FileText size={16} className="text-slate-700" />;
     }
   };
 
   const getAttachmentCount = (mockKey) => {
-    const doc = MOCK_DOCUMENTS[mockKey];
-    return doc?.attachments?.length || 0;
+    if (!mockKey || !MOCK_DOCUMENTS[mockKey]) return 0;
+    return MOCK_DOCUMENTS[mockKey].attachments?.length || 0;
   };
 
   return (
-    <div className="relative flex h-full w-full flex-col bg-[#141021] text-purple-100 font-sans text-xs select-none transition-all">
-      {/* Top Address & Filter Header */}
-      <div className="flex h-12 items-center justify-between border-b border-[#2a233d] bg-[#1a152b] px-4 backdrop-blur-md gap-4">
-        <div className="flex items-center gap-2.5 font-mono text-xs text-white/80 shrink-0">
-          <Folder size={16} className="text-[#f4d35e]" />
-          <span className="text-[#f4d35e] font-semibold">File Explorer</span>
-          <span className="text-white/40">/</span>
-          <span className="text-white font-bold">{activeDirectory}</span>
+    <div className="file-explorer-container font-sans select-none overflow-hidden text-xs">
+      {/* Top Address & Action Bar */}
+      <div className="flex h-12 shrink-0 items-center justify-between border-b border-slate-200 bg-white px-4">
+        {/* Left: Breadcrumbs */}
+        <div className="flex items-center gap-2 font-mono text-xs text-slate-700">
+          <Folder size={16} className="text-amber-700" />
+          <span className="font-bold">miraverse://storage</span>
+          <ChevronRight size={13} className="text-slate-400" />
+          <span className="text-indigo-950 font-bold bg-indigo-50 px-2 py-0.5 rounded border border-indigo-200">
+            {activeDirectory}
+          </span>
         </div>
 
-        {/* Search Bar & View Mode Toggle */}
+        {/* Right: Search & View Controls */}
         <div className="flex items-center gap-3">
           <div className="relative flex items-center">
-            <Search size={14} className="absolute left-2.5 text-white/40 pointer-events-none" />
+            <Search size={14} className="absolute left-2.5 text-slate-400 pointer-events-none" />
             <input
               type="text"
               placeholder="Filter files..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="bg-[#0f0c1a] border border-[#332b49] rounded-lg pl-8 pr-3 py-1 text-xs text-white focus:outline-none focus:border-rose-400/60 transition w-36 sm:w-48 placeholder:text-white/30"
+              className="bg-slate-50 border border-slate-200 rounded-lg pl-8 pr-3 py-1 text-xs text-slate-800 focus:outline-none focus:border-indigo-400 transition w-36 sm:w-48 placeholder:text-slate-400"
             />
           </div>
 
-          <div className="flex items-center rounded-lg border border-[#332b49] bg-[#0f0c1a] p-0.5">
+          <div className="flex items-center rounded-lg border border-slate-200 bg-slate-50 p-0.5">
             <button
               onClick={() => setViewMode('grid')}
-              className={`p-1 rounded-md transition ${viewMode === 'grid' ? 'bg-rose-500/20 text-[#f4d35e] font-bold' : 'text-white/40 hover:text-white'}`}
+              className={`p-1 rounded-md transition ${viewMode === 'grid' ? 'bg-white text-indigo-950 font-bold shadow-xs' : 'text-slate-500 hover:text-slate-900'}`}
               title="Grid View"
             >
               <LayoutGrid size={14} />
             </button>
             <button
               onClick={() => setViewMode('list')}
-              className={`p-1 rounded-md transition ${viewMode === 'list' ? 'bg-rose-500/20 text-[#f4d35e] font-bold' : 'text-white/40 hover:text-white'}`}
+              className={`p-1 rounded-md transition ${viewMode === 'list' ? 'bg-white text-indigo-950 font-bold shadow-xs' : 'text-slate-500 hover:text-slate-900'}`}
               title="List View"
             >
               <List size={14} />
             </button>
           </div>
 
-          <span className="font-mono text-[10px] text-white/50 hidden sm:inline">{filteredFiles.length} items</span>
+          <span className="font-mono text-[10px] text-slate-500 hidden sm:inline">{filteredFiles.length} items</span>
         </div>
       </div>
 
       {/* Main Workspace */}
       <div className="flex min-h-0 flex-1">
         {/* Left Directory Tree */}
-        <div className="w-[21%] min-w-40 max-w-48 shrink-0 border-r border-[#2a233d] bg-[#1a152b] p-3 space-y-1.5 font-mono text-[11px]">
-          <div className="text-[9px] font-bold text-rose-300/70 uppercase tracking-widest px-2 mb-2">Directories</div>
+        <div className="w-[21%] min-w-40 max-w-48 shrink-0 border-r border-slate-200 bg-slate-50 p-3 space-y-1.5 font-mono text-[11px]">
+          <div className="text-[9px] font-bold text-slate-500 uppercase tracking-widest px-2 mb-2">Directories</div>
           {['/root', '/documents', '/spells', '/diagnostics', '/system'].map((dir) => (
             <button
               key={dir}
@@ -183,21 +186,21 @@ export default function FileExplorerApp() {
               }}
               className={`flex w-full items-center gap-2 rounded-lg px-2.5 py-2 transition text-left ${
                 activeDirectory === dir
-                  ? 'bg-rose-500/15 text-[#f4d35e] font-bold border border-rose-400/30'
-                  : 'text-white/60 hover:bg-white/5 hover:text-white'
+                  ? 'bg-amber-100/80 text-amber-950 font-bold border border-amber-300 shadow-xs'
+                  : 'text-slate-600 hover:bg-slate-200/60 hover:text-slate-900'
               }`}
             >
-              <Folder size={14} className={activeDirectory === dir ? 'text-[#f4d35e]' : 'text-white/40'} />
+              <Folder size={14} className={activeDirectory === dir ? 'text-amber-700' : 'text-slate-400'} />
               <span>{dir}</span>
             </button>
           ))}
         </div>
 
         {/* Center File Workspace */}
-        <div className="flex-1 p-4 overflow-auto space-y-3 bg-[#141021]">
+        <div className="flex-1 p-4 overflow-auto space-y-3 bg-[#FAFBFD]">
           {filteredFiles.length === 0 ? (
-            <div className="flex flex-col items-center justify-center h-48 text-white/40 font-mono text-xs">
-              <Folder size={32} className="text-white/20 mb-2" />
+            <div className="flex flex-col items-center justify-center h-48 text-slate-400 font-mono text-xs">
+              <Folder size={32} className="text-slate-300 mb-2" />
               <span>No matching files found</span>
             </div>
           ) : viewMode === 'grid' ? (
@@ -215,40 +218,40 @@ export default function FileExplorerApp() {
                     }`}
                   >
                     <div className="flex items-center gap-3">
-                      <div className="p-2.5 rounded-lg bg-[#201936] border border-[#352c4e] shrink-0">
+                      <div className="p-2.5 rounded-lg bg-slate-50 border border-slate-200 shrink-0">
                         {getFileIcon(file.type)}
                       </div>
                       <div className="min-w-0 flex-1">
-                        <div className="font-mono text-xs font-bold text-white flex items-center gap-2 truncate">
+                        <div className="font-mono text-xs font-bold text-slate-900 flex items-center gap-2 truncate">
                           <span>{file.name}</span>
                           {attCount > 0 && (
-                            <span className="inline-flex items-center gap-0.5 text-[9px] font-normal text-[#f4d35e] bg-amber-500/10 border border-amber-500/30 px-1.5 py-0.5 rounded">
+                            <span className="inline-flex items-center gap-0.5 text-[9px] font-normal text-amber-900 bg-amber-100 border border-amber-200 px-1.5 py-0.5 rounded">
                               <Paperclip size={10} /> {attCount}
                             </span>
                           )}
                         </div>
-                        <div className="text-[10px] text-white/60 truncate mt-0.5">{file.desc}</div>
+                        <div className="text-[10px] text-slate-500 truncate mt-0.5">{file.desc}</div>
                       </div>
                     </div>
 
-                    <span className="font-mono text-[10px] text-white/40 shrink-0 ml-2">{file.size}</span>
+                    <span className="font-mono text-[10px] text-slate-400 shrink-0 ml-2">{file.size}</span>
                   </div>
                 );
               })}
             </div>
           ) : (
             /* 2. Compact Tabular List View */
-            <div className="rounded-xl border border-[#2a233d] bg-[#1a152b] overflow-hidden">
+            <div className="rounded-xl border border-slate-200 bg-white overflow-hidden shadow-xs">
               <table className="w-full text-left border-collapse">
                 <thead>
-                  <tr className="border-b border-[#2a233d] bg-[#141021] text-[10px] font-mono text-white/40 uppercase">
+                  <tr className="border-b border-slate-200 bg-slate-50 text-[10px] font-mono text-slate-500 uppercase">
                     <th className="py-2 px-3 font-semibold">Name</th>
                     <th className="py-2 px-3 font-semibold">Description</th>
                     <th className="py-2 px-3 font-semibold">Attachments</th>
                     <th className="py-2 px-3 font-semibold text-right">Size</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-[#261f38] text-xs">
+                <tbody className="divide-y divide-slate-100 text-xs">
                   {filteredFiles.map((file) => {
                     const attCount = getAttachmentCount(file.mockKey);
                     const isSelected = selectedFile?.id === file.id;
@@ -258,24 +261,24 @@ export default function FileExplorerApp() {
                         onClick={() => handleFileSelect(file)}
                         onDoubleClick={() => handleFileDoubleClick(file)}
                         className={`cursor-pointer transition ${
-                          isSelected ? 'bg-rose-500/15 text-white font-medium' : 'hover:bg-white/5 text-white/80'
+                          isSelected ? 'bg-amber-50 text-slate-900 font-medium' : 'hover:bg-slate-50 text-slate-700'
                         }`}
                       >
                         <td className="py-2.5 px-3 flex items-center gap-2 font-mono">
                           {getFileIcon(file.type)}
-                          <span className="font-bold">{file.name}</span>
+                          <span className="font-bold text-slate-900">{file.name}</span>
                         </td>
-                        <td className="py-2.5 px-3 text-[11px] text-white/60">{file.desc}</td>
+                        <td className="py-2.5 px-3 text-[11px] text-slate-500">{file.desc}</td>
                         <td className="py-2.5 px-3 font-mono text-[10px]">
                           {attCount > 0 ? (
-                            <span className="inline-flex items-center gap-1 text-[#f4d35e] bg-amber-500/10 border border-amber-500/30 px-1.5 py-0.5 rounded">
+                            <span className="inline-flex items-center gap-1 text-amber-900 bg-amber-100 border border-amber-200 px-1.5 py-0.5 rounded">
                               <Paperclip size={10} /> {attCount} attached
                             </span>
                           ) : (
-                            <span className="text-white/20">—</span>
+                            <span className="text-slate-300">—</span>
                           )}
                         </td>
-                        <td className="py-2.5 px-3 font-mono text-[10px] text-right text-white/50">{file.size}</td>
+                        <td className="py-2.5 px-3 font-mono text-[10px] text-right text-slate-400">{file.size}</td>
                       </tr>
                     );
                   })}
@@ -286,17 +289,17 @@ export default function FileExplorerApp() {
 
           {/* Selected File Action Footer */}
           {selectedFile && (
-            <div className="mt-4 rounded-xl border border-rose-400/30 bg-[#1e1730] p-3 flex items-center justify-between font-mono text-xs">
+            <div className="mt-4 rounded-xl border border-amber-200 bg-amber-50/70 p-3 flex items-center justify-between font-mono text-xs shadow-xs">
               <div className="flex items-center gap-2">
-                <span className="text-rose-300">Selected:</span>
-                <span className="font-bold text-white">{selectedFile.name}</span>
-                <span className="text-white/40">({selectedFile.size})</span>
+                <span className="text-amber-800 font-semibold">Selected:</span>
+                <span className="font-bold text-slate-900">{selectedFile.name}</span>
+                <span className="text-slate-400">({selectedFile.size})</span>
               </div>
               <Button
                 onClick={() => executeFile(selectedFile)}
                 size="sm"
                 variant="solid"
-                className="bg-[#f4d35e] hover:bg-[#ffe6a7] text-black font-bold text-xs flex items-center gap-1.5 px-4 py-1.5 rounded-lg transition"
+                className="bg-amber-300 hover:bg-amber-400 text-amber-950 font-bold text-xs flex items-center gap-1.5 px-4 py-1.5 rounded-lg transition shadow-xs"
               >
                 Inspect / View File <ExternalLink size={13} />
               </Button>

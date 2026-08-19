@@ -17,22 +17,22 @@ export type WorkplaceStationId =
   | 'faithmed'
   | 'finance'
   | 'archives'
-  | 'diplomat'
   | 'engineer'
+  | 'diplomat'
   | 'warden'
   | 'artist'
   | 'questnotice';
 
 const STATIONS: { id: WorkplaceStationId; name: string; org: string; icon: any; color: string; bg: string; border: string; desc: string }[] = [
-  { id: 'dga', name: 'DGA Tactical Console', org: 'Dept. of Global Affairs', icon: Shield, color: 'text-purple-400', bg: 'bg-purple-950/60', border: 'border-purple-600/40', desc: 'Shield defense, Eyes intelligence & Blackout glitch containment' },
-  { id: 'faithmed', name: 'Faith Medical Triage Desk', org: 'Faith Medical Group', icon: Stethoscope, color: 'text-emerald-400', bg: 'bg-emerald-950/60', border: 'border-emerald-600/40', desc: 'Clinical intake, Veil exposure stabilization & VITALS diagnostics' },
-  { id: 'finance', name: 'Oryn Treasury Terminal', org: 'Oryn Dept. of Finance', icon: Landmark, color: 'text-amber-400', bg: 'bg-amber-950/60', border: 'border-amber-600/40', desc: 'Ledger audits, salary disbursements, tax records & scholarships' },
-  { id: 'archives', name: 'Archival Research Node', org: 'City Library & Royal Society', icon: BookOpen, color: 'text-cyan-400', bg: 'bg-cyan-950/60', border: 'border-cyan-600/40', desc: 'Purge manuscripts, sealed Council files & AETHERCORE codices' },
-  { id: 'engineer', name: 'Systems Engineering Deck', org: 'Tech Labs & Infrastructure', icon: Cpu, color: 'text-blue-400', bg: 'bg-blue-950/60', border: 'border-blue-600/40', desc: 'Terminal repairs, circuit soldering, PRISM isolation & tool design' },
-  { id: 'diplomat', name: 'Council Chambers Desk', org: 'Civic Administration & Council', icon: Building, color: 'text-indigo-400', bg: 'bg-indigo-950/60', border: 'border-indigo-600/40', desc: 'Citizen mediation, regional treaties, dispatches & public hearings' },
-  { id: 'warden', name: 'Arcadia Biosphere Post', org: 'Ecological Reserve', icon: Compass, color: 'text-teal-400', bg: 'bg-teal-950/60', border: 'border-teal-600/40', desc: 'Botanical dome assays, flora sampling & environmental health' },
-  { id: 'artist', name: 'The Velvet Cultural Studio', org: 'Media & Performance Guild', icon: Sparkles, color: 'text-rose-400', bg: 'bg-rose-950/60', border: 'border-rose-600/40', desc: 'Music performances, visual holographic exhibits & media broadcasts' },
-  { id: 'questnotice', name: 'QUESTNOTICE Civic Dispatch', org: 'Aureline Public Notice Board', icon: Briefcase, color: 'text-yellow-400', bg: 'bg-yellow-950/60', border: 'border-yellow-600/40', desc: 'Neighborhood odd jobs, deliveries, errands & rapid civic help' },
+  { id: 'dga', name: 'DGA Tactical Console', org: 'Dept. of Global Affairs', icon: Shield, color: 'text-purple-700', bg: 'bg-purple-50', border: 'border-purple-200', desc: 'Shield defense, Eyes intelligence & Blackout glitch containment' },
+  { id: 'faithmed', name: 'Faith Medical Triage Desk', org: 'Faith Medical Group', icon: Stethoscope, color: 'text-emerald-700', bg: 'bg-emerald-50', border: 'border-emerald-200', desc: 'Clinical intake, Veil exposure stabilization & VITALS diagnostics' },
+  { id: 'finance', name: 'Oryn Treasury Terminal', org: 'Oryn Dept. of Finance', icon: Landmark, color: 'text-amber-800', bg: 'bg-amber-50', border: 'border-amber-200', desc: 'Ledger audits, salary disbursements, tax records & scholarships' },
+  { id: 'archives', name: 'Archival Research Node', org: 'City Library & Royal Society', icon: BookOpen, color: 'text-sky-700', bg: 'bg-sky-50', border: 'border-sky-200', desc: 'Purge manuscripts, sealed Council files & AETHERCORE codices' },
+  { id: 'engineer', name: 'Systems Engineering Deck', org: 'Tech Labs & Infrastructure', icon: Cpu, color: 'text-blue-700', bg: 'bg-blue-50', border: 'border-blue-200', desc: 'Terminal repairs, circuit soldering, PRISM isolation & tool design' },
+  { id: 'diplomat', name: 'Council Chambers Desk', org: 'Civic Administration & Council', icon: Building, color: 'text-indigo-700', bg: 'bg-indigo-50', border: 'border-indigo-200', desc: 'Citizen mediation, regional treaties, dispatches & public hearings' },
+  { id: 'warden', name: 'Arcadia Biosphere Post', org: 'Ecological Reserve', icon: Compass, color: 'text-teal-700', bg: 'bg-teal-50', border: 'border-teal-200', desc: 'Botanical dome assays, flora sampling & environmental health' },
+  { id: 'artist', name: 'The Velvet Cultural Studio', org: 'Media & Performance Guild', icon: Sparkles, color: 'text-rose-700', bg: 'bg-rose-50', border: 'border-rose-200', desc: 'Music performances, visual holographic exhibits & media broadcasts' },
+  { id: 'questnotice', name: 'QUESTNOTICE Civic Dispatch', org: 'Aureline Public Notice Board', icon: Briefcase, color: 'text-amber-700', bg: 'bg-amber-50', border: 'border-amber-200', desc: 'Neighborhood odd jobs, deliveries, errands & rapid civic help' },
 ];
 
 export default function JobWorkstationApp() {
@@ -81,7 +81,6 @@ export default function JobWorkstationApp() {
 
   // Filter missions by active workstation & mission type
   const filteredMissions = missions.filter((m) => {
-    // Station track matching
     let stationMatch = false;
     if (activeStation === 'dga') stationMatch = m.track === 'dga' || m.department.includes('DGA');
     else if (activeStation === 'faithmed') stationMatch = m.track === 'medical';
@@ -94,10 +93,8 @@ export default function JobWorkstationApp() {
     else if (activeStation === 'questnotice') stationMatch = m.track === 'questnotice' || m.type === 'QUESTNOTICE';
     else stationMatch = true;
 
-    // Mission type matching
     const typeMatch = activeMissionType === 'All' || m.type === activeMissionType;
 
-    // DGA Sub-branch filter
     let branchMatch = true;
     if (activeStation === 'dga' && dgaBranchFilter !== 'All') {
       branchMatch = m.department.includes(dgaBranchFilter);
@@ -107,10 +104,6 @@ export default function JobWorkstationApp() {
   });
 
   const selectedMission = missions.find((m) => m.id === selectedMissionId) || filteredMissions[0] || missions[0];
-
-  const completedCount = missions.filter((m) => m.completed).length;
-  const totalCreditsEarned = missions.filter((m) => m.completed).reduce((acc, curr) => acc + curr.rewardCredits, 0);
-  const totalBitsEarned = missions.filter((m) => m.completed).reduce((acc, curr) => acc + (curr.rewardBits || 0), 0);
 
   const handleExecuteMission = (missionId: string) => {
     if (soundEnabled) SoundFX.playButtonTap();
@@ -134,30 +127,30 @@ export default function JobWorkstationApp() {
   };
 
   return (
-    <div className="flex flex-col h-full bg-[#0A1026]/90 backdrop-blur-xl text-[#F8F6EE] font-ui select-none overflow-hidden border border-white/10 shadow-2xl">
+    <div className="h-full flex flex-col bg-[#FAFBFD] text-slate-800 font-ui select-none overflow-hidden">
       
-      {/* ─── 10.1A UNIFIED FEDERAL WORKNET AUTHENTICATION HEADER ─── */}
-      <header className="flex items-center justify-between px-6 py-3 bg-[#142B52]/80 border-b border-white/10 shadow-md">
+      {/* ─── 10.1A UNIFIED WORKNET TOP METRICS & INSTITUTION BAR ─── */}
+      <header className="flex items-center justify-between px-6 py-3 bg-white border-b border-slate-200 shadow-xs">
         <div className="flex items-center gap-3.5">
-          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#254A7A]/40 border border-[#D4B06A]/40 text-[#D4B06A] shadow-[0_0_15px_rgba(212,176,106,0.2)]">
+          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-amber-50 border border-amber-200 text-amber-700 shadow-xs">
             <Fingerprint size={22} className="animate-pulse" />
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <span className="text-[10px] font-ui uppercase bg-[#254A7A] text-[#F0D79A] border border-[#D4B06A]/30 px-2 py-0.5 font-bold rounded tracking-wider shadow-xs">
+              <span className="text-[10px] font-ui uppercase bg-slate-100 text-slate-700 border border-slate-200 px-2 py-0.5 font-bold rounded tracking-wider shadow-xs">
                 WORKNET §10.1A // FEDERAL ACCESS LAYER
               </span>
-              <span className="text-[11px] text-[#3EB9A8] font-ui flex items-center gap-1 font-semibold">
-                <span className="h-2 w-2 rounded-full bg-[#3EB9A8] animate-ping inline-block" /> AUTHENTICATED
+              <span className="text-[11px] text-emerald-700 font-ui flex items-center gap-1 font-semibold">
+                <span className="h-2 w-2 rounded-full bg-emerald-500 animate-ping inline-block" /> AUTHENTICATED
               </span>
-              <span className="text-[11px] text-[#C7D2E0] font-ui">
+              <span className="text-[11px] text-slate-500 font-ui">
                 BCL-{clearanceTier} (Level {player?.level || 1})
               </span>
             </div>
-            <h1 className="text-sm font-display font-bold text-[#F8F6EE] mt-0.5 tracking-tight flex items-center gap-2">
+            <h1 className="text-sm font-display font-bold text-slate-900 mt-0.5 tracking-tight flex items-center gap-2">
               <span>{currentStationInfo.org}</span>
-              <ChevronRight size={14} className="text-[#D4B06A]" />
-              <span className="text-[#F0D79A] font-semibold">{currentStationInfo.name}</span>
+              <ChevronRight size={14} className="text-slate-400" />
+              <span className="text-amber-800 font-semibold">{currentStationInfo.name}</span>
             </h1>
           </div>
         </div>
@@ -165,18 +158,18 @@ export default function JobWorkstationApp() {
         {/* Dual Currency & Federal Telemetry */}
         <div className="flex items-center gap-5 text-xs font-ui">
           <div className="text-right">
-            <div className="text-[#C7D2E0] text-[10px] uppercase tracking-wider">Primary Currency</div>
-            <div className="text-[#D4B06A] font-bold font-ui text-sm flex items-center justify-end gap-1">
+            <div className="text-slate-500 text-[10px] uppercase tracking-wider">Primary Currency</div>
+            <div className="text-amber-800 font-bold font-ui text-sm flex items-center justify-end gap-1">
               <span>{player?.credits ?? 500}</span>
-              <span className="text-[#F0D79A] text-[11px]">₢ CREDITS</span>
+              <span className="text-amber-600 text-[11px]">₢ CREDITS</span>
             </div>
           </div>
-          <div className="h-8 w-[1px] bg-white/10" />
+          <div className="h-8 w-[1px] bg-slate-200" />
           <div className="text-right">
-            <div className="text-[#C7D2E0] text-[10px] uppercase tracking-wider">Secondary Rare Currency</div>
-            <div className="text-[#3EB9A8] font-bold font-ui text-sm flex items-center justify-end gap-1">
+            <div className="text-slate-500 text-[10px] uppercase tracking-wider">Secondary Rare Currency</div>
+            <div className="text-emerald-700 font-bold font-ui text-sm flex items-center justify-end gap-1">
               <span>{player?.bits ?? 25}</span>
-              <span className="text-[#5AA371] text-[11px]">◈ BITS</span>
+              <span className="text-emerald-600 text-[11px]">◈ BITS</span>
             </div>
           </div>
         </div>
@@ -184,31 +177,31 @@ export default function JobWorkstationApp() {
 
       {/* ─── ⚡ ROOT ADMIN TESTING & DEBUG TOOLBAR (ADMINS ONLY) ─── */}
       {player?.isAdmin && (
-        <div className="flex items-center justify-between px-6 py-2 bg-gradient-to-r from-[#24467D]/95 via-[#1E3D75]/95 to-[#315D9E]/95 border-b border-[#E5C370]/50 text-xs font-ui">
+        <div className="flex items-center justify-between px-6 py-2 bg-amber-50/80 border-b border-amber-200 text-xs font-ui">
           <div className="flex items-center gap-2">
-            <span className="px-2.5 py-0.5 rounded-md bg-[#E5C370] text-[#0E1A33] font-bold text-[10px] tracking-wider uppercase flex items-center gap-1 shadow-xs">
+            <span className="px-2.5 py-0.5 rounded-md bg-amber-200 text-amber-950 font-bold text-[10px] tracking-wider uppercase flex items-center gap-1 shadow-xs">
               <Zap size={11} /> ROOT ADMIN DEBUG PANEL
             </span>
-            <span className="text-[#FBE6AB] text-[11px]">Unrestricted Access Across All 9 Institutions</span>
+            <span className="text-amber-900 text-[11px]">Unrestricted Access Across All 9 Institutions</span>
           </div>
           <div className="flex items-center gap-2">
             <button
               onClick={handleAdminResetMissions}
-              className="px-3 py-1 bg-[#142850]/80 hover:bg-[#315D9E] text-[#FFFFFF] rounded-lg text-[11px] font-bold transition border border-white/20 flex items-center gap-1 shadow-xs"
+              className="px-3 py-1 bg-white hover:bg-slate-50 text-slate-700 rounded-lg text-[11px] font-bold transition border border-slate-200 flex items-center gap-1 shadow-xs"
               title="Reset all assignments to uncompleted for re-testing"
             >
               <RefreshCw size={12} /> Reset Missions
             </button>
             <button
               onClick={handleAdminCompleteAll}
-              className="px-3 py-1 bg-[#2A8B7D] hover:bg-[#4CD6C4] hover:text-[#0E1A33] text-white rounded-lg text-[11px] font-bold transition flex items-center gap-1 shadow-xs"
+              className="px-3 py-1 bg-emerald-100 hover:bg-emerald-200 text-emerald-800 rounded-lg text-[11px] font-bold transition border border-emerald-200 flex items-center gap-1 shadow-xs"
               title="Instantly execute all directives and credit rewards"
             >
               <CheckCircle2 size={12} /> Resolve All
             </button>
             <button
               onClick={handleAdminAddFunds}
-              className="px-3 py-1 bg-gradient-to-r from-[#E5C370] to-[#D4A84D] text-[#0E1A33] hover:from-[#FBE6AB] hover:to-[#E5C370] rounded-lg text-[11px] font-bold transition flex items-center gap-1 shadow-xs"
+              className="px-3 py-1 bg-amber-200 hover:bg-amber-300 text-amber-950 rounded-lg text-[11px] font-bold transition border border-amber-300 flex items-center gap-1 shadow-xs"
               title="Grant +10,000 Credits and +1,000 Bits"
             >
               <DollarSign size={12} /> +10k ₢ / +1k ◈
@@ -218,7 +211,7 @@ export default function JobWorkstationApp() {
       )}
 
       {/* ─── WORKPLACE TERMINAL SELECTOR STRIP ─── */}
-      <div className="flex items-center gap-1.5 px-4 py-2 bg-[#142850]/80 border-b border-white/15 overflow-x-auto scrollbar-none">
+      <div className="flex items-center gap-1.5 px-4 py-2 bg-white border-b border-slate-200 overflow-x-auto scrollbar-none">
         {STATIONS.map((station) => {
           const Icon = station.icon;
           const isActive = activeStation === station.id;
@@ -231,11 +224,11 @@ export default function JobWorkstationApp() {
               }}
               className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-ui whitespace-nowrap transition-all border ${
                 isActive
-                  ? 'bg-[#315D9E] text-[#FBE6AB] border-[#E5C370]/70 shadow-md font-bold scale-[1.02]'
-                  : 'bg-[#1E3D75]/40 text-[#D5E2F5] border-white/10 hover:bg-[#315D9E]/40 hover:text-white'
+                  ? 'bg-amber-50 text-amber-950 border-amber-300 shadow-xs font-bold'
+                  : 'bg-slate-50 text-slate-600 border-slate-200 hover:bg-slate-100 hover:text-slate-900'
               }`}
             >
-              <Icon size={14} className={isActive ? 'text-[#FBE6AB]' : 'text-[#D5E2F5]'} />
+              <Icon size={14} className={isActive ? 'text-amber-700' : 'text-slate-500'} />
               <span>{station.name.split(' ')[0]}</span>
             </button>
           );
@@ -244,24 +237,24 @@ export default function JobWorkstationApp() {
 
       {/* ─── DGA SUB-BRANCH CONTROLS (IF DGA CONSOLE ACTIVE) ─── */}
       {activeStation === 'dga' && (
-        <div className="flex items-center justify-between px-6 py-2 bg-[#581D5E]/40 border-b border-[#EDE7FF]/25 text-xs font-ui">
+        <div className="flex items-center justify-between px-6 py-2 bg-purple-50/60 border-b border-purple-200 text-xs font-ui">
           <div className="flex items-center gap-2">
-            <span className="text-[#EDE7FF] font-bold text-[11px]">§10.1B DGA DIVISIONS:</span>
+            <span className="text-purple-900 font-bold text-[11px]">§10.1B DGA DIVISIONS:</span>
             {(['All', 'Shield', 'Eyes', 'Blackout Team'] as const).map((branch) => (
               <button
                 key={branch}
                 onClick={() => setDgaBranchFilter(branch)}
                 className={`px-2.5 py-1 rounded-lg text-[11px] font-semibold transition ${
                   dgaBranchFilter === branch
-                    ? 'bg-[#624BC7] text-white shadow-xs font-bold border border-white/30'
-                    : 'bg-[#581D5E]/60 text-[#EDE7FF] hover:bg-[#624BC7]/50'
+                    ? 'bg-purple-200 text-purple-950 shadow-xs font-bold border border-purple-300'
+                    : 'bg-white text-purple-700 hover:bg-purple-100/70 border border-purple-200/60'
                 }`}
               >
                 {branch}
               </button>
             ))}
           </div>
-          <div className="text-[11px] text-[#EDE7FF]/90 font-ui">
+          <div className="text-[11px] text-purple-800/80 font-ui">
             Active Nodes: SOC, RRB, PSD, ETG | SIGINT, HUMINT, RGA, CIIS | Blackout Team
           </div>
         </div>
@@ -269,12 +262,12 @@ export default function JobWorkstationApp() {
 
       {/* ─── ACTION FEEDBACK TOAST ─── */}
       {actionFeedback && (
-        <div className="mx-6 mt-3 px-4 py-2.5 bg-[#245448]/95 border border-[#4CD6C4]/60 rounded-xl text-[#FFFFFF] text-xs font-ui shadow-lg flex items-center justify-between animate-fadeIn">
+        <div className="mx-6 mt-3 px-4 py-2.5 bg-emerald-50 border border-emerald-300 rounded-xl text-emerald-900 text-xs font-ui shadow-xs flex items-center justify-between animate-fadeIn">
           <div className="flex items-center gap-2">
-            <CheckCircle2 size={16} className="text-[#4CD6C4] shrink-0" />
-            <span>{actionFeedback}</span>
+            <CheckCircle2 size={16} className="text-emerald-600 shrink-0" />
+            <span className="font-semibold">{actionFeedback}</span>
           </div>
-          <span className="text-[10px] text-[#4CD6C4] uppercase font-bold">Telemetry Synchronized</span>
+          <span className="text-[10px] text-emerald-700 uppercase font-bold">Telemetry Synchronized</span>
         </div>
       )}
 
@@ -282,10 +275,10 @@ export default function JobWorkstationApp() {
       <div className="flex-1 flex overflow-hidden p-6 gap-6">
         
         {/* LEFT PANE: 10.2 MISSION TAXONOMY & DISPATCH LIST */}
-        <div className="w-1/2 flex flex-col bg-[#142850]/80 border border-white/20 rounded-2xl overflow-hidden shadow-lg backdrop-blur-xl">
+        <div className="w-1/2 flex flex-col bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-xs">
           
           {/* Mission Type Tab Filters */}
-          <div className="flex items-center justify-between p-3.5 bg-[#1E3D75]/90 border-b border-white/15">
+          <div className="flex items-center justify-between p-3.5 bg-slate-50 border-b border-slate-200">
             <div className="flex items-center gap-1.5 overflow-x-auto scrollbar-none">
               {(['All', 'Work Shifts', 'Special Assignments', 'Career Development', 'Field Operations', 'QUESTNOTICE'] as const).map((type) => (
                 <button
@@ -293,15 +286,15 @@ export default function JobWorkstationApp() {
                   onClick={() => setActiveMissionType(type)}
                   className={`px-2.5 py-1 rounded-lg text-[11px] font-ui whitespace-nowrap transition ${
                     activeMissionType === type
-                      ? 'bg-[#E5C370] text-[#0E1A33] font-bold shadow-xs'
-                      : 'bg-[#142850]/60 text-[#D5E2F5] hover:bg-[#315D9E]/60 hover:text-white'
+                      ? 'bg-slate-900 text-white font-bold shadow-xs'
+                      : 'bg-white text-slate-600 border border-slate-200 hover:bg-slate-100 hover:text-slate-900'
                   }`}
                 >
                   {type}
                 </button>
               ))}
             </div>
-            <span className="text-[11px] text-[#D5E2F5] font-ui ml-2">
+            <span className="text-[11px] text-slate-500 font-ui ml-2">
               {filteredMissions.length} Available
             </span>
           </div>
@@ -309,7 +302,7 @@ export default function JobWorkstationApp() {
           {/* Missions Scroll List */}
           <div className="flex-1 overflow-y-auto p-3 space-y-2.5">
             {filteredMissions.length === 0 ? (
-              <div className="text-center py-12 text-[#D5E2F5]/70 font-ui text-xs">
+              <div className="text-center py-12 text-slate-400 font-ui text-xs">
                 No active assignments for this workstation filter. Switch station or mission category.
               </div>
             ) : (
@@ -325,21 +318,21 @@ export default function JobWorkstationApp() {
                     }}
                     className={`p-3.5 rounded-xl border transition cursor-pointer ${
                       isSelected
-                        ? 'bg-[#315D9E]/85 border-[#E5C370]/80 shadow-md ring-1 ring-[#E5C370]/40 text-[#FFFFFF]'
-                        : 'bg-[#24467D]/40 border-white/15 hover:bg-[#315D9E]/50 hover:border-white/30 text-[#FFFFFF]'
+                        ? 'bg-amber-50/80 border-amber-300 shadow-xs ring-1 ring-amber-300/60 text-slate-900'
+                        : 'bg-slate-50/70 border-slate-200/80 hover:bg-slate-100 hover:border-slate-300 text-slate-800'
                     }`}
                   >
                     <div className="flex items-start justify-between gap-2">
                       <div className="space-y-1">
                         <div className="flex items-center gap-2">
                           <span className={`text-[9px] font-ui uppercase px-1.5 py-0.5 rounded font-bold ${
-                            isCritical ? 'bg-rose-500/25 text-rose-200 border border-rose-400/50' : 'bg-[#1E3D75] text-[#D5E2F5]'
+                            isCritical ? 'bg-rose-100 text-rose-800 border border-rose-200' : 'bg-slate-200/70 text-slate-700'
                           }`}>
                             {m.type}
                           </span>
-                          <span className="text-[10px] text-[#D5E2F5] font-ui">{m.department}</span>
+                          <span className="text-[10px] text-slate-500 font-ui">{m.department}</span>
                         </div>
-                        <h4 className={`text-xs font-bold ${isSelected ? 'text-[#FBE6AB]' : 'text-[#FFFFFF]'}`}>
+                        <h4 className={`text-xs font-bold ${isSelected ? 'text-amber-950 font-bold' : 'text-slate-900'}`}>
                           {m.title}
                         </h4>
                       </div>
@@ -347,12 +340,12 @@ export default function JobWorkstationApp() {
                       {/* Status / Check */}
                       <div>
                         {m.completed ? (
-                          <span className="px-2 py-0.5 rounded bg-[#245448] text-[#4CD6C4] border border-[#4CD6C4]/60 text-[10px] font-ui font-bold flex items-center gap-1">
+                          <span className="px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 border border-emerald-200 text-[10px] font-ui font-bold flex items-center gap-1">
                             <CheckCircle2 size={12} /> CLEARED
                           </span>
                         ) : (
                           <span className={`px-2 py-0.5 rounded text-[10px] font-ui font-bold ${
-                            isCritical ? 'bg-rose-900/60 text-rose-200 border border-rose-500/50' : 'bg-[#1E3D75] text-[#D5E2F5]'
+                            isCritical ? 'bg-rose-100 text-rose-800 border border-rose-200' : 'bg-slate-100 text-slate-600'
                           }`}>
                             {m.severity}
                           </span>
@@ -362,12 +355,12 @@ export default function JobWorkstationApp() {
 
                     {/* Reward chips */}
                     <div className="mt-2.5 flex items-center gap-3 text-[11px] font-ui">
-                      <span className="text-[#E5C370] font-bold">+{m.rewardCredits} ₢</span>
+                      <span className="text-amber-800 font-bold">+{m.rewardCredits} ₢</span>
                       {m.rewardBits > 0 && (
-                        <span className="text-[#4CD6C4] font-bold">+{m.rewardBits} ◈ BITS</span>
+                        <span className="text-emerald-700 font-bold">+{m.rewardBits} ◈ BITS</span>
                       )}
-                      <span className="text-[#D5E2F5]">+{m.rewardXP} XP</span>
-                      <span className="text-[#D5E2F5]/70 text-[10px] ml-auto">{m.location.split('-')[0]}</span>
+                      <span className="text-slate-500">+{m.rewardXP} XP</span>
+                      <span className="text-slate-400 text-[10px] ml-auto">{m.location.split('-')[0]}</span>
                     </div>
                   </div>
                 );
@@ -377,92 +370,92 @@ export default function JobWorkstationApp() {
         </div>
 
         {/* RIGHT PANE: ACTIVE MISSION TELEMETRY & ACTION EXECUTION */}
-        <div className="w-1/2 flex flex-col bg-[#142850]/80 border border-white/20 rounded-2xl overflow-hidden shadow-lg backdrop-blur-xl">
+        <div className="w-1/2 flex flex-col bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-xs">
           {selectedMission ? (
             <div className="flex-1 flex flex-col p-5 overflow-y-auto space-y-4">
               
               {/* Mission Header */}
-              <div className="border-b border-white/15 pb-3.5 space-y-2">
+              <div className="border-b border-slate-200 pb-3.5 space-y-2">
                 <div className="flex items-center justify-between">
-                  <span className="text-[10px] font-ui uppercase bg-[#315D9E]/70 text-[#FBE6AB] px-2 py-0.5 rounded font-bold border border-[#E5C370]/40">
+                  <span className="text-[10px] font-ui uppercase bg-amber-100 text-amber-900 px-2 py-0.5 rounded font-bold border border-amber-200">
                     {selectedMission.department}
                   </span>
-                  <span className="text-xs text-[#D5E2F5] font-ui flex items-center gap-1">
-                    <MapPin size={13} className="text-[#E5C370]" /> {selectedMission.location}
+                  <span className="text-xs text-slate-500 font-ui flex items-center gap-1">
+                    <MapPin size={13} className="text-amber-600" /> {selectedMission.location}
                   </span>
                 </div>
-                <h2 className="text-base font-bold font-display text-[#FFFFFF]">
+                <h2 className="text-base font-bold font-display text-slate-900">
                   {selectedMission.title}
                 </h2>
-                <p className="text-xs text-[#D5E2F5] leading-relaxed font-ui">
+                <p className="text-xs text-slate-600 leading-relaxed font-ui">
                   {selectedMission.description}
                 </p>
               </div>
 
               {/* Subject & Threat Matrix */}
               <div className="grid grid-cols-2 gap-3 font-ui text-xs">
-                <div className="p-3 bg-[#1E3D75]/60 border border-white/15 rounded-xl space-y-1">
-                  <div className="text-[10px] text-[#D5E2F5]/80 uppercase">Target / Subject</div>
-                  <div className="font-semibold text-[#FFFFFF]">{selectedMission.targetSubject || 'General Institutional Asset'}</div>
+                <div className="p-3 bg-slate-50 border border-slate-200 rounded-xl space-y-1">
+                  <div className="text-[10px] text-slate-500 uppercase font-semibold">Target / Subject</div>
+                  <div className="font-semibold text-slate-900">{selectedMission.targetSubject || 'General Institutional Asset'}</div>
                 </div>
-                <div className="p-3 bg-[#1E3D75]/60 border border-white/15 rounded-xl space-y-1">
-                  <div className="text-[10px] text-[#D5E2F5]/80 uppercase">Anomaly / Threat Vector</div>
-                  <div className="font-semibold text-rose-200">{selectedMission.threatOrSymptom || 'Standard Workplace Procedure'}</div>
+                <div className="p-3 bg-rose-50/60 border border-rose-200 rounded-xl space-y-1">
+                  <div className="text-[10px] text-rose-700 uppercase font-semibold">Anomaly / Threat Vector</div>
+                  <div className="font-semibold text-rose-900">{selectedMission.threatOrSymptom || 'Standard Workplace Procedure'}</div>
                 </div>
               </div>
 
               {/* Permitted Institutional Tools */}
-              <div className="p-3.5 bg-[#1E3D75]/50 border border-white/15 rounded-xl space-y-2">
-                <div className="text-[10px] text-[#FBE6AB] font-ui uppercase font-bold flex items-center gap-1.5">
-                  <Key size={13} /> Permitted Institutional Clearance Tools (§10.1A)
+              <div className="p-3.5 bg-slate-50 border border-slate-200 rounded-xl space-y-2">
+                <div className="text-[10px] text-slate-700 font-ui uppercase font-bold flex items-center gap-1.5">
+                  <Key size={13} className="text-amber-600" /> Permitted Institutional Clearance Tools (§10.1A)
                 </div>
                 <div className="flex flex-wrap gap-1.5">
                   {selectedMission.permittedTools.map((tool) => (
                     <span
                       key={tool}
-                      className="px-2.5 py-1 bg-[#315D9E]/70 border border-white/20 text-[#FFFFFF] rounded-lg text-[11px] font-ui flex items-center gap-1"
+                      className="px-2.5 py-1 bg-white border border-slate-200 text-slate-800 rounded-lg text-[11px] font-ui flex items-center gap-1 shadow-xs"
                     >
-                      <Zap size={11} className="text-[#E5C370]" /> {tool}
+                      <Zap size={11} className="text-amber-600" /> {tool}
                     </span>
                   ))}
                 </div>
               </div>
 
               {/* Execution Protocol Box */}
-              <div className="p-4 bg-[#315D9E]/40 border border-[#E5C370]/40 rounded-xl space-y-2">
-                <div className="text-[11px] font-bold text-[#FBE6AB] font-ui flex items-center gap-1.5">
-                  <Terminal size={14} className="text-[#E5C370]" /> Authorized Execution Directive
+              <div className="p-4 bg-amber-50/60 border border-amber-200 rounded-xl space-y-2">
+                <div className="text-[11px] font-bold text-amber-900 font-ui flex items-center gap-1.5">
+                  <Terminal size={14} className="text-amber-700" /> Authorized Execution Directive
                 </div>
-                <p className="text-xs text-[#FFFFFF] leading-relaxed font-ui">
+                <p className="text-xs text-slate-700 leading-relaxed font-ui">
                   {selectedMission.requiredAction}
                 </p>
               </div>
 
               {/* Compensation Summary & Action Button */}
-              <div className="mt-auto pt-3 border-t border-white/15 space-y-3">
+              <div className="mt-auto pt-3 border-t border-slate-200 space-y-3">
                 <div className="flex items-center justify-between text-xs font-ui px-1">
-                  <div className="text-[#D5E2F5]">Total Compensation:</div>
+                  <div className="text-slate-500">Total Compensation:</div>
                   <div className="flex items-center gap-3 font-bold">
-                    <span className="text-[#E5C370]">+{selectedMission.rewardCredits} ₢ CREDITS</span>
+                    <span className="text-amber-800">+{selectedMission.rewardCredits} ₢ CREDITS</span>
                     {selectedMission.rewardBits > 0 && (
-                      <span className="text-[#4CD6C4]">+{selectedMission.rewardBits} ◈ BITS</span>
+                      <span className="text-emerald-700">+{selectedMission.rewardBits} ◈ BITS</span>
                     )}
-                    <span className="text-[#D5E2F5]">+{selectedMission.rewardXP} XP ({selectedMission.primaryAttribute})</span>
+                    <span className="text-slate-600">+{selectedMission.rewardXP} XP ({selectedMission.primaryAttribute})</span>
                   </div>
                 </div>
 
                 <button
                   onClick={() => handleExecuteMission(selectedMission.id)}
                   disabled={selectedMission.completed}
-                  className={`w-full py-3 rounded-xl font-bold font-ui text-xs transition flex items-center justify-center gap-2 shadow-lg ${
+                  className={`w-full py-3 rounded-xl font-bold font-ui text-xs transition flex items-center justify-center gap-2 shadow-xs ${
                     selectedMission.completed
-                      ? 'bg-[#24467D] text-[#D5E2F5] cursor-not-allowed border border-white/20'
-                      : 'bg-gradient-to-r from-[#E5C370] via-[#F5D378] to-[#D4A84D] hover:from-[#FBE6AB] hover:to-[#E5C370] text-[#0E1A33] font-bold shadow-[0_4px_16px_rgba(229,195,112,0.45)] active:scale-[0.99] hover:-translate-y-0.5'
+                      ? 'bg-slate-100 text-slate-400 cursor-not-allowed border border-slate-200'
+                      : 'bg-gradient-to-r from-amber-200 via-amber-300 to-amber-400 hover:from-amber-300 hover:to-amber-500 text-amber-950 font-bold border border-amber-300/80 shadow-xs active:scale-[0.99] hover:-translate-y-0.5'
                   }`}
                 >
                   {selectedMission.completed ? (
                     <>
-                      <CheckCircle2 size={16} className="text-[#4CD6C4]" />
+                      <CheckCircle2 size={16} className="text-emerald-600" />
                       <span>Directive Finalized & Cleared</span>
                     </>
                   ) : (
@@ -476,7 +469,7 @@ export default function JobWorkstationApp() {
 
             </div>
           ) : (
-            <div className="flex-1 flex flex-col items-center justify-center p-6 text-[#D5E2F5]/70 font-ui text-xs">
+            <div className="flex-1 flex flex-col items-center justify-center p-6 text-slate-400 font-ui text-xs">
               Select an assignment on the left to review operational telemetry and clearance requirements.
             </div>
           )}
@@ -485,7 +478,7 @@ export default function JobWorkstationApp() {
       </div>
 
       {/* ─── FOOTER BAR: MERIDION WORKNET PROTOCOL LOG ─── */}
-      <footer className="flex items-center justify-between px-6 py-2 bg-[#142850]/90 border-t border-white/15 text-[11px] font-ui text-[#D5E2F5]">
+      <footer className="flex items-center justify-between px-6 py-2 bg-slate-50 border-t border-slate-200 text-[11px] font-ui text-slate-500">
         <div className="flex items-center gap-4">
           <span>STATION ID: <strong>WK-M4-{activeStation.toUpperCase()}-09</strong></span>
           <span>•</span>
@@ -493,7 +486,7 @@ export default function JobWorkstationApp() {
           <span>•</span>
           <span>GOV DIRECTIVE: <strong>14-B COMPLIANT</strong></span>
         </div>
-        <div className="flex items-center gap-2 text-[#FBE6AB] font-semibold">
+        <div className="flex items-center gap-2 text-slate-700 font-semibold">
           <span>FEDERAL EMPLOYMENT ACCESS LAYER</span>
         </div>
       </footer>
@@ -501,4 +494,3 @@ export default function JobWorkstationApp() {
     </div>
   );
 }
-

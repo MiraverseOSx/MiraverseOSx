@@ -1,6 +1,4 @@
-// @CodeScene(disable:"Overall Code Complexity")
 import React, { useState, useEffect } from 'react';
-import OSWindow from '../../components/ui/OSWindow';
 import SearchHome from './SearchHome';
 import SearchResults from './SearchResults';
 import AureSuiteApp from './AureSuiteApp';
@@ -10,15 +8,14 @@ import {
     CivinetPortal, QuestNoticePortal, RoyalHistoryPortal
 } from './Portals';
 import { MaiSpacePortal } from './MaiSpacePortal';
-import { PORTALS } from './constants';
 import { useOSStore } from '../../store/useOSStore';
 import {
-    X, Plus, ChevronLeft, ChevronRight, RotateCw, Lock, Star, MoreHorizontal, Globe, Folder, ChevronDown
+    X, Plus, ChevronLeft, ChevronRight, RotateCw, Lock, Globe, Home
 } from 'lucide-react';
-import '../../styles/apps/BrowserApp.css';
 
-function ContentFrame({ url, openTab, navigateTab }) {
-    if (!url) return null;
+function ContentFrame({ url, openTab, navigateTab }: any) {
+    if (!url) return <SearchHome navigateTab={navigateTab} openTab={openTab} />;
+    
     const stripped = url.replace(/^https?:\/\//, '');
     const domain = stripped.split('/')[0] || '';
     const path = stripped.substring(domain.length) || '/';
@@ -45,15 +42,21 @@ function ContentFrame({ url, openTab, navigateTab }) {
     if (domain === 'mai.space' || domain === 'mai.space.aure' || domain === 'maispace.aure' || domain === 'social.aure') return <MaiSpacePortal />;
 
     return (
-        <div className="flex h-full flex-col items-center justify-center bg-white text-slate-800 p-6 text-center select-none font-sans">
-            <Globe className="h-16 w-16 mb-4 text-indigo-600 animate-pulse" />
-            <h2 className="text-lg font-bold mb-2">Connecting to {domain}...</h2>
-            <p className="text-xs text-slate-500 font-mono">Secure Connection Established // Direct Access Link: {url}</p>
+        <div className="flex h-full flex-col items-center justify-center bg-[#FAFBFD] text-slate-800 p-6 text-center select-none font-sans">
+            <Globe className="h-14 w-14 mb-3 text-emerald-600 animate-pulse" />
+            <h2 className="text-base font-bold mb-1 text-slate-900">Connecting to {domain}...</h2>
+            <p className="text-xs text-slate-500 font-mono">Secure Versenet Gateway // {url}</p>
+            <button
+                onClick={() => navigateTab('https://versenet.aure')}
+                className="mt-4 px-4 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs rounded-xl border border-slate-200 transition"
+            >
+                Return to Search Home
+            </button>
         </div>
     );
 }
 
-export default function BrowserApp({ onTabBarPointerDown }) {
+export default function BrowserApp() {
     const { tabs, activeTabId, historyMap } = useOSStore((s) => s.browserState);
     const openTab = useOSStore((s) => s.openBrowserTab);
     const closeTab = useOSStore((s) => s.closeBrowserTab);
@@ -61,22 +64,25 @@ export default function BrowserApp({ onTabBarPointerDown }) {
     const navigateTab = useOSStore((s) => s.navigateBrowserTab);
     const goBack = useOSStore((s) => s.goBrowserBack);
     const goForward = useOSStore((s) => s.goBrowserForward);
-    const closeWindow = useOSStore((s) => s.closeWindow);
-    const toggleMinimize = useOSStore((s) => s.toggleMinimize);
-    const toggleMaximize = useOSStore((s) => s.toggleMaximize);
 
     const [addressInput, setAddressInput] = useState('');
-    const [bookmarksOpen, setBookmarksOpen] = useState(false);
-
-    const activeTab = tabs.find((t) => t.id === activeTabId);
+    const activeTab = tabs.find((t) => t.id === activeTabId) || tabs[0];
 
     useEffect(() => {
         setAddressInput(activeTab?.url || 'https://versenet.aure');
     }, [activeTab?.url]);
 
-    const handleAddressSubmit = (e) => {
+    const handleAddressSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        if (addressInput.trim()) navigateTab(addressInput.trim());
+        const trimmed = addressInput.trim();
+        if (!trimmed) return;
+
+        if (trimmed.includes('.') && !trimmed.includes(' ')) {
+            const url = trimmed.startsWith('http') ? trimmed : `https://${trimmed}`;
+            navigateTab(url);
+        } else {
+            navigateTab(`https://versenet.aure/find?q=${encodeURIComponent(trimmed)}`);
+        }
     };
 
     const canBack = (() => {
@@ -95,116 +101,119 @@ export default function BrowserApp({ onTabBarPointerDown }) {
     };
 
     return (
-        <OSWindow>
-            <div
-                onPointerDown={onTabBarPointerDown}
-                className="tabbar max-w-full shrink-0 select-none cursor-grab active:cursor-grabbing bg-slate-800 text-slate-200 border-b border-slate-700"
-            >
-                <div className="flex space-x-1 overflow-x-auto flex-1 hide-scrollbar">
-                    {tabs.map((tab) => (
-                        <div
-                            key={tab.id}
-                            onClick={() => setActiveTabId(tab.id)}
-                            className={`tab flex items-center group min-w-[120px] max-w-[200px] text-xs font-semibold ${activeTabId === tab.id ? 'active bg-slate-900 text-white font-bold' : 'bg-slate-700/70 text-slate-300 hover:bg-slate-700'}`}
-                        >
-                            <span className="truncate flex-1">
-                                {tab.url.replace(/^https?:\/\//, '').split('/')[0] || 'New Tab'}
-                            </span>
-                            <button
-                                onClick={(e) => { e.stopPropagation(); closeTab(tab.id); }}
-                                className="ml-2 p-0.5 rounded-full hover:bg-slate-700 text-slate-400 hover:text-slate-200 opacity-0 group-hover:opacity-100 transition-opacity"
+        <div className="flex flex-col h-full w-full bg-[#FAFBFD] overflow-hidden select-none font-sans text-xs">
+            
+            {/* 1. NATIVE LIGHT TAB STRIP (NO DUPLICATE WINDOW CONTROLS) */}
+            <div className="flex items-center h-10 px-2 bg-slate-100 border-b border-slate-200 gap-1 select-none">
+                <div className="flex items-center space-x-1 overflow-x-auto flex-1 scrollbar-none">
+                    {tabs.map((tab) => {
+                        const isActive = activeTabId === tab.id;
+                        const label = tab.url.replace(/^https?:\/\//, '').split('/')[0] || 'New Tab';
+
+                        return (
+                            <div
+                                key={tab.id}
+                                onClick={() => setActiveTabId(tab.id)}
+                                className={`flex items-center gap-2 px-3 py-1.5 rounded-t-lg transition-all text-xs cursor-pointer max-w-[200px] min-w-[110px] group ${
+                                    isActive
+                                        ? 'bg-white text-slate-900 font-bold border-t border-x border-slate-200 shadow-xs'
+                                        : 'bg-transparent text-slate-600 hover:bg-slate-200/60 hover:text-slate-900'
+                                }`}
                             >
-                                <X size={14} />
-                            </button>
-                        </div>
-                    ))}
-                </div>
+                                <span className="truncate flex-1 font-mono text-[11px]">{label}</span>
+                                {tabs.length > 1 && (
+                                    <button
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                            closeTab(tab.id);
+                                        }}
+                                        className="p-0.5 rounded-full hover:bg-slate-200 text-slate-400 hover:text-slate-700 opacity-0 group-hover:opacity-100 transition-opacity"
+                                        title="Close Tab"
+                                    >
+                                        <X size={12} />
+                                    </button>
+                                )}
+                            </div>
+                        );
+                    })}
 
-                <button
-                    onClick={() => openTab('https://versenet.aure', 'New Tab')}
-                    className="p-1.5 ml-2 rounded-full text-slate-300 hover:bg-slate-700 hover:text-white transition-colors cursor-pointer"
-                    disabled={tabs.length >= 6}
-                    title="Open New Tab"
-                >
-                    <Plus size={18} />
-                </button>
-
-                <div className="flex items-center gap-3.5 ml-auto pl-4 pr-2 text-slate-300 font-bold text-xs select-none">
-                    <button onClick={(e) => { e.stopPropagation(); toggleMinimize('browser'); }} className="hover:text-white transition-colors px-1 cursor-pointer" title="Minimize">_</button>
-                    <button onClick={(e) => { e.stopPropagation(); toggleMaximize('browser'); }} className="hover:text-white transition-colors px-1 cursor-pointer" title="Maximize">□</button>
-                    <button onClick={(e) => { e.stopPropagation(); closeWindow('browser'); }} className="hover:text-red-400 transition-colors px-1 cursor-pointer" title="Close">✕</button>
+                    <button
+                        onClick={() => openTab('https://versenet.aure', 'New Tab')}
+                        className="p-1.5 rounded-lg text-slate-500 hover:bg-slate-200 hover:text-slate-800 transition cursor-pointer"
+                        disabled={tabs.length >= 8}
+                        title="Open New Tab"
+                    >
+                        <Plus size={14} />
+                    </button>
                 </div>
             </div>
 
-            <div className="addressbar relative max-w-full shrink-0 bg-slate-100 border-b border-slate-300 px-3 py-2 flex items-center gap-2">
+            {/* 2. CLEAN BROWSER NAVIGATION & ADDRESS BAR */}
+            <div className="flex items-center h-11 px-3 bg-white border-b border-slate-200 gap-2">
                 <div className="flex items-center space-x-1 text-slate-600">
-                    <button onClick={goBack} disabled={!canBack} className="p-1.5 rounded hover:bg-slate-200 text-slate-700 disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer"><ChevronLeft size={16} /></button>
-                    <button onClick={goForward} disabled={!canForward} className="p-1.5 rounded hover:bg-slate-200 text-slate-700 disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer"><ChevronRight size={16} /></button>
-                    <button onClick={refresh} className="p-1.5 rounded hover:bg-slate-200 text-slate-700 cursor-pointer"><RotateCw size={16} /></button>
+                    <button
+                        onClick={goBack}
+                        disabled={!canBack}
+                        className="p-1.5 rounded-lg hover:bg-slate-100 text-slate-600 disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer"
+                        title="Back"
+                    >
+                        <ChevronLeft size={16} />
+                    </button>
+                    <button
+                        onClick={goForward}
+                        disabled={!canForward}
+                        className="p-1.5 rounded-lg hover:bg-slate-100 text-slate-600 disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer"
+                        title="Forward"
+                    >
+                        <ChevronRight size={16} />
+                    </button>
+                    <button
+                        onClick={refresh}
+                        className="p-1.5 rounded-lg hover:bg-slate-100 text-slate-600 cursor-pointer"
+                        title="Refresh"
+                    >
+                        <RotateCw size={14} />
+                    </button>
+                    <button
+                        onClick={() => navigateTab('https://versenet.aure')}
+                        className="p-1.5 rounded-lg hover:bg-slate-100 text-slate-600 cursor-pointer"
+                        title="Home"
+                    >
+                        <Home size={15} />
+                    </button>
                 </div>
 
-                <form onSubmit={handleAddressSubmit} className="flex-1 flex items-center bg-white border border-slate-300 rounded-full px-3 py-1 shadow-xs focus-within:border-emerald-500 focus-within:ring-2 focus-within:ring-emerald-200">
-                    <Lock size={14} className="text-slate-400 mr-2 shrink-0" />
+                {/* URL Input Form */}
+                <form
+                    onSubmit={handleAddressSubmit}
+                    className="flex-1 flex items-center bg-slate-50 hover:bg-white border border-slate-200 focus-within:border-emerald-500 focus-within:bg-white focus-within:ring-2 focus-within:ring-emerald-100 rounded-xl px-3 py-1 transition shadow-xs"
+                >
+                    <Lock size={12} className="text-emerald-600 mr-2 shrink-0" />
                     <input
                         type="text"
                         value={addressInput}
                         onChange={(e) => setAddressInput(e.target.value)}
                         className="w-full text-xs font-mono text-slate-800 outline-none bg-transparent"
-                        placeholder="Search or enter web address..."
+                        placeholder="Search Versenet or enter URL..."
                         spellCheck={false}
                     />
-                    <button type="submit" className="ml-2 px-3 py-0.5 bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs rounded-full transition cursor-pointer">Go</button>
-                </form>
-
-                <div className="flex items-center space-x-1 text-slate-500">
                     <button
-                        onClick={() => setBookmarksOpen((open) => !open)}
-                        className={`p-1.5 rounded transition cursor-pointer flex items-center gap-0.5 ${bookmarksOpen ? 'bg-indigo-100 text-indigo-700' : 'hover:bg-slate-200 hover:text-slate-800'}`}
-                        title="Starter bookmarks"
-                        aria-expanded={bookmarksOpen}
+                        type="submit"
+                        className="ml-2 px-3 py-0.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-[11px] rounded-lg transition cursor-pointer"
                     >
-                        <Folder size={18} />
-                        <ChevronDown size={11} />
+                        Go
                     </button>
-                    <button className="p-1.5 rounded hover:bg-slate-200 hover:text-slate-800 cursor-pointer"><Star size={18} /></button>
-                    <button className="p-1.5 rounded hover:bg-slate-200 hover:text-slate-800 cursor-pointer"><MoreHorizontal size={18} /></button>
-                </div>
-
-                {bookmarksOpen && (
-                    <div className="absolute right-3 top-[calc(100%+6px)] z-30 w-72 overflow-hidden rounded-xl border border-slate-200 bg-white shadow-xl">
-                        <div className="flex items-center gap-2 border-b border-slate-200 bg-slate-50 px-3 py-2 text-[10px] font-bold uppercase tracking-wider text-slate-500">
-                            <Folder size={13} /> Starter Bookmarks
-                        </div>
-                        <div className="max-h-80 overflow-y-auto p-1.5">
-                            {Object.entries(PORTALS).map(([url, portal]) => {
-                                const IconComp = portal.icon;
-                                return (
-                                    <button
-                                        key={url}
-                                        onClick={() => {
-                                            navigateTab(`https://${url}`, portal.title);
-                                            setBookmarksOpen(false);
-                                        }}
-                                        className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-left hover:bg-indigo-50 transition"
-                                    >
-                                        <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-slate-100 text-indigo-600">
-                                            <IconComp size={15} />
-                                        </span>
-                                        <span className="min-w-0">
-                                            <span className="block truncate text-xs font-semibold text-slate-800">{portal.title}</span>
-                                            <span className="block truncate text-[10px] font-mono text-slate-400">{url}</span>
-                                        </span>
-                                    </button>
-                                );
-                            })}
-                        </div>
-                    </div>
-                )}
+                </form>
             </div>
 
-            <div className="flex-1 flex flex-col overflow-auto bg-white text-slate-800">
-                <ContentFrame url={activeTab?.url} openTab={openTab} navigateTab={navigateTab} />
+            {/* 3. BROWSER CONTENT CANVAS */}
+            <div className="flex-1 flex flex-col overflow-y-auto bg-[#FAFBFD] text-slate-800">
+                <ContentFrame
+                    url={activeTab?.url}
+                    openTab={openTab}
+                    navigateTab={navigateTab}
+                />
             </div>
-        </OSWindow>
+        </div>
     );
 }

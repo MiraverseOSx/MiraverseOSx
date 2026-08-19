@@ -13,51 +13,51 @@ export interface WindowProps {
   windowIndex?: number;
 }
 
-// Sector Chrome Determination (§3.2 & §4) - Luminous & High Contrast
+// Sector Chrome Determination (§3.2 & §4) - Light Pastel Realistic OS
 function getSectorChrome(appId: string) {
   const id = appId?.toLowerCase() || '';
   if (id.includes('faith') || id.includes('vital') || id.includes('warden')) {
     return {
       sector: 'faith',
-      activeBorder: 'border-[#4CD6C4]/60 shadow-[0_16px_44px_rgba(12,25,54,0.60),0_0_24px_rgba(76,214,196,0.30)]',
-      inactiveBorder: 'border-[#2A8B7D]/40 shadow-[0_10px_30px_rgba(12,25,54,0.45)]',
-      activeHeader: 'bg-gradient-to-r from-[#245448]/95 via-[#2A8B7D]/90 to-[#245448]/95 border-b border-[#4CD6C4]/50 text-[#FFFFFF]',
-      inactiveHeader: 'bg-[#245448]/85 border-b border-[#2A8B7D]/35 text-[#D5E2F5]/80',
-      iconColor: 'text-[#4CD6C4]',
-      accentBg: 'bg-[#1E3D75]/80',
+      activeBorder: 'border-emerald-300/80 shadow-[0_20px_50px_rgba(15,23,42,0.12),0_0_20px_rgba(220,252,231,0.50)]',
+      inactiveBorder: 'border-slate-200 shadow-[0_8px_24px_rgba(15,23,42,0.06)]',
+      activeHeader: 'bg-gradient-to-r from-[#F0FDF4] via-[#DCFCE7] to-[#F0FDF4] border-b border-emerald-200 text-emerald-950',
+      inactiveHeader: 'bg-[#F8FAFC] border-b border-slate-200 text-slate-500',
+      iconColor: 'text-emerald-600',
+      accentBg: 'bg-emerald-50',
     };
   }
   if (id.includes('comms') || id.includes('spellforge') || id.includes('nephele') || id.includes('pulse')) {
     return {
       sector: 'nephele',
-      activeBorder: 'border-[#EDE7FF]/60 shadow-[0_16px_44px_rgba(12,25,54,0.60),0_0_24px_rgba(143,162,230,0.30)]',
-      inactiveBorder: 'border-[#624BC7]/45 shadow-[0_10px_30px_rgba(12,25,54,0.45)]',
-      activeHeader: 'bg-gradient-to-r from-[#581D5E]/95 via-[#624BC7]/90 to-[#581D5E]/95 border-b border-[#EDE7FF]/40 text-[#FFFFFF]',
-      inactiveHeader: 'bg-[#581D5E]/85 border-b border-[#624BC7]/35 text-[#D5E2F5]/80',
-      iconColor: 'text-[#EDE7FF]',
-      accentBg: 'bg-[#1E3D75]/80',
+      activeBorder: 'border-purple-300/80 shadow-[0_20px_50px_rgba(15,23,42,0.12),0_0_20px_rgba(237,233,254,0.50)]',
+      inactiveBorder: 'border-slate-200 shadow-[0_8px_24px_rgba(15,23,42,0.06)]',
+      activeHeader: 'bg-gradient-to-r from-[#FAF5FF] via-[#F3E8FF] to-[#FAF5FF] border-b border-purple-200 text-purple-950',
+      inactiveHeader: 'bg-[#F8FAFC] border-b border-slate-200 text-slate-500',
+      iconColor: 'text-purple-600',
+      accentBg: 'bg-purple-50',
     };
   }
-  if (id.includes('jobs') || id.includes('passport') || id.includes('gov') || id.includes('board') || id.includes('lore')) {
+  if (id.includes('jobs') || id.includes('passport') || id.includes('gov') || id.includes('board') || id.includes('lore') || id.includes('finance')) {
     return {
       sector: 'orynvell',
-      activeBorder: 'border-[#F5D378]/60 shadow-[0_16px_44px_rgba(12,25,54,0.60),0_0_24px_rgba(245,211,120,0.30)]',
-      inactiveBorder: 'border-[#F5D378]/35 shadow-[0_10px_30px_rgba(12,25,54,0.45)]',
-      activeHeader: 'bg-gradient-to-r from-[#24467D]/95 via-[#315D9E]/90 to-[#24467D]/95 border-b border-[#F5D378]/50 text-[#FFFDF7]',
-      inactiveHeader: 'bg-[#24467D]/85 border-b border-[#F5D378]/25 text-[#D5E2F5]/80',
-      iconColor: 'text-[#F5D378]',
-      accentBg: 'bg-[#1E3D75]/80',
+      activeBorder: 'border-amber-300/80 shadow-[0_20px_50px_rgba(15,23,42,0.12),0_0_20px_rgba(254,243,199,0.50)]',
+      inactiveBorder: 'border-slate-200 shadow-[0_8px_24px_rgba(15,23,42,0.06)]',
+      activeHeader: 'bg-gradient-to-r from-[#FFFDF5] via-[#FEF3C7] to-[#FFFDF5] border-b border-amber-200 text-amber-950',
+      inactiveHeader: 'bg-[#F8FAFC] border-b border-slate-200 text-slate-500',
+      iconColor: 'text-amber-600',
+      accentBg: 'bg-amber-50',
     };
   }
-  // Default: Luminous Celestial Night (§3.1)
+  // Default: Luminous Light Pastel Celestial
   return {
     sector: 'celestial',
-    activeBorder: 'border-[#E5C370]/60 shadow-[0_16px_44px_rgba(12,25,54,0.65),0_0_24px_rgba(229,195,112,0.30)]',
-    inactiveBorder: 'border-white/20 shadow-[0_10px_30px_rgba(12,25,54,0.45)]',
-    activeHeader: 'bg-gradient-to-r from-[#1E3D75]/95 via-[#315D9E]/90 to-[#1E3D75]/95 border-b border-[#E5C370]/45 text-[#FFFFFF]',
-    inactiveHeader: 'bg-[#1E3D75]/85 border-b border-white/15 text-[#D5E2F5]/80',
-    iconColor: 'text-[#E5C370]',
-    accentBg: 'bg-[#1E3D75]/80',
+    activeBorder: 'border-sky-300/80 shadow-[0_20px_50px_rgba(15,23,42,0.12),0_0_20px_rgba(224,242,254,0.50)]',
+    inactiveBorder: 'border-slate-200 shadow-[0_8px_24px_rgba(15,23,42,0.06)]',
+    activeHeader: 'bg-gradient-to-r from-[#F0F4FF] via-[#E8EDFB] to-[#F0F4FF] border-b border-indigo-100 text-slate-900',
+    inactiveHeader: 'bg-[#F8FAFC] border-b border-slate-200 text-slate-500',
+    iconColor: 'text-sky-600',
+    accentBg: 'bg-sky-50',
   };
 }
 
@@ -145,7 +145,7 @@ export default function Window({ win, isFocusMode = false, windowIndex = 0 }: Wi
       animate={{ opacity: 1, scale: 1, y: 0 }}
       exit={{ opacity: 0, scale: 0.96, y: 8 }}
       transition={{ duration: 0.28, ease: [0.2, 0.8, 0.2, 1] }}
-      className={`fixed flex flex-col overflow-hidden select-none rounded-2xl border backdrop-blur-2xl bg-[#1E3D75]/85 transition-all duration-300 ${
+      className={`fixed flex flex-col overflow-hidden select-none rounded-2xl border backdrop-blur-2xl bg-white/95 transition-all duration-200 ${
         isActive ? chrome.activeBorder : chrome.inactiveBorder
       }`}
       style={{
@@ -156,9 +156,9 @@ export default function Window({ win, isFocusMode = false, windowIndex = 0 }: Wi
       }}
       onMouseDown={() => focusWindow(win.id)}
     >
-      {/* ─── 4.1 "NOVA GLASS" TITLE BAR WITH LUMINOUS CHROMING ─── */}
+      {/* ─── 4.1 LIGHT PASTEL TITLE BAR WITH SMOOTH REALISTIC CHROMING ─── */}
       <div
-        className={`flex h-10 shrink-0 items-center justify-between px-4 transition-colors ${
+        className={`flex h-11 shrink-0 items-center justify-between px-4 transition-colors ${
           isActive ? chrome.activeHeader : chrome.inactiveHeader
         }`}
         style={{ cursor: win.isMaximized ? 'default' : 'grab' }}
@@ -169,8 +169,8 @@ export default function Window({ win, isFocusMode = false, windowIndex = 0 }: Wi
         }}
       >
         <div className="flex items-center gap-2.5">
-          <Sparkles size={14} className={`${chrome.iconColor} ${isActive ? 'animate-pulse' : 'opacity-80'}`} />
-          <span className="font-display font-bold text-xs tracking-wider uppercase text-[#FFFFFF] drop-shadow-sm">
+          <Sparkles size={14} className={`${chrome.iconColor} ${isActive ? 'animate-pulse' : 'opacity-70'}`} />
+          <span className="font-display font-bold text-xs tracking-wider uppercase text-slate-800">
             {win.title || win.id}
           </span>
         </div>
@@ -183,7 +183,7 @@ export default function Window({ win, isFocusMode = false, windowIndex = 0 }: Wi
               if (soundEnabled) SoundFX.playSnap();
               toggleMinimize(win.id);
             }}
-            className="p-1 rounded-md text-[#D5E2F5] hover:text-[#FFFFFF] hover:bg-white/20 transition-all hover:-translate-y-0.5"
+            className="p-1.5 rounded-lg text-slate-500 hover:text-slate-900 hover:bg-slate-200/60 transition-all"
             title="Minimize"
           >
             <Minus size={13} />
@@ -194,7 +194,7 @@ export default function Window({ win, isFocusMode = false, windowIndex = 0 }: Wi
               if (soundEnabled) SoundFX.playSnap();
               toggleMaximize(win.id);
             }}
-            className="p-1 rounded-md text-[#D5E2F5] hover:text-[#FBE6AB] hover:bg-white/20 transition-all hover:-translate-y-0.5"
+            className="p-1.5 rounded-lg text-slate-500 hover:text-amber-700 hover:bg-amber-100/70 transition-all"
             title="Maximize"
           >
             <Square size={12} />
@@ -205,7 +205,7 @@ export default function Window({ win, isFocusMode = false, windowIndex = 0 }: Wi
               if (soundEnabled) SoundFX.playSnap();
               closeWindow(win.id);
             }}
-            className="p-1 rounded-md text-[#D5E2F5] hover:text-rose-200 hover:bg-rose-500/35 transition-all hover:-translate-y-0.5"
+            className="p-1.5 rounded-lg text-slate-500 hover:text-rose-700 hover:bg-rose-100/80 transition-all"
             title="Close"
           >
             <X size={14} />
@@ -213,8 +213,8 @@ export default function Window({ win, isFocusMode = false, windowIndex = 0 }: Wi
         </div>
       </div>
 
-      {/* ─── 4.1 CONTENT SURFACE AREA WITH FROSTED BACKDROP ─── */}
-      <div className="flex-1 overflow-hidden relative min-h-0 bg-[#142850]/65 backdrop-blur-md text-[#FFFFFF]">
+      {/* ─── 4.1 LIGHT PASTEL CONTENT SURFACE ─── */}
+      <div className="flex-1 overflow-hidden relative min-h-0 bg-[#FAFBFD] text-slate-800">
         <Body />
       </div>
     </motion.div>
