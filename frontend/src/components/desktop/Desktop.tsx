@@ -16,7 +16,6 @@ import SanctuaryOverlay from './SanctuaryOverlay';
 import ToastViewport from '../widgets/ToastViewport';
 import logoIcon from '../../assets/images/logo_icon.png';
 import { useSystemStore } from '../../store/useSystemStore';
-import { SoundFX } from '../../utils/audio';
 
 export default function Desktop() {
   const { isLoggedIn, windows, isSanctuary, toggleApp } = useOSStore();

@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Net;
+using System.Net.Http;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Nodes;
@@ -8,6 +9,7 @@ using System.Threading.Tasks;
 using Microsoft.Data.Sqlite;
 using Dapper;
 using Photino.NET;
+using DotNetEnv;
 
 namespace MiraverseOSx
 {
@@ -33,14 +35,34 @@ namespace MiraverseOSx
         private static PhotinoWindow? _mainWindow;
         private static HttpListener? _httpServer;
         private static int _activePort = 5000;
+        private static readonly HttpClient _httpClient = new HttpClient();
 
         [STAThread]
         static void Main(string[] args)
         {
-            // 1. Start lightweight local HTTP server for wwwroot assets and API
+            // 1. Load .env environment variables immediately
+            try
+            {
+                string envPath = Path.Combine(Directory.GetCurrentDirectory(), ".env");
+                if (File.Exists(envPath))
+                {
+                    Env.Load(envPath);
+                }
+                else
+                {
+                    Env.Load();
+                }
+                Console.WriteLine("[Environment] Loaded .env configuration.");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"[Environment Warning] Failed to load .env: {ex.Message}");
+            }
+
+            // 2. Start lightweight local HTTP server for wwwroot assets and API
             _activePort = StartLocalWebServer();
 
-            // 2. Initialize Photino native desktop window
+            // 3. Initialize Photino native desktop window
             _mainWindow = new PhotinoWindow()
                 .SetTitle("Miraverse OS x - Celestial Operating System")
                 .SetUseOsDefaultSize(false)
@@ -48,16 +70,16 @@ namespace MiraverseOSx
                 .Center()
                 .SetResizable(true);
 
-            // 3. Register web message IPC bridge handler
+            // 4. Register web message IPC bridge handler
             _mainWindow.RegisterWebMessageReceivedHandler(OnWebMessageReceived);
 
-            // 4. Load app from local web server
+            // 5. Load app from local web server
             string localUrl = $"http://localhost:{_activePort}/index.html";
             _mainWindow.Load(localUrl);
 
             _mainWindow.WaitForClose();
 
-            // 5. Cleanup server on exit
+            // 6. Cleanup server on exit
             StopLocalWebServer();
         }
 
@@ -107,7 +129,7 @@ namespace MiraverseOSx
             return port;
         }
 
-        private static void ProcessHttpRequest(HttpListenerContext context, string wwwroot)
+        private static async void ProcessHttpRequest(HttpListenerContext context, string wwwroot)
         {
             try
             {
@@ -131,6 +153,43 @@ namespace MiraverseOSx
                     context.Response.ContentLength64 = jsonBytes.Length;
                     context.Response.OutputStream.Write(jsonBytes, 0, jsonBytes.Length);
                     context.Response.OutputStream.Close();
+                    return;
+                }
+
+                // --- BLOCKCHAIR SECURE CRYPTO ROUTE ---
+                if (relPath.Equals("api/crypto", StringComparison.OrdinalIgnoreCase))
+                {
+                    // Safely grab key from environment variable
+                    string apiKey = Environment.GetEnvironmentVariable("BLOCKCHAIR_API_KEY") ?? "";
+                    string blockchairUrl = string.IsNullOrWhiteSpace(apiKey)
+                        ? "https://api.blockchair.com/bitcoin/stats"
+                        : $"https://api.blockchair.com/bitcoin/stats?key={apiKey}";
+
+                    try
+                    {
+                        HttpResponseMessage response = await _httpClient.GetAsync(blockchairUrl);
+                        string jsonResponse = await response.Content.ReadAsStringAsync();
+
+                        byte[] responseBytes = Encoding.UTF8.GetBytes(jsonResponse);
+                        context.Response.ContentType = "application/json";
+                        context.Response.ContentLength64 = responseBytes.Length;
+                        using var output = context.Response.OutputStream;
+                        output.Write(responseBytes, 0, responseBytes.Length);
+                    }
+                    catch (Exception ex)
+                    {
+                        context.Response.StatusCode = 500;
+                        Console.WriteLine($"[Crypto API Error] Error fetching crypto data: {ex.Message}");
+                        byte[] errBytes = Encoding.UTF8.GetBytes(JsonSerializer.Serialize(new { error = ex.Message }));
+                        context.Response.ContentType = "application/json";
+                        context.Response.ContentLength64 = errBytes.Length;
+                        using var output = context.Response.OutputStream;
+                        output.Write(errBytes, 0, errBytes.Length);
+                    }
+                    finally
+                    {
+                        try { context.Response.Close(); } catch { }
+                    }
                     return;
                 }
 

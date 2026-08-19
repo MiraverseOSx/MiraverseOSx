@@ -37,6 +37,7 @@ const LoreExplorerApp = lazy(() => import('./LoreExplorer'));
 const ProcessMonitorApp = lazy(() => import('./ProcessMonitorApp'));
 const HousingApp = lazy(() => import('./HousingApp'));
 const JobWorkstationApp = lazy(() => import('./JobWorkstationApp'));
+const FinanceTerminal = lazy(() => import('./FinanceTerminal'));
 
 // Sleek loading fallback for lazy-loaded apps
 const AppLoadingFallback = ({ name = 'App' }) => (
@@ -421,6 +422,7 @@ export const CONTENTS = {
   process: withSuspense(ProcessMonitorApp, 'Process Monitor'),
   housing: withSuspense(HousingApp, 'Residential Quarters'),
   jobs: withSuspense(JobWorkstationApp, 'Career Workstation'),
+  finance: withSuspense(FinanceTerminal, 'Oryn Finance Ledger'),
 };
 
 export const getContent = (key) => CONTENTS[key] || (() => <Panel>Nothing here yet.</Panel>);

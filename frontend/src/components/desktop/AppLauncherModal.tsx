@@ -23,6 +23,7 @@ export const APPS_DIRECTORY = [
   // 5.3 Workplace & Career Portals
   { id: 'jobs', label: 'WORKNET // Federal Access', category: 'Workplace Portals', icon: Briefcase, color: 'text-[#E5C370]', border: 'border-[#E5C370]/50', desc: 'Centralized federal work access across DGA, Faith Medical, Finance & Archives' },
   { id: 'comms', label: 'COMMS // Institutional Network', category: 'Workplace Portals', icon: MessageSquare, color: 'text-[#4CD6C4]', border: 'border-[#4CD6C4]/50', desc: 'Dual-pane instant messaging mesh & encrypted Cyacademy/Career inbox' },
+  { id: 'finance', label: 'ORYN // Treasury & Crypto Ledger', category: 'Workplace Portals', icon: Landmark, color: 'text-[#E5C370]', border: 'border-[#E5C370]/50', desc: 'Sovereign Treasury vault, dual currency audit & live Blockchair PoW crypto telemetry' },
   
   // 5.3 Civic Subsystems & Notice Boards
   { id: 'board', label: 'CHRONICLE // Notice Board', category: 'Civic Subsystems', icon: Bookmark, color: 'text-[#6EC087]', border: 'border-[#6EC087]/50', desc: 'Central notice board, active quests, missions, adventures & lore codices' },

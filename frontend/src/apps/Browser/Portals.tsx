@@ -5,6 +5,7 @@ import {
 } from 'lucide-react';
 import { useOSStore } from '../../store/useOSStore';
 import Button from '../../components/ui/button';
+import FinanceTerminal from '../FinanceTerminal';
 
 // ==========================================
 // 1. Faith Medical Intranet (faithmed.aure)
@@ -245,6 +246,7 @@ export function BankPortal() {
     const [authenticated, setAuthenticated] = useState(false);
     const [pinInput, setPinInput] = useState('');
     const [auditSuccess, setAuditSuccess] = useState(false);
+    const [activeTab, setActiveTab] = useState<'vault' | 'ledger'>('vault');
 
     const handleLogin = (e: React.FormEvent) => {
         e.preventDefault();
@@ -262,61 +264,79 @@ export function BankPortal() {
     };
 
     return (
-        <div className="p-6 space-y-6 bg-white min-h-full text-slate-800 font-sans select-none">
-            <header className="flex items-center justify-between border-b border-indigo-100 pb-4">
+        <div className="p-6 space-y-6 bg-[#142850] min-h-full text-white font-ui select-none">
+            <header className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-[#315D9E]/60 pb-4">
                 <div className="flex items-center gap-3">
-                    <div className="h-10 w-10 rounded-xl bg-indigo-600 text-white flex items-center justify-center font-bold">
+                    <div className="h-10 w-10 rounded-xl bg-[#E5C370] text-[#0E1A33] flex items-center justify-center font-bold shadow-md">
                         <Landmark size={22} />
                     </div>
                     <div>
-                        <h1 className="text-xl font-bold text-slate-900">Oryn Department of Finance</h1>
-                        <p className="text-xs text-indigo-600 font-mono">Banking, Treasury & Dual-Currency Accounts • bank.aure / finance.oryn.gov</p>
+                        <h1 className="text-xl font-bold font-display text-[#FFFFFF]">Oryn Department of Finance</h1>
+                        <p className="text-xs text-[#FBE6AB] font-mono">Banking, Treasury & Dual-Currency Accounts • bank.aure / finance.oryn.gov</p>
                     </div>
                 </div>
+                {authenticated && (
+                    <div className="flex items-center gap-2">
+                        <button
+                            onClick={() => setActiveTab('vault')}
+                            className={`px-3 py-1.5 rounded-xl text-xs font-bold transition ${activeTab === 'vault' ? 'bg-[#315D9E] text-[#FBE6AB] border border-[#E5C370]/60' : 'bg-[#1E3D75]/60 text-[#D5E2F5] hover:bg-[#1E3D75]'}`}
+                        >
+                            Treasury Vault
+                        </button>
+                        <button
+                            onClick={() => setActiveTab('ledger')}
+                            className={`px-3 py-1.5 rounded-xl text-xs font-bold transition ${activeTab === 'ledger' ? 'bg-[#315D9E] text-[#FBE6AB] border border-[#E5C370]/60' : 'bg-[#1E3D75]/60 text-[#D5E2F5] hover:bg-[#1E3D75]'}`}
+                        >
+                            Live Crypto Ledger
+                        </button>
+                    </div>
+                )}
             </header>
 
             {!authenticated ? (
-                <div className="max-w-md mx-auto p-6 border border-indigo-200 bg-indigo-50/50 rounded-2xl space-y-4 text-center">
-                    <Lock className="text-indigo-600 mx-auto" size={32} />
-                    <h2 className="text-base font-bold text-slate-900">Authenticated Banking & Treasury Portal</h2>
-                    <p className="text-xs text-slate-600">Enter Security PIN or Token discovered in AureMail / Dispatches (e.g. 0994 or 8891)</p>
+                <div className="max-w-md mx-auto p-6 border border-white/20 bg-[#1E3D75]/80 backdrop-blur-md rounded-2xl space-y-4 text-center shadow-xl">
+                    <Lock className="text-[#E5C370] mx-auto" size={32} />
+                    <h2 className="text-base font-bold text-[#FFFFFF]">Authenticated Banking & Treasury Portal</h2>
+                    <p className="text-xs text-[#D5E2F5]">Enter Security PIN or Token discovered in AureMail / Dispatches (e.g. 0994 or 8891)</p>
                     <form onSubmit={handleLogin} className="space-y-3">
                         <input
                             type="password"
                             value={pinInput}
                             onChange={(e) => setPinInput(e.target.value)}
                             placeholder="Enter 4-digit PIN..."
-                            className="w-full px-4 py-2.5 border border-slate-300 rounded-xl text-center text-sm outline-none font-mono focus:border-indigo-600"
+                            className="w-full px-4 py-2.5 bg-[#142850] border border-white/25 rounded-xl text-center text-sm outline-none font-mono text-white focus:border-[#E5C370]"
                         />
-                        <button type="submit" className="w-full py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs rounded-xl transition">
+                        <button type="submit" className="w-full py-2.5 bg-[#E5C370] hover:bg-[#FBE6AB] text-[#0E1A33] font-bold text-xs rounded-xl transition shadow-md">
                             Unlock Financial Vault
                         </button>
                     </form>
                 </div>
+            ) : activeTab === 'ledger' ? (
+                <FinanceTerminal />
             ) : (
                 <div className="space-y-4">
-                    <div className="grid grid-cols-2 gap-4">
-                        <div className="p-5 border border-amber-200 bg-amber-50/60 rounded-2xl">
-                            <div className="text-xs text-amber-800 font-bold uppercase tracking-wider">Primary Currency Balance</div>
-                            <div className="text-2xl font-bold text-amber-950 font-mono mt-1">{player?.credits || 0} ₢ CREDITS</div>
-                            <div className="text-[11px] text-amber-700 mt-1">Sourced from career work shifts, trade & civic service</div>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div className="p-5 border border-[#E5C370]/40 bg-[#1E3D75]/80 rounded-2xl shadow-md">
+                            <div className="text-xs text-[#FBE6AB] font-bold uppercase tracking-wider">Primary Currency Balance</div>
+                            <div className="text-2xl font-bold text-[#FFFFFF] font-mono mt-1">{player?.credits || 0} ₢ CREDITS</div>
+                            <div className="text-[11px] text-[#D5E2F5]/80 mt-1">Sourced from career work shifts, trade & civic service</div>
                         </div>
-                        <div className="p-5 border border-cyan-200 bg-cyan-50/60 rounded-2xl">
-                            <div className="text-xs text-cyan-800 font-bold uppercase tracking-wider">Secondary Rare Currency</div>
-                            <div className="text-2xl font-bold text-cyan-950 font-mono mt-1">{player?.bits || 0} ◈ BITS</div>
-                            <div className="text-[11px] text-cyan-700 mt-1">Rare crystalline micro-currency for luxury upgrades</div>
+                        <div className="p-5 border border-[#4CD6C4]/40 bg-[#1E3D75]/80 rounded-2xl shadow-md">
+                            <div className="text-xs text-[#4CD6C4] font-bold uppercase tracking-wider">Secondary Rare Currency</div>
+                            <div className="text-2xl font-bold text-[#FFFFFF] font-mono mt-1">{player?.bits || 0} ◈ BITS</div>
+                            <div className="text-[11px] text-[#D5E2F5]/80 mt-1">Rare crystalline micro-currency for luxury upgrades</div>
                         </div>
                     </div>
 
-                    <div className="p-4 border border-slate-200 bg-slate-50 rounded-2xl flex justify-between items-center">
+                    <div className="p-4 border border-white/20 bg-[#1E3D75]/60 rounded-2xl flex flex-col sm:flex-row justify-between items-center gap-3">
                         <div>
-                            <div className="text-xs font-bold text-slate-800">Direct Deposit & Rent Audit Status</div>
-                            <div className="text-[11px] text-slate-600 font-mono">Automatic monthly stipend and dorm subsidies active</div>
+                            <div className="text-xs font-bold text-[#FFFFFF]">Direct Deposit & Rent Audit Status</div>
+                            <div className="text-[11px] text-[#D5E2F5]/80 font-mono">Automatic monthly stipend and dorm subsidies active</div>
                         </div>
                         <button
                             onClick={handleHackAudit}
                             disabled={auditSuccess}
-                            className="px-4 py-2 bg-indigo-600 text-white font-bold text-xs rounded-xl hover:bg-indigo-500 transition disabled:bg-slate-300"
+                            className="px-4 py-2 bg-[#315D9E] hover:bg-[#24467D] text-[#FBE6AB] border border-[#E5C370]/40 font-bold text-xs rounded-xl transition disabled:opacity-50"
                         >
                             {auditSuccess ? 'Audit Wire Traced (+300 ₢, +2 ◈)' : 'Trace Suspect Wire Transfer (#0994)'}
                         </button>
