@@ -21,6 +21,8 @@ export interface AppMetadata {
 }
 
 export const APPS: AppMetadata[] = [
+  { id: 'meridionRegistry', title: 'AURA // Citizen Registry', category: 'Civic Records', dev: 'Meridion Civic Identity', version: '0.1.0', primary: 'Fictional citizen identity and document management', lore: 'Standalone Registry adapted into an OS application.' },
+  { id: 'traceForensics', title: 'TRACE // Forensics', category: 'Agency Systems', dev: 'DGAOS', version: '0.1.0', primary: 'Staging interface for TRACE forensic integration', lore: 'Live forensic engine not connected yet.' },
   // 5.3 Layered Interfaces & Core Tools
   { 
     id: 'passport',   
