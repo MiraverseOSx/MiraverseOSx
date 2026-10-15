@@ -1267,6 +1267,8 @@ export const useOSStore = create<OSStoreState>((set) => ({
     }
 
     const appTitles: Record<string, string> = {
+      meridionRegistry: 'AURA Citizen Registry',
+      traceForensics: 'TRACE Forensic Workstation',
       jobs: 'Career Workstation',
       board: 'Master Notice Board',
       process: 'Process Monitor',

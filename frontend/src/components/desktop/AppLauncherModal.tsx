@@ -4,7 +4,7 @@ import {
   Briefcase, Bookmark, Cpu, Home, Sparkles, Globe, Mail, 
   MessageSquare, UserCheck, Radio, Folder, BookOpen, Terminal, 
   Settings, Search, X, Star, Landmark, Play, Shield, Activity,
-  ArrowRight, Check, Zap, Layers
+  ArrowRight, Check, Zap, Layers, ContactRound, Fingerprint
 } from 'lucide-react';
 import { useOSStore } from '../../store/useOSStore';
 import { APPS } from '../../apps/contents';
@@ -33,6 +33,36 @@ export interface ProtocolItem {
 }
 
 export const PROTOCOLS: ProtocolItem[] = [
+  {
+    id: 'meridionRegistry',
+    code: 'AURA',
+    name: 'AURA // Citizen Registry',
+    label: 'AURA // Citizen Registry',
+    sector: 'Meridion Civic Identity',
+    icon: ContactRound,
+    clearance: 'Civic Authority Standard',
+    aetherTrace: 'AT-0x0118',
+    flux: '19.2 MHz',
+    desc: 'Official citizen identity archive: ancestry, affinities, ten-print biometrics, Aura ID, and document studio issuance.',
+    color: 'text-indigo-900',
+    bg: 'bg-indigo-50',
+    border: 'border-indigo-300'
+  },
+  {
+    id: 'traceForensics',
+    code: 'TRACE',
+    name: 'TRACE // Forensic Workstation',
+    label: 'TRACE // Forensic Workstation',
+    sector: 'DGAOS Investigations (EYES/SHIELD)',
+    icon: Fingerprint,
+    clearance: 'DGA Special Clearance',
+    aetherTrace: 'AT-0x0990',
+    flux: '33.8 MHz',
+    desc: 'Tactical forensic workstation: registry-linked subject analysis, evidence custody, case staging, and criminalistics.',
+    color: 'text-slate-900',
+    bg: 'bg-slate-100',
+    border: 'border-slate-400'
+  },
   {
     id: 'passport',
     code: 'MIRROR',

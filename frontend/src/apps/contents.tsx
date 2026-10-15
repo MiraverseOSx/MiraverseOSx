@@ -8,6 +8,8 @@ import {
 } from 'lucide-react';
 
 export const APPS = [
+  { id: 'meridionRegistry', title: 'AURA Citizen Registry', icon: UserCheck, category: 'Civic Records' },
+  { id: 'traceForensics', title: 'TRACE Forensic Workstation', icon: Shield, category: 'Agency Systems' },
   { id: 'jobs', title: 'WORKNET (§10.1A)', icon: Briefcase, category: 'Workplace Portals' },
   { id: 'board', title: 'CHRONICLE Notice Board (§5.3)', icon: Bookmark, category: 'Civic Subsystems' },
   { id: 'process', title: 'Process Monitor (PRISM/Sys)', icon: Cpu, category: 'Security' },
@@ -26,6 +28,8 @@ export const APPS = [
 
 // Lazy load app modules for code splitting and fast initial bundle loading
 const CommsApp = lazy(() => import('./Comms/CommsApp'));
+const RegistryWorkspaceApp = lazy(() => import('./RegistryWorkspaceApp'));
+const TraceWorkspaceApp = lazy(() => import('./TraceWorkspaceApp'));
 const SpellForgeApp = lazy(() => import('./SpellForgeApp'));
 const CivicProfileApp = lazy(() => import('./CivicProfileApp'));
 const PulseApp = lazy(() => import('./Pulse/PulseApp'));
@@ -405,6 +409,8 @@ const withSuspense = (Component, name) => (props) => (
 );
 
 export const CONTENTS = {
+  meridionRegistry: withSuspense(RegistryWorkspaceApp, 'Citizen Registry'),
+  traceForensics: withSuspense(TraceWorkspaceApp, 'TRACE'),
   files: withSuspense(FileExplorerApp, 'File Explorer'),
   comms: withSuspense(CommsApp, 'Comms'),
   mail: withSuspense(MailApp, 'Mailbox'),
