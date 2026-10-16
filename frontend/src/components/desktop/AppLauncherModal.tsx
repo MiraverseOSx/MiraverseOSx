@@ -111,13 +111,14 @@ export const PROTOCOLS: ProtocolItem[] = [
   {
     id: 'housing',
     code: 'HOMECRAFT',
-    name: 'HOMECRAFT // Residential',
-    sector: 'Cycademy Student Quarters',
+    name: 'HOMECRAFT // Housing',
+    label: 'HOMECRAFT // Housing',
+    sector: 'Orynvell & Cyacademy Housing',
     icon: Home,
     clearance: 'Resident Clearance',
     aetherTrace: 'AT-0x0289',
     flux: '32.1 MHz',
-    desc: 'Residential grid editor, dorm customization, furniture layout, room expansion, and restorative rest hub.',
+    desc: 'Residential housing grid editor, quarters customization, furniture layout, room expansion, and restorative rest hub.',
     color: 'text-indigo-800',
     bg: 'bg-indigo-50',
     border: 'border-indigo-300'

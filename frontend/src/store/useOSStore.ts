@@ -1274,7 +1274,7 @@ export const useOSStore = create<OSStoreState>((set) => ({
       jobs: 'Career Workstation',
       board: 'Master Notice Board',
       process: 'Process Monitor',
-      housing: 'Residential Dorm 4B',
+      housing: 'HOMECRAFT // Housing',
       spellforge: 'SpellForge Matrix',
       browser: 'Net Browser',
       mail: 'AureMail Mailbox',

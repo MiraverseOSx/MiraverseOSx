@@ -41,6 +41,13 @@ import { DGACase } from '@/lib/dga-types';
 import { playCardiacBeep } from '@/lib/phone-audio';
 import { escalateMedicalCaseToInvestigation } from '@/lib/dga-crosslink-engine';
 import { DgaMedicalRequestQueue } from './dga-medical-request-queue';
+import { MaidIdentityService, CanonicalCitizenRecord } from '../../../../services/maidIdentityService';
+import {
+  getCanonicalCitizens,
+  getActiveCitizenContext,
+  openCitizenInApp,
+  syncFaithMedicalUpdate,
+} from '../../../../integration/citizenBridge';
 
 interface DgaMedicalChartProps {
   onOpenCase?: (caseId: string) => void;
@@ -57,6 +64,28 @@ export function DgaMedicalChart({ onOpenCase, onNavigateTab, cases = [], activeC
   const [escalateToast, setEscalateToast] = useState<string | null>(null);
   const [isEscalating, setIsEscalating] = useState(false);
   const [actionFeedback, setActionFeedback] = useState<string | null>(null);
+  const [canonicalCitizens, setCanonicalCitizens] = useState<CanonicalCitizenRecord[]>(() => {
+    MaidIdentityService.ensureDefaultPopulationSeeded();
+    return getCanonicalCitizens();
+  });
+  const [selectedMaidCitizen, setSelectedMaidCitizen] = useState<string>(() => {
+    const ctx = getActiveCitizenContext();
+    return ctx?.maid || 'MAID-OR-00481926';
+  });
+
+  useEffect(() => {
+    const syncMaid = () => {
+      setCanonicalCitizens(getCanonicalCitizens());
+      const ctx = getActiveCitizenContext();
+      if (ctx?.maid) setSelectedMaidCitizen(ctx.maid);
+    };
+    window.addEventListener('maid-registry-updated', syncMaid);
+    window.addEventListener('active-citizen-changed', syncMaid);
+    return () => {
+      window.removeEventListener('maid-registry-updated', syncMaid);
+      window.removeEventListener('active-citizen-changed', syncMaid);
+    };
+  }, []);
 
   // New Clinical Order / Note Modals
   const [isMedModalOpen, setIsMedModalOpen] = useState(false);
@@ -536,6 +565,63 @@ export function DgaMedicalChart({ onOpenCase, onNavigateTab, cases = [], activeC
       </div>
 
       <DgaMedicalRequestQueue cases={cases} activeCaseId={activeCaseId} onOpenCase={onOpenCase} />
+
+      {/* FAITH MEDICAL <-> CANONICAL MAID REGISTRY SYNC BAR */}
+      <div className="bg-emerald-950/90 text-emerald-100 border-b border-emerald-800 px-4 py-1.5 flex flex-wrap items-center justify-between gap-2 text-xs shrink-0">
+        <div className="flex items-center gap-2">
+          <span className="px-2 py-0.5 rounded bg-emerald-800/80 text-emerald-200 font-mono font-bold text-[10px] uppercase tracking-wider border border-emerald-700">
+            Faith Medical // Canonical MAID Link
+          </span>
+          <select
+            aria-label="Select canonical MAID citizen for Faith Medical clinical chart sync"
+            value={selectedMaidCitizen}
+            onChange={(e) => setSelectedMaidCitizen(e.target.value)}
+            className="bg-slate-900 border border-emerald-700 text-white text-xs font-bold rounded px-2 py-1 outline-none cursor-pointer"
+          >
+            {canonicalCitizens.map((c) => (
+              <option key={c.maid} value={c.maid}>
+                {c.name} ({c.maid}) • Blood {c.blood}
+              </option>
+            ))}
+          </select>
+        </div>
+        <div className="flex items-center gap-2">
+          <button
+            type="button"
+            onClick={() => {
+              const updated = syncFaithMedicalUpdate(selectedMaidCitizen, {
+                clinicalNote: `MEDSTAT Chart (${chart.caseId} - ${chart.clinicalStatus}): HR ${latestVitals.heartRate} BPM, BP ${latestVitals.bloodPressureSystolic}/${latestVitals.bloodPressureDiastolic} mmHg, SpO2 ${latestVitals.oxygenSaturation}% synced by ${chart.attendingPhysician}.`,
+              });
+              setActionFeedback(
+                updated
+                  ? `Synced Faith Medical MEDSTAT telemetry to canonical MAID citizen ${updated.name} (${updated.maid}).`
+                  : `Synced clinical telemetry to ${selectedMaidCitizen}.`
+              );
+              setTimeout(() => setActionFeedback(null), 4500);
+            }}
+            className="px-2.5 py-1 rounded bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-[11px] flex items-center gap-1 cursor-pointer transition"
+          >
+            <CheckCircle2 className="w-3.5 h-3.5" />
+            <span>Sync Chart Vitals to MAID</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => openCitizenInApp(selectedMaidCitizen, 'document_studio', { targetDocId: 8 })}
+            className="px-2.5 py-1 rounded bg-slate-800 hover:bg-slate-700 text-emerald-200 border border-emerald-700 font-bold text-[11px] flex items-center gap-1 cursor-pointer transition"
+          >
+            <FileText className="w-3.5 h-3.5" />
+            <span>Open Medical Summary (Doc 8)</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => openCitizenInApp(selectedMaidCitizen, 'registry_workspace', { targetTab: 'lookup' })}
+            className="px-2.5 py-1 rounded bg-slate-800 hover:bg-slate-700 text-white border border-slate-600 font-bold text-[11px] flex items-center gap-1 cursor-pointer transition"
+          >
+            <User className="w-3.5 h-3.5" />
+            <span>MAID Dossier</span>
+          </button>
+        </div>
+      </div>
 
       {/* FEEDBACK TOAST */}
       {(escalateToast || actionFeedback) && (

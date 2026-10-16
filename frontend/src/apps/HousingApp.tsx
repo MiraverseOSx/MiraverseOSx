@@ -94,10 +94,10 @@ export default function HousingApp() {
                     </div>
                     <div>
                         <h2 className="text-base font-bold tracking-wider text-slate-900 uppercase font-display">
-                            HOMECRAFT (§5.3) // RESIDENTIAL SPACE GRID EDITOR
+                            HOMECRAFT // HOUSING & RESIDENTIAL GRID EDITOR
                         </h2>
                         <div className="flex items-center gap-3 text-xs text-slate-500 font-ui mt-0.5">
-                            <span>Assigned House: <strong className="text-indigo-900 font-bold">Vector House</strong></span>
+                            <span>Assigned Housing: <strong className="text-indigo-900 font-bold">Vector Housing Suite 4B</strong></span>
                             <span>•</span>
                             <span>Stamina: <strong className="text-emerald-700 font-bold">{stamina} / 100</strong></span>
                             <span>•</span>
@@ -117,7 +117,7 @@ export default function HousingApp() {
                         }`}
                     >
                         <Bed size={13} />
-                        <span>Room Hub</span>
+                        <span>Housing Hub</span>
                     </button>
                     <button
                         onClick={() => setActiveTab('board')}
@@ -126,7 +126,7 @@ export default function HousingApp() {
                         }`}
                     >
                         <Pin size={13} />
-                        <span>Room Board</span>
+                        <span>Housing Board</span>
                     </button>
                     <button
                         onClick={() => setActiveTab('upgrades')}
@@ -167,7 +167,7 @@ export default function HousingApp() {
                                 <div className="flex items-center justify-between mb-2">
                                     <div className="flex items-center gap-2 text-indigo-700 font-bold font-mono">
                                         <Bed size={16} />
-                                        <span>BED / REST STATION</span>
+                                        <span>HOUSING REST STATION</span>
                                     </div>
                                     <span className="text-[11px] font-mono text-emerald-700 font-bold bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
                                         READY
@@ -182,7 +182,7 @@ export default function HousingApp() {
                                 className="w-full py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-mono text-xs font-bold transition shadow-xs active:scale-95 flex items-center justify-center gap-2"
                             >
                                 <Moon size={14} />
-                                <span>Rest / Sleep Sys-Cycle</span>
+                                <span>Rest in Housing</span>
                             </button>
                         </div>
 
@@ -199,7 +199,7 @@ export default function HousingApp() {
                                     </span>
                                 </div>
                                 <p className="text-xs text-slate-600 leading-relaxed">
-                                    Study class notes, review library files, complete homework assignments, and advance your 9 Core Skills.
+                                    Study class notes, review library files, complete homework assignments, and advance your Core Skills.
                                 </p>
                             </div>
                             <button
@@ -211,7 +211,7 @@ export default function HousingApp() {
                             </button>
                         </div>
 
-                        {/* Dorm Storage & Safe */}
+                        {/* Housing Storage & Safe */}
                         <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-xs flex flex-col justify-between space-y-4">
                             <div>
                                 <div className="flex items-center justify-between mb-2">
@@ -245,7 +245,7 @@ export default function HousingApp() {
                 {activeTab === 'board' && (
                     <div className="space-y-4">
                         <div className="flex justify-between items-center mb-2">
-                            <h3 className="font-bold text-sm text-slate-900 font-mono uppercase">Pinned Memos & Campus Reminders</h3>
+                            <h3 className="font-bold text-sm text-slate-900 font-mono uppercase">Pinned Memos & Housing Reminders</h3>
                             <span className="text-xs text-slate-500 font-mono">2 Active Notices</span>
                         </div>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -255,7 +255,7 @@ export default function HousingApp() {
                                     <span className="text-[10px] bg-amber-200/80 text-amber-950 font-bold px-2 py-0.5 rounded">DAY 1</span>
                                 </div>
                                 <p className="text-xs text-slate-700 leading-relaxed">
-                                    All newly arrived citizens must complete the CITIZEN_REGISTRATION_FORM.osform and confirm their temporary dormitory assignment before attending morning Syntax classes.
+                                    All newly arrived citizens must complete the CITIZEN_REGISTRATION_FORM.osform and confirm their housing assignment before attending morning Syntax classes.
                                 </p>
                             </div>
 

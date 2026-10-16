@@ -21,12 +21,16 @@ import {
 } from '../services/documentPacketGenerator';
 import PortraitStudioModal from '../components/portrait/PortraitStudioModal';
 import { MaidIdentityService } from '../services/maidIdentityService';
+import { getActiveCitizenContext, openCitizenInApp } from '../integration/citizenBridge';
 
 const DEFAULT_CITIZEN: CitizenRecord = {
   name: 'Elara Vale',
   dob: '2001-04-18',
   place: 'Northwake, Fross',
   record: 'MRD-8492-319',
+  maid: 'MAID-OR-00481926',
+  registrationRegionCode: 'OR',
+  legacyAliases: ['MRD-8492-319'],
   passport: 'AUR-782194',
   alias: 'Frostweaver / Silverglass',
   address: '142 Moonwell Way, Glassline District, Aureline Central (fictional)',
@@ -53,14 +57,14 @@ const DEFAULT_CITIZEN: CitizenRecord = {
   clearance: 'General Civic Access · Academic Clearance II',
   aura: 'Calibrated Harmonic Tier III',
   medical: 'Faith Medical Group · intake verified',
-  residency: 'Cyacademy Dormitory 4B · Verified Residence',
+  residency: 'Cyacademy Vector Housing 4B · Verified Residence',
   history: 'Routine civil registration completed at intake; transferred from Northwake regional enclave.',
   status: 'ACTIVE / VERIFIED',
   links: 'Coordinates academic study group at Aureline Library; holds valid regional transit pass.',
   relationships: 'Known associate of Cyacademy faculty',
-  household: 'Cyacademy Campus Dormitory 4B',
+  household: 'Cyacademy Vector Housing Suite 4B',
   timeline: 'Origin: Northwake, Fross; residing in Aureline since Year 24',
-  biometricSeed: 'MRD-8492-319'
+  biometricSeed: 'MAID-OR-00481926'
 };
 
 const DOCUMENT_TABS = [
@@ -84,14 +88,32 @@ export default function DocumentStudioApp() {
   const [issuanceNotice, setIssuanceNotice] = useState<string | null>(null);
 
   // Load citizens from master canonical registry
-  const loadSavedCitizens = async () => {
+  const loadSavedCitizens = async (overrideCitizenId?: string, overrideDocId?: number) => {
     try {
-      const list = await MaidIdentityService.getAllPersons();
-      if (Array.isArray(list) && list.length > 0) {
+      const rawList = await MaidIdentityService.ensureDefaultPopulationSeeded();
+      if (Array.isArray(rawList) && rawList.length > 0) {
+        const list: CitizenRecord[] = rawList.map((p: any) => ({
+          ...p,
+          record: p.maid || p.legacyRecord || p.record || 'MRD-0000'
+        }));
         setCitizens(list);
-        const current = list.find((c: any) => (c.maid && c.maid === selectedCitizen.maid) || c.record === selectedCitizen.record);
-        if (current) setSelectedCitizen(current);
+
+        const activeCtx = getActiveCitizenContext();
+        const targetId = overrideCitizenId || activeCtx?.citizenId || selectedCitizen.maid || selectedCitizen.record;
+        const matched = list.find((c: any) =>
+          (c.maid && c.maid === targetId) ||
+          c.record === targetId ||
+          c.legacyRecord === targetId ||
+          c.id === targetId
+        );
+        if (matched) setSelectedCitizen(matched);
         else setSelectedCitizen(list[0]);
+
+        if (overrideDocId) {
+          setActiveDocId(overrideDocId);
+        } else if (activeCtx?.targetDocId && Date.now() - activeCtx.timestamp < 15000) {
+          setActiveDocId(activeCtx.targetDocId);
+        }
         return;
       }
     } catch {
@@ -104,17 +126,26 @@ export default function DocumentStudioApp() {
   useEffect(() => {
     loadSavedCitizens();
 
-    // Listen for storage / cross-tab changes
     const onMessage = (e: MessageEvent) => {
       if (e.data?.source === 'meridion-registry' && e.data?.type === 'citizens-changed') {
         loadSavedCitizens();
+      } else if (e.data?.source === 'citizen-bridge' && e.data?.type === 'active-citizen-changed') {
+        const payload = e.data.payload;
+        loadSavedCitizens(payload?.citizenId, payload?.targetDocId);
+      }
+    };
+    const onCitizenCtx = (e: Event) => {
+      const detail = (e as CustomEvent).detail;
+      if (detail?.citizenId) {
+        loadSavedCitizens(detail.citizenId, detail.targetDocId);
       }
     };
     window.addEventListener('message', onMessage);
-    window.addEventListener('storage', loadSavedCitizens);
+    window.addEventListener('miraverse-citizen-context', onCitizenCtx);
+    window.addEventListener('storage', () => loadSavedCitizens());
     return () => {
       window.removeEventListener('message', onMessage);
-      window.removeEventListener('storage', loadSavedCitizens);
+      window.removeEventListener('miraverse-citizen-context', onCitizenCtx);
     };
   }, []);
 
@@ -146,7 +177,7 @@ export default function DocumentStudioApp() {
     // Record formal issuance snapshot
     const record = recordIssuedSnapshot({
       documentType: 'FULL_NINE_DOCUMENT_PACKET',
-      citizenRecordId: idKey,
+      citizenId: idKey,
       citizenName: selectedCitizen.name,
       issuedAt: new Date().toISOString(),
       issuingAuthority: 'Aureline Civic Identity Administration & Crown Archives',
@@ -159,16 +190,17 @@ export default function DocumentStudioApp() {
 
   const handleLogIssuance = () => {
     const docInfo = DOCUMENT_TABS.find(t => t.id === activeDocId);
+    const idKey = selectedCitizen.maid || selectedCitizen.record;
     const record = recordIssuedSnapshot({
       documentType: docInfo?.title || 'CIVIL_DOCUMENT',
-      citizenRecordId: selectedCitizen.record,
+      citizenId: idKey,
       citizenName: selectedCitizen.name,
       issuedAt: new Date().toISOString(),
       issuingAuthority: 'Aureline Civic Identity Bureau',
       version: '1.0'
     });
 
-    setIssuanceNotice(`Formal issuance snapshot created: [${record.id}] (Hash: ${record.hash})`);
+    setIssuanceNotice(`Formal issuance snapshot created for ${idKey}: [${record.id}] (Hash: ${record.hash})`);
     setTimeout(() => setIssuanceNotice(null), 4000);
   };
 
@@ -221,13 +253,14 @@ export default function DocumentStudioApp() {
         </div>
 
         {/* Citizen Selector & Quick Actions */}
-        <div className="flex items-center gap-3 mt-2 sm:mt-0">
+        <div className="flex items-center gap-2.5 mt-2 sm:mt-0">
           <div className="flex items-center gap-2 bg-[#201A36] border border-[#3C3264] rounded-lg px-3 py-1.5 text-xs">
-            <span className="text-slate-400 font-medium">Citizen Record:</span>
+            <label htmlFor="doc-studio-citizen-select" className="text-slate-400 font-medium">Citizen:</label>
             <select
+              id="doc-studio-citizen-select"
               value={selectedCitizen.maid || selectedCitizen.record}
               onChange={(e) => handleCitizenChange(e.target.value)}
-              className="bg-transparent text-white font-semibold focus:outline-none cursor-pointer max-w-[200px] truncate"
+              className="bg-transparent text-white font-semibold focus:outline-none cursor-pointer max-w-[210px] truncate"
             >
               {citizens.map((c) => (
                 <option key={c.maid || c.record} value={c.maid || c.record} className="bg-[#1C1833] text-white">
@@ -236,6 +269,15 @@ export default function DocumentStudioApp() {
               ))}
             </select>
           </div>
+
+          <button
+            onClick={() => openCitizenInApp(selectedCitizen.maid || selectedCitizen.record, 'meridionRegistry', { sourceApp: 'documentStudio' })}
+            className="flex items-center gap-1.5 rounded-lg bg-[#251E3D] hover:bg-[#352B56] border border-[#4C3F78] px-3 py-1.5 text-xs font-semibold text-indigo-200 shadow transition"
+            title="Open this citizen in the MAID Citizen Registry"
+          >
+            <UserCheck size={14} className="text-indigo-300" />
+            MAID Dossier
+          </button>
 
           <button
             onClick={() => setIsPortraitModalOpen(true)}
@@ -275,7 +317,7 @@ export default function DocumentStudioApp() {
         <aside className="w-64 border-r border-[#272040] bg-[#130F22] flex flex-col justify-between overflow-y-auto">
           <div className="p-3 space-y-1">
             <div className="px-3 py-2 text-[10px] font-bold tracking-widest text-[#9883C8] uppercase">
-              Document Inventory (§7.1)
+              Official Document Inventory
             </div>
 
             {DOCUMENT_TABS.map((tab) => {

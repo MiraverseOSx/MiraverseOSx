@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import {
   Users,
   Search,
@@ -17,9 +17,17 @@ import {
   Package,
   CheckCircle2,
   RefreshCw,
+  ExternalLink,
+  FileText,
 } from 'lucide-react';
 import type { LabRecord } from '@/lib/records';
 import InvestigationBreadcrumbs from '@/components/ui/investigation-breadcrumbs';
+import { MaidIdentityService } from '../../../services/maidIdentityService';
+import {
+  openCitizenInApp,
+  syncDgaInvestigativeUpdate,
+  getActiveCitizenContext,
+} from '../../../integration/citizenBridge';
 
 export interface CitizenRecord {
   id: string;
@@ -376,9 +384,8 @@ export const SEEDED_CITIZENS: CitizenRecord[] = [
 
 function getCanonicalCitizens(): CitizenRecord[] {
   try {
-    const raw = localStorage.getItem('miraverse-canonical-identities-v1') || localStorage.getItem('miraverse-identity-registry-v3');
-    if (!raw) return [];
-    const list = JSON.parse(raw);
+    MaidIdentityService.ensureDefaultPopulationSeeded();
+    const list = MaidIdentityService.getAllPersons();
     if (!Array.isArray(list)) return [];
     return list.map((c: any) => ({
       id: c.maid || c.record || c.id,
@@ -442,16 +449,34 @@ export function CitizenRegistry({
 }: CitizenRegistryProps) {
   const [searchQuery, setSearchQuery] = useState('');
   const [categoryFilter, setCategoryFilter] = useState<string>('All');
-  const [selectedCitizenId, setSelectedCitizenId] = useState<string>('CIT-90421');
+  const [selectedCitizenId, setSelectedCitizenId] = useState<string>(() => {
+    const ctx = getActiveCitizenContext();
+    return ctx?.maid || 'MAID-OR-00481926';
+  });
   const [isQuerying, setIsQuerying] = useState(false);
   const [pinnedCitizens, setPinnedCitizens] = useState<string[]>(['CIT-90421', 'CIT-88192']);
   const [actionNotice, setActionNotice] = useState<string | null>(null);
+  const [registryVersion, setRegistryVersion] = useState(0);
+
+  useEffect(() => {
+    const syncCtx = () => {
+      setRegistryVersion((v) => v + 1);
+      const ctx = getActiveCitizenContext();
+      if (ctx?.maid) setSelectedCitizenId(ctx.maid);
+    };
+    window.addEventListener('maid-registry-updated', syncCtx);
+    window.addEventListener('active-citizen-changed', syncCtx);
+    return () => {
+      window.removeEventListener('maid-registry-updated', syncCtx);
+      window.removeEventListener('active-citizen-changed', syncCtx);
+    };
+  }, []);
 
   const combinedCitizens = useMemo(() => {
     const canonical = getCanonicalCitizens();
     const seen = new Set(canonical.map(c => c.id));
     return [...canonical, ...SEEDED_CITIZENS.filter(c => !seen.has(c.id))];
-  }, [searchQuery]);
+  }, [searchQuery, registryVersion]);
 
   const filteredCitizens = useMemo(() => {
     return combinedCitizens.filter((c) => {
@@ -498,7 +523,8 @@ export function CitizenRegistry({
     setIsQuerying(true);
     setTimeout(() => {
       setIsQuerying(false);
-      setActionNotice('NCIC / State DMV & Interpol records synchronized.');
+      setRegistryVersion((v) => v + 1);
+      setActionNotice('Canonical MAID Population Registry, NCIC / State DMV & Interpol records synchronized.');
       setTimeout(() => setActionNotice(null), 3500);
     }, 600);
   };
@@ -716,24 +742,62 @@ export function CitizenRegistry({
 
               {/* Action Buttons: Cross-Pillar Linking */}
               <div className="flex flex-col gap-2 items-start sm:items-end">
-                <button
-                  type="button"
-                  onClick={() => handleTogglePin(selectedCitizen)}
-                  className={`px-3 py-1.5 text-xs font-bold rounded-lg transition-all flex items-center gap-1.5 cursor-pointer border ${
-                    pinnedCitizens.includes(selectedCitizen.id)
-                      ? 'bg-amber-100 text-amber-900 border-amber-300'
-                      : 'bg-[#f8f6fc] hover:bg-[#ece7f4] text-[#0f0d1a] border-[#d4ceeb]'
-                  }`}
-                >
-                  <FolderKanban size={13} className="text-[#4338ca]" />
-                  <span>
-                    {pinnedCitizens.includes(selectedCitizen.id)
-                      ? 'Pinned to Corkboard ✓'
-                      : 'Pin to Detective Corkboard'}
-                  </span>
-                </button>
+                <div className="flex flex-wrap items-center gap-1.5">
+                  <button
+                    type="button"
+                    onClick={() => openCitizenInApp(selectedCitizen.id, 'registry_workspace', { targetTab: 'lookup' })}
+                    className="px-2.5 py-1.5 text-xs font-bold rounded-lg bg-[#4338ca] hover:bg-[#3730a3] text-white flex items-center gap-1 transition-all cursor-pointer shadow-2xs"
+                  >
+                    <ExternalLink size={12} />
+                    <span>MAID Registry Dossier</span>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => openCitizenInApp(selectedCitizen.id, 'document_studio', { targetDocId: 5 })}
+                    className="px-2.5 py-1.5 text-xs font-bold rounded-lg bg-[#f8f6fc] hover:bg-[#ece7f4] text-[#0f0d1a] border border-[#d4ceeb] flex items-center gap-1 transition-all cursor-pointer"
+                  >
+                    <FileText size={12} className="text-[#4338ca]" />
+                    <span>Investigative Report (Doc 5)</span>
+                  </button>
+                </div>
 
-                <div className="flex items-center gap-1.5">
+                <div className="flex flex-wrap items-center gap-1.5">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const updated = syncDgaInvestigativeUpdate(selectedCitizen.id, {
+                        caseId: 'CASE-2026-0042',
+                        note: `DGAOS/TRACE Citizen Registry cross-check logged (${new Date().toLocaleDateString()}).`,
+                      });
+                      setRegistryVersion((v) => v + 1);
+                      setActionNotice(
+                        updated
+                          ? `Synchronized DGAOS investigative note to canonical MAID record ${updated.maid}.`
+                          : `Logged local DGAOS investigative note for ${selectedCitizen.legalName}.`
+                      );
+                      setTimeout(() => setActionNotice(null), 3500);
+                    }}
+                    className="px-2.5 py-1 text-xs font-bold rounded-md bg-emerald-50 text-emerald-800 hover:bg-emerald-100 border border-emerald-300 flex items-center gap-1 transition-colors cursor-pointer"
+                  >
+                    <CheckCircle2 size={12} />
+                    <span>Sync Note to MAID</span>
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => handleTogglePin(selectedCitizen)}
+                    className={`px-2.5 py-1 text-xs font-bold rounded-md transition-all flex items-center gap-1 cursor-pointer border ${
+                      pinnedCitizens.includes(selectedCitizen.id)
+                        ? 'bg-amber-100 text-amber-900 border-amber-300'
+                        : 'bg-[#f8f6fc] hover:bg-[#ece7f4] text-[#0f0d1a] border-[#d4ceeb]'
+                    }`}
+                  >
+                    <FolderKanban size={12} className="text-[#4338ca]" />
+                    <span>
+                      {pinnedCitizens.includes(selectedCitizen.id) ? 'Pinned ✓' : 'Pin'}
+                    </span>
+                  </button>
+
                   <button
                     type="button"
                     onClick={() => navigate('Cyber Lab')}
@@ -749,7 +813,7 @@ export function CitizenRegistry({
                     className="px-2.5 py-1 text-xs font-bold rounded-md bg-[#f8f6fc] text-[#0f0d1a] hover:bg-[#ece7f4] border border-[#d4ceeb] flex items-center gap-1 transition-colors cursor-pointer"
                   >
                     <Scale size={12} className="text-[#4338ca]" />
-                    <span>Warrant Review</span>
+                    <span>Warrants</span>
                   </button>
                 </div>
               </div>
