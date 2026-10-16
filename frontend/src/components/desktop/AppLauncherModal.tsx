@@ -1,21 +1,19 @@
-import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { 
-  Briefcase, Bookmark, Cpu, Home, Sparkles, Globe, Mail, 
-  MessageSquare, UserCheck, Radio, Folder, BookOpen, Terminal, 
-  Settings, Search, X, Star, Landmark, Play, Shield, Activity,
-  ArrowRight, Check, Zap, Layers, ContactRound, Fingerprint, FileText
-} from 'lucide-react';
+﻿import React, { useEffect, useRef, useState } from 'react';
+import { ArrowRight, ChevronRight, Grid2X2, Search, X, Shield, UserRound, Globe, Wrench, LayoutGrid, Sparkles } from 'lucide-react';
 import { useOSStore } from '../../store/useOSStore';
-import { APPS } from '../../apps/contents';
-import { SoundFX } from '../../utils/audio';
 import { useSystemStore } from '../../store/useSystemStore';
+import { SoundFX } from '../../utils/audio';
+import { APPS_DIRECTORY, launchDesktopApp } from './appDirectory';
+
+export { APPS_DIRECTORY, PROTOCOLS } from './appDirectory';
+export type { ProtocolItem } from './appDirectory';
 
 export interface AppLauncherModalProps {
   isOpen: boolean;
   onClose: () => void;
 }
 
+<<<<<<< Updated upstream
 export interface ProtocolItem {
   id: string;
   code: string;
@@ -281,282 +279,145 @@ export const PROTOCOLS: ProtocolItem[] = [
     bg: 'bg-blue-50',
     border: 'border-blue-300'
   },
+=======
+const categories = [
+  { name: 'All apps', icon: Grid2X2 },
+  { name: 'Personal', icon: UserRound },
+  { name: 'Connect', icon: Globe },
+  { name: 'Civic', icon: LayoutGrid },
+  { name: 'Agency', icon: Shield },
+  { name: 'Tools', icon: Wrench },
+>>>>>>> Stashed changes
 ];
 
-export const APPS_DIRECTORY = PROTOCOLS;
-
 export default function AppLauncherModal({ isOpen, onClose }: AppLauncherModalProps) {
-  const [selectedId, setSelectedId] = useState<string>('jobs');
-  const [searchQuery, setSearchQuery] = useState<string>('');
+  const [selectedId, setSelectedId] = useState('browser');
+  const [searchQuery, setSearchQuery] = useState('');
+  const [category, setCategory] = useState('All apps');
+  const dialogRef = useRef<HTMLDialogElement>(null);
+  const searchRef = useRef<HTMLInputElement>(null);
+  const gridRef = useRef<HTMLDivElement>(null);
+  const windows = useOSStore((state) => state.windows);
+  const player = useOSStore((state) => state.gameplay?.player);
+  const soundEnabled = useSystemStore((state) => state.soundEnabled);
 
-  const toggleApp = useOSStore((s) => s.toggleApp);
-  const windows = useOSStore((s) => s.windows || []);
-  const player = useOSStore((s) => s.gameplay?.player);
-  const { soundEnabled } = useSystemStore();
+  const query = searchQuery.trim().toLowerCase();
+  const filtered = APPS_DIRECTORY.filter((app) =>
+    (category === 'All apps' || app.category === category) &&
+    (!query || `${app.code} ${app.name} ${app.sector} ${app.desc}`.toLowerCase().includes(query))
+  );
+  const selected = filtered.find((app) => app.id === selectedId) || filtered[0];
+  const running = selected && windows.some((window) => window.id === selected.id);
 
-  const filtered = PROTOCOLS.filter((p) => {
-    if (!searchQuery.trim()) return true;
-    const q = searchQuery.toLowerCase();
-    return (
-      p.code.toLowerCase().includes(q) ||
-      p.name.toLowerCase().includes(q) ||
-      p.sector.toLowerCase().includes(q) ||
-      p.desc.toLowerCase().includes(q)
-    );
-  });
-
-  const selectedProtocol = PROTOCOLS.find((p) => p.id === selectedId) || filtered[0] || PROTOCOLS[2];
-
-  const handleLaunch = (id: string) => {
-    if (soundEnabled) SoundFX.playSnap();
-    const app = APPS.find((a) => a.id === id) || { id };
-    toggleApp(app);
-    onClose();
-  };
-
-  // Keyboard navigation: Escape to close, Enter to launch, Arrow keys to navigate
   useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (!isOpen) return;
-
-      if (e.key === 'Escape') {
-        onClose();
-      } else if (e.key === 'Enter' && selectedProtocol) {
-        e.preventDefault();
-        handleLaunch(selectedProtocol.id);
-      } else if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
-        e.preventDefault();
-        const currentIndex = filtered.findIndex((p) => p.id === selectedId);
-        const nextIndex = (currentIndex + 1) % Math.max(1, filtered.length);
-        setSelectedId(filtered[nextIndex]?.id || selectedId);
-        if (soundEnabled) SoundFX.playSnap();
-      } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
-        e.preventDefault();
-        const currentIndex = filtered.findIndex((p) => p.id === selectedId);
-        const prevIndex = (currentIndex - 1 + filtered.length) % Math.max(1, filtered.length);
-        setSelectedId(filtered[prevIndex]?.id || selectedId);
-        if (soundEnabled) SoundFX.playSnap();
-      }
+    if (!isOpen) return;
+    const dialog = dialogRef.current;
+    const previousFocus = document.activeElement as HTMLElement | null;
+    dialog?.showModal();
+    searchRef.current?.focus();
+    return () => {
+      dialog?.close();
+      if (previousFocus?.isConnected) previousFocus.focus({ preventScroll: true });
     };
+  }, [isOpen]);
 
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [isOpen, filtered, selectedId, selectedProtocol, soundEnabled, onClose]);
+  function handleLaunch(id: string) {
+    if (soundEnabled) SoundFX.playSnap();
+    launchDesktopApp(id);
+    onClose();
+  }
+
+  function handleKeyDown(event: React.KeyboardEvent<HTMLDialogElement>) {
+    if (event.nativeEvent.isComposing) return;
+    const inSearch = event.target === searchRef.current;
+    const inGrid = gridRef.current?.contains(event.target as Node);
+    if (!inSearch && !inGrid) return;
+    if (event.key === 'Enter' && selected) {
+      event.preventDefault();
+      handleLaunch(selected.id);
+      return;
+    }
+    if (!event.key.startsWith('Arrow') || !filtered.length) return;
+    if (inSearch && event.key !== 'ArrowDown') return;
+    event.preventDefault();
+    const columns = getComputedStyle(gridRef.current!).gridTemplateColumns.split(' ').length;
+    const current = filtered.findIndex((app) => app.id === selected?.id);
+    const step = event.key === 'ArrowDown' ? columns : event.key === 'ArrowUp' ? -columns : event.key === 'ArrowRight' ? 1 : -1;
+    const index = inSearch ? 0 : (current + step + filtered.length) % filtered.length;
+    setSelectedId(filtered[index].id);
+    gridRef.current?.querySelectorAll<HTMLButtonElement>('.drawer-app')[index]?.focus();
+  }
 
   if (!isOpen) return null;
-
-  const validSelected = selectedProtocol || PROTOCOLS[0];
-  const SelectedIcon = validSelected?.icon || Briefcase;
-  const isRunning = windows.some((w: any) => w.id === validSelected?.id);
+  const SelectedIcon = selected?.icon || Grid2X2;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 select-none">
-      
-      {/* ── SOLID OPAQUE DIMMED BACKDROP ── */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
-        onClick={onClose}
-        className="absolute inset-0 bg-[#050A18]/75 transition-opacity"
-      />
-
-      {/* ── SOLID MASTER PROTOCOL MATRIX DECK ── */}
-      <motion.div
-        initial={{ opacity: 0, scale: 0.94, y: 14 }}
-        animate={{ opacity: 1, scale: 1, y: 0 }}
-        exit={{ opacity: 0, scale: 0.94, y: 10 }}
-        transition={{ type: 'spring', damping: 26, stiffness: 350 }}
-        className="relative z-10 w-full max-w-4xl bg-white border-2 border-amber-300/90 shadow-[0_25px_80px_rgba(5,15,35,0.50)] rounded-3xl overflow-hidden font-ui text-slate-800 flex flex-col max-h-[620px]"
-      >
-        
-        {/* ── 1. TOP BAR WITH LIVE CURRENCY & EXIT ── */}
-        <div className="px-5 py-3.5 bg-[#F8FAFC] border-b border-slate-200 flex items-center justify-between shrink-0">
-          <div className="flex items-center gap-2">
-            <span className="h-2 w-2 rounded-full bg-amber-500 animate-pulse" />
-            <span className="text-[11px] font-display font-bold tracking-[0.22em] text-slate-800 uppercase">
-              MIRAVERSEOSX // PROTOCOL MATRIX
-            </span>
+    <dialog ref={dialogRef} className="app-drawer" aria-labelledby="app-drawer-title"
+      onCancel={(event) => { event.preventDefault(); onClose(); }}
+      onClick={(event) => { if (event.target === event.currentTarget) onClose(); }}
+      onKeyDown={handleKeyDown}>
+      <div className="drawer-shell">
+        <header className="drawer-header">
+          <div className="drawer-heading">
+            <span className="drawer-brand-icon"><Sparkles size={20} /></span>
+            <div><span className="shell-eyebrow">YOUR MIRAVERSE</span><h1 id="app-drawer-title">App library<span>.</span></h1></div>
           </div>
-
-          <div className="flex items-center gap-2.5 font-ui text-xs">
-            <span className="text-amber-950 font-bold px-3 py-1 rounded-xl bg-amber-100/90 border border-amber-300 shadow-2xs font-mono">
-              [ {player?.credits?.toLocaleString() ?? '1,500'} ₢ CREDITS ]
-            </span>
-            <span className="text-emerald-950 font-bold px-3 py-1 rounded-xl bg-emerald-100/90 border border-emerald-300 shadow-2xs font-mono">
-              [ {player?.bits?.toLocaleString() ?? '25'} ◈ BITS ]
-            </span>
-            <button
-              onClick={onClose}
-              className="text-slate-400 hover:text-slate-900 transition p-1 rounded-xl hover:bg-slate-200 font-bold px-2.5"
-              title="Close Matrix [Esc]"
-            >
-              [ ✕ ]
-            </button>
-          </div>
-        </div>
-
-        {/* ── 2. TWO-COLUMN MAIN DECK ── */}
-        <div className="flex-1 grid grid-cols-12 overflow-hidden bg-[#FAFBFD]">
-          
-          {/* ════════ LEFT COLUMN: ACTIVE DIRECTORY (7 Cols) ════════ */}
-          <div className="col-span-12 md:col-span-7 border-r border-slate-200 p-5 flex flex-col overflow-hidden space-y-3">
-            
-            {/* Header & Quick Filter */}
-            <div className="flex items-center justify-between shrink-0">
-              <div className="font-display font-bold text-xs tracking-wider text-slate-800 uppercase flex items-center gap-2">
-                <span>ACTIVE DIRECTORY</span>
-                <span className="text-[10px] font-mono font-normal text-slate-400">({filtered.length} Protocols)</span>
-              </div>
-              
-              <div className="relative w-44">
-                <Search size={13} className="absolute left-2.5 top-1/2 -translate-y-1/2 text-slate-400" />
-                <input
-                  type="text"
-                  placeholder="Filter..."
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full h-7 pl-7 pr-2 rounded-lg bg-white border border-slate-200 text-[11px] text-slate-800 placeholder-slate-400 outline-none focus:border-amber-400 focus:ring-1 focus:ring-amber-200 transition font-mono"
-                />
-              </div>
+          <button className="shell-icon-button drawer-close" aria-label="Close app library" onClick={onClose}><X size={19} /></button>
+        </header>
+        <div className="drawer-body">
+          <aside className="drawer-sidebar">
+            <span className="shell-eyebrow drawer-section-label">EXPLORE</span>
+            <nav aria-label="App categories" className="drawer-categories">
+              {categories.map(({ name, icon: Icon }) => (
+                <button key={name} aria-pressed={category === name} className={`drawer-category ${category === name ? 'is-active' : ''}`} onClick={() => setCategory(name)}>
+                  <Icon size={17} /><span>{name}</span><span className="drawer-category-count">{APPS_DIRECTORY.filter((app) => name === 'All apps' || app.category === name).length}</span>
+                </button>
+              ))}
+            </nav>
+            <div className="drawer-citizen">
+              <span className="drawer-avatar">{(player?.name || 'Citizen').slice(0, 1).toUpperCase()}</span>
+              <div><strong>{player?.name || 'Citizen'}</strong><span>Aureline workspace</span></div>
             </div>
-
-            {/* 3-Column Protocol Grid */}
-            <div className="flex-1 overflow-y-auto pr-1">
-              <div className="grid grid-cols-3 gap-2.5">
-                {filtered.map((item) => {
-                  const isSelected = item.id === selectedProtocol.id;
-                  const itemRunning = windows.some((w: any) => w.id === item.id);
-
+          </aside>
+          <section className="drawer-directory" aria-label="Applications">
+            <div className="drawer-search">
+              <Search size={19} />
+              <input ref={searchRef} type="search" aria-label="Search apps" placeholder="Search apps, tools, and worlds…" value={searchQuery} onChange={(event) => setSearchQuery(event.target.value)} autoComplete="off" />
+              {searchQuery ? <button aria-label="Clear search" onClick={() => { setSearchQuery(''); searchRef.current?.focus(); }}><X size={15} /></button> : <kbd>↵</kbd>}
+            </div>
+            <div className="drawer-section-heading"><h2>{query ? 'Search results' : category}</h2><span role="status">{filtered.length} {filtered.length === 1 ? 'app' : 'apps'}</span></div>
+            <div className="drawer-grid-scroll">
+              <div ref={gridRef} className="drawer-grid">
+                {filtered.map((app) => {
+                  const Icon = app.icon;
+                  const isRunning = windows.some((window) => window.id === app.id);
                   return (
-                    <button
-                      key={item.id}
-                      onClick={() => {
-                        setSelectedId(item.id);
-                        if (soundEnabled) SoundFX.playSnap();
-                      }}
-                      onDoubleClick={() => handleLaunch(item.id)}
-                      className={`h-11 px-2.5 rounded-xl border text-left font-mono text-xs font-bold transition-all flex items-center justify-between gap-1 cursor-pointer select-none group relative ${
-                        isSelected
-                          ? 'bg-amber-100 text-amber-950 border-2 border-amber-500 shadow-xs ring-2 ring-amber-200'
-                          : 'bg-white hover:bg-slate-50 text-slate-800 border-slate-200 shadow-2xs'
-                      }`}
-                    >
-                      <div className="flex items-center gap-1.5 truncate">
-                        <span className={`text-[10px] ${isSelected ? 'text-amber-700' : 'text-slate-400 group-hover:text-amber-600'}`}>
-                          {isSelected ? '[*]' : '[✦]'}
-                        </span>
-                        <span className="truncate tracking-tight">{item.code}</span>
-                      </div>
-
-                      {/* Active / Running or Selected Indicator */}
-                      <div className="flex items-center gap-0.5 shrink-0">
-                        {itemRunning && (
-                          <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" title="Running" />
-                        )}
-                        {isSelected && (
-                          <span className="text-amber-700 text-xs font-bold">◄</span>
-                        )}
-                      </div>
+                    <button key={app.id} className={`drawer-app ${selected?.id === app.id ? 'is-selected' : ''}`} aria-label={`Select ${app.code}`} aria-pressed={selected?.id === app.id} onFocus={() => setSelectedId(app.id)} onClick={() => setSelectedId(app.id)} onDoubleClick={() => handleLaunch(app.id)}>
+                      <span className={`app-tile-icon ${app.bg} ${app.color}`}><Icon size={25} strokeWidth={1.6} /></span>
+                      {isRunning && <span className="app-running-dot" title="Running" aria-label="Running" />}
+                      <strong>{app.code}</strong><span className="drawer-app-label">{app.label}</span>
                     </button>
                   );
                 })}
               </div>
-
-              {filtered.length === 0 && (
-                <div className="text-center py-12 text-xs font-mono text-slate-400">
-                  No protocols match "{searchQuery}".
-                </div>
-              )}
+              {!filtered.length && <div className="drawer-empty"><Search size={30} strokeWidth={1.4} /><h3>No apps found</h3><p>Try another search or explore a different category.</p><button onClick={() => { setSearchQuery(''); setCategory('All apps'); }}>Show all apps <ArrowRight size={15} /></button></div>}
             </div>
-          </div>
-
-          {/* ════════ RIGHT COLUMN: DOSSIER & PROTOCOL INSPECTOR (5 Cols) ════════ */}
-          <div className="col-span-12 md:col-span-5 p-5 bg-white flex flex-col justify-between overflow-y-auto space-y-4">
-            
-            <div className="space-y-4">
-              {/* Header Title */}
-              <div className="font-display font-bold text-xs tracking-wider text-slate-800 uppercase flex items-center justify-between border-b border-slate-100 pb-2">
-                <span>DOSSIER & PROTOCOL INSPECTOR</span>
-                <span className="text-[10px] font-mono text-slate-400">{validSelected.aetherTrace}</span>
-              </div>
-
-              {/* Icon & Protocol Title Header */}
-              <div className="flex items-center gap-3">
-                <div className={`h-12 w-12 rounded-2xl ${validSelected.bg} ${validSelected.color} border-2 ${validSelected.border} flex items-center justify-center font-bold shadow-xs shrink-0`}>
-                  {SelectedIcon && <SelectedIcon size={24} />}
-                </div>
-                <div className="min-w-0">
-                  <h2 className="font-display font-bold text-sm text-slate-900 truncate">
-                    {validSelected.name}
-                  </h2>
-                  <p className="text-[11px] font-mono text-slate-500 truncate">
-                    Sector: {validSelected.sector}
-                  </p>
-                </div>
-              </div>
-
-              {/* SPECIFICATIONS Box */}
-              <div className="p-3.5 bg-[#F8FAFC] border border-slate-200 rounded-2xl space-y-2 font-mono text-xs shadow-2xs">
-                <div className="text-[10px] font-bold text-slate-400 uppercase tracking-wider border-b border-slate-200 pb-1">
-                  SPECIFICATIONS
-                </div>
-                <div className="space-y-1 text-[11px] leading-relaxed">
-                  <div className="flex justify-between">
-                    <span className="text-slate-500">Clearance:</span>
-                    <span className="font-bold text-slate-800">{validSelected.clearance}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-slate-500">Aether-Trace:</span>
-                    <span className="font-bold text-amber-700">{validSelected.aetherTrace}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-slate-500">Resonance Flux:</span>
-                    <span className="font-bold text-indigo-700">{validSelected.flux}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-slate-500">State:</span>
-                    <span className={`font-bold ${isRunning ? 'text-emerald-700' : 'text-slate-700'}`}>
-                      {isRunning ? 'Active / In Execution' : 'Ready'}
-                    </span>
-                  </div>
-                </div>
-              </div>
-
-              {/* FUNCTIONAL OVERVIEW */}
-              <div className="space-y-1">
-                <div className="text-[10px] font-bold font-mono text-slate-400 uppercase tracking-wider">
-                  FUNCTIONAL OVERVIEW
-                </div>
-                <p className="text-xs text-slate-700 leading-relaxed bg-[#FAFBFD] p-3 rounded-xl border border-slate-200">
-                  {validSelected.desc}
-                </p>
-              </div>
-            </div>
-
-            {/* INITIALIZE PROTOCOL ACTION BUTTON */}
-            <div className="pt-2">
-              <button
-                onClick={() => handleLaunch(validSelected.id)}
-                className="w-full py-3 rounded-2xl bg-gradient-to-r from-amber-300 via-amber-200 to-amber-300 hover:from-amber-400 hover:to-amber-500 border border-amber-400/90 text-amber-950 font-display font-bold text-xs uppercase tracking-widest shadow-xs hover:shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer active:scale-98"
-              >
-                <span>✦  INITIALIZE PROTOCOL  ✦</span>
-              </button>
-            </div>
-          </div>
+          </section>
+          <aside className="drawer-inspector" aria-label="App details">
+            {selected ? <>
+              <div className="drawer-inspector-top"><span className="shell-eyebrow">APP SPOTLIGHT</span><span className={`drawer-state ${running ? 'is-running' : ''}`}><i />{running ? 'Running' : 'Ready to open'}</span></div>
+              <div className={`drawer-feature-icon ${selected.bg} ${selected.color}`}><SelectedIcon size={36} strokeWidth={1.4} /></div>
+              <span className="drawer-feature-category">{selected.category} <ChevronRight size={12} /> {selected.code}</span>
+              <h2>{selected.label}</h2>
+              <p className="drawer-description">{selected.desc}</p>
+              <dl className="drawer-app-meta"><div><dt>Network</dt><dd>{selected.sector}</dd></div><div><dt>Access</dt><dd>{selected.clearance}</dd></div></dl>
+              <button className="drawer-launch" onClick={() => handleLaunch(selected.id)}>{running ? 'Go to app' : 'Open app'}<ArrowRight size={18} /></button>
+              <span className="drawer-launch-hint">Double-click an app to open directly</span>
+            </> : <div className="drawer-inspector-placeholder"><Grid2X2 size={32} /><p>Your next destination is a search away.</p></div>}
+          </aside>
         </div>
-
-        {/* ── 3. BOTTOM FOOTER BAR ── */}
-        <div className="px-5 py-2.5 bg-[#F8FAFC] border-t border-slate-200 flex items-center justify-between text-[10px] font-mono text-slate-500 shrink-0">
-          <span className="text-slate-500 truncate">
-            * Layout dynamically flows and scales to fit newly acquired protocols
-          </span>
-          <div className="flex items-center gap-1.5 shrink-0">
-            <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
-            <span className="font-bold text-emerald-700">AETHERCORE LINK: STABLE</span>
-          </div>
-        </div>
-      </motion.div>
-    </div>
+        <footer className="drawer-footer"><span><i className="shell-status-dot" /> AURELINE · PERSONAL WORKSPACE</span><span><kbd>↑</kbd><kbd>↓</kbd> Navigate <kbd>↵</kbd> Open <kbd>esc</kbd> Close</span></footer>
+      </div>
+    </dialog>
   );
 }
