@@ -5,6 +5,7 @@ import { DgaShell } from '../components/dga/dga-shell';
 import TraceApp from './TraceApp';
 import { installDgaosApiInterceptor } from '../services/traceApiInterceptor';
 import { initDGAStore } from '../lib/dga-store';
+import '../styles/dgaos-integrated.css';
 
 // Ensure in-browser API interceptor is active for DGAOS and TRACE
 installDgaosApiInterceptor();

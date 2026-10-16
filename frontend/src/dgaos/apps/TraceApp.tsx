@@ -39,6 +39,7 @@ import { installDgaosApiInterceptor } from '../services/traceApiInterceptor';
 import { traceDurableStore, SaveState } from '../services/traceDurableStore';
 import TraceClosingSummaryModal from '../components/TraceClosingSummaryModal';
 import { useOSStore } from '@/store/useOSStore';
+import '../styles/dgaos-integrated.css';
 
 // Ensure in-browser API interception is active
 installDgaosApiInterceptor();

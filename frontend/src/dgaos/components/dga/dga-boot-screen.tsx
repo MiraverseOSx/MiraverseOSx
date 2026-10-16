@@ -39,7 +39,7 @@ export function DgaBootScreen({ profile, onAuthenticated }: DgaBootScreenProps) 
   };
 
   return (
-    <div className="fixed inset-0 z-50 bg-[#1e1e28] text-[#e2e1ec] flex flex-col justify-between p-8 font-mono select-none overflow-hidden">
+    <div className="absolute inset-0 z-50 bg-[#1e1e28] text-[#e2e1ec] flex flex-col justify-between p-8 font-mono select-none overflow-hidden">
       {/* Top Header */}
       <div className="flex items-center justify-between border-b border-[#3b3a4a] pb-4">
         <div className="flex items-center gap-3">
