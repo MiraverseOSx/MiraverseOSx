@@ -1,9 +1,24 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 export default defineConfig({
   plugins: [react()],
   publicDir: 'public',
+  resolve: {
+    alias: {
+      '@/components': path.resolve(__dirname, './src/dgaos/components'),
+      '@/lib': path.resolve(__dirname, './src/dgaos/lib'),
+      '@/data': path.resolve(__dirname, './src/dgaos/data'),
+      '@/hooks': path.resolve(__dirname, './src/dgaos/hooks'),
+      '@/dgaos': path.resolve(__dirname, './src/dgaos'),
+      '@': path.resolve(__dirname, './src'),
+    },
+  },
   build: {
     outDir: '../wwwroot',
     emptyOutDir: true,

@@ -1,4 +1,4 @@
-import { Folder, Fingerprint, ContactRound, Mail, MessageSquare, Terminal, Globe, Settings, Sparkles, UserCheck, Radio, Award, BookOpen, Cpu, Home, Briefcase, Activity, Package, Building, LucideIcon } from 'lucide-react';
+import { Folder, Fingerprint, ContactRound, Shield, Mail, MessageSquare, Terminal, Globe, Settings, Sparkles, UserCheck, Radio, Award, BookOpen, Cpu, Home, Briefcase, Activity, Package, Building, LucideIcon } from 'lucide-react';
 import { miraverseDb, AppMetadata } from '../db/miraverseDb';
 
 export interface RegisteredApp extends AppMetadata {
@@ -15,6 +15,7 @@ export interface RegisteredApp extends AppMetadata {
 
 // Icon mapping per app ID
 const ICON_MAP: Record<string, LucideIcon> = {
+  dgaos: Shield,
   meridionRegistry: ContactRound,
   traceForensics: Fingerprint,
   files: Folder,

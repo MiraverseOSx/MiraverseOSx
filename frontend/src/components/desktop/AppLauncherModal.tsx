@@ -34,19 +34,19 @@ export interface ProtocolItem {
 
 export const PROTOCOLS: ProtocolItem[] = [
   {
-    id: 'meridionRegistry',
-    code: 'AURA',
-    name: 'AURA // Citizen Registry',
-    label: 'AURA // Citizen Registry',
-    sector: 'Meridion Civic Identity',
-    icon: ContactRound,
-    clearance: 'Civic Authority Standard',
-    aetherTrace: 'AT-0x0118',
-    flux: '19.2 MHz',
-    desc: 'Official citizen identity archive: ancestry, affinities, ten-print biometrics, Aura ID, and document studio issuance.',
-    color: 'text-indigo-900',
-    bg: 'bg-indigo-50',
-    border: 'border-indigo-300'
+    id: 'dgaos',
+    code: 'DGAOS',
+    name: 'DGAOS // Agency Command Center',
+    label: 'DGAOS // Agency Command Center',
+    sector: 'Department of Global Affairs',
+    icon: Shield,
+    clearance: 'DGA Senior Officer Clearance',
+    aetherTrace: 'AT-0x0901',
+    flux: '35.4 MHz',
+    desc: 'Agency headquarters: strategic operations, divisions (SHIELD/EYES), investigations, forensic dispatches, and comms.',
+    color: 'text-purple-950',
+    bg: 'bg-purple-100/80',
+    border: 'border-purple-400'
   },
   {
     id: 'traceForensics',
@@ -62,6 +62,21 @@ export const PROTOCOLS: ProtocolItem[] = [
     color: 'text-slate-900',
     bg: 'bg-slate-100',
     border: 'border-slate-400'
+  },
+  {
+    id: 'meridionRegistry',
+    code: 'AURA',
+    name: 'AURA // Citizen Registry',
+    label: 'AURA // Citizen Registry',
+    sector: 'Meridion Civic Identity',
+    icon: ContactRound,
+    clearance: 'Civic Authority Standard',
+    aetherTrace: 'AT-0x0118',
+    flux: '19.2 MHz',
+    desc: 'Official citizen identity archive: ancestry, affinities, ten-print biometrics, Aura ID, and document studio issuance.',
+    color: 'text-indigo-900',
+    bg: 'bg-indigo-50',
+    border: 'border-indigo-300'
   },
   {
     id: 'passport',
