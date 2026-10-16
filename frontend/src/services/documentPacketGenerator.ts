@@ -1004,3 +1004,22 @@ export function recordIssuedSnapshot(snapshot: Omit<IssuedDocumentSnapshot, 'id'
 
   return record;
 }
+
+/**
+ * Retrieves immutable snapshots of issued documents, optionally filtered by citizen MAID or legacy record.
+ */
+export function getIssuedSnapshots(citizenIdOrMaid?: string, legacyRecord?: string): IssuedDocumentSnapshot[] {
+  const STORE = 'miraverse-issued-documents';
+  try {
+    const list: IssuedDocumentSnapshot[] = JSON.parse(localStorage.getItem(STORE) || '[]');
+    if (!Array.isArray(list)) return [];
+    if (!citizenIdOrMaid && !legacyRecord) return list;
+    return list.filter(item =>
+      (citizenIdOrMaid && item.citizenId === citizenIdOrMaid) ||
+      (legacyRecord && item.citizenId === legacyRecord)
+    );
+  } catch {
+    return [];
+  }
+}
+

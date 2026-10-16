@@ -1,12 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Form from 'react-bootstrap/Form';
 import { useOSStore } from '../store/useOSStore';
 import {
   User, Shield, Sparkles, BookOpen, Package, Home, Award, CheckCircle2,
   Code, Network, Cpu, MessageSquare, Palette, Search, ShieldAlert, Key, Zap, Lock, Mail, AlertTriangle, Fingerprint, Camera, Activity, Check, ArrowRight, RefreshCw,
-  Globe, Flame, Folder, Layers, Phone, Radio, Eye
+  Globe, Flame, Folder, Layers, Phone, Radio, Eye, FileText, ExternalLink
 } from 'lucide-react';
 import Button from '../components/ui/button';
+import { getCanonicalCitizens, getActiveCitizenContext, openCitizenInApp, syncCyacademyOrCivicUpdate } from '../integration/citizenBridge';
+import { type CanonicalPerson } from '../services/maidIdentityService';
 
 const SKILL_ICONS = {
   Programming: Code,
@@ -55,8 +57,11 @@ const SIGNATURE_PATTERNS = [
 ];
 
 export default function CivicProfileApp() {
-  const [activeTab, setActiveTab] = useState('record'); // 'record' | 'inventory' | 'skills' | 'clubs' | 'dorm' | 'loops'
+  const [activeTab, setActiveTab] = useState('record'); // 'record' | 'inventory' | 'skills' | 'clubs' | 'housing' | 'loops'
   const [isFlipped, setIsFlipped] = useState(false);
+  const [canonicalCitizens, setCanonicalCitizens] = useState<CanonicalPerson[]>([]);
+  const [selectedMaidPerson, setSelectedMaidPerson] = useState<CanonicalPerson | null>(null);
+  const [syncNotice, setSyncNotice] = useState<string | null>(null);
 
   // Onboarding Scan Wizard States
   const [scanStep, setScanStep] = useState(1); // 1: Fingerprint Multi-Node, 2: Face & Iris, 3: Aura Telemetry, 4: Civic Persona, 5: Holographic ID Issuance
@@ -83,6 +88,19 @@ export default function CivicProfileApp() {
   const restInDorm = useOSStore((s) => s.restInDorm);
   const advanceAppRank = useOSStore((s) => s.advanceAppRank);
   const completeStarterLoop = useOSStore((s) => s.completeStarterLoop);
+
+  useEffect(() => {
+    const loadMaid = async () => {
+      const list = await getCanonicalCitizens();
+      setCanonicalCitizens(list);
+      const ctx = getActiveCitizenContext();
+      const matched = list.find(p => p.maid === ctx?.citizenId || p.legacyRecord === ctx?.citizenId);
+      setSelectedMaidPerson(matched || list[0] || null);
+    };
+    loadMaid();
+    window.addEventListener('miraverse-citizen-context', loadMaid);
+    return () => window.removeEventListener('miraverse-citizen-context', loadMaid);
+  }, []);
 
   // Handlers for Scanner Steps
   const handleFingerScan = () => {
@@ -159,17 +177,17 @@ export default function CivicProfileApp() {
   return (
     <div className="flex h-full w-full flex-col bg-[#FAFBFD] text-slate-800 p-5 text-xs select-none overflow-y-auto font-ui">
       {/* Header */}
-      <div className="flex items-center justify-between border-b border-slate-200 pb-3 mb-4 bg-white -mx-5 -mt-5 px-5 pt-4 rounded-t-xl shadow-xs">
+      <div className="flex flex-wrap items-center justify-between border-b border-slate-200 pb-3 mb-4 bg-white -mx-5 -mt-5 px-5 pt-4 rounded-t-xl shadow-xs gap-2">
         <div>
           <h2 className="text-base font-bold text-slate-900 font-display flex items-center gap-2">
-            <User size={18} className="text-amber-700" /> MIRROR (§5.3) // CITIZEN IDENTITY MATRIX & VITALS
+            <User size={18} className="text-amber-700" /> MIRROR // CITIZEN IDENTITY MATRIX & VITALS
           </h2>
-          <p className="text-[11px] text-slate-500">Official Identity Record, Inventory Backpack & Telemetry Calibration</p>
+          <p className="text-[11px] text-slate-500">Official Identity Record, Inventory Vault, Skills, Housing & App Loops</p>
         </div>
 
         {/* Sub-Tabs Navigation */}
         {dgaVerified && (
-          <div className="flex items-center gap-1 bg-slate-100 border border-slate-200 rounded-xl p-1 shadow-xs">
+          <div className="flex flex-wrap items-center gap-1 bg-slate-100 border border-slate-200 rounded-xl p-1 shadow-xs">
             <button
               onClick={() => setActiveTab('record')}
               className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition ${
@@ -192,7 +210,7 @@ export default function CivicProfileApp() {
                 activeTab === 'skills' ? 'bg-white text-indigo-950 border border-slate-300 font-bold shadow-xs' : 'text-slate-600 hover:text-slate-900'
               }`}
             >
-              ⚡ Skills (9)
+              ⚡ Skills
             </button>
             <button
               onClick={() => setActiveTab('clubs')}
@@ -203,12 +221,12 @@ export default function CivicProfileApp() {
               🏛️ Clubs
             </button>
             <button
-              onClick={() => setActiveTab('dorm')}
+              onClick={() => setActiveTab('housing')}
               className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition ${
-                activeTab === 'dorm' ? 'bg-white text-indigo-950 border border-slate-300 font-bold shadow-xs' : 'text-slate-600 hover:text-slate-900'
+                activeTab === 'housing' ? 'bg-white text-indigo-950 border border-slate-300 font-bold shadow-xs' : 'text-slate-600 hover:text-slate-900'
               }`}
             >
-              🏠 Dorm
+              🏠 Housing
             </button>
             <button
               onClick={() => setActiveTab('loops')}
@@ -216,7 +234,7 @@ export default function CivicProfileApp() {
                 activeTab === 'loops' ? 'bg-white text-indigo-950 border border-slate-300 font-bold shadow-xs' : 'text-slate-600 hover:text-slate-900'
               }`}
             >
-              🔄 App Loops (6.5)
+              🔄 App Loops
             </button>
           </div>
         )}
@@ -489,6 +507,95 @@ export default function CivicProfileApp() {
           {/* TAB 1: CITIZEN RECORD */}
           {activeTab === 'record' && (
             <div className="space-y-4">
+              {/* Canonical MAID Registry Cross-Application Link Card */}
+              {selectedMaidPerson && (
+                <div className="rounded-2xl border border-indigo-200 bg-gradient-to-r from-indigo-50/80 via-white to-purple-50/80 p-4 shadow-xs flex flex-wrap items-center justify-between gap-3">
+                  <div className="flex items-center gap-3">
+                    <div className="h-11 w-11 rounded-xl overflow-hidden border border-indigo-300 bg-indigo-950 shrink-0">
+                      {selectedMaidPerson.portraitData ? (
+                        <img src={selectedMaidPerson.portraitData} alt={selectedMaidPerson.name} className="h-full w-full object-cover" />
+                      ) : null}
+                    </div>
+                    <div>
+                      <div className="flex items-center gap-2">
+                        <span className="text-[10px] font-mono font-bold uppercase px-2 py-0.5 rounded bg-indigo-900 text-amber-200">
+                          AUTHORITATIVE MAID LINKED
+                        </span>
+                        <span className="font-mono text-xs font-bold text-indigo-900">
+                          {selectedMaidPerson.maid || selectedMaidPerson.legacyRecord}
+                        </span>
+                      </div>
+                      <div className="font-bold text-xs text-slate-900 mt-0.5">
+                        {selectedMaidPerson.name} · <span className="font-normal text-slate-600">{selectedMaidPerson.affiliation} ({selectedMaidPerson.occupation})</span>
+                      </div>
+                      <div className="text-[11px] text-slate-500">
+                        Housing: <strong className="text-indigo-800">{selectedMaidPerson.household || selectedMaidPerson.residency}</strong> · Medical: <strong className="text-teal-800">{selectedMaidPerson.medical}</strong>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="flex flex-wrap items-center gap-2">
+                    <select
+                      aria-label="Select Canonical MAID Citizen"
+                      value={selectedMaidPerson.maid || selectedMaidPerson.legacyRecord}
+                      onChange={(e) => {
+                        const found = canonicalCitizens.find(c => c.maid === e.target.value || c.legacyRecord === e.target.value);
+                        if (found) setSelectedMaidPerson(found);
+                      }}
+                      className="rounded-lg border border-slate-300 bg-white px-2.5 py-1.5 text-xs font-semibold text-slate-800"
+                    >
+                      {canonicalCitizens.map(c => (
+                        <option key={c.id} value={c.maid || c.legacyRecord}>
+                          {c.name} ({c.maid || c.legacyRecord})
+                        </option>
+                      ))}
+                    </select>
+
+                    <button
+                      type="button"
+                      onClick={async () => {
+                        const idKey = selectedMaidPerson.maid || selectedMaidPerson.legacyRecord;
+                        const res = await syncCyacademyOrCivicUpdate(idKey, {
+                          residency: 'Cyacademy Vector Housing Suite 4B · Verified Residence',
+                          household: 'Cyacademy Vector Housing Suite 4B',
+                          academicNote: `Synced MIRROR academic & housing telemetry (Level ${player?.level || 1})`
+                        });
+                        if (res.success && res.person) {
+                          setSelectedMaidPerson(res.person);
+                          setSyncNotice(`Synced Cyacademy & Housing status to ${res.person.maid}!`);
+                          setTimeout(() => setSyncNotice(null), 3500);
+                        }
+                      }}
+                      className="px-3 py-1.5 rounded-lg bg-emerald-700 hover:bg-emerald-600 text-white text-xs font-bold transition"
+                    >
+                      Sync to MAID
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() => openCitizenInApp(selectedMaidPerson.maid || selectedMaidPerson.legacyRecord, 'meridionRegistry', { sourceApp: 'passport' })}
+                      className="px-3 py-1.5 rounded-lg bg-[#1d2650] hover:bg-[#2b3875] text-white text-xs font-bold transition flex items-center gap-1"
+                    >
+                      MAID Registry <ExternalLink size={12} />
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() => openCitizenInApp(selectedMaidPerson.maid || selectedMaidPerson.legacyRecord, 'documentStudio', { targetDocId: 9, sourceApp: 'passport' })}
+                      className="px-3 py-1.5 rounded-lg bg-amber-100 hover:bg-amber-200 text-amber-950 border border-amber-300 text-xs font-bold transition flex items-center gap-1"
+                    >
+                      <FileText size={12} /> Service Doc
+                    </button>
+                  </div>
+                </div>
+              )}
+
+              {syncNotice && (
+                <div className="rounded-xl bg-emerald-50 border border-emerald-200 px-4 py-2 text-xs font-bold text-emerald-800">
+                  ✓ {syncNotice}
+                </div>
+              )}
+
               {/* Interactive Front & Back Citizen ID Card */}
               <div className="flex justify-center">
                 <div className="w-full max-w-md cursor-pointer" onClick={() => setIsFlipped(!isFlipped)}>
@@ -497,12 +604,12 @@ export default function CivicProfileApp() {
                       <div className="flex items-center justify-between border-b border-slate-200 pb-3">
                         <div className="flex items-center gap-3">
                           <div className="h-12 w-12 rounded-2xl bg-gradient-to-br from-[#8c97d6] to-[#5f6ab0] flex items-center justify-center font-bold text-white text-xl shadow-xs">
-                            {player?.name ? player.name.charAt(0) : 'P'}
+                            {(selectedMaidPerson?.name || player?.name || 'P').charAt(0)}
                           </div>
                           <div>
-                            <div className="font-bold text-sm text-[#1d2650]">{player?.name || 'Provisional Citizen'}</div>
+                            <div className="font-bold text-sm text-[#1d2650]">{selectedMaidPerson?.name || player?.name || 'Provisional Citizen'}</div>
                             <div className="text-[10px] text-slate-500 font-mono">
-                              ID: {identity?.citizenId || 'CY-9021-CITIZEN'}
+                              MAID: {selectedMaidPerson?.maid || identity?.citizenId || 'MAID-OR-00481926'}
                             </div>
                           </div>
                         </div>
@@ -514,7 +621,7 @@ export default function CivicProfileApp() {
                       <div className="grid grid-cols-2 gap-3 text-xs">
                         <div>
                           <span className="text-slate-400">Declared Region:</span>{' '}
-                          <span className="font-bold text-[#1d2650]">{identity?.declaredRegion || 'Aureline Central'}</span>
+                          <span className="font-bold text-[#1d2650]">{selectedMaidPerson?.home || identity?.declaredRegion || 'Aureline, Orynvell'}</span>
                         </div>
                         <div>
                           <span className="text-slate-400">Signal Pattern:</span>{' '}
@@ -524,7 +631,7 @@ export default function CivicProfileApp() {
 
                       {/* Barcode Visualization */}
                       <div className="rounded-xl bg-[#FAFAFC] p-3 border border-slate-200 text-center font-mono text-xs text-slate-700 tracking-widest">
-                        {identity?.barcode || '||| |||| || ||| 902148-AURE'}
+                        {selectedMaidPerson?.maid || identity?.barcode || '||| |||| || ||| MAID-OR-00481926'}
                       </div>
 
                       <div className="text-center text-[10px] text-slate-400 italic">
@@ -535,17 +642,17 @@ export default function CivicProfileApp() {
                     <div className="rounded-3xl border border-white/90 bg-[#17213f] p-6 shadow-lg space-y-4 text-white">
                       <div className="flex items-center justify-between border-b border-white/10 pb-3">
                         <div className="font-serif text-sm font-bold text-indigo-200">CITIZEN REVERSE CLEARANCE RECORD</div>
-                        <span className="text-[10px] font-mono text-indigo-300">{identity?.citizenId || 'CY-9021-CITIZEN'}</span>
+                        <span className="text-[10px] font-mono text-indigo-300">{selectedMaidPerson?.maid || identity?.citizenId || 'MAID-OR-00481926'}</span>
                       </div>
 
                       <div className="space-y-2 text-xs">
                         <div className="flex justify-between border-b border-white/10 pb-1.5">
                           <span className="text-slate-400">Clearance Tier:</span>
-                          <span className="font-bold text-amber-300">Level {player?.level || 1} Standard</span>
+                          <span className="font-bold text-amber-300">{selectedMaidPerson?.clearance || `Level ${player?.level || 1} Standard`}</span>
                         </div>
                         <div className="flex justify-between border-b border-white/10 pb-1.5">
                           <span className="text-slate-400">Lineage Status:</span>
-                          <span className="font-bold text-purple-300">{player?.lineageClass || 'Unassigned Lineage'}</span>
+                          <span className="font-bold text-purple-300">{selectedMaidPerson?.ancestry || player?.lineageClass || 'Lightborn · Ellawen Lineage'}</span>
                         </div>
                         <div className="flex justify-between border-b border-white/10 pb-1.5">
                           <span className="text-slate-400">Primary Economy:</span>
@@ -596,31 +703,40 @@ export default function CivicProfileApp() {
             </div>
           )}
 
-          {/* TAB 3: SKILLS (9) */}
+          {/* TAB 3: SKILLS */}
           {activeTab === 'skills' && (
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
-              {Object.entries(player?.skills || {}).map(([skillName, skillData]) => {
-                const IconComp = SKILL_ICONS[skillName] || Code;
-                const desc = SKILL_DESCRIPTIONS[skillName] || { unlocks: 'Higher system efficiency', raised: 'System actions' };
-                return (
-                  <div key={skillName} className="rounded-2xl border border-slate-200 bg-white p-4 space-y-2 shadow-xs">
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-2 font-bold text-xs text-[#1d2650]">
-                        <IconComp size={15} className="text-[#5f6ab0]" /> {skillName}
+            <div className="space-y-3">
+              <div className="border-b border-slate-200 pb-2">
+                <h3 className="text-xs font-bold text-[#1d2650] uppercase tracking-wider flex items-center gap-2">
+                  <Zap size={15} className="text-[#5f6ab0]" /> Core Citizen Skills & Proficiencies
+                </h3>
+                <p className="text-[11px] text-slate-500">Advance your core academic, technical, and resonance skills across Cyacademy and WORKNET.</p>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
+                {Object.entries(player?.skills || {}).map(([skillName, skillData]) => {
+                  const IconComp = SKILL_ICONS[skillName] || Code;
+                  const desc = SKILL_DESCRIPTIONS[skillName] || { unlocks: 'Higher system efficiency', raised: 'System actions' };
+                  return (
+                    <div key={skillName} className="rounded-2xl border border-slate-200 bg-white p-4 space-y-2 shadow-xs">
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-2 font-bold text-xs text-[#1d2650]">
+                          <IconComp size={15} className="text-[#5f6ab0]" /> {skillName}
+                        </div>
+                        <span className="font-mono text-xs font-bold text-indigo-700">LVL {skillData.level}</span>
                       </div>
-                      <span className="font-mono text-xs font-bold text-indigo-700">LVL {skillData.level}</span>
-                    </div>
 
-                    <div className="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden">
-                      <div className="bg-[#5f6ab0] h-full" style={{ width: `${(skillData.xp % 100)}%` }} />
-                    </div>
+                      <div className="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden">
+                        <div className="bg-[#5f6ab0] h-full" style={{ width: `${(skillData.xp % 100)}%` }} />
+                      </div>
 
-                    <div className="text-[10px] text-slate-500 leading-tight">
-                      <span className="font-semibold text-slate-700">Unlocks:</span> {desc.unlocks}
+                      <div className="text-[10px] text-slate-500 leading-tight">
+                        <span className="font-semibold text-slate-700">Unlocks:</span> {desc.unlocks}
+                      </div>
                     </div>
-                  </div>
-                );
-              })}
+                  );
+                })}
+              </div>
             </div>
           )}
 
@@ -645,28 +761,40 @@ export default function CivicProfileApp() {
             </div>
           )}
 
-          {/* TAB 5: DORM ROOM & HOUSING */}
-          {activeTab === 'dorm' && (
+          {/* TAB 5: HOUSING */}
+          {(activeTab === 'housing' || activeTab === 'dorm') && (
             <div className="space-y-3">
-              <div className="rounded-3xl border border-slate-300 bg-white p-5 shadow-xs flex items-center justify-between">
+              <div className="rounded-3xl border border-slate-300 bg-white p-5 shadow-xs flex flex-wrap items-center justify-between gap-3">
                 <div>
                   <h3 className="text-xs font-bold text-[#1d2650] flex items-center gap-1.5">
-                    <Home size={15} className="text-[#5f6ab0]" /> Housing: {player?.houseAffiliation ? 'Cycademy Student Suite 4B' : 'Provisional Citizen Quarters'}
+                    <Home size={15} className="text-[#5f6ab0]" /> Housing: {selectedMaidPerson?.household || (player?.houseAffiliation ? 'Cyacademy Vector Housing Suite 4B' : 'Provisional Citizen Housing')}
                   </h3>
-                  <p className="text-[11px] text-slate-500 mt-0.5">Comfort Rating: <span className="font-bold text-emerald-700">{player?.dormComfort || 50}% (+15% XP Multiplier)</span></p>
+                  <p className="text-[11px] text-slate-500 mt-0.5">
+                    Housing Comfort Rating: <span className="font-bold text-emerald-700">{player?.dormComfort || 50}% (+15% XP Multiplier)</span>
+                  </p>
                 </div>
 
-                <Button onClick={() => restInDorm()} size="sm" variant="solid" className="px-4 py-2 font-bold">
-                  🌙 Rest in Dorm Bed
-                </Button>
+                <div className="flex items-center gap-2">
+                  <Button
+                    onClick={() => openCitizenInApp(selectedMaidPerson?.maid || 'MAID-OR-00481926', 'housing', { sourceApp: 'passport' })}
+                    size="sm"
+                    variant="outline"
+                    className="px-3.5 py-2 font-bold"
+                  >
+                    🏠 Open HOMECRAFT Housing
+                  </Button>
+                  <Button onClick={() => restInDorm()} size="sm" variant="solid" className="px-4 py-2 font-bold">
+                    🌙 Rest in Housing
+                  </Button>
+                </div>
               </div>
             </div>
           )}
 
-          {/* TAB 6: 6.5 APP PROGRESSION LOOPS & EARLY CITIZEN LOOPS */}
+          {/* TAB 6: APP LOOPS */}
           {activeTab === 'loops' && (
             <div className="space-y-6">
-              {/* SECTION A: 4 EARLY CITIZEN GAMEPLAY LOOPS */}
+              {/* SECTION A: EARLY CITIZEN GAMEPLAY LOOPS */}
               <div className="space-y-3">
                 <div className="border-b border-slate-200 pb-2">
                   <h3 className="text-xs font-bold text-[#1d2650] uppercase tracking-wider flex items-center gap-2">
@@ -746,11 +874,11 @@ export default function CivicProfileApp() {
                 </div>
               </div>
 
-              {/* SECTION B: 6.5 APP PROGRESSION LOOPS & APP RANKS */}
+              {/* SECTION B: APP PROGRESSION LOOPS & APP RANKS */}
               <div className="space-y-3">
                 <div className="border-b border-slate-200 pb-2">
                   <h3 className="text-xs font-bold text-[#1d2650] uppercase tracking-wider flex items-center gap-2">
-                    <Layers size={15} className="text-[#5f6ab0]" /> 6.5 App Progression Loops (Deep Desktop Ecosystem)
+                    <Layers size={15} className="text-[#5f6ab0]" /> App Progression Loops
                   </h3>
                   <p className="text-[11px] text-slate-500">Every major application deepens through use, unlocking features, hidden files, and story access.</p>
                 </div>

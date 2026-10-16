@@ -4,12 +4,21 @@ import { useSystemStore } from '../store/useSystemStore';
 import { SoundFX } from '../utils/audio';
 import { miraverseDb, DGA_DIVISIONS, ORGANIZATIONS } from '../db/miraverseDb';
 import { WorknetMission, MissionType } from '../types';
+import { MaidIdentityService, CanonicalCitizenRecord } from '../services/maidIdentityService';
+import {
+  getCanonicalCitizens,
+  getActiveCitizenContext,
+  openCitizenInApp,
+  syncFaithMedicalUpdate,
+  syncDgaInvestigativeUpdate,
+  syncCyacademyOrCivicUpdate,
+} from '../integration/citizenBridge';
 import {
   Briefcase, Activity, ShieldAlert, Search, Radio, CheckCircle2, Clock, 
   Send, Users, MapPin, Truck, AlertTriangle, Play, Pause, RefreshCw, 
   Award, FileText, ChevronRight, DollarSign, Zap, Stethoscope, Compass, Lock,
   Building, BookOpen, Cpu, Sparkles, Key, Landmark, Shield, Terminal, ArrowRight,
-  Fingerprint, Layers, Database
+  Fingerprint, Layers, Database, ExternalLink
 } from 'lucide-react';
 
 export type WorkplaceStationId = 
@@ -43,6 +52,34 @@ export default function JobWorkstationApp() {
   const [selectedMissionId, setSelectedMissionId] = useState<string>('ms-spec-01');
   const [dgaBranchFilter, setDgaBranchFilter] = useState<'All' | 'Shield' | 'Eyes' | 'Blackout Team'>('All');
   const [actionFeedback, setActionFeedback] = useState<string | null>(null);
+  const [canonicalCitizens, setCanonicalCitizens] = useState<CanonicalCitizenRecord[]>(() => {
+    MaidIdentityService.ensureDefaultPopulationSeeded();
+    return getCanonicalCitizens();
+  });
+  const [activeCitizenMaid, setActiveCitizenMaid] = useState<string>(() => {
+    const ctx = getActiveCitizenContext();
+    return ctx?.maid || 'MAID-OR-00481926';
+  });
+
+  useEffect(() => {
+    const syncPopulation = () => {
+      const list = getCanonicalCitizens();
+      setCanonicalCitizens(list);
+      const ctx = getActiveCitizenContext();
+      if (ctx?.maid) setActiveCitizenMaid(ctx.maid);
+    };
+    window.addEventListener('maid-registry-updated', syncPopulation);
+    window.addEventListener('active-citizen-changed', syncPopulation);
+    return () => {
+      window.removeEventListener('maid-registry-updated', syncPopulation);
+      window.removeEventListener('active-citizen-changed', syncPopulation);
+    };
+  }, []);
+
+  const activeCitizen = canonicalCitizens.find(
+    (c) => c.maid === activeCitizenMaid || c.record === activeCitizenMaid
+  ) || canonicalCitizens[0];
+
   const player = useOSStore((s) => s.gameplay.player);
   const addCredits = useOSStore((s) => s.addCredits);
   const addBits = useOSStore((s) => s.addBits);
@@ -51,6 +88,28 @@ export default function JobWorkstationApp() {
 
   const clearanceTier = player?.clearanceLevel || (player?.isAdmin ? 5 : 2);
   const currentStationInfo = STATIONS.find((s) => s.id === activeStation) || STATIONS[0];
+
+  const handleSyncStationToCitizen = () => {
+    if (!activeCitizen) return;
+    if (activeStation === 'faithmed') {
+      syncFaithMedicalUpdate(activeCitizen.maid, {
+        clinicalNote: `Faith Medical Triage Desk clearance verified (${new Date().toLocaleDateString()}). Veil exposure baseline normal.`,
+      });
+      setActionFeedback(`🩺 Logged Faith Medical clinical triage update directly to ${activeCitizen.name} (${activeCitizen.maid}).`);
+    } else if (activeStation === 'dga') {
+      syncDgaInvestigativeUpdate(activeCitizen.maid, {
+        note: `DGA Tactical Console (${dgaBranchFilter}) security screening verified (${new Date().toLocaleDateString()}).`,
+      });
+      setActionFeedback(`🛡️ Logged DGA Tactical screening directly to ${activeCitizen.name} (${activeCitizen.maid}).`);
+    } else {
+      syncCyacademyOrCivicUpdate(activeCitizen.maid, {
+        historyNote: `${currentStationInfo.name} institutional record verified (${new Date().toLocaleDateString()}).`,
+      });
+      setActionFeedback(`🏛️ Synced ${currentStationInfo.name} record to ${activeCitizen.name} (${activeCitizen.maid}).`);
+    }
+    setCanonicalCitizens(getCanonicalCitizens());
+    setTimeout(() => setActionFeedback(null), 4500);
+  };
 
   const handleAdminResetMissions = () => {
     setMissions(miraverseDb.getMissions().map((m) => ({ ...m, completed: false })));
@@ -129,7 +188,7 @@ export default function JobWorkstationApp() {
   return (
     <div className="h-full flex flex-col bg-[#FAFBFD] text-slate-800 font-ui select-none overflow-hidden">
       
-      {/* ─── 10.1A UNIFIED WORKNET TOP METRICS & INSTITUTION BAR ─── */}
+      {/* ─── UNIFIED WORKNET TOP METRICS & INSTITUTION BAR ─── */}
       <header className="flex items-center justify-between px-6 py-3 bg-white border-b border-slate-200 shadow-xs">
         <div className="flex items-center gap-3.5">
           <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-amber-50 border border-amber-200 text-amber-700 shadow-xs">
@@ -138,7 +197,7 @@ export default function JobWorkstationApp() {
           <div>
             <div className="flex items-center gap-2">
               <span className="text-[10px] font-ui uppercase bg-slate-100 text-slate-700 border border-slate-200 px-2 py-0.5 font-bold rounded tracking-wider shadow-xs">
-                WORKNET §10.1A // FEDERAL ACCESS LAYER
+                WORKNET // FEDERAL ACCESS LAYER
               </span>
               <span className="text-[11px] text-emerald-700 font-ui flex items-center gap-1 font-semibold">
                 <span className="h-2 w-2 rounded-full bg-emerald-500 animate-ping inline-block" /> AUTHENTICATED
@@ -235,11 +294,60 @@ export default function JobWorkstationApp() {
         })}
       </div>
 
+      {/* ─── CANONICAL MAID CITIZEN RECORD TRIAGE & INSTITUTIONAL SYNC BAR ─── */}
+      {activeCitizen && (
+        <div className="flex flex-wrap items-center justify-between gap-3 px-6 py-2 bg-slate-50 border-b border-slate-200 text-xs font-ui">
+          <div className="flex items-center gap-2.5">
+            <span className="text-[10px] font-bold uppercase tracking-wider text-purple-800 bg-purple-100 border border-purple-200 px-2 py-0.5 rounded">
+              Canonical MAID Citizen Subject
+            </span>
+            <select
+              aria-label="Select canonical MAID citizen for institutional triage"
+              value={activeCitizen.maid}
+              onChange={(e) => setActiveCitizenMaid(e.target.value)}
+              className="px-2.5 py-1 bg-white border border-slate-300 rounded-lg text-xs font-bold text-slate-900 outline-none focus:border-purple-600"
+            >
+              {canonicalCitizens.map((c) => (
+                <option key={c.maid} value={c.maid}>
+                  {c.name} ({c.maid}) · {c.affiliation}
+                </option>
+              ))}
+            </select>
+            <span className="text-[11px] text-slate-600 hidden lg:inline">
+              Blood: <strong className="text-slate-800">{activeCitizen.blood}</strong> · Resonance: <strong className="text-slate-800">{activeCitizen.resonance}</strong> · Med: <strong className="text-slate-800">{activeCitizen.medical}</strong>
+            </span>
+          </div>
+          <div className="flex items-center gap-2">
+            <button
+              type="button"
+              onClick={handleSyncStationToCitizen}
+              className="px-2.5 py-1 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-[11px] transition flex items-center gap-1 cursor-pointer shadow-2xs"
+            >
+              <CheckCircle2 size={12} /> Sync {currentStationInfo.name.split(' ')[0]} Log to MAID
+            </button>
+            <button
+              type="button"
+              onClick={() => openCitizenInApp(activeCitizen.maid, 'document_studio', { targetDocId: activeStation === 'faithmed' ? 8 : activeStation === 'dga' ? 5 : 1 })}
+              className="px-2.5 py-1 rounded-lg bg-white hover:bg-slate-100 text-slate-800 border border-slate-300 font-bold text-[11px] transition flex items-center gap-1 cursor-pointer"
+            >
+              <FileText size={12} /> {activeStation === 'faithmed' ? 'Medical Record (Doc 8)' : activeStation === 'dga' ? 'DGA Report (Doc 5)' : 'Citizen ID (Doc 1)'}
+            </button>
+            <button
+              type="button"
+              onClick={() => openCitizenInApp(activeCitizen.maid, 'registry_workspace', { targetTab: 'lookup' })}
+              className="px-2.5 py-1 rounded-lg bg-purple-50 hover:bg-purple-100 text-purple-900 border border-purple-200 font-bold text-[11px] transition flex items-center gap-1 cursor-pointer"
+            >
+              <ExternalLink size={12} /> Open MAID Dossier
+            </button>
+          </div>
+        </div>
+      )}
+
       {/* ─── DGA SUB-BRANCH CONTROLS (IF DGA CONSOLE ACTIVE) ─── */}
       {activeStation === 'dga' && (
         <div className="flex items-center justify-between px-6 py-2 bg-purple-50/60 border-b border-purple-200 text-xs font-ui">
           <div className="flex items-center gap-2">
-            <span className="text-purple-900 font-bold text-[11px]">§10.1B DGA DIVISIONS:</span>
+            <span className="text-purple-900 font-bold text-[11px]">DGA DIVISIONS:</span>
             {(['All', 'Shield', 'Eyes', 'Blackout Team'] as const).map((branch) => (
               <button
                 key={branch}

@@ -1,93 +1,267 @@
-import React, { useState, useEffect } from 'react';
-import { 
-  Search, UserPlus, Users, FileText, Sparkles, Shield, AlertCircle, 
-  CheckCircle2, Copy, Check, Clock, ChevronRight, Lock, RefreshCw, ExternalLink
+import React, { useState, useEffect, useMemo } from 'react';
+import {
+  Search, UserPlus, Shield, CheckCircle2, AlertTriangle,
+  Fingerprint, Sparkles, FileText, Globe, Key, Copy, Check,
+  ArrowRight, Users, Database, Lock, RefreshCw, Layers, HeartPulse,
+  GraduationCap, Building, Eye, Edit3, Link2, ExternalLink, Download, Camera
 } from 'lucide-react';
-import { 
-  MaidIdentityService, 
-  type CanonicalPerson, 
-  type LookupResult, 
-  validateMaidFormat 
+import {
+  MaidIdentityService,
+  type CanonicalPerson,
+  type LookupResult,
+  type NewPersonInput,
+  type CharacterArchetype,
+  validateMaidFormat,
+  generateTenPrintPreview
 } from '../services/maidIdentityService';
-import { useOSStore } from '../store/useOSStore';
+import {
+  getIssuedSnapshots,
+  buildFullPacketHtml,
+  buildSingleDocumentHtml,
+  triggerHtmlDownload,
+  recordIssuedSnapshot
+} from '../services/documentPacketGenerator';
+import {
+  getActiveCitizenContext,
+  setActiveCitizenContext,
+  openCitizenInApp
+} from '../integration/citizenBridge';
+import { generateProceduralPortrait, persistCitizenPortrait } from '../services/portraitService';
 import PortraitStudioModal from '../components/portrait/PortraitStudioModal';
 
-type RegistryTab = 'lookup' | 'add' | 'roster' | 'legacy_generator';
+const ARCHETYPE_OPTIONS: { id: CharacterArchetype; label: string; badge: string; desc: string }[] = [
+  {
+    id: 'ordinary',
+    label: 'Ordinary & Believable',
+    badge: 'Civilian',
+    desc: 'Everyday Orynvell artisan, transit coordinator, or municipal resident.'
+  },
+  {
+    id: 'cyacademy',
+    label: 'Cyacademy Scholar',
+    badge: 'Academic',
+    desc: 'Student or researcher in SpellForge, PRISM resonance, and Vector Housing.'
+  },
+  {
+    id: 'faithmed',
+    label: 'Faith Medical Clinician',
+    badge: 'Clinical',
+    desc: 'Bio-aura specialist, MEDSTAT triage clinician, or outpatient subject.'
+  },
+  {
+    id: 'dgaos',
+    label: 'DGA / TRACE Subject',
+    badge: 'Forensic / Intel',
+    desc: 'DGAOS agent, TRACE forensic criminalist, or monitored person of interest.'
+  },
+  {
+    id: 'civic',
+    label: 'Orynvell Civic & Archives',
+    badge: 'Sovereign',
+    desc: 'Crown registrar, First Orynvell Treasury auditor, or Royal Archivist.'
+  }
+];
+
+const OFFICIAL_DOC_CARDS = [
+  { id: 1, title: 'Aura Citizen ID', subtitle: 'Biometric Wallet Card', category: 'Civic Identity', color: 'border-indigo-500/40 bg-indigo-950/30 text-indigo-300' },
+  { id: 2, title: 'Aura Passport', subtitle: 'Official Travel Booklet', category: 'Sovereign Travel', color: 'border-amber-500/40 bg-amber-950/30 text-amber-300' },
+  { id: 3, title: 'Birth Certificate', subtitle: 'Crown Archival Record', category: 'Vital Statistics', color: 'border-purple-500/40 bg-purple-950/30 text-purple-300' },
+  { id: 4, title: '10-Print Biometrics', subtitle: 'Forensic Dermal Sheet', category: 'TRACE Biometrics', color: 'border-blue-500/40 bg-blue-950/30 text-blue-300' },
+  { id: 5, title: 'Investigative Profile', subtitle: 'DGAOS EYES Dossier', category: 'DGA Intelligence', color: 'border-rose-500/40 bg-rose-950/30 text-rose-300' },
+  { id: 6, title: 'Residency & Housing', subtitle: 'Municipal Domicile Form', category: 'Housing Authority', color: 'border-emerald-500/40 bg-emerald-950/30 text-emerald-300' },
+  { id: 7, title: 'Physical ID Sheet', subtitle: 'Biometrics & Marks', category: 'Forensic Physical', color: 'border-cyan-500/40 bg-cyan-950/30 text-cyan-300' },
+  { id: 8, title: 'Medical Summary', subtitle: 'Faith Medical Group Chart', category: 'Faith Medical', color: 'border-teal-500/40 bg-teal-950/30 text-teal-300' },
+  { id: 9, title: 'Education & Service', subtitle: 'Cyacademy & WORKNET', category: 'Academic / Career', color: 'border-yellow-500/40 bg-yellow-950/30 text-yellow-300' },
+];
 
 export default function RegistryWorkspaceApp() {
-  const [activeTab, setActiveTab] = useState<RegistryTab>('lookup');
+  const [activeTab, setActiveTab] = useState<'lookup' | 'add' | 'ecosystem' | 'migration'>('lookup');
+  const [dossierSection, setDossierSection] = useState<'overview' | 'ancestry' | 'institutions' | 'relationships' | 'documents' | 'edit'>('overview');
+
+  // Population & Search State
+  const [persons, setPersons] = useState<CanonicalPerson[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
+  const [speciesFilter, setSpeciesFilter] = useState('ALL');
+  const [affiliationFilter, setAffiliationFilter] = useState('ALL');
+  const [statusFilter, setStatusFilter] = useState<'all' | 'active' | 'pending_migration'>('all');
   const [lookupResult, setLookupResult] = useState<LookupResult | null>(null);
   const [isSearching, setIsSearching] = useState(false);
-  const [allPersons, setAllPersons] = useState<CanonicalPerson[]>([]);
   const [copiedText, setCopiedText] = useState<string | null>(null);
-  const [migrationStatus, setMigrationStatus] = useState<string | null>(null);
+  const [statusBanner, setStatusBanner] = useState<string | null>(null);
 
-  // Portrait Studio integration state
-  const [portraitCitizen, setPortraitCitizen] = useState<CanonicalPerson | null>(null);
-  const [isPortraitOpen, setIsPortraitOpen] = useState(false);
+  // Add Person Studio State
+  const [selectedArchetype, setSelectedArchetype] = useState<CharacterArchetype>('cyacademy');
+  const [generatorSeed, setGeneratorSeed] = useState<number>(101);
+  const [formData, setFormData] = useState<NewPersonInput>(() =>
+    MaidIdentityService.generateCharacterDraft('cyacademy', 101)
+  );
+  const [initialRelTarget, setInitialRelTarget] = useState<string>('');
+  const [initialRelType, setInitialRelType] = useState<string>('Colleague');
+  const [formError, setFormError] = useState<string | null>(null);
 
-  // Add Person form state
-  const [formData, setFormData] = useState({
-    name: '',
-    registrationRegion: 'OR' as const,
-    dob: '2001-05-14',
-    place: 'Aureline, Orynvell',
-    home: 'Aureline, Orynvell',
-    species: 'Luminari',
-    ancestry: 'Lightborn · Seraphima Lineage',
-    abilities: 'Solar illumination, photon constructs, resonance shielding',
-    powerSource: 'PRISM resonance',
-    affinity: 'Gold · wealth / commerce / influence',
-    category: 'Everyday civilian',
-    occupation: 'Civic Archivist',
-    clearance: 'General civic access',
-    storyMode: 'Ordinary & Believable'
-  });
+  // Relationship Linker State (in Dossier)
+  const [relTargetMaid, setRelTargetMaid] = useState<string>('');
+  const [relType, setRelType] = useState<string>('Research Partner');
+  const [relNotes, setRelNotes] = useState<string>('');
 
-  const [addPersonNotice, setAddPersonNotice] = useState<string | null>(null);
-  const toggleApp = useOSStore((s) => s.toggleApp);
+  // Inline Profile Editor State
+  const [editDraft, setEditDraft] = useState<Partial<CanonicalPerson>>({});
 
-  const loadData = async () => {
-    const list = await MaidIdentityService.getAllPersons();
-    setAllPersons(list);
+  // Portrait Studio Modal State
+  const [portraitModalTarget, setPortraitModalTarget] = useState<'add' | 'dossier' | null>(null);
+
+  // Migration stats
+  const [migrationStats, setMigrationStats] = useState<{
+    migratedCount: number;
+    pendingCount: number;
+    alreadyMigratedCount: number;
+    backupCreated: boolean;
+  } | null>(null);
+
+  const showBanner = (msg: string) => {
+    setStatusBanner(msg);
+    setTimeout(() => setStatusBanner(null), 4500);
+  };
+
+  const loadData = async (focusCitizenId?: string) => {
+    const mig = await MaidIdentityService.migrateLegacyRegistry();
+    setMigrationStats(mig);
+    const list = await MaidIdentityService.ensureDefaultPopulationSeeded();
+    setPersons(list);
+
+    const ctx = getActiveCitizenContext();
+    const targetId = focusCitizenId || (ctx && Date.now() - ctx.timestamp < 15000 ? ctx.citizenId : null);
+
+    if (targetId) {
+      const found = await MaidIdentityService.lookupPerson(targetId, { allowRestricted: true });
+      if (found.person) {
+        setLookupResult(found);
+        setSearchQuery(found.person.maid || found.person.legacyRecord);
+        setEditDraft(found.person);
+        return;
+      }
+    }
+
+    if (!lookupResult && list.length > 0) {
+      const first = list[0];
+      setLookupResult({
+        status: 'found',
+        person: first,
+        matchedBy: 'maid',
+        matchedQuery: first.maid || first.legacyRecord
+      });
+      setEditDraft(first);
+    } else if (lookupResult?.person) {
+      const refreshed = list.find(p => p.id === lookupResult.person?.id || p.maid === lookupResult.person?.maid);
+      if (refreshed) {
+        setLookupResult({ ...lookupResult, person: refreshed });
+        setEditDraft(refreshed);
+      }
+    }
   };
 
   useEffect(() => {
     loadData();
 
-    // Cross-tab / iframe sync
     const onMessage = (e: MessageEvent) => {
       if (e.data?.source === 'meridion-registry' && e.data?.type === 'citizens-changed') {
         loadData();
+      } else if (e.data?.source === 'citizen-bridge' && e.data?.type === 'active-citizen-changed') {
+        loadData(e.data.payload?.citizenId);
       }
-      if (e.data?.source === 'meridion-registry' && e.data?.type === 'open-app' && e.data?.appId) {
-        toggleApp(e.data.appId);
+    };
+    const onCitizenCtx = (e: Event) => {
+      const detail = (e as CustomEvent).detail;
+      if (detail?.citizenId) {
+        loadData(detail.citizenId);
       }
     };
     window.addEventListener('message', onMessage);
-    window.addEventListener('storage', loadData);
+    window.addEventListener('miraverse-citizen-context', onCitizenCtx);
+    window.addEventListener('storage', () => loadData());
     return () => {
       window.removeEventListener('message', onMessage);
-      window.removeEventListener('storage', loadData);
+      window.removeEventListener('miraverse-citizen-context', onCitizenCtx);
     };
   }, []);
 
+  // Filtered population list
+  const filteredPersons = useMemo(() => {
+    return persons.filter(p => {
+      if (statusFilter !== 'all' && p.maidStatus !== statusFilter) return false;
+      if (speciesFilter !== 'ALL' && !p.species.toLowerCase().includes(speciesFilter.toLowerCase())) return false;
+      if (affiliationFilter !== 'ALL') {
+        const aff = `${p.affiliation || ''} ${p.faction || ''} ${p.category || ''}`.toLowerCase();
+        if (!aff.includes(affiliationFilter.toLowerCase())) return false;
+      }
+      if (searchQuery.trim()) {
+        const q = searchQuery.trim().toLowerCase();
+        const hay = [
+          p.maid || '',
+          p.legacyRecord || '',
+          ...(p.legacyAliases || []),
+          p.name,
+          p.alias || '',
+          p.species,
+          p.ancestry,
+          p.occupation,
+          p.affiliation,
+          p.home,
+          p.place,
+          p.abilities
+        ].join(' ').toLowerCase();
+        if (!hay.includes(q)) return false;
+      }
+      return true;
+    });
+  }, [persons, statusFilter, speciesFilter, affiliationFilter, searchQuery]);
+
   const handleSearch = async (e?: React.FormEvent) => {
     if (e) e.preventDefault();
-    if (!searchQuery.trim()) return;
+    if (!searchQuery.trim()) {
+      if (persons.length > 0) {
+        setLookupResult({ status: 'found', person: persons[0], matchedBy: 'maid', matchedQuery: persons[0].maid || '' });
+        setEditDraft(persons[0]);
+      }
+      return;
+    }
 
     setIsSearching(true);
-    const result = await MaidIdentityService.lookupPerson(searchQuery);
+    const result = await MaidIdentityService.lookupPerson(searchQuery, { allowRestricted: true });
     setLookupResult(result);
+    if (result.person) {
+      setEditDraft(result.person);
+      setActiveCitizenContext({
+        citizenId: result.person.maid || result.person.legacyRecord,
+        sourceApp: 'meridionRegistry',
+        timestamp: Date.now()
+      });
+    }
     setIsSearching(false);
+  };
+
+  const handleSelectPerson = async (person: CanonicalPerson) => {
+    setLookupResult({
+      status: person.maidStatus === 'pending_migration' ? 'pending_migration' : 'found',
+      person,
+      matchedBy: person.maid ? 'maid' : 'legacy_alias',
+      matchedQuery: person.maid || person.legacyRecord
+    });
+    setEditDraft(person);
+    setActiveCitizenContext({
+      citizenId: person.maid || person.legacyRecord,
+      sourceApp: 'meridionRegistry',
+      timestamp: Date.now()
+    });
+    setActiveTab('lookup');
   };
 
   const handleQuickLookup = async (idOrMaid: string) => {
     setSearchQuery(idOrMaid);
     setIsSearching(true);
-    const result = await MaidIdentityService.lookupPerson(idOrMaid);
+    const result = await MaidIdentityService.lookupPerson(idOrMaid, { allowRestricted: true });
     setLookupResult(result);
+    if (result.person) setEditDraft(result.person);
     setIsSearching(false);
     setActiveTab('lookup');
   };
@@ -98,638 +272,1870 @@ export default function RegistryWorkspaceApp() {
     setTimeout(() => setCopiedText(null), 2000);
   };
 
+  const handleArchetypeChange = (arch: CharacterArchetype) => {
+    const nextSeed = generatorSeed + 19;
+    setSelectedArchetype(arch);
+    setGeneratorSeed(nextSeed);
+    setFormData(MaidIdentityService.generateCharacterDraft(arch, nextSeed));
+    setFormError(null);
+  };
+
+  const handleRerollCharacter = () => {
+    const nextSeed = generatorSeed + 37;
+    setGeneratorSeed(nextSeed);
+    setFormData(MaidIdentityService.generateCharacterDraft(selectedArchetype, nextSeed));
+    setFormError(null);
+  };
+
+  const handleRegenerateDraftPortrait = () => {
+    const nextSeed = generatorSeed + 11;
+    setGeneratorSeed(nextSeed);
+    const uri = generateProceduralPortrait({
+      name: formData.name || 'Provisional Citizen',
+      species: formData.species,
+      ancestry: formData.ancestry,
+      eyes: formData.eyes || 'Luminous Hazel',
+      hair: formData.hair || 'Silver-Black',
+      build: formData.build || 'Medium',
+      height: formData.height,
+      mark: formData.mark,
+      home: formData.home,
+      affinity: formData.affinity,
+      powerSource: formData.powerSource,
+      category: formData.category || 'Citizen',
+      dob: formData.dob
+    }, nextSeed);
+    setFormData(prev => ({ ...prev, portraitData: uri }));
+  };
+
   const handleAddPersonSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setFormError(null);
     if (!formData.name.trim()) {
-      alert('Please enter a citizen name.');
+      setFormError('Full legal or sovereign name is required before issuing a permanent MAID.');
       return;
     }
 
     const res = await MaidIdentityService.addPerson(formData);
     if (res.success && res.person) {
-      setAddPersonNotice(`Official identity created! Permanent MAID issued: ${res.person.maid}`);
-      await loadData();
-      // Jump to lookup view displaying the newly created citizen
-      setSearchQuery(res.person.maid || res.person.legacyRecord);
-      setLookupResult({
-        status: 'found',
-        person: res.person,
-        matchedBy: 'maid',
-        matchedQuery: res.person.maid || ''
-      });
+      if (initialRelTarget && initialRelType) {
+        await MaidIdentityService.linkCitizens(
+          res.person.maid || res.person.id,
+          initialRelTarget,
+          initialRelType,
+          'Linked at initial MAID registration',
+          true
+        );
+      }
+      await loadData(res.person.maid || res.person.id);
+      showBanner(`Official identity registered! Permanent MAID assigned: ${res.person.maid}`);
       setActiveTab('lookup');
-      setTimeout(() => setAddPersonNotice(null), 5000);
+      setDossierSection('overview');
     } else {
-      alert(res.error || 'Failed to issue MAID identity.');
+      setFormError(res.error || 'Failed to register person.');
     }
   };
 
-  const handleConfirmPendingRegistration = async (personId: string) => {
-    const res = await MaidIdentityService.confirmPendingRegistration(personId, 'OR');
+  const handleConfirmPendingRegion = async (personId: string) => {
+    const res = await MaidIdentityService.confirmPendingRegistration(personId, 'Orynvell');
     if (res.success && res.person) {
-      await loadData();
-      setLookupResult({
-        status: 'found',
-        person: res.person,
-        matchedBy: 'maid',
-        matchedQuery: res.person.maid || ''
-      });
-      alert(`Orynvell registration confirmed! Official permanent MAID allocated: ${res.person.maid}`);
-    } else {
-      alert(res.error || 'Could not confirm registration.');
+      await loadData(res.person.maid || res.person.id);
+      showBanner(`Registration region Orynvell (OR) confirmed! Issued permanent MAID: ${res.person.maid}`);
     }
   };
 
-  const handleRunMigration = async () => {
-    const res = await MaidIdentityService.migrateLegacyRegistry();
-    await loadData();
-    setMigrationStatus(
-      `Migration complete: ${res.migratedCount} active MAIDs issued, ${res.pendingCount} pending region confirmation, ${res.alreadyMigratedCount} already canonical.`
-    );
-    setTimeout(() => setMigrationStatus(null), 5000);
+  const handleLinkRelationship = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!lookupResult?.person || !relTargetMaid) return;
+    const sourceId = lookupResult.person.maid || lookupResult.person.id;
+    const res = await MaidIdentityService.linkCitizens(sourceId, relTargetMaid, relType, relNotes, true);
+    if (res.success && res.source) {
+      setRelNotes('');
+      await loadData(sourceId);
+      showBanner(`Linked ${lookupResult.person.name} with ${res.target?.name || relTargetMaid} (${relType}).`);
+    } else {
+      showBanner(res.error || 'Could not link citizens.');
+    }
   };
+
+  const handleSaveInlineProfile = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!lookupResult?.person) return;
+    const idKey = lookupResult.person.maid || lookupResult.person.id;
+    const res = await MaidIdentityService.updatePerson(idKey, {
+      occupation: editDraft.occupation,
+      affiliation: editDraft.affiliation,
+      clearance: editDraft.clearance,
+      medical: editDraft.medical,
+      residency: editDraft.residency,
+      household: editDraft.household,
+      status: editDraft.status,
+      abilities: editDraft.abilities,
+      affinity: editDraft.affinity,
+      height: editDraft.height,
+      eyes: editDraft.eyes,
+      hair: editDraft.hair,
+      build: editDraft.build,
+      blood: editDraft.blood,
+      mark: editDraft.mark,
+      address: editDraft.address,
+      phone: editDraft.phone,
+      email: editDraft.email
+    });
+    if (res.success && res.person) {
+      await loadData(idKey);
+      showBanner(`Updated canonical profile for ${res.person.name}. Permanent MAID (${res.person.maid}) verified immutable.`);
+      setDossierSection('overview');
+    }
+  };
+
+  const handleQuickIssueDocument = (person: CanonicalPerson, docId: number, docTitle: string) => {
+    const citizenRec: any = { ...person, record: person.maid || person.legacyRecord };
+    const slug = person.name.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+    const idKey = person.maid || person.legacyRecord;
+    const html = buildSingleDocumentHtml(docId, citizenRec);
+    triggerHtmlDownload(html, `${docTitle.toLowerCase().replace(/[^a-z0-9]+/g, '-')}_${slug}_${idKey}.html`);
+    const snap = recordIssuedSnapshot({
+      documentType: docTitle,
+      citizenId: idKey,
+      citizenName: person.name,
+      issuedAt: new Date().toISOString(),
+      issuingAuthority: 'Meridion Sovereign Identity Registry (AURA)',
+      version: '2.0'
+    });
+    showBanner(`Issued & downloaded ${docTitle} for ${person.name} [${snap.id}].`);
+  };
+
+  const handleQuickExportAllNine = (person: CanonicalPerson) => {
+    const citizenRec: any = { ...person, record: person.maid || person.legacyRecord };
+    const slug = person.name.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+    const idKey = person.maid || person.legacyRecord;
+    const html = buildFullPacketHtml(citizenRec);
+    triggerHtmlDownload(html, `miraverse_nine_document_packet_${slug}_${idKey}.html`);
+    const snap = recordIssuedSnapshot({
+      documentType: 'FULL_NINE_DOCUMENT_PACKET',
+      citizenId: idKey,
+      citizenName: person.name,
+      issuedAt: new Date().toISOString(),
+      issuingAuthority: 'Meridion Sovereign Identity Registry (AURA)',
+      version: '2.0'
+    });
+    showBanner(`Exported complete 9-Document Official Packet for ${person.name} [${snap.id}].`);
+  };
+
+  const activePerson = lookupResult?.person || null;
+  const activeTenPrints = useMemo(
+    () => generateTenPrintPreview(activePerson?.biometricSeed || activePerson?.maid || 'MAID-OR-00481926'),
+    [activePerson?.biometricSeed, activePerson?.maid]
+  );
+  const draftTenPrints = useMemo(
+    () => generateTenPrintPreview(`${formData.name}-${formData.dob}-${generatorSeed}`),
+    [formData.name, formData.dob, generatorSeed]
+  );
+  const activeIssuedDocs = useMemo(
+    () => (activePerson ? getIssuedSnapshots(activePerson.maid || undefined, activePerson.legacyRecord) : []),
+    [activePerson, statusBanner]
+  );
 
   return (
-    <div className="flex h-full w-full flex-col bg-[#F8F6FC] text-[#25283C] font-sans select-none overflow-hidden">
-      
-      {/* Top Application Header */}
-      <header className="flex flex-wrap items-center justify-between border-b border-[#E2DCEF] bg-white px-5 py-3 shadow-sm">
+    <div className="flex h-full w-full flex-col bg-[#0F0C1B] text-slate-100 select-none font-sans overflow-hidden">
+      {/* Top Header */}
+      <header className="flex flex-wrap items-center justify-between border-b border-[#2C2448] bg-[#161226] px-6 py-3.5 shadow-md shrink-0">
         <div className="flex items-center gap-3">
-          <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-to-br from-[#6C5FAC] to-[#2C2849] text-white shadow">
-            <Shield size={18} />
+          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-[#C5AB78] to-[#6C5FAC] text-white shadow-lg">
+            <Fingerprint size={22} />
           </div>
           <div>
-            <div className="flex items-center gap-2">
-              <h1 className="text-sm font-bold tracking-wide text-[#2C2849] font-serif">MERIDION IDENTITY REGISTRY</h1>
-              <span className="rounded bg-[#6C5FAC]/10 px-2 py-0.5 text-[10px] font-bold text-[#6C5FAC] border border-[#6C5FAC]/20 uppercase">
-                Official MAID Registry
+            <div className="flex items-center gap-2.5">
+              <h1 className="text-base font-bold tracking-wider text-white font-serif">
+                MERIDION IDENTITY REGISTRY (MAID)
+              </h1>
+              <span className="rounded-md bg-emerald-950/90 border border-emerald-500/40 px-2.5 py-0.5 text-[10px] font-mono font-bold text-emerald-300">
+                REGION: OR (ORYNVELL) CONFIRMED
               </span>
             </div>
-            <p className="text-[11px] text-[#69758A]">
-              Authoritative citizen identity archive · Permanent MAID allocation &amp; legacy alias resolution
+            <p className="text-xs text-slate-400">
+              Authoritative Population Database, Character & Biometric Studio, Official 9-Document Suite & Cross-App Hub
             </p>
           </div>
         </div>
 
-        {/* Global Toolbar Shortcuts */}
-        <div className="flex items-center gap-2 mt-2 sm:mt-0">
+        {/* Primary Workflow Navigation */}
+        <nav className="flex items-center gap-1.5 bg-[#201A36] p-1 rounded-xl border border-[#3C3264]" aria-label="Registry Workflows">
           <button
-            onClick={() => toggleApp('documentStudio')}
-            className="flex items-center gap-1.5 rounded-md bg-[#2C2849] hover:bg-[#3E3866] text-white px-3 py-1.5 text-xs font-semibold shadow-sm transition"
+            type="button"
+            onClick={() => setActiveTab('lookup')}
+            className={`flex items-center gap-2 px-3.5 py-2 rounded-lg text-xs font-bold transition ${
+              activeTab === 'lookup'
+                ? 'bg-gradient-to-r from-[#6C5FAC] to-[#52448C] text-white shadow'
+                : 'text-slate-400 hover:text-white hover:bg-white/5'
+            }`}
           >
-            <FileText size={13} className="text-[#C5AB78]" />
-            Document Studio (9 Documents)
+            <Search size={14} />
+            Look Up MAID ({persons.length})
           </button>
-        </div>
+          <button
+            type="button"
+            onClick={() => setActiveTab('add')}
+            className={`flex items-center gap-2 px-3.5 py-2 rounded-lg text-xs font-bold transition ${
+              activeTab === 'add'
+                ? 'bg-gradient-to-r from-[#C5AB78] to-[#9E8555] text-[#161226] shadow'
+                : 'text-slate-400 hover:text-white hover:bg-white/5'
+            }`}
+          >
+            <UserPlus size={14} />
+            Add Person
+          </button>
+          <button
+            type="button"
+            onClick={() => setActiveTab('ecosystem')}
+            className={`flex items-center gap-2 px-3.5 py-2 rounded-lg text-xs font-bold transition ${
+              activeTab === 'ecosystem'
+                ? 'bg-[#2E254D] text-[#E5D7B5] border border-[#C5AB78]/40 shadow'
+                : 'text-slate-400 hover:text-white hover:bg-white/5'
+            }`}
+          >
+            <Layers size={14} />
+            Cross-App Connections
+          </button>
+          <button
+            type="button"
+            onClick={() => setActiveTab('migration')}
+            className={`flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-semibold transition ${
+              activeTab === 'migration'
+                ? 'bg-[#292244] text-white border border-[#524484]'
+                : 'text-slate-400 hover:text-white hover:bg-white/5'
+            }`}
+          >
+            <Database size={14} />
+            Ledger Integrity
+          </button>
+        </nav>
       </header>
 
-      {/* Migration / Add Notice Banner */}
-      {addPersonNotice && (
-        <div className="bg-emerald-50 border-b border-emerald-200 text-emerald-900 px-5 py-2 text-xs font-semibold flex items-center gap-2">
-          <CheckCircle2 size={14} className="text-emerald-600" />
-          <span>{addPersonNotice}</span>
-        </div>
-      )}
-      {migrationStatus && (
-        <div className="bg-purple-50 border-b border-purple-200 text-purple-900 px-5 py-2 text-xs font-semibold flex items-center gap-2">
-          <Clock size={14} className="text-purple-600" />
-          <span>{migrationStatus}</span>
-        </div>
-      )}
+      {/* Polite Live Region for Status Announcements */}
+      <div aria-live="polite" className="shrink-0">
+        {statusBanner && (
+          <div className="bg-emerald-950/90 border-b border-emerald-500/40 px-6 py-2.5 text-xs text-emerald-200 flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <CheckCircle2 size={15} className="text-emerald-400 shrink-0" />
+              <span className="font-semibold">{statusBanner}</span>
+            </div>
+            <button type="button" onClick={() => setStatusBanner(null)} className="text-emerald-400 hover:text-white">✕</button>
+          </div>
+        )}
+      </div>
 
-      {/* Workflow Tabs Rail */}
-      <nav className="flex border-b border-[#E2DCEF] bg-[#F1EDF8] px-5 text-xs font-semibold">
-        <button
-          onClick={() => setActiveTab('lookup')}
-          className={`flex items-center gap-2 border-b-2 px-4 py-2.5 transition ${
-            activeTab === 'lookup'
-              ? 'border-[#6C5FAC] text-[#2C2849] bg-white'
-              : 'border-transparent text-[#69758A] hover:text-[#2C2849]'
-          }`}
-        >
-          <Search size={14} />
-          Look Up MAID
-        </button>
-
-        <button
-          onClick={() => setActiveTab('add')}
-          className={`flex items-center gap-2 border-b-2 px-4 py-2.5 transition ${
-            activeTab === 'add'
-              ? 'border-[#6C5FAC] text-[#2C2849] bg-white'
-              : 'border-transparent text-[#69758A] hover:text-[#2C2849]'
-          }`}
-        >
-          <UserPlus size={14} />
-          Add Person
-        </button>
-
-        <button
-          onClick={() => setActiveTab('roster')}
-          className={`flex items-center gap-2 border-b-2 px-4 py-2.5 transition ${
-            activeTab === 'roster'
-              ? 'border-[#6C5FAC] text-[#2C2849] bg-white'
-              : 'border-transparent text-[#69758A] hover:text-[#2C2849]'
-          }`}
-        >
-          <Users size={14} />
-          Registry Network ({allPersons.length})
-        </button>
-
-        <button
-          onClick={() => setActiveTab('legacy_generator')}
-          className={`flex items-center gap-2 border-b-2 px-4 py-2.5 transition ${
-            activeTab === 'legacy_generator'
-              ? 'border-[#6C5FAC] text-[#2C2849] bg-white'
-              : 'border-transparent text-[#69758A] hover:text-[#2C2849]'
-          }`}
-        >
-          <ExternalLink size={13} />
-          Standalone Generator (Fixed)
-        </button>
-      </nav>
-
-      {/* Main Content Areas */}
-      <main className="flex-1 min-h-0 overflow-y-auto p-6">
-        
-        {/* WORKFLOW 1: LOOK UP MAID */}
-        {activeTab === 'lookup' && (
-          <div className="max-w-4xl mx-auto space-y-6">
-            
-            {/* Search Box */}
-            <form onSubmit={handleSearch} className="flex gap-2">
-              <div className="relative flex-1">
-                <Search size={16} className="absolute left-3.5 top-3.5 text-[#8A95A5]" />
-                <input
-                  type="text"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  placeholder="Enter official MAID (e.g. MAID-OR-00481926), legacy alias (e.g. MRD-8492-319), or full name..."
-                  className="w-full rounded-xl border border-[#D5CEE4] bg-white pl-10 pr-4 py-3 text-xs text-[#2C2849] shadow-sm focus:border-[#6C5FAC] focus:outline-none"
-                />
-              </div>
+      {/* Main Content Area */}
+      <div className="flex-1 flex min-h-0 overflow-hidden">
+        {/* Left Sidebar: Population Roster & Multi-Criteria Filters */}
+        <aside className="w-80 border-r border-[#272040] bg-[#130F22] flex flex-col justify-between overflow-hidden shrink-0">
+          <div className="p-3.5 border-b border-[#272040] space-y-2.5 bg-[#161127]">
+            <div className="flex items-center justify-between">
+              <span className="text-[11px] font-bold tracking-wider uppercase text-[#C5AB78]">
+                Population Database ({filteredPersons.length}/{persons.length})
+              </span>
               <button
-                type="submit"
-                disabled={isSearching}
-                className="flex items-center gap-2 rounded-xl bg-[#2C2849] hover:bg-[#3E3866] text-white px-6 py-3 text-xs font-bold shadow transition"
+                type="button"
+                onClick={() => {
+                  setSearchQuery('');
+                  setSpeciesFilter('ALL');
+                  setAffiliationFilter('ALL');
+                  setStatusFilter('all');
+                }}
+                className="text-[10px] text-slate-400 hover:text-white flex items-center gap-1"
+                title="Reset population filters"
               >
-                {isSearching ? <RefreshCw size={14} className="animate-spin" /> : <Search size={14} />}
-                Search Registry
+                <RefreshCw size={11} /> Reset
               </button>
-            </form>
-
-            {/* Quick Suggestions Strip */}
-            <div className="flex flex-wrap items-center gap-1.5 text-[11px] text-[#69758A]">
-              <span className="font-semibold text-[#2C2849]">Sample Records:</span>
-              {allPersons.slice(0, 4).map((p) => (
-                <button
-                  key={p.id}
-                  onClick={() => handleQuickLookup(p.maid || p.legacyRecord)}
-                  className="rounded-md bg-white border border-[#D5CEE4] px-2 py-0.5 hover:border-[#6C5FAC] hover:text-[#6C5FAC] transition"
-                >
-                  {p.name} ({p.maid ? p.maid.substring(0, 13) + '…' : p.legacyRecord})
-                </button>
-              ))}
             </div>
 
-            {/* Lookup Result Display */}
-            {lookupResult && (
-              <div className="rounded-2xl border border-[#D5CEE4] bg-white p-6 shadow-md space-y-6">
-                
-                {/* Status: FOUND */}
-                {lookupResult.status === 'found' && lookupResult.person && (
-                  <div>
-                    {/* Header Banner */}
-                    <div className="flex flex-wrap items-start justify-between border-b border-[#EAE6F2] pb-4 mb-4 gap-4">
-                      <div className="flex items-start gap-4">
-                        {/* Citizen Portrait Frame */}
-                        <div className="relative group w-20 h-24 rounded-lg border-2 border-[#C5AB78] overflow-hidden bg-[#FAF8F5] flex-shrink-0 shadow-sm">
-                          {lookupResult.person.portraitData ? (
-                            <img 
-                              src={lookupResult.person.portraitData} 
-                              alt={lookupResult.person.name} 
-                              className="w-full h-full object-cover" 
-                            />
-                          ) : (
-                            <div className="w-full h-full flex flex-col items-center justify-center text-[#718096] text-[10px] text-center p-1 bg-slate-50 font-sans">
-                              <span>NO PHOTO</span>
-                              <span className="text-[8px] text-[#A0AEC0]">ON FILE</span>
-                            </div>
-                          )}
-                          <button
-                            onClick={() => {
-                              setPortraitCitizen(lookupResult.person);
-                              setIsPortraitOpen(true);
-                            }}
-                            className="absolute inset-0 bg-[#2C2849]/75 text-white opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center text-[10px] font-semibold gap-1 p-1 text-center cursor-pointer"
-                            title="Open Portrait Studio"
-                          >
-                            <Sparkles size={14} className="text-[#C5AB78]" />
-                            <span>Edit Photo</span>
-                          </button>
-                        </div>
+            {/* Quick Filter Controls */}
+            <div className="grid grid-cols-2 gap-1.5 text-[11px]">
+              <div>
+                <label htmlFor="pop-filter-affiliation" className="block text-[10px] text-slate-400 mb-0.5">Institution</label>
+                <select
+                  id="pop-filter-affiliation"
+                  value={affiliationFilter}
+                  onChange={(e) => setAffiliationFilter(e.target.value)}
+                  className="w-full rounded-lg bg-[#1C1632] border border-[#352C57] px-2 py-1 text-[11px] text-slate-200 focus:outline-none focus:border-[#C5AB78]"
+                >
+                  <option value="ALL">All Institutions</option>
+                  <option value="Cyacademy">Cyacademy</option>
+                  <option value="Faith Medical">Faith Medical</option>
+                  <option value="DGA">DGAOS / TRACE</option>
+                  <option value="Orynvell">Orynvell Archives</option>
+                  <option value="Civilian">Civilian / Guild</option>
+                </select>
+              </div>
+              <div>
+                <label htmlFor="pop-filter-species" className="block text-[10px] text-slate-400 mb-0.5">Species</label>
+                <select
+                  id="pop-filter-species"
+                  value={speciesFilter}
+                  onChange={(e) => setSpeciesFilter(e.target.value)}
+                  className="w-full rounded-lg bg-[#1C1632] border border-[#352C57] px-2 py-1 text-[11px] text-slate-200 focus:outline-none focus:border-[#C5AB78]"
+                >
+                  <option value="ALL">All Species</option>
+                  <option value="Frostborn">Frostborn</option>
+                  <option value="Lightborn">Lightborn</option>
+                  <option value="Luminary">Luminary</option>
+                  <option value="Emberborn">Emberborn</option>
+                  <option value="Shadowborn">Shadowborn</option>
+                  <option value="Merfolk">Merfolk</option>
+                  <option value="Humanoid">Humanoid</option>
+                </select>
+              </div>
+            </div>
+          </div>
 
-                        <div>
-                          <div className="flex items-center gap-2">
-                            <h2 className="text-xl font-bold font-serif text-[#2C2849]">
-                              {lookupResult.person.name}
-                            </h2>
-                            <span className="rounded-full bg-emerald-100 text-emerald-800 text-[10px] font-bold px-2 py-0.5">
-                              CANONICAL RECORD
-                            </span>
-                          </div>
-                          <div className="text-xs text-[#69758A] mt-1">
-                            Matched via <strong className="text-[#2C2849] uppercase">{lookupResult.matchedBy}</strong> ({lookupResult.matchedQuery})
-                          </div>
-                        </div>
+          <div className="flex-1 overflow-y-auto p-3 space-y-2">
+            {filteredPersons.map((p) => {
+              const isSelected = activePerson?.id === p.id;
+              return (
+                <button
+                  type="button"
+                  key={p.id}
+                  onClick={() => handleSelectPerson(p)}
+                  className={`w-full text-left p-2.5 rounded-xl border transition flex items-start gap-2.5 ${
+                    isSelected
+                      ? 'bg-[#292147] border-[#C5AB78] shadow-md'
+                      : 'bg-[#19142B] border-[#2C2448] hover:border-[#524484] hover:bg-[#211B38]'
+                  }`}
+                >
+                  <div className="h-10 w-10 rounded-lg overflow-hidden border border-[#3C3264] bg-[#120E20] shrink-0">
+                    {p.portraitData ? (
+                      <img src={p.portraitData} alt={p.name} className="h-full w-full object-cover" />
+                    ) : (
+                      <div className="h-full w-full flex items-center justify-center font-bold text-xs text-[#C5AB78]">
+                        {p.name.charAt(0)}
                       </div>
-
-                      {/* Official MAID Card */}
-                      <div className="rounded-xl border-2 border-[#C5AB78] bg-[#FAF8F5] p-3 text-right">
-                        <div className="text-[9px] font-bold tracking-widest text-[#8C7541] uppercase">Official Permanent Identifier</div>
-                        <div className="flex items-center justify-end gap-2 font-mono text-base font-extrabold text-[#2C2849]">
-                          <span>{lookupResult.person.maid}</span>
-                          <button
-                            onClick={() => handleCopy(lookupResult.person!.maid!)}
-                            className="text-[#6C5FAC] hover:text-[#2C2849]"
-                            title="Copy MAID"
-                          >
-                            {copiedText === lookupResult.person.maid ? <Check size={14} className="text-emerald-600" /> : <Copy size={14} />}
-                          </button>
-                        </div>
-                        <div className="text-[10px] text-[#8C7541] font-semibold mt-0.5">
-                          Initial Registration: <strong>{lookupResult.person.registrationRegionCode === 'OR' ? 'Orynvell (OR)' : 'Unconfirmed'}</strong>
-                        </div>
-                      </div>
+                    )}
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <div className="flex items-center justify-between gap-1">
+                      <span className="font-bold text-xs text-white truncate">{p.name}</span>
+                      {p.maidStatus === 'active' && p.maid ? (
+                        <span className="text-[9px] font-mono bg-emerald-950/90 text-emerald-300 px-1.5 py-0.5 rounded border border-emerald-600/40 shrink-0">
+                          OR
+                        </span>
+                      ) : (
+                        <span className="text-[9px] font-mono bg-amber-950/90 text-amber-300 px-1.5 py-0.5 rounded border border-amber-600/40 shrink-0">
+                          PENDING
+                        </span>
+                      )}
                     </div>
-
-                    {/* Legacy Aliases Callout */}
-                    <div className="mb-5 rounded-lg border border-[#E2DCEF] bg-[#F9F7FC] p-3 text-xs flex items-center justify-between">
-                      <div className="flex items-center gap-2">
-                        <span className="font-bold text-[#6C5FAC]">Permanent Legacy Search Aliases:</span>
-                        <div className="flex gap-1.5 font-mono">
-                          {lookupResult.person.legacyAliases.map((alias) => (
-                            <span key={alias} className="rounded bg-white border border-[#D5CEE4] px-2 py-0.5 text-[11px] font-semibold text-[#2C2849]">
-                              {alias}
-                            </span>
-                          ))}
-                        </div>
-                      </div>
-                      <span className="text-[11px] text-[#8A95A5]">Searchable forever</span>
+                    <div className="text-[10px] font-mono text-[#C5AB78] truncate mt-0.5">
+                      {p.maid || p.legacyRecord}
                     </div>
-
-                    {/* Person Attributes Grid */}
-                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 text-xs">
-                      <div>
-                        <span className="text-[#69758A] text-[10px] uppercase font-bold block">Date of Birth</span>
-                        <strong className="text-[#2C2849]">{lookupResult.person.dob}</strong>
-                      </div>
-                      <div>
-                        <span className="text-[#69758A] text-[10px] uppercase font-bold block">Place of Birth</span>
-                        <strong className="text-[#2C2849]">{lookupResult.person.place}</strong>
-                      </div>
-                      <div>
-                        <span className="text-[#69758A] text-[10px] uppercase font-bold block">Current Residence</span>
-                        <strong className="text-[#2C2849]">{lookupResult.person.home}</strong>
-                      </div>
-                      <div>
-                        <span className="text-[#69758A] text-[10px] uppercase font-bold block">Species / Kind</span>
-                        <strong className="text-[#2C2849]">{lookupResult.person.species}</strong>
-                      </div>
-                      <div>
-                        <span className="text-[#69758A] text-[10px] uppercase font-bold block">Ancestral Lineage</span>
-                        <strong className="text-[#2C2849]">{lookupResult.person.ancestry}</strong>
-                      </div>
-                      <div>
-                        <span className="text-[#69758A] text-[10px] uppercase font-bold block">PRISM Affinity</span>
-                        <strong className="text-[#2C2849]">{lookupResult.person.affinity}</strong>
-                      </div>
-                      <div className="col-span-full">
-                        <span className="text-[#69758A] text-[10px] uppercase font-bold block">Abilities / Powers</span>
-                        <strong className="text-[#2C2849]">{lookupResult.person.abilities}</strong>
-                      </div>
-                    </div>
-
-                    {/* Action Bar */}
-                    <div className="mt-6 flex justify-end gap-3 border-t border-[#EAE6F2] pt-4">
-                      <button
-                        onClick={() => {
-                          setPortraitCitizen(lookupResult.person);
-                          setIsPortraitOpen(true);
-                        }}
-                        className="flex items-center gap-1.5 rounded-lg bg-[#FAF8F5] hover:bg-[#F2EDE4] border border-[#C5AB78] text-[#8C7541] px-4 py-2 text-xs font-semibold shadow-sm transition"
-                      >
-                        <Sparkles size={14} className="text-[#C5AB78]" />
-                        Portrait Studio
-                      </button>
-                      <button
-                        onClick={() => toggleApp('documentStudio')}
-                        className="flex items-center gap-1.5 rounded-lg bg-[#2C2849] hover:bg-[#3E3866] text-white px-4 py-2 text-xs font-semibold shadow transition"
-                      >
-                        <FileText size={14} className="text-[#C5AB78]" />
-                        Generate Nine-Document Packet
-                      </button>
+                    <div className="text-[10px] text-slate-400 truncate mt-0.5">
+                      {p.species} · {p.occupation}
                     </div>
                   </div>
-                )}
+                </button>
+              );
+            })}
 
-                {/* Status: PENDING MIGRATION */}
-                {lookupResult.status === 'pending_migration' && lookupResult.person && (
-                  <div className="space-y-4">
-                    <div className="rounded-xl border border-amber-300 bg-amber-50 p-4 text-amber-900 flex items-start gap-3">
-                      <AlertCircle size={20} className="text-amber-600 flex-shrink-0 mt-0.5" />
-                      <div>
-                        <h3 className="font-bold text-sm">Legacy Record Located: Pending Region Confirmation</h3>
-                        <p className="text-xs text-amber-800 mt-1 leading-relaxed">
-                          This record (<strong className="font-mono">{lookupResult.person.legacyRecord}</strong>) was imported from prior legacy registrations without an explicitly recorded Initial Registration Region.
-                          Per non-negotiable directive, registration region is never derived from birthplace or residence.
-                        </p>
-                      </div>
-                    </div>
-
-                    <div className="rounded-xl border border-[#D5CEE4] p-4 bg-[#FAF9FD] flex items-center justify-between">
-                      <div>
-                        <div className="font-bold text-sm text-[#2C2849]">{lookupResult.person.name}</div>
-                        <div className="text-xs text-[#69758A]">Birthplace: {lookupResult.person.place} · Home: {lookupResult.person.home}</div>
-                      </div>
-
-                      <button
-                        onClick={() => handleConfirmPendingRegistration(lookupResult.person!.id, 'OR')}
-                        className="flex items-center gap-2 rounded-lg bg-[#6C5FAC] hover:bg-[#524484] text-white px-4 py-2 text-xs font-bold shadow transition"
-                      >
-                        <CheckCircle2 size={14} />
-                        Confirm Initial Registration in Orynvell (OR) &amp; Issue MAID
-                      </button>
-                    </div>
-                  </div>
-                )}
-
-                {/* Status: RESTRICTED */}
-                {lookupResult.status === 'restricted' && (
-                  <div className="rounded-xl border border-rose-200 bg-rose-50 p-6 text-center space-y-3">
-                    <div className="flex h-12 w-12 items-center justify-center rounded-full bg-rose-100 text-rose-600 mx-auto">
-                      <Lock size={24} />
-                    </div>
-                    <h3 className="font-bold text-base text-rose-950">Classification Restriction</h3>
-                    <p className="text-xs text-rose-800 max-w-md mx-auto">
-                      {lookupResult.message || 'Access to this record is restricted to authorized DGA investigators. Public civic index query withheld.'}
-                    </p>
-                  </div>
-                )}
-
-                {/* Status: NOT FOUND */}
-                {lookupResult.status === 'not_found' && (
-                  <div className="text-center py-8 text-[#69758A] space-y-2">
-                    <AlertCircle size={32} className="mx-auto text-[#A5ADC0]" />
-                    <h3 className="font-bold text-sm text-[#2C2849]">No Record Located</h3>
-                    <p className="text-xs max-w-sm mx-auto">
-                      {lookupResult.message || 'No citizen was found matching that search parameter.'}
-                    </p>
-                  </div>
-                )}
+            {filteredPersons.length === 0 && (
+              <div className="text-center py-8 text-xs text-slate-500">
+                No citizen records match current filters.
               </div>
             )}
           </div>
-        )}
 
-        {/* WORKFLOW 2: ADD PERSON */}
-        {activeTab === 'add' && (
-          <div className="max-w-3xl mx-auto rounded-2xl border border-[#D5CEE4] bg-white p-6 shadow-md space-y-6">
-            <div className="border-b border-[#EAE6F2] pb-3">
-              <h2 className="text-base font-bold font-serif text-[#2C2849]">Official Person Registration</h2>
-              <p className="text-xs text-[#69758A]">
-                Establishes a new citizen identity and atomically allocates an official, permanent MAID.
-              </p>
+          <div className="p-3 border-t border-[#272040] bg-[#0E0B1A] text-[11px] text-slate-400 space-y-1">
+            <div className="flex justify-between">
+              <span>Active MAIDs:</span>
+              <strong className="text-emerald-400 font-mono">{persons.filter(p => p.maidStatus === 'active').length}</strong>
             </div>
+            <div className="flex justify-between">
+              <span>Pending Migration:</span>
+              <strong className="text-amber-400 font-mono">{persons.filter(p => p.maidStatus === 'pending_migration').length}</strong>
+            </div>
+          </div>
+        </aside>
 
-            <form onSubmit={handleAddPersonSubmit} className="space-y-4 text-xs">
-              
-              {/* Name & Region */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-[11px] font-bold text-[#4A5568] uppercase mb-1">
-                    Citizen Legal Name *
+        {/* Right Main Workspace */}
+        <main className="flex-1 overflow-y-auto p-6 bg-[#181429]">
+          {/* =====================================================================
+              TAB 1: LOOK UP MAID & COMPREHENSIVE CITIZEN DOSSIER
+             ===================================================================== */}
+          {activeTab === 'lookup' && (
+            <div className="max-w-5xl mx-auto space-y-5">
+              {/* Search Bar */}
+              <div className="bg-[#211B38] border border-[#382E5E] rounded-2xl p-5 shadow-lg">
+                <form onSubmit={handleSearch} className="space-y-2">
+                  <label htmlFor="maid-lookup-input" className="block text-xs font-bold uppercase tracking-wider text-[#C5AB78]">
+                    Authoritative MAID, Legacy MRD Alias, or Citizen Name Search
                   </label>
-                  <input
-                    type="text"
-                    required
-                    value={formData.name}
-                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                    placeholder="e.g. Kieran Vesper"
-                    className="w-full rounded-lg border border-[#D5CEE4] p-2.5 text-xs text-[#2C2849] focus:border-[#6C5FAC] focus:outline-none"
-                  />
+                  <div className="flex gap-2.5">
+                    <div className="relative flex-1">
+                      <Search size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
+                      <input
+                        id="maid-lookup-input"
+                        type="text"
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                        aria-describedby="maid-lookup-helper"
+                        placeholder="Enter MAID (MAID-OR-00481926), Legacy ID (MRD-8492-319), Name, or Occupation..."
+                        className="w-full rounded-xl bg-[#130F22] border border-[#44386A] pl-10 pr-4 py-2.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-[#C5AB78]"
+                      />
+                    </div>
+                    <button
+                      type="submit"
+                      disabled={isSearching}
+                      className="rounded-xl bg-gradient-to-r from-[#C5AB78] to-[#9883C8] hover:from-[#D4BC8B] hover:to-[#A896D8] text-[#161226] px-5 py-2.5 text-xs font-bold shadow transition cursor-pointer"
+                    >
+                      {isSearching ? 'Querying...' : 'Resolve Identity'}
+                    </button>
+                  </div>
+                  <p id="maid-lookup-helper" className="text-[11px] text-slate-400">
+                    Resolves permanent <code className="text-[#E5D7B5]">MAID-OR-XXXXXXXX</code> numbers, historical <code className="text-indigo-300">MRD-...</code> aliases, and partial name/institution queries.
+                  </p>
+                </form>
+              </div>
+
+              {/* Not Found State */}
+              {lookupResult?.status === 'not_found' && (
+                <div role="alert" className="bg-rose-950/40 border border-rose-500/40 rounded-2xl p-5 flex items-start gap-4">
+                  <AlertTriangle size={22} className="text-rose-400 shrink-0 mt-0.5" />
+                  <div>
+                    <h3 className="text-sm font-bold text-rose-200">Identity Record Not Found</h3>
+                    <p className="text-xs text-rose-300/90 mt-1">{lookupResult.message}</p>
+                  </div>
                 </div>
+              )}
 
-                <div>
-                  <label className="block text-[11px] font-bold text-[#4A5568] uppercase mb-1">
-                    Initial Registration Region *
-                  </label>
-                  <select
-                    value={formData.registrationRegion}
-                    onChange={(e) => setFormData({ ...formData, registrationRegion: e.target.value as any })}
-                    className="w-full rounded-lg border border-[#D5CEE4] p-2.5 text-xs text-[#2C2849] focus:border-[#6C5FAC] focus:outline-none bg-white font-semibold"
+              {/* Pending Migration Alert */}
+              {lookupResult?.status === 'pending_migration' && activePerson && (
+                <div className="bg-amber-950/40 border border-amber-500/40 rounded-2xl p-4 flex items-center justify-between gap-4">
+                  <div className="flex items-start gap-3">
+                    <AlertTriangle size={20} className="text-amber-400 shrink-0 mt-0.5" />
+                    <div>
+                      <h3 className="text-xs font-bold text-amber-200">Pending Registration Region Confirmation</h3>
+                      <p className="text-[11px] text-amber-300/90 mt-0.5">
+                        Legacy record <strong>{activePerson.legacyRecord}</strong> requires explicit Orynvell (<code className="font-mono">OR</code>) confirmation before permanent MAID allocation.
+                      </p>
+                    </div>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => handleConfirmPendingRegion(activePerson.id)}
+                    className="rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 px-4 py-2 text-xs font-bold transition shrink-0"
                   >
-                    <option value="OR">Orynvell (OR) · Authorized for MAID Issuance</option>
-                  </select>
-                  <span className="text-[10px] text-[#8C7541] mt-1 block">
-                    ✦ Note: Non-OR regional codes require confirmation by Creative Director.
-                  </span>
+                    Confirm Orynvell (OR) & Issue MAID
+                  </button>
                 </div>
-              </div>
+              )}
 
-              {/* Birthplace & Residence */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-[11px] font-bold text-[#4A5568] uppercase mb-1">
-                    Place of Birth *
-                  </label>
-                  <input
-                    type="text"
-                    required
-                    value={formData.place}
-                    onChange={(e) => setFormData({ ...formData, place: e.target.value })}
-                    className="w-full rounded-lg border border-[#D5CEE4] p-2.5 text-xs text-[#2C2849] focus:border-[#6C5FAC] focus:outline-none"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-[11px] font-bold text-[#4A5568] uppercase mb-1">
-                    Current Home Region / Residence *
-                  </label>
-                  <input
-                    type="text"
-                    required
-                    value={formData.home}
-                    onChange={(e) => setFormData({ ...formData, home: e.target.value })}
-                    className="w-full rounded-lg border border-[#D5CEE4] p-2.5 text-xs text-[#2C2849] focus:border-[#6C5FAC] focus:outline-none"
-                  />
-                </div>
-              </div>
-
-              {/* Species & Lineage */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-[11px] font-bold text-[#4A5568] uppercase mb-1">
-                    Species / Kind
-                  </label>
-                  <input
-                    type="text"
-                    value={formData.species}
-                    onChange={(e) => setFormData({ ...formData, species: e.target.value })}
-                    className="w-full rounded-lg border border-[#D5CEE4] p-2.5 text-xs text-[#2C2849] focus:border-[#6C5FAC] focus:outline-none"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-[11px] font-bold text-[#4A5568] uppercase mb-1">
-                    Ancestral Lineage
-                  </label>
-                  <input
-                    type="text"
-                    value={formData.ancestry}
-                    onChange={(e) => setFormData({ ...formData, ancestry: e.target.value })}
-                    className="w-full rounded-lg border border-[#D5CEE4] p-2.5 text-xs text-[#2C2849] focus:border-[#6C5FAC] focus:outline-none"
-                  />
-                </div>
-              </div>
-
-              {/* Abilities */}
-              <div>
-                <label className="block text-[11px] font-bold text-[#4A5568] uppercase mb-1">
-                  Abilities &amp; Resonance Powers *
-                </label>
-                <textarea
-                  required
-                  rows={2}
-                  value={formData.abilities}
-                  onChange={(e) => setFormData({ ...formData, abilities: e.target.value })}
-                  className="w-full rounded-lg border border-[#D5CEE4] p-2.5 text-xs text-[#2C2849] focus:border-[#6C5FAC] focus:outline-none"
-                />
-              </div>
-
-              {/* Submit Action */}
-              <div className="pt-4 border-t border-[#EAE6F2] flex justify-end">
-                <button
-                  type="submit"
-                  className="flex items-center gap-2 rounded-xl bg-gradient-to-r from-[#6C5FAC] to-[#2C2849] hover:from-[#7D6FBF] hover:to-[#3E3866] text-white px-6 py-3 text-xs font-bold shadow-md transition"
-                >
-                  <CheckCircle2 size={16} />
-                  ✦ Register Person &amp; Issue Official MAID
-                </button>
-              </div>
-            </form>
-          </div>
-        )}
-
-        {/* WORKFLOW 3: ROSTER / NETWORK */}
-        {activeTab === 'roster' && (
-          <div className="max-w-5xl mx-auto space-y-4">
-            <div className="flex items-center justify-between">
-              <div>
-                <h2 className="text-base font-bold font-serif text-[#2C2849]">Canonical Citizen Network</h2>
-                <p className="text-xs text-[#69758A]">
-                  All officially registered persons and legacy aliases currently present in the durable registry.
-                </p>
-              </div>
-
-              <button
-                onClick={handleRunMigration}
-                className="flex items-center gap-1.5 rounded-lg bg-white border border-[#D5CEE4] px-3 py-1.5 text-xs font-semibold text-[#2C2849] hover:bg-[#F9F7FC] transition shadow-sm"
-              >
-                <RefreshCw size={12} />
-                Run Legacy Migration Check
-              </button>
-            </div>
-
-            {/* Roster Table */}
-            <div className="rounded-xl border border-[#D5CEE4] bg-white overflow-hidden shadow-sm">
-              <table className="w-full text-left border-collapse text-xs">
-                <thead>
-                  <tr className="bg-[#FAF9FD] border-b border-[#E2DCEF] text-[10px] font-bold text-[#69758A] uppercase">
-                    <th className="py-3 px-4">Citizen Name</th>
-                    <th className="py-3 px-4">Official MAID</th>
-                    <th className="py-3 px-4">Initial Region</th>
-                    <th className="py-3 px-4">Legacy Alias</th>
-                    <th className="py-3 px-4">Species</th>
-                    <th className="py-3 px-4">Status</th>
-                    <th className="py-3 px-4 text-right">Action</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-[#EAE6F2]">
-                  {allPersons.map((p) => (
-                    <tr key={p.id} className="hover:bg-[#FAF9FD] transition">
-                      <td className="py-3 px-4 font-semibold text-[#2C2849]">{p.name}</td>
-                      <td className="py-3 px-4 font-mono">
-                        {p.maid ? (
-                          <span className="font-bold text-[#6C5FAC]">{p.maid}</span>
+              {/* Active Citizen Comprehensive Dossier */}
+              {activePerson && (
+                <div className="bg-[#211B38] border border-[#3C3264] rounded-2xl shadow-xl overflow-hidden">
+                  {/* Citizen Master Banner */}
+                  <div className="bg-gradient-to-r from-[#282046] via-[#211B38] to-[#2C224E] p-6 border-b border-[#3C3264] flex flex-wrap items-center justify-between gap-4">
+                    <div className="flex items-center gap-4">
+                      <div className="relative h-20 w-20 rounded-2xl overflow-hidden border-2 border-[#C5AB78] bg-[#130F22] shadow-lg shrink-0 group">
+                        {activePerson.portraitData ? (
+                          <img src={activePerson.portraitData} alt={activePerson.name} className="h-full w-full object-cover" />
                         ) : (
-                          <span className="rounded bg-amber-100 text-amber-800 px-1.5 py-0.5 text-[10px] font-semibold">Pending Confirmation</span>
+                          <div className="h-full w-full flex items-center justify-center text-2xl font-bold text-[#C5AB78]">
+                            {activePerson.name.charAt(0)}
+                          </div>
                         )}
-                      </td>
-                      <td className="py-3 px-4 text-[#4A5568]">
-                        {p.registrationRegionCode === 'OR' ? 'Orynvell (OR)' : 'Unassigned'}
-                      </td>
-                      <td className="py-3 px-4 font-mono text-[#69758A]">
-                        {p.legacyAliases.join(', ') || p.legacyRecord}
-                      </td>
-                      <td className="py-3 px-4 text-[#4A5568]">{p.species}</td>
-                      <td className="py-3 px-4">
-                        <span className="rounded-full bg-emerald-100 text-emerald-800 text-[10px] font-bold px-2 py-0.5">
-                          {p.status || 'ACTIVE'}
-                        </span>
-                      </td>
-                      <td className="py-3 px-4 text-right">
                         <button
-                          onClick={() => handleQuickLookup(p.maid || p.legacyRecord)}
-                          className="text-[#6C5FAC] hover:text-[#2C2849] font-bold text-[11px]"
+                          type="button"
+                          onClick={() => setPortraitModalTarget('dossier')}
+                          className="absolute inset-0 bg-black/65 opacity-0 group-hover:opacity-100 transition flex flex-col items-center justify-center text-[10px] font-bold text-[#E5D7B5]"
+                          title="Open Portrait Studio for this citizen"
                         >
-                          View →
+                          <Camera size={14} className="mb-0.5" />
+                          Portrait
                         </button>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+                      </div>
+
+                      <div>
+                        <div className="flex flex-wrap items-center gap-2">
+                          <h2 className="text-xl font-bold text-white font-serif">{activePerson.name}</h2>
+                          {activePerson.alias && (
+                            <span className="text-xs text-[#C5AB78] font-medium">“{activePerson.alias}”</span>
+                          )}
+                          <span className="rounded-full bg-emerald-950/80 border border-emerald-500/40 px-2.5 py-0.5 text-[10px] font-mono font-bold text-emerald-300">
+                            {activePerson.status}
+                          </span>
+                        </div>
+
+                        <div className="text-xs text-slate-300 mt-1">
+                          {activePerson.species} ({activePerson.ancestry}) · <span className="text-[#E5D7B5] font-semibold">{activePerson.occupation}</span>
+                        </div>
+                        <div className="text-[11px] text-slate-400 mt-0.5">
+                          Institution: <strong className="text-slate-200">{activePerson.affiliation}</strong> · Residence: <strong className="text-slate-200">{activePerson.home}</strong>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Authoritative MAID & Legacy Alias Box */}
+                    <div className="bg-[#141024] border border-[#44386A] rounded-xl p-3.5 text-right space-y-1.5">
+                      <div className="text-[10px] font-mono uppercase tracking-wider text-slate-400">
+                        OFFICIAL PERMANENT MAID (IMMUTABLE)
+                      </div>
+                      {activePerson.maid ? (
+                        <div className="flex items-center justify-end gap-2">
+                          <span className="text-base font-mono font-bold text-[#E5D7B5] tracking-wider">
+                            {activePerson.maid}
+                          </span>
+                          <button
+                            type="button"
+                            onClick={() => handleCopy(activePerson.maid!)}
+                            className="p-1 rounded bg-[#251E3D] hover:bg-[#362C58] text-slate-300"
+                            title="Copy MAID"
+                          >
+                            {copiedText === activePerson.maid ? <Check size={13} className="text-emerald-400" /> : <Copy size={13} />}
+                          </button>
+                        </div>
+                      ) : (
+                        <div className="text-xs font-mono font-bold text-amber-400">PENDING REGION CONFIRMATION</div>
+                      )}
+                      <div className="text-[10px] font-mono text-indigo-300">
+                        Legacy MRD Alias: {activePerson.legacyAliases?.join(', ') || activePerson.legacyRecord} · Passport: {activePerson.passport}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Dossier Sub-Navigation Tabs */}
+                  <div className="flex flex-wrap items-center justify-between gap-2 bg-[#171229] px-6 py-2.5 border-b border-[#2F264F]">
+                    <div className="flex flex-wrap items-center gap-1.5">
+                      {[
+                        { id: 'overview', label: 'Identity & Biometrics', icon: Fingerprint },
+                        { id: 'ancestry', label: 'Ancestry & Resonance', icon: Sparkles },
+                        { id: 'institutions', label: 'Faith Med / Cyacademy / DGA', icon: Building },
+                        { id: 'relationships', label: `Relationships (${activePerson.relationshipIds?.length || 0})`, icon: Users },
+                        { id: 'documents', label: `Official Documents (9)`, icon: FileText },
+                        { id: 'edit', label: 'Edit Profile', icon: Edit3 },
+                      ].map((tab) => {
+                        const Icon = tab.icon;
+                        const isSel = dossierSection === tab.id;
+                        return (
+                          <button
+                            type="button"
+                            key={tab.id}
+                            onClick={() => setDossierSection(tab.id as any)}
+                            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition ${
+                              isSel
+                                ? 'bg-[#3C3268] text-white border border-[#C5AB78]/50 shadow-xs'
+                                : 'text-slate-400 hover:text-white hover:bg-white/5'
+                            }`}
+                          >
+                            <Icon size={13} className={isSel ? 'text-[#C5AB78]' : 'text-slate-400'} />
+                            <span>{tab.label}</span>
+                          </button>
+                        );
+                      })}
+                    </div>
+
+                    {/* Quick Open in Document Studio */}
+                    <div className="flex items-center gap-2">
+                      <button
+                        type="button"
+                        onClick={() => setPortraitModalTarget('dossier')}
+                        className="flex items-center gap-1 rounded-lg bg-[#272042] hover:bg-[#362C5A] border border-[#524484] px-2.5 py-1.5 text-[11px] font-semibold text-[#E5D7B5]"
+                      >
+                        <Camera size={12} /> Portrait Studio
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => openCitizenInApp(activePerson.maid || activePerson.legacyRecord, 'documentStudio', { sourceApp: 'meridionRegistry' })}
+                        className="flex items-center gap-1 rounded-lg bg-gradient-to-r from-[#C5AB78] to-[#9883C8] text-[#161226] px-3 py-1.5 text-[11px] font-bold shadow"
+                      >
+                        <FileText size={12} /> Open in Document Studio
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* DOSSIER SECTION 1: OVERVIEW & 10-PRINT BIOMETRICS */}
+                  {dossierSection === 'overview' && (
+                    <div className="p-6 space-y-6">
+                      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div className="bg-[#161226] border border-[#2F264F] rounded-xl p-4 space-y-2.5">
+                          <h3 className="text-[11px] font-bold uppercase tracking-wider text-[#C5AB78] border-b border-[#272040] pb-1.5">
+                            Vital & Domicile Coordinates
+                          </h3>
+                          <div className="space-y-1.5 text-xs">
+                            <div className="flex justify-between"><span className="text-slate-400">Date of Birth:</span><strong className="text-white font-mono">{activePerson.dob}</strong></div>
+                            <div className="flex justify-between"><span className="text-slate-400">Birthplace:</span><strong className="text-white">{activePerson.place}</strong></div>
+                            <div className="flex justify-between"><span className="text-slate-400">Current Home:</span><strong className="text-white">{activePerson.home}</strong></div>
+                            <div className="flex justify-between"><span className="text-slate-400">District:</span><strong className="text-slate-200">{activePerson.district}</strong></div>
+                            <div className="flex justify-between"><span className="text-slate-400">Housing Unit:</span><strong className="text-indigo-300">{activePerson.household || activePerson.residency}</strong></div>
+                            <div className="pt-1 border-t border-[#272040] text-[11px] text-slate-300">{activePerson.address}</div>
+                          </div>
+                        </div>
+
+                        <div className="bg-[#161226] border border-[#2F264F] rounded-xl p-4 space-y-2.5">
+                          <h3 className="text-[11px] font-bold uppercase tracking-wider text-[#C5AB78] border-b border-[#272040] pb-1.5">
+                            Physical & Biometric Descriptors
+                          </h3>
+                          <div className="space-y-1.5 text-xs">
+                            <div className="flex justify-between"><span className="text-slate-400">Height / Build:</span><strong className="text-white">{activePerson.height} · {activePerson.build}</strong></div>
+                            <div className="flex justify-between"><span className="text-slate-400">Eye Color:</span><strong className="text-white">{activePerson.eyes}</strong></div>
+                            <div className="flex justify-between"><span className="text-slate-400">Hair Color:</span><strong className="text-white">{activePerson.hair}</strong></div>
+                            <div className="flex justify-between"><span className="text-slate-400">Blood & Aura:</span><strong className="text-emerald-300">{activePerson.blood}</strong></div>
+                            <div className="pt-1 border-t border-[#272040] text-[11px] text-slate-300">
+                              <span className="text-slate-400 block">Distinguishing Marks:</span>
+                              {activePerson.mark}
+                            </div>
+                          </div>
+                        </div>
+
+                        <div className="bg-[#161226] border border-[#2F264F] rounded-xl p-4 space-y-2.5">
+                          <h3 className="text-[11px] font-bold uppercase tracking-wider text-[#C5AB78] border-b border-[#272040] pb-1.5">
+                            Sovereign Registration Metadata
+                          </h3>
+                          <div className="space-y-1.5 text-xs">
+                            <div className="flex justify-between"><span className="text-slate-400">Reg. Region:</span><strong className="text-emerald-400 font-mono">{activePerson.registrationRegionCode || 'PENDING'} (Orynvell)</strong></div>
+                            <div className="flex justify-between"><span className="text-slate-400">Passport No.:</span><strong className="text-amber-300 font-mono">{activePerson.passport}</strong></div>
+                            <div className="flex justify-between"><span className="text-slate-400">Clearance:</span><strong className="text-indigo-300">{activePerson.clearance}</strong></div>
+                            <div className="flex justify-between"><span className="text-slate-400">Comms / Phone:</span><strong className="text-slate-200 font-mono">{activePerson.phone}</strong></div>
+                            <div className="flex justify-between"><span className="text-slate-400">Versenet Mail:</span><strong className="text-slate-200 font-mono">{activePerson.email}</strong></div>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* 10-Print Dermal Ridge Classification Strip */}
+                      <div className="bg-[#161226] border border-[#2F264F] rounded-xl p-4 space-y-3">
+                        <div className="flex items-center justify-between">
+                          <div>
+                            <h3 className="text-xs font-bold uppercase tracking-wider text-[#C5AB78] flex items-center gap-2">
+                              <Fingerprint size={15} /> Authoritative 10-Print Dermal Ridge Classification
+                            </h3>
+                            <p className="text-[11px] text-slate-400">
+                              Deterministic biometric ridge matrix seeded from <code className="text-indigo-300">{activePerson.biometricSeed}</code> (synchronized with TRACE AFIS & Document 4).
+                            </p>
+                          </div>
+                          <button
+                            type="button"
+                            onClick={() => openCitizenInApp(activePerson.maid || activePerson.legacyRecord, 'documentStudio', { targetDocId: 4, sourceApp: 'meridionRegistry' })}
+                            className="text-[11px] font-semibold text-[#E5D7B5] hover:underline flex items-center gap-1"
+                          >
+                            Open 10-Print Sheet <ExternalLink size={12} />
+                          </button>
+                        </div>
+
+                        <div className="grid grid-cols-2 sm:grid-cols-5 gap-2">
+                          {activeTenPrints.map((fp) => (
+                            <div key={fp.fingerIndex} className="bg-[#1E1836] border border-[#352C57] rounded-lg p-2.5 text-center space-y-1">
+                              <div className="text-[10px] font-bold text-slate-300">{fp.label}</div>
+                              <div className="mx-auto h-10 w-10 rounded-full border border-indigo-400/40 bg-[#120E20] flex items-center justify-center">
+                                <Fingerprint size={22} className="text-indigo-300 opacity-85" />
+                              </div>
+                              <div className="text-[10px] font-mono font-bold text-[#C5AB78]">{fp.pattern}</div>
+                              <div className="text-[9px] font-mono text-slate-400">
+                                {fp.henryCode} · {fp.minutiaeScore}%
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* DOSSIER SECTION 2: ANCESTRY & RESONANCE */}
+                  {dossierSection === 'ancestry' && (
+                    <div className="p-6 space-y-4">
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div className="bg-[#161226] border border-[#2F264F] rounded-xl p-5 space-y-3">
+                          <h3 className="text-xs font-bold uppercase tracking-wider text-[#C5AB78]">
+                            Lineage, Species & Origin
+                          </h3>
+                          <div className="space-y-2 text-xs">
+                            <div className="flex justify-between border-b border-[#272040] pb-1.5">
+                              <span className="text-slate-400">Biological / Celestial Species:</span>
+                              <strong className="text-white">{activePerson.species}</strong>
+                            </div>
+                            <div className="flex justify-between border-b border-[#272040] pb-1.5">
+                              <span className="text-slate-400">Ancestral House / Lineage:</span>
+                              <strong className="text-purple-300">{activePerson.ancestry}</strong>
+                            </div>
+                            <div className="flex justify-between border-b border-[#272040] pb-1.5">
+                              <span className="text-slate-400">Archetype / Story Mode:</span>
+                              <strong className="text-[#E5D7B5]">{activePerson.storyMode || 'Ordinary & Believable'}</strong>
+                            </div>
+                            <div className="pt-1">
+                              <span className="text-slate-400 block mb-1">Timeline & Migration Origin:</span>
+                              <p className="text-slate-200 leading-relaxed bg-[#1E1836] p-3 rounded-lg border border-[#352C57]">
+                                {activePerson.timeline || `Origin: ${activePerson.place}; registered in ${activePerson.home}`}
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div className="bg-[#161226] border border-[#2F264F] rounded-xl p-5 space-y-3">
+                          <h3 className="text-xs font-bold uppercase tracking-wider text-[#C5AB78]">
+                            PRISM Resonance, Affinity & Abilities
+                          </h3>
+                          <div className="space-y-2 text-xs">
+                            <div className="flex justify-between border-b border-[#272040] pb-1.5">
+                              <span className="text-slate-400">Spectrum Affinity:</span>
+                              <strong className="text-indigo-300">{activePerson.affinity}</strong>
+                            </div>
+                            <div className="flex justify-between border-b border-[#272040] pb-1.5">
+                              <span className="text-slate-400">Primary Power Source:</span>
+                              <strong className="text-amber-300">{activePerson.powerSource}</strong>
+                            </div>
+                            <div className="flex justify-between border-b border-[#272040] pb-1.5">
+                              <span className="text-slate-400">Aura Calibration Tier:</span>
+                              <strong className="text-emerald-300">{activePerson.aura || 'Aura Calibrated Standard'}</strong>
+                            </div>
+                            <div className="pt-1">
+                              <span className="text-slate-400 block mb-1">Recorded Abilities & Harmonic Traits:</span>
+                              <p className="text-slate-200 leading-relaxed bg-[#1E1836] p-3 rounded-lg border border-[#352C57]">
+                                {activePerson.abilities}
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="bg-[#161226] border border-[#2F264F] rounded-xl p-5 space-y-2">
+                        <h3 className="text-xs font-bold uppercase tracking-wider text-[#C5AB78]">
+                          Archival Biography & Civic History
+                        </h3>
+                        <p className="text-xs text-slate-200 leading-relaxed">{activePerson.lore || activePerson.history}</p>
+                        <p className="text-[11px] text-slate-400 pt-1 border-t border-[#272040]">{activePerson.history}</p>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* DOSSIER SECTION 3: INSTITUTIONAL & CLINICAL RECORDS */}
+                  {dossierSection === 'institutions' && (
+                    <div className="p-6 space-y-4">
+                      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        {/* Faith Medical Group */}
+                        <div className="bg-[#161226] border border-teal-500/30 rounded-xl p-4 flex flex-col justify-between space-y-3">
+                          <div className="space-y-2">
+                            <div className="flex items-center justify-between">
+                              <span className="text-xs font-bold text-teal-300 flex items-center gap-1.5">
+                                <HeartPulse size={15} /> Faith Medical Group
+                              </span>
+                              <span className="text-[10px] font-mono bg-teal-950 text-teal-300 px-2 py-0.5 rounded border border-teal-500/30">
+                                MEDSTAT SYNCED
+                              </span>
+                            </div>
+                            <p className="text-xs text-slate-200 leading-relaxed bg-[#1E1836] p-3 rounded-lg border border-[#352C57]">
+                              {activePerson.medical}
+                            </p>
+                            <div className="text-[11px] text-slate-400">
+                              Blood/Aura: <strong className="text-teal-200">{activePerson.blood}</strong> · <strong className="text-teal-200">{activePerson.aura}</strong>
+                            </div>
+                          </div>
+                          <div className="flex flex-col gap-1.5 pt-2">
+                            <button
+                              type="button"
+                              onClick={() => openCitizenInApp(activePerson.maid || activePerson.legacyRecord, 'documentStudio', { targetDocId: 8, sourceApp: 'meridionRegistry' })}
+                              className="w-full py-2 rounded-lg bg-teal-900/50 hover:bg-teal-800/70 border border-teal-500/40 text-teal-200 text-xs font-bold transition flex items-center justify-center gap-1.5"
+                            >
+                              <FileText size={13} /> Open Medical Summary (Doc 8)
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => openCitizenInApp(activePerson.maid || activePerson.legacyRecord, 'jobs', { targetTab: 'faithmed', sourceApp: 'meridionRegistry' })}
+                              className="w-full py-1.5 rounded-lg bg-[#241D3B] hover:bg-[#312850] text-slate-200 text-[11px] font-semibold transition flex items-center justify-center gap-1"
+                            >
+                              Open in Faith Medical Triage <ExternalLink size={11} />
+                            </button>
+                          </div>
+                        </div>
+
+                        {/* Cyacademy & Housing */}
+                        <div className="bg-[#161226] border border-indigo-500/30 rounded-xl p-4 flex flex-col justify-between space-y-3">
+                          <div className="space-y-2">
+                            <div className="flex items-center justify-between">
+                              <span className="text-xs font-bold text-indigo-300 flex items-center gap-1.5">
+                                <GraduationCap size={15} /> Cyacademy & Housing
+                              </span>
+                              <span className="text-[10px] font-mono bg-indigo-950 text-indigo-300 px-2 py-0.5 rounded border border-indigo-500/30">
+                                MIRROR / HOMECRAFT
+                              </span>
+                            </div>
+                            <div className="text-xs text-slate-200 space-y-1 bg-[#1E1836] p-3 rounded-lg border border-[#352C57]">
+                              <div><span className="text-slate-400">Affiliation:</span> <strong>{activePerson.affiliation}</strong></div>
+                              <div><span className="text-slate-400">Role:</span> <strong>{activePerson.occupation}</strong></div>
+                              <div><span className="text-slate-400">Housing:</span> <strong className="text-indigo-200">{activePerson.household || activePerson.residency}</strong></div>
+                            </div>
+                          </div>
+                          <div className="flex flex-col gap-1.5 pt-2">
+                            <button
+                              type="button"
+                              onClick={() => openCitizenInApp(activePerson.maid || activePerson.legacyRecord, 'documentStudio', { targetDocId: 9, sourceApp: 'meridionRegistry' })}
+                              className="w-full py-2 rounded-lg bg-indigo-900/50 hover:bg-indigo-800/70 border border-indigo-500/40 text-indigo-200 text-xs font-bold transition flex items-center justify-center gap-1.5"
+                            >
+                              <FileText size={13} /> Education & Service (Doc 9)
+                            </button>
+                            <div className="grid grid-cols-2 gap-1.5">
+                              <button
+                                type="button"
+                                onClick={() => openCitizenInApp(activePerson.maid || activePerson.legacyRecord, 'passport', { sourceApp: 'meridionRegistry' })}
+                                className="py-1.5 rounded-lg bg-[#241D3B] hover:bg-[#312850] text-slate-200 text-[11px] font-semibold transition"
+                              >
+                                MIRROR Profile
+                              </button>
+                              <button
+                                type="button"
+                                onClick={() => openCitizenInApp(activePerson.maid || activePerson.legacyRecord, 'housing', { sourceApp: 'meridionRegistry' })}
+                                className="py-1.5 rounded-lg bg-[#241D3B] hover:bg-[#312850] text-slate-200 text-[11px] font-semibold transition"
+                              >
+                                Housing App
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* DGAOS & TRACE Forensics */}
+                        <div className="bg-[#161226] border border-rose-500/30 rounded-xl p-4 flex flex-col justify-between space-y-3">
+                          <div className="space-y-2">
+                            <div className="flex items-center justify-between">
+                              <span className="text-xs font-bold text-rose-300 flex items-center gap-1.5">
+                                <Shield size={15} /> DGAOS & TRACE
+                              </span>
+                              <span className="text-[10px] font-mono bg-rose-950 text-rose-300 px-2 py-0.5 rounded border border-rose-500/30">
+                                EYES / AFIS
+                              </span>
+                            </div>
+                            <div className="text-xs text-slate-200 space-y-1 bg-[#1E1836] p-3 rounded-lg border border-[#352C57]">
+                              <div><span className="text-slate-400">Clearance:</span> <strong className="text-amber-300">{activePerson.clearance}</strong></div>
+                              <div><span className="text-slate-400">Standing:</span> <strong>{activePerson.links}</strong></div>
+                            </div>
+                          </div>
+                          <div className="flex flex-col gap-1.5 pt-2">
+                            <button
+                              type="button"
+                              onClick={() => openCitizenInApp(activePerson.maid || activePerson.legacyRecord, 'documentStudio', { targetDocId: 5, sourceApp: 'meridionRegistry' })}
+                              className="w-full py-2 rounded-lg bg-rose-900/50 hover:bg-rose-800/70 border border-rose-500/40 text-rose-200 text-xs font-bold transition flex items-center justify-center gap-1.5"
+                            >
+                              <Shield size={13} /> Investigative Profile (Doc 5)
+                            </button>
+                            <div className="grid grid-cols-2 gap-1.5">
+                              <button
+                                type="button"
+                                onClick={() => openCitizenInApp(activePerson.maid || activePerson.legacyRecord, 'dgaos', { sourceApp: 'meridionRegistry' })}
+                                className="py-1.5 rounded-lg bg-[#241D3B] hover:bg-[#312850] text-slate-200 text-[11px] font-semibold transition"
+                              >
+                                Open DGAOS
+                              </button>
+                              <button
+                                type="button"
+                                onClick={() => openCitizenInApp(activePerson.maid || activePerson.legacyRecord, 'traceForensics', { sourceApp: 'meridionRegistry' })}
+                                className="py-1.5 rounded-lg bg-[#241D3B] hover:bg-[#312850] text-slate-200 text-[11px] font-semibold transition"
+                              >
+                                Open TRACE
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* DOSSIER SECTION 4: INTERACTIVE RELATIONSHIPS & HOUSEHOLD */}
+                  {dossierSection === 'relationships' && (
+                    <div className="p-6 space-y-5">
+                      <div className="grid grid-cols-1 md:grid-cols-12 gap-5">
+                        {/* Existing Relationships Graph */}
+                        <div className="md:col-span-7 bg-[#161226] border border-[#2F264F] rounded-xl p-4 space-y-3">
+                          <h3 className="text-xs font-bold uppercase tracking-wider text-[#C5AB78] flex items-center gap-2">
+                            <Users size={15} /> Verified Citizen Relationships & Associates
+                          </h3>
+                          {activePerson.relationships && (
+                            <p className="text-xs text-slate-300 bg-[#1E1836] p-3 rounded-lg border border-[#352C57]">
+                              {activePerson.relationships}
+                            </p>
+                          )}
+
+                          <div className="space-y-2">
+                            {(activePerson.relationshipIds || []).map((rel, i) => {
+                              const linkedCitizen = persons.find(p => p.maid === rel.id || p.legacyRecord === rel.id || p.id === rel.id);
+                              return (
+                                <div
+                                  key={i}
+                                  className="flex items-center justify-between bg-[#1F1936] border border-[#3C3264] rounded-xl p-3 hover:border-[#C5AB78] transition"
+                                >
+                                  <div className="flex items-center gap-3">
+                                    <div className="h-9 w-9 rounded-lg overflow-hidden bg-[#120E20] border border-[#44386A] flex items-center justify-center font-bold text-xs text-[#C5AB78]">
+                                      {linkedCitizen?.portraitData ? (
+                                        <img src={linkedCitizen.portraitData} alt={linkedCitizen.name} className="h-full w-full object-cover" />
+                                      ) : (
+                                        (linkedCitizen?.name || rel.id).charAt(0)
+                                      )}
+                                    </div>
+                                    <div>
+                                      <div className="text-xs font-bold text-white">
+                                        {linkedCitizen ? linkedCitizen.name : rel.id}
+                                        <span className="ml-2 text-[10px] font-mono text-[#C5AB78]">({rel.id})</span>
+                                      </div>
+                                      <div className="text-[11px] text-indigo-300 font-semibold">
+                                        {rel.type} {rel.notes ? <span className="text-slate-400 font-normal">· {rel.notes}</span> : null}
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <button
+                                    type="button"
+                                    onClick={() => handleQuickLookup(rel.id)}
+                                    className="px-3 py-1.5 rounded-lg bg-[#2E254D] hover:bg-[#3F3368] text-xs font-bold text-[#E5D7B5] flex items-center gap-1"
+                                  >
+                                    Inspect <ArrowRight size={12} />
+                                  </button>
+                                </div>
+                              );
+                            })}
+
+                            {(!activePerson.relationshipIds || activePerson.relationshipIds.length === 0) && (
+                              <div className="text-xs text-slate-400 py-4 text-center">
+                                No structured relationship links recorded yet. Use the form on the right to link another citizen.
+                              </div>
+                            )}
+                          </div>
+                        </div>
+
+                        {/* Link New Relationship Form */}
+                        <div className="md:col-span-5 bg-[#161226] border border-[#2F264F] rounded-xl p-4">
+                          <form onSubmit={handleLinkRelationship} className="space-y-3">
+                            <fieldset className="space-y-3">
+                              <legend className="text-xs font-bold uppercase tracking-wider text-[#C5AB78] flex items-center gap-1.5 mb-1">
+                                <Link2 size={14} /> Link Citizen Relationship
+                              </legend>
+
+                              <div>
+                                <label htmlFor="rel-target-select" className="block text-[11px] font-semibold text-slate-300 mb-1">
+                                  Target Citizen (MAID Registry)
+                                </label>
+                                <select
+                                  id="rel-target-select"
+                                  value={relTargetMaid}
+                                  onChange={(e) => setRelTargetMaid(e.target.value)}
+                                  required
+                                  className="w-full rounded-lg bg-[#1E1836] border border-[#3C3264] px-3 py-2 text-xs text-white focus:outline-none focus:border-[#C5AB78]"
+                                >
+                                  <option value="">Select a citizen to link...</option>
+                                  {persons
+                                    .filter(p => p.id !== activePerson.id)
+                                    .map(p => (
+                                      <option key={p.id} value={p.maid || p.legacyRecord}>
+                                        {p.name} ({p.maid || p.legacyRecord})
+                                      </option>
+                                    ))}
+                                </select>
+                              </div>
+
+                              <div>
+                                <label htmlFor="rel-type-select" className="block text-[11px] font-semibold text-slate-300 mb-1">
+                                  Relationship Classification
+                                </label>
+                                <select
+                                  id="rel-type-select"
+                                  value={relType}
+                                  onChange={(e) => setRelType(e.target.value)}
+                                  className="w-full rounded-lg bg-[#1E1836] border border-[#3C3264] px-3 py-2 text-xs text-white focus:outline-none focus:border-[#C5AB78]"
+                                >
+                                  <option value="Research Partner">Research Partner (Cyacademy)</option>
+                                  <option value="Attending Clinician">Attending Clinician (Faith Medical)</option>
+                                  <option value="Patient">Patient (Faith Medical)</option>
+                                  <option value="Forensic Colleague">Forensic Colleague (DGAOS / TRACE)</option>
+                                  <option value="Investigative Subject">Investigative Subject (DGAOS)</option>
+                                  <option value="Family / Kin">Family / Kin</option>
+                                  <option value="Housing Neighbor">Housing Neighbor</option>
+                                  <option value="Mentor / Advisor">Mentor / Advisor</option>
+                                </select>
+                              </div>
+
+                              <div>
+                                <label htmlFor="rel-notes-input" className="block text-[11px] font-semibold text-slate-300 mb-1">
+                                  Contextual Notes
+                                </label>
+                                <input
+                                  id="rel-notes-input"
+                                  type="text"
+                                  value={relNotes}
+                                  onChange={(e) => setRelNotes(e.target.value)}
+                                  placeholder="e.g. Vector Housing Suite 4B / Joint Case"
+                                  className="w-full rounded-lg bg-[#1E1836] border border-[#3C3264] px-3 py-2 text-xs text-white focus:outline-none focus:border-[#C5AB78]"
+                                />
+                              </div>
+
+                              <button
+                                type="submit"
+                                className="w-full py-2.5 rounded-xl bg-gradient-to-r from-[#C5AB78] to-[#9883C8] text-[#161226] font-bold text-xs shadow transition cursor-pointer"
+                              >
+                                Establish Bidirectional Link
+                              </button>
+                            </fieldset>
+                          </form>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* DOSSIER SECTION 5: OFFICIAL DOCUMENTS SUITE */}
+                  {dossierSection === 'documents' && (
+                    <div className="p-6 space-y-5">
+                      <div className="flex flex-wrap items-center justify-between gap-3 bg-[#161226] border border-[#2F264F] rounded-xl p-4">
+                        <div>
+                          <h3 className="text-xs font-bold uppercase tracking-wider text-[#C5AB78]">
+                            Sovereign 9-Document Packet & Official Credentials
+                          </h3>
+                          <p className="text-[11px] text-slate-400">
+                            All 9 official documents dynamically bind to <strong className="text-white">{activePerson.name}</strong> (<code className="text-[#E5D7B5]">{activePerson.maid || activePerson.legacyRecord}</code>).
+                          </p>
+                        </div>
+                        <button
+                          type="button"
+                          onClick={() => handleQuickExportAllNine(activePerson)}
+                          className="flex items-center gap-1.5 rounded-xl bg-gradient-to-r from-[#C5AB78] to-[#9883C8] text-[#161226] px-4 py-2 text-xs font-bold shadow cursor-pointer"
+                        >
+                          <Download size={14} /> Export Complete 9-Document Packet
+                        </button>
+                      </div>
+
+                      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
+                        {OFFICIAL_DOC_CARDS.map((doc) => (
+                          <div key={doc.id} className={`rounded-xl border p-3.5 flex flex-col justify-between space-y-3 ${doc.color}`}>
+                            <div>
+                              <div className="flex items-center justify-between text-[10px] font-mono uppercase opacity-80">
+                                <span>DOC 0{doc.id}</span>
+                                <span>{doc.category}</span>
+                              </div>
+                              <div className="text-xs font-bold text-white mt-1">{doc.title}</div>
+                              <div className="text-[11px] opacity-85">{doc.subtitle}</div>
+                            </div>
+                            <div className="flex items-center gap-1.5 pt-1">
+                              <button
+                                type="button"
+                                onClick={() => openCitizenInApp(activePerson.maid || activePerson.legacyRecord, 'documentStudio', { targetDocId: doc.id, sourceApp: 'meridionRegistry' })}
+                                className="flex-1 py-1.5 rounded-lg bg-black/40 hover:bg-black/60 text-white text-[11px] font-semibold transition flex items-center justify-center gap-1"
+                              >
+                                <Eye size={12} /> Preview in Studio
+                              </button>
+                              <button
+                                type="button"
+                                onClick={() => handleQuickIssueDocument(activePerson, doc.id, doc.title)}
+                                className="px-2.5 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-white text-[11px] font-bold transition"
+                                title="Issue & Download HTML"
+                              >
+                                <Download size={12} />
+                              </button>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+
+                      {/* Issued Snapshots History */}
+                      <div className="bg-[#161226] border border-[#2F264F] rounded-xl p-4 space-y-2.5">
+                        <h4 className="text-xs font-bold uppercase tracking-wider text-[#C5AB78]">
+                          Issued Document Snapshot Ledger ({activeIssuedDocs.length})
+                        </h4>
+                        {activeIssuedDocs.length > 0 ? (
+                          <div className="space-y-1.5 max-h-40 overflow-y-auto">
+                            {activeIssuedDocs.map((snap) => (
+                              <div key={snap.id} className="flex items-center justify-between text-xs bg-[#1E1836] border border-[#352C57] rounded-lg px-3 py-2 font-mono">
+                                <span className="text-white font-semibold">{snap.documentType}</span>
+                                <span className="text-slate-400 text-[11px]">{new Date(snap.issuedAt).toLocaleString()}</span>
+                                <span className="text-emerald-400 text-[10px]">HASH: {snap.hash}</span>
+                              </div>
+                            ))}
+                          </div>
+                        ) : (
+                          <div className="text-xs text-slate-400">
+                            No document snapshots logged for this citizen yet. Click any document above to issue and log a snapshot.
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* DOSSIER SECTION 6: INLINE PROFILE EDITOR (IMMUTABLE MAID) */}
+                  {dossierSection === 'edit' && (
+                    <form onSubmit={handleSaveInlineProfile} className="p-6 space-y-5">
+                      <fieldset className="space-y-4">
+                        <legend className="text-xs font-bold uppercase tracking-wider text-[#C5AB78] flex items-center gap-2">
+                          <Lock size={14} /> Edit Citizen Attributes (MAID & Registration Region Permanently Locked)
+                        </legend>
+
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-3 bg-[#141024] border border-[#352C57] rounded-xl p-3.5 text-xs">
+                          <div>
+                            <span className="text-[10px] text-slate-400 block uppercase">Immutable Official MAID</span>
+                            <strong className="font-mono text-[#E5D7B5]">{activePerson.maid || 'PENDING'}</strong>
+                          </div>
+                          <div>
+                            <span className="text-[10px] text-slate-400 block uppercase">Registration Region Code</span>
+                            <strong className="font-mono text-emerald-400">{activePerson.registrationRegionCode || 'OR'} (Orynvell)</strong>
+                          </div>
+                          <div>
+                            <span className="text-[10px] text-slate-400 block uppercase">Permanent Legacy Alias</span>
+                            <strong className="font-mono text-indigo-300">{activePerson.legacyAliases?.join(', ') || activePerson.legacyRecord}</strong>
+                          </div>
+                        </div>
+
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                          <div>
+                            <label htmlFor="edit-occupation" className="block text-xs font-semibold text-slate-300 mb-1">Occupation / Role</label>
+                            <input
+                              id="edit-occupation"
+                              type="text"
+                              value={editDraft.occupation || ''}
+                              onChange={(e) => setEditDraft({ ...editDraft, occupation: e.target.value })}
+                              className="w-full rounded-lg bg-[#161226] border border-[#3C3264] px-3 py-2 text-xs text-white"
+                            />
+                          </div>
+                          <div>
+                            <label htmlFor="edit-affiliation" className="block text-xs font-semibold text-slate-300 mb-1">Institutional Affiliation</label>
+                            <input
+                              id="edit-affiliation"
+                              type="text"
+                              value={editDraft.affiliation || ''}
+                              onChange={(e) => setEditDraft({ ...editDraft, affiliation: e.target.value })}
+                              className="w-full rounded-lg bg-[#161226] border border-[#3C3264] px-3 py-2 text-xs text-white"
+                            />
+                          </div>
+                          <div>
+                            <label htmlFor="edit-clearance" className="block text-xs font-semibold text-slate-300 mb-1">Clearance Level</label>
+                            <input
+                              id="edit-clearance"
+                              type="text"
+                              value={editDraft.clearance || ''}
+                              onChange={(e) => setEditDraft({ ...editDraft, clearance: e.target.value })}
+                              className="w-full rounded-lg bg-[#161226] border border-[#3C3264] px-3 py-2 text-xs text-white"
+                            />
+                          </div>
+                          <div>
+                            <label htmlFor="edit-housing" className="block text-xs font-semibold text-slate-300 mb-1">Housing / Domicile Assignment</label>
+                            <input
+                              id="edit-housing"
+                              type="text"
+                              value={editDraft.residency || ''}
+                              onChange={(e) => setEditDraft({ ...editDraft, residency: e.target.value, household: e.target.value })}
+                              className="w-full rounded-lg bg-[#161226] border border-[#3C3264] px-3 py-2 text-xs text-white"
+                            />
+                          </div>
+                          <div>
+                            <label htmlFor="edit-medical" className="block text-xs font-semibold text-slate-300 mb-1">Faith Medical Summary</label>
+                            <input
+                              id="edit-medical"
+                              type="text"
+                              value={editDraft.medical || ''}
+                              onChange={(e) => setEditDraft({ ...editDraft, medical: e.target.value })}
+                              className="w-full rounded-lg bg-[#161226] border border-[#3C3264] px-3 py-2 text-xs text-white"
+                            />
+                          </div>
+                          <div>
+                            <label htmlFor="edit-status" className="block text-xs font-semibold text-slate-300 mb-1">Civic Status</label>
+                            <input
+                              id="edit-status"
+                              type="text"
+                              value={editDraft.status || ''}
+                              onChange={(e) => setEditDraft({ ...editDraft, status: e.target.value })}
+                              className="w-full rounded-lg bg-[#161226] border border-[#3C3264] px-3 py-2 text-xs text-white"
+                            />
+                          </div>
+                        </div>
+
+                        <div className="flex justify-end gap-3 pt-2">
+                          <button
+                            type="button"
+                            onClick={() => setDossierSection('overview')}
+                            className="px-4 py-2 rounded-xl bg-[#272042] text-slate-300 text-xs font-semibold"
+                          >
+                            Cancel
+                          </button>
+                          <button
+                            type="submit"
+                            className="px-5 py-2 rounded-xl bg-gradient-to-r from-[#C5AB78] to-[#9883C8] text-[#161226] text-xs font-bold shadow cursor-pointer"
+                          >
+                            Save Canonical Updates
+                          </button>
+                        </div>
+                      </fieldset>
+                    </form>
+                  )}
+                </div>
+              )}
             </div>
-          </div>
-        )}
+          )}
 
-        {/* WORKFLOW 4: STANDALONE FIXED GENERATOR (IFRAME) */}
-        {activeTab === 'legacy_generator' && (
-          <div className="h-full w-full flex flex-col rounded-xl overflow-hidden border border-[#D5CEE4] bg-white">
-            <iframe
-              title="Meridion Standalone Generator"
-              src="/registry.html"
-              className="w-full flex-1 border-0"
-            />
-          </div>
-        )}
-      </main>
+          {/* =====================================================================
+              TAB 2: ADD PERSON (CHARACTER GENERATOR & MANUAL IDENTITY STUDIO)
+             ===================================================================== */}
+          {activeTab === 'add' && (
+            <div className="max-w-5xl mx-auto space-y-6">
+              <div className="bg-[#211B38] border border-[#3C3264] rounded-2xl p-6 shadow-xl space-y-6">
+                <div className="flex flex-wrap items-center justify-between gap-4 border-b border-[#352C57] pb-4">
+                  <div>
+                    <h2 className="text-lg font-bold text-white font-serif flex items-center gap-2">
+                      <UserPlus size={20} className="text-[#C5AB78]" /> Add Person — Character Generator & Sovereign Identity Studio
+                    </h2>
+                    <p className="text-xs text-slate-400 mt-0.5">
+                      Generate an archetype-calibrated citizen or customize every biometric, lineage, and institutional trait before permanent <code className="text-[#E5D7B5]">MAID-OR-XXXXXXXX</code> issuance.
+                    </p>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <button
+                      type="button"
+                      onClick={handleRerollCharacter}
+                      className="flex items-center gap-1.5 rounded-xl bg-[#2E254D] hover:bg-[#3F3368] border border-[#C5AB78]/40 px-3.5 py-2 text-xs font-bold text-[#E5D7B5] transition cursor-pointer"
+                    >
+                      <Sparkles size={14} /> Generate Archetype Draft
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setPortraitModalTarget('add')}
+                      className="flex items-center gap-1.5 rounded-xl bg-[#3C3268] hover:bg-[#52448C] border border-[#6C5FAC] px-3.5 py-2 text-xs font-bold text-white transition cursor-pointer"
+                    >
+                      <Camera size={14} className="text-[#C5AB78]" /> Portrait Studio
+                    </button>
+                  </div>
+                </div>
 
-      {/* Integrated Portrait Studio Modal */}
-      {portraitCitizen && (
+                {/* Error Alert */}
+                <div aria-live="assertive">
+                  {formError && (
+                    <div role="alert" className="bg-rose-950/60 border border-rose-500/50 rounded-xl p-3.5 text-xs text-rose-200 flex items-center gap-2">
+                      <AlertTriangle size={16} className="text-rose-400 shrink-0" />
+                      <span>{formError}</span>
+                    </div>
+                  )}
+                </div>
+
+                <form onSubmit={handleAddPersonSubmit} className="space-y-6">
+                  {/* FIELDSET 0: ARCHETYPE RADIO SELECTION (< 6 mutually exclusive options per modern-web-guidance forms) */}
+                  <fieldset className="bg-[#161226] border border-[#2F264F] rounded-xl p-4 space-y-3">
+                    <legend className="text-xs font-bold uppercase tracking-wider text-[#C5AB78] px-1">
+                      1. Select Character Generator Archetype (5 Institutional Presets)
+                    </legend>
+                    <div className="grid grid-cols-1 sm:grid-cols-5 gap-2.5">
+                      {ARCHETYPE_OPTIONS.map((opt) => {
+                        const checked = selectedArchetype === opt.id;
+                        const radioId = `archetype-radio-${opt.id}`;
+                        return (
+                          <label
+                            key={opt.id}
+                            htmlFor={radioId}
+                            className={`cursor-pointer rounded-xl border p-3 transition flex flex-col justify-between ${
+                              checked
+                                ? 'bg-[#2B224B] border-[#C5AB78] shadow-md'
+                                : 'bg-[#1C1632] border-[#322952] hover:border-[#524484]'
+                            }`}
+                          >
+                            <div className="space-y-1">
+                              <div className="flex items-center justify-between gap-1">
+                                <input
+                                  id={radioId}
+                                  type="radio"
+                                  name="characterArchetype"
+                                  value={opt.id}
+                                  checked={checked}
+                                  onChange={() => handleArchetypeChange(opt.id)}
+                                  className="accent-[#C5AB78]"
+                                />
+                                <span className="text-[9px] font-mono uppercase px-1.5 py-0.5 rounded bg-black/30 text-[#E5D7B5]">
+                                  {opt.badge}
+                                </span>
+                              </div>
+                              <div className="text-xs font-bold text-white pt-1">{opt.label}</div>
+                              <p className="text-[10px] text-slate-400 leading-snug">{opt.desc}</p>
+                            </div>
+                          </label>
+                        );
+                      })}
+                    </div>
+                  </fieldset>
+
+                  {/* FIELDSET 1: CORE IDENTITY & SOVEREIGN REGISTRATION */}
+                  <fieldset className="bg-[#161226] border border-[#2F264F] rounded-xl p-4 space-y-4">
+                    <legend className="text-xs font-bold uppercase tracking-wider text-[#C5AB78] px-1">
+                      2. Core Identity, Registration Region & Housing Coordinates
+                    </legend>
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                      <div>
+                        <label htmlFor="add-name" className="block text-xs font-semibold text-slate-200 mb-1">
+                          Full Legal Name *
+                        </label>
+                        <input
+                          id="add-name"
+                          type="text"
+                          required
+                          aria-describedby="add-name-help"
+                          value={formData.name}
+                          onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                          className="w-full rounded-lg bg-[#1E1836] border border-[#3C3264] px-3 py-2 text-xs text-white focus:outline-none focus:border-[#C5AB78]"
+                        />
+                        <span id="add-name-help" className="text-[10px] text-slate-400">Primary legal name on Citizen ID & Passport.</span>
+                      </div>
+
+                      <div>
+                        <label htmlFor="add-region" className="block text-xs font-semibold text-slate-200 mb-1">
+                          Initial Registration Region *
+                        </label>
+                        <select
+                          id="add-region"
+                          aria-describedby="add-region-help"
+                          value={formData.registrationRegion}
+                          onChange={(e) => setFormData({ ...formData, registrationRegion: e.target.value as any })}
+                          className="w-full rounded-lg bg-[#1E1836] border border-emerald-500/50 px-3 py-2 text-xs text-emerald-300 font-semibold focus:outline-none"
+                        >
+                          <option value="Orynvell">Orynvell (Code: OR — Confirmed)</option>
+                        </select>
+                        <span id="add-region-help" className="text-[10px] text-emerald-400/90">Issues permanent MAID-OR-XXXXXXXX.</span>
+                      </div>
+
+                      <div>
+                        <label htmlFor="add-dob" className="block text-xs font-semibold text-slate-200 mb-1">
+                          Date of Birth *
+                        </label>
+                        <input
+                          id="add-dob"
+                          type="date"
+                          required
+                          value={formData.dob}
+                          onChange={(e) => setFormData({ ...formData, dob: e.target.value })}
+                          className="w-full rounded-lg bg-[#1E1836] border border-[#3C3264] px-3 py-2 text-xs text-white focus:outline-none focus:border-[#C5AB78]"
+                        />
+                      </div>
+
+                      <div>
+                        <label htmlFor="add-place" className="block text-xs font-semibold text-slate-200 mb-1">
+                          Place of Birth
+                        </label>
+                        <input
+                          id="add-place"
+                          type="text"
+                          value={formData.place}
+                          onChange={(e) => setFormData({ ...formData, place: e.target.value })}
+                          className="w-full rounded-lg bg-[#1E1836] border border-[#3C3264] px-3 py-2 text-xs text-white focus:outline-none focus:border-[#C5AB78]"
+                        />
+                      </div>
+
+                      <div>
+                        <label htmlFor="add-home" className="block text-xs font-semibold text-slate-200 mb-1">
+                          Current Residence City
+                        </label>
+                        <input
+                          id="add-home"
+                          type="text"
+                          value={formData.home}
+                          onChange={(e) => setFormData({ ...formData, home: e.target.value })}
+                          className="w-full rounded-lg bg-[#1E1836] border border-[#3C3264] px-3 py-2 text-xs text-white focus:outline-none focus:border-[#C5AB78]"
+                        />
+                      </div>
+
+                      <div>
+                        <label htmlFor="add-housing" className="block text-xs font-semibold text-slate-200 mb-1">
+                          Assigned Housing Unit
+                        </label>
+                        <input
+                          id="add-housing"
+                          type="text"
+                          value={formData.residency || ''}
+                          onChange={(e) => setFormData({ ...formData, residency: e.target.value, household: e.target.value })}
+                          className="w-full rounded-lg bg-[#1E1836] border border-[#3C3264] px-3 py-2 text-xs text-white focus:outline-none focus:border-[#C5AB78]"
+                        />
+                      </div>
+                    </div>
+                  </fieldset>
+
+                  {/* FIELDSET 2: SPECIES, ANCESTRY & RESONANCE */}
+                  <fieldset className="bg-[#161226] border border-[#2F264F] rounded-xl p-4 space-y-4">
+                    <legend className="text-xs font-bold uppercase tracking-wider text-[#C5AB78] px-1">
+                      3. Lineage, Species & PRISM Resonance
+                    </legend>
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                      <div>
+                        <label htmlFor="add-species" className="block text-xs font-semibold text-slate-200 mb-1">
+                          Species
+                        </label>
+                        <input
+                          id="add-species"
+                          type="text"
+                          value={formData.species}
+                          onChange={(e) => setFormData({ ...formData, species: e.target.value })}
+                          className="w-full rounded-lg bg-[#1E1836] border border-[#3C3264] px-3 py-2 text-xs text-white"
+                        />
+                      </div>
+
+                      <div>
+                        <label htmlFor="add-ancestry" className="block text-xs font-semibold text-slate-200 mb-1">
+                          Ancestry / Bloodline
+                        </label>
+                        <input
+                          id="add-ancestry"
+                          type="text"
+                          value={formData.ancestry}
+                          onChange={(e) => setFormData({ ...formData, ancestry: e.target.value })}
+                          className="w-full rounded-lg bg-[#1E1836] border border-[#3C3264] px-3 py-2 text-xs text-white"
+                        />
+                      </div>
+
+                      <div>
+                        <label htmlFor="add-affinity" className="block text-xs font-semibold text-slate-200 mb-1">
+                          Spectrum Affinity
+                        </label>
+                        <input
+                          id="add-affinity"
+                          type="text"
+                          value={formData.affinity}
+                          onChange={(e) => setFormData({ ...formData, affinity: e.target.value })}
+                          className="w-full rounded-lg bg-[#1E1836] border border-[#3C3264] px-3 py-2 text-xs text-white"
+                        />
+                      </div>
+
+                      <div className="md:col-span-2">
+                        <label htmlFor="add-abilities" className="block text-xs font-semibold text-slate-200 mb-1">
+                          Abilities & Resonance Signatures
+                        </label>
+                        <input
+                          id="add-abilities"
+                          type="text"
+                          value={formData.abilities}
+                          onChange={(e) => setFormData({ ...formData, abilities: e.target.value })}
+                          className="w-full rounded-lg bg-[#1E1836] border border-[#3C3264] px-3 py-2 text-xs text-white"
+                        />
+                      </div>
+
+                      <div>
+                        <label htmlFor="add-powersource" className="block text-xs font-semibold text-slate-200 mb-1">
+                          Power Source
+                        </label>
+                        <input
+                          id="add-powersource"
+                          type="text"
+                          value={formData.powerSource}
+                          onChange={(e) => setFormData({ ...formData, powerSource: e.target.value })}
+                          className="w-full rounded-lg bg-[#1E1836] border border-[#3C3264] px-3 py-2 text-xs text-white"
+                        />
+                      </div>
+                    </div>
+                  </fieldset>
+
+                  {/* FIELDSET 3: BIOMETRICS, PORTRAIT & LIVE 10-PRINT PREVIEW */}
+                  <fieldset className="bg-[#161226] border border-[#2F264F] rounded-xl p-4 space-y-4">
+                    <legend className="text-xs font-bold uppercase tracking-wider text-[#C5AB78] px-1">
+                      4. Portrait Synthesis, Physical Biometrics & 10-Print Dermal Matrix
+                    </legend>
+                    <div className="grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
+                      {/* Portrait Preview Box */}
+                      <div className="md:col-span-3 flex flex-col items-center bg-[#1E1836] border border-[#3C3264] rounded-xl p-3 space-y-2">
+                        <div className="h-28 w-24 rounded-xl overflow-hidden border-2 border-[#C5AB78] bg-[#120E20]">
+                          {formData.portraitData ? (
+                            <img src={formData.portraitData} alt="Citizen Portrait Preview" className="h-full w-full object-cover" />
+                          ) : null}
+                        </div>
+                        <div className="flex gap-1.5 w-full">
+                          <button
+                            type="button"
+                            onClick={handleRegenerateDraftPortrait}
+                            className="flex-1 py-1.5 rounded-lg bg-[#2B224B] hover:bg-[#3B2F63] text-[10px] font-bold text-[#E5D7B5] transition"
+                          >
+                            Re-Roll SVG
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => setPortraitModalTarget('add')}
+                            className="flex-1 py-1.5 rounded-lg bg-[#3C3268] hover:bg-[#52448C] text-[10px] font-bold text-white transition"
+                          >
+                            Studio
+                          </button>
+                        </div>
+                      </div>
+
+                      {/* Physical Biometric Inputs */}
+                      <div className="md:col-span-9 grid grid-cols-2 sm:grid-cols-3 gap-3">
+                        <div>
+                          <label htmlFor="add-height" className="block text-xs font-semibold text-slate-200 mb-1">Height</label>
+                          <input
+                            id="add-height"
+                            type="text"
+                            value={formData.height || ''}
+                            onChange={(e) => setFormData({ ...formData, height: e.target.value })}
+                            className="w-full rounded-lg bg-[#1E1836] border border-[#3C3264] px-3 py-1.5 text-xs text-white"
+                          />
+                        </div>
+                        <div>
+                          <label htmlFor="add-build" className="block text-xs font-semibold text-slate-200 mb-1">Build</label>
+                          <input
+                            id="add-build"
+                            type="text"
+                            value={formData.build || ''}
+                            onChange={(e) => setFormData({ ...formData, build: e.target.value })}
+                            className="w-full rounded-lg bg-[#1E1836] border border-[#3C3264] px-3 py-1.5 text-xs text-white"
+                          />
+                        </div>
+                        <div>
+                          <label htmlFor="add-blood" className="block text-xs font-semibold text-slate-200 mb-1">Blood & Aura Type</label>
+                          <input
+                            id="add-blood"
+                            type="text"
+                            value={formData.blood || ''}
+                            onChange={(e) => setFormData({ ...formData, blood: e.target.value })}
+                            className="w-full rounded-lg bg-[#1E1836] border border-[#3C3264] px-3 py-1.5 text-xs text-white"
+                          />
+                        </div>
+                        <div>
+                          <label htmlFor="add-eyes" className="block text-xs font-semibold text-slate-200 mb-1">Eye Color</label>
+                          <input
+                            id="add-eyes"
+                            type="text"
+                            value={formData.eyes || ''}
+                            onChange={(e) => setFormData({ ...formData, eyes: e.target.value })}
+                            className="w-full rounded-lg bg-[#1E1836] border border-[#3C3264] px-3 py-1.5 text-xs text-white"
+                          />
+                        </div>
+                        <div>
+                          <label htmlFor="add-hair" className="block text-xs font-semibold text-slate-200 mb-1">Hair Color</label>
+                          <input
+                            id="add-hair"
+                            type="text"
+                            value={formData.hair || ''}
+                            onChange={(e) => setFormData({ ...formData, hair: e.target.value })}
+                            className="w-full rounded-lg bg-[#1E1836] border border-[#3C3264] px-3 py-1.5 text-xs text-white"
+                          />
+                        </div>
+                        <div>
+                          <label htmlFor="add-mark" className="block text-xs font-semibold text-slate-200 mb-1">Distinguishing Mark</label>
+                          <input
+                            id="add-mark"
+                            type="text"
+                            value={formData.mark || ''}
+                            onChange={(e) => setFormData({ ...formData, mark: e.target.value })}
+                            className="w-full rounded-lg bg-[#1E1836] border border-[#3C3264] px-3 py-1.5 text-xs text-white"
+                          />
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Compact 5-Finger Preview Strip */}
+                    <div className="pt-2 border-t border-[#272040] flex flex-wrap items-center justify-between gap-2 text-[11px] text-slate-400">
+                      <span>Pre-Registration 10-Print Henry Vector:</span>
+                      <div className="flex flex-wrap gap-1.5 font-mono text-[10px]">
+                        {draftTenPrints.slice(0, 5).map(fp => (
+                          <span key={fp.fingerIndex} className="px-2 py-0.5 rounded bg-[#1E1836] border border-[#352C57] text-indigo-300">
+                            {fp.label}: {fp.pattern} ({fp.henryCode})
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  </fieldset>
+
+                  {/* FIELDSET 4: INSTITUTIONAL AFFILIATION & RELATIONSHIP LINKING */}
+                  <fieldset className="bg-[#161226] border border-[#2F264F] rounded-xl p-4 space-y-4">
+                    <legend className="text-xs font-bold uppercase tracking-wider text-[#C5AB78] px-1">
+                      5. Cross-Application Institutional Assignment & Initial Relationship
+                    </legend>
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                      <div>
+                        <label htmlFor="add-affiliation" className="block text-xs font-semibold text-slate-200 mb-1">
+                          Primary Institution
+                        </label>
+                        <input
+                          id="add-affiliation"
+                          type="text"
+                          value={formData.affiliation || ''}
+                          onChange={(e) => setFormData({ ...formData, affiliation: e.target.value })}
+                          className="w-full rounded-lg bg-[#1E1836] border border-[#3C3264] px-3 py-2 text-xs text-white"
+                        />
+                      </div>
+                      <div>
+                        <label htmlFor="add-occupation" className="block text-xs font-semibold text-slate-200 mb-1">
+                          Occupation / Assignment
+                        </label>
+                        <input
+                          id="add-occupation"
+                          type="text"
+                          value={formData.occupation || ''}
+                          onChange={(e) => setFormData({ ...formData, occupation: e.target.value })}
+                          className="w-full rounded-lg bg-[#1E1836] border border-[#3C3264] px-3 py-2 text-xs text-white"
+                        />
+                      </div>
+                      <div>
+                        <label htmlFor="add-clearance" className="block text-xs font-semibold text-slate-200 mb-1">
+                          Clearance Level
+                        </label>
+                        <input
+                          id="add-clearance"
+                          type="text"
+                          value={formData.clearance || ''}
+                          onChange={(e) => setFormData({ ...formData, clearance: e.target.value })}
+                          className="w-full rounded-lg bg-[#1E1836] border border-[#3C3264] px-3 py-2 text-xs text-white"
+                        />
+                      </div>
+
+                      <div>
+                        <label htmlFor="add-medical" className="block text-xs font-semibold text-slate-200 mb-1">
+                          Faith Medical Intake Baseline
+                        </label>
+                        <input
+                          id="add-medical"
+                          type="text"
+                          value={formData.medical || ''}
+                          onChange={(e) => setFormData({ ...formData, medical: e.target.value })}
+                          className="w-full rounded-lg bg-[#1E1836] border border-[#3C3264] px-3 py-2 text-xs text-white"
+                        />
+                      </div>
+
+                      <div>
+                        <label htmlFor="add-rel-target" className="block text-xs font-semibold text-slate-200 mb-1">
+                          Link to Existing Citizen (Optional)
+                        </label>
+                        <select
+                          id="add-rel-target"
+                          value={initialRelTarget}
+                          onChange={(e) => setInitialRelTarget(e.target.value)}
+                          className="w-full rounded-lg bg-[#1E1836] border border-[#3C3264] px-3 py-2 text-xs text-white"
+                        >
+                          <option value="">None — Independent Entry</option>
+                          {persons.map(p => (
+                            <option key={p.id} value={p.maid || p.legacyRecord}>
+                              {p.name} ({p.maid || p.legacyRecord})
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+
+                      <div>
+                        <label htmlFor="add-rel-type" className="block text-xs font-semibold text-slate-200 mb-1">
+                          Relationship Role
+                        </label>
+                        <select
+                          id="add-rel-type"
+                          value={initialRelType}
+                          onChange={(e) => setInitialRelType(e.target.value)}
+                          className="w-full rounded-lg bg-[#1E1836] border border-[#3C3264] px-3 py-2 text-xs text-white"
+                        >
+                          <option value="Colleague">Colleague</option>
+                          <option value="Research Partner">Research Partner</option>
+                          <option value="Attending Physician">Attending Physician</option>
+                          <option value="Patient">Patient</option>
+                          <option value="Family / Kin">Family / Kin</option>
+                          <option value="Housing Neighbor">Housing Neighbor</option>
+                          <option value="Investigative Subject">Investigative Subject</option>
+                        </select>
+                      </div>
+                    </div>
+                  </fieldset>
+
+                  {/* Submit Action Bar */}
+                  <div className="flex items-center justify-between bg-[#141024] border border-[#44386A] rounded-xl p-4">
+                    <div className="text-xs text-slate-300">
+                      <strong className="text-[#E5D7B5] block">Permanent Atomic Issuance</strong>
+                      Upon registration, the next sequential <code className="text-emerald-400">MAID-OR-XXXXXXXX</code> number is permanently bound to this citizen across all MiraverseOSx applications.
+                    </div>
+                    <button
+                      type="submit"
+                      className="rounded-xl bg-gradient-to-r from-[#C5AB78] to-[#9883C8] hover:from-[#D4BC8B] hover:to-[#A896D8] text-[#161226] px-6 py-3 text-xs font-bold shadow-lg transition cursor-pointer shrink-0"
+                    >
+                      Register Citizen & Issue Permanent MAID
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          )}
+
+          {/* =====================================================================
+              TAB 3: CROSS-APPLICATION ECOSYSTEM CONNECTIONS
+             ===================================================================== */}
+          {activeTab === 'ecosystem' && (
+            <div className="max-w-5xl mx-auto space-y-5">
+              <div className="bg-[#211B38] border border-[#3C3264] rounded-2xl p-6 shadow-xl space-y-4">
+                <div className="flex flex-wrap items-center justify-between gap-4 border-b border-[#352C57] pb-4">
+                  <div>
+                    <h2 className="text-lg font-bold text-white font-serif flex items-center gap-2">
+                      <Layers size={20} className="text-[#C5AB78]" /> Cross-Application Citizen Record Architecture
+                    </h2>
+                    <p className="text-xs text-slate-400 mt-0.5">
+                      Every application in MiraverseOSx reads and updates the same canonical <code className="text-[#E5D7B5]">miraverse-canonical-identities-v1</code> store via <code className="text-indigo-300">CitizenBridge</code>.
+                    </p>
+                  </div>
+                  {activePerson && (
+                    <div className="bg-[#141024] border border-[#44386A] rounded-xl px-4 py-2 text-xs">
+                      <span className="text-slate-400">Active Context Citizen: </span>
+                      <strong className="text-white">{activePerson.name}</strong>{' '}
+                      <span className="font-mono text-[#E5D7B5]">({activePerson.maid || activePerson.legacyRecord})</span>
+                    </div>
+                  )}
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {[
+                    {
+                      appId: 'jobs' as const,
+                      title: 'Faith Medical Group (MEDSTAT & WORKNET)',
+                      badge: 'CLINICAL & BIO-AURA',
+                      icon: HeartPulse,
+                      color: 'border-teal-500/40',
+                      desc: 'Accesses canonical MAID records for patient triage, Veilwilt stabilization, blood/aura baselines, and DGA MEDSTAT forensic medical charts. Clinical updates write directly back to the citizen’s MAID medical summary.',
+                      docId: 8,
+                      docLabel: 'Medical Summary (Doc 8)'
+                    },
+                    {
+                      appId: 'passport' as const,
+                      title: 'Cyacademy & Housing (MIRROR & HOMECRAFT)',
+                      badge: 'ACADEMIC & HOUSING',
+                      icon: GraduationCap,
+                      color: 'border-indigo-500/40',
+                      desc: 'Synchronizes student and faculty enrollment, 9 core skills, housing assignments (Vector Housing Suite 4B), and academic service records with the canonical MAID profile.',
+                      docId: 9,
+                      docLabel: 'Education & Service (Doc 9)'
+                    },
+                    {
+                      appId: 'dgaos' as const,
+                      title: 'DGAOS Command Center & TRACE Forensics',
+                      badge: 'AGENCY & FORENSICS',
+                      icon: Shield,
+                      color: 'border-rose-500/40',
+                      desc: 'Resolves both official MAID numbers and legacy MRD aliases across 31 investigative records, 10-print AFIS dermal comparison stations, and hybrid forensic findings transmissions.',
+                      docId: 5,
+                      docLabel: 'Investigative Profile (Doc 5)'
+                    },
+                    {
+                      appId: 'documentStudio' as const,
+                      title: 'Official Document Studio (9-Document Suite)',
+                      badge: 'SOVEREIGN PAPERWORK',
+                      icon: FileText,
+                      color: 'border-amber-500/40',
+                      desc: 'Generates printable HTML/PDF Citizen IDs, Passports, Birth Certificates, 10-Print Biometrics, Residency Records, Medical Summaries, and Investigative Dossiers with immutable snapshot hashes.',
+                      docId: 1,
+                      docLabel: 'Aura Citizen ID (Doc 1)'
+                    }
+                  ].map((item) => {
+                    const Icon = item.icon;
+                    const targetCitizenId = activePerson?.maid || activePerson?.legacyRecord || 'MAID-OR-00481926';
+                    return (
+                      <div key={item.title} className={`bg-[#161226] border ${item.color} rounded-2xl p-5 flex flex-col justify-between space-y-4`}>
+                        <div className="space-y-2">
+                          <div className="flex items-center justify-between">
+                            <span className="text-sm font-bold text-white flex items-center gap-2">
+                              <Icon size={17} className="text-[#C5AB78]" /> {item.title}
+                            </span>
+                            <span className="text-[10px] font-mono bg-white/10 text-[#E5D7B5] px-2 py-0.5 rounded">
+                              {item.badge}
+                            </span>
+                          </div>
+                          <p className="text-xs text-slate-300 leading-relaxed">{item.desc}</p>
+                        </div>
+
+                        <div className="flex items-center gap-2 pt-2 border-t border-[#272040]">
+                          <button
+                            type="button"
+                            onClick={() => openCitizenInApp(targetCitizenId, item.appId, { sourceApp: 'meridionRegistry' })}
+                            className="flex-1 py-2 rounded-xl bg-[#2B224B] hover:bg-[#3B2F63] border border-[#C5AB78]/40 text-xs font-bold text-[#E5D7B5] transition flex items-center justify-center gap-1.5 cursor-pointer"
+                          >
+                            Launch Application <ExternalLink size={12} />
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => openCitizenInApp(targetCitizenId, 'documentStudio', { targetDocId: item.docId, sourceApp: 'meridionRegistry' })}
+                            className="px-3 py-2 rounded-xl bg-[#1E1836] hover:bg-[#292147] border border-[#3C3264] text-xs font-semibold text-slate-200 transition cursor-pointer"
+                          >
+                            {item.docLabel}
+                          </button>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* =====================================================================
+              TAB 4: MIGRATION & LEDGER INTEGRITY
+             ===================================================================== */}
+          {activeTab === 'migration' && (
+            <div className="max-w-4xl mx-auto space-y-5">
+              <div className="bg-[#211B38] border border-[#3C3264] rounded-2xl p-6 space-y-4">
+                <h2 className="text-base font-bold text-white font-serif flex items-center gap-2">
+                  <Database size={18} className="text-[#C5AB78]" /> Non-Destructive Legacy MRD Migration & MAID Ledger
+                </h2>
+                <p className="text-xs text-slate-300 leading-relaxed">
+                  All legacy <code className="text-indigo-300">MRD-XXXX-XXX</code> records are preserved as permanent searchable aliases. Only records with confirmed Orynvell (<code className="text-emerald-300">OR</code>) registration receive automatic <code className="text-[#E5D7B5]">MAID-OR-XXXXXXXX</code> numbers; unconfirmed records remain safely queued for manual region confirmation.
+                </p>
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-center">
+                  <div className="bg-[#161226] border border-[#2F264F] rounded-xl p-3">
+                    <div className="text-[10px] text-slate-400 uppercase">Total Canonical</div>
+                    <div className="text-lg font-bold text-white font-mono mt-1">{persons.length}</div>
+                  </div>
+                  <div className="bg-[#161226] border border-[#2F264F] rounded-xl p-3">
+                    <div className="text-[10px] text-slate-400 uppercase">Active MAID-OR</div>
+                    <div className="text-lg font-bold text-emerald-400 font-mono mt-1">
+                      {persons.filter(p => p.maidStatus === 'active').length}
+                    </div>
+                  </div>
+                  <div className="bg-[#161226] border border-[#2F264F] rounded-xl p-3">
+                    <div className="text-[10px] text-slate-400 uppercase">Pending Region</div>
+                    <div className="text-lg font-bold text-amber-400 font-mono mt-1">
+                      {persons.filter(p => p.maidStatus === 'pending_migration').length}
+                    </div>
+                  </div>
+                  <div className="bg-[#161226] border border-[#2F264F] rounded-xl p-3">
+                    <div className="text-[10px] text-slate-400 uppercase">Backup Verified</div>
+                    <div className="text-lg font-bold text-indigo-300 font-mono mt-1">
+                      {migrationStats?.backupCreated ? 'CREATED' : 'INTACT'}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+        </main>
+      </div>
+
+      {/* Integrated Portrait Studio Modal (Supports both Add Person draft and Active Dossier citizen) */}
+      {portraitModalTarget && (
         <PortraitStudioModal
-          citizen={{
-            ...portraitCitizen,
-            record: portraitCitizen.maid || portraitCitizen.legacyRecord
-          }}
-          isOpen={isPortraitOpen}
-          onClose={() => {
-            setIsPortraitOpen(false);
-            setPortraitCitizen(null);
-          }}
+          citizen={
+            portraitModalTarget === 'add'
+              ? {
+                  name: formData.name || 'New Citizen',
+                  species: formData.species,
+                  ancestry: formData.ancestry,
+                  eyes: formData.eyes || 'Luminous Hazel',
+                  hair: formData.hair || 'Silver-Black',
+                  build: formData.build || 'Medium',
+                  height: formData.height,
+                  mark: formData.mark,
+                  home: formData.home,
+                  affinity: formData.affinity,
+                  powerSource: formData.powerSource,
+                  category: formData.category || 'Citizen',
+                  dob: formData.dob,
+                  record: 'DRAFT-PORTRAIT',
+                  portraitData: formData.portraitData
+                }
+              : {
+                  name: activePerson?.name || 'Citizen',
+                  species: activePerson?.species || 'Humanoid',
+                  ancestry: activePerson?.ancestry || 'Orynvell',
+                  eyes: activePerson?.eyes || 'Luminous Hazel',
+                  hair: activePerson?.hair || 'Silver-Black',
+                  build: activePerson?.build || 'Medium',
+                  height: activePerson?.height,
+                  mark: activePerson?.mark,
+                  home: activePerson?.home || 'Aureline, Orynvell',
+                  affinity: activePerson?.affinity || 'Aether',
+                  powerSource: activePerson?.powerSource || 'Aether',
+                  category: activePerson?.category || 'Citizen',
+                  dob: activePerson?.dob,
+                  record: activePerson?.maid || activePerson?.legacyRecord || 'MAID-OR-00481926',
+                  portraitData: activePerson?.portraitData
+                }
+          }
+          isOpen={true}
+          onClose={() => setPortraitModalTarget(null)}
           onPortraitSaved={async (newUri) => {
-            if (portraitCitizen) {
-              await MaidIdentityService.updatePerson(portraitCitizen.id, { portraitData: newUri });
-              await loadData();
-              if (lookupResult?.person?.id === portraitCitizen.id) {
-                setLookupResult({
-                  ...lookupResult,
-                  person: {
-                    ...lookupResult.person,
-                    portraitData: newUri
-                  }
-                });
-              }
+            if (portraitModalTarget === 'add') {
+              setFormData(prev => ({ ...prev, portraitData: newUri }));
+              showBanner('Custom portrait applied to new citizen draft.');
+            } else if (activePerson) {
+              const idKey = activePerson.maid || activePerson.id;
+              persistCitizenPortrait(idKey, newUri);
+              await MaidIdentityService.updatePerson(idKey, { portraitData: newUri });
+              await loadData(idKey);
+              showBanner(`Saved new portrait to ${activePerson.name}'s canonical MAID profile.`);
             }
           }}
         />
@@ -737,4 +2143,3 @@ export default function RegistryWorkspaceApp() {
     </div>
   );
 }
-
