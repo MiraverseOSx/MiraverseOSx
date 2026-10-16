@@ -1268,6 +1268,7 @@ export const useOSStore = create<OSStoreState>((set) => ({
 
     const appTitles: Record<string, string> = {
       dgaos: 'DGAOS Command Center',
+      documentStudio: 'Document Studio (Nine Documents)',
       meridionRegistry: 'AURA Citizen Registry',
       traceForensics: 'TRACE Forensic Workstation',
       jobs: 'Career Workstation',
