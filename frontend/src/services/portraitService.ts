@@ -345,25 +345,45 @@ export function generateProceduralPortrait(citizen: CitizenAppearance, seed = 42
   return `data:image/svg+xml;utf8,${encodeURIComponent(svg)}`;
 }
 
-/**
- * Saves the approved portrait data URI to the master citizen record in localStorage.
- * Notifies all open apps across the OS.
- */
 export function persistCitizenPortrait(citizenId: string, portraitDataUri: string): boolean {
   try {
+    // 1. Update legacy storage
     const STORE = 'miraverse-identity-registry-v3';
     const raw = localStorage.getItem(STORE);
-    if (!raw) return false;
-    const list = JSON.parse(raw);
-    if (!Array.isArray(list)) return false;
+    if (raw) {
+      try {
+        const list = JSON.parse(raw);
+        if (Array.isArray(list)) {
+          const idx = list.findIndex((c: any) => c.record === citizenId || c.maid === citizenId || c.id === citizenId || c.legacyRecord === citizenId);
+          if (idx >= 0) {
+            list[idx].portraitData = portraitDataUri;
+            localStorage.setItem(STORE, JSON.stringify(list));
+          }
+        }
+      } catch {}
+    }
 
-    const idx = list.findIndex((c: any) => c.record === citizenId);
-    if (idx < 0) return false;
+    // 2. Update canonical identities storage
+    const CANONICAL_STORE = 'miraverse-canonical-identities-v1';
+    const canRaw = localStorage.getItem(CANONICAL_STORE);
+    if (canRaw) {
+      try {
+        const canList = JSON.parse(canRaw);
+        if (Array.isArray(canList)) {
+          const idx = canList.findIndex((c: any) => c.record === citizenId || c.maid === citizenId || c.id === citizenId || c.legacyRecord === citizenId);
+          if (idx >= 0) {
+            canList[idx].portraitData = portraitDataUri;
+            localStorage.setItem(CANONICAL_STORE, JSON.stringify(canList));
+            // Asynchronously sync to IndexedDB
+            import('idb-keyval').then(({ set }) => {
+              set(CANONICAL_STORE, canList).catch(() => {});
+            }).catch(() => {});
+          }
+        }
+      } catch {}
+    }
 
-    list[idx].portraitData = portraitDataUri;
-    localStorage.setItem(STORE, JSON.stringify(list));
-
-    // Broadcast update to all windows/tabs/iframes
+    // 3. Broadcast update to all windows/tabs/iframes
     if (typeof window !== 'undefined') {
       window.postMessage({ source: 'meridion-registry', type: 'citizens-changed' }, window.location.origin);
       window.dispatchEvent(new Event('storage'));

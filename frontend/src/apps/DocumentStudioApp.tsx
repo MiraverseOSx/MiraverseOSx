@@ -20,6 +20,7 @@ import {
   renderEducationEmploymentHtml
 } from '../services/documentPacketGenerator';
 import PortraitStudioModal from '../components/portrait/PortraitStudioModal';
+import { MaidIdentityService } from '../services/maidIdentityService';
 
 const DEFAULT_CITIZEN: CitizenRecord = {
   name: 'Elara Vale',
@@ -82,23 +83,19 @@ export default function DocumentStudioApp() {
   const [isPortraitModalOpen, setIsPortraitModalOpen] = useState(false);
   const [issuanceNotice, setIssuanceNotice] = useState<string | null>(null);
 
-  // Load citizens from master localStorage store
-  const loadSavedCitizens = () => {
+  // Load citizens from master canonical registry
+  const loadSavedCitizens = async () => {
     try {
-      const raw = localStorage.getItem('miraverse-identity-registry-v3');
-      if (raw) {
-        const parsed = JSON.parse(raw);
-        if (Array.isArray(parsed) && parsed.length > 0) {
-          setCitizens(parsed);
-          // Preserve currently selected if available, otherwise pick first
-          const current = parsed.find((c: any) => c.record === selectedCitizen.record);
-          if (current) setSelectedCitizen(current);
-          else setSelectedCitizen(parsed[0]);
-          return;
-        }
+      const list = await MaidIdentityService.getAllPersons();
+      if (Array.isArray(list) && list.length > 0) {
+        setCitizens(list);
+        const current = list.find((c: any) => (c.maid && c.maid === selectedCitizen.maid) || c.record === selectedCitizen.record);
+        if (current) setSelectedCitizen(current);
+        else setSelectedCitizen(list[0]);
+        return;
       }
     } catch {
-      // Fallback to default
+      // Fallback
     }
     setCitizens([DEFAULT_CITIZEN]);
     setSelectedCitizen(DEFAULT_CITIZEN);
@@ -122,7 +119,7 @@ export default function DocumentStudioApp() {
   }, []);
 
   const handleCitizenChange = (recordId: string) => {
-    const found = citizens.find(c => c.record === recordId);
+    const found = citizens.find(c => (c.maid && c.maid === recordId) || c.record === recordId || (c as any).id === recordId || (c as any).legacyRecord === recordId);
     if (found) setSelectedCitizen(found);
   };
 
@@ -133,21 +130,23 @@ export default function DocumentStudioApp() {
   const handleDownloadCurrentHtml = () => {
     const docInfo = DOCUMENT_TABS.find(t => t.id === activeDocId);
     const slug = (selectedCitizen.name || 'citizen').toLowerCase().replace(/[^a-z0-9]+/g, '-');
-    const filename = `${docInfo?.title.toLowerCase().replace(/[^a-z0-9]+/g, '-')}_${slug}_${selectedCitizen.record}.html`;
+    const idKey = selectedCitizen.maid || selectedCitizen.record;
+    const filename = `${docInfo?.title.toLowerCase().replace(/[^a-z0-9]+/g, '-')}_${slug}_${idKey}.html`;
     const html = buildSingleDocumentHtml(activeDocId, selectedCitizen);
     triggerHtmlDownload(html, filename);
   };
 
   const handleExportFullPacket = () => {
     const slug = (selectedCitizen.name || 'citizen').toLowerCase().replace(/[^a-z0-9]+/g, '-');
-    const filename = `miraverse_nine_document_packet_${slug}_${selectedCitizen.record}.html`;
+    const idKey = selectedCitizen.maid || selectedCitizen.record;
+    const filename = `miraverse_nine_document_packet_${slug}_${idKey}.html`;
     const html = buildFullPacketHtml(selectedCitizen);
     triggerHtmlDownload(html, filename);
 
     // Record formal issuance snapshot
     const record = recordIssuedSnapshot({
       documentType: 'FULL_NINE_DOCUMENT_PACKET',
-      citizenRecordId: selectedCitizen.record,
+      citizenRecordId: idKey,
       citizenName: selectedCitizen.name,
       issuedAt: new Date().toISOString(),
       issuingAuthority: 'Aureline Civic Identity Administration & Crown Archives',
@@ -226,13 +225,13 @@ export default function DocumentStudioApp() {
           <div className="flex items-center gap-2 bg-[#201A36] border border-[#3C3264] rounded-lg px-3 py-1.5 text-xs">
             <span className="text-slate-400 font-medium">Citizen Record:</span>
             <select
-              value={selectedCitizen.record}
+              value={selectedCitizen.maid || selectedCitizen.record}
               onChange={(e) => handleCitizenChange(e.target.value)}
               className="bg-transparent text-white font-semibold focus:outline-none cursor-pointer max-w-[200px] truncate"
             >
               {citizens.map((c) => (
-                <option key={c.record} value={c.record} className="bg-[#1C1833] text-white">
-                  {c.name} ({c.record})
+                <option key={c.maid || c.record} value={c.maid || c.record} className="bg-[#1C1833] text-white">
+                  {c.name} ({c.maid || c.record})
                 </option>
               ))}
             </select>

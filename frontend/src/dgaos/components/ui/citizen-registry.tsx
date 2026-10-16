@@ -374,6 +374,59 @@ export const SEEDED_CITIZENS: CitizenRecord[] = [
   },
 ];
 
+function getCanonicalCitizens(): CitizenRecord[] {
+  try {
+    const raw = localStorage.getItem('miraverse-canonical-identities-v1') || localStorage.getItem('miraverse-identity-registry-v3');
+    if (!raw) return [];
+    const list = JSON.parse(raw);
+    if (!Array.isArray(list)) return [];
+    return list.map((c: any) => ({
+      id: c.maid || c.record || c.id,
+      legalName: c.name || 'Unnamed Citizen',
+      aliases: [
+        ...(c.legacyAliases || []),
+        c.alias,
+        c.maid && c.record !== c.maid ? c.record : null
+      ].filter(Boolean),
+      category: (c.category?.toLowerCase().includes('dga') || c.category?.toLowerCase().includes('complex')) ? 'Person of Interest' : 'Witness',
+      threatLevel: c.status?.includes('RESTRICTED') ? 'Medium' : 'Low',
+      avatarInitials: (c.name || 'U').split(' ').map((n: string) => n[0]).join('').slice(0, 2).toUpperCase(),
+      avatarColor: 'from-purple-600 to-indigo-800',
+      age: c.dob ? (2026 - parseInt(c.dob.slice(0, 4), 10) || 25) : 25,
+      dob: c.dob || '2001-01-01',
+      gender: 'Unspecified',
+      occupation: c.occupation || 'Resident',
+      employer: c.affiliation || 'Independent',
+      address: c.address || 'Address on file',
+      cityState: c.district || c.home || 'Aureline Central, Orynvell',
+      biometrics: {
+        bloodType: c.blood || 'A+',
+        height: c.height || '172 cm',
+        weight: c.build || 'Medium',
+        fingerprintClass: 'Simulated Dermal Ridge #BIO-' + (c.maid || c.record),
+        dnaReferenceId: 'AURA-RESONANCE-' + (c.maid || c.record),
+        facialMatchConfidence: '99.2% (Aura Biometrics)',
+      },
+      telecom: {
+        phone: c.phone || '+1 (202) 555-0100',
+        carrier: 'Aureline Telecom Grid',
+        onlineHandles: [c.email || 'citizen@example.com'],
+      },
+      vehicles: [],
+      criminalRecord: {
+        hasWarrant: c.status?.includes('WARRANT') || false,
+        priorOffenses: c.history ? [c.history] : [],
+        probationStatus: 'None',
+      },
+      investigativeNotes: c.links || 'Registered Meridion citizen.',
+      associatedCitizenIds: (c.relationshipIds || []).map((r: any) => r.id),
+      linkedEvidenceIds: [],
+    }));
+  } catch {
+    return [];
+  }
+}
+
 interface CitizenRegistryProps {
   cases: LabRecord[];
   evidence: LabRecord[];
@@ -394,8 +447,14 @@ export function CitizenRegistry({
   const [pinnedCitizens, setPinnedCitizens] = useState<string[]>(['CIT-90421', 'CIT-88192']);
   const [actionNotice, setActionNotice] = useState<string | null>(null);
 
+  const combinedCitizens = useMemo(() => {
+    const canonical = getCanonicalCitizens();
+    const seen = new Set(canonical.map(c => c.id));
+    return [...canonical, ...SEEDED_CITIZENS.filter(c => !seen.has(c.id))];
+  }, [searchQuery]);
+
   const filteredCitizens = useMemo(() => {
-    return SEEDED_CITIZENS.filter((c) => {
+    return combinedCitizens.filter((c) => {
       const matchesCategory =
         categoryFilter === 'All' ||
         (categoryFilter === 'Warrants'
@@ -425,15 +484,15 @@ export function CitizenRegistry({
         employerMatch
       );
     });
-  }, [searchQuery, categoryFilter]);
+  }, [combinedCitizens, searchQuery, categoryFilter]);
 
   const selectedCitizen = useMemo(() => {
     return (
-      SEEDED_CITIZENS.find((c) => c.id === selectedCitizenId) ||
+      combinedCitizens.find((c) => c.id === selectedCitizenId) ||
       filteredCitizens[0] ||
-      SEEDED_CITIZENS[0]
+      combinedCitizens[0]
     );
-  }, [selectedCitizenId, filteredCitizens]);
+  }, [combinedCitizens, selectedCitizenId, filteredCitizens]);
 
   const handleSimulateRefresh = () => {
     setIsQuerying(true);
@@ -492,7 +551,7 @@ export function CitizenRegistry({
             <span>{isQuerying ? 'Synchronizing…' : 'Sync Records'}</span>
           </button>
           <div className="text-right pl-3 border-l border-[#e5e0f0] text-xs">
-            <div className="text-[#4338ca] font-bold">{SEEDED_CITIZENS.length} Persons Indexed</div>
+            <div className="text-[#4338ca] font-bold">{combinedCitizens.length} Persons Indexed</div>
             <div className="text-[11px] text-[#4b465c]">
               {pinnedCitizens.length} Pinned to Corkboard
             </div>

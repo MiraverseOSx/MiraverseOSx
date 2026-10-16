@@ -41,9 +41,13 @@ export interface CitizenRecord {
   links: string;
   relationships?: string;
   household?: string;
-  timeline?: string;
   portraitData?: string;
   biometricSeed?: string;
+  maid?: string | null;
+  maidStatus?: string;
+  registrationRegionCode?: string | null;
+  legacyAliases?: string[];
+  legacyRecord?: string;
 }
 
 export interface IssuedDocumentSnapshot {
@@ -228,8 +232,9 @@ export function renderAuraIdHtml(citizen: CitizenRecord): string {
               <div style="font-size:15px;font-weight:700;color:#1E1738;font-family:'Cinzel',serif;">${escapeHtml(citizen.name)}</div>
             </div>
             <div>
-              <div style="font-size:8px;font-weight:700;text-transform:uppercase;color:#68758A;">Civic Record No.</div>
-              <div style="font-weight:700;font-family:'JetBrains Mono',monospace;color:#2C2849;">${escapeHtml(citizen.record)}</div>
+              <div style="font-size:8px;font-weight:700;text-transform:uppercase;color:#68758A;">Official MAID</div>
+              <div style="font-weight:700;font-family:'JetBrains Mono',monospace;color:#2C2849;">${escapeHtml(citizen.maid || citizen.record)}</div>
+              ${citizen.maid && citizen.record !== citizen.maid ? `<div style="font-size:7px;color:#8A95A5;">Legacy: ${escapeHtml(citizen.record)}</div>` : ''}
             </div>
             <div>
               <div style="font-size:8px;font-weight:700;text-transform:uppercase;color:#68758A;">Date of Birth</div>
@@ -276,7 +281,7 @@ export function renderAuraIdHtml(citizen: CitizenRecord): string {
 
         <!-- MRZ Zone -->
         <div style="background:#131024;border:1px solid #3C335C;border-radius:8px;padding:8px 12px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:3px;color:#C5AB78;line-height:1.5;">
-          I&lt;MRD${(citizen.record || 'MRD0000').replace(/[^A-Z0-9]/gi, '')}&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;<br>
+          I&lt;MRD${(citizen.maid || citizen.record || 'MRD0000').replace(/[^A-Z0-9]/gi, '')}&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;<br>
           ${(citizen.dob || '000000').replace(/-/g, '')}4M3409121MRD&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;4
         </div>
       </div>
@@ -327,8 +332,8 @@ export function renderAuraPassportHtml(citizen: CitizenRecord): string {
               <div style="font-family:'JetBrains Mono',monospace;font-weight:700;color:#9883C8;">${escapeHtml(citizen.passport || 'AUR-918204')}</div>
             </div>
             <div>
-              <div style="font-size:9px;font-weight:700;color:#718096;text-transform:uppercase;">Citizen ID</div>
-              <div style="font-family:'JetBrains Mono',monospace;font-weight:600;">${escapeHtml(citizen.record)}</div>
+              <div style="font-size:9px;font-weight:700;color:#718096;text-transform:uppercase;">Official MAID</div>
+              <div style="font-family:'JetBrains Mono',monospace;font-weight:700;color:#2C2849;">${escapeHtml(citizen.maid || citizen.record)}</div>
             </div>
             <div>
               <div style="font-size:9px;font-weight:700;color:#718096;text-transform:uppercase;">Nationality</div>
@@ -413,7 +418,7 @@ export function renderBirthCertificateHtml(citizen: CitizenRecord): string {
 
       <!-- Registration Number Box -->
       <div style="display:flex;justify-content:space-between;border-bottom:2px solid #2C2849;padding-bottom:10px;margin-bottom:24px;font-size:11px;">
-        <div>REGISTRY NUMBER: <strong style="font-family:'JetBrains Mono',monospace;">BIR-${escapeHtml(citizen.record)}</strong></div>
+        <div>OFFICIAL MAID: <strong style="font-family:'JetBrains Mono',monospace;">${escapeHtml(citizen.maid || `BIR-${citizen.record}`)}</strong>${citizen.maid && citizen.record !== citizen.maid ? `<span style="font-size:9px;color:#718096;margin-left:8px;">(Legacy: ${escapeHtml(citizen.record)})</span>` : ''}</div>
         <div>SOLAR CYCLE: <strong>FOUNDING ERA</strong></div>
         <div>PAGE: <strong>1 OF 1</strong></div>
       </div>
@@ -493,7 +498,7 @@ export function renderFingerprintFormHtml(citizen: CitizenRecord): string {
           <div style="font-size:10px;font-weight:700;color:#6C5FAC;letter-spacing:1.5px;text-transform:uppercase;">FORM TRACE-10-PRINT · DERMAL IMPRESSION REGISTRATION</div>
         </div>
         <div style="text-align:right;font-size:10px;font-family:'JetBrains Mono',monospace;">
-          <div>SPECIMEN ID: <strong>BIO-${escapeHtml(citizen.record)}</strong></div>
+          <div>SPECIMEN ID: <strong>BIO-${escapeHtml(citizen.maid || citizen.record)}</strong></div>
           <div>CUSTODY: <strong>DGAOS EYES RECORD</strong></div>
         </div>
       </div>
@@ -501,7 +506,7 @@ export function renderFingerprintFormHtml(citizen: CitizenRecord): string {
       <!-- Subject Summary Strip -->
       <div style="display:grid;grid-template-columns:repeat(5, 1fr);gap:12px;background:#F8F6FC;border:1px solid #D5CEE4;border-radius:6px;padding:10px 14px;margin-bottom:20px;font-size:11px;">
         <div><span style="color:#718096;font-size:9px;display:block;">SUBJECT NAME</span><strong>${escapeHtml(citizen.name)}</strong></div>
-        <div><span style="color:#718096;font-size:9px;display:block;">CIVIC NUMBER</span><strong>${escapeHtml(citizen.record)}</strong></div>
+        <div><span style="color:#718096;font-size:9px;display:block;">OFFICIAL MAID</span><strong>${escapeHtml(citizen.maid || citizen.record)}</strong>${citizen.maid && citizen.record !== citizen.maid ? `<span style="font-size:8px;color:#718096;display:block;">Legacy: ${escapeHtml(citizen.record)}</span>` : ''}</div>
         <div><span style="color:#718096;font-size:9px;display:block;">SPECIES</span><strong>${escapeHtml(citizen.species)}</strong></div>
         <div><span style="color:#718096;font-size:9px;display:block;">CLEARANCE</span><strong>${escapeHtml(citizen.clearance)}</strong></div>
         <div><span style="color:#718096;font-size:9px;display:block;">COLLECTION STATUS</span><strong style="color:#2E7D32;">VERIFIED</strong></div>
@@ -583,8 +588,9 @@ export function renderInvestigativeProfileHtml(citizen: CitizenRecord): string {
             <div style="font-size:20px;font-weight:700;color:#2C2849;font-family:'Cinzel',serif;">${escapeHtml(citizen.name)}</div>
           </div>
           <div>
-            <div style="font-size:9px;font-weight:700;color:#718096;text-transform:uppercase;">Master Civic ID</div>
-            <div style="font-weight:700;font-family:'JetBrains Mono',monospace;">${escapeHtml(citizen.record)}</div>
+            <div style="font-size:9px;font-weight:700;color:#718096;text-transform:uppercase;">Master Civic ID / Official MAID</div>
+            <div style="font-weight:700;font-family:'JetBrains Mono',monospace;">${escapeHtml(citizen.maid || citizen.record)}</div>
+            ${citizen.maid && citizen.record !== citizen.maid ? `<div style="font-size:8px;color:#718096;">Legacy: ${escapeHtml(citizen.record)}</div>` : ''}
           </div>
           <div>
             <div style="font-size:9px;font-weight:700;color:#718096;text-transform:uppercase;">Aliases / Monikers</div>
@@ -634,7 +640,7 @@ export function renderResidencyRecordHtml(citizen: CitizenRecord): string {
       <div style="border-bottom:3px double #2C2849;padding-bottom:16px;margin-bottom:24px;">
         <div style="font-family:'Cinzel',serif;font-size:11px;letter-spacing:2px;color:#6C5FAC;font-weight:700;">MUNICIPALITY OF AURELINE · HOMECRAFT HOUSING AUTHORITY</div>
         <div style="font-family:'Cinzel',serif;font-size:24px;font-weight:800;color:#2C2849;margin:6px 0;">OFFICIAL DOMICILE &amp; RESIDENCY CERTIFICATE</div>
-        <div style="font-size:10px;color:#718096;text-transform:uppercase;font-weight:600;">HOUSING REGISTRATION NO: RES-${escapeHtml(citizen.record)}</div>
+        <div style="font-size:10px;color:#718096;text-transform:uppercase;font-weight:600;">HOUSING REGISTRATION NO: RES-${escapeHtml(citizen.maid || citizen.record)}</div>
       </div>
 
       <!-- Domicile Details Grid -->
@@ -642,7 +648,7 @@ export function renderResidencyRecordHtml(citizen: CitizenRecord): string {
         <div style="grid-column:1/-1;background:#F8F6FC;padding:14px;border-radius:6px;border:1px solid #D5CEE4;">
           <div style="font-size:10px;font-weight:700;color:#6C5FAC;text-transform:uppercase;">Registered Occupant</div>
           <div style="font-family:'Cinzel',serif;font-size:18px;font-weight:700;color:#2C2849;">${escapeHtml(citizen.name)}</div>
-          <div style="font-size:11px;color:#666;">CIVIC ID: ${escapeHtml(citizen.record)}</div>
+          <div style="font-size:11px;color:#666;">OFFICIAL MAID: <strong style="font-family:monospace;color:#2C2849;">${escapeHtml(citizen.maid || citizen.record)}</strong>${citizen.maid && citizen.record !== citizen.maid ? ` · Legacy: ${escapeHtml(citizen.record)}` : ''}</div>
         </div>
 
         <div>
@@ -700,6 +706,17 @@ export function renderPhysicalSheetHtml(citizen: CitizenRecord): string {
           ${photo}
         </div>
         <div style="flex:1;display:grid;grid-template-columns:repeat(3, 1fr);gap:12px 18px;font-size:12px;">
+          <div style="grid-column:1/-1;border-bottom:1px solid #CBD5E1;padding-bottom:8px;margin-bottom:4px;display:flex;justify-content:space-between;align-items:flex-end;">
+            <div>
+              <div style="font-size:9px;font-weight:700;color:#718096;text-transform:uppercase;">Subject Legal Name</div>
+              <div style="font-size:16px;font-weight:700;color:#2C2849;font-family:'Cinzel',serif;">${escapeHtml(citizen.name)}</div>
+            </div>
+            <div style="text-align:right;">
+              <div style="font-size:8px;font-weight:700;color:#718096;text-transform:uppercase;">Official MAID</div>
+              <div style="font-family:'JetBrains Mono',monospace;font-weight:700;color:#2C2849;font-size:12px;">${escapeHtml(citizen.maid || citizen.record)}</div>
+              ${citizen.maid && citizen.record !== citizen.maid ? `<div style="font-size:8px;color:#718096;">Legacy: ${escapeHtml(citizen.record)}</div>` : ''}
+            </div>
+          </div>
           <div>
             <div style="font-size:9px;font-weight:700;color:#718096;text-transform:uppercase;">Height</div>
             <div style="font-weight:600;">${escapeHtml(citizen.height)}</div>
@@ -756,7 +773,8 @@ export function renderMedicalSummaryHtml(citizen: CitizenRecord): string {
           <div style="font-size:10px;color:#64748B;text-transform:uppercase;font-weight:600;">EMERGENCY &amp; BIOLOGICAL PROFILE (NOT FULL CLINICAL CHART)</div>
         </div>
         <div style="text-align:right;font-size:10px;font-family:'JetBrains Mono',monospace;">
-          <div>RECORD NO: <strong>MED-${escapeHtml(citizen.record)}</strong></div>
+          <div>RECORD NO: <strong>MED-${escapeHtml(citizen.maid || citizen.record)}</strong></div>
+          ${citizen.maid && citizen.record !== citizen.maid ? `<div style="font-size:8px;color:#64748B;">Legacy: ${escapeHtml(citizen.record)}</div>` : ''}
           <div style="color:#0D9488;">FACILITY: FAITH AURELINE</div>
         </div>
       </div>
@@ -803,7 +821,7 @@ export function renderEducationEmploymentHtml(citizen: CitizenRecord): string {
       <!-- Subject Summary -->
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;background:#FAF8F5;border:1px solid #E5DFD3;border-radius:6px;padding:14px;margin-bottom:24px;font-size:12px;">
         <div><span style="color:#718096;font-size:9px;display:block;">INDIVIDUAL NAME</span><strong style="font-size:15px;">${escapeHtml(citizen.name)}</strong></div>
-        <div><span style="color:#718096;font-size:9px;display:block;">CIVIC ID NUMBER</span><strong style="font-family:monospace;">${escapeHtml(citizen.record)}</strong></div>
+        <div><span style="color:#718096;font-size:9px;display:block;">OFFICIAL MAID / CIVIC ID</span><strong style="font-family:monospace;">${escapeHtml(citizen.maid || citizen.record)}</strong>${citizen.maid && citizen.record !== citizen.maid ? `<span style="font-size:9px;color:#718096;margin-left:6px;">(Legacy: ${escapeHtml(citizen.record)})</span>` : ''}</div>
       </div>
 
       <!-- Academic Record Section -->
@@ -906,7 +924,7 @@ export function buildSingleDocumentHtml(docType: number, citizen: CitizenRecord)
  * with standardized print page-breaks ready for individual or booklet PDF creation!
  */
 export function buildFullPacketHtml(citizen: CitizenRecord): string {
-  const title = `Meridion Nine-Document Packet - ${citizen.name} (${citizen.record})`;
+  const title = `Meridion Nine-Document Packet - ${citizen.name} (${citizen.maid || citizen.record})`;
 
   return `<!doctype html>
 <html lang="en">
