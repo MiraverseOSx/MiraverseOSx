@@ -88,11 +88,12 @@ export default function Window({ win, isFocusMode = false, windowIndex = 0 }: Wi
       const screenW = window.innerWidth || 1440;
       const screenH = window.innerHeight || 900;
       
-      const width = Math.min(1080, Math.max(760, screenW - 80));
-      const height = Math.min(720, Math.max(520, screenH - 120));
-      const cascade = (windowIndex % 5) * 22;
-      const left = Math.max(16, Math.round((screenW - width) / 2) + cascade);
-      const top = Math.max(16, Math.round((screenH - height - 70) / 2) + cascade);
+      const margin = screenW < 768 ? 8 : 16;
+      const width = Math.max(0, Math.min(1080, screenW - (screenW < 768 ? 16 : 80)));
+      const height = Math.max(0, Math.min(720, screenH - 120));
+      const cascade = screenW < 768 ? 0 : (windowIndex % 5) * 22;
+      const left = Math.max(margin, Math.min(screenW - width - margin, Math.round((screenW - width) / 2) + cascade));
+      const top = Math.max(8, Math.min(screenH - height - 96, Math.round((screenH - height - 70) / 2) + cascade));
 
       setWindowGeometry({ width, height, left, top });
     };

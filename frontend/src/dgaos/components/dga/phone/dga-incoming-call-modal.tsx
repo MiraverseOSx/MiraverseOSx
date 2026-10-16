@@ -1,8 +1,13 @@
-'use client';
+"use client";
 
-import React, { useEffect } from 'react';
-import { Phone, PhoneOff, PhoneCall, Volume2, Shield } from 'lucide-react';
-import { playPhoneRingTone } from '@/lib/phone-audio';
+import React, { useEffect } from "react";
+import {
+  PhoneSurface,
+  PhonePanel,
+  PhoneButton,
+} from "../../../../components/phone/PhonePrimitives";
+import { Phone, PhoneOff, PhoneCall, Volume2, Shield } from "lucide-react";
+import { playPhoneRingTone } from "@/lib/phone-audio";
 
 interface DgaIncomingCallModalProps {
   callerName: string;
@@ -32,62 +37,73 @@ export function DgaIncomingCallModal({
   }, []);
 
   return (
-    <div className="fixed inset-0 z-50 bg-[#1f1e30]/60 flex items-center justify-center p-4 select-none animate-fadeIn">
-      <div className="bg-white border-2 border-[#4b4372] rounded-xl max-w-md w-full p-6 text-[#1f1e30] shadow-2xl space-y-6 relative overflow-hidden">
+    <PhoneSurface
+      className="agency-incoming-overlay"
+      aria-label="Incoming agency call"
+    >
+      <PhonePanel className="agency-incoming-panel space-y-6">
         {/* Animated glowing border banner */}
-        <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-[#4b4372] via-rose-500 to-[#4b4372] animate-pulse" />
+        <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-[var(--phone-accent)] via-[var(--phone-danger)] to-[var(--phone-accent)] animate-pulse" />
 
         {/* Incoming Telephony Badge */}
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <span className="w-2.5 h-2.5 rounded-full bg-rose-500 animate-ping" />
-            <span className="text-[11px] font-mono font-bold tracking-widest text-[#4b4372] uppercase">
+            <span className="w-2.5 h-2.5 rounded-full bg-[var(--phone-danger)] animate-ping" />
+            <span className="text-[11px] font-mono font-bold tracking-widest text-[color:var(--phone-accent)] uppercase">
               INCOMING SECURE PRIORITY CALL
             </span>
           </div>
-          <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-[#f0eff5] text-[#4b4372] border border-[#cfcddb] font-semibold">
+          <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-[var(--phone-canvas)] text-[color:var(--phone-accent)] border border-[var(--phone-border)] font-semibold">
             TYPE-1 CRYPTO
           </span>
         </div>
 
         {/* Caller Avatar & Bio */}
         <div className="flex flex-col items-center text-center space-y-3 pt-2">
-          <div className="w-20 h-20 rounded-full bg-[#edeaf6] border-2 border-[#4b4372] flex items-center justify-center text-2xl font-bold text-[#362f59] shadow-md animate-bounce">
+          <div className="w-20 h-20 rounded-full bg-[var(--phone-surface-raised)] border-2 border-[var(--phone-accent)] flex items-center justify-center text-2xl font-bold text-[color:var(--phone-accent)] shadow-md animate-bounce">
             {callerAvatar}
           </div>
           <div>
-            <h2 className="text-xl font-bold text-[#1f1e30] tracking-wide">{callerName}</h2>
-            <div className="text-xs text-[#4b4372] font-semibold">{callerTitle}</div>
-            <div className="text-[11px] text-[#5e5c7a] mt-0.5">{callerDepartment}</div>
+            <h2 className="text-xl font-bold text-[color:var(--phone-text)] tracking-wide">
+              {callerName}
+            </h2>
+            <div className="text-xs text-[color:var(--phone-accent)] font-semibold">
+              {callerTitle}
+            </div>
+            <div className="text-[11px] text-[color:var(--phone-muted)] mt-0.5">
+              {callerDepartment}
+            </div>
           </div>
         </div>
 
         {/* Pre-recorded spoken soundbite or hook */}
-        <div className="bg-[#f8f7fc] border border-[#cfcddb] rounded-lg p-3.5 text-center">
-          <div className="text-xs text-[#2c2a3e] italic font-medium leading-relaxed">
+        <div className="bg-[var(--phone-canvas)] border border-[var(--phone-border)] rounded-lg p-3.5 text-center">
+          <div className="text-xs text-[color:var(--phone-text)] italic font-medium leading-relaxed">
             “{headlineMessage}”
           </div>
         </div>
 
         {/* Action Buttons: Accept / Decline */}
         <div className="grid grid-cols-2 gap-3 pt-2">
-          <button
+          <PhoneButton
             onClick={onDecline}
-            className="py-3 px-4 bg-rose-50 hover:bg-rose-100 border border-rose-300 text-rose-900 rounded-lg font-bold text-xs flex items-center justify-center gap-2 transition-colors cursor-pointer"
+            tone="danger"
+            className="py-3 px-4 bg-[var(--phone-danger)] hover:bg-[var(--phone-danger)] border border-[var(--phone-danger)] text-[color:var(--phone-danger)] rounded-lg font-bold text-xs flex items-center justify-center gap-2 transition-colors cursor-pointer"
           >
-            <PhoneOff className="w-4 h-4 text-rose-600" />
+            <PhoneOff className="w-4 h-4" />
             <span>SEND TO VM</span>
-          </button>
+          </PhoneButton>
 
-          <button
+          <PhoneButton
             onClick={onAccept}
-            className="py-3 px-4 bg-emerald-600 hover:bg-emerald-500 border border-emerald-600 text-white rounded-lg font-bold text-xs flex items-center justify-center gap-2 transition-all cursor-pointer shadow-lg animate-pulse"
+            tone="success"
+            className="py-3 px-4 bg-[var(--phone-success)] hover:bg-[var(--phone-success)] border border-[var(--phone-success)] text-[color:var(--phone-on-accent)] rounded-lg font-bold text-xs flex items-center justify-center gap-2 transition-all cursor-pointer shadow-lg animate-pulse"
           >
-            <PhoneCall className="w-4 h-4 text-white" />
+            <PhoneCall className="w-4 h-4" />
             <span>ACCEPT CALL</span>
-          </button>
+          </PhoneButton>
         </div>
-      </div>
-    </div>
+      </PhonePanel>
+    </PhoneSurface>
   );
 }

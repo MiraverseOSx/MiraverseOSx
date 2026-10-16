@@ -22,7 +22,7 @@ export default function DesktopTaskbar({ onTogglePhone, onOpenLauncher, isLaunch
 
   return (
     <nav className="desktop-dock" aria-label="Desktop dock">
-      <button className="dock-library" aria-label="Open app library" aria-haspopup="dialog" aria-expanded={isLauncherOpen} title="App library (Ctrl+Space)" onClick={() => { playClick(); onOpenLauncher(); }}><Grid2X2 size={20} /><span>Apps</span></button>
+      <button className="dock-library" aria-label="Open Orbit" aria-haspopup="dialog" aria-expanded={isLauncherOpen} title="Orbit (Ctrl+Space)" onClick={() => { playClick(); onOpenLauncher(); }}><Grid2X2 size={20} /><span>Orbit</span></button>
       <span className="dock-divider" />
       <div className="dock-apps" aria-label="Pinned and running apps">
         {apps.map((app) => {

@@ -63,7 +63,7 @@ export function DgaAppRail({
 
   return (
     <aside
-      className={`bg-[#f0eff5] text-[#2c2a3e] border-r border-[#cfcddb] flex flex-col justify-between shrink-0 select-none transition-all duration-200 h-full overflow-hidden ${
+      className={`dga-app-rail bg-[#f0eff5] text-[#2c2a3e] border-r border-[#cfcddb] flex flex-col justify-between shrink-0 select-none transition-all duration-200 h-full overflow-hidden ${
         isCollapsed ? 'w-[62px] min-w-[62px]' : 'w-[var(--dga-sidebar-w,244px)] min-w-[var(--dga-sidebar-w,244px)] max-w-[var(--dga-sidebar-w,244px)]'
       }`}
     >

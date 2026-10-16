@@ -1,0 +1,76 @@
+/* All phone palettes implement this semantic contract. Geometry is shared. */
+.phone-theme {
+  --phone-canvas: #1c1730;
+  --phone-wallpaper: linear-gradient(155deg, #342044, #1c1730 70%, #272142);
+  --phone-surface: #2d2440;
+  --phone-surface-raised: #3a2f50;
+  --phone-surface-hover: #493a60;
+  --phone-text: #f6efff;
+  --phone-muted: #c2b4d4;
+  --phone-accent: #d7b9ff;
+  --phone-accent-soft: #49345f;
+  --phone-on-accent: #28143e;
+  --phone-border: #655477;
+  --phone-success: #9ae3bd;
+  --phone-success-soft: #203f35;
+  --phone-danger: #ffb4bd;
+  --phone-danger-soft: #542b3c;
+  --phone-warning: #f4d898;
+  --phone-warning-soft: #493e28;
+  --phone-info: #a9d7fa;
+  --phone-info-soft: #263c52;
+  --phone-frame: #151020;
+  --phone-shadow: 0 20px 55px #0d09294d;
+  --phone-scrim: #081225b8;
+  --phone-radius: 18px;
+  --phone-control-radius: 12px;
+  --phone-target: 44px;
+  color-scheme: dark;
+}
+.phone-theme[data-phone-theme='aureline'] {
+  --phone-canvas: #f4f1fa;
+  --phone-wallpaper: linear-gradient(155deg, #ece3f8, #f9f7fc 65%, #ebe7f5);
+  --phone-surface: #ffffff;
+  --phone-surface-raised: #eee7f6;
+  --phone-surface-hover: #e4d9f0;
+  --phone-text: #30233f;
+  --phone-muted: #6f5d80;
+  --phone-accent: #714593;
+  --phone-accent-soft: #eaddf4;
+  --phone-on-accent: #ffffff;
+  --phone-border: #c8b7d8;
+  --phone-success: #226b4c;
+  --phone-success-soft: #e0f1e6;
+  --phone-danger: #a83250;
+  --phone-danger-soft: #fbe2e9;
+  --phone-warning: #7e5b16;
+  --phone-warning-soft: #f7edcf;
+  --phone-info: #2a6089;
+  --phone-info-soft: #deedf8;
+  --phone-frame: #c9bfd8;
+  --phone-shadow: 0 20px 55px #281d4938;
+  color-scheme: light;
+}
+.phone-theme[data-phone-theme='agency'] {
+  --phone-canvas: #111f30;
+  --phone-wallpaper: linear-gradient(155deg, #19394c, #111f30 70%, #162f3d);
+  --phone-surface: #1b3042;
+  --phone-surface-raised: #244055;
+  --phone-surface-hover: #2d4e63;
+  --phone-text: #eef8fc;
+  --phone-muted: #adc6d7;
+  --phone-accent: #8ee0d3;
+  --phone-accent-soft: #224b4d;
+  --phone-on-accent: #102d30;
+  --phone-border: #48677c;
+  --phone-success: #9de3ba;
+  --phone-success-soft: #234535;
+  --phone-danger: #ffb7bc;
+  --phone-danger-soft: #522f3f;
+  --phone-warning: #f3d399;
+  --phone-warning-soft: #4b3e29;
+  --phone-info: #a4d7ff;
+  --phone-info-soft: #244359;
+  --phone-frame: #0b1523;
+  --phone-shadow: 0 20px 55px #08162766;
+}

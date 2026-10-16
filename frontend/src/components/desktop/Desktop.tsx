@@ -86,15 +86,15 @@ export default function Desktop() {
           <p className="desktop-greeting">Welcome to your universe, {firstName}.</p>
           <h1>Make space for<br /><em>something extraordinary.</em></h1>
           <p className="desktop-welcome-description">Your world, your tools, your next discovery.<br />Everything begins here.</p>
-          <button className="desktop-library-button" onClick={() => setIsLauncherOpen(true)}><Grid2X2 size={17} />Explore your apps<ArrowUpRight size={16} /></button>
-          <span className="desktop-keyboard-hint"><Command size={11} /> Ctrl / ⌘ + Space to open the app library</span>
+          <button className="desktop-library-button" onClick={() => setIsLauncherOpen(true)}><Grid2X2 size={17} />Enter Orbit<ArrowUpRight size={16} /></button>
+          <span className="desktop-keyboard-hint"><Command size={11} /> Ctrl / ⌘ + Space to open Orbit</span>
         </section>
         <div className="desktop-workspace-note"><span className="desktop-note-star">✧</span><div><span className="shell-eyebrow">THE AURELINE CHAPTER</span><p>Cycle {cycle.toString().padStart(2, '0')} <span>/</span> {segment}</p></div></div>
         <button className="desktop-search-button" onClick={() => setIsLauncherOpen(true)} aria-label="Search your apps"><Search size={16} /><span>Find your next destination</span><ArrowUpRight size={14} /></button>
         {isSanctuary && <SanctuaryOverlay />}
       </div>
       <AnimatePresence>{windows.filter((win) => !win.isMinimized).map((win) => <Window key={win.id} win={win} windowIndex={windows.findIndex((candidate) => candidate.id === win.id)} isFocusMode={true} workspaceRef={appWorkspaceRef} />)}</AnimatePresence>
-      {isPhoneOpen && <div className="desktop-phone"><PhoneWidget /></div>}
+      {isPhoneOpen && <div className="desktop-phone"><PhoneWidget onClose={() => setIsPhoneOpen(false)} /></div>}
       <AppLauncherModal isOpen={isLauncherOpen} onClose={() => setIsLauncherOpen(false)} />
       <DesktopTaskbar onTogglePhone={() => setIsPhoneOpen((open) => !open)} onOpenLauncher={() => setIsLauncherOpen(true)} isLauncherOpen={isLauncherOpen} />
       <ToastViewport />

@@ -196,7 +196,7 @@ export function DgaShell({ traceWorkbenchNode }: DgaShellProps) {
   };
 
   return (
-    <div className="h-full w-full flex flex-col bg-[#e8e7f0] text-[#1e1d2c] font-sans antialiased overflow-hidden select-none">
+    <div data-phone-active={activeMode === 'DGA_CORE' && activeTab === 'phone'} className="dga-shell h-full w-full flex flex-col bg-[#e8e7f0] text-[#1e1d2c] font-sans antialiased overflow-hidden select-none">
       {/* 1. COMPACT GLOBAL STATUS BAR (Responsive, zero cutoff on laptop resolutions) */}
       <header className="h-[32px] min-h-[32px] max-h-[32px] bg-[#21202e] text-[#d4d2e5] border-b border-[#343247] px-2 flex items-center justify-between gap-1.5 text-[11px] shrink-0 select-none z-30 whitespace-nowrap overflow-x-auto scrollbar-none">
         <div className="flex items-center gap-1.5 min-w-0 shrink">
@@ -292,7 +292,7 @@ export function DgaShell({ traceWorkbenchNode }: DgaShellProps) {
                 callerDepartment: 'Homicide / CCTV Analysis',
                 callerAvatar: 'YT',
                 headlineMessage: 'I found something in the CCTV review. Check your evidence vault.',
-                contactId: 'agent-yumi'
+                contactId: 'CONT-YUMI'
               });
             }}
             className="hidden 2xl:flex h-[22px] px-[6px] rounded-[3px] bg-[#392e54] hover:bg-[#483a69] text-purple-200 hover:text-white items-center gap-1 text-[10px] font-mono border border-[#57467e] transition-colors cursor-pointer animate-pulse"
@@ -379,7 +379,7 @@ export function DgaShell({ traceWorkbenchNode }: DgaShellProps) {
 
         {/* WORKSPACE CONTENT AREA */}
         {activeMode === 'DGA_CORE' ? (
-          <main className="flex-1 flex flex-col overflow-hidden bg-[#e9e8f1]">
+          <main className="min-w-0 flex-1 flex flex-col overflow-hidden bg-[#e9e8f1]">
             {activeTab === 'dashboard' && (
               <DgaDashboard
                 cases={dgaState.cases}
