@@ -8,8 +8,9 @@ import {
 } from 'lucide-react';
 
 export const APPS = [
-  { id: 'meridionRegistry', title: 'AURA Citizen Registry', icon: UserCheck, category: 'Civic Records' },
+  { id: 'dgaos', title: 'DGAOS Command Center', icon: Shield, category: 'Agency Systems' },
   { id: 'traceForensics', title: 'TRACE Forensic Workstation', icon: Shield, category: 'Agency Systems' },
+  { id: 'meridionRegistry', title: 'AURA Citizen Registry', icon: UserCheck, category: 'Civic Records' },
   { id: 'jobs', title: 'WORKNET (§10.1A)', icon: Briefcase, category: 'Workplace Portals' },
   { id: 'board', title: 'CHRONICLE Notice Board (§5.3)', icon: Bookmark, category: 'Civic Subsystems' },
   { id: 'process', title: 'Process Monitor (PRISM/Sys)', icon: Cpu, category: 'Security' },
@@ -27,6 +28,7 @@ export const APPS = [
 ];
 
 // Lazy load app modules for code splitting and fast initial bundle loading
+const DgaosApp = lazy(() => import('../dgaos/apps/DgaosApp'));
 const CommsApp = lazy(() => import('./Comms/CommsApp'));
 const RegistryWorkspaceApp = lazy(() => import('./RegistryWorkspaceApp'));
 const TraceWorkspaceApp = lazy(() => import('./TraceWorkspaceApp'));
@@ -409,6 +411,7 @@ const withSuspense = (Component, name) => (props) => (
 );
 
 export const CONTENTS = {
+  dgaos: withSuspense(DgaosApp, 'DGAOS Command Center'),
   meridionRegistry: withSuspense(RegistryWorkspaceApp, 'Citizen Registry'),
   traceForensics: withSuspense(TraceWorkspaceApp, 'TRACE'),
   files: withSuspense(FileExplorerApp, 'File Explorer'),
