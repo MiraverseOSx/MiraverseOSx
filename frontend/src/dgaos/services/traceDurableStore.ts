@@ -108,7 +108,15 @@ class TraceDurableStore {
       // 1. Load records from IndexedDB or fallback to localStorage / seed
       const storedRecords = (await idbGet<LabRecord[]>(STORAGE_KEYS.RECORDS)) || this.loadLocal<LabRecord[]>(STORAGE_KEYS.RECORDS);
       if (storedRecords && Array.isArray(storedRecords) && storedRecords.length > 0) {
-        this.recordsCache = storedRecords;
+        // Preserve user drafts and modifications, but merge in any authoritative seed records not yet present
+        const existingIds = new Set(storedRecords.map((r) => r.id));
+        const missingFromSeed = seed.filter((s) => !existingIds.has(s.id));
+        if (missingFromSeed.length > 0) {
+          this.recordsCache = [...storedRecords, ...missingFromSeed];
+          await this.persistRecords();
+        } else {
+          this.recordsCache = storedRecords;
+        }
       } else {
         this.recordsCache = [...seed];
         await this.persistRecords();

@@ -31,6 +31,7 @@ import CourtroomTrial from '@/components/ui/courtroom-trial';
 import {modules} from '@/lib/modules';
 import type {LabRecord,Kind} from '@/lib/records';
 import {acceptAndSignTraceCase} from '@/lib/case-store';
+import '../styles/dgaos-integrated.css';
 
 const moduleName=(id:string)=>modules.find(m=>m.id===id)?.name||id;
 const date=(value:string)=>new Date(value).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric',timeZone:'UTC'});

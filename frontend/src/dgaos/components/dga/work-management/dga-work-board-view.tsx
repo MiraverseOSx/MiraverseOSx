@@ -97,7 +97,7 @@ export function DgaWorkBoardView({
         return (
           <div
             key={col.id}
-            className="bg-[#f4f3f8] border border-[#cfcddb] rounded-lg flex flex-col max-h-[calc(100vh-210px)] shadow-2xs"
+            className="bg-[#f4f3f8] border border-[#cfcddb] rounded-lg flex flex-col flex-1 max-h-full min-h-[250px] overflow-hidden shadow-2xs"
           >
             {/* Column Header */}
             <div className="p-3 border-b border-[#dedce7] flex items-center justify-between shrink-0 bg-[#ebe9f3]">

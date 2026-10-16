@@ -140,7 +140,7 @@ export function DgaShell({ traceWorkbenchNode }: DgaShellProps) {
 
   if (!dgaState) {
     return (
-      <div className="h-screen w-screen bg-[#181722] flex items-center justify-center text-white font-mono text-xs">
+      <div className="h-full w-full min-h-[300px] bg-[#181722] flex items-center justify-center text-white font-mono text-xs">
         <div className="flex items-center gap-2">
           <Cpu className="w-4 h-4 animate-spin text-[#9598c4]" />
           <span>INITIALIZING DGAOS CORE ENCLAVE (NODE HQ-04)...</span>
@@ -196,7 +196,7 @@ export function DgaShell({ traceWorkbenchNode }: DgaShellProps) {
   };
 
   return (
-    <div className="h-screen w-screen flex flex-col bg-[#e8e7f0] text-[#1e1d2c] font-sans antialiased overflow-hidden select-none">
+    <div className="h-full w-full flex flex-col bg-[#e8e7f0] text-[#1e1d2c] font-sans antialiased overflow-hidden select-none">
       {/* 1. COMPACT GLOBAL STATUS BAR (Responsive, zero cutoff on laptop resolutions) */}
       <header className="h-[32px] min-h-[32px] max-h-[32px] bg-[#21202e] text-[#d4d2e5] border-b border-[#343247] px-2 flex items-center justify-between gap-1.5 text-[11px] shrink-0 select-none z-30 whitespace-nowrap overflow-x-auto scrollbar-none">
         <div className="flex items-center gap-1.5 min-w-0 shrink">
