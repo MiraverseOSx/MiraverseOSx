@@ -1,1 +1,0 @@
-import{j as r}from"./framer-motion-CI5Hau7M.js";import{T as p}from"./TraceApp-CMusoTFe.js";import"./index-DH6ZEq4z.js";import"./lucide-icons-DcAvXqU2.js";function m(){return r.jsx(p,{})}export{m as default};
