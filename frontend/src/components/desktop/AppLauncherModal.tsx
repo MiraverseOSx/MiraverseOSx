@@ -4,7 +4,7 @@ import {
   Briefcase, Bookmark, Cpu, Home, Sparkles, Globe, Mail, 
   MessageSquare, UserCheck, Radio, Folder, BookOpen, Terminal, 
   Settings, Search, X, Star, Landmark, Play, Shield, Activity,
-  ArrowRight, Check, Zap, Layers, ContactRound, Fingerprint
+  ArrowRight, Check, Zap, Layers, ContactRound, Fingerprint, FileText
 } from 'lucide-react';
 import { useOSStore } from '../../store/useOSStore';
 import { APPS } from '../../apps/contents';
@@ -77,6 +77,21 @@ export const PROTOCOLS: ProtocolItem[] = [
     color: 'text-indigo-900',
     bg: 'bg-indigo-50',
     border: 'border-indigo-300'
+  },
+  {
+    id: 'documentStudio',
+    code: 'STUDIO',
+    name: 'STUDIO // Nine-Document Packet',
+    label: 'STUDIO // Nine-Document Packet',
+    sector: 'Aureline Civic & Crown Archives',
+    icon: FileText,
+    clearance: 'Civic Records Authority',
+    aetherTrace: 'AT-0x0119',
+    flux: '24.1 MHz',
+    desc: 'Formal nine-document civic and forensic packet generator: passport booklet, birth certificate, biometrics, and local portrait synthesis.',
+    color: 'text-purple-900',
+    bg: 'bg-purple-50',
+    border: 'border-purple-300'
   },
   {
     id: 'passport',

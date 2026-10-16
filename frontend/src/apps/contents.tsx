@@ -10,6 +10,7 @@ import {
 export const APPS = [
   { id: 'dgaos', title: 'DGAOS Command Center', icon: Shield, category: 'Agency Systems' },
   { id: 'traceForensics', title: 'TRACE Forensic Workstation', icon: Shield, category: 'Agency Systems' },
+  { id: 'documentStudio', title: 'Document Studio (Nine Documents)', icon: FileText, category: 'Civic Records' },
   { id: 'meridionRegistry', title: 'AURA Citizen Registry', icon: UserCheck, category: 'Civic Records' },
   { id: 'jobs', title: 'WORKNET (§10.1A)', icon: Briefcase, category: 'Workplace Portals' },
   { id: 'board', title: 'CHRONICLE Notice Board (§5.3)', icon: Bookmark, category: 'Civic Subsystems' },
@@ -30,6 +31,7 @@ export const APPS = [
 // Lazy load app modules for code splitting and fast initial bundle loading
 const DgaosApp = lazy(() => import('../dgaos/apps/DgaosApp'));
 const CommsApp = lazy(() => import('./Comms/CommsApp'));
+const DocumentStudioApp = lazy(() => import('./DocumentStudioApp'));
 const RegistryWorkspaceApp = lazy(() => import('./RegistryWorkspaceApp'));
 const TraceWorkspaceApp = lazy(() => import('./TraceWorkspaceApp'));
 const SpellForgeApp = lazy(() => import('./SpellForgeApp'));
@@ -412,6 +414,7 @@ const withSuspense = (Component, name) => (props) => (
 
 export const CONTENTS = {
   dgaos: withSuspense(DgaosApp, 'DGAOS Command Center'),
+  documentStudio: withSuspense(DocumentStudioApp, 'Document Studio'),
   meridionRegistry: withSuspense(RegistryWorkspaceApp, 'Citizen Registry'),
   traceForensics: withSuspense(TraceWorkspaceApp, 'TRACE'),
   files: withSuspense(FileExplorerApp, 'File Explorer'),

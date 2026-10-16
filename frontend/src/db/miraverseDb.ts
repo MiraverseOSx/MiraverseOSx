@@ -23,6 +23,7 @@ export interface AppMetadata {
 export const APPS: AppMetadata[] = [
   { id: 'dgaos', title: 'DGAOS // Command Center', category: 'Agency Systems', dev: 'Department of Global Affairs', version: '2.4.0', primary: 'Agency intelligence, investigations, command center, communications and assignments', lore: 'Department of Global Affairs agency operating environment.' },
   { id: 'traceForensics', title: 'TRACE // Forensics', category: 'Agency Systems', dev: 'DGAOS EYES/SHIELD', version: '2.4.0', primary: 'Tactical Records, Analysis & Criminal Examination workstation', lore: 'Specialized forensic laboratory stations and evidence examination engine.' },
+  { id: 'documentStudio', title: 'STUDIO // Nine-Document Packet', category: 'Civic Records', dev: 'Aureline Civic Identity Administration', version: '2.0.0', primary: 'Nine-document official civic and forensic packet generator with integrated local portrait studio', lore: 'Official Document Studio providing nine formal printable documents, passport booklet, birth certificate, biometrics, and local portrait synthesis.' },
   { id: 'meridionRegistry', title: 'AURA // Citizen Registry', category: 'Civic Records', dev: 'Meridion Civic Identity', version: '1.0.0', primary: 'Fictional citizen identity, biometrics, and civil document studio', lore: 'Official civic registry and identity issuing authority.' },
   // 5.3 Layered Interfaces & Core Tools
   { 
