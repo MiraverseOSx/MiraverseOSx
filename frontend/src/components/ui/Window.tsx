@@ -1,64 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import { motion, useDragControls } from 'framer-motion';
+import { motion, useDragControls, useReducedMotion } from 'framer-motion';
 import { useOSStore } from '../../store/useOSStore';
 import { getContent } from '../../apps/contents';
-import { Minus, Square, X, Sparkles } from 'lucide-react';
+import { Minus, Square, X, Grid2X2, Copy } from 'lucide-react';
 import { SoundFX } from '../../utils/audio';
 import { useSystemStore } from '../../store/useSystemStore';
+import { APPS_DIRECTORY } from '../desktop/appDirectory';
+import AppGlyph, { appTone } from './AppGlyph';
 
 export interface WindowProps {
   win: any;
   workspaceRef?: any;
   isFocusMode?: boolean;
   windowIndex?: number;
-}
-
-// Sector Chrome Determination (§3.2 & §4) - Light Pastel Realistic OS
-function getSectorChrome(appId: string) {
-  const id = appId?.toLowerCase() || '';
-  if (id.includes('faith') || id.includes('vital') || id.includes('warden')) {
-    return {
-      sector: 'faith',
-      activeBorder: 'border-emerald-300/80 shadow-[0_20px_50px_rgba(15,23,42,0.12),0_0_20px_rgba(220,252,231,0.50)]',
-      inactiveBorder: 'border-slate-200 shadow-[0_8px_24px_rgba(15,23,42,0.06)]',
-      activeHeader: 'bg-gradient-to-r from-[#F0FDF4] via-[#DCFCE7] to-[#F0FDF4] border-b border-emerald-200 text-emerald-950',
-      inactiveHeader: 'bg-[#F8FAFC] border-b border-slate-200 text-slate-500',
-      iconColor: 'text-emerald-600',
-      accentBg: 'bg-emerald-50',
-    };
-  }
-  if (id.includes('comms') || id.includes('spellforge') || id.includes('nephele') || id.includes('pulse')) {
-    return {
-      sector: 'nephele',
-      activeBorder: 'border-purple-300/80 shadow-[0_20px_50px_rgba(15,23,42,0.12),0_0_20px_rgba(237,233,254,0.50)]',
-      inactiveBorder: 'border-slate-200 shadow-[0_8px_24px_rgba(15,23,42,0.06)]',
-      activeHeader: 'bg-gradient-to-r from-[#FAF5FF] via-[#F3E8FF] to-[#FAF5FF] border-b border-purple-200 text-purple-950',
-      inactiveHeader: 'bg-[#F8FAFC] border-b border-slate-200 text-slate-500',
-      iconColor: 'text-purple-600',
-      accentBg: 'bg-purple-50',
-    };
-  }
-  if (id.includes('jobs') || id.includes('passport') || id.includes('gov') || id.includes('board') || id.includes('lore') || id.includes('finance')) {
-    return {
-      sector: 'orynvell',
-      activeBorder: 'border-amber-300/80 shadow-[0_20px_50px_rgba(15,23,42,0.12),0_0_20px_rgba(254,243,199,0.50)]',
-      inactiveBorder: 'border-slate-200 shadow-[0_8px_24px_rgba(15,23,42,0.06)]',
-      activeHeader: 'bg-gradient-to-r from-[#FFFDF5] via-[#FEF3C7] to-[#FFFDF5] border-b border-amber-200 text-amber-950',
-      inactiveHeader: 'bg-[#F8FAFC] border-b border-slate-200 text-slate-500',
-      iconColor: 'text-amber-600',
-      accentBg: 'bg-amber-50',
-    };
-  }
-  // Default: Luminous Light Pastel Celestial
-  return {
-    sector: 'celestial',
-    activeBorder: 'border-sky-300/80 shadow-[0_20px_50px_rgba(15,23,42,0.12),0_0_20px_rgba(224,242,254,0.50)]',
-    inactiveBorder: 'border-slate-200 shadow-[0_8px_24px_rgba(15,23,42,0.06)]',
-    activeHeader: 'bg-gradient-to-r from-[#F0F4FF] via-[#E8EDFB] to-[#F0F4FF] border-b border-indigo-100 text-slate-900',
-    inactiveHeader: 'bg-[#F8FAFC] border-b border-slate-200 text-slate-500',
-    iconColor: 'text-sky-600',
-    accentBg: 'bg-sky-50',
-  };
 }
 
 export default function Window({ win, isFocusMode = false, windowIndex = 0 }: WindowProps) {
@@ -71,10 +25,11 @@ export default function Window({ win, isFocusMode = false, windowIndex = 0 }: Wi
   const { soundEnabled } = useSystemStore();
 
   const dragControls = useDragControls();
+  const reducedMotion = useReducedMotion();
   const Body = getContent(win.contentKey || win.id);
   const isActive = activeWindowId === win.id;
   const windowOffset = win.windowOffset || { x: 0, y: 0 };
-  const chrome = getSectorChrome(win.id);
+  const app = APPS_DIRECTORY.find((candidate) => candidate.id === win.id);
 
   const [windowGeometry, setWindowGeometry] = useState({
     width: 1040,
@@ -90,10 +45,11 @@ export default function Window({ win, isFocusMode = false, windowIndex = 0 }: Wi
       
       const margin = screenW < 768 ? 8 : 16;
       const width = Math.max(0, Math.min(1080, screenW - (screenW < 768 ? 16 : 80)));
-      const height = Math.max(0, Math.min(720, screenH - 120));
+      const menuSpace = screenW < 701 ? 66 : 78;
+      const height = Math.max(0, Math.min(720, screenH - menuSpace - 108));
       const cascade = screenW < 768 ? 0 : (windowIndex % 5) * 22;
       const left = Math.max(margin, Math.min(screenW - width - margin, Math.round((screenW - width) / 2) + cascade));
-      const top = Math.max(8, Math.min(screenH - height - 96, Math.round((screenH - height - 70) / 2) + cascade));
+      const top = Math.max(menuSpace, Math.min(screenH - height - 108, menuSpace + cascade));
 
       setWindowGeometry({ width, height, left, top });
     };
@@ -120,10 +76,10 @@ export default function Window({ win, isFocusMode = false, windowIndex = 0 }: Wi
   };
 
   const maximizedStyle = {
-    top: 10,
+    top: window.innerWidth < 701 ? 62 : 74,
     left: 10,
     width: (window.innerWidth || 1440) - 20,
-    height: (window.innerHeight || 900) - 78,
+    height: Math.max(0, (window.innerHeight || 900) - (window.innerWidth < 701 ? 158 : 174)),
   };
 
   const normalStyle = {
@@ -142,13 +98,15 @@ export default function Window({ win, isFocusMode = false, windowIndex = 0 }: Wi
       dragElastic={0}
       dragSnapToOrigin
       onDragEnd={handleDragEnd}
-      initial={{ opacity: 0, scale: 0.96, y: 10 }}
+      initial={reducedMotion ? false : { opacity: 0, scale: 0.98, y: 8 }}
       animate={{ opacity: 1, scale: 1, y: 0 }}
-      exit={{ opacity: 0, scale: 0.96, y: 8 }}
-      transition={{ duration: 0.28, ease: [0.2, 0.8, 0.2, 1] }}
-      className={`fixed flex flex-col overflow-hidden select-none rounded-2xl border backdrop-blur-2xl bg-white/95 transition-all duration-200 ${
-        isActive ? chrome.activeBorder : chrome.inactiveBorder
-      }`}
+      exit={{ opacity: 0, scale: reducedMotion ? 1 : 0.98 }}
+      transition={{ duration: reducedMotion ? 0 : 0.2, ease: [0.2, 0.8, 0.2, 1] }}
+      className="os-window"
+      data-active={isActive}
+      data-tone={appTone(win.id)}
+      role="region"
+      aria-label={app?.label || win.title || win.id}
       style={{
         ...(win.isMaximized ? maximizedStyle : normalStyle),
         x: win.isMaximized ? 0 : windowOffset.x,
@@ -157,34 +115,29 @@ export default function Window({ win, isFocusMode = false, windowIndex = 0 }: Wi
       }}
       onMouseDown={() => focusWindow(win.id)}
     >
-      {/* ─── 4.1 LIGHT PASTEL TITLE BAR WITH SMOOTH REALISTIC CHROMING ─── */}
       <div
-        className={`flex h-11 shrink-0 items-center justify-between px-4 transition-colors ${
-          isActive ? chrome.activeHeader : chrome.inactiveHeader
-        }`}
+        className="os-window__titlebar"
         style={{ cursor: win.isMaximized ? 'default' : 'grab' }}
         onPointerDown={startDrag}
-        onDoubleClick={() => {
+        onDoubleClick={(event) => {
+          if ((event.target as HTMLElement).closest('button')) return;
           if (soundEnabled) SoundFX.playSnap();
           toggleMaximize(win.id);
         }}
       >
-        <div className="flex items-center gap-2.5">
-          <Sparkles size={14} className={`${chrome.iconColor} ${isActive ? 'animate-pulse' : 'opacity-70'}`} />
-          <span className="font-display font-bold text-xs tracking-wider uppercase text-slate-800">
-            {win.title || win.id}
-          </span>
+        <div className="os-window__identity">
+          <AppGlyph icon={app?.icon || Grid2X2} appId={win.id} size="small" />
+          <div className="os-window__name"><strong>{app?.label || win.title || win.id}</strong><small>{app?.code || 'MIRAVERSE'} / {app?.category || 'Workspace'}</small></div>
         </div>
 
         {/* Window Controls: Minimize, Maximize, Close */}
-        <div className="flex items-center gap-1.5 text-xs">
+        <div className="os-window__controls">
           <button
             onClick={(e) => {
               e.stopPropagation();
               if (soundEnabled) SoundFX.playSnap();
               toggleMinimize(win.id);
             }}
-            className="p-1.5 rounded-lg text-slate-500 hover:text-slate-900 hover:bg-slate-200/60 transition-all"
             title="Minimize"
           >
             <Minus size={13} />
@@ -195,10 +148,10 @@ export default function Window({ win, isFocusMode = false, windowIndex = 0 }: Wi
               if (soundEnabled) SoundFX.playSnap();
               toggleMaximize(win.id);
             }}
-            className="p-1.5 rounded-lg text-slate-500 hover:text-amber-700 hover:bg-amber-100/70 transition-all"
-            title="Maximize"
+            title={win.isMaximized ? 'Restore window' : 'Maximize'}
+            aria-pressed={!!win.isMaximized}
           >
-            <Square size={12} />
+            {win.isMaximized ? <Copy size={12} /> : <Square size={12} />}
           </button>
           <button
             onClick={(e) => {
@@ -206,7 +159,6 @@ export default function Window({ win, isFocusMode = false, windowIndex = 0 }: Wi
               if (soundEnabled) SoundFX.playSnap();
               closeWindow(win.id);
             }}
-            className="p-1.5 rounded-lg text-slate-500 hover:text-rose-700 hover:bg-rose-100/80 transition-all"
             title="Close"
           >
             <X size={14} />
@@ -215,7 +167,7 @@ export default function Window({ win, isFocusMode = false, windowIndex = 0 }: Wi
       </div>
 
       {/* ─── 4.1 LIGHT PASTEL CONTENT SURFACE ─── */}
-      <div className="flex-1 overflow-hidden relative min-h-0 bg-[#FAFBFD] text-slate-800">
+      <div className="os-window__body">
         <Body />
       </div>
     </motion.div>

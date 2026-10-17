@@ -1,17 +1,17 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Sparkles, Send, Bot, Terminal, ChevronUp, ChevronDown, CheckCircle2, AlertCircle, ShieldAlert, FileText, HelpCircle, Activity } from 'lucide-react';
+import { Sparkles, Send, Bot, AlertCircle, ShieldAlert } from 'lucide-react';
 import { useOSStore } from '../../store/useOSStore';
 import { useWorldStore } from '../../store/useWorldStore';
 import { useGameStore } from '../../store/useGameStore';
-import { APPS } from '../../apps/registry';
+import { APPS } from '../../apps/contents';
 import soundEngine from '../../utils/soundEngine';
 
 export default function MAIDock() {
   const [isOpen, setIsOpen] = useState(false);
   const [prompt, setPrompt] = useState('');
   const [status, setStatus] = useState('idle'); // 'idle' | 'thinking' | 'executing' | 'error' | 'glitched'
-  const [aiResponse, setAiResponse] = useState(null);
+  const [aiResponse, setAiResponse] = useState<any>(null);
 
   const toggleApp = useOSStore((s) => s.toggleApp);
   const addXP = useOSStore((s) => s.addXP);
@@ -20,11 +20,10 @@ export default function MAIDock() {
 
   const isCorrupted = prismCorruptionLevel >= 15;
 
-  const handleCommandSubmit = async (e) => {
-    e?.preventDefault();
-    if (!prompt.trim() || status === 'thinking') return;
+  const executeQuery = async (queryText: string) => {
+    if (!queryText.trim() || status === 'thinking') return;
 
-    const userQuery = prompt.trim();
+    const userQuery = queryText.trim();
     setPrompt('');
     setStatus('thinking');
     soundEngine.playMAIPulse();
@@ -74,7 +73,7 @@ export default function MAIDock() {
       setAiResponse(response);
       addXP(15);
       setTimeout(() => setStatus('idle'), 4000);
-    } catch (err) {
+    } catch {
       setStatus('error');
       setAiResponse({
         thought: 'Connection Notice',
@@ -83,6 +82,11 @@ export default function MAIDock() {
       });
       setTimeout(() => setStatus('idle'), 3000);
     }
+  };
+
+  const handleCommandSubmit = async (e?: React.FormEvent) => {
+    e?.preventDefault();
+    await executeQuery(prompt);
   };
 
   const getStatusRing = () => {
@@ -176,9 +180,8 @@ export default function MAIDock() {
               ].map((chip, idx) => (
                 <button
                   key={idx}
-                  onClick={() => {
-                    setPrompt(chip.cmd);
-                  }}
+                  type="button"
+                  onClick={() => executeQuery(chip.cmd)}
                   className="px-2.5 py-1 rounded-lg bg-purple-950/70 border border-purple-500/30 text-[10px] text-purple-300 hover:text-white hover:bg-purple-900 transition"
                 >
                   {chip.label}

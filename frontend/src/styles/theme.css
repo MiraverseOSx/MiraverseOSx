@@ -9,9 +9,15 @@
 /* ==========================================================================
    1. MASTER TYPOGRAPHY UTILITIES (§2)
    ========================================================================== */
-.font-display, h1, h2, h3, .window-title, .modal-title {
+.font-display, .modal-title {
   font-family: var(--font-display);
   letter-spacing: 0.03em;
+  color: var(--color-text-primary);
+}
+
+h1, h2, h3, .window-title {
+  font-family: var(--font-ui);
+  letter-spacing: -.025em;
   color: var(--color-text-primary);
 }
 

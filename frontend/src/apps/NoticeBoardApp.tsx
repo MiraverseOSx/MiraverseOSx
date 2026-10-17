@@ -16,117 +16,25 @@ import {
 import { SoundFX } from '../utils/audio';
 import { useSystemStore } from '../store/useSystemStore';
 import { useOSStore } from '../store/useOSStore';
-
-interface NoticeItem {
-  id: string;
-  category: 'tasks' | 'quests' | 'missions' | 'adventures' | 'journey';
-  title: string;
-  description: string;
-  priority: 'Normal' | 'Elevated' | 'Critical' | 'Archival';
-  isPinned?: boolean;
-  completed: boolean;
-  tag: string;
-  rewardXP?: number;
-  rewardCredits?: number;
-  rewardBits?: number;
-}
+import { NOTICES } from '../data/notices';
 
 export default function NoticeBoardApp() {
   const { soundEnabled } = useSystemStore();
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [activeCategory, setActiveCategory] = useState<'all' | 'tasks' | 'quests' | 'missions' | 'adventures' | 'journey'>('all');
   
-  const addXP = useOSStore((s) => s.addXP);
-  const addCredits = useOSStore((s) => s.addCredits);
-  const addBits = useOSStore((s) => s.addBits);
+  const completeNotice = useOSStore((s) => s.completeNotice);
   const player = useOSStore((s) => s.gameplay.player);
+  const notices = NOTICES.map((notice) => ({
+    ...notice,
+    completed: notice.completed || player.completedNoticeIds.includes(notice.id),
+  }));
 
-  // Initial Aureline Systems Notice Data
-  const [notices, setNotices] = useState<NoticeItem[]>([
-    {
-      id: 'n-01',
-      category: 'missions',
-      title: 'Aureline Civic Onboarding Registration',
-      description: 'Complete provisional resident intake forms via .osform and confirm Faith Medical portal synchronization.',
-      priority: 'Critical',
-      isPinned: true,
-      completed: true,
-      tag: 'DGA-01',
-      rewardXP: 100,
-      rewardCredits: 150,
-      rewardBits: 0,
-    },
-    {
-      id: 'n-02',
-      category: 'quests',
-      title: 'Investigate Old Factory Ward Anomalies',
-      description: 'Trace erratic background process signatures near the Supercomputer lower levels for AETHERCORE file remnants.',
-      priority: 'Elevated',
-      isPinned: true,
-      completed: false,
-      tag: 'PRISM-WARN',
-      rewardXP: 250,
-      rewardCredits: 300,
-      rewardBits: 2,
-    },
-    {
-      id: 'n-03',
-      category: 'tasks',
-      title: 'Starter House Room Calibration',
-      description: 'Unpack starter assignment box, configure terminal dock, and inspect wall port integrity in residential sector.',
-      priority: 'Normal',
-      isPinned: false,
-      completed: false,
-      tag: 'RES-04',
-      rewardXP: 50,
-      rewardCredits: 75,
-      rewardBits: 0,
-    },
-    {
-      id: 'n-04',
-      category: 'adventures',
-      title: 'Founding Day Protocol: March 6 Archive Unlock',
-      description: 'Prepare ceremonial decryption keys for Maeryn Seraphima historical records across district mainframes.',
-      priority: 'Archival',
-      isPinned: true,
-      completed: false,
-      tag: 'ORYNVELL',
-      rewardXP: 500,
-      rewardCredits: 600,
-      rewardBits: 5,
-    },
-    {
-      id: 'n-05',
-      category: 'journey',
-      title: 'Discover All 8 Regional Shrines',
-      description: 'Visit Fross, Lumia, Marlowe, Brisland, Kaji, Nephele, Orynvell and Core to calibrate full environmental harmony.',
-      priority: 'Archival',
-      isPinned: false,
-      completed: false,
-      tag: 'AURA-ALL',
-      rewardXP: 800,
-      rewardCredits: 1000,
-      rewardBits: 10,
-    },
-  ]);
-
-  const toggleNoticeCompletion = (id: string) => {
-    if (soundEnabled) SoundFX.playButtonTap();
-    setNotices((prev) =>
-      prev.map((n) => {
-        if (n.id === id) {
-          const nextState = !n.completed;
-          if (nextState) {
-            if (n.rewardXP) addXP(n.rewardXP);
-            if (n.rewardCredits) addCredits(n.rewardCredits);
-            if (n.rewardBits) addBits(n.rewardBits);
-            if (soundEnabled) SoundFX.playSuccess();
-          }
-          return { ...n, completed: nextState };
-        }
-        return n;
-      })
-    );
+  const handleCompleteNotice = (id: string) => {
+    const notice = notices.find((candidate) => candidate.id === id);
+    if (!notice || notice.completed) return;
+    completeNotice(id);
+    if (soundEnabled) SoundFX.playSuccess();
   };
 
   const filteredNotices = activeCategory === 'all' 
@@ -209,7 +117,7 @@ export default function NoticeBoardApp() {
           <div>
             <div className="flex items-center gap-2 mb-1">
               <span className="text-[10px] font-ui uppercase bg-amber-100 text-amber-900 border border-amber-200 px-2 py-0.5 rounded font-bold">
-                CHRONICLE (§5.3) // CIVIC NOTICE BOARD & QUEST ENGINE
+                CHRONICLE // CIVIC NOTICE BOARD & QUEST ENGINE
               </span>
               <span className="text-[10px] font-ui text-slate-500">// Aureline Civic Grid</span>
             </div>
@@ -282,7 +190,9 @@ export default function NoticeBoardApp() {
                       {/* Card Footer with Status Toggle */}
                       <div className="pt-3 border-t border-slate-100 flex items-center justify-between">
                         <button
-                          onClick={() => toggleNoticeCompletion(notice.id)}
+                          onClick={() => handleCompleteNotice(notice.id)}
+                          disabled={notice.completed}
+                          aria-label={`${notice.completed ? 'Completed' : 'Complete'}: ${notice.title}`}
                           className="flex items-center gap-1.5 text-xs font-ui font-medium text-slate-600 hover:text-slate-900 transition-colors"
                         >
                           {notice.completed ? (
@@ -326,7 +236,7 @@ export default function NoticeBoardApp() {
                   pinnedNotices.map((pn) => (
                     <div 
                       key={pn.id} 
-                      onClick={() => toggleNoticeCompletion(pn.id)}
+                      onClick={() => handleCompleteNotice(pn.id)}
                       className="p-2.5 bg-white hover:bg-amber-100/50 border border-amber-200 rounded-lg cursor-pointer transition flex items-center justify-between group shadow-xs"
                     >
                       <div className="min-w-0 pr-2">
@@ -353,7 +263,7 @@ export default function NoticeBoardApp() {
                 Aureline Dispatch Advisory
               </h4>
               <p className="text-xs text-slate-600 leading-relaxed font-ui">
-                Civic tasks refresh at every Morning and Evening time segment shift. Ensure Biometric Clearance verification via MIRROR is active for classified assignments.
+                Completed directives are saved to your citizen record. Each directive awards its payout once. Ensure Biometric Clearance verification via MIRROR is active for classified assignments.
               </p>
             </div>
           </div>

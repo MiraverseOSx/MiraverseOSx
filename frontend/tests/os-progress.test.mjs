@@ -1,0 +1,121 @@
+import assert from 'node:assert/strict';
+import { registerHooks } from 'node:module';
+import test from 'node:test';
+
+// Match Vite's extensionless TypeScript imports using Node's built-in TS support.
+registerHooks({
+  resolve(specifier, context, nextResolve) {
+    try { return nextResolve(specifier, context); }
+    catch (error) {
+      if (error.code !== 'ERR_MODULE_NOT_FOUND' || !specifier.startsWith('.')) throw error;
+      return nextResolve(`${specifier}.ts`, context);
+    }
+  },
+});
+
+const key = 'miraverse-os-progress';
+let instance = 0;
+function memoryStorage() {
+  const data = new Map();
+  const storage = {
+    getItem: (name) => data.get(name) ?? null,
+    setItem: (name, value) => data.set(name, value),
+    removeItem: (name) => data.delete(name),
+  };
+  Object.defineProperty(globalThis, 'localStorage', { configurable: true, value: storage });
+  return storage;
+}
+async function freshStore() {
+  const module = await import(`../src/store/useOSStore.ts?instance=${instance++}`);
+  return module.useOSStore;
+}
+
+test('gameplay and wallpaper survive a fresh store while runtime windows are excluded', async () => {
+  const storage = memoryStorage();
+  const store = await freshStore();
+  store.getState().loginUser({ name: 'Test Citizen', credits: 500, level: 1 });
+  store.getState().addCredits(123);
+  store.getState().addSkillXP('Research', 25);
+  store.getState().completeIdentityScan({ citizenId: 'TEST-01' });
+  store.getState().damageAura(40);
+  store.getState().removeCondition('Veilwilt');
+  store.getState().setWallpaper('https://example.com/wallpaper.jpg');
+  store.getState().toggleApp({ id: 'passport', icon: () => null });
+
+  const saved = JSON.parse(storage.getItem(key)).state;
+  assert.equal(saved.windows, undefined);
+  assert.equal(saved.activeWindowId, undefined);
+  const restored = await freshStore();
+  assert.deepEqual(restored.getState().gameplay, store.getState().gameplay);
+  assert.equal(restored.getState().wallpaper, 'https://example.com/wallpaper.jpg');
+  assert.equal(restored.getState().isLoggedIn, true);
+  assert.deepEqual(restored.getState().windows, []);
+});
+
+test('signing back in resumes earned credits, level, and onboarding', async () => {
+  memoryStorage();
+  const store = await freshStore();
+  store.getState().loginUser({ name: 'Test Citizen', credits: 500, level: 1 });
+  store.getState().addCredits(321);
+  store.getState().addXP(350);
+  store.getState().completeIdentityScan({ citizenId: 'TEST-01' });
+  store.getState().logoutUser();
+  const restored = await freshStore();
+  assert.equal(restored.getState().isLoggedIn, false);
+  const progress = restored.getState().gameplay;
+  restored.getState().loginUser({ name: 'test citizen', credits: 500, level: 1 });
+  assert.equal(restored.getState().isLoggedIn, true);
+  assert.deepEqual(restored.getState().gameplay, progress);
+});
+
+test('notice completion pays exactly once, including after reload', async () => {
+  memoryStorage();
+  const store = await freshStore();
+  const before = store.getState().gameplay.player;
+  store.getState().completeNotice('n-02');
+  const after = store.getState().gameplay.player;
+  assert.equal(after.credits - before.credits, 300);
+  assert.equal(after.xp - before.xp, 250);
+  assert.equal(after.bits - before.bits, 2);
+  assert.equal(after.level, Math.floor(after.xp / 100) + 1);
+  store.getState().completeNotice('n-02');
+  store.getState().completeNotice('n-01');
+  store.getState().completeNotice('unknown');
+  assert.deepEqual(store.getState().gameplay.player, after);
+  const restored = await freshStore();
+  restored.getState().completeNotice('n-02');
+  assert.deepEqual(restored.getState().gameplay.player, after);
+});
+
+test('partial saves gain new defaults without restoring cleared conditions', async () => {
+  const storage = memoryStorage();
+  storage.setItem(key, JSON.stringify({ version: 1, state: {
+    gameplay: { player: { name: 'Returning Citizen', credits: 42, conditions: [] } },
+  } }));
+  const store = await freshStore();
+  const player = store.getState().gameplay.player;
+  assert.equal(player.name, 'Returning Citizen');
+  assert.equal(player.credits, 42);
+  assert.deepEqual(player.conditions, []);
+  assert.deepEqual(player.completedNoticeIds, ['n-01']);
+  assert.ok(player.skills.Research);
+  assert.ok(store.getState().gameplay.identity);
+});
+
+test('corrupt or unavailable storage leaves a playable session', async (t) => {
+  const storage = memoryStorage();
+  storage.setItem(key, '{invalid json');
+  const store = await freshStore();
+  assert.equal(store.getState().gameplay.player.credits, 500);
+  store.getState().addCredits(10);
+  assert.equal(JSON.parse(storage.getItem(key)).state.gameplay.player.credits, 510);
+
+  Object.defineProperty(globalThis, 'localStorage', {
+    configurable: true,
+    get() { throw new Error('Storage unavailable'); },
+  });
+  t.mock.method(console, 'warn', () => {});
+  const blockedStore = await freshStore();
+  assert.doesNotThrow(() => blockedStore.getState().addCredits(10));
+  assert.equal(blockedStore.getState().gameplay.player.credits, 510);
+});

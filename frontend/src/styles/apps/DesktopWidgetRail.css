@@ -1,0 +1,60 @@
+.desktop-widget-rail {
+  position: absolute;
+  z-index: 1;
+  top: 24px;
+  right: 28px;
+  width: 272px;
+  max-height: calc(100% - 136px);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  border-radius: 17px;
+  scrollbar-width: thin;
+  scrollbar-color: #c1b3d2 transparent;
+}
+.desktop-widget-rail:focus-visible { outline: 2px solid #c6b0e0; outline-offset: 4px; }
+.desktop-widget {
+  flex-shrink: 0;
+  min-width: 0;
+  padding: 16px 17px 13px;
+  border: 1px solid #ffffffa6;
+  border-radius: 16px;
+  background: linear-gradient(130deg, #fcfaf7f0, #f1ebf8ed);
+  backdrop-filter: blur(22px);
+  -webkit-backdrop-filter: blur(22px);
+  color: var(--mira-ink);
+  box-shadow: inset 0 1px 0 #fff, 0 6px 22px #0b142812;
+  font-family: var(--font-ui);
+}
+.desktop-widget-heading { display: flex; align-items: center; gap: 7px; color: #77618d; }
+.desktop-widget .desktop-widget-heading h2 { margin: 0; color: #4c435d; font-family: var(--font-ui); font-size: 11px; font-weight: 600; line-height: 1.4; letter-spacing: 0; }
+.desktop-widget-heading > span { margin-left: auto; color: #746680; font-size: 7px; font-weight: 600; letter-spacing: .12em; }
+.desktop-widget-clock { display: flex; flex-direction: column; gap: 4px; margin-top: 12px; }
+.desktop-widget-clock strong { color: #35364f; font-size: 29px; font-weight: 400; letter-spacing: -.045em; line-height: 1.2; font-variant-numeric: tabular-nums; }
+.desktop-widget-clock > span { color: #6c6478; font-size: 11px; }
+.desktop-widget-cycle { display: flex; justify-content: space-between; margin-top: 13px; padding-top: 10px; border-top: 1px solid #d9d1e3; color: #6d607c; font-size: 9px; }
+.desktop-widget-aura { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; margin-top: 13px; }
+.desktop-widget-aura strong { color: #3d6d60; font-size: 28px; font-weight: 400; line-height: 1; letter-spacing: -.045em; }
+.desktop-widget-aura small { font-size: 13px; margin-left: 2px; }
+.desktop-widget-aura > span { color: #6a6275; font-size: 9px; }
+.desktop-widget--aura progress { display: block; width: 100%; height: 4px; margin: 12px 0 8px; border: 0; border-radius: 4px; overflow: hidden; background: #dce5de; }
+.desktop-widget--aura progress::-webkit-progress-bar { background: #dce5de; border-radius: 4px; }
+.desktop-widget--aura progress::-webkit-progress-value { background: #598778; border-radius: 4px; }
+.desktop-widget--aura progress::-moz-progress-bar { background: #598778; border-radius: 4px; }
+.desktop-widget-action { display: flex; align-items: center; justify-content: space-between; gap: 8px; width: 100%; min-height: 28px; padding: 5px 0; border: 0; border-radius: 5px; background: transparent; color: #6a4e84; text-align: left; font-family: var(--font-ui); font-size: 10px; font-weight: 600; }
+.desktop-widget-action:hover { color: #49325f; background: #e4d9ef66; }
+.mira-desktop .desktop-widget-action:focus-visible { outline: 2px solid #80609f; outline-offset: 3px; }
+.desktop-widget-heading > .desktop-widget-count { display: grid; place-items: center; min-width: 22px; height: 21px; border-radius: 6px; background: #e5dbef; color: #6b527e; font-size: 10px; letter-spacing: 0; }
+.desktop-widget-notices { list-style: none; margin: 10px 0 7px; padding: 0; }
+.desktop-widget-notices li { display: flex; align-items: flex-start; gap: 8px; padding: 7px 0; }
+.desktop-widget-notices li + li { border-top: 1px solid #e0d9e8; }
+.desktop-widget-notices li > span { width: 4px; height: 4px; flex-shrink: 0; margin-top: 6px; border-radius: 50%; background: #977ead; }
+.desktop-widget-notices p { margin: 0; color: #575064; font-size: 11px; line-height: 1.55; overflow-wrap: anywhere; }
+.desktop-widget-empty { color: #5f7168; font-size: 11px; margin: 17px 0 12px; }
+
+@media (max-width: 700px) {
+  .desktop-widget-rail { position: relative; top: auto; right: auto; width: 100%; max-width: 360px; max-height: none; margin: 0 auto; overflow: visible; }
+  .desktop-widget { padding: 18px 20px 15px; }
+}

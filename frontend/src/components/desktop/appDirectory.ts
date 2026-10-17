@@ -1,4 +1,4 @@
-﻿import { Briefcase, Bookmark, Cpu, Home, Sparkles, Globe, Mail, MessageSquare, UserCheck, Radio, Folder, BookOpen, Terminal, Settings, Shield, Activity, Landmark, ContactRound, Fingerprint, FileText, GraduationCap, Grid2X2 } from 'lucide-react';
+import { Briefcase, Bookmark, Cpu, Home, Sparkles, Globe, Mail, MessageSquare, UserCheck, Radio, Folder, BookOpen, Terminal, Settings, Shield, Activity, Landmark, ContactRound, Fingerprint, FileText, GraduationCap, Grid2X2 } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 import { APPS } from '../../apps/contents';
 import { useOSStore } from '../../store/useOSStore';
@@ -98,13 +98,13 @@ export const PROTOCOLS: ProtocolItem[] = [
   {
     id: 'housing',
     code: 'HOMECRAFT',
-    name: 'HOMECRAFT // Residential',
-    sector: 'Cycademy Student Quarters',
+    name: 'HOMECRAFT // Housing',
+    sector: 'Orynvell & Cyacademy Housing',
     icon: Home,
     clearance: 'Resident Clearance',
     aetherTrace: 'AT-0x0289',
     flux: '32.1 MHz',
-    desc: 'Residential grid editor, dorm customization, furniture layout, room expansion, and restorative rest hub.',
+    desc: 'Housing grid editor, suite customization, furniture layout, room expansion, and restorative rest hub.',
     color: 'text-indigo-800',
     bg: 'bg-indigo-50',
     border: 'border-indigo-300'

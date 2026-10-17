@@ -1,0 +1,1 @@
+import{j as r}from"./framer-motion-DSXSN-3g.js";import{M as t}from"./MaiSpacePortal-77xZc3Mk.js";import"./index-GmTHAKxv.js";import"./lucide-icons-ChwNiCjQ.js";function m(){return r.jsx(t,{})}export{m as default};

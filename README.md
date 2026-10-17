@@ -39,6 +39,22 @@ npm run dev
 ```
 Open [http://localhost:3000](http://localhost:3000) in your browser.
 
+Gameplay progress and wallpaper choices save automatically in this browser under
+`miraverse-os-progress`. Reloading restores the current playthrough; signing back
+in with the same citizen name preserves earned balances, levels, and onboarding.
+App windows reopen from the launcher after a reload. This is a local save for the
+current browser and origin, rather than a cloud account save.
+
+CHRONICLE completion and rewards are saved together, and each notice pays once.
+CAMPUS opens the academic portal directly. VITALS displays live aura integrity,
+conditions, and world corruption, with links to housing recovery and Faith Medical.
+
+Run the progress regression checks with Node.js 24 or newer:
+```bash
+npm run test:progress --prefix frontend
+npm run test:phone --prefix frontend
+```
+
 ### 3. Build Production Bundle
 ```bash
 npm run build

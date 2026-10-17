@@ -40,12 +40,7 @@
 .desktop-menubar time span { margin-left: 16px; color: #eeecf5; }
 .desktop-workspace { position: relative; min-height: 0; flex: 1; padding-bottom: 96px; }
 .shell-eyebrow { font-size: 9px; font-weight: 650; letter-spacing: .17em; }
-.desktop-shortcuts { position: absolute; left: 50%; bottom: 112px; transform: translateX(-50%); width: min(590px, calc(100% - 48px)); text-align: center; }
-.desktop-shortcuts > .shell-eyebrow { display: block; color: #b3b6cd; margin: 0 0 10px; }
-.desktop-shortcut-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px; }
-.desktop-shortcut { display: flex; flex-direction: column; align-items: center; gap: 9px; background: transparent; border: 1px solid transparent; border-radius: 16px; padding: 9px 2px; color: #e5e4f2; font-size: 9px; font-weight: 600; letter-spacing: .05em; transition: background .18s, transform .18s; }
-.desktop-shortcut:hover { background: #ffffff0a; border-color: #ffffff0e; transform: translateY(-3px); }
-.desktop-shortcut-icon { width: 54px; height: 54px; border: 1px solid #ffffff78; border-radius: 17px; display: grid; place-items: center; box-shadow: inset 0 1px 1px #fff9, 0 5px 14px #080f271c; }
+
 .desktop-welcome { position: absolute; top: calc((100% - 240px) / 2); left: 50%; transform: translate(-50%, -50%); width: min(650px, 65%); text-align: center; display: flex; flex-direction: column; align-items: center; }
 .desktop-welcome-label { display: flex; align-items: center; gap: 9px; font-size: 8px; letter-spacing: .22em; color: #d3c5e4; margin-bottom: 24px; }
 .desktop-emblem { display: grid; place-items: center; width: 114px; height: 114px; margin-bottom: 21px; position: relative; }
@@ -55,15 +50,7 @@
 .desktop-welcome h1 { font-family: 'Georgia', var(--font-display); font-size: clamp(30px, 3.3vw, 50px); font-weight: 400; letter-spacing: -.035em; line-height: 1.22; color: #f8f5fc; margin: 0 0 19px; }
 .desktop-welcome h1 em { color: #d7c1df; font-weight: 400; }
 .desktop-welcome-description { font-size: 12px; line-height: 1.8; color: #bfc1d3; margin: 0 0 25px; }
-.desktop-library-button { display: flex; align-items: center; justify-content: center; gap: 12px; border: 1px solid #e0cee657; border-radius: 12px; padding: 12px 18px; background: #ede2f0; color: #3a3154; font-size: 12px; font-weight: 650; box-shadow: 0 4px 18px #0d142626; transition: background .2s, transform .2s; }
-.desktop-library-button:hover { background: #fff3fb; transform: translateY(-2px); }
-.desktop-library-button svg:last-child { margin-left: 15px; }
-.desktop-keyboard-hint { margin-top: 16px; color: #a6a6c0; font-size: 9px; display: flex; gap: 6px; align-items: center; }
-.desktop-workspace-note { position: absolute; left: 42px; bottom: 111px; display: flex; gap: 12px; align-items: center; }
-.desktop-note-star { font-size: 31px; color: #cfb8dc; font-family: Georgia, serif; }
-.desktop-workspace-note .shell-eyebrow { color: #b5adc9; font-size: 8px; }
-.desktop-workspace-note p { font-size: 12px; color: #e6dfee; margin: 5px 0 0; }
-.desktop-workspace-note p span { color: #807e9d; margin: 0 9px; }
+
 .desktop-search-button { position: absolute; right: 36px; bottom: 120px; display: flex; align-items: center; gap: 10px; background: transparent; border: 0; color: #c5bfd5; font-size: 10px; padding: 8px; }
 .desktop-search-button:hover { color: white; }
 .desktop-phone { position: fixed; bottom: 96px; right: 24px; z-index: 9001; width: min(360px, calc(100vw - 32px)); height: min(680px, calc(100dvh - 124px)); }
@@ -165,10 +152,10 @@
   .drawer-inspector { padding: 23px 19px; }
   .drawer-directory { padding: 22px 18px 0; }
   .drawer-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .desktop-shortcuts { width: min(560px, calc(100% - 48px)); }
+
   .desktop-welcome { left: 50%; }
   .desktop-search-button { display: none; }
-  .desktop-workspace-note { display: none; }
+
 }
 @media (max-height: 740px) and (min-width: 701px) {
   .desktop-welcome-label { margin-bottom: 12px; }
@@ -177,8 +164,7 @@
   .desktop-welcome h1 { font-size: 34px; margin-bottom: 12px; }
   .desktop-welcome-description { margin-bottom: 16px; }
   .desktop-greeting { margin-bottom: 10px; }
-  .desktop-shortcut-grid { gap: 8px 4px; }
-  .desktop-workspace-note { bottom: 94px; }
+
   .drawer-feature-icon { margin: 17px 0; width: 60px; height: 60px; border-radius: 18px; }
   .drawer-description { margin-bottom: 15px; }
   .drawer-app-meta { margin-bottom: 18px; }
@@ -190,12 +176,7 @@
   .desktop-wordmark strong span { margin-left: 5px; }
   .desktop-wordmark img { width: 23px; height: 23px; }
   .desktop-menu-divider, .desktop-location, .desktop-connection, .desktop-menubar time span { display: none; }
-  .desktop-shortcuts { top: auto; bottom: 115px; left: 50%; transform: translateX(-50%); width: min(440px, calc(100% - 32px)); }
-  .desktop-shortcuts > .shell-eyebrow { display: none; }
-  .desktop-shortcut-grid { grid-template-columns: repeat(6, 1fr); gap: 2px; }
-  .desktop-shortcut { padding: 6px 0; gap: 8px; font-size: 7px; letter-spacing: 0; }
-  .desktop-shortcut-icon { width: 42px; height: 42px; border-radius: 13px; }
-  .desktop-shortcut-icon svg { width: 21px; height: 21px; }
+
   .desktop-welcome { left: 50%; top: 37%; width: calc(100% - 36px); }
   .desktop-welcome-label { font-size: 7px; letter-spacing: .14em; margin-bottom: 19px; }
   .desktop-emblem { width: 88px; height: 88px; margin-bottom: 21px; }
@@ -203,7 +184,7 @@
   .desktop-greeting { font-size: 11px; }
   .desktop-welcome h1 { font-size: clamp(27px, 5.5vw, 36px); }
   .desktop-welcome-description { font-size: 11px; }
-  .desktop-workspace-note { display: none; }
+
   .desktop-dock { display: flex; width: calc(100vw - 20px); bottom: 20px; padding: 8px; gap: 4px; border-radius: 17px; max-width: calc(100vw - 20px); }
   .dock-library { padding: 0 10px; height: 38px; }
   .dock-library span { display: none; }
@@ -245,6 +226,125 @@
   .drawer-footer { padding: 11px 18px; }
   .drawer-footer > span:last-child { display: none; }
 }
-@media (max-width: 380px) { .desktop-shortcut-grid { grid-template-columns: repeat(3, 1fr); } .desktop-shortcuts { bottom: 102px; width: 260px; } .desktop-shortcut-icon { width: 34px; height: 34px; border-radius: 11px; } .desktop-shortcut { gap: 4px; } .desktop-welcome { top: 32%; } .desktop-emblem { width: 64px; height: 64px; margin-bottom: 12px; } .desktop-emblem img { width: 50px; height: 50px; } .desktop-welcome-label { display: none; } .desktop-welcome h1 { font-size: 27px; } .desktop-welcome-description { margin-bottom: 16px; } .desktop-keyboard-hint { display: none; } .drawer-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-@media (max-height: 640px) and (max-width: 700px) { .desktop-welcome-label, .desktop-emblem, .desktop-welcome-description, .desktop-keyboard-hint { display: none; } .desktop-welcome { top: 28%; } .desktop-welcome h1 { font-size: 27px; margin-bottom: 17px; } .desktop-shortcuts { bottom: 100px; } }
+@media (max-width: 380px) {
+
+ .desktop-welcome { top: 32%; } .desktop-emblem { width: 64px; height: 64px; margin-bottom: 12px; } .desktop-emblem img { width: 50px; height: 50px; } .desktop-welcome-label { display: none; } .desktop-welcome h1 { font-size: 27px; } .desktop-welcome-description { margin-bottom: 16px; }
+ .drawer-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-height: 640px) and (max-width: 700px) {
+.desktop-welcome-label, .desktop-emblem, .desktop-welcome-description { display: none; } .desktop-welcome { top: 28%; } .desktop-welcome h1 { font-size: 27px; margin-bottom: 17px; }
+ }
 @media (prefers-reduced-motion: reduce) { .mira-desktop *, .app-drawer[open], .app-drawer * { animation: none !important; transition: none !important; scroll-behavior: auto !important; } }
+
+/* Celestial visual pass: an editorial workspace and a shared icon family. */
+.desktop-wallpaper {
+  background: radial-gradient(ellipse at 83% 26%, #79628a30, transparent 48%), radial-gradient(ellipse at 25% 108%, #4e6c7f33, transparent 58%), linear-gradient(120deg, #14243d, #222c49 60%, #343048);
+}
+.desktop-wallpaper::after { opacity: .12; background-size: 97px 97px; }
+.desktop-wallpaper > .desktop-orbit { opacity: .3; }
+.desktop-particles { opacity: .11; }
+.desktop-menubar { background: #15233b42; backdrop-filter: blur(18px); border-color: #ddd7f014; }
+.desktop-celestial-art { position: absolute; width: min(46vw, 660px); right: 140px; top: -5%; bottom: 135px; display: flex; flex-direction: column; align-items: center; justify-content: center; pointer-events: none; opacity: .65; }
+.desktop-celestial-art .celestial-scene { width: 100%; max-height: 100%; overflow: visible; }
+.desktop-world-caption { display: flex; flex-direction: column; gap: 9px; align-items: center; margin-top: -28px; color: #c9c1d8; }
+.desktop-world-caption span:first-child { font-size: 8px; letter-spacing: .23em; }
+.desktop-world-caption span:last-child { font-family: var(--font-display); font-size: 16px; font-style: italic; color: #e1d7e8; }
+.desktop-welcome { top: calc((100% - 145px) / 2); left: 8%; transform: translateY(-50%); width: 47%; max-width: 620px; align-items: flex-start; text-align: left; }
+.desktop-welcome-label { gap: 8px; font-size: 8px; letter-spacing: .16em; padding: 8px 11px; border: 1px solid #d5c9e62b; border-radius: 7px; background: #e4d7fa06; color: #ddcee9; margin-bottom: 28px; }
+.desktop-emblem { display: none; }
+.desktop-greeting { font-size: 13px; color: #c7bfd4; margin-bottom: 18px; }
+.desktop-welcome h1 { font-family: var(--font-display); font-size: clamp(35px, 4.1vw, 60px); font-weight: 400; line-height: 1.16; letter-spacing: -.045em; margin-bottom: 21px; }
+.desktop-welcome h1 em { color: #d9c3e5; }
+.desktop-welcome-description { color: #c3c2d4; font-size: 13px; line-height: 1.8; margin-bottom: 27px; }
+
+.desktop-search-button { bottom: 113px; right: 45px; color: #d2c9df; }
+.desktop-dock { background: linear-gradient(125deg, #f8f6f2e8, #f0eaf5e8); border-color: #ffffffb3; box-shadow: 0 12px 44px #080c253b, inset 0 1px 0 #fff; border-radius: 19px; padding: 10px 16px; }
+.dock-app { width: 47px; height: 47px; }
+.dock-app.is-active { background: #e4ddec; border-color: #cfc1dc; }
+.dock-app .app-glyph { pointer-events: none; }
+.dock-library { color: #614b7a; background: #e7ddf0; border-color: #d4c4e0; }
+.app-drawer { background: var(--mira-paper); border-color: #ffffffe0; }
+.drawer-header { justify-content: flex-start; padding: 22px 27px; background: linear-gradient(110deg, #fff, #f7f3fb); }
+.drawer-heading { text-align: left; gap: 13px; }
+.drawer-brand-icon { position: static; transform: none; width: 43px; height: 43px; background: linear-gradient(140deg, #f4ebfb, #e5d8f1); box-shadow: inset 0 1px 0 #fff; }
+.drawer-heading h1 { font-family: var(--font-display); font-size: 29px; font-weight: 400; letter-spacing: -.04em; color: #3d3150; }
+.drawer-heading .shell-eyebrow { color: #736781; font-size: 8px; }
+.drawer-sidebar { background: #f4f2f8; }
+.drawer-section-label { color: #736b83; }
+.drawer-category { color: #696175; }
+.drawer-category.is-active { color: #60477b; border-color: #d8cbe5; background: #e9e0f2; }
+.drawer-app { border-color: #e6e2ed; padding-top: 18px; background: #ffffffd9; }
+.drawer-app.is-selected { border-color: #b39acb; background: #f1eaf8; box-shadow: 0 2px 8px #7c639f0e; }
+.drawer-app .app-tile-icon { margin-bottom: 13px; }
+.drawer-app strong { font-size: 10px; color: #4b405d; letter-spacing: .065em; }
+.drawer-app-label { color: #6f667c; font-size: 11px; }
+.drawer-inspector { background: radial-gradient(circle at 50% 15%, #e3d6f255, transparent 38%), linear-gradient(155deg, #f7f2fc, #f1eff6); }
+.drawer-inspector .drawer-feature-icon { margin: 27px 0 23px; }
+.drawer-description, .drawer-app-meta dd { color: #6f627c; }
+.drawer-inspector-top .shell-eyebrow { color: #7c6a8b; }
+.drawer-launch { background: #74568f; border-color: #674a80; box-shadow: 0 4px 12px #77588f1c; }
+.drawer-launch:hover { background: #63467e; }
+
+@media (min-width: 701px) and (max-height: 740px) {
+  .desktop-welcome { top: calc((100% - 125px) / 2); }
+  .desktop-welcome-label { margin-bottom: 18px; }
+  .desktop-welcome h1 { font-size: clamp(34px, 3.8vw, 49px); margin-bottom: 16px; }
+  .desktop-welcome-description { margin-bottom: 20px; }
+
+  .desktop-celestial-art { bottom: 116px; }
+  .desktop-world-caption { display: none; }
+}
+@media (min-width: 701px) and (max-height: 800px) {
+  .drawer-inspector { padding: 18px 21px; }
+  .drawer-inspector-top { display: none; }
+  .drawer-inspector .drawer-feature-icon[data-size='large'] { width: 60px; height: 60px; border-radius: 19px; margin: 14px 0 18px; }
+  .drawer-inspector .drawer-feature-icon::before { border-radius: 14px; }
+  .drawer-inspector .drawer-feature-icon > svg { width: 29px; height: 29px; }
+  .drawer-inspector h2 { font-size: 25px; margin: 9px 0 12px; }
+  .drawer-description { font-size: 11px; line-height: 1.7; margin-bottom: 16px; }
+  .drawer-app-meta { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding-top: 14px; margin-bottom: 18px; }
+  .drawer-app-meta dd { font-size: 10px; }
+  .drawer-launch-hint { display: none; }
+}
+@media (max-width: 1000px) and (min-width: 701px) {
+  .desktop-welcome { left: 6%; width: 54%; }
+  .desktop-welcome h1 { font-size: 40px; }
+  .desktop-celestial-art { right: 150px; width: 50vw; opacity: .4; }
+
+  .desktop-search-button { display: none; }
+}
+@media (max-width: 700px) {
+  .desktop-celestial-art { width: 110vw; right: -32%; top: -9%; bottom: 120px; opacity: .25; }
+  .desktop-world-caption { display: none; }
+  .desktop-welcome { left: 50%; top: 36%; transform: translate(-50%, -50%); width: calc(100% - 40px); align-items: center; text-align: center; }
+  .desktop-welcome-label { font-size: 7px; letter-spacing: .1em; margin-bottom: 22px; }
+  .desktop-welcome h1 { font-size: clamp(32px, 8vw, 43px); margin-bottom: 19px; }
+  .desktop-greeting { font-size: 12px; }
+  .desktop-welcome-description { font-size: 12px; margin-bottom: 23px; }
+
+  .desktop-search-button { display: none; }
+  .desktop-dock { padding: 8px; }
+  .dock-app { width: 35px; height: 39px; }
+  .dock-app .app-glyph { width: 29px; height: 29px; }
+  .drawer-header { padding: 16px 18px; }
+  .drawer-heading h1 { font-size: 25px; }
+  .drawer-inspector .drawer-feature-icon { display: none; }
+  .drawer-app .app-tile-icon { width: 40px; height: 40px; border-radius: 13px; margin-bottom: 10px; }
+  .drawer-app .app-tile-icon svg { width: 22px; height: 22px; }
+}
+@media (max-height: 640px) {
+  .desktop-welcome-label { display: none; }
+  .desktop-welcome-description { font-size: 11px; margin-bottom: 16px; }
+  .desktop-welcome h1 { font-size: 34px; }
+  .desktop-celestial-art { opacity: .5; }
+}
+
+/* The widget column stays within the desktop; app windows and the dock sit above it. */
+@media (min-width: 701px) and (max-width: 1100px) {
+  .desktop-world-caption { display: none; }
+}
+@media (max-width: 700px) {
+  .desktop-workspace { overflow-x: hidden; overflow-y: auto; padding: 24px 20px 116px; }
+  .desktop-welcome { position: relative; top: auto; left: auto; transform: none; width: 100%; max-width: 360px; margin: 24px auto 30px; }
+  .desktop-welcome-description { margin-bottom: 0; }
+  .desktop-celestial-art { top: -30px; bottom: auto; height: 500px; opacity: .2; }
+}

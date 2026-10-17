@@ -60,20 +60,20 @@ export const MOCK_DOCUMENTS: Record<string, MockDocument> = {
 
   'housing-temp-assignment': {
     title: 'HOUSING_TEMP_ASSIGNMENT.osform',
-    category: 'Residential Services',
+    category: 'Housing Services',
     type: 'osform',
-    summary: 'Provisional dormitory room allocation and room key confirmation.',
-    author: 'Residential Services Bureau',
+    summary: 'Provisional housing suite allocation and room key confirmation.',
+    author: 'Housing Services Bureau',
     date: 'Sys-Cycle Day 1',
     content: {
       sections: [
         {
-          title: 'Dormitory Unit 4B Allocation',
-          body: 'Your provisional starter dorm is located on Campus North Wing. Room features include a Rest Bed, Study Desk, and Secure Storage Vault.'
+          title: 'Housing Unit 4B Allocation',
+          body: 'Your provisional starter housing suite is located on Campus North Wing. Room features include a Rest Bed, Study Desk, and Secure Storage Vault.'
         }
       ],
       formFields: [
-        { id: 'roomConfirm', label: 'Confirm Dorm 4B Assignment', type: 'select', options: ['Accept Assignment', 'Request East Wing Transfer'] },
+        { id: 'roomConfirm', label: 'Confirm Housing 4B Assignment', type: 'select', options: ['Accept Assignment', 'Request East Wing Transfer'] },
         { id: 'mattressUpgrade', label: 'Request Better Mattress (+Stamina)', type: 'checkbox' }
       ]
     }
@@ -105,7 +105,7 @@ export const MOCK_DOCUMENTS: Record<string, MockDocument> = {
     title: 'Personal_Log_88.txt',
     category: 'Diary Log',
     type: 'txt',
-    summary: 'Personal diary log from a former resident of Dorm 4B.',
+    summary: 'Personal diary log from a former resident of Housing Unit 4B.',
     author: 'Previous Occupant',
     date: 'Cycle 14',
     content: {

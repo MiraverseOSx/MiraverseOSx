@@ -4,6 +4,7 @@ import { useOSStore } from '../../store/useOSStore';
 import { useSystemStore } from '../../store/useSystemStore';
 import { SoundFX } from '../../utils/audio';
 import { APPS_DIRECTORY, launchDesktopApp } from './appDirectory';
+import AppGlyph from '../ui/AppGlyph';
 
 export { APPS_DIRECTORY, PROTOCOLS } from './appDirectory';
 export type { ProtocolItem } from './appDirectory';
@@ -125,7 +126,7 @@ export default function AppLauncherModal({ isOpen, onClose }: AppLauncherModalPr
                   const isRunning = windows.some((window) => window.id === app.id);
                   return (
                     <button key={app.id} className={`drawer-app ${selected?.id === app.id ? 'is-selected' : ''}`} aria-label={`Select ${app.code}`} aria-pressed={selected?.id === app.id} onFocus={() => setSelectedId(app.id)} onClick={() => setSelectedId(app.id)} onDoubleClick={() => handleLaunch(app.id)}>
-                      <span className={`app-tile-icon ${app.bg} ${app.color}`}><Icon size={25} strokeWidth={1.6} /></span>
+                      <AppGlyph className="app-tile-icon" icon={Icon} appId={app.id} />
                       {isRunning && <span className="app-running-dot" title="Running" aria-label="Running" />}
                       <strong>{app.code}</strong><span className="drawer-app-label">{app.label}</span>
                     </button>
@@ -138,7 +139,7 @@ export default function AppLauncherModal({ isOpen, onClose }: AppLauncherModalPr
           <aside className="drawer-inspector" aria-label="App details">
             {selected ? <>
               <div className="drawer-inspector-top"><span className="shell-eyebrow">APP SPOTLIGHT</span><span className={`drawer-state ${running ? 'is-running' : ''}`}><i />{running ? 'Running' : 'Ready to open'}</span></div>
-              <div className={`drawer-feature-icon ${selected.bg} ${selected.color}`}><SelectedIcon size={36} strokeWidth={1.4} /></div>
+              <AppGlyph className="drawer-feature-icon" icon={SelectedIcon} appId={selected.id} size="large" />
               <span className="drawer-feature-category">{selected.category} <ChevronRight size={12} /> {selected.code}</span>
               <h2>{selected.label}</h2>
               <p className="drawer-description">{selected.desc}</p>

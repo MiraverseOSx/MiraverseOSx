@@ -1,8 +1,6 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-
-// Email inbox — will be populated from DataGrip SQLite pipeline (miraverse.db → Emails table).
-const mailData: any[] = [];
+import { INITIAL_EMAILS } from '../data/commsData';
 
 export interface ChannelItem {
   id: string;
@@ -15,7 +13,7 @@ export interface ChannelItem {
 }
 
 export interface ChatMessage {
-  id: string;
+  id: string | number;
   user: string;
   team: string;
   text: string;
@@ -44,8 +42,8 @@ export interface CommsState {
 export const useCommsStore = create<CommsState>()(
   persist(
     (set, get) => ({
-      // Email Dispatches — awaiting DataGrip seed
-      emails: mailData,
+      // Seeded institutional & onboarding dispatches
+      emails: INITIAL_EMAILS,
 
       // ── Comms Portal Channel Tiers ──
       // Tier 0: System & Civic Alerts (Read-only broadcasts)
@@ -126,7 +124,7 @@ export const useCommsStore = create<CommsState>()(
 
       addEmail: (email) => {
         const current = get().emails || [];
-        set({ emails: [...current, email] });
+        set({ emails: [email, ...current] });
       },
 
       toggleEncryption: () => set((s) => ({ encryptionActive: !s.encryptionActive })),
@@ -137,6 +135,15 @@ export const useCommsStore = create<CommsState>()(
         corruptedChannels: s.corruptedChannels.filter((c) => c !== channelId)
       }))
     }),
-    { name: 'miraverse-comms' }
+    {
+      name: 'miraverse-comms',
+      merge: (persistedState: any, currentState) => {
+        const merged = { ...currentState, ...(persistedState || {}) };
+        if (!Array.isArray(merged.emails) || merged.emails.length === 0) {
+          merged.emails = INITIAL_EMAILS;
+        }
+        return merged;
+      },
+    }
   )
 );

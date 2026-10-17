@@ -7,7 +7,8 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "test:phone": "node --test tests/phone-theme-contrast.test.mjs"
+    "test:phone": "node --test tests/phone-theme-contrast.test.mjs",
+    "test:progress": "node --test tests/os-progress.test.mjs"
   },
   "dependencies": {
     "@base-ui/react": "^1.9.0",

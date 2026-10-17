@@ -8,8 +8,19 @@
   /* ==========================================================================
      1. MASTER TYPOGRAPHY VARIABLES (§2)
      ========================================================================== */
-  --font-display: 'Cinzel', 'Playfair Display', 'Georgia', serif;
-  --font-ui: 'Corbel', 'Carlito', 'Segoe UI', system-ui, -apple-system, sans-serif;
+  --font-display: 'Playfair Display', 'Georgia', serif;
+  --font-ui: 'Segoe UI', 'Carlito', system-ui, -apple-system, sans-serif;
+  --font-mono: 'Cascadia Code', 'Consolas', monospace;
+
+  --mira-ink: #24324b;
+  --mira-muted: #606b80;
+  --mira-paper: #fcfbff;
+  --mira-canvas: #f3f3f9;
+  --mira-line: #e3e3ee;
+  --mira-lilac: #7c639f;
+  --mira-lilac-soft: #ede7f5;
+  --mira-sage: #377668;
+  --mira-shadow: 0 24px 80px #0b142838, 0 4px 14px #0b142814;
   --font-lore: 'Alice', 'Georgia', serif;
   --font-script: 'Great Vibes', 'Cookie', cursive;
 

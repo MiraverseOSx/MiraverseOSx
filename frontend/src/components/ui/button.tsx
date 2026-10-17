@@ -7,10 +7,10 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        solid: 'bg-os-accent text-white hover:brightness-110',
-        soft: 'bg-[color-mix(in_oklch,var(--color-accent)_15%,transparent)] text-[--color-text] border border-[color-mix(in_oklch,var(--color-accent)_35%,transparent)] hover:bg-[color-mix(in_oklch,var(--color-accent)_22%,transparent)]',
-        outline: 'border border-[--color-accent] text-[--color-accent] hover:bg-[color-mix(in_oklch,var(--color-accent)_12%,transparent)]',
-        ghost: 'text-[--color-accent] hover:bg-[color-mix(in_oklch,var(--color-accent)_10%,transparent)]',
+        solid: 'bg-[#765b93] text-white border border-[#70558e] hover:bg-[#654a81] shadow-sm',
+        soft: 'bg-[#ede7f5] text-[#624c7c] border border-[#dcd0e8] hover:bg-[#e3d9ee]',
+        outline: 'bg-white border border-[#c9bdd7] text-[#624c7c] hover:bg-[#f4eff8]',
+        ghost: 'text-[#6d5686] hover:bg-[#eee7f5]',
       },
       size: {
         sm: 'h-8 px-3 text-xs rounded-md',

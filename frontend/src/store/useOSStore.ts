@@ -1,4 +1,7 @@
 import { create } from 'zustand';
+import { createJSONStorage, persist } from 'zustand/middleware';
+import { NOTICES } from '../data/notices';
+import { mergeSavedProgress, osStorage } from './osPersistence';
 
 // Activities / missions — seeded by MissionDirector TypeScript engine or future DataGrip pipeline.
 const missionsData: any[] = [];
@@ -77,6 +80,7 @@ export interface OSStoreState {
   addBits: (amount: number) => void;
   addXP: (amount: number) => void;
   completeActivity: (id: string) => void;
+  completeNotice: (id: string) => void;
   claimCommsAttachment: (commId: string, credits?: number, xp?: number) => void;
   advanceAppRank: (appKey: string) => void;
   completeStarterLoop: (loopKey: string) => void;
@@ -117,13 +121,13 @@ export interface OSStoreState {
   setWallpaper: (url: string) => void;
 }
 
-export const useOSStore = create<OSStoreState>((set) => ({
+export const useOSStore = create<OSStoreState>()(persist((set) => ({
   isLoggedIn: false,
   isSanctuary: false,
   toggleSanctuary: () => set((s) => ({ isSanctuary: !s.isSanctuary })),
   windows: [],
   activeWindowId: null,
-  wallpaper: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=2072&auto=format&fit=crop',
+  wallpaper: '',
   browserUrl: null,
   browserState: {
     tabs: [
@@ -298,6 +302,10 @@ export const useOSStore = create<OSStoreState>((set) => ({
 
   loginUser: (userData) =>
     set((s) => {
+      // Login resumes this browser's saved character without reapplying starter rewards.
+      if (s.gameplay.player.name && s.gameplay.player.name.toLowerCase() === userData.name?.trim().toLowerCase()) {
+        return { isLoggedIn: true };
+      }
       const isAdmin = !!(
         userData.isAdmin ||
         userData.name?.toLowerCase().includes('admin') ||
@@ -464,6 +472,7 @@ export const useOSStore = create<OSStoreState>((set) => ({
       xp: 0,
       rewardItems: [],
       completedQuests: [],
+      completedNoticeIds: NOTICES.filter((notice) => notice.completed).map((notice) => notice.id),
       hackedNodes: 0,
       auraHealth: 100,
       conditions: ['Veilwilt'],
@@ -739,6 +748,28 @@ export const useOSStore = create<OSStoreState>((set) => ({
               ? [...rewardItems, rewardItem]
               : rewardItems,
             activities: newActivities,
+          },
+        },
+      };
+    }),
+
+  completeNotice: (id) =>
+    set((state) => {
+      const notice = NOTICES.find((candidate) => candidate.id === id);
+      const player = state.gameplay.player;
+      const completedIds = player.completedNoticeIds || [];
+      if (!notice || notice.completed || completedIds.includes(id)) return state;
+      const xp = player.xp + (notice.rewardXP || 0);
+      return {
+        gameplay: {
+          ...state.gameplay,
+          player: {
+            ...player,
+            completedNoticeIds: [...completedIds, id],
+            credits: player.credits + (notice.rewardCredits || 0),
+            bits: player.bits + (notice.rewardBits || 0),
+            xp,
+            level: Math.floor(xp / 100) + 1,
           },
         },
       };
@@ -1348,4 +1379,19 @@ export const useOSStore = create<OSStoreState>((set) => ({
   clearActive: () => set({ activeWindowId: null }),
 
   setWallpaper: (url) => set({ wallpaper: url }),
+}), {
+  name: 'miraverse-os-progress',
+  version: 1,
+  storage: createJSONStorage(() => osStorage),
+  // Window metadata can contain React icons; recreate windows rather than serializing them.
+  partialize: ({ gameplay, wallpaper, isLoggedIn }) => ({ gameplay, wallpaper, isLoggedIn }),
+  merge: (persisted, current) => {
+    const saved = persisted as Partial<OSStoreState> | null;
+    return {
+      ...current,
+      gameplay: mergeSavedProgress(current.gameplay, saved?.gameplay),
+      wallpaper: typeof saved?.wallpaper === 'string' ? saved.wallpaper : current.wallpaper,
+      isLoggedIn: typeof saved?.isLoggedIn === 'boolean' ? saved.isLoggedIn : current.isLoggedIn,
+    };
+  },
 }));

@@ -1,11 +1,10 @@
 import React, { useState, useMemo } from 'react';
 import {
     Mail, Inbox, Star, Archive, Send, Paperclip, CheckCircle2,
-    Shield, Activity, Lock, ArrowRight, Sparkles, ExternalLink, FileText
+    Shield, Sparkles, ExternalLink, FileText, X
 } from 'lucide-react';
 import { useCommsStore } from '../store/useCommsStore';
 import { useOSStore } from '../store/useOSStore';
-import { APPS } from './registry';
 import Button from '../components/ui/button';
 import Input from '../components/ui/input';
 import {
@@ -20,27 +19,74 @@ export default function MailApp() {
     const [activeFaction, setActiveFaction] = useState('all');
     const [search, setSearch] = useState('');
     const [selectedMailId, setSelectedMailId] = useState('MSG-000');
-    const [starredIds, setStarredIds] = useState([]);
+    const [starredIds, setStarredIds] = useState<string[]>([]);
+    const [archivedIds, setArchivedIds] = useState<string[]>([]);
     const [replyText, setReplyText] = useState('');
-    const [replyStatus, setReplyStatus] = useState(null);
-    const [openDocModal, setOpenDocModal] = useState(null);
+    const [replyStatus, setReplyStatus] = useState<string | null>(null);
+    const [openDocModal, setOpenDocModal] = useState<any>(null);
+    const [isComposing, setIsComposing] = useState(false);
+    const [composeRecipient, setComposeRecipient] = useState('Municipal Dispatch Registry');
+    const [composeSubject, setComposeSubject] = useState('');
+    const [composeBody, setComposeBody] = useState('');
 
     const emails = useCommsStore((s) => s.emails);
+    const addEmail = useCommsStore((s) => s.addEmail);
     const claimedComms = useOSStore((s) => s.gameplay.claimedComms);
     const claimCommsAttachment = useOSStore((s) => s.claimCommsAttachment);
-    const toggleApp = useOSStore((s) => s.toggleApp);
     const pushToast = useToastStore((s) => s.pushToast);
 
-    const toggleStar = (id, e) => {
+    const toggleStar = (id: string, e?: React.MouseEvent) => {
         e?.stopPropagation();
         setStarredIds((prev) =>
             prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id]
         );
     };
 
+    const toggleArchive = (id: string, e?: React.MouseEvent) => {
+        e?.stopPropagation();
+        const isArchived = archivedIds.includes(id);
+        setArchivedIds((prev) =>
+            isArchived ? prev.filter((item) => item !== id) : [...prev, id]
+        );
+        pushToast({
+            title: isArchived ? 'Restored to Inbox' : 'Dispatch Archived',
+            message: isArchived ? 'Moved back to active inbox.' : 'Moved to municipal archive.',
+            tone: 'info',
+        });
+    };
+
+    const handleSendNewDispatch = (e: React.FormEvent) => {
+        e.preventDefault();
+        if (!composeSubject.trim() || !composeBody.trim()) return;
+        const newId = `MSG-${Date.now().toString().slice(-4)}`;
+        addEmail({
+            id: newId,
+            sender: `Citizen Dispatch → ${composeRecipient}`,
+            faction: 'Civic',
+            subject: composeSubject.trim(),
+            time: 'JUST NOW',
+            unread: false,
+            body: composeBody.trim(),
+        });
+        setSelectedMailId(newId);
+        setIsComposing(false);
+        setComposeSubject('');
+        setComposeBody('');
+        pushToast({
+            title: 'Dispatch Transmitted',
+            message: `Sent to ${composeRecipient}`,
+            tone: 'success',
+        });
+    };
+
     const filteredEmails = useMemo(() => {
         return emails.filter((mail) => {
             // Folder filter
+            if (activeFolder === 'archive') {
+                if (!archivedIds.includes(mail.id)) return false;
+            } else {
+                if (archivedIds.includes(mail.id)) return false;
+            }
             if (activeFolder === 'starred' && !starredIds.includes(mail.id)) return false;
             if (activeFolder === 'official' && !/DGA|Governance|Faith|Cyacademy|Bureau|Housing|Finance|Safety|Mobile|Integration|Pulse/i.test(mail.sender)) return false;
 
@@ -62,11 +108,11 @@ export default function MailApp() {
 
             return true;
         });
-    }, [emails, activeFolder, activeFaction, search, starredIds]);
+    }, [emails, activeFolder, activeFaction, search, starredIds, archivedIds]);
 
-    const selectedMail = emails.find((m) => m.id === selectedMailId) || emails[0];
+    const selectedMail = filteredEmails.find((m) => m.id === selectedMailId) || filteredEmails[0] || null;
 
-    const getMailAttachments = (mail) => {
+    const getMailAttachments = (mail: any) => {
         if (!mail) return [];
         if (mail.attachments && Array.isArray(mail.attachments)) return mail.attachments;
         if (mail.attachment) return [mail.attachment];
@@ -75,7 +121,8 @@ export default function MailApp() {
 
     const currentAttachments = getMailAttachments(selectedMail);
 
-    const handleClaimAttachmentItem = (attId, amount) => {
+    const handleClaimAttachmentItem = (attId: string, amount: number) => {
+        if (!selectedMail) return;
         const claimId = `${selectedMail.id}_${attId || 'default'}`;
         if (claimedComms.includes(claimId)) return;
         claimCommsAttachment(claimId, amount || 100, 50);
@@ -86,7 +133,7 @@ export default function MailApp() {
         });
     };
 
-    const handleOpenDocumentAttachment = (att) => {
+    const handleOpenDocumentAttachment = (att: any) => {
         const mockKey = att.mockKey || 'dga-registration';
         const docDef = MOCK_DOCUMENTS[mockKey] || {
             id: att.id || 'doc',
@@ -101,20 +148,7 @@ export default function MailApp() {
         setOpenDocModal(docDef);
     };
 
-    const handleActionClick = (actionType) => {
-        if (actionType === 'dga_verification' || selectedMail?.id === 'MSG-000') {
-            const passportApp = APPS.find((a) => a.id === 'passport');
-            if (passportApp) toggleApp(passportApp);
-        } else if (actionType === 'faith_intake' || selectedMail?.id === 'MSG-005') {
-            const browserApp = APPS.find((a) => a.id === 'browser');
-            if (browserApp) {
-                useOSStore.getState().setBrowserUrl('https://faithmed.aure');
-                toggleApp(browserApp);
-            }
-        }
-    };
-
-    const handleSendReply = (e) => {
+    const handleSendReply = (e: React.FormEvent) => {
         e.preventDefault();
         if (!replyText.trim()) return;
         setReplyStatus('Reply sent to dispatch channel.');
@@ -147,8 +181,11 @@ export default function MailApp() {
             <div className="flex min-h-0 flex-1 overflow-hidden">
                 {/* PANE 1: LEFT FOLDERS & NAVIGATION */}
                 <AppSidebar className="w-[22%] min-w-44 max-w-52 shrink-0 p-3 space-y-4" label="Mailbox folders and factions">
-                    <button className="flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#17213f] to-[#3a497b] py-2 text-xs font-bold text-white shadow-sm hover:opacity-90 transition">
-                        <Sparkles size={14} className="text-purple-300" /> New Dispatch
+                    <button
+                        onClick={() => setIsComposing((prev) => !prev)}
+                        className="flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#17213f] to-[#3a497b] py-2 text-xs font-bold text-white shadow-sm hover:opacity-90 transition"
+                    >
+                        <Sparkles size={14} className="text-purple-300" /> {isComposing ? 'Close Composer' : 'New Dispatch'}
                     </button>
 
                     <div className="space-y-1">
@@ -156,10 +193,10 @@ export default function MailApp() {
                             Mailbox Folders
                         </div>
                         {[
-                            { id: 'inbox', label: 'Inbox', icon: Inbox, count: emails.length },
+                            { id: 'inbox', label: 'Inbox', icon: Inbox, count: emails.filter((m) => !archivedIds.includes(m.id)).length },
                             { id: 'starred', label: 'Starred', icon: Star, count: starredIds.length },
-                            { id: 'official', label: 'Official Dispatches', icon: Shield, count: emails.filter((m) => /DGA|Faith|Cyacademy|Bureau|Housing|Finance/i.test(m.sender)).length },
-                            { id: 'archive', label: 'Archive', icon: Archive, count: 0 },
+                            { id: 'official', label: 'Official Dispatches', icon: Shield, count: emails.filter((m) => !archivedIds.includes(m.id) && /DGA|Faith|Cyacademy|Bureau|Housing|Finance/i.test(m.sender)).length },
+                            { id: 'archive', label: 'Archive', icon: Archive, count: archivedIds.length },
                         ].map((f) => {
                             const IconComp = f.icon;
                             return (
@@ -216,7 +253,7 @@ export default function MailApp() {
 
                     <div className="flex-1 overflow-y-auto p-2 space-y-1.5">
                         {filteredEmails.map((mail) => {
-                            const isSelected = selectedMailId === mail.id;
+                            const isSelected = selectedMail?.id === mail.id;
                             const isStarred = starredIds.includes(mail.id);
                             const atts = getMailAttachments(mail);
 
@@ -274,6 +311,48 @@ export default function MailApp() {
 
                 {/* PANE 3: RIGHT DISPATCH READER */}
                 <main className="flex min-w-0 flex-1 flex-col bg-[#FAFAFC] overflow-y-auto p-6">
+                    {isComposing && (
+                        <form onSubmit={handleSendNewDispatch} className="mb-4 rounded-2xl border border-indigo-200 bg-white p-4 shadow-sm space-y-3">
+                            <div className="flex items-center justify-between border-b border-slate-100 pb-2">
+                                <span className="text-xs font-bold text-[#1d2650] flex items-center gap-1.5">
+                                    <Sparkles size={14} className="text-indigo-600" /> Compose Official Citizen Dispatch
+                                </span>
+                                <button type="button" onClick={() => setIsComposing(false)} className="text-slate-400 hover:text-slate-600">
+                                    <X size={14} />
+                                </button>
+                            </div>
+                            <div className="grid grid-cols-2 gap-2">
+                                <Input
+                                    value={composeRecipient}
+                                    onChange={(e) => setComposeRecipient(e.target.value)}
+                                    placeholder="Recipient Bureau..."
+                                    className="text-xs"
+                                />
+                                <Input
+                                    value={composeSubject}
+                                    onChange={(e) => setComposeSubject(e.target.value)}
+                                    placeholder="Dispatch Subject..."
+                                    className="text-xs"
+                                />
+                            </div>
+                            <textarea
+                                value={composeBody}
+                                onChange={(e) => setComposeBody(e.target.value)}
+                                placeholder="Enter formal municipal transmission message..."
+                                rows={3}
+                                className="w-full rounded-xl border border-slate-300 p-2.5 text-xs text-slate-800 focus:border-indigo-500 focus:outline-none"
+                            />
+                            <div className="flex justify-end gap-2">
+                                <Button type="button" size="sm" variant="ghost" onClick={() => setIsComposing(false)}>
+                                    Cancel
+                                </Button>
+                                <Button type="submit" size="sm" variant="solid" className="flex items-center gap-1.5">
+                                    <Send size={12} /> Transmit Dispatch
+                                </Button>
+                            </div>
+                        </form>
+                    )}
+
                     {selectedMail ? (
                         <div className="flex h-full flex-col space-y-4">
                             <div className="rounded-2xl border border-slate-300/80 bg-white p-5 shadow-sm space-y-3">
@@ -289,9 +368,19 @@ export default function MailApp() {
                                         </div>
                                     </div>
 
-                                    <span className="rounded-full bg-purple-100 border border-purple-300 px-3 py-1 font-mono text-[10px] font-bold text-purple-800 flex items-center gap-1">
-                                        <Shield size={12} /> {selectedMail.faction || 'Encrypted Dispatch'}
-                                    </span>
+                                    <div className="flex items-center gap-2">
+                                        <button
+                                            type="button"
+                                            onClick={(e) => toggleArchive(selectedMail.id, e)}
+                                            className="rounded-lg border border-slate-200 bg-slate-50 px-2.5 py-1 text-[10px] font-semibold text-slate-600 hover:bg-slate-100 flex items-center gap-1 transition"
+                                        >
+                                            <Archive size={11} />
+                                            {archivedIds.includes(selectedMail.id) ? 'Unarchive' : 'Archive'}
+                                        </button>
+                                        <span className="rounded-full bg-purple-100 border border-purple-300 px-3 py-1 font-mono text-[10px] font-bold text-purple-800 flex items-center gap-1">
+                                            <Shield size={12} /> {selectedMail.faction || 'Encrypted Dispatch'}
+                                        </span>
+                                    </div>
                                 </div>
 
                                 <div className="text-xs leading-relaxed text-[#243064] whitespace-pre-line font-serif bg-[#FAF9FF] p-4 rounded-xl border border-purple-200/50">

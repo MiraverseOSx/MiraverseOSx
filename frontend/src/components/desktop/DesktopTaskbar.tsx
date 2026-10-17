@@ -5,6 +5,7 @@ import MAIDock from '../widgets/MAIDock';
 import { Smartphone, Power, Volume2, VolumeX, Grid2X2, Globe, Folder, Mail } from 'lucide-react';
 import { useSystemStore } from '../../store/useSystemStore';
 import { SoundFX } from '../../utils/audio';
+import AppGlyph from '../ui/AppGlyph';
 
 export interface DesktopTaskbarProps {
   onTogglePhone: () => void;
@@ -31,7 +32,7 @@ export default function DesktopTaskbar({ onTogglePhone, onOpenLauncher, isLaunch
           const win = windows.find((candidate) => candidate.id === app.id);
           const active = win && activeWindowId === app.id && !win.isMinimized;
           const name = meta?.label || win?.title || app.id;
-          return <button key={app.id} className={`dock-app ${active ? 'is-active' : ''}`} aria-label={`${win ? 'Toggle' : 'Open'} ${name}`} aria-pressed={!!active} title={`${name}${win ? win.isMinimized ? ' · Minimized' : ' · Running' : ''}`} onClick={() => { playClick(); win ? toggleApp(win) : launchDesktopApp(app.id); }}><Icon size={21} strokeWidth={1.7} className={meta?.color} /><span className="dock-tooltip" aria-hidden="true">{name}</span>{win && <i className={`dock-running-dot ${active ? 'is-active' : ''}`} />}</button>;
+          return <button key={app.id} className={`dock-app ${active ? 'is-active' : ''}`} aria-label={`${win ? 'Toggle' : 'Open'} ${name}`} aria-pressed={!!active} title={`${name}${win ? win.isMinimized ? ' · Minimized' : ' · Running' : ''}`} onClick={() => { playClick(); win ? toggleApp(win) : launchDesktopApp(app.id); }}><AppGlyph icon={Icon} appId={app.id} size="small" /><span className="dock-tooltip" aria-hidden="true">{name}</span>{win && <i className={`dock-running-dot ${active ? 'is-active' : ''}`} />}</button>;
         })}
       </div>
       <span className="dock-divider" />

@@ -1,10 +1,8 @@
 import React, { useState } from 'react';
 import { useOSStore } from '../store/useOSStore';
-import { useGameStore } from '../store/useGameStore';
 import {
-  Sparkles, Shield, Flame, Droplets, Wind, Moon, Sun, Cpu, CheckCircle2, AlertCircle, RefreshCw, Zap, Lock, BookOpen, Layers
+  Sparkles, Shield, Flame, Droplets, Wind, Moon, Sun, Zap, Lock, Layers
 } from 'lucide-react';
-import Button from '../components/ui/button';
 
 export interface SpellModule {
   id: string;
@@ -43,6 +41,7 @@ const CANONICAL_COMBOS: Record<string, { name: string; type: string; desc: strin
 export default function SpellForgeApp() {
   const [selectedSlotA, setSelectedSlotA] = useState<SpellModule | null>(MODULES_INVENTORY[0]);
   const [selectedSlotB, setSelectedSlotB] = useState<SpellModule | null>(MODULES_INVENTORY[1]);
+  const [targetSlot, setTargetSlot] = useState<'A' | 'B'>('A');
   const [forgedHistory, setForgedHistory] = useState<any[]>([
     { name: 'Reflect Shield', combo: 'Firewall + Routing', date: 'Cycle 28', active: true }
   ]);
@@ -104,7 +103,10 @@ export default function SpellForgeApp() {
       <div className="flex-1 grid grid-cols-12 min-h-0 overflow-hidden">
         {/* Module Inventory Tray */}
         <div className="col-span-4 border-r border-slate-200 p-5 overflow-y-auto space-y-3 bg-slate-50">
-          <div className="text-[10px] font-mono text-slate-500 uppercase tracking-wider mb-2">Module Inventory (11 Modules)</div>
+          <div className="flex items-center justify-between mb-2">
+            <span className="text-[10px] font-mono text-slate-500 uppercase tracking-wider">Module Inventory (11 Modules)</span>
+            <span className="text-[10px] font-mono font-bold text-purple-700">Target: Slot {targetSlot}</span>
+          </div>
           {MODULES_INVENTORY.map((mod) => {
             const Icon = mod.icon;
             const isSlotA = selectedSlotA?.id === mod.id;
@@ -114,9 +116,13 @@ export default function SpellForgeApp() {
               <div
                 key={mod.id}
                 onClick={() => {
-                  if (!selectedSlotA) setSelectedSlotA(mod);
-                  else if (!selectedSlotB && selectedSlotA.id !== mod.id) setSelectedSlotB(mod);
-                  else setSelectedSlotA(mod);
+                  if (targetSlot === 'A' && selectedSlotB?.id !== mod.id) {
+                    setSelectedSlotA(mod);
+                    setTargetSlot('B');
+                  } else if (targetSlot === 'B' && selectedSlotA?.id !== mod.id) {
+                    setSelectedSlotB(mod);
+                    setTargetSlot('A');
+                  }
                 }}
                 className={`p-3.5 rounded-xl border cursor-pointer transition flex items-center justify-between shadow-xs ${
                   isSlotA
@@ -148,8 +154,24 @@ export default function SpellForgeApp() {
           <div className="space-y-6">
             <div className="grid grid-cols-2 gap-6">
               {/* Primary Slot */}
-              <div className="p-5 rounded-2xl bg-white border border-slate-200 space-y-3 shadow-xs">
-                <div className="text-[10px] font-mono text-purple-700 uppercase tracking-wider font-bold">Primary Module Slot</div>
+              <div
+                onClick={() => setTargetSlot('A')}
+                className={`p-5 rounded-2xl bg-white border cursor-pointer space-y-3 shadow-xs transition ${
+                  targetSlot === 'A' ? 'border-purple-400 ring-2 ring-purple-100' : 'border-slate-200'
+                }`}
+              >
+                <div className="flex items-center justify-between">
+                  <span className="text-[10px] font-mono text-purple-700 uppercase tracking-wider font-bold">Primary Module Slot (A)</span>
+                  {selectedSlotA && (
+                    <button
+                      type="button"
+                      onClick={(e) => { e.stopPropagation(); setSelectedSlotA(null); setTargetSlot('A'); }}
+                      className="text-[10px] font-mono text-slate-400 hover:text-rose-600"
+                    >
+                      Clear
+                    </button>
+                  )}
+                </div>
                 {selectedSlotA ? (
                   <div>
                     <h3 className="font-bold text-base text-purple-950 font-mono">{selectedSlotA.name}</h3>
@@ -162,8 +184,24 @@ export default function SpellForgeApp() {
               </div>
 
               {/* Secondary Slot */}
-              <div className="p-5 rounded-2xl bg-white border border-slate-200 space-y-3 shadow-xs">
-                <div className="text-[10px] font-mono text-sky-700 uppercase tracking-wider font-bold">Secondary Logic Slot</div>
+              <div
+                onClick={() => setTargetSlot('B')}
+                className={`p-5 rounded-2xl bg-white border cursor-pointer space-y-3 shadow-xs transition ${
+                  targetSlot === 'B' ? 'border-sky-400 ring-2 ring-sky-100' : 'border-slate-200'
+                }`}
+              >
+                <div className="flex items-center justify-between">
+                  <span className="text-[10px] font-mono text-sky-700 uppercase tracking-wider font-bold">Secondary Logic Slot (B)</span>
+                  {selectedSlotB && (
+                    <button
+                      type="button"
+                      onClick={(e) => { e.stopPropagation(); setSelectedSlotB(null); setTargetSlot('B'); }}
+                      className="text-[10px] font-mono text-slate-400 hover:text-rose-600"
+                    >
+                      Clear
+                    </button>
+                  )}
+                </div>
                 {selectedSlotB ? (
                   <div>
                     <h3 className="font-bold text-base text-sky-950 font-mono">{selectedSlotB.name}</h3>

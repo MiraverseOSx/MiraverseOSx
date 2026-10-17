@@ -38,12 +38,14 @@ export default function HousingApp() {
     const addCredits = useOSStore((s) => s.addCredits);
     const addBits = useOSStore((s) => s.addBits);
     const addXP = useOSStore((s) => s.addXP);
+    const restInDorm = useOSStore((s) => s.restInDorm);
 
     const handleRest = () => {
+        restInDorm();
         setStamina(100);
         const newDream = `DREAM_ENTRY #${dreamLogs.length + 5}: AETHERCORE whispers: "Maeryn's Lightborn bloodline will awaken when the Veil tears."`;
         setDreamLogs((prev) => [newDream, ...prev]);
-        setRestMessage('💤 Slept peacefully. Stamina restored to 100%. Dream log updated.');
+        setRestMessage('💤 Slept peacefully. Aura and stamina restored to 100%. Dream log updated.');
         setTimeout(() => setRestMessage(null), 4000);
         addXP(50);
     };

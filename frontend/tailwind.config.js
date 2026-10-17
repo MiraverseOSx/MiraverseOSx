@@ -7,16 +7,16 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        // Master Typography (§2) - Monospace excluded
-        sans: ['Corbel', 'Carlito', 'Segoe UI', 'sans-serif'],
-        ui: ['Corbel', 'Carlito', 'Segoe UI', 'sans-serif'],
-        display: ['Cinzel', 'Playfair Display', 'Georgia', 'serif'],
+        // UI, editorial headings, and tabular data each have a distinct role.
+        sans: ['Segoe UI', 'Carlito', 'sans-serif'],
+        ui: ['Segoe UI', 'Carlito', 'sans-serif'],
+        display: ['Playfair Display', 'Georgia', 'serif'],
         cinzel: ['Cinzel', 'serif'],
         playfair: ['Playfair Display', 'Georgia', 'serif'],
         lore: ['Alice', 'Georgia', 'serif'],
         alice: ['Alice', 'Georgia', 'serif'],
         script: ['Great Vibes', 'Cookie', 'cursive'],
-        mono: ['Corbel', 'Carlito', 'Segoe UI', 'sans-serif'], // Fallback mapped to Corbel
+        mono: ['Cascadia Code', 'Consolas', 'monospace'],
       },
       colors: {
         // 3.1 Global OS Base — Luminous "Celestial Night" (Zero Muddy Blacks)

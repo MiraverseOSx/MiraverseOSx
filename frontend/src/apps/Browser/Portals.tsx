@@ -88,7 +88,7 @@ export function FaithMedPortal() {
 
             {/* Clinical Condition Treatment Matrix */}
             <div className="space-y-3 pt-2">
-                <h3 className="text-xs font-bold text-slate-700 uppercase tracking-wider">Veil Exposure Treatment Protocols (§13.5)</h3>
+                <h3 className="text-xs font-bold text-slate-700 uppercase tracking-wider">Veil Exposure Treatment Protocols</h3>
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-3 text-xs font-mono">
                     <div className="p-3 rounded-xl bg-cyan-50 border border-cyan-200 space-y-1">
                         <div className="font-bold text-cyan-900">Frostlung Syndrome</div>
@@ -333,7 +333,7 @@ export function BankPortal() {
                     <div className="p-4 border border-slate-200 bg-white rounded-2xl flex flex-col sm:flex-row justify-between items-center gap-3 shadow-xs">
                         <div>
                             <div className="text-xs font-bold text-slate-900">Direct Deposit & Rent Audit Status</div>
-                            <div className="text-[11px] text-slate-500 font-mono">Automatic monthly stipend and dorm subsidies active</div>
+                            <div className="text-[11px] text-slate-500 font-mono">Automatic monthly stipend and housing subsidies active</div>
                         </div>
                         <button
                             onClick={handleHackAudit}

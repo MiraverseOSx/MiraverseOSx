@@ -55,13 +55,13 @@ Additional applications, folders, websites, and communication channels will unlo
     id: 'MSG-003',
     sender: 'Cyacademy Residential Services',
     faction: 'Cyacademy Admin',
-    subject: 'Housing Assignment: Dorm Access Pending',
+    subject: 'Housing Assignment: Unit 4B Access Pending',
     time: '08:10 AM',
     read: false,
-    attachment: { type: 'credits', amount: 150, name: 'DORM_KEY.ics', claimed: false },
-    body: `Player has been assigned a starter dorm room pending arrival confirmation. 
+    attachment: { type: 'credits', amount: 150, name: 'HOUSING_KEY.ics', claimed: false },
+    body: `Player has been assigned a starter housing suite pending arrival confirmation. 
 
-The room includes basic sleep access, minimal storage, and default furnishings only. Upgrades, decorations, visitors, and expanded property options must be earned through credits, reputation, permissions, and progression.
+The suite includes basic sleep access, minimal storage, and default furnishings only. Upgrades, decorations, visitors, and expanded property options must be earned through credits, reputation, permissions, and progression.
 
 - Residential Services`,
   },
@@ -133,7 +133,7 @@ Communication access expands as player meets people and earns trust.`,
     attachment: { type: 'credits', amount: 200, name: 'DAY_ONE_SCHEDULE.ics', claimed: false },
     body: `Player, welcome to Cyacademy. 
 
-Your first day is simple: confirm registration, activate Aura Passport, check your dorm assignment, review the Notice Board, and attend orientation. 
+Your first day is simple: confirm registration, activate Aura Passport, check your housing assignment, review the Notice Board, and attend orientation. 
 
 Do not enter restricted areas. Do not attempt to access the Old Factory Ward. If the operating system behaves strangely, report the incident before investigating alone.
 

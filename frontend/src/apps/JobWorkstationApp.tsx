@@ -515,7 +515,7 @@ export default function JobWorkstationApp() {
               {/* Permitted Institutional Tools */}
               <div className="p-3.5 bg-slate-50 border border-slate-200 rounded-xl space-y-2">
                 <div className="text-[10px] text-slate-700 font-ui uppercase font-bold flex items-center gap-1.5">
-                  <Key size={13} className="text-amber-600" /> Permitted Institutional Clearance Tools (§10.1A)
+                  <Key size={13} className="text-amber-600" /> Permitted Institutional Clearance Tools
                 </div>
                 <div className="flex flex-wrap gap-1.5">
                   {selectedMission.permittedTools.map((tool) => (
