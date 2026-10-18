@@ -1787,8 +1787,11 @@ export const useOSStore = create<OSStoreState>()(persist((set, get) => ({
 
   claimCommsAttachment: (commId, credits, xp) =>
     set((state) => {
-      if (state.gameplay.claimedComms.includes(commId)) return state;
-      const newXP = state.gameplay.player.xp + (xp || 50);
+      if (!commId || state.gameplay.claimedComms.includes(commId)) return state;
+      const addedCredits = typeof credits === 'number' && credits > 0 ? credits : 0;
+      const addedXP = typeof xp === 'number' && xp > 0 ? xp : 0;
+      if (addedCredits <= 0 && addedXP <= 0) return state;
+      const newXP = state.gameplay.player.xp + addedXP;
       const newLevel = Math.floor(newXP / 100) + 1;
       return {
         gameplay: {
@@ -1796,7 +1799,7 @@ export const useOSStore = create<OSStoreState>()(persist((set, get) => ({
           claimedComms: [...state.gameplay.claimedComms, commId],
           player: {
             ...state.gameplay.player,
-            credits: state.gameplay.player.credits + (credits || 100),
+            credits: state.gameplay.player.credits + addedCredits,
             xp: newXP,
             level: newLevel,
           },

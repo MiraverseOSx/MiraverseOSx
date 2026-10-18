@@ -19,6 +19,17 @@ export const CONFIRMED_REGISTRATION_REGIONS: Record<string, { code: Registration
   Orynvell: { code: 'OR', name: 'Orynvell (Celestial Crown Center)' },
 };
 
+export interface VerifiedEmailAccount {
+  address: string;
+  accountType: 'personal' | 'academic' | 'work' | 'institutional';
+  institution: string;
+  roleLabel: string;
+  verified: boolean;
+  status: 'active' | 'suspended' | 'revoked';
+  maid: string | null;
+  requiredClearance?: number;
+}
+
 export interface CanonicalPerson {
   id: string; // Internal stable UUID
   maid: string | null; // e.g. "MAID-OR-00481926" or null if pending migration
@@ -36,6 +47,7 @@ export interface CanonicalPerson {
   address: string;
   phone: string;
   email: string;
+  emailAccounts?: VerifiedEmailAccount[];
   district: string;
   passport: string;
   alias?: string;
@@ -107,6 +119,7 @@ export interface NewPersonInput {
   address?: string;
   phone?: string;
   email?: string;
+  emailAccounts?: VerifiedEmailAccount[];
   district?: string;
   passport?: string;
   alias?: string;
@@ -333,6 +346,123 @@ function generateUuid(): string {
   });
 }
 
+export function buildVerifiedEmailAccountsForPerson(person: Partial<CanonicalPerson>): VerifiedEmailAccount[] {
+  if (Array.isArray(person.emailAccounts) && person.emailAccounts.length > 0) {
+    return person.emailAccounts;
+  }
+  const slug = (person.name || 'citizen')
+    .toLowerCase()
+    .replace(/^dr\.\s*/i, '')
+    .trim()
+    .replace(/[^a-z0-9]+/g, '.')
+    .replace(/^\.|\.$/g, '') || 'citizen';
+  const maid = person.maid || null;
+  const aff = `${person.affiliation || ''} ${person.category || ''} ${person.occupation || ''}`.toLowerCase();
+
+  const accounts: VerifiedEmailAccount[] = [
+    {
+      address: `${slug}@auremail.aure`,
+      accountType: 'personal',
+      institution: 'AureMail Municipal Grid',
+      roleLabel: 'Primary Personal Citizen Mailbox',
+      verified: true,
+      status: 'active',
+      maid,
+      requiredClearance: 1,
+    },
+  ];
+
+  if (person.email && !accounts.some((a) => a.address.toLowerCase() === person.email!.toLowerCase())) {
+    const lowerEmail = person.email.toLowerCase();
+    const isAcademic = lowerEmail.includes('cyacademy');
+    const isMedical = lowerEmail.includes('faith');
+    const isDga = lowerEmail.includes('dga.gov');
+    const isCrown = lowerEmail.includes('orynvell.gov');
+    accounts.push({
+      address: person.email,
+      accountType: isAcademic ? 'academic' : isDga || isMedical || isCrown ? 'institutional' : 'work',
+      institution: isAcademic
+        ? 'Cyacademy of Sciences'
+        : isMedical
+        ? 'Faith Medical Group'
+        : isDga
+        ? 'Department of Global Affairs (DGAOS)'
+        : isCrown
+        ? 'Orynvell Sovereign Archives'
+        : person.affiliation || 'Meridion Civic Network',
+      roleLabel: person.occupation || 'Registered Role',
+      verified: true,
+      status: 'active',
+      maid,
+      requiredClearance: isDga ? 2 : 1,
+    });
+  }
+
+  if (aff.includes('cyacademy') || aff.includes('student') || aff.includes('scholar')) {
+    const addr = `${slug}@cyacademy.edu`;
+    if (!accounts.some((a) => a.address.toLowerCase() === addr)) {
+      accounts.push({
+        address: addr,
+        accountType: 'academic',
+        institution: 'Cyacademy of Sciences',
+        roleLabel: person.occupation || 'Academic Scholar',
+        verified: true,
+        status: 'active',
+        maid,
+        requiredClearance: 1,
+      });
+    }
+  }
+
+  if (aff.includes('faith') || aff.includes('clinical') || aff.includes('physician')) {
+    const addr = `${slug}@faithmed.aure`;
+    if (!accounts.some((a) => a.address.toLowerCase() === addr)) {
+      accounts.push({
+        address: addr,
+        accountType: 'institutional',
+        institution: 'Faith Medical Group',
+        roleLabel: person.occupation || 'Clinical Staff',
+        verified: true,
+        status: 'active',
+        maid,
+        requiredClearance: 1,
+      });
+    }
+  }
+
+  if (aff.includes('dga') || aff.includes('trace') || aff.includes('forensic')) {
+    const addr = `${slug}@dga.gov`;
+    if (!accounts.some((a) => a.address.toLowerCase() === addr)) {
+      accounts.push({
+        address: addr,
+        accountType: 'institutional',
+        institution: 'Department of Global Affairs (DGAOS)',
+        roleLabel: person.occupation || 'DGA / TRACE Investigator',
+        verified: true,
+        status: 'active',
+        maid,
+        requiredClearance: 2,
+      });
+    }
+  }
+
+  const workAddr = `${slug}@worknet.aure`;
+  if (!accounts.some((a) => a.address.toLowerCase() === workAddr)) {
+    accounts.push({
+      address: workAddr,
+      accountType: 'work',
+      institution: 'WorkNet Federal Career Relay',
+      roleLabel: person.occupation || 'Federal Contractor',
+      verified: true,
+      status: 'active',
+      maid,
+      requiredClearance: 1,
+    });
+  }
+
+  return accounts;
+}
+
 export class MaidIdentityService {
   /**
    * Performs an idempotent, non-destructive migration of existing legacy MRD records.
@@ -476,6 +606,7 @@ export class MaidIdentityService {
         storyMode: legacy.storyMode,
         isRestricted: !!legacy.isRestricted
       };
+      canonicalPerson.emailAccounts = buildVerifiedEmailAccountsForPerson(canonicalPerson);
 
       currentCanonical.push(canonicalPerson);
       existingByRecord.set(recordKey, canonicalPerson);
@@ -490,20 +621,25 @@ export class MaidIdentityService {
   }
 
   /**
-   * Retrieves all canonical persons in the registry.
+   * Retrieves all canonical persons in the registry, ensuring verified multi-account email associations.
    */
   public static async getAllPersons(): Promise<CanonicalPerson[]> {
-    const list = await loadStoredCanonicalList();
+    let list = await loadStoredCanonicalList();
     if (list.length === 0) {
-      // Auto-migrate if legacy records exist
       await this.migrateLegacyRegistry();
-      return await loadStoredCanonicalList();
+      list = await loadStoredCanonicalList();
     }
-    return list;
+    if (list.length === 0) {
+      list = await this.ensureDefaultPopulationSeeded();
+    }
+    return list.map((p) => ({
+      ...p,
+      emailAccounts: buildVerifiedEmailAccountsForPerson(p),
+    }));
   }
 
   /**
-   * Authoritative MAID / Legacy Alias / Name Lookup.
+   * Authoritative MAID / Legacy Alias / Name / Email Account Lookup.
    */
   public static async lookupPerson(query: string, options?: { allowRestricted?: boolean }): Promise<LookupResult> {
     if (!query || typeof query !== 'string') {
@@ -512,6 +648,7 @@ export class MaidIdentityService {
 
     const trimmed = query.trim();
     const upperQuery = trimmed.toUpperCase();
+    const lowerQuery = trimmed.toLowerCase();
     const persons = await this.getAllPersons();
 
     // 1. Exact MAID Match
@@ -559,9 +696,13 @@ export class MaidIdentityService {
       return { status: 'found', person: byAlias, matchedBy: 'legacy_alias', matchedQuery: trimmed };
     }
 
-    // 3. Name or Attribute Match (Case-insensitive)
-    const lowerQuery = trimmed.toLowerCase();
-    const byName = persons.find(p => p.name.toLowerCase() === lowerQuery || p.name.toLowerCase().includes(lowerQuery));
+    // 3. Name or Verified Email Account Match (Case-insensitive)
+    const byName = persons.find(p =>
+      p.name.toLowerCase() === lowerQuery ||
+      p.name.toLowerCase().includes(lowerQuery) ||
+      (p.email && p.email.toLowerCase() === lowerQuery) ||
+      (p.emailAccounts || []).some(acc => acc.address.toLowerCase() === lowerQuery)
+    );
 
     if (byName) {
       if (byName.isRestricted && !options?.allowRestricted) {
@@ -704,6 +845,7 @@ export class MaidIdentityService {
         dob: newPerson.dob
       });
     }
+    newPerson.emailAccounts = buildVerifiedEmailAccountsForPerson(newPerson);
 
     currentList.push(newPerson);
     await saveCanonicalList(currentList);
@@ -737,6 +879,7 @@ export class MaidIdentityService {
       legacyAliases: current.legacyAliases,
       legacyRecord: current.legacyRecord
     };
+    updatedPerson.emailAccounts = buildVerifiedEmailAccountsForPerson(updatedPerson);
 
     currentList[idx] = updatedPerson;
     await saveCanonicalList(currentList);
@@ -1058,9 +1201,12 @@ export class MaidIdentityService {
    * across Cyacademy, Faith Medical, DGAOS/TRACE, and Orynvell Civic Archives if empty.
    */
   public static async ensureDefaultPopulationSeeded(): Promise<CanonicalPerson[]> {
-    const existing = await this.getAllPersons();
+    const existing = await loadStoredCanonicalList();
     if (existing.length > 0) {
-      return existing;
+      return existing.map((p) => ({
+        ...p,
+        emailAccounts: buildVerifiedEmailAccountsForPerson(p),
+      }));
     }
 
     const defaultInputs: (NewPersonInput & { fixedMaid: string; fixedLegacy: string })[] = [

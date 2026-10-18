@@ -320,3 +320,81 @@ test('corrupt or unavailable storage leaves a playable session', async (t) => {
   assert.doesNotThrow(() => blockedStore.getState().addCredits(10));
   assert.equal(blockedStore.getState().gameplay.player.credits, 510);
 });
+
+test('AureMail Decisions 006-011 enforce multi-account MAID links, persisted mailbox state, hybrid replies, clearance gates, and separated file vs. reward attachments', async () => {
+  memoryStorage();
+  const osStore = await freshStore();
+  const commsMod = await import(`../src/store/useCommsStore.ts?t=${Date.now()}-${Math.random()}`);
+  const maidMod = await import(`../src/services/maidIdentityService.ts?t=${Date.now()}-${Math.random()}`);
+  const comms = commsMod.useCommsStore;
+
+  // 1. Decision 009 & 010: Multiple verified accounts per citizen & player
+  assert.ok(comms.getState().playerAccounts.length >= 4);
+  const persons = await maidMod.MaidIdentityService.getAllPersons();
+  assert.ok(persons.length >= 3);
+  assert.ok(Array.isArray(persons[0].emailAccounts) && persons[0].emailAccounts.length >= 2);
+  const lookupBySecondaryEmail = await maidMod.MaidIdentityService.lookupPerson(persons[0].emailAccounts[1].address);
+  assert.equal(lookupBySecondaryEmail.status, 'found');
+  assert.equal(lookupBySecondaryEmail.person.maid, persons[0].maid);
+
+  // 2. Persisted star, archive, trash, and read states
+  comms.getState().toggleStarEmail('MSG-001');
+  comms.getState().toggleArchiveEmail('MSG-002');
+  comms.getState().markEmailRead('MSG-001', true);
+  assert.ok(comms.getState().starredEmailIds.includes('MSG-001'));
+  assert.ok(comms.getState().archivedEmailIds.includes('MSG-002'));
+  assert.ok(comms.getState().readEmailIds.includes('MSG-001'));
+
+  // 3. Decision 011: Ordinary file/record/form attachments NEVER award automatic credits/XP
+  const msg1 = comms.getState().emails.find((m) => m.id === 'MSG-001');
+  const regDoc = msg1.attachments.find((a) => a.id === 'att-reg-card');
+  const regGrant = msg1.attachments.find((a) => a.id === 'att-reg-grant');
+  assert.equal(regDoc.isReward, false);
+  assert.equal(regDoc.amount, 0);
+  assert.equal(regGrant.isReward, true);
+  assert.equal(regGrant.amount, 100);
+
+  const beforeFileSave = osStore.getState().gameplay.player;
+  const vaultRes = comms.getState().saveAttachmentToVault('MSG-001', 'att-reg-card');
+  assert.equal(vaultRes.ok, true);
+  // Attempting to call claimCommsAttachment with 0 or undefined values awards nothing
+  osStore.getState().claimCommsAttachment('MSG-001_att-reg-card', 0, 0);
+  assert.equal(osStore.getState().gameplay.player.credits, beforeFileSave.credits);
+  assert.equal(osStore.getState().gameplay.player.xp, beforeFileSave.xp);
+
+  // Claiming the verified grant awards +100 credits and +50 XP exactly once
+  osStore.getState().claimCommsAttachment('MSG-001_att-reg-grant', regGrant.amount, regGrant.xp);
+  assert.equal(osStore.getState().gameplay.player.credits, beforeFileSave.credits + 100);
+  assert.equal(osStore.getState().gameplay.player.xp, beforeFileSave.xp + 50);
+  osStore.getState().claimCommsAttachment('MSG-001_att-reg-grant', regGrant.amount, regGrant.xp);
+  assert.equal(osStore.getState().gameplay.player.credits, beforeFileSave.credits + 100);
+
+  // Submitting an .osform attachment creates an official filing receipt without awarding currency
+  const formRes = comms.getState().submitAttachmentForm('MSG-004', 'att-aura-consent', 'Verified citizen attestation');
+  assert.equal(formRes.ok, true);
+  assert.ok(formRes.replyEmail.subject.includes('Form Filing Receipt'));
+
+  // 4. Decision 007 & 008: Replying to an email appends to thread and generates a hybrid institutional/NPC response
+  const replyRes = comms.getState().replyToEmail('MSG-009', 'I analyzed the 88.2 MHz harmonic trace in Lab 4!', {
+    fromAddress: 'scholar@cyacademy.edu',
+    playerClearance: 1,
+  });
+  assert.equal(replyRes.ok, true);
+  assert.equal(replyRes.sentMessage.folder, 'sent');
+  assert.equal(replyRes.autoReplyMessage.folder, 'inbox');
+  assert.equal(replyRes.autoReplyMessage.threadId, 'THR-009');
+  assert.ok(replyRes.autoReplyMessage.body.includes('88.2 MHz'));
+
+  // Clearance gate: Sending to Level 3 DGA High Command with Level 1 clearance holds message in Outbox
+  const blockedRes = comms.getState().sendEmail({
+    fromAddress: 'liaison@dga.gov',
+    toAddress: 'command.classified@dga.gov',
+    subject: 'Requesting Compartmented Dossier',
+    body: 'Requesting Level 3 access.',
+    playerClearance: 1,
+  });
+  assert.equal(blockedRes.ok, false);
+  assert.equal(blockedRes.deliveryStatus, 'blocked_clearance');
+  assert.equal(blockedRes.sentMessage.folder, 'outbox');
+});
+
