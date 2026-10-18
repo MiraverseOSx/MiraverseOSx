@@ -4,6 +4,7 @@ import { useSystemStore } from '../store/useSystemStore';
 import { SoundFX } from '../utils/audio';
 import { miraverseDb, DGA_DIVISIONS, ORGANIZATIONS } from '../db/miraverseDb';
 import { WorknetMission, MissionType } from '../types';
+import { WORKNET_DOMAIN_TASKS, evaluateWorknetObjective } from '../gameplay/WorldEventEngine';
 import { MaidIdentityService, CanonicalCitizenRecord } from '../services/maidIdentityService';
 import {
   getCanonicalCitizens,
@@ -52,6 +53,7 @@ export default function JobWorkstationApp() {
   const [selectedMissionId, setSelectedMissionId] = useState<string>('ms-spec-01');
   const [dgaBranchFilter, setDgaBranchFilter] = useState<'All' | 'Shield' | 'Eyes' | 'Blackout Team'>('All');
   const [actionFeedback, setActionFeedback] = useState<string | null>(null);
+  const [selectedDomainOptionByMission, setSelectedDomainOptionByMission] = useState<Record<string, string>>({});
   const [canonicalCitizens, setCanonicalCitizens] = useState<CanonicalCitizenRecord[]>(() => {
     MaidIdentityService.ensureDefaultPopulationSeeded();
     return getCanonicalCitizens();
@@ -83,12 +85,11 @@ export default function JobWorkstationApp() {
   const player = useOSStore((s) => s.gameplay.player);
   const addCredits = useOSStore((s) => s.addCredits);
   const addBits = useOSStore((s) => s.addBits);
-  const advanceWorknetMissionStep = useOSStore((s) => s.advanceWorknetMissionStep);
+  const completeWorknetDomainTask = useOSStore((s) => s.completeWorknetDomainTask);
   const completeWorknetMission = useOSStore((s) => s.completeWorknetMission);
   const resetWorknetMissionsAdmin = useOSStore((s) => s.resetWorknetMissionsAdmin);
 
   const completedMissionIds = player?.completedWorknetMissionIds || [];
-  const missionProgressMap = player?.worknetMissionProgress || {};
 
   const missions: WorknetMission[] = baseMissions.map((m) => ({
     ...m,
@@ -123,30 +124,27 @@ export default function JobWorkstationApp() {
   });
 
   const selectedMission = missions.find((m) => m.id === selectedMissionId) || filteredMissions[0] || missions[0];
-  const selectedSteps = selectedMission ? (missionProgressMap[selectedMission.id] || []) : [];
-  const stepToolDone = selectedSteps.includes('tool_calibrated') || Boolean(selectedMission?.completed);
-  const stepSubjectDone = selectedSteps.includes('subject_inspected') || Boolean(selectedMission?.completed);
-  const stepDirectiveDone = selectedSteps.includes('directive_executed') || Boolean(selectedMission?.completed);
-  const allStepsDone = stepToolDone && stepSubjectDone && stepDirectiveDone;
+  const objectiveEval = selectedMission
+    ? evaluateWorknetObjective(selectedMission.id, selectedMission.track, player)
+    : { verified: false, source: '', requirementText: '' };
+  const domainTask = selectedMission ? WORKNET_DOMAIN_TASKS[selectedMission.id] : undefined;
+  const isObjectiveVerified = Boolean(selectedMission?.completed || objectiveEval.verified);
 
   const handleSyncStationToCitizen = () => {
     if (!activeCitizen) return;
-    if (selectedMission && !selectedMission.completed) {
-      advanceWorknetMissionStep(selectedMission.id, 'subject_inspected');
-    }
     if (activeStation === 'faithmed') {
       syncFaithMedicalUpdate(activeCitizen.maid, {
-        clinicalNote: `Faith Medical Triage Desk clearance verified (${new Date().toLocaleDateString()}). Veil exposure baseline normal.`,
+        medicalSummary: `Faith Medical Triage Desk clearance verified (${new Date().toLocaleDateString()}). Veil exposure baseline normal.`,
       });
       setActionFeedback(`🩺 Logged Faith Medical clinical triage update directly to ${activeCitizen.name} (${activeCitizen.maid}).`);
     } else if (activeStation === 'dga') {
       syncDgaInvestigativeUpdate(activeCitizen.maid, {
-        note: `DGA Tactical Console (${dgaBranchFilter}) security screening verified (${new Date().toLocaleDateString()}).`,
+        investigativeNote: `DGA Tactical Console (${dgaBranchFilter}) security screening verified (${new Date().toLocaleDateString()}).`,
       });
       setActionFeedback(`🛡️ Logged DGA Tactical screening directly to ${activeCitizen.name} (${activeCitizen.maid}).`);
     } else {
       syncCyacademyOrCivicUpdate(activeCitizen.maid, {
-        historyNote: `${currentStationInfo.name} institutional record verified (${new Date().toLocaleDateString()}).`,
+        academicNote: `${currentStationInfo.name} institutional record verified (${new Date().toLocaleDateString()}).`,
       });
       setActionFeedback(`🏛️ Synced ${currentStationInfo.name} record to ${activeCitizen.name} (${activeCitizen.maid}).`);
     }
@@ -154,40 +152,33 @@ export default function JobWorkstationApp() {
     setTimeout(() => setActionFeedback(null), 4500);
   };
 
-  const handleStepCalibrateTool = (toolName?: string) => {
-    if (!selectedMission || selectedMission.completed) return;
+  const handleRunDomainTask = (missionId: string) => {
+    const selectedOptionId = selectedDomainOptionByMission[missionId] || '';
+    if (!selectedOptionId) {
+      setActionFeedback('⚠️ Select a domain procedure option before executing the assignment task.');
+      setTimeout(() => setActionFeedback(null), 3500);
+      return;
+    }
     if (soundEnabled) SoundFX.playButtonTap();
-    advanceWorknetMissionStep(selectedMission.id, 'tool_calibrated');
-    setActionFeedback(`🔧 Calibrated permitted tool "${toolName || selectedMission.permittedTools[0] || 'Standard Kit'}" for "${selectedMission.title}".`);
-    setTimeout(() => setActionFeedback(null), 3500);
-  };
-
-  const handleStepInspectSubject = () => {
-    if (!selectedMission || selectedMission.completed) return;
-    if (soundEnabled) SoundFX.playButtonTap();
-    handleSyncStationToCitizen();
-  };
-
-  const handleStepExecuteDirective = () => {
-    if (!selectedMission || selectedMission.completed) return;
-    if (soundEnabled) SoundFX.playButtonTap();
-    advanceWorknetMissionStep(selectedMission.id, 'directive_executed');
-    setActionFeedback(`⚡ Executed field protocol: "${selectedMission.requiredAction}". Ready for final payout verification.`);
-    setTimeout(() => setActionFeedback(null), 3500);
+    const res = completeWorknetDomainTask(missionId, selectedOptionId);
+    setActionFeedback(res.ok ? res.message : `⚠️ ${res.message}`);
+    setTimeout(() => setActionFeedback(null), 4500);
   };
 
   const handleAdminResetMissions = () => {
     resetWorknetMissionsAdmin();
-    setActionFeedback('⚡ [ADMIN] All persistent WorkNet missions & verification steps reset.');
+    setActionFeedback('⚡ [ADMIN] All persistent WorkNet missions & domain objectives reset.');
     setTimeout(() => setActionFeedback(null), 4000);
   };
 
   const handleAdminCompleteAll = () => {
     missions.forEach((m) => {
       if (!m.completed) {
-        advanceWorknetMissionStep(m.id, 'tool_calibrated');
-        advanceWorknetMissionStep(m.id, 'subject_inspected');
-        advanceWorknetMissionStep(m.id, 'directive_executed');
+        const tDef = WORKNET_DOMAIN_TASKS[m.id];
+        const validOpt = tDef?.options.find((o) => o.isCorrect);
+        if (validOpt) {
+          completeWorknetDomainTask(m.id, validOpt.id);
+        }
         completeWorknetMission({
           id: m.id,
           rewardCredits: m.rewardCredits,
@@ -372,14 +363,14 @@ export default function JobWorkstationApp() {
             </button>
             <button
               type="button"
-              onClick={() => openCitizenInApp(activeCitizen.maid, 'document_studio', { targetDocId: activeStation === 'faithmed' ? 8 : activeStation === 'dga' ? 5 : 1 })}
+              onClick={() => openCitizenInApp(activeCitizen.maid, 'documentStudio', { targetDocId: activeStation === 'faithmed' ? 8 : activeStation === 'dga' ? 5 : 1 })}
               className="px-2.5 py-1 rounded-lg bg-white hover:bg-slate-100 text-slate-800 border border-slate-300 font-bold text-[11px] transition flex items-center gap-1 cursor-pointer"
             >
               <FileText size={12} /> {activeStation === 'faithmed' ? 'Medical Record (Doc 8)' : activeStation === 'dga' ? 'DGA Report (Doc 5)' : 'Citizen ID (Doc 1)'}
             </button>
             <button
               type="button"
-              onClick={() => openCitizenInApp(activeCitizen.maid, 'registry_workspace', { targetTab: 'lookup' })}
+              onClick={() => openCitizenInApp(activeCitizen.maid, 'meridionRegistry', { targetTab: 'lookup' })}
               className="px-2.5 py-1 rounded-lg bg-purple-50 hover:bg-purple-100 text-purple-900 border border-purple-200 font-bold text-[11px] transition flex items-center gap-1 cursor-pointer"
             >
               <ExternalLink size={12} /> Open MAID Dossier
@@ -512,7 +503,7 @@ export default function JobWorkstationApp() {
                       {m.rewardBits > 0 && (
                         <span className="text-emerald-700 font-bold">+{m.rewardBits} ◈ BITS</span>
                       )}
-                      <span className="text-slate-500">+{m.rewardXP} XP</span>
+                      <span className="text-slate-500">+{m.rewardXP} Career XP</span>
                       <span className="text-slate-400 text-[10px] ml-auto">{m.location.split('-')[0]}</span>
                     </div>
                   </div>
@@ -522,7 +513,7 @@ export default function JobWorkstationApp() {
           </div>
         </div>
 
-        {/* RIGHT PANE: ACTIVE MISSION TELEMETRY & ACTION EXECUTION */}
+        {/* RIGHT PANE: ACTIVE MISSION TELEMETRY & DOMAIN WORK EXECUTION */}
         <div className="w-1/2 flex flex-col bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-xs">
           {selectedMission ? (
             <div className="flex-1 flex flex-col p-5 overflow-y-auto space-y-4">
@@ -552,97 +543,94 @@ export default function JobWorkstationApp() {
                   <div className="font-semibold text-slate-900">{selectedMission.targetSubject || 'General Institutional Asset'}</div>
                 </div>
                 <div className="p-3 bg-rose-50/60 border border-rose-200 rounded-xl space-y-1">
-                  <div className="text-[10px] text-rose-700 uppercase font-semibold">Anomaly / Threat Vector</div>
+                  <div className="text-[10px] text-rose-700 uppercase font-semibold">Anomaly / Clinical Presentation</div>
                   <div className="font-semibold text-rose-900">{selectedMission.threatOrSymptom || 'Standard Workplace Procedure'}</div>
                 </div>
               </div>
 
-              {/* Permitted Institutional Tools (Interactive Step 1) */}
+              {/* Permitted Institutional Tools */}
               <div className="p-3.5 bg-slate-50 border border-slate-200 rounded-xl space-y-2">
                 <div className="flex items-center justify-between">
                   <div className="text-[10px] text-slate-700 font-ui uppercase font-bold flex items-center gap-1.5">
-                    <Key size={13} className="text-amber-600" /> Permitted Institutional Clearance Tools
+                    <Key size={13} className="text-amber-600" /> Authorized Station Equipment ({selectedMission.track.toUpperCase()})
                   </div>
-                  <span className={`text-[10px] font-bold px-2 py-0.5 rounded ${stepToolDone ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800'}`}>
-                    {stepToolDone ? 'Tool Calibrated ✓' : 'Click Tool to Calibrate'}
+                  <span className={`text-[10px] font-bold px-2 py-0.5 rounded ${isObjectiveVerified ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800'}`}>
+                    {isObjectiveVerified ? `✓ Verified (${objectiveEval.source || 'Completed'})` : 'Objective Pending'}
                   </span>
                 </div>
                 <div className="flex flex-wrap gap-1.5">
                   {selectedMission.permittedTools.map((tool) => (
-                    <button
-                      type="button"
+                    <span
                       key={tool}
-                      onClick={() => handleStepCalibrateTool(tool)}
-                      className={`px-2.5 py-1 border rounded-lg text-[11px] font-ui flex items-center gap-1 shadow-xs transition cursor-pointer ${
-                        stepToolDone
-                          ? 'bg-emerald-50 border-emerald-300 text-emerald-900 font-semibold'
-                          : 'bg-white border-slate-200 hover:border-amber-400 text-slate-800'
-                      }`}
+                      className="px-2.5 py-1 border bg-white border-slate-200 rounded-lg text-[11px] font-ui flex items-center gap-1 text-slate-800 shadow-2xs"
                     >
-                      <Zap size={11} className={stepToolDone ? 'text-emerald-600' : 'text-amber-600'} /> {tool}
-                    </button>
+                      <Zap size={11} className="text-amber-600" /> {tool}
+                    </span>
                   ))}
                 </div>
               </div>
 
-              {/* 3-Step Operational Verification Checklist */}
-              <div className="p-4 bg-amber-50/60 border border-amber-200 rounded-xl space-y-2.5">
-                <div className="flex items-center justify-between">
-                  <div className="text-[11px] font-bold text-amber-900 font-ui flex items-center gap-1.5">
-                    <Terminal size={14} className="text-amber-700" /> Mandatory 3-Step Operational Verification
+              {/* Profession-Specific Domain Task & Cross-App Verification Panel */}
+              {domainTask && (
+                <div className="p-4 bg-amber-50/60 border border-amber-200 rounded-xl space-y-3">
+                  <div className="flex items-center justify-between">
+                    <div className="text-[11px] font-bold text-amber-950 font-ui flex items-center gap-1.5">
+                      <Terminal size={14} className="text-amber-700" /> {domainTask.taskTitle}
+                    </div>
+                    <span className={`text-[10px] font-bold px-2 py-0.5 rounded ${isObjectiveVerified ? 'bg-emerald-100 text-emerald-800' : 'bg-white text-amber-900 border border-amber-200'}`}>
+                      {isObjectiveVerified ? '✓ Objective Accomplished' : 'Required Domain Task'}
+                    </span>
                   </div>
-                  <span className="text-[10px] font-bold text-amber-800">
-                    {[stepToolDone, stepSubjectDone, stepDirectiveDone].filter(Boolean).length} / 3 Verified
-                  </span>
+
+                  <p className="text-xs text-slate-700 leading-relaxed font-ui">
+                    {domainTask.prompt}
+                  </p>
+                  <div className="text-[11px] text-indigo-800 bg-indigo-50/80 border border-indigo-200/80 rounded-lg px-2.5 py-1.5 font-ui">
+                    <strong>Cross-App Integration:</strong> {domainTask.crossAppHint}
+                  </div>
+
+                  <div className="space-y-1.5 pt-1">
+                    {domainTask.options.map((opt) => {
+                      const chosen = selectedDomainOptionByMission[selectedMission.id] === opt.id;
+                      return (
+                        <label
+                          key={opt.id}
+                          className={`p-2.5 rounded-xl border text-left text-xs cursor-pointer transition flex items-start gap-2 ${
+                            chosen
+                              ? 'border-amber-500 bg-amber-100/70 text-amber-950 font-semibold'
+                              : 'border-slate-200 bg-white text-slate-700 hover:bg-slate-50'
+                          }`}
+                        >
+                          <input
+                            type="radio"
+                            name={`domain-task-${selectedMission.id}`}
+                            disabled={isObjectiveVerified}
+                            checked={chosen}
+                            onChange={() =>
+                              setSelectedDomainOptionByMission({
+                                ...selectedDomainOptionByMission,
+                                [selectedMission.id]: opt.id,
+                              })
+                            }
+                            className="mt-0.5"
+                          />
+                          <span>{opt.label}</span>
+                        </label>
+                      );
+                    })}
+                  </div>
+
+                  {!isObjectiveVerified && (
+                    <button
+                      type="button"
+                      onClick={() => handleRunDomainTask(selectedMission.id)}
+                      className="w-full py-2 bg-slate-900 hover:bg-slate-800 text-white rounded-xl text-xs font-bold transition cursor-pointer"
+                    >
+                      Perform Domain Procedure & Verify Objective
+                    </button>
+                  )}
                 </div>
-                <p className="text-xs text-slate-700 leading-relaxed font-ui">
-                  {selectedMission.requiredAction}
-                </p>
-
-                <div className="grid grid-cols-1 gap-2 pt-1">
-                  <button
-                    type="button"
-                    disabled={selectedMission.completed || stepToolDone}
-                    onClick={() => handleStepCalibrateTool()}
-                    className={`w-full px-3 py-2 rounded-lg text-left text-xs font-ui flex items-center justify-between border transition ${
-                      stepToolDone
-                        ? 'bg-emerald-50 border-emerald-200 text-emerald-900 font-semibold'
-                        : 'bg-white hover:bg-amber-100/60 border-amber-200 text-slate-800 cursor-pointer'
-                    }`}
-                  >
-                    <span>1. Calibrate Permitted Tool ({selectedMission.permittedTools[0] || 'Standard Kit'})</span>
-                    <span className="font-bold text-[10px] uppercase">{stepToolDone ? 'Verified ✓' : 'Calibrate →'}</span>
-                  </button>
-
-                  <button
-                    type="button"
-                    disabled={selectedMission.completed || stepSubjectDone}
-                    onClick={handleStepInspectSubject}
-                    className={`w-full px-3 py-2 rounded-lg text-left text-xs font-ui flex items-center justify-between border transition ${
-                      stepSubjectDone
-                        ? 'bg-emerald-50 border-emerald-200 text-emerald-900 font-semibold'
-                        : 'bg-white hover:bg-amber-100/60 border-amber-200 text-slate-800 cursor-pointer'
-                    }`}
-                  >
-                    <span>2. Verify Subject & Sync MAID Telemetry ({selectedMission.targetSubject || activeCitizen?.name})</span>
-                    <span className="font-bold text-[10px] uppercase">{stepSubjectDone ? 'Verified ✓' : 'Verify & Sync →'}</span>
-                  </button>
-
-                  <button
-                    type="button"
-                    disabled={selectedMission.completed || stepDirectiveDone}
-                    onClick={handleStepExecuteDirective}
-                    className={`w-full px-3 py-2 rounded-lg text-left text-xs font-ui flex items-center justify-between border transition ${
-                      stepDirectiveDone
-                        ? 'bg-emerald-50 border-emerald-200 text-emerald-900 font-semibold'
-                        : 'bg-white hover:bg-amber-100/60 border-amber-200 text-slate-800 cursor-pointer'
-                    }`}
-                  >
-                    <span>3. Execute Field Protocol ({selectedMission.threatOrSymptom || 'Standard Procedure'})</span>
-                    <span className="font-bold text-[10px] uppercase">{stepDirectiveDone ? 'Verified ✓' : 'Run Protocol →'}</span>
-                  </button>
-                </div>
-              </div>
+              )}
 
               {/* Compensation Summary & Action Button */}
               <div className="mt-auto pt-3 border-t border-slate-200 space-y-3">
@@ -653,17 +641,17 @@ export default function JobWorkstationApp() {
                     {selectedMission.rewardBits > 0 && (
                       <span className="text-emerald-700">+{selectedMission.rewardBits} ◈ BITS</span>
                     )}
-                    <span className="text-slate-600">+{selectedMission.rewardXP} XP ({selectedMission.primaryAttribute})</span>
+                    <span className="text-slate-600">+{selectedMission.rewardXP} Career XP ({selectedMission.track})</span>
                   </div>
                 </div>
 
                 <button
                   onClick={() => handleExecuteMission(selectedMission)}
-                  disabled={selectedMission.completed || !allStepsDone}
+                  disabled={selectedMission.completed || !isObjectiveVerified}
                   className={`w-full py-3 rounded-xl font-bold font-ui text-xs transition flex items-center justify-center gap-2 shadow-xs ${
                     selectedMission.completed
                       ? 'bg-slate-100 text-slate-400 cursor-not-allowed border border-slate-200'
-                      : !allStepsDone
+                      : !isObjectiveVerified
                       ? 'bg-slate-100 text-slate-500 cursor-not-allowed border border-slate-200'
                       : 'bg-gradient-to-r from-amber-200 via-amber-300 to-amber-400 hover:from-amber-300 hover:to-amber-500 text-amber-950 font-bold border border-amber-300/80 shadow-xs active:scale-[0.99] hover:-translate-y-0.5 cursor-pointer'
                   }`}
@@ -673,10 +661,10 @@ export default function JobWorkstationApp() {
                       <CheckCircle2 size={16} className="text-emerald-600" />
                       <span>Directive Finalized & Cleared (Persisted)</span>
                     </>
-                  ) : !allStepsDone ? (
+                  ) : !isObjectiveVerified ? (
                     <>
                       <Lock size={15} />
-                      <span>Complete All 3 Verification Steps Above to Claim Payout</span>
+                      <span>Complete the Profession Objective Above to Claim Payout</span>
                     </>
                   ) : (
                     <>

@@ -2,7 +2,14 @@ import { create } from 'zustand';
 import { createJSONStorage, persist } from 'zustand/middleware';
 import { NOTICES, evaluateNoticeObjective } from '../data/notices';
 import { mergeSavedProgress, osStorage } from './osPersistence';
-import { worldEventEngine, type WorldNarrativeEvent, type WorldEventCategory } from '../gameplay/WorldEventEngine';
+import {
+  worldEventEngine,
+  PATIENT_CARE_ASSIGNMENTS,
+  WORKNET_DOMAIN_TASKS,
+  evaluateWorknetObjective,
+  type WorldNarrativeEvent,
+  type WorldEventCategory,
+} from '../gameplay/WorldEventEngine';
 
 // Activities / missions — seeded by MissionDirector TypeScript engine or future DataGrip pipeline.
 const missionsData: any[] = [];
@@ -75,6 +82,7 @@ export interface OSStoreState {
   studyInHousing: () => { ok: boolean; message: string };
   purchaseHousingUpgrade: (upgradeId: string, cost: number, bitCost?: number) => { ok: boolean; message: string };
   advanceWorknetMissionStep: (missionId: string, stepKey: string) => void;
+  completeWorknetDomainTask: (missionId: string, selectedOptionId: string) => { ok: boolean; message: string };
   completeWorknetMission: (mission: { id: string; track: string; rewardCredits: number; rewardBits?: number; rewardXP: number; primaryAttribute?: string }) => { ok: boolean; reason?: string };
   resetWorknetMissionsAdmin: () => void;
   compileSpellProtocol: (spell: { name: string; combo?: string; comboLabel?: string; type: string; desc: string; power: number; isCanonical: boolean; regions?: string[] }) => { ok: boolean; isNewDiscovery: boolean; status: 'mastered_new' | 'recast' | 'insufficient_stamina'; message: string };
@@ -84,6 +92,7 @@ export interface OSStoreState {
   recordWorldEvent: (params: { category: WorldEventCategory; title: string; summary: string; institution: string; citizenMaid?: string; tags?: string[]; impact?: WorldNarrativeEvent['impact'] }) => WorldNarrativeEvent;
   runFaithDiagnosticScan: () => { ok: boolean; message: string };
   treatFaithCondition: (conditionName: string) => { ok: boolean; message: string };
+  completePatientCareAssignment: (patientCaseId: string, diagnosisId: string, treatmentId: string) => { ok: boolean; message: string };
   acceptMaiSpaceFriend: (friendId: string) => { ok: boolean; message: string };
   updateMaiSpaceProfile: (updates: { handle?: string; statusThought?: string; headerFont?: string }) => void;
   postMaiSpaceBulletin: (content: string) => { ok: boolean; message: string };
@@ -522,6 +531,7 @@ export const useOSStore = create<OSStoreState>()(persist((set, get) => ({
       faithDiagnosed: false,
       lastFaithDiagnosticCycle: 0,
       treatedConditionsHistory: [],
+      completedPatientCareIds: [],
       maiSpaceProfile: {
         handle: 'Aureline_Netrunner',
         statusThought: 'Exploring the digital conduits of Aureline Central ✨',
@@ -601,6 +611,7 @@ export const useOSStore = create<OSStoreState>()(persist((set, get) => ({
       starterPhase: 0,
       houseAffiliation: null,
       dormComfort: 50,
+      roomComfort: 50,
       starterCompletedLoops: [],
       currentMonthIndex: 2, // Default: March (Early Spring / Founding Day)
       dailyRewardLastClaimed: 0,
@@ -737,6 +748,8 @@ export const useOSStore = create<OSStoreState>()(persist((set, get) => ({
 
     const newXP = player.xp + 40;
     const newLevel = Math.floor(newXP / 100) + 1;
+    const currentComfort = typeof player.roomComfort === 'number' ? player.roomComfort : (player.dormComfort || 50);
+    const nextComfort = currentComfort + 10;
 
     set((s) => ({
       gameplay: {
@@ -747,7 +760,8 @@ export const useOSStore = create<OSStoreState>()(persist((set, get) => ({
           bits: bitCost > 0 ? Math.max(0, (s.gameplay.player.bits || 0) - bitCost) : s.gameplay.player.bits,
           unlockedHousingUpgrades: [...unlocked, upgradeId],
           housingCalibrated: true,
-          dormComfort: Math.min(100, (s.gameplay.player.dormComfort || 50) + 10),
+          roomComfort: nextComfort,
+          dormComfort: nextComfort,
           xp: newXP,
           level: newLevel,
         },
@@ -756,11 +770,11 @@ export const useOSStore = create<OSStoreState>()(persist((set, get) => ({
     get().recordWorldEvent({
       category: 'housing',
       title: `Installed Housing Upgrade: ${upgradeId}`,
-      summary: `Citizen upgraded residential Suite 4B with ${upgradeId}, raising comfort and recovery calibration.`,
+      summary: `Citizen upgraded residential Suite 4B with ${upgradeId} (+40 XP, +10 Room Comfort → ${nextComfort}).`,
       institution: 'HOMECRAFT // Housing',
       impact: { reputationTrack: 'campus', reputationDelta: 2 },
     });
-    return { ok: true, message: 'Upgrade unlocked & permanently installed! Room comfort and housing calibration updated.' };
+    return { ok: true, message: `Upgrade unlocked & permanently installed! Granted +40 XP and +10 Room Comfort (Comfort: ${nextComfort}).` };
   },
 
   advanceWorknetMissionStep: (missionId, stepKey) =>
@@ -782,6 +796,53 @@ export const useOSStore = create<OSStoreState>()(persist((set, get) => ({
       };
     }),
 
+  completeWorknetDomainTask: (missionId, selectedOptionId) => {
+    const taskDef = WORKNET_DOMAIN_TASKS[missionId];
+    if (!taskDef) {
+      return { ok: false, message: `Unknown WorkNet assignment ID: ${missionId}.` };
+    }
+    const chosen = taskDef.options.find((o) => o.id === selectedOptionId);
+    if (!chosen || !chosen.isCorrect) {
+      return {
+        ok: false,
+        message: 'Incorrect operational procedure or analysis for this assignment. Review the target subject, symptoms/anomaly, and required action.',
+      };
+    }
+
+    const state = get();
+    const player = state.gameplay.player;
+    const progressMap: Record<string, string[]> = { ...(player.worknetMissionProgress || {}) };
+    const existingSteps = Array.isArray(progressMap[missionId]) ? progressMap[missionId] : [];
+    const nextSteps = existingSteps.includes('domain_objective_verified')
+      ? existingSteps
+      : [...existingSteps, 'domain_objective_verified'];
+
+    const completedPatientCare: string[] = Array.isArray(player.completedPatientCareIds) ? player.completedPatientCareIds : [];
+    const nextPatientCare =
+      missionId === 'ms-shift-01' && !completedPatientCare.includes('pc-mercer')
+        ? [...completedPatientCare, 'pc-mercer']
+        : completedPatientCare;
+
+    set((s) => ({
+      gameplay: {
+        ...s.gameplay,
+        player: {
+          ...s.gameplay.player,
+          completedPatientCareIds: nextPatientCare,
+          worknetMissionProgress: {
+            ...progressMap,
+            [missionId]: nextSteps,
+          },
+        },
+      },
+    }));
+
+    return {
+      ok: true,
+      message: `✓ Domain Objective Accomplished: ${taskDef.successSummary}`,
+    };
+  },
+
   completeWorknetMission: (mission) => {
     const state = get();
     const player = state.gameplay.player;
@@ -790,12 +851,12 @@ export const useOSStore = create<OSStoreState>()(persist((set, get) => ({
       return { ok: false, reason: 'Assignment already completed and cleared.' };
     }
 
-    const progressMap: Record<string, string[]> = player.worknetMissionProgress || {};
-    const steps = Array.isArray(progressMap[mission.id]) ? progressMap[mission.id] : [];
-    const requiredSteps = ['tool_calibrated', 'subject_inspected', 'directive_executed'];
-    const allVerified = requiredSteps.every((req) => steps.includes(req));
-    if (!allVerified) {
-      return { ok: false, reason: 'All 3 operational verification steps must be completed before claiming payout.' };
+    const evalResult = evaluateWorknetObjective(mission.id, mission.track, player);
+    if (!evalResult.verified) {
+      return {
+        ok: false,
+        reason: evalResult.requirementText,
+      };
     }
 
     const newXP = player.xp + (mission.rewardXP || 0);
@@ -831,7 +892,7 @@ export const useOSStore = create<OSStoreState>()(persist((set, get) => ({
     get().recordWorldEvent({
       category: 'worknet',
       title: `Completed WorkNet Directive ${mission.id}`,
-      summary: `Verified 3-step institutional protocol on track "${mission.track}" (+${mission.rewardCredits} ₢).`,
+      summary: `Verified domain work (${evalResult.source}) on track "${mission.track}" (+${mission.rewardCredits} ₢, +${mission.rewardXP} Career XP).`,
       institution: `WORKNET // ${mission.track.toUpperCase()}`,
     });
     return { ok: true };
@@ -1094,15 +1155,9 @@ export const useOSStore = create<OSStoreState>()(persist((set, get) => ({
     if (player.faithDiagnosed && player.lastFaithDiagnosticCycle === currentCycle) {
       return {
         ok: false,
-        message: `Baseline bio-aura diagnostic already completed for Cycle ${currentCycle}. Rest or advance cycle before rescanning.`,
+        message: `Personal bio-aura diagnostic already completed for Cycle ${currentCycle}. Rest or advance cycle before rescanning.`,
       };
     }
-
-    const firstEverScan = !player.lastFaithDiagnosticCycle;
-    const creditReward = firstEverScan ? 150 : 0;
-    const xpReward = 75;
-    const newXP = player.xp + xpReward;
-    const newLevel = Math.floor(newXP / 100) + 1;
 
     set((s) => ({
       gameplay: {
@@ -1112,9 +1167,6 @@ export const useOSStore = create<OSStoreState>()(persist((set, get) => ({
           faithDiagnosed: true,
           lastFaithDiagnosticCycle: currentCycle,
           auraHealth: Math.min(100, (s.gameplay.player.auraHealth || 100) + 20),
-          credits: s.gameplay.player.credits + creditReward,
-          xp: newXP,
-          level: newLevel,
         },
       },
     }));
@@ -1122,18 +1174,16 @@ export const useOSStore = create<OSStoreState>()(persist((set, get) => ({
     const activeConds: string[] = Array.isArray(player.conditions) ? player.conditions : [];
     get().recordWorldEvent({
       category: 'medical',
-      title: `Faith Medical Bio-Aura Diagnostic (Cycle ${currentCycle})`,
+      title: `Faith Medical Personal Bio-Aura Diagnostic (Cycle ${currentCycle})`,
       summary: activeConds.length
-        ? `Diagnostic confirmed active condition(s): ${activeConds.join(', ')}. Treatment protocols unlocked.`
-        : 'Diagnostic confirmed stable bio-aura baseline.',
+        ? `Personal telemetry scan confirmed active condition(s): ${activeConds.join(', ')}. Personal treatment protocols unlocked.`
+        : 'Personal telemetry scan confirmed stable bio-aura baseline (+20% Aura Integrity).',
       institution: 'Faith Medical Group',
-      impact: { reputationTrack: 'faith', reputationDelta: 5 },
     });
 
-    const rewardNote = creditReward > 0 ? `+${creditReward} ₢ Stipend & +${xpReward} XP` : `+${xpReward} XP`;
     return {
       ok: true,
-      message: `Bio-Aura Diagnostic Complete (${rewardNote}). Active conditions verified for targeted clinical treatment.`,
+      message: 'Personal Bio-Aura Diagnostic Complete (+20% Aura Integrity). Active personal conditions calibrated for targeted treatment.',
     };
   },
 
@@ -1143,7 +1193,7 @@ export const useOSStore = create<OSStoreState>()(persist((set, get) => ({
     if (!player.faithDiagnosed) {
       return {
         ok: false,
-        message: 'Clinical prerequisite unmet: Run the Mandatory Baseline Aura Diagnostic scan before administering treatment.',
+        message: 'Clinical prerequisite unmet: Run your Personal Baseline Aura Diagnostic scan before administering personal treatment.',
       };
     }
 
@@ -1151,13 +1201,12 @@ export const useOSStore = create<OSStoreState>()(persist((set, get) => ({
     if (!currentConditions.includes(conditionName)) {
       return {
         ok: false,
-        message: `No active "${conditionName}" detected in your bio-aura telemetry. Treatment unnecessary.`,
+        message: `No active "${conditionName}" detected in your personal bio-aura telemetry. Treatment unnecessary.`,
       };
     }
 
-    const newXP = player.xp + 60;
-    const newLevel = Math.floor(newXP / 100) + 1;
     const history: string[] = Array.isArray(player.treatedConditionsHistory) ? player.treatedConditionsHistory : [];
+    const currentStamina = typeof player.stamina === 'number' ? player.stamina : 85;
 
     set((s) => ({
       gameplay: {
@@ -1166,24 +1215,91 @@ export const useOSStore = create<OSStoreState>()(persist((set, get) => ({
           ...s.gameplay.player,
           conditions: currentConditions.filter((c) => c !== conditionName),
           treatedConditionsHistory: [...history, `${conditionName}@Cycle${s.gameplay.timeCycleCount}`],
-          auraHealth: Math.min(100, (s.gameplay.player.auraHealth || 100) + 15),
-          xp: newXP,
-          level: newLevel,
+          auraHealth: Math.min(100, (s.gameplay.player.auraHealth || 100) + 25),
+          stamina: Math.min(100, currentStamina + 10),
         },
       },
     }));
 
     get().recordWorldEvent({
       category: 'medical',
-      title: `Treated Clinical Condition: ${conditionName}`,
-      summary: `Faith Medical protocol cleared ${conditionName} from citizen bio-aura (+15% Aura Integrity, +60 XP).`,
+      title: `Personal Healthcare: Treated ${conditionName}`,
+      summary: `Faith Medical personal care cleared ${conditionName} from citizen bio-aura (+25% Aura Integrity, +10 Stamina).`,
       institution: 'Faith Medical Group',
-      impact: { reputationTrack: 'faith', reputationDelta: 8, corruptionDelta: -0.5 },
+      impact: { corruptionDelta: -0.5 },
     });
 
     return {
       ok: true,
-      message: `Clinical treatment successful! Cleared "${conditionName}", restored +15% Aura Integrity, and earned +60 XP.`,
+      message: `Personal clinical treatment applied! Cleared "${conditionName}" and restored +25% Aura Integrity & +10 Stamina.`,
+    };
+  },
+
+  completePatientCareAssignment: (patientCaseId, diagnosisId, treatmentId) => {
+    const state = get();
+    const player = state.gameplay.player;
+    const completedCare: string[] = Array.isArray(player.completedPatientCareIds) ? player.completedPatientCareIds : [];
+    if (completedCare.includes(patientCaseId)) {
+      return {
+        ok: false,
+        message: `Patient chart ${patientCaseId} has already been treated and signed off.`,
+      };
+    }
+
+    const caseDef = PATIENT_CARE_ASSIGNMENTS.find((p) => p.id === patientCaseId);
+    if (!caseDef) {
+      return { ok: false, message: `Unknown patient chart ID: ${patientCaseId}.` };
+    }
+
+    const diagObj = caseDef.diagnoses.find((d) => d.id === diagnosisId);
+    const txObj = caseDef.treatments.find((t) => t.id === treatmentId);
+    if (!diagObj?.isCorrect || !txObj?.isCorrect) {
+      return {
+        ok: false,
+        message: `Clinical mismatch for ${caseDef.patientName}: Re-evaluate presenting vitals (${caseDef.presentingVitals}) before administering treatment.`,
+      };
+    }
+
+    const newXP = player.xp + caseDef.rewardXP;
+    const newLevel = Math.floor(newXP / 100) + 1;
+    const progressMap: Record<string, string[]> = { ...(player.worknetMissionProgress || {}) };
+    if (caseDef.linkedWorknetMissionId) {
+      const mSteps = Array.isArray(progressMap[caseDef.linkedWorknetMissionId])
+        ? progressMap[caseDef.linkedWorknetMissionId]
+        : [];
+      if (!mSteps.includes('domain_objective_verified')) {
+        progressMap[caseDef.linkedWorknetMissionId] = [...mSteps, 'domain_objective_verified'];
+      }
+    }
+
+    set((s) => ({
+      gameplay: {
+        ...s.gameplay,
+        player: {
+          ...s.gameplay.player,
+          completedPatientCareIds: [...completedCare, patientCaseId],
+          worknetMissionProgress: progressMap,
+          credits: s.gameplay.player.credits + caseDef.rewardCredits,
+          xp: newXP,
+          level: newLevel,
+        },
+      },
+    }));
+
+    get().addCareerXP('medical', caseDef.rewardCareerXP);
+    get().addSkillXP('Communication', 20);
+    get().recordWorldEvent({
+      category: 'medical',
+      title: `Completed Inpatient Care: ${caseDef.patientName}`,
+      summary: `Diagnosed "${diagObj.label}" and administered "${txObj.label}" (+${caseDef.rewardCareerXP} Medical Career XP, +${caseDef.rewardCredits} ₢).`,
+      institution: 'Faith Medical Group // Clinical Care',
+      citizenMaid: caseDef.patientMaid,
+      impact: { reputationTrack: 'faith', reputationDelta: 10, corruptionDelta: -0.5 },
+    });
+
+    return {
+      ok: true,
+      message: `✓ Patient Care Completed for ${caseDef.patientName}! Earned +${caseDef.rewardCareerXP} Medical Career XP, +${caseDef.rewardCredits} ₢, and +10 Faith Medical Reputation.`,
     };
   },
 
@@ -1236,13 +1352,13 @@ export const useOSStore = create<OSStoreState>()(persist((set, get) => ({
 
     get().recordWorldEvent({
       category: 'social',
-      title: `Mai.space Connection Established: ${friendId}`,
-      summary: `Linked Mai.space social node with ${friendId} (+15 Trust, +10 Friendship, +100 ₢).`,
+      title: `Mai.space Onboarding Connection: ${friendId}`,
+      summary: `Accepted first-time Mai.space onboarding link with ${friendId} (+15 Trust, +10 Friendship, +100 ₢ Starter Bonus, +75 XP).`,
       institution: 'Mai.space Social Grid',
       impact: { reputationTrack: 'campus', reputationDelta: 10 },
     });
 
-    return { ok: true, message: `Connected with ${friendId} on Mai.space! (+15 Trust, +10 Friendship, +100 ₢, +75 XP)` };
+    return { ok: true, message: `Connected with ${friendId} on Mai.space! (+15 Trust, +10 Friendship, +100 ₢ Starter Bonus, +75 XP)` };
   },
 
   updateMaiSpaceProfile: (updates) =>
@@ -1289,10 +1405,7 @@ export const useOSStore = create<OSStoreState>()(persist((set, get) => ({
     };
 
     const alreadyPostedThisCycle = profile.lastBulletinPostCycle === currentCycle;
-    const xpGain = alreadyPostedThisCycle ? 0 : 25;
     const repGain = alreadyPostedThisCycle ? 0 : 5;
-    const newXP = player.xp + xpGain;
-    const newLevel = Math.floor(newXP / 100) + 1;
     const newPost = {
       id: Date.now(),
       author: profile.handle || player.name || 'Aureline_Netrunner',
@@ -1301,13 +1414,31 @@ export const useOSStore = create<OSStoreState>()(persist((set, get) => ({
       likes: 1,
     };
 
+    const currentVectors = player.npcVectors || {};
+    const nextVectors = alreadyPostedThisCycle
+      ? currentVectors
+      : {
+          ...currentVectors,
+          jeremie: {
+            ...(currentVectors.jeremie || { friendship: 60, trust: 75, rivalry: 10, sync: 80, corruption: 0 }),
+            friendship: Math.min(100, (currentVectors.jeremie?.friendship || 60) + 2),
+          },
+          aelita: {
+            ...(currentVectors.aelita || { friendship: 85, trust: 90, rivalry: 5, sync: 85, corruption: 5 }),
+            friendship: Math.min(100, (currentVectors.aelita?.friendship || 85) + 2),
+          },
+          odd: {
+            ...(currentVectors.odd || { friendship: 95, trust: 85, rivalry: 15, sync: 80, corruption: 0 }),
+            friendship: Math.min(100, (currentVectors.odd?.friendship || 95) + 2),
+          },
+        };
+
     set((s) => ({
       gameplay: {
         ...s.gameplay,
         player: {
           ...s.gameplay.player,
-          xp: newXP,
-          level: newLevel,
+          npcVectors: nextVectors,
           maiSpaceProfile: {
             ...profile,
             lastBulletinPostCycle: currentCycle,
@@ -1321,7 +1452,7 @@ export const useOSStore = create<OSStoreState>()(persist((set, get) => ({
       get().recordWorldEvent({
         category: 'social',
         title: 'Broadcasted Public Mai.space Bulletin',
-        summary: `Posted to Aureline social grid: "${trimmed.slice(0, 60)}"`,
+        summary: `Posted to Aureline social grid: "${trimmed.slice(0, 60)}" (+5 Campus Reputation, +2 Peer Friendship).`,
         institution: 'Mai.space Social Grid',
         impact: { reputationTrack: 'campus', reputationDelta: repGain },
       });
@@ -1330,8 +1461,8 @@ export const useOSStore = create<OSStoreState>()(persist((set, get) => ({
     return {
       ok: true,
       message: alreadyPostedThisCycle
-        ? 'Bulletin posted to the public grid (cycle XP bonus already claimed).'
-        : 'Bulletin broadcasted! Earned +25 XP and +5 Campus Reputation.',
+        ? 'Bulletin posted to the public grid.'
+        : 'Bulletin broadcasted! Strengthened peer friendships (+2) and earned +5 Campus Reputation.',
     };
   },
 
@@ -1352,13 +1483,11 @@ export const useOSStore = create<OSStoreState>()(persist((set, get) => ({
     if (pingedMap[friendId] === currentCycle) {
       return {
         ok: false,
-        message: `Already pinged ${friendId} during Cycle ${currentCycle}. Advance cycle to ping again.`,
+        message: `Already synced signal with ${friendId} during Cycle ${currentCycle}. Advance cycle to check in again.`,
       };
     }
 
     pingedMap[friendId] = currentCycle;
-    const newXP = player.xp + 15;
-    const newLevel = Math.floor(newXP / 100) + 1;
     const currentVec = player.npcVectors?.[friendId] || { friendship: 50, trust: 50, rivalry: 10, sync: 50, corruption: 0 };
 
     set((s) => ({
@@ -1366,8 +1495,6 @@ export const useOSStore = create<OSStoreState>()(persist((set, get) => ({
         ...s.gameplay,
         player: {
           ...s.gameplay.player,
-          xp: newXP,
-          level: newLevel,
           maiSpaceProfile: {
             ...profile,
             pingedFriendsCycle: pingedMap,
@@ -1377,13 +1504,14 @@ export const useOSStore = create<OSStoreState>()(persist((set, get) => ({
             [friendId]: {
               ...currentVec,
               friendship: Math.min(100, (currentVec.friendship || 50) + 5),
+              trust: Math.min(100, (currentVec.trust || 50) + 3),
             },
           },
         },
       },
     }));
 
-    return { ok: true, message: `Pinged ${friendId} on Mai.space (+5 Friendship, +15 XP).` };
+    return { ok: true, message: `Signal synced with ${friendId} on Mai.space (+5 Friendship, +3 Trust).` };
   },
 
   claimPortalAction: (actionId, rewardCredits, rewardBits = 0, rewardXP = 0, label = 'Institutional Portal Action') => {

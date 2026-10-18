@@ -4,7 +4,7 @@ import {
     Lock, CheckCircle2, AlertTriangle, Key, Search, ArrowRight, UserCheck, RefreshCw, User, BookOpen
 } from 'lucide-react';
 import { useOSStore } from '../../store/useOSStore';
-import { FORMAL_INVESTIGATION_CASES } from '../../gameplay/WorldEventEngine';
+import { FORMAL_INVESTIGATION_CASES, PATIENT_CARE_ASSIGNMENTS } from '../../gameplay/WorldEventEngine';
 import Button from '../../components/ui/button';
 import FinanceTerminal from '../FinanceTerminal';
 
@@ -192,11 +192,16 @@ export function FaithMedPortal() {
     const timeCycleCount = useOSStore((s) => s.gameplay?.timeCycleCount ?? 0);
     const runFaithDiagnosticScan = useOSStore((s) => s.runFaithDiagnosticScan);
     const treatFaithCondition = useOSStore((s) => s.treatFaithCondition);
+    const completePatientCareAssignment = useOSStore((s) => s.completePatientCareAssignment);
     const [clinicalMessage, setClinicalMessage] = useState<string | null>(null);
+    const [selectedDiagByCase, setSelectedDiagByCase] = useState<Record<string, string>>({});
+    const [selectedTxByCase, setSelectedTxByCase] = useState<Record<string, string>>({});
+    const [patientFeedbackByCase, setPatientFeedbackByCase] = useState<Record<string, { ok: boolean; message: string }>>({});
 
     const isDiagnosed = Boolean(player?.faithDiagnosed);
     const scannedThisCycle = player?.lastFaithDiagnosticCycle === timeCycleCount;
     const activeConditions = player?.conditions || [];
+    const completedPatientIds = player?.completedPatientCareIds || [];
 
     const handleIntakeScan = () => {
         if (!runFaithDiagnosticScan) return;
@@ -208,6 +213,17 @@ export function FaithMedPortal() {
         if (!treatFaithCondition) return;
         const res = treatFaithCondition(conditionName);
         setClinicalMessage(res.message);
+    };
+
+    const handleCompletePatientCare = (caseId: string) => {
+        if (!completePatientCareAssignment) return;
+        const diagId = selectedDiagByCase[caseId] || '';
+        const txId = selectedTxByCase[caseId] || '';
+        const res = completePatientCareAssignment(caseId, diagId, txId);
+        setPatientFeedbackByCase({
+            ...patientFeedbackByCase,
+            [caseId]: res
+        });
     };
 
     const treatmentProtocols = [
@@ -235,14 +251,14 @@ export function FaithMedPortal() {
                 </div>
             </header>
 
-            {/* Aura Telemetry Scanner Banner */}
+            {/* Section A: Personal Healthcare — Aura Telemetry Scanner Banner */}
             <div className="p-5 border border-emerald-200 bg-emerald-50/70 rounded-2xl flex items-center justify-between shadow-xs">
                 <div className="space-y-1">
                     <h2 className="text-sm font-bold text-emerald-950 flex items-center gap-2 font-display">
-                        <Activity size={18} className="text-emerald-700" /> Mandatory Baseline Aura Diagnostic
+                        <Activity size={18} className="text-emerald-700" /> Personal Healthcare: Baseline Aura Diagnostic
                     </h2>
                     <p className="text-xs text-emerald-800">
-                        Execute a telemetry scan before applying condition-specific treatments. First baseline calibration grants +150 ₢ and +75 XP (once per Sys-Cycle).
+                        Routine personal scans and self-care restore Aura Integrity (+20%) and Stamina (+10) and unlock personal condition treatments. Professional Medical Career XP is earned by treating inpatients below.
                     </p>
                 </div>
                 <button
@@ -253,8 +269,8 @@ export function FaithMedPortal() {
                     {scannedThisCycle
                         ? '✓ Telemetry Calibrated (This Cycle)'
                         : isDiagnosed
-                        ? 'Re-Calibrate Cycle Scan (+75 XP)'
-                        : 'Run Baseline Scan (+150 ₢, +75 XP)'}
+                        ? 'Re-Calibrate Cycle Scan (+20% Aura)'
+                        : 'Run Baseline Scan (+20% Aura, +10 Stamina)'}
                 </button>
             </div>
 
@@ -275,7 +291,7 @@ export function FaithMedPortal() {
                     </div>
                 </div>
                 <div className="p-4 border border-slate-200 rounded-xl bg-white space-y-2 shadow-xs">
-                    <h3 className="text-xs font-bold text-slate-700 uppercase tracking-wider">Patient Telemetry #FM-88392</h3>
+                    <h3 className="text-xs font-bold text-slate-700 uppercase tracking-wider">Personal Telemetry #FM-88392</h3>
                     <div className="text-xs space-y-1 font-mono text-slate-600">
                         <div>Diagnostic Status: <strong className={isDiagnosed ? 'text-emerald-700' : 'text-amber-700'}>{isDiagnosed ? 'Verified Baseline' : 'Scan Required Prior to Treatment'}</strong></div>
                         <div>Active Conditions: <span className="font-bold text-rose-600">{activeConditions.length > 0 ? activeConditions.join(', ') : 'None (Stable Resonance)'}</span></div>
@@ -284,12 +300,12 @@ export function FaithMedPortal() {
                 </div>
             </div>
 
-            {/* Clinical Condition Treatment Matrix */}
+            {/* Personal Condition Treatment Matrix */}
             <div className="space-y-3 pt-2">
                 <div className="flex items-center justify-between">
-                    <h3 className="text-xs font-bold text-slate-700 uppercase tracking-wider">Veil Exposure Treatment Protocols</h3>
+                    <h3 className="text-xs font-bold text-slate-700 uppercase tracking-wider">Personal Veil Exposure Treatment Protocols</h3>
                     <span className="text-[11px] font-mono text-slate-500">
-                        Requires Baseline Scan + Active Condition Diagnosis (+60 XP & +15 Aura on verified cure)
+                        Requires Baseline Scan + Active Condition Diagnosis (+25% Aura & +10 Stamina on verified cure)
                     </span>
                 </div>
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-3 text-xs font-mono">
@@ -315,8 +331,117 @@ export function FaithMedPortal() {
                                     {!isDiagnosed
                                         ? 'Scan Required'
                                         : hasCondition
-                                        ? `${proto.btnLabel} (+60 XP)`
+                                        ? `${proto.btnLabel} (+25% Aura)`
                                         : 'No Active Exposure'}
+                                </button>
+                            </div>
+                        );
+                    })}
+                </div>
+            </div>
+
+            {/* Section B: Professional Medical Work — Inpatient Clinical Care Queue (FAITH-003) */}
+            <div className="space-y-4 pt-2">
+                <div className="flex items-center justify-between">
+                    <h3 className="text-xs font-bold text-emerald-900 uppercase tracking-wider flex items-center gap-1.5">
+                        <UserCheck size={14} className="text-emerald-700" /> Inpatient Clinical Care Queue (Professional Medical Practice)
+                    </h3>
+                    <span className="text-[11px] font-mono text-emerald-700 font-bold">
+                        Treated Inpatients: {completedPatientIds.length}/{PATIENT_CARE_ASSIGNMENTS.length} • Medical Career Rank {player?.careers?.medical?.rankIndex || 0} ({player?.careers?.medical?.xp || 0} XP)
+                    </span>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {PATIENT_CARE_ASSIGNMENTS.map((pt) => {
+                        const isCompleted = completedPatientIds.includes(pt.id);
+                        const chosenDiag = selectedDiagByCase[pt.id] || '';
+                        const chosenTx = selectedTxByCase[pt.id] || '';
+                        const fb = patientFeedbackByCase[pt.id];
+
+                        return (
+                            <div key={pt.id} className="p-4 border border-emerald-200 rounded-2xl bg-white space-y-3 shadow-xs">
+                                <div className="flex items-start justify-between gap-2 border-b border-slate-100 pb-2">
+                                    <div>
+                                        <div className="text-xs font-bold text-slate-900">
+                                            {pt.patientName} <span className="font-mono text-[10px] text-slate-500">({pt.patientMaid})</span>
+                                        </div>
+                                        <div className="text-[10px] font-mono text-emerald-700">{pt.ward}</div>
+                                    </div>
+                                    <span className={`px-2 py-0.5 rounded-full text-[9px] font-mono font-bold ${
+                                        isCompleted
+                                            ? 'bg-emerald-100 text-emerald-800 border border-emerald-300'
+                                            : 'bg-teal-50 text-teal-800 border border-teal-200'
+                                    }`}>
+                                        {isCompleted ? '✓ CHART SIGNED' : `+${pt.rewardCareerXP} Med Career XP / +${pt.rewardCredits} ₢`}
+                                    </span>
+                                </div>
+
+                                <p className="text-[11px] text-slate-700 font-mono bg-slate-50 p-2.5 rounded-xl border border-slate-200">
+                                    <strong>Presenting Vitals:</strong> {pt.presentingVitals}
+                                </p>
+
+                                {/* Step 1: Clinical Diagnosis */}
+                                <div className="space-y-1">
+                                    <div className="text-[10px] font-bold text-slate-700 uppercase">1. Select Clinical Diagnosis:</div>
+                                    {pt.diagnoses.map((d) => (
+                                        <label
+                                            key={d.id}
+                                            className={`p-2 rounded-xl border text-[11px] flex items-center gap-2 cursor-pointer transition ${
+                                                chosenDiag === d.id
+                                                    ? 'border-emerald-600 bg-emerald-50 text-emerald-950 font-semibold'
+                                                    : 'border-slate-200 bg-white text-slate-700 hover:bg-slate-50'
+                                            }`}
+                                        >
+                                            <input
+                                                type="radio"
+                                                name={`diag-${pt.id}`}
+                                                disabled={isCompleted}
+                                                checked={chosenDiag === d.id}
+                                                onChange={() => setSelectedDiagByCase({ ...selectedDiagByCase, [pt.id]: d.id })}
+                                            />
+                                            <span>{d.label}</span>
+                                        </label>
+                                    ))}
+                                </div>
+
+                                {/* Step 2: Treatment Protocol */}
+                                <div className="space-y-1">
+                                    <div className="text-[10px] font-bold text-slate-700 uppercase">2. Select Treatment Protocol:</div>
+                                    {pt.treatments.map((t) => (
+                                        <label
+                                            key={t.id}
+                                            className={`p-2 rounded-xl border text-[11px] flex items-center gap-2 cursor-pointer transition ${
+                                                chosenTx === t.id
+                                                    ? 'border-teal-600 bg-teal-50 text-teal-950 font-semibold'
+                                                    : 'border-slate-200 bg-white text-slate-700 hover:bg-slate-50'
+                                            }`}
+                                        >
+                                            <input
+                                                type="radio"
+                                                name={`tx-${pt.id}`}
+                                                disabled={isCompleted}
+                                                checked={chosenTx === t.id}
+                                                onChange={() => setSelectedTxByCase({ ...selectedTxByCase, [pt.id]: t.id })}
+                                            />
+                                            <span>{t.label}</span>
+                                        </label>
+                                    ))}
+                                </div>
+
+                                {fb && (
+                                    <div className={`p-2 rounded-xl text-[11px] font-mono border ${
+                                        fb.ok ? 'bg-emerald-50 border-emerald-200 text-emerald-900' : 'bg-rose-50 border-rose-200 text-rose-900'
+                                    }`}>
+                                        {fb.message}
+                                    </div>
+                                )}
+
+                                <button
+                                    onClick={() => handleCompletePatientCare(pt.id)}
+                                    disabled={isCompleted}
+                                    className="w-full py-2 rounded-xl bg-emerald-700 hover:bg-emerald-800 disabled:bg-slate-200 disabled:text-slate-400 text-white text-xs font-bold transition cursor-pointer"
+                                >
+                                    {isCompleted ? '✓ Inpatient Care Completed' : 'Administer Clinical Care & Sign Chart'}
                                 </button>
                             </div>
                         );

@@ -78,6 +78,8 @@ export default function HousingApp() {
                         <div className="flex items-center gap-3 text-xs text-slate-500 font-ui mt-0.5">
                             <span>Assigned Housing: <strong className="text-indigo-900 font-bold">Vector Housing Suite 4B</strong></span>
                             <span>•</span>
+                            <span>Room Comfort: <strong className="text-indigo-700 font-bold">{player?.roomComfort ?? player?.dormComfort ?? 50}</strong></span>
+                            <span>•</span>
                             <span>Stamina: <strong className="text-emerald-700 font-bold">{stamina} / 100</strong></span>
                             <span>•</span>
                             <span>Credits: <strong className="text-amber-800 font-bold">{credits} ₢</strong></span>

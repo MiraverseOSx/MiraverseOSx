@@ -98,7 +98,7 @@ test('notice completion requires verified world objective and pays exactly once,
   assert.deepEqual(restored.getState().gameplay.player, after);
 });
 
-test('WorkNet missions require all 3 verification steps and persist completion across reloads', async () => {
+test('WORKNET-002: WorkNet missions require actual domain work (not generic buttons) and persist completion', async () => {
   memoryStorage();
   const store = await freshStore();
   const mission = {
@@ -110,13 +110,22 @@ test('WorkNet missions require all 3 verification steps and persist completion a
     primaryAttribute: 'Investigation',
   };
 
-  // Cannot complete before all 3 steps are verified
+  // Generic verification buttons alone CANNOT complete a WorkNet assignment (WORKNET-002 Option B)
   assert.equal(store.getState().completeWorknetMission(mission).ok, false);
   store.getState().advanceWorknetMissionStep(mission.id, 'tool_calibrated');
   store.getState().advanceWorknetMissionStep(mission.id, 'subject_inspected');
+  store.getState().advanceWorknetMissionStep(mission.id, 'directive_executed');
   assert.equal(store.getState().completeWorknetMission(mission).ok, false);
 
-  store.getState().advanceWorknetMissionStep(mission.id, 'directive_executed');
+  // Submitting the wrong domain analysis option is rejected
+  const wrongDomain = store.getState().completeWorknetDomainTask(mission.id, 'dga-512-ignore');
+  assert.equal(wrongDomain.ok, false);
+  assert.equal(store.getState().completeWorknetMission(mission).ok, false);
+
+  // Completing the actual forensic domain analysis (or quarantining PID 512) unlocks mission completion
+  const rightDomain = store.getState().completeWorknetDomainTask(mission.id, 'dga-512-valid');
+  assert.equal(rightDomain.ok, true);
+
   const res = store.getState().completeWorknetMission(mission);
   assert.equal(res.ok, true);
   assert.ok(store.getState().gameplay.player.completedWorknetMissionIds.includes(mission.id));
@@ -130,14 +139,20 @@ test('WorkNet missions require all 3 verification steps and persist completion a
   assert.equal(restored.getState().gameplay.player.credits, afterFirst.credits);
 });
 
-test('Housing upgrades and SpellForge discoveries persist and prevent infinite credit farming', async () => {
+test('HOMECRAFT-001 & SpellForge: Housing purchases grant +40 XP & +10 roomComfort permanently, and SpellForge prevents infinite farming', async () => {
   memoryStorage();
   const store = await freshStore();
   store.getState().addCredits(1000);
 
-  // Housing upgrade persists across store reload
+  const beforeBuy = store.getState().gameplay.player;
   const buyRes = store.getState().purchaseHousingUpgrade('mattress', 350);
   assert.equal(buyRes.ok, true);
+
+  const afterBuy = store.getState().gameplay.player;
+  assert.equal(afterBuy.credits, beforeBuy.credits - 350);
+  assert.equal(afterBuy.xp, beforeBuy.xp + 40);
+  assert.equal(afterBuy.roomComfort, (beforeBuy.roomComfort ?? 50) + 10);
+  assert.equal(afterBuy.dormComfort, (beforeBuy.dormComfort ?? 50) + 10);
   assert.equal(store.getState().purchaseHousingUpgrade('mattress', 350).ok, false);
 
   // SpellForge canonical discovery awards +200 credits once, repeat cast awards 0 credits
@@ -163,53 +178,80 @@ test('Housing upgrades and SpellForge discoveries persist and prevent infinite c
 
   const restored = await freshStore();
   assert.ok(restored.getState().gameplay.player.unlockedHousingUpgrades.includes('mattress'));
+  assert.equal(restored.getState().gameplay.player.roomComfort, (beforeBuy.roomComfort ?? 50) + 10);
   assert.ok(restored.getState().gameplay.player.forgedSpells.includes('Seal Lock'));
 });
 
-test('Faith Medical diagnostic-first treatment, Mai.space persistence, and Formal Case Reasoning', async () => {
+test('FAITH-003, MAI.SPACE-004, and Formal Case Reasoning enforce canonical progression rules', async () => {
   memoryStorage();
   const store = await freshStore();
 
-  // 1. Faith Medical: Cannot treat Veilwilt before running baseline diagnostic scan
+  // 1. FAITH-003 (Option C): Personal healthcare vs. Professional patient-care assignments
+  store.getState().damageAura(45); // Lower aura to 55% to verify personal health restoration
   const preScanTreat = store.getState().treatFaithCondition('Veilwilt');
   assert.equal(preScanTreat.ok, false);
   assert.ok(store.getState().gameplay.player.conditions.includes('Veilwilt'));
 
-  // Run baseline diagnostic scan (+150 credits first time, +75 XP)
-  const creditsBeforeScan = store.getState().gameplay.player.credits;
+  // Routine personal scan restores +20% Aura Integrity & +10 Stamina, with 0 Credits and 0 XP
+  const beforeScan = store.getState().gameplay.player;
   const scan1 = store.getState().runFaithDiagnosticScan();
   assert.equal(scan1.ok, true);
-  assert.equal(store.getState().gameplay.player.credits, creditsBeforeScan + 150);
+  assert.equal(store.getState().gameplay.player.credits, beforeScan.credits);
+  assert.equal(store.getState().gameplay.player.xp, beforeScan.xp);
+  assert.equal(store.getState().gameplay.player.auraHealth, beforeScan.auraHealth + 20);
   assert.equal(store.getState().gameplay.player.faithDiagnosed, true);
 
   // Repeat scan in same cycle is blocked
-  const scan2 = store.getState().runFaithDiagnosticScan();
-  assert.equal(scan2.ok, false);
+  assert.equal(store.getState().runFaithDiagnosticScan().ok, false);
 
-  // Cannot treat a condition the player does NOT have (e.g. Frostlung)
-  const unownedTreat = store.getState().treatFaithCondition('Frostlung');
-  assert.equal(unownedTreat.ok, false);
+  // Cannot treat a condition the player does NOT have
+  assert.equal(store.getState().treatFaithCondition('Frostlung').ok, false);
 
-  // Treating active Veilwilt succeeds once and removes it
-  const xpBeforeTreat = store.getState().gameplay.player.xp;
+  // Treating active Veilwilt restores +25% Aura Integrity and clears condition, with 0 Credits and 0 XP
+  const beforeTreat = store.getState().gameplay.player;
   const validTreat = store.getState().treatFaithCondition('Veilwilt');
   assert.equal(validTreat.ok, true);
   assert.ok(!store.getState().gameplay.player.conditions.includes('Veilwilt'));
-  assert.equal(store.getState().gameplay.player.xp, xpBeforeTreat + 60);
+  assert.equal(store.getState().gameplay.player.xp, beforeTreat.xp);
+  assert.equal(store.getState().gameplay.player.credits, beforeTreat.credits);
+  assert.equal(store.getState().gameplay.player.auraHealth, Math.min(100, beforeTreat.auraHealth + 25));
 
   // Repeat treatment of already-cured Veilwilt is rejected
-  const repeatTreat = store.getState().treatFaithCondition('Veilwilt');
-  assert.equal(repeatTreat.ok, false);
+  assert.equal(store.getState().treatFaithCondition('Veilwilt').ok, false);
 
-  // 2. Mai.space friend acceptance & profile edits persist and cannot be farmed
-  const creditsBeforeJeremie = store.getState().gameplay.player.credits;
+  // Professional Medical Work: Completing inpatient care awards Medical Career XP & Credits and unlocks ms-shift-01
+  const beforePatientCare = store.getState().gameplay.player;
+  const badPatientCare = store.getState().completePatientCareAssignment('pc-mercer', 'diag-frostlung', 'tx-cryo-immersion');
+  assert.equal(badPatientCare.ok, false);
+
+  const goodPatientCare = store.getState().completePatientCareAssignment('pc-mercer', 'diag-veilwilt-desync', 'tx-warm-compress-vitals');
+  assert.equal(goodPatientCare.ok, true);
+  const afterPatientCare = store.getState().gameplay.player;
+  assert.ok(
+    afterPatientCare.careers.medical.rankIndex > (beforePatientCare.careers.medical.rankIndex || 0) ||
+    afterPatientCare.careers.medical.xp > (beforePatientCare.careers.medical.xp || 0)
+  );
+  assert.equal(afterPatientCare.credits, beforePatientCare.credits + 220);
+  assert.ok(afterPatientCare.completedPatientCareIds.includes('pc-mercer'));
+
+  // 2. MAI.SPACE-004 (Option C): First-time onboarding grants +75 XP & +100 credits; ongoing social actions affect relationships/reputation only
+  const beforeJeremie = store.getState().gameplay.player;
   assert.equal(store.getState().acceptMaiSpaceFriend('jeremie').ok, true);
-  assert.equal(store.getState().gameplay.player.credits, creditsBeforeJeremie + 100);
+  const afterJeremie = store.getState().gameplay.player;
+  assert.equal(afterJeremie.credits, beforeJeremie.credits + 100);
+  assert.equal(afterJeremie.xp, beforeJeremie.xp + 75);
   assert.equal(store.getState().acceptMaiSpaceFriend('jeremie').ok, false);
-  assert.equal(store.getState().gameplay.player.credits, creditsBeforeJeremie + 100);
 
   store.getState().updateMaiSpaceProfile({ handle: 'Cipher_Valkyrie', headerFont: 'Yeseva One' });
+  const beforeSocial = store.getState().gameplay.player;
   assert.equal(store.getState().postMaiSpaceBulletin('Verified Sector 7 conduit telemetry.').ok, true);
+  assert.equal(store.getState().pingMaiSpaceFriend('aelita').ok, true);
+  const afterSocial = store.getState().gameplay.player;
+  // Ongoing social actions grant 0 XP and 0 credits, while increasing campus reputation & NPC friendship/trust
+  assert.equal(afterSocial.xp, beforeSocial.xp);
+  assert.equal(afterSocial.credits, beforeSocial.credits);
+  assert.ok(afterSocial.reputation.campus > beforeSocial.reputation.campus);
+  assert.ok(afterSocial.npcVectors.aelita.friendship > beforeSocial.npcVectors.aelita.friendship);
 
   // 3. Formal Case Reasoning: rejects wrong hypothesis or unverified rumor exhibit, rewards valid reasoning once
   const badCase = store.getState().submitInvestigationCase(
@@ -239,6 +281,7 @@ test('Faith Medical diagnostic-first treatment, Mai.space persistence, and Forma
   const reloaded = await freshStore();
   assert.equal(reloaded.getState().gameplay.player.faithDiagnosed, true);
   assert.ok(!reloaded.getState().gameplay.player.conditions.includes('Veilwilt'));
+  assert.ok(reloaded.getState().gameplay.player.completedPatientCareIds.includes('pc-mercer'));
   assert.ok(reloaded.getState().gameplay.player.maiSpaceProfile.acceptedFriends.includes('jeremie'));
   assert.equal(reloaded.getState().gameplay.player.maiSpaceProfile.handle, 'Cipher_Valkyrie');
   assert.ok(reloaded.getState().gameplay.player.solvedInvestigationCaseIds.includes('CASE-FM-401'));

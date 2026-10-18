@@ -307,7 +307,7 @@ export function MaiSpacePortal() {
               <div className="flex justify-between items-center">
                 <span className="text-[10px] text-slate-400 font-mono">Public broadcast visible to all districts & persisted in Mai.space</span>
                 <Button type="submit" size="sm" variant="solid" className="px-4 py-1.5 font-bold">
-                  <Send size={12} className="mr-1 inline" /> Post Bulletin (+25 XP)
+                  <Send size={12} className="mr-1 inline" /> Post Bulletin (+5 Campus Rep & +2 Friendship)
                 </Button>
               </div>
             </form>
@@ -356,7 +356,7 @@ export function MaiSpacePortal() {
                       disabled={alreadyPinged}
                       className="px-3 py-1.5 bg-purple-100 hover:bg-purple-200 disabled:bg-slate-100 disabled:text-slate-400 text-purple-900 text-[10px] font-bold rounded-xl transition cursor-pointer"
                     >
-                      {alreadyPinged ? '✓ Signal Synced' : '+ Ping Signal (+5 Bond)'}
+                      {alreadyPinged ? '✓ Signal Synced' : '+ Ping Signal (+5 Friendship / +3 Trust)'}
                     </button>
                   </div>
                 );
