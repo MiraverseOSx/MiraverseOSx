@@ -227,10 +227,8 @@ export async function syncFaithMedicalUpdate(
     try {
       useOSStore.getState().recordWorldEvent({
         category: 'medical',
-        pillar: 'Medical & Forensic Investigations',
-        sourceApp: 'Faith Medical / CitizenBridge',
+        institution: 'Faith Medical / CitizenBridge',
         citizenMaid: p.maid || p.id,
-        citizenName: p.name,
         title: `Clinical Record Sync: ${p.name}`,
         summary: `Faith Medical updated ${p.name} (${p.maid || p.id}): ${clinicalUpdate.medicalSummary}.`,
         tags: ['faith-medical', 'citizen-bridge', p.maid || p.id]
@@ -278,10 +276,8 @@ export async function syncCyacademyOrCivicUpdate(
     try {
       useOSStore.getState().recordWorldEvent({
         category: 'civic',
-        pillar: 'Living-World Simulation',
-        sourceApp: 'Cyacademy / CitizenBridge',
+        institution: 'Cyacademy / CitizenBridge',
         citizenMaid: p.maid || p.id,
-        citizenName: p.name,
         title: `Civic & Academic Sync: ${p.name}`,
         summary: civicUpdate.academicNote || `Updated civic affiliation/residency for ${p.name} (${p.maid || p.id}).`,
         tags: ['cyacademy', 'citizen-bridge', p.maid || p.id]
@@ -324,14 +320,11 @@ export async function syncDgaInvestigativeUpdate(
     try {
       useOSStore.getState().recordWorldEvent({
         category: 'forensic',
-        pillar: 'Medical & Forensic Investigations',
-        sourceApp: 'DGAOS / TRACE',
+        institution: 'DGAOS / TRACE',
         citizenMaid: p.maid || p.id,
-        citizenName: p.name,
-        caseId: dgaUpdate.caseId,
         title: `DGAOS Investigative Sync${caseTag}: ${p.name}`,
         summary: dgaUpdate.investigativeNote,
-        tags: ['dgaos', 'trace', 'citizen-bridge', p.maid || p.id]
+        tags: ['dgaos', 'trace', 'citizen-bridge', p.maid || p.id, ...(dgaUpdate.caseId ? [dgaUpdate.caseId] : [])]
       });
     } catch {
       // ignore

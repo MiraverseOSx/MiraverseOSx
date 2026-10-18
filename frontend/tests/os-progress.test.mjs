@@ -176,9 +176,10 @@ test('Faith Medical diagnostic-first treatment, Mai.space persistence, and Forma
   assert.ok(store.getState().gameplay.player.conditions.includes('Veilwilt'));
 
   // Run baseline diagnostic scan (+150 credits first time, +75 XP)
+  const creditsBeforeScan = store.getState().gameplay.player.credits;
   const scan1 = store.getState().runFaithDiagnosticScan();
   assert.equal(scan1.ok, true);
-  assert.equal(scan1.rewardedCredits, 150);
+  assert.equal(store.getState().gameplay.player.credits, creditsBeforeScan + 150);
   assert.equal(store.getState().gameplay.player.faithDiagnosed, true);
 
   // Repeat scan in same cycle is blocked
@@ -202,26 +203,26 @@ test('Faith Medical diagnostic-first treatment, Mai.space persistence, and Forma
 
   // 2. Mai.space friend acceptance & profile edits persist and cannot be farmed
   const creditsBeforeJeremie = store.getState().gameplay.player.credits;
-  assert.equal(store.getState().acceptMaiSpaceFriend('jeremie'), true);
+  assert.equal(store.getState().acceptMaiSpaceFriend('jeremie').ok, true);
   assert.equal(store.getState().gameplay.player.credits, creditsBeforeJeremie + 100);
-  assert.equal(store.getState().acceptMaiSpaceFriend('jeremie'), false);
+  assert.equal(store.getState().acceptMaiSpaceFriend('jeremie').ok, false);
   assert.equal(store.getState().gameplay.player.credits, creditsBeforeJeremie + 100);
 
   store.getState().updateMaiSpaceProfile({ handle: 'Cipher_Valkyrie', headerFont: 'Yeseva One' });
-  assert.equal(store.getState().postMaiSpaceBulletin('Verified Sector 7 conduit telemetry.'), true);
+  assert.equal(store.getState().postMaiSpaceBulletin('Verified Sector 7 conduit telemetry.').ok, true);
 
   // 3. Formal Case Reasoning: rejects wrong hypothesis or unverified rumor exhibit, rewards valid reasoning once
   const badCase = store.getState().submitInvestigationCase(
     'CASE-FM-401',
-    ['ev-fm-telemetry', 'ev-fm-rumor'],
-    'hyp-fm-sabotage'
+    ['ev-aura-scan', 'ev-cafeteria-log'],
+    'hyp-coolant'
   );
   assert.equal(badCase.ok, false);
 
   const goodCase = store.getState().submitInvestigationCase(
     'CASE-FM-401',
-    ['ev-fm-telemetry', 'ev-fm-dispensary'],
-    'hyp-fm-conduit'
+    ['ev-aura-scan', 'ev-prism-pid512'],
+    'hyp-prism-bleed'
   );
   assert.equal(goodCase.ok, true);
   assert.ok(store.getState().gameplay.player.solvedInvestigationCaseIds.includes('CASE-FM-401'));
@@ -229,8 +230,8 @@ test('Faith Medical diagnostic-first treatment, Mai.space persistence, and Forma
   // Cannot claim case reward a second time
   const duplicateCase = store.getState().submitInvestigationCase(
     'CASE-FM-401',
-    ['ev-fm-telemetry', 'ev-fm-dispensary'],
-    'hyp-fm-conduit'
+    ['ev-aura-scan', 'ev-prism-pid512'],
+    'hyp-prism-bleed'
   );
   assert.equal(duplicateCase.ok, false);
 

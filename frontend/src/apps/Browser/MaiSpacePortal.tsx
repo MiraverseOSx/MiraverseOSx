@@ -275,11 +275,11 @@ export function MaiSpacePortal() {
                   {worldEventLog.slice(0, 6).map((evt) => (
                     <div key={evt.id} className="p-2.5 rounded-2xl bg-slate-50 border border-slate-100 flex items-start justify-between gap-2">
                       <div>
-                        <div className="font-bold text-[11px] text-slate-900">[{evt.sourceApp}] {evt.title}</div>
+                        <div className="font-bold text-[11px] text-slate-900">[{evt.institution}] {evt.title}</div>
                         <div className="text-[10px] text-slate-600 mt-0.5">{evt.summary}</div>
                       </div>
-                      <span className="text-[9px] font-mono px-2 py-0.5 rounded-full bg-purple-100 text-purple-800 shrink-0">
-                        {evt.pillar}
+                      <span className="text-[9px] font-mono px-2 py-0.5 rounded-full bg-purple-100 text-purple-800 shrink-0 uppercase">
+                        {evt.category}
                       </span>
                     </div>
                   ))}

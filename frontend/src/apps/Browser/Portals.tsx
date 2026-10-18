@@ -39,7 +39,7 @@ function FormalCaseReasoningBoard({ filterInstitution }: { filterInstitution?: s
         const res = submitInvestigationCase(caseId, ev, hyp);
         setFeedbackByCase({
             ...feedbackByCase,
-            [caseId]: { ok: res.ok, message: res.reason }
+            [caseId]: { ok: res.ok, message: res.message }
         });
     };
 
@@ -68,7 +68,7 @@ function FormalCaseReasoningBoard({ filterInstitution }: { filterInstitution?: s
                                     [{c.id}] {c.title}
                                 </div>
                                 <div className="text-[11px] font-mono text-slate-500">
-                                    Subject: {c.subjectName} ({c.subjectMaid}) • Lead: {c.leadInvestigator}
+                                    Subject: {c.subjectName} ({c.subjectMaid}) • Institution: {c.institution}
                                 </div>
                             </div>
                             <span
@@ -82,7 +82,7 @@ function FormalCaseReasoningBoard({ filterInstitution }: { filterInstitution?: s
                             </span>
                         </div>
 
-                        <p className="text-xs text-slate-600 leading-relaxed">{c.summary}</p>
+                        <p className="text-xs text-slate-600 leading-relaxed">{c.symptomOrAnomaly}</p>
 
                         {/* Step 1: Select Corroborating Evidence */}
                         <div className="space-y-1.5">
@@ -90,7 +90,7 @@ function FormalCaseReasoningBoard({ filterInstitution }: { filterInstitution?: s
                                 1. Select Corroborating Exhibits (Exclude Unverified Rumors):
                             </div>
                             <div className="grid grid-cols-1 md:grid-cols-3 gap-2">
-                                {c.requiredEvidence.map((ev) => {
+                                {c.availableEvidence.map((ev) => {
                                     const checked = selectedEv.includes(ev.id);
                                     return (
                                         <label
@@ -111,7 +111,7 @@ function FormalCaseReasoningBoard({ filterInstitution }: { filterInstitution?: s
                                             <div>
                                                 <div className="font-bold">{ev.label}</div>
                                                 <div className="text-[10px] text-slate-500 font-mono">Source: {ev.sourceApp}</div>
-                                                <div className="text-[10px] text-slate-600 mt-0.5">{ev.finding}</div>
+                                                <div className="text-[10px] text-slate-600 mt-0.5">{ev.detail}</div>
                                             </div>
                                         </label>
                                     );
@@ -148,7 +148,7 @@ function FormalCaseReasoningBoard({ filterInstitution }: { filterInstitution?: s
                                             />
                                             <div>
                                                 <div className="font-bold">{h.title}</div>
-                                                <div className="text-[10px] text-slate-600">{h.conclusion}</div>
+                                                <div className="text-[10px] text-slate-600">{h.explanation}</div>
                                             </div>
                                         </label>
                                     );
@@ -201,13 +201,13 @@ export function FaithMedPortal() {
     const handleIntakeScan = () => {
         if (!runFaithDiagnosticScan) return;
         const res = runFaithDiagnosticScan();
-        setClinicalMessage(res.reason);
+        setClinicalMessage(res.message);
     };
 
     const handleTreatCondition = (conditionName: string) => {
         if (!treatFaithCondition) return;
         const res = treatFaithCondition(conditionName);
-        setClinicalMessage(res.reason);
+        setClinicalMessage(res.message);
     };
 
     const treatmentProtocols = [
