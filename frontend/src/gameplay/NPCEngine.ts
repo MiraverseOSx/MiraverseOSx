@@ -4,6 +4,9 @@
  * dialogue generation with rich persona templates and deterministic offline fallbacks.
  */
 
+import { useOSStore } from '../store/useOSStore';
+import { worldEventEngine } from './WorldEventEngine';
+
 export interface NPCPersona {
   name: string;
   role: string;
@@ -17,6 +20,7 @@ export interface NPCDialogueResponse {
   source: 'Groq API (miragroq)' | 'mcp-agents-groq' | 'Native Persona Engine';
   model: string;
   text: string;
+  narrativeContext?: string;
 }
 
 export class NPCEngine {
@@ -67,7 +71,8 @@ export class NPCEngine {
   };
 
   /**
-   * Generates NPC response with fallback mechanisms.
+   * Generates NPC response enriched with shared WorldEventEngine narrative memory,
+   * player relationships, active medical conditions, mastered spells, and solved cases.
    */
   public async generateDialogue(
     npcName: string,
@@ -82,6 +87,10 @@ export class NPCEngine {
       systemContext: `You are ${npcName}, a resident of Aureline.`
     };
 
+    const gameplayState = useOSStore.getState()?.gameplay;
+    const narrative = worldEventEngine.buildNarrativeContextForNPC(npcName, gameplayState);
+    const combinedContext = `${persona.systemContext} Tone: ${persona.tone}. Shared World Memory: ${narrative.summaryText} ${extraContext}`.trim();
+
     // 1. Try MCP Agent Orchestrator on localhost:5050
     try {
       const orchRes = await fetch('http://localhost:5050/api/agent', {
@@ -89,7 +98,7 @@ export class NPCEngine {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           prompt: `[${npcName}] ${prompt}`,
-          context: `${persona.systemContext} Tone: ${persona.tone}. Keep responses concise (1-3 sentences). ${extraContext}`
+          context: `Keep responses concise (1-3 sentences). ${combinedContext}`
         })
       });
       if (orchRes.ok) {
@@ -99,7 +108,8 @@ export class NPCEngine {
             npc: npcName,
             source: 'mcp-agents-groq',
             model: 'llama-3.3-70b-versatile',
-            text: data.response
+            text: data.response,
+            narrativeContext: narrative.summaryText
           };
         }
       }
@@ -107,19 +117,15 @@ export class NPCEngine {
       // Clean fallback if orchestrator is offline
     }
 
-    // 2. Fallback response generation
-    const fallbacks = [
-      `[${persona.role}] ${prompt.substring(0, 32)}... Understood. We must maintain harmony across the grid.`,
-      `[${persona.role}] Direct telemetry synced. Ensure your civic registration and elemental matrices are calibrated.`,
-      `[${persona.role}] Versenet signal reflects your transmission: "${prompt.substring(0, 40)}". Proceed with caution.`
-    ];
-    const selectedText = fallbacks[Math.floor(Math.random() * fallbacks.length)];
+    // 2. Context-aware deterministic persona response incorporating world events & player history
+    const selectedText = `[${persona.role}] Re: "${prompt.substring(0, 40)}" — ${narrative.contextualReply}`;
 
     return {
       npc: npcName,
       source: 'Native Persona Engine',
-      model: 'rule_based_brain',
-      text: selectedText
+      model: 'narrative_memory_brain',
+      text: selectedText,
+      narrativeContext: narrative.summaryText
     };
   }
 
@@ -129,3 +135,4 @@ export class NPCEngine {
 }
 
 export const npcEngine = new NPCEngine();
+

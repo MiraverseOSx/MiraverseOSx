@@ -166,6 +166,84 @@ test('Housing upgrades and SpellForge discoveries persist and prevent infinite c
   assert.ok(restored.getState().gameplay.player.forgedSpells.includes('Seal Lock'));
 });
 
+test('Faith Medical diagnostic-first treatment, Mai.space persistence, and Formal Case Reasoning', async () => {
+  memoryStorage();
+  const store = await freshStore();
+
+  // 1. Faith Medical: Cannot treat Veilwilt before running baseline diagnostic scan
+  const preScanTreat = store.getState().treatFaithCondition('Veilwilt');
+  assert.equal(preScanTreat.ok, false);
+  assert.ok(store.getState().gameplay.player.conditions.includes('Veilwilt'));
+
+  // Run baseline diagnostic scan (+150 credits first time, +75 XP)
+  const scan1 = store.getState().runFaithDiagnosticScan();
+  assert.equal(scan1.ok, true);
+  assert.equal(scan1.rewardedCredits, 150);
+  assert.equal(store.getState().gameplay.player.faithDiagnosed, true);
+
+  // Repeat scan in same cycle is blocked
+  const scan2 = store.getState().runFaithDiagnosticScan();
+  assert.equal(scan2.ok, false);
+
+  // Cannot treat a condition the player does NOT have (e.g. Frostlung)
+  const unownedTreat = store.getState().treatFaithCondition('Frostlung');
+  assert.equal(unownedTreat.ok, false);
+
+  // Treating active Veilwilt succeeds once and removes it
+  const xpBeforeTreat = store.getState().gameplay.player.xp;
+  const validTreat = store.getState().treatFaithCondition('Veilwilt');
+  assert.equal(validTreat.ok, true);
+  assert.ok(!store.getState().gameplay.player.conditions.includes('Veilwilt'));
+  assert.equal(store.getState().gameplay.player.xp, xpBeforeTreat + 60);
+
+  // Repeat treatment of already-cured Veilwilt is rejected
+  const repeatTreat = store.getState().treatFaithCondition('Veilwilt');
+  assert.equal(repeatTreat.ok, false);
+
+  // 2. Mai.space friend acceptance & profile edits persist and cannot be farmed
+  const creditsBeforeJeremie = store.getState().gameplay.player.credits;
+  assert.equal(store.getState().acceptMaiSpaceFriend('jeremie'), true);
+  assert.equal(store.getState().gameplay.player.credits, creditsBeforeJeremie + 100);
+  assert.equal(store.getState().acceptMaiSpaceFriend('jeremie'), false);
+  assert.equal(store.getState().gameplay.player.credits, creditsBeforeJeremie + 100);
+
+  store.getState().updateMaiSpaceProfile({ handle: 'Cipher_Valkyrie', headerFont: 'Yeseva One' });
+  assert.equal(store.getState().postMaiSpaceBulletin('Verified Sector 7 conduit telemetry.'), true);
+
+  // 3. Formal Case Reasoning: rejects wrong hypothesis or unverified rumor exhibit, rewards valid reasoning once
+  const badCase = store.getState().submitInvestigationCase(
+    'CASE-FM-401',
+    ['ev-fm-telemetry', 'ev-fm-rumor'],
+    'hyp-fm-sabotage'
+  );
+  assert.equal(badCase.ok, false);
+
+  const goodCase = store.getState().submitInvestigationCase(
+    'CASE-FM-401',
+    ['ev-fm-telemetry', 'ev-fm-dispensary'],
+    'hyp-fm-conduit'
+  );
+  assert.equal(goodCase.ok, true);
+  assert.ok(store.getState().gameplay.player.solvedInvestigationCaseIds.includes('CASE-FM-401'));
+
+  // Cannot claim case reward a second time
+  const duplicateCase = store.getState().submitInvestigationCase(
+    'CASE-FM-401',
+    ['ev-fm-telemetry', 'ev-fm-dispensary'],
+    'hyp-fm-conduit'
+  );
+  assert.equal(duplicateCase.ok, false);
+
+  // Verify persistence across reload and WorldEventLog population
+  const reloaded = await freshStore();
+  assert.equal(reloaded.getState().gameplay.player.faithDiagnosed, true);
+  assert.ok(!reloaded.getState().gameplay.player.conditions.includes('Veilwilt'));
+  assert.ok(reloaded.getState().gameplay.player.maiSpaceProfile.acceptedFriends.includes('jeremie'));
+  assert.equal(reloaded.getState().gameplay.player.maiSpaceProfile.handle, 'Cipher_Valkyrie');
+  assert.ok(reloaded.getState().gameplay.player.solvedInvestigationCaseIds.includes('CASE-FM-401'));
+  assert.ok(reloaded.getState().gameplay.worldEventLog.length >= 4);
+});
+
 test('partial saves gain new defaults without restoring cleared conditions', async () => {
   const storage = memoryStorage();
   storage.setItem(key, JSON.stringify({ version: 1, state: {

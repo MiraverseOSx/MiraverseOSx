@@ -2,6 +2,7 @@ import { create } from 'zustand';
 import { createJSONStorage, persist } from 'zustand/middleware';
 import { NOTICES, evaluateNoticeObjective } from '../data/notices';
 import { mergeSavedProgress, osStorage } from './osPersistence';
+import { worldEventEngine, type WorldNarrativeEvent, type WorldEventCategory } from '../gameplay/WorldEventEngine';
 
 // Activities / missions — seeded by MissionDirector TypeScript engine or future DataGrip pipeline.
 const missionsData: any[] = [];
@@ -80,6 +81,15 @@ export interface OSStoreState {
   quarantineProcess: (pid: number) => boolean;
   recordFileInspection: (mockKey: string) => void;
   discoverRegionalShrine: (regionName: string) => boolean;
+  recordWorldEvent: (params: { category: WorldEventCategory; title: string; summary: string; institution: string; citizenMaid?: string; tags?: string[]; impact?: WorldNarrativeEvent['impact'] }) => WorldNarrativeEvent;
+  runFaithDiagnosticScan: () => { ok: boolean; message: string };
+  treatFaithCondition: (conditionName: string) => { ok: boolean; message: string };
+  acceptMaiSpaceFriend: (friendId: string) => { ok: boolean; message: string };
+  updateMaiSpaceProfile: (updates: { handle?: string; statusThought?: string; headerFont?: string }) => void;
+  postMaiSpaceBulletin: (content: string) => { ok: boolean; message: string };
+  pingMaiSpaceFriend: (friendId: string) => { ok: boolean; message: string };
+  claimPortalAction: (actionId: string, rewardCredits: number, rewardBits?: number, rewardXP?: number, label?: string) => { ok: boolean; message: string };
+  submitInvestigationCase: (caseId: string, selectedEvidenceIds: string[], hypothesisId: string) => { ok: boolean; verified: boolean; message: string };
   updateNPCVector: (npcId: string, vectorName: string, delta: number) => void;
   updateReputationTrack: (trackName: string, delta: number) => void;
   startSession: (gameId: string, initialState?: Record<string, any>) => void;
@@ -453,6 +463,18 @@ export const useOSStore = create<OSStoreState>()(persist((set, get) => ({
     activeGameId: null,
     prismCorruptionLevel: 14.8,
     claimedComms: [],
+    worldEventLog: [
+      {
+        id: 'EVT-BOOT-01',
+        category: 'civic',
+        title: 'Aureline Municipal Grid Synchronized',
+        summary: 'Directive 14-B biometric telemetry and citizen registry links initialized across all 9 institutions.',
+        institution: 'Aureline Civic Grid',
+        cycle: 28,
+        timestamp: '2026-03-06T08:00:00.000Z',
+        tags: ['civic', 'boot'],
+      },
+    ],
     timeSegmentIndex: 2, // 0: Morning, 1: Afternoon, 2: Evening, 3: Night
     timeCycleCount: 28,
     onboardingPhase: 1, // 1: Boot, 2: Emails Read, 3: Identity Verified, 4: Pulse Created, 5: Comms Unlocked, 6: Completed
@@ -497,6 +519,26 @@ export const useOSStore = create<OSStoreState>()(persist((set, get) => ({
       discoveredShrines: [],
       auraHealth: 100,
       conditions: ['Veilwilt'],
+      faithDiagnosed: false,
+      lastFaithDiagnosticCycle: 0,
+      treatedConditionsHistory: [],
+      maiSpaceProfile: {
+        handle: 'Aureline_Netrunner',
+        statusThought: 'Exploring the digital conduits of Aureline Central ✨',
+        headerFont: 'Cookie',
+        acceptedFriends: [],
+        pingedFriendsCycle: {},
+        lastBulletinPostCycle: 0,
+        bulletinPosts: [
+          { id: 1, author: 'Odd Della Robbia', time: '12m ago', content: 'Who replaced the cafeteria synth-juice with cryogenic coolant? My mouth is glowing blue.', likes: 14 },
+          { id: 2, author: 'Jeremie Belpois', time: '34m ago', content: 'Observing unusual spectral noise in the Sub-Conduit frequency band (88.2 MHz). Keep your firewall up.', likes: 29 },
+          { id: 3, author: 'Elisabeth Delmas (Sissi)', time: '1h ago', content: 'Reminder: Cycademy Gala dress code is strictly Silver & Obsidian. Do not embarrass us.', likes: 8 },
+          { id: 4, author: 'Aelita Schaeffer', time: '3h ago', content: 'The melody in the Veil towers sounds like a pre-Collapse lullaby...', likes: 45 },
+        ],
+      },
+      claimedPortalActionIds: [],
+      solvedInvestigationCaseIds: [],
+      investigationCaseDrafts: {},
       forgedSpells: ['Reflect Shield'],
       forgedSpellHistory: [
         { name: 'Reflect Shield', combo: 'Firewall.mod + Routing.mod', type: 'Combat Defense', power: 120, date: 'Cycle 28', mastered: true },
@@ -711,6 +753,13 @@ export const useOSStore = create<OSStoreState>()(persist((set, get) => ({
         },
       },
     }));
+    get().recordWorldEvent({
+      category: 'housing',
+      title: `Installed Housing Upgrade: ${upgradeId}`,
+      summary: `Citizen upgraded residential Suite 4B with ${upgradeId}, raising comfort and recovery calibration.`,
+      institution: 'HOMECRAFT // Housing',
+      impact: { reputationTrack: 'campus', reputationDelta: 2 },
+    });
     return { ok: true, message: 'Upgrade unlocked & permanently installed! Room comfort and housing calibration updated.' };
   },
 
@@ -779,6 +828,12 @@ export const useOSStore = create<OSStoreState>()(persist((set, get) => ({
     if (mission.primaryAttribute) {
       get().addSkillXP(mission.primaryAttribute, 25);
     }
+    get().recordWorldEvent({
+      category: 'worknet',
+      title: `Completed WorkNet Directive ${mission.id}`,
+      summary: `Verified 3-step institutional protocol on track "${mission.track}" (+${mission.rewardCredits} ₢).`,
+      institution: `WORKNET // ${mission.track.toUpperCase()}`,
+    });
     return { ok: true };
   },
 
@@ -848,6 +903,12 @@ export const useOSStore = create<OSStoreState>()(persist((set, get) => ({
         },
       }));
       get().addSkillXP('Spellcasting', 35);
+      get().recordWorldEvent({
+        category: 'veil',
+        title: `Synthesized New Spell Protocol: ${spell.name}`,
+        summary: `Compiled ${comboStr} (${spell.power} PWR) in SpellForge, reducing PRISM corruption.`,
+        institution: 'SpellForge Compiler',
+      });
       return {
         ok: true,
         isNewDiscovery: true,
@@ -903,6 +964,13 @@ export const useOSStore = create<OSStoreState>()(persist((set, get) => ({
       },
     }));
     get().addSkillXP('CyberSecurity', 30);
+    get().recordWorldEvent({
+      category: 'forensic',
+      title: `Quarantined Rogue Kernel Process PID ${pid}`,
+      summary: `Isolated anomalous PRISM/AETHERCORE thread PID ${pid} in Process Monitor (-2.5% Corruption).`,
+      institution: 'Process Monitor',
+      impact: { reputationTrack: 'dga', reputationDelta: 5 },
+    });
     return true;
   },
 
@@ -917,9 +985,26 @@ export const useOSStore = create<OSStoreState>()(persist((set, get) => ({
       const xpGain = alreadyInspected ? 0 : 25;
       const newXP = player.xp + xpGain;
 
+      const currentEvents: WorldNarrativeEvent[] = Array.isArray(state.gameplay.worldEventLog) ? state.gameplay.worldEventLog : [];
+      const nextEvents = alreadyInspected
+        ? currentEvents
+        : [
+            worldEventEngine.createEvent({
+              category: unlocksLineage ? 'archive' : 'forensic',
+              title: `Inspected Archive File: ${mockKey}`,
+              summary: unlocksLineage
+                ? `Decrypted restricted pre-Collapse lineage file (${mockKey}).`
+                : `Reviewed system record (${mockKey}) in File Explorer.`,
+              institution: 'File Explorer // Archives',
+              cycle: state.gameplay.timeCycleCount,
+            }),
+            ...currentEvents.slice(0, 29),
+          ];
+
       return {
         gameplay: {
           ...state.gameplay,
+          worldEventLog: nextEvents,
           player: {
             ...player,
             inspectedFiles: nextInspected,
@@ -953,7 +1038,439 @@ export const useOSStore = create<OSStoreState>()(persist((set, get) => ({
       },
     }));
     get().addSkillXP('Research', 15);
+    get().recordWorldEvent({
+      category: 'veil',
+      title: `Attuned ${regionName} Elemental Shrine`,
+      summary: `Synchronized regional resonance node for ${regionName} (${shrines.length + 1}/8 Shrines).`,
+      institution: 'Reality Registry // Shrines',
+    });
     return true;
+  },
+
+  recordWorldEvent: (params) => {
+    const state = get();
+    const evt = worldEventEngine.createEvent({
+      ...params,
+      cycle: state.gameplay.timeCycleCount ?? 28,
+    });
+    set((s) => {
+      const existing: WorldNarrativeEvent[] = Array.isArray(s.gameplay.worldEventLog) ? s.gameplay.worldEventLog : [];
+      const currentCorruption = s.gameplay.prismCorruptionLevel ?? 14.8;
+      const nextCorruption = params.impact?.corruptionDelta
+        ? Math.max(2.0, Math.min(100, Number((currentCorruption + params.impact.corruptionDelta).toFixed(1))))
+        : currentCorruption;
+
+      const currentRep = s.gameplay.player.reputation || {};
+      const nextRep =
+        params.impact?.reputationTrack && params.impact?.reputationDelta
+          ? {
+              ...currentRep,
+              [params.impact.reputationTrack]: Math.max(
+                0,
+                Math.min(100, (currentRep[params.impact.reputationTrack] || 50) + params.impact.reputationDelta)
+              ),
+            }
+          : currentRep;
+
+      return {
+        gameplay: {
+          ...s.gameplay,
+          prismCorruptionLevel: nextCorruption,
+          worldEventLog: [evt, ...existing.slice(0, 29)],
+          player: {
+            ...s.gameplay.player,
+            reputation: nextRep,
+          },
+        },
+      };
+    });
+    return evt;
+  },
+
+  runFaithDiagnosticScan: () => {
+    const state = get();
+    const player = state.gameplay.player;
+    const currentCycle = state.gameplay.timeCycleCount ?? 28;
+    if (player.faithDiagnosed && player.lastFaithDiagnosticCycle === currentCycle) {
+      return {
+        ok: false,
+        message: `Baseline bio-aura diagnostic already completed for Cycle ${currentCycle}. Rest or advance cycle before rescanning.`,
+      };
+    }
+
+    const firstEverScan = !player.lastFaithDiagnosticCycle;
+    const creditReward = firstEverScan ? 150 : 0;
+    const xpReward = 75;
+    const newXP = player.xp + xpReward;
+    const newLevel = Math.floor(newXP / 100) + 1;
+
+    set((s) => ({
+      gameplay: {
+        ...s.gameplay,
+        player: {
+          ...s.gameplay.player,
+          faithDiagnosed: true,
+          lastFaithDiagnosticCycle: currentCycle,
+          auraHealth: Math.min(100, (s.gameplay.player.auraHealth || 100) + 20),
+          credits: s.gameplay.player.credits + creditReward,
+          xp: newXP,
+          level: newLevel,
+        },
+      },
+    }));
+
+    const activeConds: string[] = Array.isArray(player.conditions) ? player.conditions : [];
+    get().recordWorldEvent({
+      category: 'medical',
+      title: `Faith Medical Bio-Aura Diagnostic (Cycle ${currentCycle})`,
+      summary: activeConds.length
+        ? `Diagnostic confirmed active condition(s): ${activeConds.join(', ')}. Treatment protocols unlocked.`
+        : 'Diagnostic confirmed stable bio-aura baseline.',
+      institution: 'Faith Medical Group',
+      impact: { reputationTrack: 'faith', reputationDelta: 5 },
+    });
+
+    const rewardNote = creditReward > 0 ? `+${creditReward} ₢ Stipend & +${xpReward} XP` : `+${xpReward} XP`;
+    return {
+      ok: true,
+      message: `Bio-Aura Diagnostic Complete (${rewardNote}). Active conditions verified for targeted clinical treatment.`,
+    };
+  },
+
+  treatFaithCondition: (conditionName) => {
+    const state = get();
+    const player = state.gameplay.player;
+    if (!player.faithDiagnosed) {
+      return {
+        ok: false,
+        message: 'Clinical prerequisite unmet: Run the Mandatory Baseline Aura Diagnostic scan before administering treatment.',
+      };
+    }
+
+    const currentConditions: string[] = Array.isArray(player.conditions) ? player.conditions : [];
+    if (!currentConditions.includes(conditionName)) {
+      return {
+        ok: false,
+        message: `No active "${conditionName}" detected in your bio-aura telemetry. Treatment unnecessary.`,
+      };
+    }
+
+    const newXP = player.xp + 60;
+    const newLevel = Math.floor(newXP / 100) + 1;
+    const history: string[] = Array.isArray(player.treatedConditionsHistory) ? player.treatedConditionsHistory : [];
+
+    set((s) => ({
+      gameplay: {
+        ...s.gameplay,
+        player: {
+          ...s.gameplay.player,
+          conditions: currentConditions.filter((c) => c !== conditionName),
+          treatedConditionsHistory: [...history, `${conditionName}@Cycle${s.gameplay.timeCycleCount}`],
+          auraHealth: Math.min(100, (s.gameplay.player.auraHealth || 100) + 15),
+          xp: newXP,
+          level: newLevel,
+        },
+      },
+    }));
+
+    get().recordWorldEvent({
+      category: 'medical',
+      title: `Treated Clinical Condition: ${conditionName}`,
+      summary: `Faith Medical protocol cleared ${conditionName} from citizen bio-aura (+15% Aura Integrity, +60 XP).`,
+      institution: 'Faith Medical Group',
+      impact: { reputationTrack: 'faith', reputationDelta: 8, corruptionDelta: -0.5 },
+    });
+
+    return {
+      ok: true,
+      message: `Clinical treatment successful! Cleared "${conditionName}", restored +15% Aura Integrity, and earned +60 XP.`,
+    };
+  },
+
+  acceptMaiSpaceFriend: (friendId) => {
+    const state = get();
+    const player = state.gameplay.player;
+    const profile = player.maiSpaceProfile || {
+      handle: player.name || 'Aureline_Netrunner',
+      statusThought: 'Exploring the digital conduits of Aureline Central ✨',
+      headerFont: 'Cookie',
+      acceptedFriends: [],
+      pingedFriendsCycle: {},
+      lastBulletinPostCycle: 0,
+      bulletinPosts: [],
+    };
+    const accepted: string[] = Array.isArray(profile.acceptedFriends) ? profile.acceptedFriends : [];
+    if (accepted.includes(friendId)) {
+      return { ok: false, message: `Connection with ${friendId} is already active in your Mai.space network.` };
+    }
+
+    const newXP = player.xp + 75;
+    const newLevel = Math.floor(newXP / 100) + 1;
+    const currentVec = player.npcVectors?.[friendId] || { friendship: 50, trust: 50, rivalry: 10, sync: 50, corruption: 0 };
+    const completedLoops: string[] = Array.isArray(state.gameplay.starterCompletedLoops) ? state.gameplay.starterCompletedLoops : [];
+
+    set((s) => ({
+      gameplay: {
+        ...s.gameplay,
+        starterCompletedLoops: completedLoops.includes('mai_space') ? completedLoops : [...completedLoops, 'mai_space'],
+        player: {
+          ...s.gameplay.player,
+          credits: s.gameplay.player.credits + 100,
+          xp: newXP,
+          level: newLevel,
+          maiSpaceProfile: {
+            ...profile,
+            acceptedFriends: [...accepted, friendId],
+          },
+          npcVectors: {
+            ...s.gameplay.player.npcVectors,
+            [friendId]: {
+              ...currentVec,
+              trust: Math.min(100, (currentVec.trust || 50) + 15),
+              friendship: Math.min(100, (currentVec.friendship || 50) + 10),
+            },
+          },
+        },
+      },
+    }));
+
+    get().recordWorldEvent({
+      category: 'social',
+      title: `Mai.space Connection Established: ${friendId}`,
+      summary: `Linked Mai.space social node with ${friendId} (+15 Trust, +10 Friendship, +100 ₢).`,
+      institution: 'Mai.space Social Grid',
+      impact: { reputationTrack: 'campus', reputationDelta: 10 },
+    });
+
+    return { ok: true, message: `Connected with ${friendId} on Mai.space! (+15 Trust, +10 Friendship, +100 ₢, +75 XP)` };
+  },
+
+  updateMaiSpaceProfile: (updates) =>
+    set((state) => {
+      const player = state.gameplay.player;
+      const profile = player.maiSpaceProfile || {
+        handle: player.name || 'Aureline_Netrunner',
+        statusThought: 'Exploring the digital conduits of Aureline Central ✨',
+        headerFont: 'Cookie',
+        acceptedFriends: [],
+        pingedFriendsCycle: {},
+        lastBulletinPostCycle: 0,
+        bulletinPosts: [],
+      };
+      return {
+        gameplay: {
+          ...state.gameplay,
+          player: {
+            ...player,
+            maiSpaceProfile: {
+              ...profile,
+              ...updates,
+            },
+          },
+        },
+      };
+    }),
+
+  postMaiSpaceBulletin: (content) => {
+    const trimmed = (content || '').trim();
+    if (!trimmed) return { ok: false, message: 'Bulletin content cannot be empty.' };
+
+    const state = get();
+    const player = state.gameplay.player;
+    const currentCycle = state.gameplay.timeCycleCount ?? 28;
+    const profile = player.maiSpaceProfile || {
+      handle: player.name || 'Aureline_Netrunner',
+      statusThought: 'Exploring the digital conduits of Aureline Central ✨',
+      headerFont: 'Cookie',
+      acceptedFriends: [],
+      pingedFriendsCycle: {},
+      lastBulletinPostCycle: 0,
+      bulletinPosts: [],
+    };
+
+    const alreadyPostedThisCycle = profile.lastBulletinPostCycle === currentCycle;
+    const xpGain = alreadyPostedThisCycle ? 0 : 25;
+    const repGain = alreadyPostedThisCycle ? 0 : 5;
+    const newXP = player.xp + xpGain;
+    const newLevel = Math.floor(newXP / 100) + 1;
+    const newPost = {
+      id: Date.now(),
+      author: profile.handle || player.name || 'Aureline_Netrunner',
+      time: `Cycle ${currentCycle}`,
+      content: trimmed,
+      likes: 1,
+    };
+
+    set((s) => ({
+      gameplay: {
+        ...s.gameplay,
+        player: {
+          ...s.gameplay.player,
+          xp: newXP,
+          level: newLevel,
+          maiSpaceProfile: {
+            ...profile,
+            lastBulletinPostCycle: currentCycle,
+            bulletinPosts: [newPost, ...(Array.isArray(profile.bulletinPosts) ? profile.bulletinPosts.slice(0, 19) : [])],
+          },
+        },
+      },
+    }));
+
+    if (!alreadyPostedThisCycle) {
+      get().recordWorldEvent({
+        category: 'social',
+        title: 'Broadcasted Public Mai.space Bulletin',
+        summary: `Posted to Aureline social grid: "${trimmed.slice(0, 60)}"`,
+        institution: 'Mai.space Social Grid',
+        impact: { reputationTrack: 'campus', reputationDelta: repGain },
+      });
+    }
+
+    return {
+      ok: true,
+      message: alreadyPostedThisCycle
+        ? 'Bulletin posted to the public grid (cycle XP bonus already claimed).'
+        : 'Bulletin broadcasted! Earned +25 XP and +5 Campus Reputation.',
+    };
+  },
+
+  pingMaiSpaceFriend: (friendId) => {
+    const state = get();
+    const player = state.gameplay.player;
+    const currentCycle = state.gameplay.timeCycleCount ?? 28;
+    const profile = player.maiSpaceProfile || {
+      handle: player.name || 'Aureline_Netrunner',
+      statusThought: 'Exploring the digital conduits of Aureline Central ✨',
+      headerFont: 'Cookie',
+      acceptedFriends: [],
+      pingedFriendsCycle: {},
+      lastBulletinPostCycle: 0,
+      bulletinPosts: [],
+    };
+    const pingedMap: Record<string, number> = { ...(profile.pingedFriendsCycle || {}) };
+    if (pingedMap[friendId] === currentCycle) {
+      return {
+        ok: false,
+        message: `Already pinged ${friendId} during Cycle ${currentCycle}. Advance cycle to ping again.`,
+      };
+    }
+
+    pingedMap[friendId] = currentCycle;
+    const newXP = player.xp + 15;
+    const newLevel = Math.floor(newXP / 100) + 1;
+    const currentVec = player.npcVectors?.[friendId] || { friendship: 50, trust: 50, rivalry: 10, sync: 50, corruption: 0 };
+
+    set((s) => ({
+      gameplay: {
+        ...s.gameplay,
+        player: {
+          ...s.gameplay.player,
+          xp: newXP,
+          level: newLevel,
+          maiSpaceProfile: {
+            ...profile,
+            pingedFriendsCycle: pingedMap,
+          },
+          npcVectors: {
+            ...s.gameplay.player.npcVectors,
+            [friendId]: {
+              ...currentVec,
+              friendship: Math.min(100, (currentVec.friendship || 50) + 5),
+            },
+          },
+        },
+      },
+    }));
+
+    return { ok: true, message: `Pinged ${friendId} on Mai.space (+5 Friendship, +15 XP).` };
+  },
+
+  claimPortalAction: (actionId, rewardCredits, rewardBits = 0, rewardXP = 0, label = 'Institutional Portal Action') => {
+    const state = get();
+    const player = state.gameplay.player;
+    const claimed: string[] = Array.isArray(player.claimedPortalActionIds) ? player.claimedPortalActionIds : [];
+    if (claimed.includes(actionId)) {
+      return { ok: false, message: 'This institutional directive or stipend has already been claimed.' };
+    }
+
+    const newXP = player.xp + rewardXP;
+    const newLevel = Math.floor(newXP / 100) + 1;
+
+    set((s) => ({
+      gameplay: {
+        ...s.gameplay,
+        player: {
+          ...s.gameplay.player,
+          claimedPortalActionIds: [...claimed, actionId],
+          credits: s.gameplay.player.credits + rewardCredits,
+          bits: (s.gameplay.player.bits || 0) + rewardBits,
+          xp: newXP,
+          level: newLevel,
+        },
+      },
+    }));
+
+    get().recordWorldEvent({
+      category: 'civic',
+      title: label,
+      summary: `Verified portal action (${actionId}) for +${rewardCredits} ₢.`,
+      institution: 'Aureline Intranet Portal',
+    });
+
+    return { ok: true, message: `${label} verified (+${rewardCredits} ₢).` };
+  },
+
+  submitInvestigationCase: (caseId, selectedEvidenceIds, hypothesisId) => {
+    const state = get();
+    const player = state.gameplay.player;
+    const solvedIds: string[] = Array.isArray(player.solvedInvestigationCaseIds) ? player.solvedInvestigationCaseIds : [];
+    if (solvedIds.includes(caseId)) {
+      return { ok: false, verified: true, message: `Case ${caseId} has already been formally validated and closed.` };
+    }
+
+    const evalRes = worldEventEngine.evaluateCaseSubmission(caseId, selectedEvidenceIds, hypothesisId);
+    if (!evalRes.ok || !evalRes.verified || !evalRes.caseDef) {
+      return { ok: false, verified: false, message: evalRes.message };
+    }
+
+    const caseDef = evalRes.caseDef;
+    const newXP = player.xp + caseDef.rewardXP;
+    const newLevel = Math.floor(newXP / 100) + 1;
+
+    set((s) => ({
+      gameplay: {
+        ...s.gameplay,
+        player: {
+          ...s.gameplay.player,
+          solvedInvestigationCaseIds: [...solvedIds, caseId],
+          credits: s.gameplay.player.credits + caseDef.rewardCredits,
+          bits: (s.gameplay.player.bits || 0) + caseDef.rewardBits,
+          xp: newXP,
+          level: newLevel,
+        },
+      },
+    }));
+
+    get().addSkillXP('Research', 35);
+    get().recordWorldEvent({
+      category: 'forensic',
+      title: `Validated Case Resolution: ${caseDef.title}`,
+      summary: evalRes.message,
+      institution: caseDef.institution,
+      citizenMaid: caseDef.subjectMaid,
+      impact: {
+        reputationTrack: caseDef.reputationTrack,
+        reputationDelta: 12,
+        corruptionDelta: -1.5,
+      },
+    });
+
+    return {
+      ok: true,
+      verified: true,
+      message: `${evalRes.message} Awarded +${caseDef.rewardCredits} ₢, +${caseDef.rewardBits} ◈, and +${caseDef.rewardXP} XP.`,
+    };
   },
 
   updateNPCVector: (npcId, vectorName, delta) =>

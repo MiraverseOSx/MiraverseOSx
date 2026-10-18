@@ -9,27 +9,31 @@ import Button from '../../components/ui/button';
 export function MaiSpacePortal() {
   const player = useOSStore((s) => s.gameplay.player);
   const identity = useOSStore((s) => s.gameplay.identity);
-  const updateNPCVector = useOSStore((s) => s.updateNPCVector);
-  const updateReputationTrack = useOSStore((s) => s.updateReputationTrack);
-  const addXP = useOSStore((s) => s.addXP);
-  const addCredits = useOSStore((s) => s.addCredits);
-  const completeStarterLoop = useOSStore((s) => s.completeStarterLoop);
+  const timeCycleCount = useOSStore((s) => s.gameplay.timeCycleCount ?? 0);
+  const worldEventLog = useOSStore((s) => s.gameplay.worldEventLog || []);
+  const acceptMaiSpaceFriend = useOSStore((s) => s.acceptMaiSpaceFriend);
+  const updateMaiSpaceProfile = useOSStore((s) => s.updateMaiSpaceProfile);
+  const postMaiSpaceBulletin = useOSStore((s) => s.postMaiSpaceBulletin);
+  const pingMaiSpaceFriend = useOSStore((s) => s.pingMaiSpaceFriend);
 
   const [activeTab, setActiveTab] = useState('profile'); // 'profile' | 'bulletin' | 'network' | 'reputation'
-  const [handle, setHandle] = useState(player?.name || 'Aureline_Netrunner');
-  const [headerFont, setHeaderFont] = useState('Cookie'); // 'Cookie' | 'Yeseva One' | 'Esteban'
-  const [statusThought, setStatusThought] = useState('Exploring the digital conduits of Aureline Central ✨');
   const [isPlayingMusic, setIsPlayingMusic] = useState(true);
-  const [hasAcceptedJeremie, setHasAcceptedJeremie] = useState(false);
-
-  // Rumor bulletin posts
-  const [bulletinPosts, setBulletinPosts] = useState([
-    { id: 1, author: 'Odd Della Robbia', time: '12m ago', content: 'Who replaced the cafeteria synth-juice with cryogenic coolant? My mouth is glowing blue.', likes: 14 },
-    { id: 2, author: 'Jeremie Belpois', time: '34m ago', content: 'Observing unusual spectral noise in the Sub-Conduit frequency band (88.2 MHz). Keep your firewall up.', likes: 29 },
-    { id: 3, author: 'Elisabeth Delmas (Sissi)', time: '1h ago', content: 'Reminder: Cycademy Gala dress code is strictly Silver & Obsidian. Do not embarrass us.', likes: 8 },
-    { id: 4, author: 'Aelita Schaeffer', time: '3h ago', content: 'The melody in the Veil towers sounds like a pre-Collapse lullaby...', likes: 45 }
-  ]);
   const [newPostText, setNewPostText] = useState('');
+
+  const profile = player?.maiSpaceProfile || {
+    handle: player?.name || 'Aureline_Netrunner',
+    headerFont: 'Cookie',
+    statusThought: 'Exploring the digital conduits of Aureline Central ✨',
+    acceptedFriends: [],
+    pingedFriendsCycle: {},
+    bulletinPosts: []
+  };
+
+  const handle = profile.handle;
+  const headerFont = profile.headerFont;
+  const statusThought = profile.statusThought;
+  const hasAcceptedJeremie = (profile.acceptedFriends || []).includes('jeremie');
+  const bulletinPosts = profile.bulletinPosts || [];
 
   // Top 8 Friends
   const top8Friends = [
@@ -44,25 +48,18 @@ export function MaiSpacePortal() {
   ];
 
   const handleAcceptJeremie = () => {
-    setHasAcceptedJeremie(true);
-    updateNPCVector('jeremie', 'trust', 15);
-    updateNPCVector('jeremie', 'friendship', 10);
-    updateReputationTrack('campus', 10);
-    addCredits(100);
-    addXP(75);
-    completeStarterLoop('mai_space');
+    if (acceptMaiSpaceFriend) {
+      acceptMaiSpaceFriend('jeremie');
+    }
   };
 
-  const handlePostBulletin = (e) => {
+  const handlePostBulletin = (e: React.FormEvent) => {
     e.preventDefault();
     if (!newPostText.trim()) return;
-    setBulletinPosts([
-      { id: Date.now(), author: handle, time: 'Just now', content: newPostText.trim(), likes: 1 },
-      ...bulletinPosts
-    ]);
+    if (postMaiSpaceBulletin) {
+      postMaiSpaceBulletin(newPostText.trim());
+    }
     setNewPostText('');
-    addXP(25);
-    updateReputationTrack('campus', 5);
   };
 
   const fontClass = headerFont === 'Cookie' ? 'font-signature' : headerFont === 'Yeseva One' ? 'font-display' : 'font-serif-y2k';
@@ -140,9 +137,9 @@ export function MaiSpacePortal() {
           <div className="flex items-center gap-2">
             <button
               onClick={handleAcceptJeremie}
-              className="px-4 py-2 bg-[#1b254f] hover:bg-[#25335f] text-white font-bold text-xs rounded-xl transition shadow-xs flex items-center gap-1.5"
+              className="px-4 py-2 bg-[#1b254f] hover:bg-[#25335f] text-white font-bold text-xs rounded-xl transition shadow-xs flex items-center gap-1.5 cursor-pointer"
             >
-              <UserCheck size={14} /> Accept (+15 Trust & +100 ₡)
+              <UserCheck size={14} /> Accept (+15 Trust & +100 ₢)
             </button>
           </div>
         </div>
@@ -182,14 +179,14 @@ export function MaiSpacePortal() {
                   <input
                     type="text"
                     value={handle}
-                    onChange={(e) => setHandle(e.target.value)}
+                    onChange={(e) => updateMaiSpaceProfile({ handle: e.target.value })}
                     placeholder="Enter your handle..."
                     className="w-full text-xs rounded-xl border border-slate-200 p-2 text-slate-800 focus:outline-none focus:border-purple-400"
                   />
                   <input
                     type="text"
                     value={statusThought}
-                    onChange={(e) => setStatusThought(e.target.value)}
+                    onChange={(e) => updateMaiSpaceProfile({ statusThought: e.target.value })}
                     placeholder="Update status thought..."
                     className="w-full text-xs rounded-xl border border-slate-200 p-2 text-slate-800 focus:outline-none focus:border-purple-400"
                   />
@@ -215,19 +212,19 @@ export function MaiSpacePortal() {
               </div>
             </div>
 
-            {/* Right Column: Customization, Bio, Network Preview */}
+            {/* Right Column: Customization, Bio, Network Preview, World Stream */}
             <div className="lg:col-span-8 space-y-4">
               {/* Header Typography Selector */}
               <div className="rounded-3xl border border-purple-200/80 bg-white p-4 shadow-sm flex items-center justify-between">
                 <div>
                   <span className="font-bold text-xs text-[#1b254f]">Header Profile Font:</span>
-                  <p className="text-[10px] text-slate-500">Personalize your page header aesthetic</p>
+                  <p className="text-[10px] text-slate-500">Personalize your page header aesthetic (Persisted to OS Profile)</p>
                 </div>
                 <div className="flex gap-1.5">
-                  {['Cookie', 'Yeseva One', 'Esteban'].map((f) => (
+                  {(['Cookie', 'Yeseva One', 'Esteban'] as const).map((f) => (
                     <button
                       key={f}
-                      onClick={() => setHeaderFont(f)}
+                      onClick={() => updateMaiSpaceProfile({ headerFont: f })}
                       className={`px-3 py-1 rounded-xl text-xs font-semibold transition ${
                         headerFont === f ? 'bg-[#1b254f] text-white shadow-xs' : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
                       }`}
@@ -265,6 +262,29 @@ export function MaiSpacePortal() {
                   ))}
                 </div>
               </div>
+
+              {/* Live Institutional Echoes & World Event Stream */}
+              <div className="rounded-3xl border border-purple-200/80 bg-white p-5 shadow-sm space-y-3">
+                <div className="flex items-center justify-between border-b border-slate-100 pb-2">
+                  <h3 className="text-xs font-bold text-[#1b254f] uppercase tracking-wider flex items-center gap-1.5">
+                    <Sparkles size={14} className="text-indigo-600" /> Cross-Institution Resonance Feed
+                  </h3>
+                  <span className="text-[10px] font-mono text-indigo-700">Shared Narrative Memory</span>
+                </div>
+                <div className="space-y-2 max-h-48 overflow-y-auto pr-1">
+                  {worldEventLog.slice(0, 6).map((evt) => (
+                    <div key={evt.id} className="p-2.5 rounded-2xl bg-slate-50 border border-slate-100 flex items-start justify-between gap-2">
+                      <div>
+                        <div className="font-bold text-[11px] text-slate-900">[{evt.sourceApp}] {evt.title}</div>
+                        <div className="text-[10px] text-slate-600 mt-0.5">{evt.summary}</div>
+                      </div>
+                      <span className="text-[9px] font-mono px-2 py-0.5 rounded-full bg-purple-100 text-purple-800 shrink-0">
+                        {evt.pillar}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </div>
             </div>
           </div>
         )}
@@ -285,7 +305,7 @@ export function MaiSpacePortal() {
                 className="w-full rounded-2xl border border-slate-200 p-3 text-xs text-slate-800 focus:outline-none focus:border-purple-500"
               />
               <div className="flex justify-between items-center">
-                <span className="text-[10px] text-slate-400 font-mono">Public broadcast visible to all districts</span>
+                <span className="text-[10px] text-slate-400 font-mono">Public broadcast visible to all districts & persisted in Mai.space</span>
                 <Button type="submit" size="sm" variant="solid" className="px-4 py-1.5 font-bold">
                   <Send size={12} className="mr-1 inline" /> Post Bulletin (+25 XP)
                 </Button>
@@ -317,29 +337,30 @@ export function MaiSpacePortal() {
         {activeTab === 'network' && (
           <div className="space-y-4">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {top8Friends.map((f) => (
-                <div key={f.id} className="rounded-3xl border border-purple-200/80 bg-white p-4 shadow-sm flex items-center justify-between">
-                  <div className="flex items-center gap-3">
-                    <div className="h-12 w-12 rounded-2xl bg-purple-50 border border-purple-200 flex items-center justify-center text-2xl">
-                      {f.avatar}
+              {top8Friends.map((f) => {
+                const alreadyPinged = profile.pingedFriendsCycle?.[f.id] === timeCycleCount;
+                return (
+                  <div key={f.id} className="rounded-3xl border border-purple-200/80 bg-white p-4 shadow-sm flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                      <div className="h-12 w-12 rounded-2xl bg-purple-50 border border-purple-200 flex items-center justify-center text-2xl">
+                        {f.avatar}
+                      </div>
+                      <div>
+                        <div className="font-bold text-xs text-[#1b254f]">{f.name}</div>
+                        <div className="text-[10px] text-purple-700 font-mono">{f.role}</div>
+                        <div className="text-[10px] text-slate-400 mt-0.5">Bond Affinity: {f.affinity}%</div>
+                      </div>
                     </div>
-                    <div>
-                      <div className="font-bold text-xs text-[#1b254f]">{f.name}</div>
-                      <div className="text-[10px] text-purple-700 font-mono">{f.role}</div>
-                      <div className="text-[10px] text-slate-400 mt-0.5">Bond Affinity: {f.affinity}%</div>
-                    </div>
+                    <button
+                      onClick={() => pingMaiSpaceFriend && pingMaiSpaceFriend(f.id)}
+                      disabled={alreadyPinged}
+                      className="px-3 py-1.5 bg-purple-100 hover:bg-purple-200 disabled:bg-slate-100 disabled:text-slate-400 text-purple-900 text-[10px] font-bold rounded-xl transition cursor-pointer"
+                    >
+                      {alreadyPinged ? '✓ Signal Synced' : '+ Ping Signal (+5 Bond)'}
+                    </button>
                   </div>
-                  <button
-                    onClick={() => {
-                      updateNPCVector(f.id, 'friendship', 5);
-                      addXP(15);
-                    }}
-                    className="px-3 py-1.5 bg-purple-100 hover:bg-purple-200 text-purple-900 text-[10px] font-bold rounded-xl transition"
-                  >
-                    + Ping Signal
-                  </button>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </div>
         )}
@@ -374,3 +395,4 @@ export function MaiSpacePortal() {
   );
 }
 export default MaiSpacePortal;
+

@@ -4,30 +4,218 @@ import {
     Lock, CheckCircle2, AlertTriangle, Key, Search, ArrowRight, UserCheck, RefreshCw, User, BookOpen
 } from 'lucide-react';
 import { useOSStore } from '../../store/useOSStore';
+import { FORMAL_INVESTIGATION_CASES } from '../../gameplay/WorldEventEngine';
 import Button from '../../components/ui/button';
 import FinanceTerminal from '../FinanceTerminal';
+
+// ==========================================
+// Shared Pillar III: Formal Case Reasoning Panel
+// ==========================================
+function FormalCaseReasoningBoard({ filterInstitution }: { filterInstitution?: string }) {
+    const player = useOSStore((s) => s.gameplay?.player);
+    const submitInvestigationCase = useOSStore((s) => s.submitInvestigationCase);
+    const solvedIds = player?.solvedInvestigationCaseIds || [];
+
+    const cases = filterInstitution
+        ? FORMAL_INVESTIGATION_CASES.filter((c) => c.institution.includes(filterInstitution))
+        : FORMAL_INVESTIGATION_CASES;
+
+    const [selectedEvidenceByCase, setSelectedEvidenceByCase] = useState<Record<string, string[]>>({});
+    const [selectedHypothesisByCase, setSelectedHypothesisByCase] = useState<Record<string, string>>({});
+    const [feedbackByCase, setFeedbackByCase] = useState<Record<string, { ok: boolean; message: string }>>({});
+
+    const toggleEvidence = (caseId: string, evId: string) => {
+        const current = selectedEvidenceByCase[caseId] || [];
+        const next = current.includes(evId)
+            ? current.filter((x) => x !== evId)
+            : [...current, evId];
+        setSelectedEvidenceByCase({ ...selectedEvidenceByCase, [caseId]: next });
+    };
+
+    const handleSubmitCase = (caseId: string) => {
+        if (!submitInvestigationCase) return;
+        const ev = selectedEvidenceByCase[caseId] || [];
+        const hyp = selectedHypothesisByCase[caseId] || '';
+        const res = submitInvestigationCase(caseId, ev, hyp);
+        setFeedbackByCase({
+            ...feedbackByCase,
+            [caseId]: { ok: res.ok, message: res.reason }
+        });
+    };
+
+    return (
+        <div className="space-y-4 pt-2">
+            <div className="flex items-center justify-between">
+                <h3 className="text-xs font-bold text-slate-800 uppercase tracking-wider flex items-center gap-1.5">
+                    <Search size={14} className="text-indigo-600" /> Formal Case Reasoning & Evidence Verification
+                </h3>
+                <span className="text-[11px] font-mono text-slate-500">
+                    Solved: {solvedIds.length}/{FORMAL_INVESTIGATION_CASES.length}
+                </span>
+            </div>
+
+            {cases.map((c) => {
+                const isSolved = solvedIds.includes(c.id);
+                const selectedEv = selectedEvidenceByCase[c.id] || [];
+                const selectedHyp = selectedHypothesisByCase[c.id] || '';
+                const feedback = feedbackByCase[c.id];
+
+                return (
+                    <div key={c.id} className="p-4 border border-slate-200 rounded-2xl bg-white space-y-3 shadow-xs">
+                        <div className="flex flex-wrap items-center justify-between gap-2 border-b border-slate-100 pb-2">
+                            <div>
+                                <div className="text-xs font-bold text-slate-900">
+                                    [{c.id}] {c.title}
+                                </div>
+                                <div className="text-[11px] font-mono text-slate-500">
+                                    Subject: {c.subjectName} ({c.subjectMaid}) • Lead: {c.leadInvestigator}
+                                </div>
+                            </div>
+                            <span
+                                className={`px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold ${
+                                    isSolved
+                                        ? 'bg-emerald-100 text-emerald-800 border border-emerald-300'
+                                        : 'bg-amber-50 text-amber-800 border border-amber-200'
+                                }`}
+                            >
+                                {isSolved ? '✓ VERIFIED DETERMINATION' : `REWARD: +${c.rewardCredits} ₢ / +${c.rewardXP} XP / +${c.rewardBits} ◈`}
+                            </span>
+                        </div>
+
+                        <p className="text-xs text-slate-600 leading-relaxed">{c.summary}</p>
+
+                        {/* Step 1: Select Corroborating Evidence */}
+                        <div className="space-y-1.5">
+                            <div className="text-[11px] font-bold text-slate-700 uppercase">
+                                1. Select Corroborating Exhibits (Exclude Unverified Rumors):
+                            </div>
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-2">
+                                {c.requiredEvidence.map((ev) => {
+                                    const checked = selectedEv.includes(ev.id);
+                                    return (
+                                        <label
+                                            key={ev.id}
+                                            className={`p-2.5 rounded-xl border text-left text-[11px] cursor-pointer transition flex items-start gap-2 ${
+                                                checked
+                                                    ? 'border-indigo-500 bg-indigo-50/70 text-indigo-950'
+                                                    : 'border-slate-200 bg-slate-50/60 text-slate-700 hover:bg-slate-100/70'
+                                            }`}
+                                        >
+                                            <input
+                                                type="checkbox"
+                                                disabled={isSolved}
+                                                checked={checked}
+                                                onChange={() => toggleEvidence(c.id, ev.id)}
+                                                className="mt-0.5"
+                                            />
+                                            <div>
+                                                <div className="font-bold">{ev.label}</div>
+                                                <div className="text-[10px] text-slate-500 font-mono">Source: {ev.sourceApp}</div>
+                                                <div className="text-[10px] text-slate-600 mt-0.5">{ev.finding}</div>
+                                            </div>
+                                        </label>
+                                    );
+                                })}
+                            </div>
+                        </div>
+
+                        {/* Step 2: Select Formal Hypothesis */}
+                        <div className="space-y-1.5">
+                            <div className="text-[11px] font-bold text-slate-700 uppercase">
+                                2. Select Formal Determination Hypothesis:
+                            </div>
+                            <div className="space-y-1.5">
+                                {c.hypotheses.map((h) => {
+                                    const chosen = selectedHyp === h.id;
+                                    return (
+                                        <label
+                                            key={h.id}
+                                            className={`p-2.5 rounded-xl border text-left text-[11px] cursor-pointer transition flex items-start gap-2 ${
+                                                chosen
+                                                    ? 'border-emerald-500 bg-emerald-50/70 text-emerald-950'
+                                                    : 'border-slate-200 bg-white text-slate-700 hover:bg-slate-50'
+                                            }`}
+                                        >
+                                            <input
+                                                type="radio"
+                                                name={`hyp-${c.id}`}
+                                                disabled={isSolved}
+                                                checked={chosen}
+                                                onChange={() =>
+                                                    setSelectedHypothesisByCase({ ...selectedHypothesisByCase, [c.id]: h.id })
+                                                }
+                                                className="mt-0.5"
+                                            />
+                                            <div>
+                                                <div className="font-bold">{h.title}</div>
+                                                <div className="text-[10px] text-slate-600">{h.conclusion}</div>
+                                            </div>
+                                        </label>
+                                    );
+                                })}
+                            </div>
+                        </div>
+
+                        {feedback && (
+                            <div
+                                className={`p-2.5 rounded-xl text-xs font-mono border ${
+                                    feedback.ok
+                                        ? 'bg-emerald-50 border-emerald-200 text-emerald-900'
+                                        : 'bg-rose-50 border-rose-200 text-rose-900'
+                                }`}
+                            >
+                                {feedback.message}
+                            </div>
+                        )}
+
+                        <div className="flex justify-end">
+                            <button
+                                onClick={() => handleSubmitCase(c.id)}
+                                disabled={isSolved}
+                                className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 disabled:bg-slate-200 disabled:text-slate-400 text-white rounded-xl text-xs font-bold transition cursor-pointer"
+                            >
+                                {isSolved ? '✓ Case Filed in Canonical Registry' : 'Submit Formal Determination'}
+                            </button>
+                        </div>
+                    </div>
+                );
+            })}
+        </div>
+    );
+}
 
 // ==========================================
 // 1. Faith Medical Intranet (faithmed.aure)
 // ==========================================
 export function FaithMedPortal() {
     const player = useOSStore((s) => s.gameplay?.player);
-    const healAura = useOSStore((s) => s.healAura);
-    const removeCondition = useOSStore((s) => s.removeCondition);
-    const addCredits = useOSStore((s) => s.addCredits);
-    const addXP = useOSStore((s) => s.addXP);
-    const [scanned, setScanned] = useState(false);
+    const timeCycleCount = useOSStore((s) => s.gameplay?.timeCycleCount ?? 0);
+    const runFaithDiagnosticScan = useOSStore((s) => s.runFaithDiagnosticScan);
+    const treatFaithCondition = useOSStore((s) => s.treatFaithCondition);
+    const [clinicalMessage, setClinicalMessage] = useState<string | null>(null);
+
+    const isDiagnosed = Boolean(player?.faithDiagnosed);
+    const scannedThisCycle = player?.lastFaithDiagnosticCycle === timeCycleCount;
+    const activeConditions = player?.conditions || [];
 
     const handleIntakeScan = () => {
-        if (healAura) healAura(30);
-        if (removeCondition) {
-            removeCondition('Veilwilt');
-            removeCondition('Sunspire Burn Fever');
-        }
-        if (addCredits) addCredits(150);
-        if (addXP) addXP(75);
-        setScanned(true);
+        if (!runFaithDiagnosticScan) return;
+        const res = runFaithDiagnosticScan();
+        setClinicalMessage(res.reason);
     };
+
+    const handleTreatCondition = (conditionName: string) => {
+        if (!treatFaithCondition) return;
+        const res = treatFaithCondition(conditionName);
+        setClinicalMessage(res.reason);
+    };
+
+    const treatmentProtocols = [
+        { id: 'Frostlung', title: 'Frostlung Syndrome', desc: 'Warm-essence thermal thaw', btnLabel: 'Apply Thaw', color: 'cyan' },
+        { id: 'Sunspire Burn Fever', title: 'Sunspire Burn Fever', desc: 'Thermal cooling mapping', btnLabel: 'Cool Aura', color: 'amber' },
+        { id: 'Veilwilt', title: 'Veilwilt Disorder', desc: 'Aura rest & memory seal', btnLabel: 'Seal Veil', color: 'purple' },
+        { id: 'Riftspine Fracture', title: 'Riftspine Fracture', desc: 'Timeline drift stabilization', btnLabel: 'Re-align Spine', color: 'rose' }
+    ];
 
     return (
         <div className="p-6 space-y-6 bg-[#FAFBFD] min-h-full text-slate-800 font-ui select-none">
@@ -42,7 +230,7 @@ export function FaithMedPortal() {
                     </div>
                 </div>
                 <div className="text-right text-xs font-ui">
-                    <div className="text-slate-500">Patient Baseline</div>
+                    <div className="text-slate-500">Patient Baseline ({isDiagnosed ? 'Calibrated' : 'Uncalibrated'})</div>
                     <div className="text-emerald-700 font-bold">Aura Integrity: {player?.auraHealth || 100}%</div>
                 </div>
             </header>
@@ -54,17 +242,27 @@ export function FaithMedPortal() {
                         <Activity size={18} className="text-emerald-700" /> Mandatory Baseline Aura Diagnostic
                     </h2>
                     <p className="text-xs text-emerald-800">
-                        Execute telemetry scan to restore Aura Integrity, purge Veilwilt exposure, and claim health stipend.
+                        Execute a telemetry scan before applying condition-specific treatments. First baseline calibration grants +150 ₢ and +75 XP (once per Sys-Cycle).
                     </p>
                 </div>
                 <button
                     onClick={handleIntakeScan}
-                    disabled={scanned}
+                    disabled={scannedThisCycle}
                     className="px-5 py-2.5 bg-emerald-600 hover:bg-emerald-700 disabled:bg-slate-200 disabled:text-slate-400 text-white rounded-xl text-xs font-bold transition-all shadow-xs flex items-center gap-2 font-ui cursor-pointer"
                 >
-                    {scanned ? '✓ Telemetry Calibrated' : 'Run Diagnostic Scan (+150 ₢)'}
+                    {scannedThisCycle
+                        ? '✓ Telemetry Calibrated (This Cycle)'
+                        : isDiagnosed
+                        ? 'Re-Calibrate Cycle Scan (+75 XP)'
+                        : 'Run Baseline Scan (+150 ₢, +75 XP)'}
                 </button>
             </div>
+
+            {clinicalMessage && (
+                <div className="p-3 rounded-xl bg-emerald-50 border border-emerald-200 text-xs font-mono text-emerald-900">
+                    [MEDSTAT TELEMETRY]: {clinicalMessage}
+                </div>
+            )}
 
             {/* Staff & Patient Logs */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -79,59 +277,55 @@ export function FaithMedPortal() {
                 <div className="p-4 border border-slate-200 rounded-xl bg-white space-y-2 shadow-xs">
                     <h3 className="text-xs font-bold text-slate-700 uppercase tracking-wider">Patient Telemetry #FM-88392</h3>
                     <div className="text-xs space-y-1 font-mono text-slate-600">
-                        <div>Aura Heat: <strong className="text-emerald-700">37.2°C (Stable)</strong></div>
-                        <div>Active Conditions: <span className="font-bold text-rose-600">{player?.conditions?.join(', ') || 'None (Stable Resonance)'}</span></div>
-                        <div>Flux Index: <span className="text-indigo-600 font-bold">88.4% Harmonic</span></div>
+                        <div>Diagnostic Status: <strong className={isDiagnosed ? 'text-emerald-700' : 'text-amber-700'}>{isDiagnosed ? 'Verified Baseline' : 'Scan Required Prior to Treatment'}</strong></div>
+                        <div>Active Conditions: <span className="font-bold text-rose-600">{activeConditions.length > 0 ? activeConditions.join(', ') : 'None (Stable Resonance)'}</span></div>
+                        <div>Treated History: <span className="text-indigo-600 font-bold">{(player?.treatedConditionsHistory || []).join(', ') || 'No prior interventions'}</span></div>
                     </div>
                 </div>
             </div>
 
             {/* Clinical Condition Treatment Matrix */}
             <div className="space-y-3 pt-2">
-                <h3 className="text-xs font-bold text-slate-700 uppercase tracking-wider">Veil Exposure Treatment Protocols</h3>
+                <div className="flex items-center justify-between">
+                    <h3 className="text-xs font-bold text-slate-700 uppercase tracking-wider">Veil Exposure Treatment Protocols</h3>
+                    <span className="text-[11px] font-mono text-slate-500">
+                        Requires Baseline Scan + Active Condition Diagnosis (+60 XP & +15 Aura on verified cure)
+                    </span>
+                </div>
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-3 text-xs font-mono">
-                    <div className="p-3 rounded-xl bg-cyan-50 border border-cyan-200 space-y-1">
-                        <div className="font-bold text-cyan-900">Frostlung Syndrome</div>
-                        <p className="text-[11px] text-cyan-700">Warm-essence thermal thaw</p>
-                        <button
-                            onClick={() => { if (removeCondition) removeCondition('Frostlung'); if (addXP) addXP(60); }}
-                            className="mt-1 w-full py-1 rounded bg-cyan-600 hover:bg-cyan-700 text-white font-bold text-[10px] cursor-pointer"
-                        >
-                            Apply Thaw
-                        </button>
-                    </div>
-                    <div className="p-3 rounded-xl bg-amber-50 border border-amber-200 space-y-1">
-                        <div className="font-bold text-amber-900">Sunspire Burn Fever</div>
-                        <p className="text-[11px] text-amber-700">Thermal cooling mapping</p>
-                        <button
-                            onClick={() => { if (removeCondition) removeCondition('Sunspire Burn Fever'); if (addXP) addXP(60); }}
-                            className="mt-1 w-full py-1 rounded bg-amber-600 hover:bg-amber-700 text-white font-bold text-[10px] cursor-pointer"
-                        >
-                            Cool Aura
-                        </button>
-                    </div>
-                    <div className="p-3 rounded-xl bg-purple-50 border border-purple-200 space-y-1">
-                        <div className="font-bold text-purple-900">Veilwilt Disorder</div>
-                        <p className="text-[11px] text-purple-700">Aura rest & memory seal</p>
-                        <button
-                            onClick={() => { if (removeCondition) removeCondition('Veilwilt'); if (addXP) addXP(60); }}
-                            className="mt-1 w-full py-1 rounded bg-purple-600 hover:bg-purple-700 text-white font-bold text-[10px] cursor-pointer"
-                        >
-                            Seal Veil
-                        </button>
-                    </div>
-                    <div className="p-3 rounded-xl bg-rose-50 border border-rose-200 space-y-1">
-                        <div className="font-bold text-rose-900">Riftspine Fracture</div>
-                        <p className="text-[11px] text-rose-700">Timeline drift stabilization</p>
-                        <button
-                            onClick={() => { if (removeCondition) removeCondition('Riftspine Fracture'); if (addXP) addXP(60); }}
-                            className="mt-1 w-full py-1 rounded bg-rose-600 hover:bg-rose-700 text-white font-bold text-[10px] cursor-pointer"
-                        >
-                            Re-align Spine
-                        </button>
-                    </div>
+                    {treatmentProtocols.map((proto) => {
+                        const hasCondition = activeConditions.includes(proto.id);
+                        const canTreat = isDiagnosed && hasCondition;
+                        return (
+                            <div key={proto.id} className="p-3 rounded-xl bg-white border border-slate-200 space-y-1.5 shadow-2xs flex flex-col justify-between">
+                                <div>
+                                    <div className="flex items-center justify-between gap-1">
+                                        <span className="font-bold text-slate-900">{proto.title}</span>
+                                        <span className={`px-1.5 py-0.5 rounded text-[9px] font-bold ${hasCondition ? 'bg-rose-100 text-rose-800' : 'bg-slate-100 text-slate-500'}`}>
+                                            {hasCondition ? 'ACTIVE' : 'CLEAR'}
+                                        </span>
+                                    </div>
+                                    <p className="text-[11px] text-slate-600 mt-1">{proto.desc}</p>
+                                </div>
+                                <button
+                                    onClick={() => handleTreatCondition(proto.id)}
+                                    disabled={!canTreat}
+                                    className="mt-2 w-full py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 disabled:bg-slate-100 disabled:text-slate-400 text-white font-bold text-[10px] transition cursor-pointer"
+                                >
+                                    {!isDiagnosed
+                                        ? 'Scan Required'
+                                        : hasCondition
+                                        ? `${proto.btnLabel} (+60 XP)`
+                                        : 'No Active Exposure'}
+                                </button>
+                            </div>
+                        );
+                    })}
                 </div>
             </div>
+
+            {/* Pillar III Clinical Forensic Triage Cases */}
+            <FormalCaseReasoningBoard filterInstitution="Faith Medical" />
         </div>
     );
 }
@@ -168,6 +362,9 @@ export function DGAPortal() {
                 <h3 className="font-bold text-slate-800 uppercase tracking-wider">Public Advisories</h3>
                 <div className="text-slate-600">• PRISM Signal Anomaly detected in Sector 4. Citizens advised to report corrupted binary runes.</div>
             </div>
+
+            {/* Pillar III DGA / TRACE Forensic Investigation Board */}
+            <FormalCaseReasoningBoard filterInstitution="DGAOS" />
         </div>
     );
 }
@@ -243,12 +440,12 @@ export function OrynvellRecordsPortal() {
 // ==========================================
 export function BankPortal() {
     const player = useOSStore((s) => s.gameplay?.player);
-    const addCredits = useOSStore((s) => s.addCredits);
-    const addBits = useOSStore((s) => s.addBits);
+    const claimPortalAction = useOSStore((s) => s.claimPortalAction);
     const [authenticated, setAuthenticated] = useState(false);
     const [pinInput, setPinInput] = useState('');
-    const [auditSuccess, setAuditSuccess] = useState(false);
     const [activeTab, setActiveTab] = useState<'vault' | 'ledger'>('vault');
+
+    const auditSuccess = (player?.claimedPortalActionIds || []).includes('bank-wire-0994');
 
     const handleLogin = (e: React.FormEvent) => {
         e.preventDefault();
@@ -260,9 +457,9 @@ export function BankPortal() {
     };
 
     const handleHackAudit = () => {
-        if (addCredits) addCredits(300);
-        if (addBits) addBits(2);
-        setAuditSuccess(true);
+        if (claimPortalAction) {
+            claimPortalAction('bank-wire-0994', 300, 2, 50, 'Traced Suspect Wire Transfer #0994 in Oryn Treasury');
+        }
     };
 
     return (
@@ -354,12 +551,13 @@ export function BankPortal() {
 // ==========================================
 export function CivinetPortal() {
     const player = useOSStore((s) => s.gameplay?.player);
-    const addCredits = useOSStore((s) => s.addCredits);
-    const [stipendClaimed, setStipendClaimed] = useState(false);
+    const claimPortalAction = useOSStore((s) => s.claimPortalAction);
+    const stipendClaimed = (player?.claimedPortalActionIds || []).includes('civinet-monthly-stipend');
 
     const handleClaimStipend = () => {
-        if (addCredits) addCredits(100);
-        setStipendClaimed(true);
+        if (claimPortalAction) {
+            claimPortalAction('civinet-monthly-stipend', 100, 0, 25, 'Claimed Provisional Citizen Monthly Welfare Stipend');
+        }
     };
 
     return (
@@ -431,9 +629,8 @@ export function CivinetPortal() {
 // ==========================================
 export function QuestNoticePortal() {
     const player = useOSStore((s) => s.gameplay?.player);
-    const addCredits = useOSStore((s) => s.addCredits);
-    const addXP = useOSStore((s) => s.addXP);
-    const [claimedTasks, setClaimedTasks] = useState<string[]>([]);
+    const claimPortalAction = useOSStore((s) => s.claimPortalAction);
+    const claimedTasks = player?.claimedPortalActionIds || [];
 
     const tasks = [
         { id: 'qn-web-1', title: 'Library Return Cart Sorting', rewardCredits: 80, rewardXP: 40, desc: 'Sort 20 returned volumes by catalog number in the East Reading Room.' },
@@ -441,10 +638,10 @@ export function QuestNoticePortal() {
         { id: 'qn-web-3', title: 'Apothecary Herb Delivery', rewardCredits: 150, rewardXP: 75, desc: 'Deliver dried Sunspire blossom bundles to Faith Medical Clinic Ward 2.' },
     ];
 
-    const handleClaim = (taskId: string, credits: number, xp: number) => {
-        if (addCredits) addCredits(credits);
-        if (addXP) addXP(xp);
-        setClaimedTasks([...claimedTasks, taskId]);
+    const handleClaim = (taskId: string, title: string, credits: number, xp: number) => {
+        if (claimPortalAction) {
+            claimPortalAction(taskId, credits, 0, xp, `Completed Public Errand: ${title}`);
+        }
     };
 
     return (
@@ -478,7 +675,7 @@ export function QuestNoticePortal() {
                                 <div className="pt-2 border-t border-slate-100 flex items-center justify-between">
                                     <span className="text-xs font-mono font-bold text-amber-700">+{task.rewardCredits} ₢</span>
                                     <button
-                                        onClick={() => handleClaim(task.id, task.rewardCredits, task.rewardXP)}
+                                        onClick={() => handleClaim(task.id, task.title, task.rewardCredits, task.rewardXP)}
                                         disabled={isClaimed}
                                         className="px-3 py-1 bg-amber-600 hover:bg-amber-700 disabled:bg-slate-200 disabled:text-slate-400 text-white text-[11px] font-bold rounded-lg transition cursor-pointer"
                                     >
