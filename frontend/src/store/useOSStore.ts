@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { createJSONStorage, persist } from 'zustand/middleware';
-import { NOTICES } from '../data/notices';
+import { NOTICES, evaluateNoticeObjective } from '../data/notices';
 import { mergeSavedProgress, osStorage } from './osPersistence';
 
 // Activities / missions — seeded by MissionDirector TypeScript engine or future DataGrip pipeline.
@@ -71,6 +71,15 @@ export interface OSStoreState {
 
   advanceTime: () => void;
   restInDorm: () => void;
+  studyInHousing: () => { ok: boolean; message: string };
+  purchaseHousingUpgrade: (upgradeId: string, cost: number, bitCost?: number) => { ok: boolean; message: string };
+  advanceWorknetMissionStep: (missionId: string, stepKey: string) => void;
+  completeWorknetMission: (mission: { id: string; track: string; rewardCredits: number; rewardBits?: number; rewardXP: number; primaryAttribute?: string }) => { ok: boolean; reason?: string };
+  resetWorknetMissionsAdmin: () => void;
+  compileSpellProtocol: (spell: { name: string; combo?: string; comboLabel?: string; type: string; desc: string; power: number; isCanonical: boolean; regions?: string[] }) => { ok: boolean; isNewDiscovery: boolean; status: 'mastered_new' | 'recast' | 'insufficient_stamina'; message: string };
+  quarantineProcess: (pid: number) => boolean;
+  recordFileInspection: (mockKey: string) => void;
+  discoverRegionalShrine: (regionName: string) => boolean;
   updateNPCVector: (npcId: string, vectorName: string, delta: number) => void;
   updateReputationTrack: (trackName: string, delta: number) => void;
   startSession: (gameId: string, initialState?: Record<string, any>) => void;
@@ -80,7 +89,7 @@ export interface OSStoreState {
   addBits: (amount: number) => void;
   addXP: (amount: number) => void;
   completeActivity: (id: string) => void;
-  completeNotice: (id: string) => void;
+  completeNotice: (id: string) => boolean;
   claimCommsAttachment: (commId: string, credits?: number, xp?: number) => void;
   advanceAppRank: (appKey: string) => void;
   completeStarterLoop: (loopKey: string) => void;
@@ -121,7 +130,7 @@ export interface OSStoreState {
   setWallpaper: (url: string) => void;
 }
 
-export const useOSStore = create<OSStoreState>()(persist((set) => ({
+export const useOSStore = create<OSStoreState>()(persist((set, get) => ({
   isLoggedIn: false,
   isSanctuary: false,
   toggleSanctuary: () => set((s) => ({ isSanctuary: !s.isSanctuary })),
@@ -470,13 +479,28 @@ export const useOSStore = create<OSStoreState>()(persist((set) => ({
       credits: 500,
       bits: 25,
       xp: 0,
+      stamina: 85,
       rewardItems: [],
       completedQuests: [],
       completedNoticeIds: NOTICES.filter((notice) => notice.completed).map((notice) => notice.id),
+      completedWorknetMissionIds: [],
+      worknetMissionProgress: {},
+      unlockedHousingUpgrades: ['banner'],
+      housingCalibrated: false,
+      dreamLogs: [
+        'DREAM_ENTRY #04: A mirrored cathedral under coastal rain. A woman with silver hair whispers: "The code was never code, it was memory."',
+        'DREAM_ENTRY #03: Falling through the Supercomputer factory floor. Glowing blue lines trace my pulse.',
+      ],
       hackedNodes: 0,
+      quarantinedProcessPids: [],
+      inspectedFiles: [],
+      discoveredShrines: [],
       auraHealth: 100,
       conditions: ['Veilwilt'],
-      forgedSpells: [],
+      forgedSpells: ['Reflect Shield'],
+      forgedSpellHistory: [
+        { name: 'Reflect Shield', combo: 'Firewall.mod + Routing.mod', type: 'Combat Defense', power: 120, date: 'Cycle 28', mastered: true },
+      ],
       lineageDecrypted: false,
       dgaVerified: false,
       npcVectors: {
@@ -584,17 +608,353 @@ export const useOSStore = create<OSStoreState>()(persist((set) => ({
     }),
 
   restInDorm: () =>
+    set((state) => {
+      const player = state.gameplay.player;
+      const unlocked = Array.isArray(player.unlockedHousingUpgrades) ? player.unlockedHousingUpgrades : ['banner'];
+      const hasAuraLamp = unlocked.includes('aura_lamp');
+      const currentDreams = Array.isArray(player.dreamLogs) ? player.dreamLogs : [];
+      const nextDreamNumber = currentDreams.length + 5;
+      const newDream = `DREAM_ENTRY #0${nextDreamNumber}: AETHERCORE whispers (Cycle ${state.gameplay.timeCycleCount + 1}): "Maeryn's Lightborn bloodline will awaken when the Veil tears."`;
+      const newXP = player.xp + 50;
+      const newLevel = Math.floor(newXP / 100) + 1;
+      const nextCorruption = hasAuraLamp
+        ? Math.max(2.0, Number((state.gameplay.prismCorruptionLevel - 1.5).toFixed(1)))
+        : state.gameplay.prismCorruptionLevel;
+      const nextConditions = hasAuraLamp
+        ? (player.conditions || []).filter((c: string) => c !== 'Veilwilt')
+        : player.conditions;
+
+      return {
+        gameplay: {
+          ...state.gameplay,
+          timeSegmentIndex: 0, // Morning
+          timeCycleCount: state.gameplay.timeCycleCount + 1,
+          prismCorruptionLevel: nextCorruption,
+          player: {
+            ...player,
+            auraHealth: 100,
+            stamina: 100,
+            housingCalibrated: true,
+            xp: newXP,
+            level: newLevel,
+            conditions: nextConditions,
+            dreamLogs: [newDream, ...currentDreams.slice(0, 14)],
+          },
+        },
+      };
+    }),
+
+  studyInHousing: () => {
+    const state = get();
+    const player = state.gameplay.player;
+    const unlocked = Array.isArray(player.unlockedHousingUpgrades) ? player.unlockedHousingUpgrades : ['banner'];
+    const staminaCost = unlocked.includes('mattress') ? 15 : 20;
+    const currentStamina = typeof player.stamina === 'number' ? player.stamina : 85;
+    if (currentStamina < staminaCost) {
+      return { ok: false, message: `Too exhausted to study! Requires ${staminaCost} Stamina. Rest in your bed first.` };
+    }
+
+    const xpGain = unlocked.includes('desk') ? 160 : 120;
+    const newXP = player.xp + xpGain;
+    const newLevel = Math.floor(newXP / 100) + 1;
+
+    set((s) => ({
+      gameplay: {
+        ...s.gameplay,
+        player: {
+          ...s.gameplay.player,
+          stamina: Math.max(0, currentStamina - staminaCost),
+          housingCalibrated: true,
+          xp: newXP,
+          level: newLevel,
+        },
+      },
+    }));
+    get().addSkillXP('Research', 25);
+    get().addSkillXP('Programming', 20);
+    return { ok: true, message: `Completed 2 hours of Cyacademy Syntax coursework (-${staminaCost} Stamina). +${xpGain} Academic XP gained!` };
+  },
+
+  purchaseHousingUpgrade: (upgradeId, cost, bitCost = 0) => {
+    const state = get();
+    const player = state.gameplay.player;
+    const unlocked: string[] = Array.isArray(player.unlockedHousingUpgrades) ? player.unlockedHousingUpgrades : ['banner'];
+    if (unlocked.includes(upgradeId)) {
+      return { ok: false, message: 'Upgrade already installed in your housing unit.' };
+    }
+
+    if (bitCost > 0) {
+      if ((player.bits || 0) < bitCost) {
+        return { ok: false, message: `Insufficient BITS! Requires ${bitCost} ◈ BITS.` };
+      }
+    } else {
+      if ((player.credits || 0) < cost) {
+        return { ok: false, message: `Insufficient CREDITS! Requires ${cost} ₢ Credits.` };
+      }
+    }
+
+    const newXP = player.xp + 40;
+    const newLevel = Math.floor(newXP / 100) + 1;
+
+    set((s) => ({
+      gameplay: {
+        ...s.gameplay,
+        player: {
+          ...s.gameplay.player,
+          credits: bitCost > 0 ? s.gameplay.player.credits : Math.max(0, s.gameplay.player.credits - cost),
+          bits: bitCost > 0 ? Math.max(0, (s.gameplay.player.bits || 0) - bitCost) : s.gameplay.player.bits,
+          unlockedHousingUpgrades: [...unlocked, upgradeId],
+          housingCalibrated: true,
+          dormComfort: Math.min(100, (s.gameplay.player.dormComfort || 50) + 10),
+          xp: newXP,
+          level: newLevel,
+        },
+      },
+    }));
+    return { ok: true, message: 'Upgrade unlocked & permanently installed! Room comfort and housing calibration updated.' };
+  },
+
+  advanceWorknetMissionStep: (missionId, stepKey) =>
+    set((state) => {
+      const player = state.gameplay.player;
+      const progressMap: Record<string, string[]> = { ...(player.worknetMissionProgress || {}) };
+      const existingSteps = Array.isArray(progressMap[missionId]) ? progressMap[missionId] : [];
+      if (existingSteps.includes(stepKey)) return state;
+      progressMap[missionId] = [...existingSteps, stepKey];
+
+      return {
+        gameplay: {
+          ...state.gameplay,
+          player: {
+            ...player,
+            worknetMissionProgress: progressMap,
+          },
+        },
+      };
+    }),
+
+  completeWorknetMission: (mission) => {
+    const state = get();
+    const player = state.gameplay.player;
+    const completedIds: string[] = Array.isArray(player.completedWorknetMissionIds) ? player.completedWorknetMissionIds : [];
+    if (!mission?.id || completedIds.includes(mission.id)) {
+      return { ok: false, reason: 'Assignment already completed and cleared.' };
+    }
+
+    const progressMap: Record<string, string[]> = player.worknetMissionProgress || {};
+    const steps = Array.isArray(progressMap[mission.id]) ? progressMap[mission.id] : [];
+    const requiredSteps = ['tool_calibrated', 'subject_inspected', 'directive_executed'];
+    const allVerified = requiredSteps.every((req) => steps.includes(req));
+    if (!allVerified) {
+      return { ok: false, reason: 'All 3 operational verification steps must be completed before claiming payout.' };
+    }
+
+    const newXP = player.xp + (mission.rewardXP || 0);
+    const newLevel = Math.floor(newXP / 100) + 1;
+    const currentStamina = typeof player.stamina === 'number' ? player.stamina : 85;
+    const reducesCorruption = ['dga', 'engineer', 'medical', 'archivist'].includes(mission.track);
+    const nextCorruption = reducesCorruption
+      ? Math.max(2.0, Number((state.gameplay.prismCorruptionLevel - 1.0).toFixed(1)))
+      : state.gameplay.prismCorruptionLevel;
+
+    set((s) => ({
+      gameplay: {
+        ...s.gameplay,
+        prismCorruptionLevel: nextCorruption,
+        player: {
+          ...s.gameplay.player,
+          completedWorknetMissionIds: [...completedIds, mission.id],
+          credits: s.gameplay.player.credits + (mission.rewardCredits || 0),
+          bits: (s.gameplay.player.bits || 0) + (mission.rewardBits || 0),
+          xp: newXP,
+          level: newLevel,
+          stamina: Math.max(0, currentStamina - 10),
+        },
+      },
+    }));
+
+    if (mission.track) {
+      get().addCareerXP(mission.track, mission.rewardXP || 50);
+    }
+    if (mission.primaryAttribute) {
+      get().addSkillXP(mission.primaryAttribute, 25);
+    }
+    return { ok: true };
+  },
+
+  resetWorknetMissionsAdmin: () =>
     set((state) => ({
       gameplay: {
         ...state.gameplay,
-        timeSegmentIndex: 0, // Morning
-        timeCycleCount: state.gameplay.timeCycleCount + 1,
         player: {
           ...state.gameplay.player,
-          auraHealth: 100,
+          completedWorknetMissionIds: [],
+          worknetMissionProgress: {},
         },
       },
     })),
+
+  compileSpellProtocol: (spell) => {
+    const state = get();
+    const player = state.gameplay.player;
+    const currentStamina = typeof player.stamina === 'number' ? player.stamina : 85;
+    if (currentStamina < 15) {
+      return {
+        ok: false,
+        isNewDiscovery: false,
+        status: 'insufficient_stamina',
+        message: 'Insufficient Stamina (requires 15 Stamina). Rest in HOMECRAFT // Housing to recover.',
+      };
+    }
+
+    const forgedSpells: string[] = Array.isArray(player.forgedSpells) ? player.forgedSpells : [];
+    const history = Array.isArray(player.forgedSpellHistory) ? player.forgedSpellHistory : [];
+    const alreadyForged = forgedSpells.includes(spell.name);
+    const comboStr = spell.comboLabel || spell.combo || 'Module Synthesis';
+
+    const discoveredShrines: string[] = Array.isArray(player.discoveredShrines) ? [...player.discoveredShrines] : [];
+    if (Array.isArray(spell.regions)) {
+      for (const reg of spell.regions) {
+        if (reg && !discoveredShrines.includes(reg)) {
+          discoveredShrines.push(reg);
+        }
+      }
+    }
+
+    if (!alreadyForged) {
+      const xpGain = spell.isCanonical ? 150 : 60;
+      const creditGain = spell.isCanonical ? 200 : 50;
+      const newXP = player.xp + xpGain;
+      const newLevel = Math.floor(newXP / 100) + 1;
+      const nextCorruption = Math.max(2.0, Number((state.gameplay.prismCorruptionLevel - 2.0).toFixed(1)));
+
+      set((s) => ({
+        gameplay: {
+          ...s.gameplay,
+          prismCorruptionLevel: nextCorruption,
+          player: {
+            ...s.gameplay.player,
+            stamina: Math.max(0, currentStamina - 15),
+            credits: s.gameplay.player.credits + creditGain,
+            xp: newXP,
+            level: newLevel,
+            forgedSpells: [...forgedSpells, spell.name],
+            discoveredShrines,
+            forgedSpellHistory: [
+              { name: spell.name, combo: comboStr, type: spell.type, power: spell.power, date: `Cycle ${s.gameplay.timeCycleCount}`, mastered: true },
+              ...history.slice(0, 14),
+            ],
+          },
+        },
+      }));
+      get().addSkillXP('Spellcasting', 35);
+      return {
+        ok: true,
+        isNewDiscovery: true,
+        status: 'mastered_new',
+        message: `First-Time Protocol Discovery! +${creditGain} ₢, +${xpGain} XP, -2.0% PRISM Corruption.`,
+      };
+    } else {
+      const nextCorruption = Math.max(2.0, Number((state.gameplay.prismCorruptionLevel - 1.0).toFixed(1)));
+      set((s) => ({
+        gameplay: {
+          ...s.gameplay,
+          prismCorruptionLevel: nextCorruption,
+          player: {
+            ...s.gameplay.player,
+            stamina: Math.max(0, currentStamina - 15),
+            auraHealth: Math.min(100, (s.gameplay.player.auraHealth || 100) + 5),
+            discoveredShrines,
+          },
+        },
+      }));
+      get().addSkillXP('Spellcasting', 15);
+      return {
+        ok: true,
+        isNewDiscovery: false,
+        status: 'recast',
+        message: `Channeled mastered protocol "${spell.name}" (-15 Stamina). Stabilized Veil (-1.0% PRISM Corruption, +5 Aura, +15 Spellcasting XP).`,
+      };
+    }
+  },
+
+  quarantineProcess: (pid) => {
+    const state = get();
+    const player = state.gameplay.player;
+    const quarantined: number[] = Array.isArray(player.quarantinedProcessPids) ? player.quarantinedProcessPids : [];
+    if (quarantined.includes(pid)) return false;
+
+    const newXP = player.xp + 150;
+    const newLevel = Math.floor(newXP / 100) + 1;
+    const nextCorruption = Math.max(2.0, Number((state.gameplay.prismCorruptionLevel - 2.5).toFixed(1)));
+
+    set((s) => ({
+      gameplay: {
+        ...s.gameplay,
+        prismCorruptionLevel: nextCorruption,
+        player: {
+          ...s.gameplay.player,
+          quarantinedProcessPids: [...quarantined, pid],
+          hackedNodes: (s.gameplay.player.hackedNodes || 0) + 1,
+          credits: s.gameplay.player.credits + 250,
+          xp: newXP,
+          level: newLevel,
+        },
+      },
+    }));
+    get().addSkillXP('CyberSecurity', 30);
+    return true;
+  },
+
+  recordFileInspection: (mockKey) =>
+    set((state) => {
+      if (!mockKey) return state;
+      const player = state.gameplay.player;
+      const inspected: string[] = Array.isArray(player.inspectedFiles) ? player.inspectedFiles : [];
+      const alreadyInspected = inspected.includes(mockKey);
+      const nextInspected = alreadyInspected ? inspected : [...inspected, mockKey];
+      const unlocksLineage = mockKey === 'purge-archive' || mockKey === 'aethercore-sys';
+      const xpGain = alreadyInspected ? 0 : 25;
+      const newXP = player.xp + xpGain;
+
+      return {
+        gameplay: {
+          ...state.gameplay,
+          player: {
+            ...player,
+            inspectedFiles: nextInspected,
+            lineageDecrypted: player.lineageDecrypted || unlocksLineage,
+            xp: newXP,
+            level: Math.floor(newXP / 100) + 1,
+          },
+        },
+      };
+    }),
+
+  discoverRegionalShrine: (regionName) => {
+    if (!regionName) return false;
+    const state = get();
+    const player = state.gameplay.player;
+    const shrines: string[] = Array.isArray(player.discoveredShrines) ? player.discoveredShrines : [];
+    if (shrines.includes(regionName)) return false;
+
+    const newXP = player.xp + 35;
+    const newLevel = Math.floor(newXP / 100) + 1;
+
+    set((s) => ({
+      gameplay: {
+        ...s.gameplay,
+        player: {
+          ...s.gameplay.player,
+          discoveredShrines: [...shrines, regionName],
+          xp: newXP,
+          level: newLevel,
+        },
+      },
+    }));
+    get().addSkillXP('Research', 15);
+    return true;
+  },
 
   updateNPCVector: (npcId, vectorName, delta) =>
     set((state) => {
@@ -753,27 +1113,32 @@ export const useOSStore = create<OSStoreState>()(persist((set) => ({
       };
     }),
 
-  completeNotice: (id) =>
-    set((state) => {
-      const notice = NOTICES.find((candidate) => candidate.id === id);
-      const player = state.gameplay.player;
-      const completedIds = player.completedNoticeIds || [];
-      if (!notice || notice.completed || completedIds.includes(id)) return state;
-      const xp = player.xp + (notice.rewardXP || 0);
-      return {
-        gameplay: {
-          ...state.gameplay,
-          player: {
-            ...player,
-            completedNoticeIds: [...completedIds, id],
-            credits: player.credits + (notice.rewardCredits || 0),
-            bits: player.bits + (notice.rewardBits || 0),
-            xp,
-            level: Math.floor(xp / 100) + 1,
-          },
+  completeNotice: (id) => {
+    const state = get();
+    const notice = NOTICES.find((candidate) => candidate.id === id);
+    const player = state.gameplay.player;
+    const completedIds = player.completedNoticeIds || [];
+    if (!notice || notice.completed || completedIds.includes(id)) return false;
+
+    const evaluation = evaluateNoticeObjective(player, id);
+    if (!evaluation.met) return false;
+
+    const xp = player.xp + (notice.rewardXP || 0);
+    set((s) => ({
+      gameplay: {
+        ...s.gameplay,
+        player: {
+          ...s.gameplay.player,
+          completedNoticeIds: [...completedIds, id],
+          credits: s.gameplay.player.credits + (notice.rewardCredits || 0),
+          bits: s.gameplay.player.bits + (notice.rewardBits || 0),
+          xp,
+          level: Math.floor(xp / 100) + 1,
         },
-      };
-    }),
+      },
+    }));
+    return true;
+  },
 
   claimCommsAttachment: (commId, credits, xp) =>
     set((state) => {

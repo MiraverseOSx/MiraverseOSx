@@ -16,25 +16,41 @@ import {
 import { SoundFX } from '../utils/audio';
 import { useSystemStore } from '../store/useSystemStore';
 import { useOSStore } from '../store/useOSStore';
-import { NOTICES } from '../data/notices';
+import { NOTICES, evaluateNoticeObjective } from '../data/notices';
+import { launchDesktopApp } from '../integration/citizenBridge';
 
 export default function NoticeBoardApp() {
   const { soundEnabled } = useSystemStore();
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [activeCategory, setActiveCategory] = useState<'all' | 'tasks' | 'quests' | 'missions' | 'adventures' | 'journey'>('all');
+  const [feedbackMsg, setFeedbackMsg] = useState<string | null>(null);
   
   const completeNotice = useOSStore((s) => s.completeNotice);
   const player = useOSStore((s) => s.gameplay.player);
-  const notices = NOTICES.map((notice) => ({
-    ...notice,
-    completed: notice.completed || player.completedNoticeIds.includes(notice.id),
-  }));
+  const notices = NOTICES.map((notice) => {
+    const completed = notice.completed || player.completedNoticeIds.includes(notice.id);
+    const evalStatus = evaluateNoticeObjective(player, notice.id);
+    return {
+      ...notice,
+      completed,
+      evalStatus,
+    };
+  });
 
   const handleCompleteNotice = (id: string) => {
     const notice = notices.find((candidate) => candidate.id === id);
     if (!notice || notice.completed) return;
-    completeNotice(id);
-    if (soundEnabled) SoundFX.playSuccess();
+    if (!notice.evalStatus.met) {
+      setFeedbackMsg(`⚠️ Objective not yet fulfilled: ${notice.evalStatus.hint}`);
+      setTimeout(() => setFeedbackMsg(null), 4500);
+      return;
+    }
+    const ok = completeNotice(id);
+    if (ok) {
+      if (soundEnabled) SoundFX.playSuccess();
+      setFeedbackMsg(`✅ Protocol Fulfilled: "${notice.title}" (+${notice.rewardCredits} ₢, +${notice.rewardXP} XP)`);
+      setTimeout(() => setFeedbackMsg(null), 4500);
+    }
   };
 
   const filteredNotices = activeCategory === 'all' 
@@ -138,6 +154,12 @@ export default function NoticeBoardApp() {
           </div>
         </div>
 
+        {feedbackMsg && (
+          <div className="mb-3 px-4 py-2.5 rounded-xl bg-amber-50 border border-amber-200 text-xs font-ui font-semibold text-amber-950 shadow-xs">
+            {feedbackMsg}
+          </div>
+        )}
+
         {/* ASYMMETRIC TWO-COLUMN LAYOUT */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 items-start">
           
@@ -155,6 +177,7 @@ export default function NoticeBoardApp() {
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 {filteredNotices.map((notice, index) => {
                   const isWideCard = index % 3 === 0;
+                  const canComplete = notice.evalStatus.met && !notice.completed;
                   return (
                     <div 
                       key={notice.id}
@@ -182,9 +205,27 @@ export default function NoticeBoardApp() {
                         <h4 className={`text-sm font-bold font-display text-slate-900 mb-1 ${notice.completed ? 'line-through text-slate-400' : ''}`}>
                           {notice.title}
                         </h4>
-                        <p className="text-xs text-slate-600 leading-relaxed mb-4 font-ui">
+                        <p className="text-xs text-slate-600 leading-relaxed mb-3 font-ui">
                           {notice.description}
                         </p>
+
+                        {/* Verifiable Objective Telemetry Pill */}
+                        <div className={`mb-3 px-2.5 py-1.5 rounded-lg border text-[11px] font-ui flex items-center justify-between gap-2 ${
+                          notice.completed || notice.evalStatus.met
+                            ? 'bg-emerald-50 border-emerald-200 text-emerald-900'
+                            : 'bg-slate-50 border-slate-200 text-slate-700'
+                        }`}>
+                          <span className="font-semibold truncate">{notice.evalStatus.progressText}</span>
+                          {!notice.completed && !notice.evalStatus.met && notice.evalStatus.targetAppId && (
+                            <button
+                              type="button"
+                              onClick={() => launchDesktopApp(notice.evalStatus.targetAppId!)}
+                              className="px-2 py-0.5 rounded bg-indigo-600 hover:bg-indigo-700 text-white text-[10px] font-bold shrink-0 cursor-pointer"
+                            >
+                              Open App →
+                            </button>
+                          )}
+                        </div>
                       </div>
 
                       {/* Card Footer with Status Toggle */}
@@ -193,15 +234,23 @@ export default function NoticeBoardApp() {
                           onClick={() => handleCompleteNotice(notice.id)}
                           disabled={notice.completed}
                           aria-label={`${notice.completed ? 'Completed' : 'Complete'}: ${notice.title}`}
-                          className="flex items-center gap-1.5 text-xs font-ui font-medium text-slate-600 hover:text-slate-900 transition-colors"
+                          className={`flex items-center gap-1.5 text-xs font-ui font-medium transition-colors ${
+                            notice.completed
+                              ? 'text-slate-400'
+                              : canComplete
+                              ? 'text-emerald-700 hover:text-emerald-900 cursor-pointer'
+                              : 'text-slate-500 hover:text-slate-800 cursor-pointer'
+                          }`}
                         >
                           {notice.completed ? (
                             <CheckSquare className="w-4 h-4 text-emerald-600" />
+                          ) : canComplete ? (
+                            <Square className="w-4 h-4 text-emerald-600" />
                           ) : (
-                            <Square className="w-4 h-4 text-slate-400 hover:text-slate-700" />
+                            <Square className="w-4 h-4 text-slate-400" />
                           )}
                           <span className={notice.completed ? 'line-through text-slate-400 font-bold' : 'font-bold'}>
-                            {notice.completed ? 'Protocol Fulfilled' : 'Mark Complete'}
+                            {notice.completed ? 'Protocol Fulfilled' : canComplete ? 'Claim Verified Reward' : 'Verify Objective'}
                           </span>
                         </button>
                         <span className="text-[10px] font-ui uppercase text-amber-800 font-semibold">
@@ -245,6 +294,9 @@ export default function NoticeBoardApp() {
                         </span>
                         <div className="text-xs font-bold text-slate-900 group-hover:text-amber-900 truncate mt-1 font-display">
                           {pn.title}
+                        </div>
+                        <div className="text-[10px] text-slate-500 truncate">
+                          {pn.evalStatus.progressText}
                         </div>
                       </div>
                       <span className="text-[10px] text-emerald-700 font-ui font-bold shrink-0">

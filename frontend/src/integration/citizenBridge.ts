@@ -175,6 +175,27 @@ export function openCitizenInApp(
 }
 
 /**
+ * Launches or focuses any MiraverseOSx desktop application by its app ID.
+ */
+export function launchDesktopApp(targetAppId: string): void {
+  try {
+    const store = useOSStore.getState();
+    const appMeta = APPS.find(a => a.id === targetAppId) || { id: targetAppId, title: targetAppId };
+    const existingWin = (store.windows || []).find(w => w.id === targetAppId);
+    if (existingWin) {
+      if (existingWin.isMinimized) {
+        store.toggleMinimize(targetAppId);
+      }
+      store.focusWindow(targetAppId);
+    } else {
+      store.addWindow(appMeta);
+    }
+  } catch {
+    // Fallback if store not mounted
+  }
+}
+
+/**
  * Synchronizes a Faith Medical / MEDSTAT clinical update back to the citizen's canonical MAID record.
  */
 export async function syncFaithMedicalUpdate(

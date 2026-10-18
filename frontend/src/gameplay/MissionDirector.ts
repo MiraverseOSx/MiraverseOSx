@@ -10,6 +10,12 @@ export interface OperationReward {
   item: string;
 }
 
+export interface MissionObjectiveStep {
+  id: string;
+  label: string;
+  completed: boolean;
+}
+
 export interface OperationMission {
   id: string;
   title: string;
@@ -20,6 +26,16 @@ export interface OperationMission {
   description: string;
   rewards: OperationReward;
   status: 'Available' | 'In Progress' | 'Completed' | 'Locked';
+  prerequisites?: {
+    minLevel: number;
+    requiredSkill?: string;
+  };
+  objectives?: MissionObjectiveStep[];
+  worldConsequences?: {
+    corruptionDelta: number;
+    harmonicDelta: number;
+    reputationGain: number;
+  };
 }
 
 export class MissionDirector {
@@ -54,7 +70,8 @@ export class MissionDirector {
   ];
 
   /**
-   * Procedurally generates a field operation or city mission calibrated to player level.
+   * Procedurally generates a field operation or city mission calibrated to player level,
+   * including verifiable objective steps, prerequisites, and world consequences.
    */
   public generateMission(playerLevel = 1, preferredRegion?: string): OperationMission {
     const id = `MIS-${Math.random().toString(36).substring(2, 8).toUpperCase()}`;
@@ -67,8 +84,8 @@ export class MissionDirector {
     const difficulties: Array<'Novice' | 'Adept' | 'Master' | 'Overclocked'> = ['Novice', 'Adept', 'Master', 'Overclocked'];
     const difficulty = difficulties[Math.min(difficulties.length - 1, Math.floor(Math.random() * difficulties.length))];
 
-    const xpReward = playerLevel * (Math.floor(Math.random() * 250) + 150);
-    const creditReward = playerLevel * (Math.floor(Math.random() * 550) + 250);
+    const xpReward = playerLevel * (Math.floor(Math.random() * 120) + 100);
+    const creditReward = playerLevel * (Math.floor(Math.random() * 300) + 200);
     const itemReward = this.REWARD_ITEMS[Math.floor(Math.random() * this.REWARD_ITEMS.length)];
 
     const titles: Record<string, string> = {
@@ -100,8 +117,26 @@ export class MissionDirector {
         credits: creditReward,
         item: itemReward
       },
-      status: 'Available'
+      status: 'Available',
+      prerequisites: {
+        minLevel: Math.max(1, difficulty === 'Overclocked' ? 4 : difficulty === 'Master' ? 3 : difficulty === 'Adept' ? 2 : 1),
+        requiredSkill: type === 'Aether Purification' || type === 'Rune Calibration' ? 'Spellcasting' : 'Programming',
+      },
+      objectives: [
+        { id: 'recon', label: `Establish telemetry uplink in ${region}`, completed: false },
+        { id: 'execute', label: `Execute ${type} protocol for ${faction}`, completed: false },
+      ],
+      worldConsequences: {
+        corruptionDelta: -1.5,
+        harmonicDelta: 1.2,
+        reputationGain: 10,
+      }
     };
+  }
+
+  public verifyObjectivesComplete(mission: OperationMission): boolean {
+    if (!mission.objectives || mission.objectives.length === 0) return true;
+    return mission.objectives.every((obj) => obj.completed);
   }
 }
 

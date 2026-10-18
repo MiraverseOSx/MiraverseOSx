@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { miraverseDb } from '../db/miraverseDb';
-import { Shield, Globe, Users, RefreshCw, MapPin } from 'lucide-react';
+import { useOSStore } from '../store/useOSStore';
+import { ALL_SHRINE_REGIONS } from '../data/notices';
+import { Shield, Globe, Users, RefreshCw, MapPin, Sparkles, CheckCircle2 } from 'lucide-react';
 
 export default function LoreExplorer() {
     const [activeTab, setActiveTab] = useState<'factions' | 'locations' | 'npcs'>('factions');
@@ -8,6 +10,8 @@ export default function LoreExplorer() {
     const [locations, setLocations] = useState<any[]>([]);
     const [npcs, setNPCs] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
+    const discoveredShrines = useOSStore((s) => s.gameplay.player?.discoveredShrines || []);
+    const discoverRegionalShrine = useOSStore((s) => s.discoverRegionalShrine);
 
     const loadData = () => {
         setLoading(true);
@@ -145,7 +149,40 @@ export default function LoreExplorer() {
 
                         {/* LOCATIONS TAB */}
                         {activeTab === 'locations' && (
-                            <div className="space-y-4">
+                            <div className="space-y-5">
+                                {/* 8 Regional Elemental Shrines Attunement Strip */}
+                                <div className="bg-white p-4 rounded-xl border border-[#d8dce8] shadow-xs space-y-2.5">
+                                    <div className="flex items-center justify-between">
+                                        <div className="flex items-center gap-2 text-xs font-mono font-bold text-[#1e2640] uppercase">
+                                            <Sparkles size={14} className="text-amber-600" />
+                                            <span>Elemental Shrine Attunement Grid ({discoveredShrines.length} / {ALL_SHRINE_REGIONS.length} Attuned)</span>
+                                        </div>
+                                        <span className="text-[11px] font-mono text-slate-500">
+                                            Chronicle Expedition Protocol (n-05)
+                                        </span>
+                                    </div>
+                                    <div className="flex flex-wrap gap-2">
+                                        {ALL_SHRINE_REGIONS.map((region) => {
+                                            const isAttuned = discoveredShrines.includes(region);
+                                            return (
+                                                <button
+                                                    type="button"
+                                                    key={region}
+                                                    onClick={() => discoverRegionalShrine(region)}
+                                                    className={`px-3 py-1.5 rounded-lg text-xs font-mono font-bold border transition flex items-center gap-1.5 cursor-pointer ${
+                                                        isAttuned
+                                                            ? 'bg-emerald-50 border-emerald-300 text-emerald-800'
+                                                            : 'bg-slate-50 hover:bg-indigo-50 border-slate-200 hover:border-indigo-300 text-slate-700'
+                                                    }`}
+                                                >
+                                                    {isAttuned ? <CheckCircle2 size={13} className="text-emerald-600" /> : <Sparkles size={12} className="text-indigo-600" />}
+                                                    <span>{region} Shrine</span>
+                                                </button>
+                                            );
+                                        })}
+                                    </div>
+                                </div>
+
                                 {locations.length === 0 ? (
                                     <div className="text-center py-12 text-slate-400 text-xs font-mono">
                                         No location records found.

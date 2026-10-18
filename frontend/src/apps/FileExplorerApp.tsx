@@ -7,6 +7,7 @@ import Button from '../components/ui/button';
 import DocumentModal from '../components/widgets/DocumentModal';
 import SignalPlayerModal from '../components/widgets/SignalPlayerModal';
 import { MOCK_DOCUMENTS } from '../data/mockDocuments';
+import { useOSStore } from '../store/useOSStore';
 import '../styles/apps/FileExplorer.css';
 
 const FILES_DATA = [
@@ -44,6 +45,7 @@ export default function FileExplorerApp() {
   const [activeDirectory, setActiveDirectory] = useState('/root');
   const [searchQuery, setSearchQuery] = useState('');
   const [viewMode, setViewMode] = useState('grid'); // 'grid' | 'list'
+  const recordFileInspection = useOSStore((s) => s.recordFileInspection);
 
   const filteredFiles = FILES_DATA.filter((file) => {
     const matchesDir = file.dir === activeDirectory;
@@ -64,6 +66,9 @@ export default function FileExplorerApp() {
 
   const executeFile = (file) => {
     if (!file) return;
+    if (file.mockKey) {
+      recordFileInspection(file.mockKey);
+    }
 
     // Resolve Document Schema structure from MOCK_DOCUMENTS or fallback
     const resolvedDoc = MOCK_DOCUMENTS[file.mockKey] || {

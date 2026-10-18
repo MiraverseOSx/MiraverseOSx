@@ -42,13 +42,16 @@ export default function SpellForgeApp() {
   const [selectedSlotA, setSelectedSlotA] = useState<SpellModule | null>(MODULES_INVENTORY[0]);
   const [selectedSlotB, setSelectedSlotB] = useState<SpellModule | null>(MODULES_INVENTORY[1]);
   const [targetSlot, setTargetSlot] = useState<'A' | 'B'>('A');
-  const [forgedHistory, setForgedHistory] = useState<any[]>([
-    { name: 'Reflect Shield', combo: 'Firewall + Routing', date: 'Cycle 28', active: true }
-  ]);
   const [forgeResult, setForgeResult] = useState<any>(null);
+  const [statusMessage, setStatusMessage] = useState<string | null>(null);
 
-  const addXP = useOSStore((s) => s.addXP);
-  const addCredits = useOSStore((s) => s.addCredits);
+  const player = useOSStore((s) => s.gameplay.player);
+  const compileSpellProtocol = useOSStore((s) => s.compileSpellProtocol);
+  const stamina = player?.stamina ?? 85;
+  const masteredSpells = player?.forgedSpells || ['Reflect Shield'];
+  const forgedHistory = player?.forgedSpellHistory || [
+    { name: 'Reflect Shield', combo: 'Firewall + Routing', date: 'Cycle 28', active: true },
+  ];
 
   const handleForge = () => {
     if (!selectedSlotA || !selectedSlotB) return;
@@ -56,28 +59,33 @@ export default function SpellForgeApp() {
     const key2 = `${selectedSlotB.id}+${selectedSlotA.id}`;
     const combo = CANONICAL_COMBOS[key1] || CANONICAL_COMBOS[key2];
 
-    if (combo) {
-      setForgeResult(combo);
-      setForgedHistory((prev) => [
-        { name: combo.name, combo: `${selectedSlotA.name} + ${selectedSlotB.name}`, date: 'Now', active: true },
-        ...prev
-      ]);
-      addXP(150);
-      addCredits(200);
-    } else {
-      const generic = {
-        name: `${selectedSlotA.name.split('.')[0]}-${selectedSlotB.name.split('.')[0]} Protocol`,
-        type: 'Experimental Spell',
-        desc: `Experimental synthesis of ${selectedSlotA.element} and ${selectedSlotB.element} frequencies.`,
-        power: Math.round((selectedSlotA.power + selectedSlotB.power) * 0.9)
-      };
-      setForgeResult(generic);
-      setForgedHistory((prev) => [
-        { name: generic.name, combo: `${selectedSlotA.name} + ${selectedSlotB.name}`, date: 'Now', active: true },
-        ...prev
-      ]);
-      addXP(80);
+    const spellPayload = combo
+      ? {
+          name: combo.name,
+          type: combo.type,
+          desc: combo.desc,
+          power: combo.power,
+          comboLabel: `${selectedSlotA.name} + ${selectedSlotB.name}`,
+          isCanonical: true,
+          regions: [selectedSlotA.region, selectedSlotB.region],
+        }
+      : {
+          name: `${selectedSlotA.name.split('.')[0]}-${selectedSlotB.name.split('.')[0]} Protocol`,
+          type: 'Experimental Spell',
+          desc: `Experimental synthesis of ${selectedSlotA.element} and ${selectedSlotB.element} frequencies.`,
+          power: Math.round((selectedSlotA.power + selectedSlotB.power) * 0.9),
+          comboLabel: `${selectedSlotA.name} + ${selectedSlotB.name}`,
+          isCanonical: false,
+          regions: [selectedSlotA.region, selectedSlotB.region],
+        };
+
+    const res = compileSpellProtocol(spellPayload);
+    if (!res.ok) {
+      setStatusMessage(`⚠️ ${res.message}`);
+      return;
     }
+    setForgeResult({ ...spellPayload, isNewDiscovery: res.isNewDiscovery });
+    setStatusMessage(`${res.isNewDiscovery ? '✨' : '🛡️'} ${res.message}`);
   };
 
   return (
@@ -95,6 +103,16 @@ export default function SpellForgeApp() {
             <p className="text-xs text-slate-500 font-mono">
               Combine code modules to stabilize reality and forge spells for the Digital Veil.
             </p>
+          </div>
+        </div>
+        <div className="flex items-center gap-4 text-xs font-mono">
+          <div>
+            <span className="text-slate-400">STAMINA: </span>
+            <strong className={stamina < 15 ? 'text-rose-600' : 'text-emerald-700'}>{stamina} / 100</strong>
+          </div>
+          <div>
+            <span className="text-slate-400">MASTERED: </span>
+            <strong className="text-purple-800">{masteredSpells.length} Spells</strong>
           </div>
         </div>
       </div>
@@ -215,22 +233,33 @@ export default function SpellForgeApp() {
             </div>
 
             {/* Compile Action */}
-            <div className="flex justify-center">
+            <div className="flex flex-col items-center gap-2">
               <button
                 onClick={handleForge}
-                disabled={!selectedSlotA || !selectedSlotB}
-                className="px-8 py-3.5 rounded-xl bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white font-mono font-bold text-sm shadow-md transition active:scale-95 disabled:opacity-40 flex items-center gap-2"
+                disabled={!selectedSlotA || !selectedSlotB || stamina < 15}
+                className="px-8 py-3.5 rounded-xl bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white font-mono font-bold text-sm shadow-md transition active:scale-95 disabled:opacity-40 flex items-center gap-2 cursor-pointer"
               >
                 <Sparkles size={16} />
-                <span>Compile Protocol Spell</span>
+                <span>Compile Protocol Spell (-15 Stamina)</span>
               </button>
+              <span className="text-[11px] font-mono text-slate-500">
+                First-time canonical discovery awards +200 ₢ & +150 XP • Repeat casts stabilize Veil (-1.0% Corruption)
+              </span>
             </div>
+
+            {statusMessage && (
+              <div className="p-3 rounded-xl bg-amber-50 border border-amber-200 text-xs font-mono text-amber-950 font-semibold">
+                {statusMessage}
+              </div>
+            )}
 
             {/* Result Display */}
             {forgeResult && (
               <div className="p-5 rounded-2xl bg-purple-50 border border-purple-200 space-y-2 shadow-xs">
                 <div className="flex items-center justify-between">
-                  <span className="text-[10px] font-mono font-bold text-purple-700 uppercase">SYNTHESIS SUCCESSFUL</span>
+                  <span className="text-[10px] font-mono font-bold text-purple-700 uppercase">
+                    {forgeResult.isNewDiscovery ? 'NEW PROTOCOL DISCOVERED & MASTERED' : 'PROTOCOL RECAST // VEIL STABILIZED'}
+                  </span>
                   <span className="text-xs font-mono font-bold text-amber-800">{forgeResult.power} PROTOCOL POWER</span>
                 </div>
                 <h4 className="text-lg font-bold text-purple-950 font-mono">{forgeResult.name}</h4>

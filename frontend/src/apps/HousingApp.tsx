@@ -24,65 +24,42 @@ const INITIAL_UPGRADES: RoomUpgrade[] = [
 
 export default function HousingApp() {
     const [activeTab, setActiveTab] = useState<'room' | 'board' | 'upgrades' | 'dreams'>('room');
-    const [upgrades, setUpgrades] = useState<RoomUpgrade[]>(INITIAL_UPGRADES);
-    const [stamina, setStamina] = useState(85);
     const [restMessage, setRestMessage] = useState<string | null>(null);
-    const [dreamLogs, setDreamLogs] = useState<string[]>([
-        'DREAM_ENTRY #04: A mirrored cathedral under coastal rain. A woman with silver hair whispers: "The code was never code, it was memory."',
-        'DREAM_ENTRY #03: Falling through the Supercomputer factory floor. Glowing blue lines trace my pulse.',
-    ]);
 
     const player = useOSStore((s) => s.gameplay.player);
     const credits = player?.credits || 0;
     const bits = player?.bits || 0;
-    const addCredits = useOSStore((s) => s.addCredits);
-    const addBits = useOSStore((s) => s.addBits);
-    const addXP = useOSStore((s) => s.addXP);
+    const stamina = player?.stamina ?? 85;
+    const unlockedIds = player?.unlockedHousingUpgrades || ['banner'];
+    const dreamLogs = player?.dreamLogs || [
+        'DREAM_ENTRY #04: A mirrored cathedral under coastal rain. A woman with silver hair whispers: "The code was never code, it was memory."',
+        'DREAM_ENTRY #03: Falling through the Supercomputer factory floor. Glowing blue lines trace my pulse.',
+    ];
+
+    const upgrades: RoomUpgrade[] = INITIAL_UPGRADES.map((u) => ({
+        ...u,
+        unlocked: unlockedIds.includes(u.id),
+    }));
+
     const restInDorm = useOSStore((s) => s.restInDorm);
+    const studyInHousing = useOSStore((s) => s.studyInHousing);
+    const purchaseHousingUpgrade = useOSStore((s) => s.purchaseHousingUpgrade);
 
     const handleRest = () => {
         restInDorm();
-        setStamina(100);
-        const newDream = `DREAM_ENTRY #${dreamLogs.length + 5}: AETHERCORE whispers: "Maeryn's Lightborn bloodline will awaken when the Veil tears."`;
-        setDreamLogs((prev) => [newDream, ...prev]);
-        setRestMessage('💤 Slept peacefully. Aura and stamina restored to 100%. Dream log updated.');
+        setRestMessage('💤 Slept peacefully. Aura and stamina restored to 100%. Dream log & housing calibration persisted.');
         setTimeout(() => setRestMessage(null), 4000);
-        addXP(50);
     };
 
     const handleStudy = () => {
-        if (stamina < 20) {
-            setRestMessage('⚠️ You are too exhausted to study! Rest in your bed first.');
-            setTimeout(() => setRestMessage(null), 3000);
-            return;
-        }
-        setStamina((s) => Math.max(0, s - 20));
-        addXP(120);
-        setRestMessage('📖 Completed 2 hours of Cyacademy Syntax coursework. +120 Academic XP gained!');
-        setTimeout(() => setRestMessage(null), 3000);
+        const res = studyInHousing();
+        setRestMessage(res.ok ? `📖 ${res.message}` : `⚠️ ${res.message}`);
+        setTimeout(() => setRestMessage(null), 3500);
     };
 
     const handleBuyUpgrade = (upgradeId: string, cost: number, bitCost: number = 0) => {
-        if (bitCost > 0) {
-            if (bits < bitCost) {
-                setRestMessage(`⚠️ Insufficient BITS! Requires ${bitCost} ◈ BITS.`);
-                setTimeout(() => setRestMessage(null), 3000);
-                return;
-            }
-            addBits(-bitCost);
-        } else {
-            if (credits < cost) {
-                setRestMessage(`⚠️ Insufficient CREDITS! Requires ${cost} ₢ Credits.`);
-                setTimeout(() => setRestMessage(null), 3000);
-                return;
-            }
-            addCredits(-cost);
-        }
-
-        setUpgrades((prev) =>
-            prev.map((u) => (u.id === upgradeId ? { ...u, unlocked: true } : u))
-        );
-        setRestMessage(`✨ Upgrade unlocked! Your room comfort and social attributes increased.`);
+        const res = purchaseHousingUpgrade(upgradeId, cost, bitCost);
+        setRestMessage(res.ok ? `✨ ${res.message}` : `⚠️ ${res.message}`);
         setTimeout(() => setRestMessage(null), 3500);
     };
 

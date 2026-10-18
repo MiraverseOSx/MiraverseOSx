@@ -4,6 +4,7 @@ import { ecosystemEngine } from '../gameplay/EcosystemEngine';
 import { missionDirector } from '../gameplay/MissionDirector';
 import { harmonyEngine } from '../gameplay/HarmonyEngine';
 import { npcEngine } from '../gameplay/NPCEngine';
+import { useOSStore } from './useOSStore';
 
 declare global {
   interface Window {
@@ -206,9 +207,16 @@ export const useGameStore = create<GameStoreState>((setStore, getStore) => ({
 
     const rewardXP = mission.rewards?.xp || 200;
     const rewardCredits = mission.rewards?.credits || 300;
-    const newXP = state.player.xp + rewardXP;
-    const newLevel = Math.floor(newXP / 500) + 1;
-    const newCredits = state.player.credits + rewardCredits;
+
+    // Synchronize directly with the canonical OS progression store (100 XP per level)
+    const osState = useOSStore.getState();
+    osState.addXP(rewardXP);
+    osState.addCredits(rewardCredits);
+    const osPlayer = useOSStore.getState().gameplay.player;
+
+    const newXP = osPlayer?.xp ?? state.player.xp + rewardXP;
+    const newLevel = Math.floor(newXP / 100) + 1;
+    const newCredits = osPlayer?.credits ?? state.player.credits + rewardCredits;
 
     const updatedWorld = {
       ...state.worldState,

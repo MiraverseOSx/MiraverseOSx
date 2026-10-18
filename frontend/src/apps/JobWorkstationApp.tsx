@@ -48,7 +48,7 @@ export default function JobWorkstationApp() {
   const { soundEnabled } = useSystemStore();
   const [activeStation, setActiveStation] = useState<WorkplaceStationId>('dga');
   const [activeMissionType, setActiveMissionType] = useState<string>('All');
-  const [missions, setMissions] = useState<WorknetMission[]>(() => miraverseDb.getMissions());
+  const [baseMissions] = useState<WorknetMission[]>(() => miraverseDb.getMissions());
   const [selectedMissionId, setSelectedMissionId] = useState<string>('ms-spec-01');
   const [dgaBranchFilter, setDgaBranchFilter] = useState<'All' | 'Shield' | 'Eyes' | 'Blackout Team'>('All');
   const [actionFeedback, setActionFeedback] = useState<string | null>(null);
@@ -83,60 +83,20 @@ export default function JobWorkstationApp() {
   const player = useOSStore((s) => s.gameplay.player);
   const addCredits = useOSStore((s) => s.addCredits);
   const addBits = useOSStore((s) => s.addBits);
-  const addXP = useOSStore((s) => s.addXP);
-  const addCareerXP = useOSStore((s) => s.addCareerXP);
+  const advanceWorknetMissionStep = useOSStore((s) => s.advanceWorknetMissionStep);
+  const completeWorknetMission = useOSStore((s) => s.completeWorknetMission);
+  const resetWorknetMissionsAdmin = useOSStore((s) => s.resetWorknetMissionsAdmin);
+
+  const completedMissionIds = player?.completedWorknetMissionIds || [];
+  const missionProgressMap = player?.worknetMissionProgress || {};
+
+  const missions: WorknetMission[] = baseMissions.map((m) => ({
+    ...m,
+    completed: completedMissionIds.includes(m.id),
+  }));
 
   const clearanceTier = player?.clearanceLevel || (player?.isAdmin ? 5 : 2);
   const currentStationInfo = STATIONS.find((s) => s.id === activeStation) || STATIONS[0];
-
-  const handleSyncStationToCitizen = () => {
-    if (!activeCitizen) return;
-    if (activeStation === 'faithmed') {
-      syncFaithMedicalUpdate(activeCitizen.maid, {
-        clinicalNote: `Faith Medical Triage Desk clearance verified (${new Date().toLocaleDateString()}). Veil exposure baseline normal.`,
-      });
-      setActionFeedback(`🩺 Logged Faith Medical clinical triage update directly to ${activeCitizen.name} (${activeCitizen.maid}).`);
-    } else if (activeStation === 'dga') {
-      syncDgaInvestigativeUpdate(activeCitizen.maid, {
-        note: `DGA Tactical Console (${dgaBranchFilter}) security screening verified (${new Date().toLocaleDateString()}).`,
-      });
-      setActionFeedback(`🛡️ Logged DGA Tactical screening directly to ${activeCitizen.name} (${activeCitizen.maid}).`);
-    } else {
-      syncCyacademyOrCivicUpdate(activeCitizen.maid, {
-        historyNote: `${currentStationInfo.name} institutional record verified (${new Date().toLocaleDateString()}).`,
-      });
-      setActionFeedback(`🏛️ Synced ${currentStationInfo.name} record to ${activeCitizen.name} (${activeCitizen.maid}).`);
-    }
-    setCanonicalCitizens(getCanonicalCitizens());
-    setTimeout(() => setActionFeedback(null), 4500);
-  };
-
-  const handleAdminResetMissions = () => {
-    setMissions(miraverseDb.getMissions().map((m) => ({ ...m, completed: false })));
-    setActionFeedback('⚡ [ADMIN] All missions reset to uncompleted state for testing.');
-    setTimeout(() => setActionFeedback(null), 4000);
-  };
-
-  const handleAdminCompleteAll = () => {
-    missions.forEach((m) => {
-      if (!m.completed) {
-        addCredits(m.rewardCredits);
-        if (m.rewardBits) addBits(m.rewardBits);
-        addXP(m.rewardXP);
-        addCareerXP(m.track, m.rewardXP);
-      }
-    });
-    setMissions((prev) => prev.map((m) => ({ ...m, completed: true })));
-    setActionFeedback('⚡ [ADMIN] Executed and resolved all institutional directives.');
-    setTimeout(() => setActionFeedback(null), 4000);
-  };
-
-  const handleAdminAddFunds = () => {
-    addCredits(10000);
-    addBits(1000);
-    setActionFeedback('⚡ [ADMIN] Granted +10,000 ₢ CREDITS and +1,000 ◈ BITS.');
-    setTimeout(() => setActionFeedback(null), 4000);
-  };
 
   // Filter missions by active workstation & mission type
   const filteredMissions = missions.filter((m) => {
@@ -163,26 +123,111 @@ export default function JobWorkstationApp() {
   });
 
   const selectedMission = missions.find((m) => m.id === selectedMissionId) || filteredMissions[0] || missions[0];
+  const selectedSteps = selectedMission ? (missionProgressMap[selectedMission.id] || []) : [];
+  const stepToolDone = selectedSteps.includes('tool_calibrated') || Boolean(selectedMission?.completed);
+  const stepSubjectDone = selectedSteps.includes('subject_inspected') || Boolean(selectedMission?.completed);
+  const stepDirectiveDone = selectedSteps.includes('directive_executed') || Boolean(selectedMission?.completed);
+  const allStepsDone = stepToolDone && stepSubjectDone && stepDirectiveDone;
 
-  const handleExecuteMission = (missionId: string) => {
+  const handleSyncStationToCitizen = () => {
+    if (!activeCitizen) return;
+    if (selectedMission && !selectedMission.completed) {
+      advanceWorknetMissionStep(selectedMission.id, 'subject_inspected');
+    }
+    if (activeStation === 'faithmed') {
+      syncFaithMedicalUpdate(activeCitizen.maid, {
+        clinicalNote: `Faith Medical Triage Desk clearance verified (${new Date().toLocaleDateString()}). Veil exposure baseline normal.`,
+      });
+      setActionFeedback(`🩺 Logged Faith Medical clinical triage update directly to ${activeCitizen.name} (${activeCitizen.maid}).`);
+    } else if (activeStation === 'dga') {
+      syncDgaInvestigativeUpdate(activeCitizen.maid, {
+        note: `DGA Tactical Console (${dgaBranchFilter}) security screening verified (${new Date().toLocaleDateString()}).`,
+      });
+      setActionFeedback(`🛡️ Logged DGA Tactical screening directly to ${activeCitizen.name} (${activeCitizen.maid}).`);
+    } else {
+      syncCyacademyOrCivicUpdate(activeCitizen.maid, {
+        historyNote: `${currentStationInfo.name} institutional record verified (${new Date().toLocaleDateString()}).`,
+      });
+      setActionFeedback(`🏛️ Synced ${currentStationInfo.name} record to ${activeCitizen.name} (${activeCitizen.maid}).`);
+    }
+    setCanonicalCitizens(getCanonicalCitizens());
+    setTimeout(() => setActionFeedback(null), 4500);
+  };
+
+  const handleStepCalibrateTool = (toolName?: string) => {
+    if (!selectedMission || selectedMission.completed) return;
     if (soundEnabled) SoundFX.playButtonTap();
-    setMissions((prev) =>
-      prev.map((m) => {
-        if (m.id === missionId && !m.completed) {
-          addCredits(m.rewardCredits);
-          if (m.rewardBits) addBits(m.rewardBits);
-          addXP(m.rewardXP);
-          addCareerXP(m.track, m.rewardXP);
+    advanceWorknetMissionStep(selectedMission.id, 'tool_calibrated');
+    setActionFeedback(`🔧 Calibrated permitted tool "${toolName || selectedMission.permittedTools[0] || 'Standard Kit'}" for "${selectedMission.title}".`);
+    setTimeout(() => setActionFeedback(null), 3500);
+  };
 
-          if (soundEnabled) SoundFX.playSuccess();
-          const bitMsg = m.rewardBits ? ` + ${m.rewardBits} ◈ BITS` : '';
-          setActionFeedback(`✅ Assignment Completed: "${m.title}"! Received +${m.rewardCredits} ₢ CREDITS${bitMsg}, and +${m.rewardXP} Career XP.`);
-          setTimeout(() => setActionFeedback(null), 5000);
-          return { ...m, completed: true };
-        }
-        return m;
-      })
-    );
+  const handleStepInspectSubject = () => {
+    if (!selectedMission || selectedMission.completed) return;
+    if (soundEnabled) SoundFX.playButtonTap();
+    handleSyncStationToCitizen();
+  };
+
+  const handleStepExecuteDirective = () => {
+    if (!selectedMission || selectedMission.completed) return;
+    if (soundEnabled) SoundFX.playButtonTap();
+    advanceWorknetMissionStep(selectedMission.id, 'directive_executed');
+    setActionFeedback(`⚡ Executed field protocol: "${selectedMission.requiredAction}". Ready for final payout verification.`);
+    setTimeout(() => setActionFeedback(null), 3500);
+  };
+
+  const handleAdminResetMissions = () => {
+    resetWorknetMissionsAdmin();
+    setActionFeedback('⚡ [ADMIN] All persistent WorkNet missions & verification steps reset.');
+    setTimeout(() => setActionFeedback(null), 4000);
+  };
+
+  const handleAdminCompleteAll = () => {
+    missions.forEach((m) => {
+      if (!m.completed) {
+        advanceWorknetMissionStep(m.id, 'tool_calibrated');
+        advanceWorknetMissionStep(m.id, 'subject_inspected');
+        advanceWorknetMissionStep(m.id, 'directive_executed');
+        completeWorknetMission({
+          id: m.id,
+          rewardCredits: m.rewardCredits,
+          rewardBits: m.rewardBits,
+          rewardXP: m.rewardXP,
+          track: m.track,
+          primaryAttribute: m.primaryAttribute,
+        });
+      }
+    });
+    setActionFeedback('⚡ [ADMIN] Verified and resolved all institutional directives.');
+    setTimeout(() => setActionFeedback(null), 4000);
+  };
+
+  const handleAdminAddFunds = () => {
+    addCredits(10000);
+    addBits(1000);
+    setActionFeedback('⚡ [ADMIN] Granted +10,000 ₢ CREDITS and +1,000 ◈ BITS.');
+    setTimeout(() => setActionFeedback(null), 4000);
+  };
+
+  const handleExecuteMission = (mission: WorknetMission) => {
+    if (soundEnabled) SoundFX.playButtonTap();
+    const res = completeWorknetMission({
+      id: mission.id,
+      rewardCredits: mission.rewardCredits,
+      rewardBits: mission.rewardBits,
+      rewardXP: mission.rewardXP,
+      track: mission.track,
+      primaryAttribute: mission.primaryAttribute,
+    });
+    if (!res.ok) {
+      setActionFeedback(`⚠️ ${res.reason}`);
+      setTimeout(() => setActionFeedback(null), 4500);
+      return;
+    }
+    if (soundEnabled) SoundFX.playSuccess();
+    const bitMsg = mission.rewardBits ? ` + ${mission.rewardBits} ◈ BITS` : '';
+    setActionFeedback(`✅ Assignment Verified & Completed: "${mission.title}"! Received +${mission.rewardCredits} ₢ CREDITS${bitMsg}, and +${mission.rewardXP} Career XP.`);
+    setTimeout(() => setActionFeedback(null), 5000);
   };
 
   return (
@@ -512,37 +557,97 @@ export default function JobWorkstationApp() {
                 </div>
               </div>
 
-              {/* Permitted Institutional Tools */}
+              {/* Permitted Institutional Tools (Interactive Step 1) */}
               <div className="p-3.5 bg-slate-50 border border-slate-200 rounded-xl space-y-2">
-                <div className="text-[10px] text-slate-700 font-ui uppercase font-bold flex items-center gap-1.5">
-                  <Key size={13} className="text-amber-600" /> Permitted Institutional Clearance Tools
+                <div className="flex items-center justify-between">
+                  <div className="text-[10px] text-slate-700 font-ui uppercase font-bold flex items-center gap-1.5">
+                    <Key size={13} className="text-amber-600" /> Permitted Institutional Clearance Tools
+                  </div>
+                  <span className={`text-[10px] font-bold px-2 py-0.5 rounded ${stepToolDone ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800'}`}>
+                    {stepToolDone ? 'Tool Calibrated ✓' : 'Click Tool to Calibrate'}
+                  </span>
                 </div>
                 <div className="flex flex-wrap gap-1.5">
                   {selectedMission.permittedTools.map((tool) => (
-                    <span
+                    <button
+                      type="button"
                       key={tool}
-                      className="px-2.5 py-1 bg-white border border-slate-200 text-slate-800 rounded-lg text-[11px] font-ui flex items-center gap-1 shadow-xs"
+                      onClick={() => handleStepCalibrateTool(tool)}
+                      className={`px-2.5 py-1 border rounded-lg text-[11px] font-ui flex items-center gap-1 shadow-xs transition cursor-pointer ${
+                        stepToolDone
+                          ? 'bg-emerald-50 border-emerald-300 text-emerald-900 font-semibold'
+                          : 'bg-white border-slate-200 hover:border-amber-400 text-slate-800'
+                      }`}
                     >
-                      <Zap size={11} className="text-amber-600" /> {tool}
-                    </span>
+                      <Zap size={11} className={stepToolDone ? 'text-emerald-600' : 'text-amber-600'} /> {tool}
+                    </button>
                   ))}
                 </div>
               </div>
 
-              {/* Execution Protocol Box */}
-              <div className="p-4 bg-amber-50/60 border border-amber-200 rounded-xl space-y-2">
-                <div className="text-[11px] font-bold text-amber-900 font-ui flex items-center gap-1.5">
-                  <Terminal size={14} className="text-amber-700" /> Authorized Execution Directive
+              {/* 3-Step Operational Verification Checklist */}
+              <div className="p-4 bg-amber-50/60 border border-amber-200 rounded-xl space-y-2.5">
+                <div className="flex items-center justify-between">
+                  <div className="text-[11px] font-bold text-amber-900 font-ui flex items-center gap-1.5">
+                    <Terminal size={14} className="text-amber-700" /> Mandatory 3-Step Operational Verification
+                  </div>
+                  <span className="text-[10px] font-bold text-amber-800">
+                    {[stepToolDone, stepSubjectDone, stepDirectiveDone].filter(Boolean).length} / 3 Verified
+                  </span>
                 </div>
                 <p className="text-xs text-slate-700 leading-relaxed font-ui">
                   {selectedMission.requiredAction}
                 </p>
+
+                <div className="grid grid-cols-1 gap-2 pt-1">
+                  <button
+                    type="button"
+                    disabled={selectedMission.completed || stepToolDone}
+                    onClick={() => handleStepCalibrateTool()}
+                    className={`w-full px-3 py-2 rounded-lg text-left text-xs font-ui flex items-center justify-between border transition ${
+                      stepToolDone
+                        ? 'bg-emerald-50 border-emerald-200 text-emerald-900 font-semibold'
+                        : 'bg-white hover:bg-amber-100/60 border-amber-200 text-slate-800 cursor-pointer'
+                    }`}
+                  >
+                    <span>1. Calibrate Permitted Tool ({selectedMission.permittedTools[0] || 'Standard Kit'})</span>
+                    <span className="font-bold text-[10px] uppercase">{stepToolDone ? 'Verified ✓' : 'Calibrate →'}</span>
+                  </button>
+
+                  <button
+                    type="button"
+                    disabled={selectedMission.completed || stepSubjectDone}
+                    onClick={handleStepInspectSubject}
+                    className={`w-full px-3 py-2 rounded-lg text-left text-xs font-ui flex items-center justify-between border transition ${
+                      stepSubjectDone
+                        ? 'bg-emerald-50 border-emerald-200 text-emerald-900 font-semibold'
+                        : 'bg-white hover:bg-amber-100/60 border-amber-200 text-slate-800 cursor-pointer'
+                    }`}
+                  >
+                    <span>2. Verify Subject & Sync MAID Telemetry ({selectedMission.targetSubject || activeCitizen?.name})</span>
+                    <span className="font-bold text-[10px] uppercase">{stepSubjectDone ? 'Verified ✓' : 'Verify & Sync →'}</span>
+                  </button>
+
+                  <button
+                    type="button"
+                    disabled={selectedMission.completed || stepDirectiveDone}
+                    onClick={handleStepExecuteDirective}
+                    className={`w-full px-3 py-2 rounded-lg text-left text-xs font-ui flex items-center justify-between border transition ${
+                      stepDirectiveDone
+                        ? 'bg-emerald-50 border-emerald-200 text-emerald-900 font-semibold'
+                        : 'bg-white hover:bg-amber-100/60 border-amber-200 text-slate-800 cursor-pointer'
+                    }`}
+                  >
+                    <span>3. Execute Field Protocol ({selectedMission.threatOrSymptom || 'Standard Procedure'})</span>
+                    <span className="font-bold text-[10px] uppercase">{stepDirectiveDone ? 'Verified ✓' : 'Run Protocol →'}</span>
+                  </button>
+                </div>
               </div>
 
               {/* Compensation Summary & Action Button */}
               <div className="mt-auto pt-3 border-t border-slate-200 space-y-3">
                 <div className="flex items-center justify-between text-xs font-ui px-1">
-                  <div className="text-slate-500">Total Compensation:</div>
+                  <div className="text-slate-500">Total Compensation (-10 Stamina):</div>
                   <div className="flex items-center gap-3 font-bold">
                     <span className="text-amber-800">+{selectedMission.rewardCredits} ₢ CREDITS</span>
                     {selectedMission.rewardBits > 0 && (
@@ -553,23 +658,30 @@ export default function JobWorkstationApp() {
                 </div>
 
                 <button
-                  onClick={() => handleExecuteMission(selectedMission.id)}
-                  disabled={selectedMission.completed}
+                  onClick={() => handleExecuteMission(selectedMission)}
+                  disabled={selectedMission.completed || !allStepsDone}
                   className={`w-full py-3 rounded-xl font-bold font-ui text-xs transition flex items-center justify-center gap-2 shadow-xs ${
                     selectedMission.completed
                       ? 'bg-slate-100 text-slate-400 cursor-not-allowed border border-slate-200'
-                      : 'bg-gradient-to-r from-amber-200 via-amber-300 to-amber-400 hover:from-amber-300 hover:to-amber-500 text-amber-950 font-bold border border-amber-300/80 shadow-xs active:scale-[0.99] hover:-translate-y-0.5'
+                      : !allStepsDone
+                      ? 'bg-slate-100 text-slate-500 cursor-not-allowed border border-slate-200'
+                      : 'bg-gradient-to-r from-amber-200 via-amber-300 to-amber-400 hover:from-amber-300 hover:to-amber-500 text-amber-950 font-bold border border-amber-300/80 shadow-xs active:scale-[0.99] hover:-translate-y-0.5 cursor-pointer'
                   }`}
                 >
                   {selectedMission.completed ? (
                     <>
                       <CheckCircle2 size={16} className="text-emerald-600" />
-                      <span>Directive Finalized & Cleared</span>
+                      <span>Directive Finalized & Cleared (Persisted)</span>
+                    </>
+                  ) : !allStepsDone ? (
+                    <>
+                      <Lock size={15} />
+                      <span>Complete All 3 Verification Steps Above to Claim Payout</span>
                     </>
                   ) : (
                     <>
                       <Play size={15} />
-                      <span>Execute Work Directive & Claim Payout</span>
+                      <span>Finalize Verified Directive & Claim Payout</span>
                     </>
                   )}
                 </button>

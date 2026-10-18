@@ -30,7 +30,6 @@ const INITIAL_PROCESSES: SystemProcess[] = [
 ];
 
 export default function ProcessMonitorApp() {
-    const [processes, setProcesses] = useState<SystemProcess[]>(INITIAL_PROCESSES);
     const [selectedPid, setSelectedPid] = useState<number | null>(512);
     const [filterQuery, setFilterQuery] = useState('');
     const [actionLog, setActionLog] = useState<string[]>([
@@ -40,27 +39,24 @@ export default function ProcessMonitorApp() {
     const [isScanning, setIsScanning] = useState(false);
 
     const prismCorruption = useOSStore((s) => s.gameplay.prismCorruptionLevel || 0);
-    const addCredits = useOSStore((s) => s.addCredits);
-    const addXP = useOSStore((s) => s.addXP);
+    const quarantinedPids = useOSStore((s) => s.gameplay.player?.quarantinedProcessPids || []);
+    const quarantineProcess = useOSStore((s) => s.quarantineProcess);
+
+    const processes: SystemProcess[] = INITIAL_PROCESSES.map((p) => {
+        const isQ = quarantinedPids.includes(p.pid);
+        return isQ ? { ...p, isQuarantined: true, cpuUsage: 0, threatLevel: 'Safe' } : p;
+    });
 
     const selectedProcess = processes.find((p) => p.pid === selectedPid);
 
     const handleQuarantine = (pid: number) => {
-        setProcesses((prev) =>
-            prev.map((p) => {
-                if (p.pid === pid) {
-                    return { ...p, isQuarantined: true, cpuUsage: 0, threatLevel: 'Safe' };
-                }
-                return p;
-            })
-        );
+        const ok = quarantineProcess(pid);
+        if (!ok) return;
         setActionLog((prev) => [
-            `QUARANTINE_SUCCESS: Process PID ${pid} locked in secure sandbox container.`,
-            `THREAT_NEUTRALIZED: PRISM leak stopped. +150 XP, +250 Credits awarded.`,
+            `QUARANTINE_SUCCESS: Process PID ${pid} locked in persistent sandbox container.`,
+            `THREAT_NEUTRALIZED: PRISM leak stopped (-2.5% Corruption). +150 XP, +250 Credits awarded.`,
             ...prev,
         ]);
-        addCredits(250);
-        addXP(150);
     };
 
     const handleTrace = (p: SystemProcess) => {

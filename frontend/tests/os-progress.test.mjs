@@ -68,15 +68,26 @@ test('signing back in resumes earned credits, level, and onboarding', async () =
   assert.deepEqual(restored.getState().gameplay, progress);
 });
 
-test('notice completion pays exactly once, including after reload', async () => {
+test('notice completion requires verified world objective and pays exactly once, including after reload', async () => {
   memoryStorage();
   const store = await freshStore();
   const before = store.getState().gameplay.player;
-  store.getState().completeNotice('n-02');
+
+  // Attempting to complete n-02 before tracing/quarantining an anomaly must fail and pay nothing
+  const premature = store.getState().completeNotice('n-02');
+  assert.equal(premature, false);
+  assert.deepEqual(store.getState().gameplay.player, before);
+
+  // Fulfill n-02 objective via recordFileInspection('system-audit')
+  store.getState().recordFileInspection('system-audit');
+  const afterInspect = store.getState().gameplay.player;
+
+  const fulfilled = store.getState().completeNotice('n-02');
+  assert.equal(fulfilled, true);
   const after = store.getState().gameplay.player;
-  assert.equal(after.credits - before.credits, 300);
-  assert.equal(after.xp - before.xp, 250);
-  assert.equal(after.bits - before.bits, 2);
+  assert.equal(after.credits - afterInspect.credits, 300);
+  assert.equal(after.xp - afterInspect.xp, 250);
+  assert.equal(after.bits - afterInspect.bits, 2);
   assert.equal(after.level, Math.floor(after.xp / 100) + 1);
   store.getState().completeNotice('n-02');
   store.getState().completeNotice('n-01');
@@ -85,6 +96,74 @@ test('notice completion pays exactly once, including after reload', async () => 
   const restored = await freshStore();
   restored.getState().completeNotice('n-02');
   assert.deepEqual(restored.getState().gameplay.player, after);
+});
+
+test('WorkNet missions require all 3 verification steps and persist completion across reloads', async () => {
+  memoryStorage();
+  const store = await freshStore();
+  const mission = {
+    id: 'ms-spec-01',
+    rewardCredits: 400,
+    rewardBits: 10,
+    rewardXP: 180,
+    track: 'dga',
+    primaryAttribute: 'Investigation',
+  };
+
+  // Cannot complete before all 3 steps are verified
+  assert.equal(store.getState().completeWorknetMission(mission).ok, false);
+  store.getState().advanceWorknetMissionStep(mission.id, 'tool_calibrated');
+  store.getState().advanceWorknetMissionStep(mission.id, 'subject_inspected');
+  assert.equal(store.getState().completeWorknetMission(mission).ok, false);
+
+  store.getState().advanceWorknetMissionStep(mission.id, 'directive_executed');
+  const res = store.getState().completeWorknetMission(mission);
+  assert.equal(res.ok, true);
+  assert.ok(store.getState().gameplay.player.completedWorknetMissionIds.includes(mission.id));
+
+  // Cannot repeat for extra payout even after reload
+  const afterFirst = store.getState().gameplay.player;
+  assert.equal(store.getState().completeWorknetMission(mission).ok, false);
+  const restored = await freshStore();
+  assert.ok(restored.getState().gameplay.player.completedWorknetMissionIds.includes(mission.id));
+  assert.equal(restored.getState().completeWorknetMission(mission).ok, false);
+  assert.equal(restored.getState().gameplay.player.credits, afterFirst.credits);
+});
+
+test('Housing upgrades and SpellForge discoveries persist and prevent infinite credit farming', async () => {
+  memoryStorage();
+  const store = await freshStore();
+  store.getState().addCredits(1000);
+
+  // Housing upgrade persists across store reload
+  const buyRes = store.getState().purchaseHousingUpgrade('mattress', 350);
+  assert.equal(buyRes.ok, true);
+  assert.equal(store.getState().purchaseHousingUpgrade('mattress', 350).ok, false);
+
+  // SpellForge canonical discovery awards +200 credits once, repeat cast awards 0 credits
+  const spell = {
+    name: 'Seal Lock',
+    type: 'Veil Stabilization',
+    desc: 'Stabilizes leaks.',
+    power: 135,
+    comboLabel: 'Encryption.mod + Anchor.mod',
+    isCanonical: true,
+    regions: ['Core'],
+  };
+  const creditsBeforeSpell = store.getState().gameplay.player.credits;
+  const firstCast = store.getState().compileSpellProtocol(spell);
+  assert.equal(firstCast.ok, true);
+  assert.equal(firstCast.isNewDiscovery, true);
+  assert.equal(store.getState().gameplay.player.credits, creditsBeforeSpell + 200);
+
+  const secondCast = store.getState().compileSpellProtocol(spell);
+  assert.equal(secondCast.ok, true);
+  assert.equal(secondCast.isNewDiscovery, false);
+  assert.equal(store.getState().gameplay.player.credits, creditsBeforeSpell + 200);
+
+  const restored = await freshStore();
+  assert.ok(restored.getState().gameplay.player.unlockedHousingUpgrades.includes('mattress'));
+  assert.ok(restored.getState().gameplay.player.forgedSpells.includes('Seal Lock'));
 });
 
 test('partial saves gain new defaults without restoring cleared conditions', async () => {
