@@ -1,4 +1,4 @@
-import{l as r,p as d}from"./index-W_LKOZLn.js";const s=[{id:"MSG-001",sender:"Cyacademy Registration Office",faction:"Cyacademy Admin",subject:"Welcome to MIRAVERSEOSX",time:"08:00 AM",read:!1,attachment:{type:"credits",amount:100,name:"REGISTRATION_CARD.pdf",claimed:!1},body:`Welcome, player.
+import{l as r,p as d}from"./index-BWy-Hdn9.js";const s=[{id:"MSG-001",sender:"Cyacademy Registration Office",faction:"Cyacademy Admin",subject:"Welcome to MIRAVERSEOSX",time:"08:00 AM",read:!1,attachment:{type:"credits",amount:100,name:"REGISTRATION_CARD.pdf",claimed:!1},body:`Welcome, player.
     
 Your provisional Cyacademy registration has been received. Your record currently contains no verified credits, no active contacts, no declared career track, no reputation standing, and no confirmed housing beyond temporary placement.
 

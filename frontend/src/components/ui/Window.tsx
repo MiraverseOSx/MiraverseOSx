@@ -32,26 +32,29 @@ export default function Window({ win, isFocusMode = false, windowIndex = 0 }: Wi
   const app = APPS_DIRECTORY.find((candidate) => candidate.id === win.id);
 
   const [windowGeometry, setWindowGeometry] = useState({
-    width: 1040,
-    height: 680,
-    left: 100,
+    width: 1120,
+    height: 700,
+    left: 140,
     top: 40,
+    screenW: 1920,
+    screenH: 1080,
   });
 
   useEffect(() => {
     const calculateGeometry = () => {
-      const screenW = window.innerWidth || 1440;
-      const screenH = window.innerHeight || 900;
-      
-      const margin = screenW < 768 ? 8 : 16;
-      const width = Math.max(0, Math.min(1080, screenW - (screenW < 768 ? 16 : 80)));
-      const menuSpace = screenW < 701 ? 66 : 78;
-      const height = Math.max(0, Math.min(720, screenH - menuSpace - 108));
+      const frameEl = document.getElementById('mira-screen-frame');
+      const screenW = Math.min(1920, frameEl?.clientWidth || window.innerWidth || 1920);
+      const screenH = Math.min(1080, frameEl?.clientHeight || window.innerHeight || 1080);
+
+      const margin = screenW < 768 ? 8 : 24;
+      const width = Math.max(0, Math.min(1180, screenW - (screenW < 768 ? 16 : 96)));
+      const menuSpace = screenW < 701 ? 66 : 76;
+      const height = Math.max(0, Math.min(760, screenH - menuSpace - 108));
       const cascade = screenW < 768 ? 0 : (windowIndex % 5) * 22;
       const left = Math.max(margin, Math.min(screenW - width - margin, Math.round((screenW - width) / 2) + cascade));
       const top = Math.max(menuSpace, Math.min(screenH - height - 108, menuSpace + cascade));
 
-      setWindowGeometry({ width, height, left, top });
+      setWindowGeometry({ width, height, left, top, screenW, screenH });
     };
 
     calculateGeometry();
@@ -75,11 +78,12 @@ export default function Window({ win, isFocusMode = false, windowIndex = 0 }: Wi
     });
   };
 
+  const maxW = Math.min(1640, windowGeometry.screenW - 32);
   const maximizedStyle = {
-    top: window.innerWidth < 701 ? 62 : 74,
-    left: 10,
-    width: (window.innerWidth || 1440) - 20,
-    height: Math.max(0, (window.innerHeight || 900) - (window.innerWidth < 701 ? 158 : 174)),
+    top: windowGeometry.screenW < 701 ? 62 : 72,
+    left: Math.max(16, Math.round((windowGeometry.screenW - maxW) / 2)),
+    width: maxW,
+    height: Math.max(0, windowGeometry.screenH - (windowGeometry.screenW < 701 ? 158 : 172)),
   };
 
   const normalStyle = {

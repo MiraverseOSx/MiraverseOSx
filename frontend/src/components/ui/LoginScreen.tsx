@@ -71,7 +71,7 @@ export default function LoginScreen({ onLoginSuccess, initialMode = 'login', onB
   };
 
   return (
-    <div className="relative flex h-screen w-screen items-center justify-center bg-[#070514] overflow-hidden select-none font-sans">
+    <div className="relative flex h-full w-full items-center justify-center bg-[#070514] overflow-hidden select-none font-sans">
       
       {/* ── BACKGROUND LIVE VIDEO FEED (ASSET FOLDER VIDEOS) ── */}
       <div className="absolute inset-0 z-0 overflow-hidden">

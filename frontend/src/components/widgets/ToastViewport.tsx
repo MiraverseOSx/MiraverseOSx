@@ -15,7 +15,7 @@ export default function ToastViewport() {
     const dismissToast = useToastStore((state) => state.dismissToast);
 
     return (
-        <div className="pointer-events-none fixed bottom-16 right-4 z-[100] flex w-[min(360px,calc(100vw-32px))] flex-col gap-2" aria-live="polite" aria-atomic="false">
+        <div className="pointer-events-none absolute bottom-16 right-4 z-[9500] flex w-[min(360px,calc(100%-32px))] flex-col gap-2" aria-live="polite" aria-atomic="false">
             <AnimatePresence initial={false}>
                 {toasts.map((toast) => {
                     const tone = TONE_STYLES[toast.tone] || TONE_STYLES.info;

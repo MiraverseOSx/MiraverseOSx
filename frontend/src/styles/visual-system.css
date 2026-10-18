@@ -32,7 +32,7 @@
 
 .os-window {
   --window-accent: var(--mira-lilac);
-  position: fixed;
+  position: absolute;
   display: flex;
   flex-direction: column;
   overflow: hidden;

@@ -12,12 +12,12 @@ export default function MeridionLandingPage({ onSignIn, onEnroll, onDirectLaunch
   const [useVideoMode, setUseVideoMode] = useState(true);
 
   return (
-    <div className="relative h-screen w-full bg-[#05030d] text-white font-sans overflow-y-auto overflow-x-hidden select-none">
+    <div className="relative h-full w-full bg-[#05030d] text-white font-sans overflow-y-auto overflow-x-hidden select-none">
       {/* Dynamic Starfield Background Canvas */}
       <SparklesCanvas />
 
       {/* ── HERO SECTION: MAC-STYLE PURPLE WORLD OF MERIDION ── */}
-      <section className="relative z-10 flex min-h-screen w-full flex-col items-center justify-center py-12 px-6">
+      <section className="relative z-10 flex min-h-full w-full flex-col items-center justify-center py-12 px-6">
         {/* Ambient Purple Radial Glows */}
         <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 h-[600px] w-[800px] bg-purple-600/15 rounded-full blur-[140px] pointer-events-none" />
         <div className="absolute top-1/3 right-10 h-[400px] w-[400px] bg-indigo-600/15 rounded-full blur-[120px] pointer-events-none" />
