@@ -39,6 +39,7 @@ export default function SearchResults({ query, navigateTab }) {
         const q = normalizedQuery.toLowerCase();
         const queryHash = getQueryHash(normalizedQuery);
         const foundResults = [];
+        if (/job|work|career|quest|task|mission|adventure|journey/.test(q)) foundResults.push({ type: 'site', url: 'versenet.aure/jobs', title: 'WorkNet — Jobs, quests & adventures', snippet: 'Current opportunities with real briefings, assignment activities, pay and special unlocks. Browse every institution or choose a longer story.', icon: Globe, accent: 'emerald' });
 
         Object.entries(PORTALS).forEach(([url, portal]) => {
             if (includesQuery(url, q) || includesQuery(portal.title, q) || includesQuery(portal.category, q)) {

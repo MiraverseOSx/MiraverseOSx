@@ -2,6 +2,8 @@
 @import './styles/theme.css';
 @import './styles/components.css';
 @import './styles/visual-system.css';
+@import './styles/workspaces.css';
+@import './styles/progression.css';
 
 @tailwind base;
 @tailwind components;

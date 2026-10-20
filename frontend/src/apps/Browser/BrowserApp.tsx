@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import SearchHome from './SearchHome';
 import SearchResults from './SearchResults';
+import AssignmentBoard from '../AssignmentBoard';
 import AureSuiteApp from './AureSuiteApp';
 import {
     FaithMedPortal, DGAPortal, CyacademyPortal, OrynvellRecordsPortal,
@@ -21,12 +22,14 @@ function ContentFrame({ url, openTab, navigateTab }: any) {
     const path = stripped.substring(domain.length) || '/';
 
     if (domain === 'versenet.aure' || domain === 'versenet' || domain === 'search.aure' || domain === '') {
+        if (path === '/jobs' || path.startsWith('/jobs?')) return <AssignmentBoard />;
         if (path.startsWith('/find?')) {
             const query = new URLSearchParams(path.slice(path.indexOf('?') + 1)).get('q') ?? '';
             return <SearchResults query={query} navigateTab={navigateTab} />;
         }
         return <SearchHome openTab={openTab} navigateTab={navigateTab} />;
     }
+    if (domain === 'worknet.aure') return <AssignmentBoard />;
 
     if (domain === 'civinet.mer' || domain === 'civinet.aure' || domain === 'civinet') return <CivinetPortal />;
     if (domain === 'questnotice.mer' || domain === 'questnotice.aure' || domain === 'questnotice') return <QuestNoticePortal />;

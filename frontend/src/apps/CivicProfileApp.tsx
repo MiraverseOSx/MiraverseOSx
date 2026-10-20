@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Form from 'react-bootstrap/Form';
 import { useOSStore } from '../store/useOSStore';
 import {
-  User, Shield, Sparkles, BookOpen, Package, Home, Award, CheckCircle2,
+  User, Users, Shield, Sparkles, BookOpen, Package, Home, Award, CheckCircle2,
   Code, Network, Cpu, MessageSquare, Palette, Search, ShieldAlert, Key, Zap, Lock, Mail, AlertTriangle, Fingerprint, Camera, Activity, Check, ArrowRight, RefreshCw,
   Globe, Flame, Folder, Layers, Phone, Radio, Eye, FileText, ExternalLink
 } from 'lucide-react';
@@ -174,72 +174,20 @@ export default function CivicProfileApp() {
     { id: 'c-art', name: 'Interface Weaving & Art', req: 'Creativity Lv.1', desc: 'Synthesize custom themes and OS desktop widgets.', skills: 'Creativity & Communication' },
   ];
 
+  const recordSections = [
+    { id: 'record', label: 'Identity record', icon: User }, { id: 'inventory', label: 'Personal vault', icon: Package },
+    { id: 'skills', label: 'Skills & experience', icon: Activity }, { id: 'clubs', label: 'Associations', icon: Users },
+    { id: 'housing', label: 'Residence', icon: Home }, { id: 'loops', label: 'World connections', icon: Network },
+  ];
   return (
-    <div className="flex h-full w-full flex-col bg-[#FAFBFD] text-slate-800 p-5 text-xs select-none overflow-y-auto font-ui">
-      {/* Header */}
-      <div className="flex flex-wrap items-center justify-between border-b border-slate-200 pb-3 mb-4 bg-white -mx-5 -mt-5 px-5 pt-4 rounded-t-xl shadow-xs gap-2">
-        <div>
-          <h2 className="text-base font-bold text-slate-900 font-display flex items-center gap-2">
-            <User size={18} className="text-amber-700" /> MIRROR // CITIZEN IDENTITY MATRIX & VITALS
-          </h2>
-          <p className="text-[11px] text-slate-500">Official Identity Record, Inventory Vault, Skills, Housing & App Loops</p>
-        </div>
-
-        {/* Sub-Tabs Navigation */}
-        {dgaVerified && (
-          <div className="flex flex-wrap items-center gap-1 bg-slate-100 border border-slate-200 rounded-xl p-1 shadow-xs">
-            <button
-              onClick={() => setActiveTab('record')}
-              className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition ${
-                activeTab === 'record' ? 'bg-white text-indigo-950 border border-slate-300 font-bold shadow-xs' : 'text-slate-600 hover:text-slate-900'
-              }`}
-            >
-              🆔 Record
-            </button>
-            <button
-              onClick={() => setActiveTab('inventory')}
-              className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition ${
-                activeTab === 'inventory' ? 'bg-white text-indigo-950 border border-slate-300 font-bold shadow-xs' : 'text-slate-600 hover:text-slate-900'
-              }`}
-            >
-              🎒 VAULT
-            </button>
-            <button
-              onClick={() => setActiveTab('skills')}
-              className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition ${
-                activeTab === 'skills' ? 'bg-white text-indigo-950 border border-slate-300 font-bold shadow-xs' : 'text-slate-600 hover:text-slate-900'
-              }`}
-            >
-              ⚡ Skills
-            </button>
-            <button
-              onClick={() => setActiveTab('clubs')}
-              className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition ${
-                activeTab === 'clubs' ? 'bg-white text-indigo-950 border border-slate-300 font-bold shadow-xs' : 'text-slate-600 hover:text-slate-900'
-              }`}
-            >
-              🏛️ Clubs
-            </button>
-            <button
-              onClick={() => setActiveTab('housing')}
-              className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition ${
-                activeTab === 'housing' ? 'bg-white text-indigo-950 border border-slate-300 font-bold shadow-xs' : 'text-slate-600 hover:text-slate-900'
-              }`}
-            >
-              🏠 Housing
-            </button>
-            <button
-              onClick={() => setActiveTab('loops')}
-              className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition ${
-                activeTab === 'loops' ? 'bg-white text-indigo-950 border border-slate-300 font-bold shadow-xs' : 'text-slate-600 hover:text-slate-900'
-              }`}
-            >
-              🔄 App Loops
-            </button>
-          </div>
-        )}
-      </div>
-
+    <div className="civic-workspace">
+      <aside className="civic-index" aria-label="Personal record navigation">
+        <span className="workspace-kicker">Mirror / citizen record</span><div className="civic-monogram">{(player?.name || 'Citizen').slice(0, 1)}</div><strong>{player?.name || 'Provisional citizen'}</strong><span className="civic-record-status">{dgaVerified ? 'Identity verified' : 'Awaiting verification'}</span>
+        {dgaVerified && <nav>{recordSections.map(item => { const Icon = item.icon; return <button key={item.id} aria-label={item.label} aria-pressed={activeTab === item.id} onClick={() => setActiveTab(item.id as typeof activeTab)}><Icon size={15} />{item.label}</button>; })}</nav>}
+        <p className="civic-index-note">Your identity, experience, and place in the world.</p>
+      </aside>
+      <main className="civic-content">
+        <header className="civic-heading"><span className="workspace-kicker">Aureline civic administration</span><h1>{dgaVerified ? recordSections.find(item => item.id === activeTab)?.label : 'Establish your identity'}</h1></header>
       {/* ── STEP-BY-STEP DEEPENED BIOMETRIC IDENTITY SETUP SCANNER ── */}
       {!dgaVerified ? (
         <div className="flex-1 flex flex-col items-center justify-center p-6 text-center">
@@ -983,6 +931,7 @@ export default function CivicProfileApp() {
           )}
         </>
       )}
+      </main>
     </div>
   );
 }

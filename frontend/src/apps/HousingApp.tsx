@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useOSStore } from '../store/useOSStore';
+import DailyLifePanel from './DailyLifePanel';
 import { Home, Moon, BookOpen, Terminal, Sparkles, Box, Shield, Users, Pin, CheckCircle2, ChevronRight, ArrowUpRight, Bed, Coffee, Lock } from 'lucide-react';
 
 export interface RoomUpgrade {
@@ -23,7 +24,7 @@ const INITIAL_UPGRADES: RoomUpgrade[] = [
 ];
 
 export default function HousingApp() {
-    const [activeTab, setActiveTab] = useState<'room' | 'board' | 'upgrades' | 'dreams'>('room');
+    const [activeTab, setActiveTab] = useState<'room' | 'life' | 'board' | 'upgrades' | 'dreams'>('room');
     const [sleepDuration, setSleepDuration] = useState<'short' | 'standard' | 'full'>('full');
     const [restMessage, setRestMessage] = useState<string | null>(null);
 
@@ -50,89 +51,41 @@ export default function HousingApp() {
 
     const handleRest = () => {
         const res = restInDorm(sleepDuration);
-        setRestMessage(`💤 ${res?.message || 'Rest complete. Stamina & Aura recovered based on duration, upgrades, and conditions.'}`);
+        setRestMessage(`${res?.message || 'Rest complete. Stamina & Aura recovered based on duration, upgrades, and conditions.'}`);
         setTimeout(() => setRestMessage(null), 5000);
     };
 
     const handleStudy = () => {
         const res = studyInHousing();
-        setRestMessage(res.ok ? `📖 ${res.message}` : `⚠️ ${res.message}`);
+        setRestMessage(res.ok ? `${res.message}` : `${res.message}`);
         setTimeout(() => setRestMessage(null), 3500);
     };
 
     const handleBuyUpgrade = (upgradeId: string, cost: number, bitCost: number = 0) => {
         const res = purchaseHousingUpgrade(upgradeId, cost, bitCost);
-        setRestMessage(res.ok ? `✨ ${res.message}` : `⚠️ ${res.message}`);
+        setRestMessage(res.ok ? `${res.message}` : `${res.message}`);
         setTimeout(() => setRestMessage(null), 3500);
     };
 
+    const sections = [
+        { id: 'life', label: 'Everyday life', icon: Coffee, title: 'Time that is yours.', description: 'Simple routines, familiar places, and a home to live in.' },
+        { id: 'room', label: 'Living space', icon: Home, title: 'A place to return to.', description: 'Rest, study, and keep the things that matter close.' },
+        { id: 'board', label: 'House notices', icon: Pin, title: 'Around the residence.', description: 'Notes and news from your corner of Aureline.' },
+        { id: 'upgrades', label: 'Furnishings', icon: Box, title: 'Make it your own.', description: 'Thoughtful additions for a more comfortable home.' },
+        { id: 'dreams', label: 'Dream journal', icon: Moon, title: 'What the night leaves behind.', description: 'Fragments, discoveries, and the occasional familiar voice.' },
+    ];
+    const section = sections.find(item => item.id === activeTab)!;
     return (
-        <div className="flex flex-col h-full bg-[#FAFBFD] text-slate-800 font-ui select-none overflow-hidden">
-            {/* Header */}
-            <div className="flex items-center justify-between px-6 py-4 bg-white border-b border-slate-200 shadow-xs">
-                <div className="flex items-center gap-3">
-                    <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-indigo-50 border border-indigo-200 text-indigo-700 shadow-xs">
-                        <Home size={20} />
-                    </div>
-                    <div>
-                        <h2 className="text-base font-bold tracking-wider text-slate-900 uppercase font-display">
-                            HOMECRAFT // HOUSING & RESIDENTIAL GRID EDITOR
-                        </h2>
-                        <div className="flex items-center gap-3 text-xs text-slate-500 font-ui mt-0.5">
-                            <span>Assigned Housing: <strong className="text-indigo-900 font-bold">Vector Housing Suite 4B</strong></span>
-                            <span>•</span>
-                            <span>Room Comfort: <strong className="text-indigo-700 font-bold">{player?.roomComfort ?? player?.dormComfort ?? 50}</strong></span>
-                            <span>•</span>
-                            <span>Stamina: <strong className="text-emerald-700 font-bold">{stamina} / 100</strong></span>
-                            <span>•</span>
-                            <span>Credits: <strong className="text-amber-800 font-bold">{credits} ₢</strong></span>
-                            <span>•</span>
-                            <span>Bits: <strong className="text-emerald-700 font-bold">{bits} ◈</strong></span>
-                        </div>
-                    </div>
-                </div>
-
-                {/* Tab Navigation */}
-                <div className="flex items-center bg-slate-100 p-1 rounded-xl border border-slate-200">
-                    <button
-                        onClick={() => setActiveTab('room')}
-                        className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition ${
-                            activeTab === 'room' ? 'bg-white text-indigo-950 shadow-xs border border-slate-200 font-bold' : 'text-slate-600 hover:text-slate-900'
-                        }`}
-                    >
-                        <Bed size={13} />
-                        <span>Housing Hub</span>
-                    </button>
-                    <button
-                        onClick={() => setActiveTab('board')}
-                        className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition ${
-                            activeTab === 'board' ? 'bg-white text-indigo-950 shadow-xs border border-slate-200 font-bold' : 'text-slate-600 hover:text-slate-900'
-                        }`}
-                    >
-                        <Pin size={13} />
-                        <span>Housing Board</span>
-                    </button>
-                    <button
-                        onClick={() => setActiveTab('upgrades')}
-                        className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition ${
-                            activeTab === 'upgrades' ? 'bg-white text-indigo-950 shadow-xs border border-slate-200 font-bold' : 'text-slate-600 hover:text-slate-900'
-                        }`}
-                    >
-                        <Sparkles size={13} />
-                        <span>Upgrades</span>
-                    </button>
-                    <button
-                        onClick={() => setActiveTab('dreams')}
-                        className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition ${
-                            activeTab === 'dreams' ? 'bg-white text-indigo-950 shadow-xs border border-slate-200 font-bold' : 'text-slate-600 hover:text-slate-900'
-                        }`}
-                    >
-                        <Moon size={13} />
-                        <span>DreamLog ({dreamLogs.length})</span>
-                    </button>
-                </div>
-            </div>
-
+        <div className="homecraft-workspace">
+            <aside className="homecraft-index" aria-label="Residence navigation">
+                <span className="workspace-kicker">Aureline residences</span>
+                <div className="homecraft-address"><span>VECTOR HOUSE</span><strong>4B<span> / your suite</span></strong></div>
+                <svg className="homecraft-plan" viewBox="0 0 160 126" fill="none" aria-label="Suite 4B floor plan" role="img"><path d="M12 12h136v102H90m-25 0H12V12m86 0v46h50M12 78h50v36" /><path d="M65 114a25 25 0 0 1 25-25v25M98 58a21 21 0 0 1-21-21h21" /><rect x="23" y="24" width="38" height="43" /><path d="M23 36h38m50-12h24v22h-24zM24 88h24v14H24z" /><path d="M62 12h20m66 59v23" strokeWidth="4" /></svg>
+                <nav>{sections.map(item => { const Icon = item.icon; return <button key={item.id} aria-pressed={activeTab === item.id} onClick={() => setActiveTab(item.id as typeof activeTab)}><Icon size={16} /><span>{item.label}</span>{item.id === 'dreams' && <small>{dreamLogs.length}</small>}</button>; })}</nav>
+                <dl className="homecraft-stats"><div><dt>Room comfort</dt><dd>{player?.roomComfort ?? player?.dormComfort ?? 50}<small>/100</small></dd></div><div><dt>Stamina</dt><dd>{stamina}<small>/100</small></dd></div><div><dt>Available credits</dt><dd>{credits.toLocaleString()} ₢</dd></div></dl>
+            </aside>
+            <div className="homecraft-body">
+                <header className="homecraft-heading"><span className="workspace-kicker">Homecraft / {section.label}</span><h1>{section.title}</h1><p>{section.description}</p></header>
             {/* Notification alert */}
             {restMessage && (
                 <div className="bg-amber-50 border-b border-amber-200 px-6 py-2 text-xs font-ui text-amber-900 font-semibold flex items-center justify-between">
@@ -141,24 +94,25 @@ export default function HousingApp() {
             )}
 
             {/* Main Content Area */}
-            <div className="flex-1 p-6 overflow-y-auto bg-[#FAFBFD]">
+            <div className="homecraft-content">
+                {activeTab === 'life' && <DailyLifePanel onShop={() => setActiveTab('upgrades')} />}
                 {/* ROOM HUB TAB */}
                 {activeTab === 'room' && (
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                         {/* Bed Station */}
-                        <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-xs flex flex-col justify-between space-y-4">
+                        <div className="homecraft-station flex flex-col justify-between space-y-4">
                             <div className="space-y-2.5">
                                 <div className="flex items-center justify-between">
                                     <div className="flex items-center gap-2 text-indigo-700 font-bold font-mono">
                                         <Bed size={16} />
-                                        <span>HOUSING REST STATION</span>
+                                        <span>Rest & recovery</span>
                                     </div>
                                     <span className="text-[11px] font-mono text-emerald-700 font-bold bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
                                         AURA {auraHealth}%
                                     </span>
                                 </div>
                                 <p className="text-xs text-slate-600 leading-relaxed">
-                                    Advances in-game time and restores Stamina &amp; Aura according to sleep duration, installed upgrades, and active conditions. Ordinary sleep does not grant repeatable XP; milestone discoveries unlock Special Lore Dreams.
+                                    Choose how long to rest. Your room and current conditions shape your recovery.
                                 </p>
                                 <div className="grid grid-cols-3 gap-1.5 pt-1">
                                     {[
@@ -197,12 +151,12 @@ export default function HousingApp() {
                         </div>
 
                         {/* Study Station */}
-                        <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-xs flex flex-col justify-between space-y-4">
+                        <div className="homecraft-station flex flex-col justify-between space-y-4">
                             <div>
                                 <div className="flex items-center justify-between mb-2">
                                     <div className="flex items-center gap-2 text-sky-700 font-bold font-mono">
                                         <BookOpen size={16} />
-                                        <span>STUDY DESK & TERMINAL</span>
+                                        <span>At your desk</span>
                                     </div>
                                     <span className="text-[11px] font-mono text-sky-700 font-bold bg-sky-50 px-2 py-0.5 rounded border border-sky-200">
                                         -20 STAMINA
@@ -222,12 +176,12 @@ export default function HousingApp() {
                         </div>
 
                         {/* Housing Storage & Safe */}
-                        <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-xs flex flex-col justify-between space-y-4">
+                        <div className="homecraft-station flex flex-col justify-between space-y-4">
                             <div>
                                 <div className="flex items-center justify-between mb-2">
                                     <div className="flex items-center gap-2 text-amber-800 font-bold font-mono">
                                         <Box size={16} />
-                                        <span>SECURE STORAGE VAULT</span>
+                                        <span>In safekeeping</span>
                                     </div>
                                     <span className="text-[11px] font-mono text-slate-500 bg-slate-100 px-2 py-0.5 rounded">
                                         4 / 20 SLOTS
@@ -348,6 +302,7 @@ export default function HousingApp() {
                         </div>
                     </div>
                 )}
+            </div>
             </div>
         </div>
     );

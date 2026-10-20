@@ -2,12 +2,16 @@ import { create } from 'zustand';
 import { createJSONStorage, persist } from 'zustand/middleware';
 import { NOTICES, evaluateNoticeObjective } from '../data/notices';
 import { mergeSavedProgress, osStorage } from './osPersistence';
+import { createWorknetActions } from './worknetActions';
+import { createAssignmentActions, type AssignmentFlowActions } from './assignmentActions';
+import { emptyAssignmentJournal } from '../gameplay/AssignmentFlow';
+import { createProgressionActions, type ProgressionActions } from './progressionActions';
+import { emptyWorldJournal } from '../gameplay/ProgressionEngine';
+import type { WorkOrder, WorkValues, TaskResult } from '../gameplay/ActivityEngine';
 import {
   worldEventEngine,
   PATIENT_CARE_ASSIGNMENTS,
-  WORKNET_DOMAIN_TASKS,
   CAREER_TRACK_SPECS,
-  evaluateWorknetObjective,
   calculateRestOutcome,
   evaluateCareerPromotion,
   type SleepDuration,
@@ -58,7 +62,7 @@ export interface OSWindow {
   [key: string]: any;
 }
 
-export interface OSStoreState {
+export interface OSStoreState extends AssignmentFlowActions, ProgressionActions {
   isLoggedIn: boolean;
   isSanctuary: boolean;
   toggleSanctuary: () => void;
@@ -93,6 +97,11 @@ export interface OSStoreState {
   purchaseHousingUpgrade: (upgradeId: string, cost: number, bitCost?: number) => { ok: boolean; message: string };
   advanceWorknetMissionStep: (missionId: string, stepKey: string) => void;
   completeWorknetDomainTask: (missionId: string, selectedOptionId: string) => { ok: boolean; message: string };
+  acceptEmployment: (track: string) => { ok: boolean; message: string };
+  openWorknetOrder: (missionId: string) => { ok: boolean; message: string };
+  saveWorknetDraft: (missionId: string, stageId: string, values: WorkValues) => void;
+  submitWorknetStage: (missionId: string, stageId: string, values: WorkValues) => { ok: boolean; message: string };
+  remediateWorknetOrder: (missionId: string, note: string) => { ok: boolean; message: string };
   completeWorknetMission: (mission: { id: string; track: string; rewardCredits: number; rewardBits?: number; rewardXP: number; primaryAttribute?: string }) => { ok: boolean; reason?: string };
   resetWorknetMissionsAdmin: () => void;
   compileSpellProtocol: (spell: { name: string; combo?: string; comboLabel?: string; type: string; desc: string; power: number; isCanonical: boolean; regions?: string[] }) => { ok: boolean; isNewDiscovery: boolean; status: 'mastered_new' | 'recast' | 'insufficient_stamina'; message: string };
@@ -533,6 +542,12 @@ export const useOSStore = create<OSStoreState>()(persist((set, get) => ({
       completedNoticeIds: NOTICES.filter((notice) => notice.completed).map((notice) => notice.id),
       completedWorknetMissionIds: [],
       worknetMissionProgress: {},
+      employmentContracts: {},
+      worknetOrders: {},
+      assignmentJournal: emptyAssignmentJournal(),
+      worldJournal: emptyWorldJournal(),
+      rewardedWorkOrderIds: [],
+      taskResults: {},
       unlockedHousingUpgrades: ['banner'],
       housingCalibrated: false,
       unlockedDreamIds: [],
@@ -819,119 +834,9 @@ export const useOSStore = create<OSStoreState>()(persist((set, get) => ({
       };
     }),
 
-  completeWorknetDomainTask: (missionId, selectedOptionId) => {
-    const taskDef = WORKNET_DOMAIN_TASKS[missionId];
-    if (!taskDef) {
-      return { ok: false, message: `Unknown WorkNet assignment ID: ${missionId}.` };
-    }
-    const chosen = taskDef.options.find((o) => o.id === selectedOptionId);
-    if (!chosen || !chosen.isCorrect) {
-      return {
-        ok: false,
-        message: 'Incorrect operational procedure or analysis for this assignment. Review the target subject, symptoms/anomaly, and required action.',
-      };
-    }
-
-    const state = get();
-    const player = state.gameplay.player;
-    const progressMap: Record<string, string[]> = { ...(player.worknetMissionProgress || {}) };
-    const existingSteps = Array.isArray(progressMap[missionId]) ? progressMap[missionId] : [];
-    const nextSteps = existingSteps.includes('domain_objective_verified')
-      ? existingSteps
-      : [...existingSteps, 'domain_objective_verified'];
-
-    const completedPatientCare: string[] = Array.isArray(player.completedPatientCareIds) ? player.completedPatientCareIds : [];
-    const nextPatientCare =
-      missionId === 'ms-shift-01' && !completedPatientCare.includes('pc-mercer')
-        ? [...completedPatientCare, 'pc-mercer']
-        : completedPatientCare;
-
-    set((s) => ({
-      gameplay: {
-        ...s.gameplay,
-        player: {
-          ...s.gameplay.player,
-          completedPatientCareIds: nextPatientCare,
-          worknetMissionProgress: {
-            ...progressMap,
-            [missionId]: nextSteps,
-          },
-        },
-      },
-    }));
-
-    return {
-      ok: true,
-      message: `✓ Domain Objective Accomplished: ${taskDef.successSummary}`,
-    };
-  },
-
-  completeWorknetMission: (mission) => {
-    const state = get();
-    const player = state.gameplay.player;
-    const completedIds: string[] = Array.isArray(player.completedWorknetMissionIds) ? player.completedWorknetMissionIds : [];
-    if (!mission?.id || completedIds.includes(mission.id)) {
-      return { ok: false, reason: 'Assignment already completed and cleared.' };
-    }
-
-    const evalResult = evaluateWorknetObjective(mission.id, mission.track, player);
-    if (!evalResult.verified) {
-      return {
-        ok: false,
-        reason: evalResult.requirementText,
-      };
-    }
-
-    const newXP = player.xp + (mission.rewardXP || 0);
-    const newLevel = Math.floor(newXP / 100) + 1;
-    const currentStamina = typeof player.stamina === 'number' ? player.stamina : 85;
-    const reducesCorruption = ['dga', 'engineer', 'medical', 'archivist'].includes(mission.track);
-    const nextCorruption = reducesCorruption
-      ? Math.max(2.0, Number((state.gameplay.prismCorruptionLevel - 1.0).toFixed(1)))
-      : state.gameplay.prismCorruptionLevel;
-
-    set((s) => ({
-      gameplay: {
-        ...s.gameplay,
-        prismCorruptionLevel: nextCorruption,
-        player: {
-          ...s.gameplay.player,
-          completedWorknetMissionIds: [...completedIds, mission.id],
-          credits: s.gameplay.player.credits + (mission.rewardCredits || 0),
-          bits: (s.gameplay.player.bits || 0) + (mission.rewardBits || 0),
-          xp: newXP,
-          level: newLevel,
-          stamina: Math.max(0, currentStamina - 10),
-        },
-      },
-    }));
-
-    if (mission.track) {
-      get().addCareerXP(mission.track, mission.rewardXP || 50);
-    }
-    if (mission.primaryAttribute) {
-      get().addSkillXP(mission.primaryAttribute, 25);
-    }
-    get().recordWorldEvent({
-      category: 'worknet',
-      title: `Completed WorkNet Directive ${mission.id}`,
-      summary: `Verified domain work (${evalResult.source}) on track "${mission.track}" (+${mission.rewardCredits} ₢, +${mission.rewardXP} Career XP).`,
-      institution: `WORKNET // ${mission.track.toUpperCase()}`,
-    });
-    return { ok: true };
-  },
-
-  resetWorknetMissionsAdmin: () =>
-    set((state) => ({
-      gameplay: {
-        ...state.gameplay,
-        player: {
-          ...state.gameplay.player,
-          completedWorknetMissionIds: [],
-          worknetMissionProgress: {},
-        },
-      },
-    })),
+  ...createWorknetActions(set, get),
+  ...createAssignmentActions(set, get),
+  ...createProgressionActions(set, get),
 
   compileSpellProtocol: (spell) => {
     const state = get();
@@ -1285,15 +1190,13 @@ export const useOSStore = create<OSStoreState>()(persist((set, get) => ({
 
     const newXP = player.xp + caseDef.rewardXP;
     const newLevel = Math.floor(newXP / 100) + 1;
-    const progressMap: Record<string, string[]> = { ...(player.worknetMissionProgress || {}) };
-    if (caseDef.linkedWorknetMissionId) {
-      const mSteps = Array.isArray(progressMap[caseDef.linkedWorknetMissionId])
-        ? progressMap[caseDef.linkedWorknetMissionId]
-        : [];
-      if (!mSteps.includes('domain_objective_verified')) {
-        progressMap[caseDef.linkedWorknetMissionId] = [...mSteps, 'domain_objective_verified'];
-      }
-    }
+    const missionId = caseDef.linkedWorknetMissionId;
+    const workOrder: WorkOrder | undefined = missionId ? player.worknetOrders?.[missionId] : undefined;
+    const careReceipt: TaskResult | undefined = missionId ? {
+      id: `WORK:${missionId}:once:care`, workOrderId: `WORK:${missionId}:once`,
+      definitionId: missionId, stageId: 'care', subject: patientCaseId, mechanic: 'diagnostics',
+      output: { diagnosis: diagObj.label, treatment: txObj.label }, completedAt: new Date().toISOString(), compensationPaid: true,
+    } : undefined;
 
     set((s) => ({
       gameplay: {
@@ -1301,7 +1204,10 @@ export const useOSStore = create<OSStoreState>()(persist((set, get) => ({
         player: {
           ...s.gameplay.player,
           completedPatientCareIds: [...completedCare, patientCaseId],
-          worknetMissionProgress: progressMap,
+          taskResults: careReceipt ? { ...player.taskResults, [careReceipt.id]: careReceipt } : player.taskResults,
+          worknetOrders: workOrder && careReceipt && missionId ? { ...player.worknetOrders, [missionId]: {
+            ...workOrder, resultIds: [...new Set([...workOrder.resultIds, careReceipt.id])], timeRemaining: workOrder.timeRemaining - 1,
+          } } : player.worknetOrders,
           credits: s.gameplay.player.credits + caseDef.rewardCredits,
           xp: newXP,
           level: newLevel,

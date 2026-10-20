@@ -1,5 +1,5 @@
 // src/apps/FileExplorerApp.jsx
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Folder, FileText, Map, ShieldAlert, Activity, Radio, Zap, ChevronRight, Cpu, MapPin, Search, LayoutGrid, List, Paperclip, ExternalLink
 } from 'lucide-react';
@@ -46,9 +46,15 @@ export default function FileExplorerApp() {
   const [searchQuery, setSearchQuery] = useState('');
   const [viewMode, setViewMode] = useState('grid'); // 'grid' | 'list'
   const recordFileInspection = useOSStore((s) => s.recordFileInspection);
+  const journal = useOSStore(state => state.gameplay.player.assignmentJournal);
+  const assignmentFiles = Object.values(journal?.files || {}) as any[];
+  const directories = ['/root', '/documents', '/spells', '/diagnostics', '/system', '/assignments', ...new Set(assignmentFiles.map(file => file.dir))];
+  useEffect(() => {
+    if (journal?.fileDirectory) { setActiveDirectory(journal.fileDirectory); setSelectedFile(null); }
+  }, [journal?.fileRequest]);
 
-  const filteredFiles = FILES_DATA.filter((file) => {
-    const matchesDir = file.dir === activeDirectory;
+  const filteredFiles = [...FILES_DATA, ...assignmentFiles].filter((file) => {
+    const matchesDir = file.dir === activeDirectory || (activeDirectory === '/assignments' && file.dir.startsWith('/assignments/'));
     const matchesSearch = !searchQuery.trim() || 
       file.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       file.desc.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -78,8 +84,8 @@ export default function FileExplorerApp() {
       extension: '.' + file.type,
       category: file.type === 'sys' ? 'System' : 'Document',
       meta: {
-        classification: 'RESTRICTED OS COMPONENT',
-        author: 'SYSTEM DAEMON',
+        classification: file.assignmentId ? 'PERSONAL ASSIGNMENT RECORD' : 'RESTRICTED OS COMPONENT',
+        author: file.assignmentId ? 'WORKNET DISPATCH' : 'SYSTEM DAEMON',
         timestamp: 'WINTER',
         fileSize: file.size
       },
@@ -88,7 +94,7 @@ export default function FileExplorerApp() {
       content: {
         title: file.name.replace(/_/g, ' ').toUpperCase(),
         subtitle: file.desc,
-        bodyText: `${file.desc}\n\nFile Location: ${activeDirectory}/${file.name}\nFile Size: ${file.size}`
+        bodyText: file.body || `${file.desc}\n\nFile Location: ${activeDirectory}/${file.name}\nFile Size: ${file.size}`
       }
     };
 
@@ -180,9 +186,9 @@ export default function FileExplorerApp() {
       {/* Main Workspace */}
       <div className="flex min-h-0 flex-1">
         {/* Left Directory Tree */}
-        <div className="w-[21%] min-w-40 max-w-48 shrink-0 border-r border-slate-200 bg-slate-50 p-3 space-y-1.5 font-mono text-[11px]">
+        <div className="w-[21%] min-w-40 max-w-48 shrink-0 border-r border-slate-200 bg-slate-50 p-3 space-y-1.5 font-mono text-[11px] overflow-y-auto">
           <div className="text-[9px] font-bold text-slate-500 uppercase tracking-widest px-2 mb-2">Directories</div>
-          {['/root', '/documents', '/spells', '/diagnostics', '/system'].map((dir) => (
+          {directories.map((dir) => (
             <button
               key={dir}
               onClick={() => {
@@ -196,7 +202,7 @@ export default function FileExplorerApp() {
               }`}
             >
               <Folder size={14} className={activeDirectory === dir ? 'text-amber-700' : 'text-slate-400'} />
-              <span>{dir}</span>
+              <span className="break-all">{dir.startsWith('/assignments/') ? dir.split('/').pop() : dir}</span>
             </button>
           ))}
         </div>
@@ -308,6 +314,7 @@ export default function FileExplorerApp() {
               >
                 Inspect / View File <ExternalLink size={13} />
               </Button>
+              {selectedFile.assignmentId && <Button size="sm" variant="ghost" onClick={() => useOSStore.getState().openAssignment(selectedFile.assignmentId)}>Continue in WorkNet</Button>}
             </div>
           )}
         </div>

@@ -3,15 +3,18 @@ import { miraverseDb } from '../db/miraverseDb';
 import { useOSStore } from '../store/useOSStore';
 import { ALL_SHRINE_REGIONS } from '../data/notices';
 import { Shield, Globe, Users, RefreshCw, MapPin, Sparkles, CheckCircle2 } from 'lucide-react';
+import WorldJournalPanel from './WorldJournalPanel';
 
 export default function LoreExplorer() {
-    const [activeTab, setActiveTab] = useState<'factions' | 'locations' | 'npcs'>('factions');
+    const [activeTab, setActiveTab] = useState<'exploration' | 'factions' | 'locations' | 'npcs'>('exploration');
     const [factions, setFactions] = useState<any[]>([]);
     const [locations, setLocations] = useState<any[]>([]);
     const [npcs, setNPCs] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
     const discoveredShrines = useOSStore((s) => s.gameplay.player?.discoveredShrines || []);
     const discoverRegionalShrine = useOSStore((s) => s.discoverRegionalShrine);
+    const journalRequest = useOSStore(state => state.gameplay.player.worldJournal?.openRequest);
+    useEffect(() => { setActiveTab('exploration'); }, [journalRequest]);
 
     const loadData = () => {
         setLoading(true);
@@ -26,70 +29,8 @@ export default function LoreExplorer() {
     }, []);
 
     return (
-        <div className="flex flex-col h-full bg-[#f1f3f9] text-[#1a1f36] font-sans select-none overflow-hidden">
-            {/* Header Toolbar */}
-            <div className="flex items-center justify-between px-6 py-4 bg-[#ffffff] border-b border-[#d8dce8] shadow-xs">
-                <div>
-                    <div className="flex items-center gap-2">
-                        <span className="h-2.5 w-2.5 rounded-full bg-emerald-500 animate-pulse" />
-                        <h2 className="text-base font-bold tracking-wider text-[#1e2640] uppercase font-mono">
-                            SYSTEM DIRECTORY // REALITY REGISTRY
-                        </h2>
-                    </div>
-                    <p className="text-xs text-slate-500 mt-0.5">
-                        Local lore database — factions, regions, and character registries
-                    </p>
-                </div>
-
-                <div className="flex items-center gap-3">
-                    {/* Tab Navigation */}
-                    <div className="flex items-center bg-[#e9ecf4] p-1 rounded-lg border border-[#d8dce8]">
-                        <button
-                            onClick={() => setActiveTab('factions')}
-                            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-semibold transition ${
-                                activeTab === 'factions'
-                                    ? 'bg-[#ffffff] text-[#1e2640] shadow-xs border border-[#d8dce8]'
-                                    : 'text-slate-600 hover:text-slate-900'
-                            }`}
-                        >
-                            <Shield size={13} />
-                            <span>Factions ({factions.length})</span>
-                        </button>
-                        <button
-                            onClick={() => setActiveTab('locations')}
-                            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-semibold transition ${
-                                activeTab === 'locations'
-                                    ? 'bg-[#ffffff] text-[#1e2640] shadow-xs border border-[#d8dce8]'
-                                    : 'text-slate-600 hover:text-slate-900'
-                            }`}
-                        >
-                            <Globe size={13} />
-                            <span>Locations ({locations.length})</span>
-                        </button>
-                        <button
-                            onClick={() => setActiveTab('npcs')}
-                            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-semibold transition ${
-                                activeTab === 'npcs'
-                                    ? 'bg-[#ffffff] text-[#1e2640] shadow-xs border border-[#d8dce8]'
-                                    : 'text-slate-600 hover:text-slate-900'
-                            }`}
-                        >
-                            <Users size={13} />
-                            <span>NPCs ({npcs.length})</span>
-                        </button>
-                    </div>
-
-                    <button
-                        onClick={loadData}
-                        disabled={loading}
-                        className="p-2 rounded-lg bg-[#ffffff] hover:bg-slate-100 text-slate-700 border border-[#d8dce8] transition active:scale-95 disabled:opacity-50"
-                        title="Refresh registry"
-                    >
-                        <RefreshCw size={14} className={loading ? 'animate-spin text-indigo-600' : ''} />
-                    </button>
-                </div>
-            </div>
-
+        <div className="atlas-workspace flex flex-col h-full bg-[#f1f3f9] text-[#1a1f36] font-sans select-none overflow-hidden">
+            <header className="atlas-heading"><div><span className="workspace-kicker">Atlas / royal historic archive</span><h1>The Aureline collection.</h1><p>People, places, and the institutions that connect them.</p></div><div className="atlas-collection-switch"><label>Browse collection<select aria-label="Archive collection" value={activeTab} onChange={event => setActiveTab(event.target.value as typeof activeTab)}><option value="exploration">Explore & Discovery Journal</option><option value="factions">Institutions · {factions.length}</option><option value="locations">Regions · {locations.length}</option><option value="npcs">People · {npcs.length}</option></select></label><button onClick={loadData} disabled={loading} aria-label="Refresh archive"><RefreshCw size={15} className={loading ? 'animate-spin' : ''} /></button></div></header>
             {/* Content Area */}
             <div className="flex-1 p-6 overflow-y-auto">
                 {loading ? (
@@ -99,6 +40,7 @@ export default function LoreExplorer() {
                     </div>
                 ) : (
                     <>
+                        {activeTab === 'exploration' && <WorldJournalPanel />}
                         {/* FACTIONS TAB */}
                         {activeTab === 'factions' && (
                             <div className="space-y-4">

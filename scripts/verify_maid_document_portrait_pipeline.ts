@@ -171,11 +171,12 @@ async function runTestSuite() {
   // -------------------------------------------------------------------------
   console.log('\n[Suite 5] Non-destructive Idempotent Migration');
 
-  // Inject legacy pre-MAID data
+  // Elara is already part of the default population seeded by addPerson above.
+  // Use a separate legacy citizen to exercise allocation rather than an idempotent skip.
   const legacySeed = [
     {
-      record: 'MRD-8492-319',
-      name: 'Elara Vale',
+      record: 'MRD-TEST-001',
+      name: 'Serin Vale',
       dob: '2001-04-18',
       place: 'Northwake, Fross',
       home: 'Aureline, Orynvell',
@@ -198,6 +199,8 @@ async function runTestSuite() {
   const migration1 = await MaidIdentityService.migrateLegacyRegistry();
   assert(migration1.backupCreated === true, 'Pre-migration backup safely created');
   assert(migration1.migratedCount >= 1, 'Confirmed legacy record migrated with newly assigned MAID');
+  const migratedCitizen = await MaidIdentityService.lookupPerson('MRD-TEST-001');
+  assert(migratedCitizen.person?.name === 'Serin Vale' && Boolean(migratedCitizen.person.maid), 'New legacy citizen resolves to its assigned MAID');
   assert(migration1.pendingCount >= 1, 'Unconfirmed legacy record marked as pending migration');
 
   // Check pending record did NOT receive an unauthorized guess

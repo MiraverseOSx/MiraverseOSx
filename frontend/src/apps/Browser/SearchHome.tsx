@@ -81,6 +81,7 @@ export default function SearchHome({ navigateTab }: SearchHomeProps) {
             </div>
 
             {/* Footer */}
+            <button type="button" onClick={() => navigateTab('https://versenet.aure/jobs')} className="assignment-web-link">Jobs, quests & adventures <span>Explore current opportunities →</span></button>
             <div className="text-[10px] text-slate-400 font-mono tracking-wider pt-6">
                 VERSENET SECURE WEB ENGINE • AURELINE NETWORK PROTOCOL 4.2.1
             </div>

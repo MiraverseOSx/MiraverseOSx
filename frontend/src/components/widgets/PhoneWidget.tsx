@@ -1,5 +1,6 @@
 ﻿import React, { useState } from "react";
 import { useOSStore } from "../../store/useOSStore";
+import { OPPORTUNITIES, getOpportunity } from '../../gameplay/AssignmentFlow';
 import {
   INITIAL_SMS_THREADS,
   INITIAL_VOICEMAILS,
@@ -68,6 +69,9 @@ export default function PhoneWidget({ onClose }: { onClose?: () => void }) {
   const [spellResult, setSpellResult] = useState("");
   const [notice, setNotice] = useState("");
   const player = useOSStore((state) => state.gameplay.player);
+  const calls = Object.entries(player.assignmentJournal?.dispatches || {}).filter(([, dispatch]: [string, any]) => dispatch.channel === 'phone').map(([id, dispatch]: [string, any]) => ({ id, ...dispatch, opportunity: getOpportunity(id) })).filter(call => call.opportunity);
+  const incomingCalls = calls.filter(call => !call.heardAt);
+  const phoneOpportunities = OPPORTUNITIES.filter(item => player.worknetOrders?.[item.id]?.status === 'active' || player.assignmentJournal?.started?.[item.id]);
   const addCredits = useOSStore((state) => state.addCredits);
   const addXP = useOSStore((state) => state.addXP);
   const purgePrismCorruption = useOSStore(
@@ -145,6 +149,7 @@ export default function PhoneWidget({ onClose }: { onClose?: () => void }) {
       <div className="phone-screen">
         {activeScreen === "home" ? (
           <div className="phone-screen-scroll phone-home">
+            {incomingCalls.length > 0 && <PhonePanel className="phone-stack"><strong>Work dispatch · incoming call</strong><p>{incomingCalls[0].opportunity.title}</p><PhoneButton tone="primary" onClick={() => setActiveScreen('phone')}><Phone size={15} /> View work call</PhoneButton></PhonePanel>}
             <PhonePanel>
               <div className="phone-track">
                 <span className="phone-music-art">
@@ -204,7 +209,7 @@ export default function PhoneWidget({ onClose }: { onClose?: () => void }) {
                   label={app.label}
                   badge={
                     app.id === "phone"
-                      ? INITIAL_VOICEMAILS.length
+                      ? INITIAL_VOICEMAILS.length + incomingCalls.length
                       : app.id === "evidence"
                         ? evidenceItems.length
                         : undefined
@@ -325,6 +330,7 @@ export default function PhoneWidget({ onClose }: { onClose?: () => void }) {
               </div>
             ) : (
               <div className="phone-screen-scroll phone-stack">
+                {activeScreen === 'phone' && calls.map(call => <PhonePanel key={call.id} className="phone-stack"><strong>{call.opportunity.institution}</strong><small className="phone-muted">{call.heardAt ? 'Answered work call' : 'Incoming work call'}</small><h3>{call.opportunity.title}</h3>{call.heardAt ? <><p>“{call.opportunity.description} Your briefing and assignments are ready in WorkNet. Review the work before accepting.”</p><small className="phone-muted">In-world call transcript · simulated audio</small><PhoneButton tone="primary" onClick={() => { useOSStore.getState().openAssignment(call.id); onClose?.(); }}>Review call assignment</PhoneButton></> : <><PhoneButton tone="primary" onClick={() => useOSStore.getState().answerAssignmentCall(call.id)}><Phone size={15} /> Answer work call</PhoneButton><small className="phone-muted">The call stays here if you want to answer later.</small></>}</PhonePanel>)}
                 {activeScreen === "phone" &&
                   INITIAL_VOICEMAILS.map((voicemail) => (
                     <PhonePanel key={voicemail.id} className="phone-stack">
@@ -378,16 +384,7 @@ export default function PhoneWidget({ onClose }: { onClose?: () => void }) {
                 )}
                 {activeScreen === "missions" && (
                   <>
-                    <PhonePanel className="phone-stack">
-                      <h3>Sector 7 Subnet Patrol</h3>
-                      <p>Scan perimeter net nodes for PRISM corruption.</p>
-                      <p className="phone-success">+200 credits · +100 XP</p>
-                    </PhonePanel>
-                    <PhonePanel className="phone-stack">
-                      <h3>Faith Medical Intake Scan</h3>
-                      <p>Verify student aura health records.</p>
-                      <p className="phone-success">+150 credits · +75 XP</p>
-                    </PhonePanel>
+                    {(phoneOpportunities.length ? phoneOpportunities : OPPORTUNITIES.slice(0, 3)).map(item => <PhonePanel key={item.id} className="phone-stack"><small className="phone-muted">{item.kind}</small><h3>{item.title}</h3><p>{item.description}</p><PhoneButton onClick={() => { useOSStore.getState().openAssignment(item.id); onClose?.(); }}>Open in WorkNet</PhoneButton></PhonePanel>)}
                   </>
                 )}
                 {activeScreen === "spellforge" && (

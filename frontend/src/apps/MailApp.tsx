@@ -1268,6 +1268,7 @@ export default function MailApp() {
                 </div>
 
                 {/* Conversation Thread View */}
+                {selectedMail.assignmentId && <button type="button" className="assignment-mail-action" onClick={() => useOSStore.getState().openAssignment(selectedMail.assignmentId!)}>Review opportunity in WorkNet <ExternalLink size={14} /></button>}
                 {threadMessages.length > 1 ? (
                   <div className="space-y-2.5">
                     <div className="text-[10px] font-bold uppercase tracking-wider text-indigo-700">

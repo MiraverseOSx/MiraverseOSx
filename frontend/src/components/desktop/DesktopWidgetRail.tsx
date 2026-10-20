@@ -19,6 +19,7 @@ export default function DesktopWidgetRail({ now }: DesktopWidgetRailProps) {
   const conditionCount = (player.conditions ?? []).length;
   const completedIds: string[] = player.completedNoticeIds ?? [];
   const pendingNotices = NOTICES.filter((notice) => !notice.completed && !completedIds.includes(notice.id));
+  const discoveries = Object.values(player.worldJournal?.notifications || {}).filter((entry: any) => !entry.read).length;
 
   return (
     <aside className="desktop-widget-rail" aria-label="Desktop widgets" tabIndex={0}>
@@ -42,6 +43,7 @@ export default function DesktopWidgetRail({ now }: DesktopWidgetRailProps) {
         <div className="desktop-widget-heading"><ListTodo size={14} aria-hidden="true" /><h2 id="desktop-notices-title">Notice Board</h2><span className="desktop-widget-count" aria-label={`${pendingNotices.length} pending directives`}>{pendingNotices.length}</span></div>
         {pendingNotices.length ? <ul className="desktop-widget-notices">{pendingNotices.slice(0, 2).map((notice) => <li key={notice.id}><span aria-hidden="true" /><p>{notice.title}</p></li>)}</ul> : <p className="desktop-widget-empty">All directives complete</p>}
         <button className="desktop-widget-action" onClick={() => launchDesktopApp('board')}>Open Notice Board <ArrowUpRight size={13} aria-hidden="true" /></button>
+        <button className="desktop-widget-action" onClick={() => useOSStore.getState().openWorldJournal()}>Discovery Journal{discoveries ? ` · ${discoveries} new` : ''} <ArrowUpRight size={13} aria-hidden="true" /></button>
       </section>
     </aside>
   );

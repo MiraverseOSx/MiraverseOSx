@@ -109,6 +109,7 @@ export default function Window({ win, isFocusMode = false, windowIndex = 0 }: Wi
       className="os-window"
       data-active={isActive}
       data-tone={appTone(win.id)}
+      data-app={win.contentKey || win.id}
       role="region"
       aria-label={app?.label || win.title || win.id}
       style={{
@@ -170,7 +171,7 @@ export default function Window({ win, isFocusMode = false, windowIndex = 0 }: Wi
         </div>
       </div>
 
-      {/* ─── 4.1 LIGHT PASTEL CONTENT SURFACE ─── */}
+      {/* Shared application frame; each app owns its navigation and workspace. */}
       <div className="os-window__body">
         <Body />
       </div>

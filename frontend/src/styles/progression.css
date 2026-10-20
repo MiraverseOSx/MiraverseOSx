@@ -1,0 +1,57 @@
+.world-journal, .daily-life { color: #344a43; font: 12px/1.8 var(--font-ui); }
+.world-journal > header { display: flex; flex-wrap: wrap; gap: 22px; align-items: flex-end; justify-content: space-between; padding-bottom: 24px; border-bottom: 1px solid #d5dfd9; }
+.world-journal h1 { margin: 6px 0; font-size: 30px; letter-spacing: -.04em; font-weight: 500; color: #334e43; }
+.world-journal header p { max-width: 500px; font-size: 11px; color: #62746b; }
+.world-journal button, .daily-life button, .journey-chapters button, .adventure-approach button, .world-journal-link, .atlas-explore-entry button { display: inline-flex; align-items: center; justify-content: flex-start; gap: 8px; background: transparent; color: #385d4b; border: 1px solid #bfcfc4; border-radius: 3px; padding: 8px 12px; font-size: 11px; line-height: 1.7; text-align: left; }
+.world-journal button:disabled, .daily-life button:disabled, .journey-chapters button:disabled { opacity: .55; cursor: default; }
+.world-journal header nav { display: flex; gap: 8px; flex-wrap: wrap; }
+.world-journal button[aria-pressed='true'], .daily-life button[aria-pressed='true'] { background: #e2ebe3; border-color: #8ca494; color: #304e3e; }
+.world-exploration { display: grid; grid-template-columns: minmax(170px, .7fr) minmax(0, 1.3fr); gap: 30px; padding-top: 24px; }
+.world-exploration > nav { display: flex; flex-direction: column; gap: 0; }
+.world-exploration nav button { display: block; position: relative; width: 100%; border: 0; border-bottom: 1px solid #d5dfd9; border-radius: 0; padding: 18px 12px; }
+.world-exploration nav strong { display: block; font-weight: 500; font-size: 13px; margin: 6px 0; }
+.world-exploration nav p { font-size: 10px; color: #65796b; margin: 0; }
+.world-exploration nav svg { position: absolute; right: 8px; top: 18px; }
+.world-exploration h2, .world-entries h2, .daily-life h2, .journey-chapters h2, .adventure-approach h2 { font-size: 23px; font-weight: 500; letter-spacing: -.035em; margin: 6px 0 12px; }
+.world-exploration article > p { color: #60766a; font-size: 11px; }
+.world-observation { padding: 14px 0 14px 15px; border-left: 2px solid #87a18e; margin: 18px 0; }
+.world-interaction { padding: 15px 0; border-top: 1px solid #d5dfd9; }
+.world-interaction p { margin: 10px 0 0; font-size: 11px; color: #60766a; }
+.world-entries { padding: 22px 0; max-width: 850px; }
+.world-entries details { border-bottom: 1px solid #d5dfd9; padding: 17px 0; }
+.world-entries summary { cursor: pointer; }
+.world-entries summary strong { display: block; font-weight: 500; font-size: 15px; margin: 7px 0; }
+.world-entries details > p { color: #60766a; margin: 15px 0; }
+.world-keepsake { color: #3c654d !important; }
+.world-entries > section { margin-top: 28px; }
+.world-journal-link { margin-top: 16px; padding: 7px 0; border: 0; font-size: 10px; }
+.atlas-explore-entry { padding: 0 24px 12px; }
+.activity-hierarchy { color: #6c7e71; text-transform: capitalize; font-size: 10px; margin: 0 0 22px; line-height: 1.8; }
+.activity-hierarchy small { display: block; text-transform: none; font-size: 9px; }
+.journey-chapters, .adventure-approach { margin-top: 30px; border-top: 1px solid #d5dfd9; padding-top: 22px; }
+.journey-chapters p, .adventure-approach p { font-size: 11px; color: #65796b; line-height: 1.8; }
+.journey-chapters > div, .adventure-approach > div { padding: 16px 0; border-top: 1px solid #dfe6df; }
+.journey-chapters h3 { font-size: 14px; margin: 0 0 7px; font-weight: 500; }
+.daily-life { padding: 28px; overflow-y: auto; flex: 1; min-height: 0; background: #fbfcf9; }
+.daily-life header { max-width: 650px; }
+.daily-life header p { color: #63796c; font-size: 11px; }
+.daily-life nav { display: flex; flex-wrap: wrap; gap: 7px; margin: 24px 0; }
+.daily-routine { border-block: 1px solid #d5dfd9; padding: 24px 0; max-width: 650px; }
+.daily-routine h3 { font-size: 20px; font-weight: 500; margin: 6px 0 15px; }
+.daily-routine label { display: block; font-size: 11px; }
+.daily-routine select { display: block; width: min(100%, 370px); border: 1px solid #becfc2; background: white; color: #385948; padding: 9px; margin: 7px 0 18px; border-radius: 3px; }
+.daily-routine > button { background: #405d4c; border-color: #405d4c; color: white; }
+.daily-life footer { margin: 22px 0; color: #64796b; font-size: 11px; }
+.daily-life footer > span { display: block; margin-top: 18px; }
+.daily-life details { font-size: 11px; }
+.homecraft-content > .daily-life { padding: 0; overflow: visible; }
+.homecraft-content > .daily-life > header { display: none; }
+.homecraft-heading { flex-shrink: 0; }
+.adventure-scene { background: #273d3a; color: #edf1e9; padding: 25px; margin-top: 27px; border-radius: 3px; }
+.adventure-scene h2 { color: #edf1e9; font-size: 23px; font-weight: 500; line-height: 1.3; margin: 9px 0 20px; }
+.adventure-scene .workspace-kicker { color: #b8cbbc; }
+.adventure-scene > p { font: 16px/1.9 Georgia, serif; max-width: 500px; }
+.adventure-scene > div { display: flex; gap: 13px; align-items: center; flex-wrap: wrap; margin-top: 22px; }
+.adventure-scene button { border: 1px solid #a0b7a4; background: transparent; color: #edf1e9; border-radius: 3px; padding: 8px 11px; font-size: 10px; }
+.adventure-scene span { font-size: 9px; }
+@media (max-width: 640px) { .world-exploration { grid-template-columns: 1fr; gap: 20px; } .world-exploration > nav { max-height: 240px; overflow-y: auto; } .world-journal h1 { font-size: 25px; } .daily-life { padding: 22px 18px; } }

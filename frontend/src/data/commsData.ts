@@ -42,6 +42,7 @@ export interface EmailAttachment {
 }
 
 export interface EmailItem {
+  assignmentId?: string;
   id: string;
   threadId?: string;
   parentId?: string;

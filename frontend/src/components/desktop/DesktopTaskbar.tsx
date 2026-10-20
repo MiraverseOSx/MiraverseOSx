@@ -17,6 +17,7 @@ const pinned = [{ id: 'browser', icon: Globe }, { id: 'files', icon: Folder }, {
 
 export default function DesktopTaskbar({ onTogglePhone, onOpenLauncher, isLauncherOpen }: DesktopTaskbarProps) {
   const { windows, toggleApp, logoutUser, activeWindowId } = useOSStore();
+  const workCalls = useOSStore(state => Object.values(state.gameplay.player.assignmentJournal?.dispatches || {}).filter((dispatch: any) => dispatch.channel === 'phone' && !dispatch.heardAt).length);
   const { soundEnabled, toggleSound } = useSystemStore();
   const playClick = () => { if (soundEnabled) SoundFX.playSnap(); };
   const apps = [...pinned, ...windows.filter((win) => !pinned.some((app) => app.id === win.id)).map((win) => ({ id: win.id, icon: Grid2X2 }))];
@@ -38,7 +39,7 @@ export default function DesktopTaskbar({ onTogglePhone, onOpenLauncher, isLaunch
       <span className="dock-divider" />
       <div className="dock-utilities">
         <MAIDock />
-        <button className="shell-icon-button dock-phone" aria-label="Toggle phone" title="Phone" onClick={() => { playClick(); onTogglePhone(); }}><Smartphone size={18} /></button>
+        <button className="shell-icon-button dock-phone" aria-label="Toggle phone" title={workCalls ? `${workCalls} incoming work call` : 'Phone'} onClick={() => { playClick(); onTogglePhone(); }}><Smartphone size={18} />{workCalls > 0 && <span className="assignment-call-badge" aria-label={`${workCalls} incoming work call`}>{workCalls}</span>}</button>
         <button className="shell-icon-button" aria-label={soundEnabled ? 'Mute audio' : 'Unmute audio'} aria-pressed={soundEnabled} title={soundEnabled ? 'Mute audio' : 'Unmute audio'} onClick={() => { toggleSound(); if (!soundEnabled) SoundFX.playSnap(); }}>{soundEnabled ? <Volume2 size={18} /> : <VolumeX size={18} />}</button>
         <button className="shell-icon-button dock-power" aria-label="Log out" title="Log out" onClick={logoutUser}><Power size={17} /></button>
       </div>

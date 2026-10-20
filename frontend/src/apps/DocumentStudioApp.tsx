@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { 
   FileText, Download, Printer, Sparkles, UserCheck, Shield, 
   Building, HeartPulse, GraduationCap, Eye, Layers, Clock, CheckCircle2, ChevronRight, RefreshCw
@@ -22,6 +22,7 @@ import {
 import PortraitStudioModal from '../components/portrait/PortraitStudioModal';
 import { MaidIdentityService } from '../services/maidIdentityService';
 import { getActiveCitizenContext, openCitizenInApp } from '../integration/citizenBridge';
+import { citizenSelection, subscribeCitizenUpdates } from '../integration/citizenEvents';
 
 const DEFAULT_CITIZEN: CitizenRecord = {
   name: 'Elara Vale',
@@ -87,71 +88,56 @@ export default function DocumentStudioApp() {
   const [isPortraitModalOpen, setIsPortraitModalOpen] = useState(false);
   const [issuanceNotice, setIssuanceNotice] = useState<string | null>(null);
 
-  // Load citizens from master canonical registry
+  const selectedCitizenRef = useRef(selectedCitizen);
+  const mountedRef = useRef(false);
+  const loadVersionRef = useRef(0);
+  useEffect(() => { selectedCitizenRef.current = selectedCitizen; }, [selectedCitizen]);
+
   const loadSavedCitizens = async (overrideCitizenId?: string, overrideDocId?: number) => {
+    const version = ++loadVersionRef.current;
     try {
       const rawList = await MaidIdentityService.ensureDefaultPopulationSeeded();
+      if (!mountedRef.current || version !== loadVersionRef.current) return;
       if (Array.isArray(rawList) && rawList.length > 0) {
-        const list: CitizenRecord[] = rawList.map((p: any) => ({
-          ...p,
-          record: p.maid || p.legacyRecord || p.record || 'MRD-0000'
-        }));
+        const list: CitizenRecord[] = rawList.map(person => ({ ...person, record: person.maid || person.legacyRecord || person.id }));
+        const current = selectedCitizenRef.current;
+        const targetId = overrideCitizenId || current.maid || current.record;
+        const matched = list.find(citizen => citizen.maid === targetId || citizen.record === targetId || (citizen as any).legacyRecord === targetId || (citizen as any).id === targetId);
         setCitizens(list);
-
-        const activeCtx = getActiveCitizenContext();
-        const targetId = overrideCitizenId || activeCtx?.citizenId || selectedCitizen.maid || selectedCitizen.record;
-        const matched = list.find((c: any) =>
-          (c.maid && c.maid === targetId) ||
-          c.record === targetId ||
-          c.legacyRecord === targetId ||
-          c.id === targetId
-        );
-        if (matched) setSelectedCitizen(matched);
-        else setSelectedCitizen(list[0]);
-
-        if (overrideDocId) {
-          setActiveDocId(overrideDocId);
-        } else if (activeCtx?.targetDocId && Date.now() - activeCtx.timestamp < 15000) {
-          setActiveDocId(activeCtx.targetDocId);
+        if (matched) {
+          selectedCitizenRef.current = matched;
+          setSelectedCitizen(matched);
         }
+        if (Number.isInteger(overrideDocId) && overrideDocId! >= 1 && overrideDocId! <= 9) setActiveDocId(overrideDocId!);
         return;
       }
     } catch {
-      // Fallback
+      if (!mountedRef.current || version !== loadVersionRef.current) return;
+      setIssuanceNotice('Citizen records could not be refreshed. Your current document selection has been kept.');
     }
-    setCitizens([DEFAULT_CITIZEN]);
-    setSelectedCitizen(DEFAULT_CITIZEN);
+    setCitizens(current => current.length ? current : [DEFAULT_CITIZEN]);
   };
 
   useEffect(() => {
-    loadSavedCitizens();
-
-    const onMessage = (e: MessageEvent) => {
-      if (e.data?.source === 'meridion-registry' && e.data?.type === 'citizens-changed') {
-        loadSavedCitizens();
-      } else if (e.data?.source === 'citizen-bridge' && e.data?.type === 'active-citizen-changed') {
-        const payload = e.data.payload;
-        loadSavedCitizens(payload?.citizenId, payload?.targetDocId);
-      }
-    };
-    const onCitizenCtx = (e: Event) => {
-      const detail = (e as CustomEvent).detail;
-      if (detail?.citizenId) {
-        loadSavedCitizens(detail.citizenId, detail.targetDocId);
-      }
-    };
-    window.addEventListener('message', onMessage);
-    window.addEventListener('miraverse-citizen-context', onCitizenCtx);
-    window.addEventListener('storage', () => loadSavedCitizens());
+    mountedRef.current = true;
+    const rawContext = getActiveCitizenContext();
+    const context = citizenSelection(rawContext);
+    void loadSavedCitizens(context?.citizenId, rawContext && Date.now() - rawContext.timestamp < 15000 ? context?.targetDocId : undefined);
+    const unsubscribe = subscribeCitizenUpdates(update => { void loadSavedCitizens(update.citizenId, update.targetDocId); });
     return () => {
-      window.removeEventListener('message', onMessage);
-      window.removeEventListener('miraverse-citizen-context', onCitizenCtx);
+      mountedRef.current = false;
+      ++loadVersionRef.current;
+      unsubscribe();
     };
   }, []);
 
   const handleCitizenChange = (recordId: string) => {
-    const found = citizens.find(c => (c.maid && c.maid === recordId) || c.record === recordId || (c as any).id === recordId || (c as any).legacyRecord === recordId);
-    if (found) setSelectedCitizen(found);
+    const found = citizens.find(citizen => citizen.maid === recordId || citizen.record === recordId || (citizen as any).id === recordId || (citizen as any).legacyRecord === recordId);
+    if (found) {
+      ++loadVersionRef.current;
+      selectedCitizenRef.current = found;
+      setSelectedCitizen(found);
+    }
   };
 
   const handlePrintCurrent = () => {
@@ -231,196 +217,19 @@ export default function DocumentStudioApp() {
   };
 
   return (
-    <div className="flex h-full w-full flex-col bg-[#0F0C1B] text-slate-100 select-none font-sans overflow-hidden">
-      
-      {/* Top Application Header */}
-      <header className="flex flex-wrap items-center justify-between border-b border-[#2C2448] bg-[#161226] px-5 py-3 shadow-md">
-        <div className="flex items-center gap-3">
-          <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-to-br from-[#C5AB78] to-[#6C5FAC] text-white shadow">
-            <FileText size={18} />
-          </div>
-          <div>
-            <div className="flex items-center gap-2">
-              <h1 className="text-sm font-bold tracking-wide text-white font-serif">DOCUMENT STUDIO</h1>
-              <span className="rounded bg-[#C5AB78]/20 px-2 py-0.5 text-[10px] font-semibold text-[#E5D7B5] border border-[#C5AB78]/30">
-                Nine-Document Packet
-              </span>
-            </div>
-            <p className="text-[11px] text-slate-400">
-              Formal civil, forensic, and institutional paperwork for the Sovereign Realm of Meridion
-            </p>
-          </div>
-        </div>
-
-        {/* Citizen Selector & Quick Actions */}
-        <div className="flex items-center gap-2.5 mt-2 sm:mt-0">
-          <div className="flex items-center gap-2 bg-[#201A36] border border-[#3C3264] rounded-lg px-3 py-1.5 text-xs">
-            <label htmlFor="doc-studio-citizen-select" className="text-slate-400 font-medium">Citizen:</label>
-            <select
-              id="doc-studio-citizen-select"
-              value={selectedCitizen.maid || selectedCitizen.record}
-              onChange={(e) => handleCitizenChange(e.target.value)}
-              className="bg-transparent text-white font-semibold focus:outline-none cursor-pointer max-w-[210px] truncate"
-            >
-              {citizens.map((c) => (
-                <option key={c.maid || c.record} value={c.maid || c.record} className="bg-[#1C1833] text-white">
-                  {c.name} ({c.maid || c.record})
-                </option>
-              ))}
-            </select>
-          </div>
-
-          <button
-            onClick={() => openCitizenInApp(selectedCitizen.maid || selectedCitizen.record, 'meridionRegistry', { sourceApp: 'documentStudio' })}
-            className="flex items-center gap-1.5 rounded-lg bg-[#251E3D] hover:bg-[#352B56] border border-[#4C3F78] px-3 py-1.5 text-xs font-semibold text-indigo-200 shadow transition"
-            title="Open this citizen in the MAID Citizen Registry"
-          >
-            <UserCheck size={14} className="text-indigo-300" />
-            MAID Dossier
-          </button>
-
-          <button
-            onClick={() => setIsPortraitModalOpen(true)}
-            className="flex items-center gap-1.5 rounded-lg bg-[#3C3268] hover:bg-[#52448C] border border-[#6C5FAC] px-3 py-1.5 text-xs font-semibold text-white shadow transition"
-            title="Open integrated Portrait Studio"
-          >
-            <Sparkles size={14} className="text-[#C5AB78]" />
-            Portrait Studio
-          </button>
-
-          <button
-            onClick={handleExportFullPacket}
-            className="flex items-center gap-1.5 rounded-lg bg-gradient-to-r from-[#C5AB78] to-[#9883C8] hover:from-[#D4BC8B] hover:to-[#A896D8] text-[#1E1738] px-3.5 py-1.5 text-xs font-bold shadow transition"
-            title="Download all 9 documents as a combined PDF-ready packet"
-          >
-            <Download size={14} />
-            Export 9-Doc Packet
-          </button>
-        </div>
-      </header>
-
-      {/* Issuance Notification Banner if triggered */}
-      {issuanceNotice && (
-        <div className="bg-emerald-950/80 border-b border-emerald-600/40 text-emerald-200 px-5 py-2 text-xs flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <CheckCircle2 size={14} className="text-emerald-400" />
-            <span>{issuanceNotice}</span>
-          </div>
-          <button onClick={() => setIssuanceNotice(null)} className="text-emerald-400 hover:text-white">✕</button>
-        </div>
-      )}
-
-      {/* Main Workspace Body */}
-      <div className="flex flex-1 min-h-0 overflow-hidden">
-        
-        {/* Left Document Type Navigation Rail */}
-        <aside className="w-64 border-r border-[#272040] bg-[#130F22] flex flex-col justify-between overflow-y-auto">
-          <div className="p-3 space-y-1">
-            <div className="px-3 py-2 text-[10px] font-bold tracking-widest text-[#9883C8] uppercase">
-              Official Document Inventory
-            </div>
-
-            {DOCUMENT_TABS.map((tab) => {
-              const Icon = tab.icon;
-              const isActive = activeDocId === tab.id;
-              return (
-                <button
-                  key={tab.id}
-                  onClick={() => setActiveDocId(tab.id)}
-                  className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-left transition ${
-                    isActive
-                      ? 'bg-[#292244] text-white border border-[#524484] shadow-sm'
-                      : 'text-slate-400 hover:bg-white/5 hover:text-slate-200'
-                  }`}
-                >
-                  <div className={`flex h-7 w-7 items-center justify-center rounded-md ${isActive ? 'bg-[#3C3268] text-white' : 'bg-[#1C1730] text-slate-400'}`}>
-                    <Icon size={14} />
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <div className="text-xs font-bold truncate leading-tight">{tab.title}</div>
-                    <div className="text-[10px] text-slate-400 truncate">{tab.subtitle}</div>
-                  </div>
-                  {isActive && <ChevronRight size={14} className="text-[#C5AB78]" />}
-                </button>
-              );
-            })}
-          </div>
-
-          {/* Left Footer Summary */}
-          <div className="p-3 border-t border-[#272040] bg-[#0E0B1A] text-[11px] text-slate-400 space-y-2">
-            <div className="flex justify-between items-center text-[10px]">
-              <span>ACTIVE CITIZEN:</span>
-              <strong className="text-white truncate max-w-[120px]">{selectedCitizen.name}</strong>
-            </div>
-            <div className="flex justify-between items-center text-[10px]">
-              <span>CIVIC STATUS:</span>
-              <span className="text-emerald-400 font-semibold">{selectedCitizen.status || 'VERIFIED'}</span>
-            </div>
-            <button
-              onClick={handleLogIssuance}
-              className="w-full flex items-center justify-center gap-1.5 rounded-md bg-[#251E3D] hover:bg-[#322A50] border border-[#44386A] py-1.5 text-[11px] font-medium text-slate-200 transition"
-            >
-              <Clock size={12} />
-              Log Snapshot Issuance
-            </button>
-          </div>
-        </aside>
-
-        {/* Right Document Preview Workspace */}
-        <main className="flex-1 flex flex-col bg-[#1A162B] overflow-hidden">
-          
-          {/* Document Toolbar */}
-          <div className="flex items-center justify-between border-b border-[#2C2448] bg-[#161226] px-6 py-2.5 text-xs">
-            <div className="flex items-center gap-3">
-              <span className="font-bold text-white tracking-wide">
-                {DOCUMENT_TABS.find(t => t.id === activeDocId)?.title}
-              </span>
-              <span className="text-slate-400 text-[11px]">
-                Official Sovereign Document · Specimen View
-              </span>
-            </div>
-
-            <div className="flex items-center gap-3">
-              {/* Zoom Controls */}
-              <div className="flex items-center gap-1 text-[11px] text-slate-400 bg-[#201A36] border border-[#3C3264] rounded-md px-2 py-1">
-                <span>Scale:</span>
-                <button onClick={() => setZoomScale(Math.max(60, zoomScale - 10))} className="px-1 hover:text-white">-</button>
-                <span className="text-white font-mono">{zoomScale}%</span>
-                <button onClick={() => setZoomScale(Math.min(140, zoomScale + 10))} className="px-1 hover:text-white">+</button>
-              </div>
-
-              {/* Print Document */}
-              <button
-                onClick={handlePrintCurrent}
-                className="flex items-center gap-1.5 rounded-md bg-[#251E3D] hover:bg-[#342A54] border border-[#44386A] px-3 py-1.5 text-xs text-white transition"
-              >
-                <Printer size={13} />
-                Print Document
-              </button>
-
-              {/* Download Document HTML */}
-              <button
-                onClick={handleDownloadCurrentHtml}
-                className="flex items-center gap-1.5 rounded-md bg-[#3C3268] hover:bg-[#4E4185] border border-[#6C5FAC] px-3 py-1.5 text-xs font-semibold text-white shadow transition"
-              >
-                <Download size={13} />
-                Download HTML
-              </button>
-            </div>
-          </div>
-
-          {/* Interactive Document Paper Container */}
-          <div className="flex-1 overflow-auto p-8 flex justify-center bg-[#1F1A33]">
-            <div 
-              className="transition-transform duration-150 origin-top"
-              style={{ transform: `scale(${zoomScale / 100})` }}
-            >
-              {renderActiveDocumentContent()}
-            </div>
-          </div>
-        </main>
-      </div>
-
+    <div className="document-studio">
+      <aside className="document-library" aria-label="Official document library">
+        <header><span className="workspace-kicker">Studio / official documents</span><h1>The civil file.</h1><p>Nine records. One identity.</p></header>
+        <label className="document-citizen-label">Prepared for<select id="doc-studio-citizen-select" aria-label="Document citizen" value={selectedCitizen.maid || selectedCitizen.record} onChange={event => handleCitizenChange(event.target.value)}>{citizens.map(citizen => <option key={citizen.maid || citizen.record} value={citizen.maid || citizen.record}>{citizen.name}</option>)}</select></label>
+        <nav aria-label="Choose a document">{DOCUMENT_TABS.map(document => <button key={document.id} aria-pressed={activeDocId === document.id} onClick={() => setActiveDocId(document.id)}><span className="document-file-number">{document.id.toString().padStart(2, '0')}</span><span><strong>{document.title}</strong><small>{document.subtitle}</small></span></button>)}</nav>
+        <div className="document-library-actions"><button className="document-export" onClick={handleExportFullPacket}><Download size={14} />Export complete packet</button><details><summary>Record actions</summary><button onClick={() => openCitizenInApp(selectedCitizen.maid || selectedCitizen.record, 'meridionRegistry', { sourceApp: 'documentStudio' })}>Open citizen dossier</button><button onClick={() => setIsPortraitModalOpen(true)}>Edit portrait</button><button onClick={handleLogIssuance}>Log issuance snapshot</button></details></div>
+      </aside>
+      <main className="document-workbench">
+        <header className="document-toolbar"><div><span className="workspace-kicker">Document {activeDocId.toString().padStart(2, '0')} / 09</span><h2>{DOCUMENT_TABS.find(document => document.id === activeDocId)?.title}</h2></div><div className="document-toolbar-actions"><div className="document-zoom"><button aria-label="Zoom out" onClick={() => setZoomScale(Math.max(60, zoomScale - 10))}>−</button><span>{zoomScale}%</span><button aria-label="Zoom in" onClick={() => setZoomScale(Math.min(140, zoomScale + 10))}>+</button></div><button onClick={handlePrintCurrent}><Printer size={14} /><span>Print</span></button><button onClick={handleDownloadCurrentHtml}><Download size={14} /><span>Save HTML</span></button></div></header>
+        {issuanceNotice && <div className="document-notice" role="status"><CheckCircle2 size={14} /><span>{issuanceNotice}</span><button aria-label="Dismiss issuance notice" onClick={() => setIssuanceNotice(null)}>×</button></div>}
+        <div className="document-pasteboard"><div className="document-paper" style={{ transform: `scale(${zoomScale / 100})`, transformOrigin: 'top center' }}>{renderActiveDocumentContent()}</div></div>
+        <footer className="document-workbench-footer"><span>{selectedCitizen.maid || selectedCitizen.record}</span><span>Sovereign Realm of Meridion · Specimen view</span></footer>
+      </main>
       {/* Integrated Portrait Studio Modal */}
       <PortraitStudioModal
         citizen={selectedCitizen}

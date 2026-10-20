@@ -24,6 +24,9 @@ export default function Desktop() {
   const [isLauncherOpen, setIsLauncherOpen] = useState(false);
   const [now, setNow] = useState(() => new Date());
   const [reducedMotion, setReducedMotion] = useState(() => window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+  useEffect(() => {
+    if (isLoggedIn) useOSStore.getState().refreshAssignmentDispatches();
+  }, [isLoggedIn, gameplay.player.clearanceLevel, gameplay.timeCycleCount]);
 
   useEffect(() => {
     const timer = window.setInterval(() => setNow(new Date()), 30000);
