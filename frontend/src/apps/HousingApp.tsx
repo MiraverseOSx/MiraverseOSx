@@ -24,12 +24,15 @@ const INITIAL_UPGRADES: RoomUpgrade[] = [
 
 export default function HousingApp() {
     const [activeTab, setActiveTab] = useState<'room' | 'board' | 'upgrades' | 'dreams'>('room');
+    const [sleepDuration, setSleepDuration] = useState<'short' | 'standard' | 'full'>('full');
     const [restMessage, setRestMessage] = useState<string | null>(null);
 
     const player = useOSStore((s) => s.gameplay.player);
     const credits = player?.credits || 0;
     const bits = player?.bits || 0;
     const stamina = player?.stamina ?? 85;
+    const auraHealth = player?.auraHealth ?? 100;
+    const activeConditions: string[] = Array.isArray(player?.conditions) ? player.conditions : [];
     const unlockedIds = player?.unlockedHousingUpgrades || ['banner'];
     const dreamLogs = player?.dreamLogs || [
         'DREAM_ENTRY #04: A mirrored cathedral under coastal rain. A woman with silver hair whispers: "The code was never code, it was memory."',
@@ -46,9 +49,9 @@ export default function HousingApp() {
     const purchaseHousingUpgrade = useOSStore((s) => s.purchaseHousingUpgrade);
 
     const handleRest = () => {
-        restInDorm();
-        setRestMessage('💤 Slept peacefully. Aura and stamina restored to 100%. Dream log & housing calibration persisted.');
-        setTimeout(() => setRestMessage(null), 4000);
+        const res = restInDorm(sleepDuration);
+        setRestMessage(`💤 ${res?.message || 'Rest complete. Stamina & Aura recovered based on duration, upgrades, and conditions.'}`);
+        setTimeout(() => setRestMessage(null), 5000);
     };
 
     const handleStudy = () => {
@@ -144,26 +147,52 @@ export default function HousingApp() {
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                         {/* Bed Station */}
                         <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-xs flex flex-col justify-between space-y-4">
-                            <div>
-                                <div className="flex items-center justify-between mb-2">
+                            <div className="space-y-2.5">
+                                <div className="flex items-center justify-between">
                                     <div className="flex items-center gap-2 text-indigo-700 font-bold font-mono">
                                         <Bed size={16} />
                                         <span>HOUSING REST STATION</span>
                                     </div>
                                     <span className="text-[11px] font-mono text-emerald-700 font-bold bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
-                                        READY
+                                        AURA {auraHealth}%
                                     </span>
                                 </div>
                                 <p className="text-xs text-slate-600 leading-relaxed">
-                                    Ends the Sys-Cycle, restores full stamina, and triggers subconscious DreamLog memories from the Veil.
+                                    Advances in-game time and restores Stamina &amp; Aura according to sleep duration, installed upgrades, and active conditions. Ordinary sleep does not grant repeatable XP; milestone discoveries unlock Special Lore Dreams.
                                 </p>
+                                <div className="grid grid-cols-3 gap-1.5 pt-1">
+                                    {[
+                                        { id: 'short', label: 'Short Nap', sub: '+1 Seg' },
+                                        { id: 'standard', label: 'Standard', sub: '+2 Segs' },
+                                        { id: 'full', label: 'Overnight', sub: 'Next Day' },
+                                    ].map((opt) => (
+                                        <button
+                                            key={opt.id}
+                                            type="button"
+                                            onClick={() => setSleepDuration(opt.id as any)}
+                                            className={`rounded-lg border px-2 py-1.5 text-center font-mono text-[10px] transition ${
+                                                sleepDuration === opt.id
+                                                    ? 'border-indigo-500 bg-indigo-50 font-bold text-indigo-900'
+                                                    : 'border-slate-200 bg-slate-50 text-slate-600 hover:bg-slate-100'
+                                            }`}
+                                        >
+                                            <div>{opt.label}</div>
+                                            <div className="text-[9px] text-slate-400">{opt.sub}</div>
+                                        </button>
+                                    ))}
+                                </div>
+                                {activeConditions.length > 0 && !unlockedIds.includes('aura_lamp') && (
+                                    <div className="rounded-lg bg-amber-50 border border-amber-200 px-2.5 py-1.5 text-[10px] text-amber-900 font-mono">
+                                        Active Condition ({activeConditions.join(', ')}) reduces peak recovery until treated at Faith Medical or stabilized with an Aura Lamp.
+                                    </div>
+                                )}
                             </div>
                             <button
                                 onClick={handleRest}
                                 className="w-full py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-mono text-xs font-bold transition shadow-xs active:scale-95 flex items-center justify-center gap-2"
                             >
                                 <Moon size={14} />
-                                <span>Rest in Housing</span>
+                                <span>Rest in Housing ({sleepDuration.toUpperCase()})</span>
                             </button>
                         </div>
 

@@ -4,7 +4,7 @@ import { useSystemStore } from '../store/useSystemStore';
 import { SoundFX } from '../utils/audio';
 import { miraverseDb, DGA_DIVISIONS, ORGANIZATIONS } from '../db/miraverseDb';
 import { WorknetMission, MissionType } from '../types';
-import { WORKNET_DOMAIN_TASKS, evaluateWorknetObjective } from '../gameplay/WorldEventEngine';
+import { WORKNET_DOMAIN_TASKS, evaluateWorknetObjective, evaluateCareerPromotion } from '../gameplay/WorldEventEngine';
 import { MaidIdentityService, CanonicalCitizenRecord } from '../services/maidIdentityService';
 import {
   getCanonicalCitizens,
@@ -87,7 +87,30 @@ export default function JobWorkstationApp() {
   const addBits = useOSStore((s) => s.addBits);
   const completeWorknetDomainTask = useOSStore((s) => s.completeWorknetDomainTask);
   const completeWorknetMission = useOSStore((s) => s.completeWorknetMission);
+  const requestCareerPromotion = useOSStore((s) => s.requestCareerPromotion);
   const resetWorknetMissionsAdmin = useOSStore((s) => s.resetWorknetMissionsAdmin);
+
+  const stationCareerTrackMap: Record<WorkplaceStationId, string> = {
+    dga: 'dga',
+    faithmed: 'medical',
+    finance: 'finance',
+    archives: 'archivist',
+    engineer: 'engineer',
+    diplomat: 'diplomat',
+    warden: 'warden',
+    artist: 'artist',
+    questnotice: 'questnotice',
+  };
+  const activeCareerTrack = stationCareerTrackMap[activeStation] || 'dga';
+  const careerEval = evaluateCareerPromotion(activeCareerTrack, player);
+
+  const handleRequestPromotion = () => {
+    if (soundEnabled) SoundFX.playButtonTap();
+    const res = requestCareerPromotion(activeCareerTrack);
+    if (res.ok && soundEnabled) SoundFX.playSuccess();
+    setActionFeedback(res.ok ? `🎖️ ${res.message}` : `⚠️ ${res.message}`);
+    setTimeout(() => setActionFeedback(null), 5000);
+  };
 
   const completedMissionIds = player?.completedWorknetMissionIds || [];
 
@@ -378,6 +401,56 @@ export default function JobWorkstationApp() {
           </div>
         </div>
       )}
+
+      {/* ─── GAMEPLAY-013: CAREER ADVANCEMENT & QUALIFICATION PATHWAYS BAR ─── */}
+      <div className="flex flex-wrap items-center justify-between gap-3 px-6 py-2.5 bg-amber-50/50 border-b border-amber-200/80 text-xs font-ui">
+        <div className="flex flex-wrap items-center gap-3">
+          <div className="flex items-center gap-1.5">
+            <Award size={15} className="text-amber-700" />
+            <span className="font-bold text-slate-900">
+              {careerEval.currentTitle} (Rank {careerEval.currentRankIndex}/5)
+            </span>
+          </div>
+          <span className="rounded bg-white px-2 py-0.5 font-mono text-[11px] font-bold text-amber-900 border border-amber-200">
+            Career XP: {careerEval.currentXP} / {careerEval.requiredXP} XP
+          </span>
+          <div className="flex flex-wrap items-center gap-1.5">
+            {careerEval.pathwayStatuses.map((pw) => (
+              <span
+                key={pw.id}
+                title={pw.summary}
+                className={`rounded-md px-2 py-0.5 text-[10px] font-semibold border ${
+                  pw.met
+                    ? 'bg-emerald-50 text-emerald-800 border-emerald-300'
+                    : 'bg-white text-slate-600 border-slate-200'
+                }`}
+              >
+                {pw.met ? '✓ ' : '○ '}
+                {pw.label}: {pw.summary}
+              </span>
+            ))}
+          </div>
+        </div>
+
+        {careerEval.nextTitle && (
+          <button
+            type="button"
+            onClick={handleRequestPromotion}
+            className={`px-3 py-1 rounded-lg font-bold text-[11px] transition flex items-center gap-1.5 border cursor-pointer ${
+              careerEval.canPromote
+                ? 'bg-amber-600 hover:bg-amber-700 text-white border-amber-700 shadow-2xs'
+                : 'bg-white hover:bg-slate-50 text-slate-700 border-slate-300'
+            }`}
+          >
+            <Award size={12} />
+            <span>
+              {careerEval.canPromote
+                ? `Promote to ${careerEval.nextTitle}`
+                : `Review Promotion (${careerEval.nextTitle})`}
+            </span>
+          </button>
+        )}
+      </div>
 
       {/* ─── DGA SUB-BRANCH CONTROLS (IF DGA CONSOLE ACTIVE) ─── */}
       {activeStation === 'dga' && (

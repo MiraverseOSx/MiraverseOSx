@@ -6,7 +6,11 @@ import {
   worldEventEngine,
   PATIENT_CARE_ASSIGNMENTS,
   WORKNET_DOMAIN_TASKS,
+  CAREER_TRACK_SPECS,
   evaluateWorknetObjective,
+  calculateRestOutcome,
+  evaluateCareerPromotion,
+  type SleepDuration,
   type WorldNarrativeEvent,
   type WorldEventCategory,
 } from '../gameplay/WorldEventEngine';
@@ -78,7 +82,13 @@ export interface OSStoreState {
   gameplay: any;
 
   advanceTime: () => void;
-  restInDorm: () => void;
+  restInDorm: (duration?: SleepDuration) => {
+    ok: boolean;
+    staminaRecovered: number;
+    auraRecovered: number;
+    unlockedSpecialDream: any;
+    message: string;
+  };
   studyInHousing: () => { ok: boolean; message: string };
   purchaseHousingUpgrade: (upgradeId: string, cost: number, bitCost?: number) => { ok: boolean; message: string };
   advanceWorknetMissionStep: (missionId: string, stepKey: string) => void;
@@ -129,6 +139,13 @@ export interface OSStoreState {
   decryptLineage: () => void;
   addSkillXP: (skillName: string, amount: number) => void;
   addCareerXP: (track: string, amount: number) => void;
+  requestCareerPromotion: (track: string) => {
+    ok: boolean;
+    newRankIndex?: number;
+    newTitle?: string;
+    pathwayLabel?: string;
+    message: string;
+  };
   advanceStarterPhase: (targetPhase?: number) => void;
   setHouseAffiliation: (house: string) => void;
   updateActivityStatus: (activityId: string, status: string) => void;
@@ -518,6 +535,7 @@ export const useOSStore = create<OSStoreState>()(persist((set, get) => ({
       worknetMissionProgress: {},
       unlockedHousingUpgrades: ['banner'],
       housingCalibrated: false,
+      unlockedDreamIds: [],
       dreamLogs: [
         'DREAM_ENTRY #04: A mirrored cathedral under coastal rain. A woman with silver hair whispers: "The code was never code, it was memory."',
         'DREAM_ENTRY #03: Falling through the Supercomputer factory floor. Glowing blue lines trace my pulse.',
@@ -660,42 +678,47 @@ export const useOSStore = create<OSStoreState>()(persist((set, get) => ({
       };
     }),
 
-  restInDorm: () =>
-    set((state) => {
-      const player = state.gameplay.player;
-      const unlocked = Array.isArray(player.unlockedHousingUpgrades) ? player.unlockedHousingUpgrades : ['banner'];
-      const hasAuraLamp = unlocked.includes('aura_lamp');
-      const currentDreams = Array.isArray(player.dreamLogs) ? player.dreamLogs : [];
-      const nextDreamNumber = currentDreams.length + 5;
-      const newDream = `DREAM_ENTRY #0${nextDreamNumber}: AETHERCORE whispers (Cycle ${state.gameplay.timeCycleCount + 1}): "Maeryn's Lightborn bloodline will awaken when the Veil tears."`;
-      const newXP = player.xp + 50;
-      const newLevel = Math.floor(newXP / 100) + 1;
-      const nextCorruption = hasAuraLamp
-        ? Math.max(2.0, Number((state.gameplay.prismCorruptionLevel - 1.5).toFixed(1)))
-        : state.gameplay.prismCorruptionLevel;
-      const nextConditions = hasAuraLamp
-        ? (player.conditions || []).filter((c: string) => c !== 'Veilwilt')
-        : player.conditions;
+  restInDorm: (duration = 'full') => {
+    const state = get();
+    const player = state.gameplay.player;
+    const currentDreams = Array.isArray(player.dreamLogs) ? player.dreamLogs : [];
+    const outcome = calculateRestOutcome(state.gameplay, duration);
 
-      return {
-        gameplay: {
-          ...state.gameplay,
-          timeSegmentIndex: 0, // Morning
-          timeCycleCount: state.gameplay.timeCycleCount + 1,
-          prismCorruptionLevel: nextCorruption,
-          player: {
-            ...player,
-            auraHealth: 100,
-            stamina: 100,
-            housingCalibrated: true,
-            xp: newXP,
-            level: newLevel,
-            conditions: nextConditions,
-            dreamLogs: [newDream, ...currentDreams.slice(0, 14)],
-          },
+    set((s) => ({
+      gameplay: {
+        ...s.gameplay,
+        timeSegmentIndex: outcome.nextTimeSegmentIndex,
+        timeCycleCount: outcome.nextTimeCycleCount,
+        prismCorruptionLevel: outcome.nextCorruption,
+        player: {
+          ...s.gameplay.player,
+          auraHealth: outcome.nextAuraHealth,
+          stamina: outcome.nextStamina,
+          housingCalibrated: true,
+          conditions: outcome.nextConditions,
+          unlockedDreamIds: outcome.nextUnlockedDreamIds,
+          dreamLogs: [outcome.dreamText, ...currentDreams.slice(0, 14)],
         },
-      };
-    }),
+      },
+    }));
+
+    if (outcome.unlockedSpecialDream) {
+      get().recordWorldEvent({
+        category: 'veil',
+        title: `Special Lore Dream: ${outcome.unlockedSpecialDream.title}`,
+        summary: outcome.unlockedSpecialDream.loreSummary,
+        institution: 'HOMECRAFT // Subconscious Veil',
+      });
+    }
+
+    return {
+      ok: true,
+      staminaRecovered: outcome.staminaRecovered,
+      auraRecovered: outcome.auraRecovered,
+      unlockedSpecialDream: outcome.unlockedSpecialDream,
+      message: outcome.summaryMessage,
+    };
+  },
 
   studyInHousing: () => {
     const state = get();
@@ -2107,15 +2130,19 @@ export const useOSStore = create<OSStoreState>()(persist((set, get) => ({
       };
     }),
 
+  // GAMEPLAY-013: Career XP measures experience & professional development.
+  // Promotions are never automatically granted just for accumulating XP; they require
+  // profession-specific qualifications evaluated via requestCareerPromotion(track).
   addCareerXP: (track, amount) =>
     set((state) => {
-      const current = state.gameplay.player.careers[track] || { rankIndex: 0, xp: 0 };
-      let newXP = current.xp + amount;
-      let newRankIndex = current.rankIndex;
-      if (newXP >= 100) {
-        newXP -= 100;
-        newRankIndex = Math.min(5, current.rankIndex + 1);
-      }
+      const current = state.gameplay.player.careers[track] || {
+        rankIndex: 0,
+        xp: 0,
+        title: CAREER_TRACK_SPECS[track]?.rankTitles?.[0] || track,
+      };
+      const newXP = Math.max(0, (current.xp || 0) + amount);
+      const canonicalTitle =
+        CAREER_TRACK_SPECS[track]?.rankTitles?.[current.rankIndex || 0] || current.title || track;
       return {
         gameplay: {
           ...state.gameplay,
@@ -2123,12 +2150,69 @@ export const useOSStore = create<OSStoreState>()(persist((set, get) => ({
             ...state.gameplay.player,
             careers: {
               ...state.gameplay.player.careers,
-              [track]: { rankIndex: newRankIndex, xp: newXP },
+              [track]: {
+                ...current,
+                rankIndex: current.rankIndex || 0,
+                xp: newXP,
+                title: canonicalTitle,
+              },
             },
           },
         },
       };
     }),
+
+  requestCareerPromotion: (track) => {
+    const state = get();
+    const player = state.gameplay.player;
+    const evalRes = evaluateCareerPromotion(track, player);
+    if (!evalRes.canPromote || evalRes.nextRankIndex === null || !evalRes.nextTitle) {
+      return {
+        ok: false,
+        message: evalRes.reason,
+      };
+    }
+
+    const current = player.careers?.[track] || { rankIndex: 0, xp: 0 };
+    const newPlayerXP = player.xp + 50;
+    const newLevel = Math.floor(newPlayerXP / 100) + 1;
+
+    set((s) => ({
+      gameplay: {
+        ...s.gameplay,
+        player: {
+          ...s.gameplay.player,
+          credits: s.gameplay.player.credits + 150,
+          xp: newPlayerXP,
+          level: newLevel,
+          careers: {
+            ...s.gameplay.player.careers,
+            [track]: {
+              ...current,
+              rankIndex: evalRes.nextRankIndex!,
+              xp: current.xp || 0,
+              title: evalRes.nextTitle!,
+            },
+          },
+        },
+      },
+    }));
+
+    get().recordWorldEvent({
+      category: 'worknet',
+      title: `Career Promotion: ${evalRes.nextTitle}`,
+      summary: `${evalRes.reason} Promoted to Rank ${evalRes.nextRankIndex} (${evalRes.nextTitle}) in ${track.toUpperCase()}.`,
+      institution: `WORKNET // ${track.toUpperCase()}`,
+    });
+
+    return {
+      ok: true,
+      newRankIndex: evalRes.nextRankIndex,
+      newTitle: evalRes.nextTitle,
+      pathwayLabel: evalRes.qualifiedPathway?.label,
+      message: `Promoted to ${evalRes.nextTitle} (Rank ${evalRes.nextRankIndex}) via ${evalRes.qualifiedPathway?.label}! (+150 ₢ Stipend, +50 XP)`,
+    };
+  },
 
   advanceStarterPhase: (targetPhase) =>
     set((state) => {

@@ -398,3 +398,74 @@ test('AureMail Decisions 006-011 enforce multi-account MAID links, persisted mai
   assert.equal(blockedRes.sentMessage.folder, 'outbox');
 });
 
+test('GAMEPLAY-012 & GAMEPLAY-013: Rest restores stamina/health conditionally without repeatable XP, and career promotions require profession qualifications beyond raw XP', async () => {
+  memoryStorage();
+  const store = await freshStore();
+
+  // 1. GAMEPLAY-012 (Option C): Ordinary sleep does NOT grant repeatable general XP; recovery scales with duration, upgrades, and conditions
+  store.getState().damageAura(40); // Aura drops to 60
+  const xpBeforeRest = store.getState().gameplay.player.xp;
+  const cycleBeforeRest = store.getState().gameplay.timeCycleCount;
+
+  // First calibration rest unlocks Special Lore Dream #05, advances cycle, and recovers Stamina/Aura (capped at 90/85 due to untreated Veilwilt and no Aura Lamp)
+  const firstRest = store.getState().restInDorm('full');
+  assert.equal(firstRest.ok, true);
+  assert.ok(firstRest.unlockedSpecialDream);
+  assert.equal(store.getState().gameplay.player.xp, xpBeforeRest); // 0 general XP from sleeping!
+  assert.equal(store.getState().gameplay.timeCycleCount, cycleBeforeRest + 1);
+  assert.equal(store.getState().gameplay.player.auraHealth, 85); // Capped at 85 while Veilwilt is untreated and no Aura Lamp
+
+  // Subsequent ordinary sleep grants 0 XP and does not re-trigger the already unlocked special dream
+  const secondRest = store.getState().restInDorm('short');
+  assert.equal(store.getState().gameplay.player.xp, xpBeforeRest);
+  assert.equal(secondRest.unlockedSpecialDream, null);
+
+  // Installing Aura Lamp and resting overnight restores Aura to 100% and soothes Veilwilt
+  store.getState().addCredits(1000);
+  store.getState().purchaseHousingUpgrade('aura_lamp', 600);
+  const xpAfterUpgrade = store.getState().gameplay.player.xp;
+  store.getState().restInDorm('full');
+  assert.equal(store.getState().gameplay.player.xp, xpAfterUpgrade);
+  assert.equal(store.getState().gameplay.player.auraHealth, 100);
+  assert.equal(store.getState().gameplay.player.stamina, 100);
+
+  // 2. GAMEPLAY-013 (Options C + D): Accumulating Career XP alone does NOT auto-promote a physician or an artist
+  store.getState().addCareerXP('medical', 300);
+  assert.equal(store.getState().gameplay.player.careers.medical.xp, 300);
+  assert.equal(store.getState().gameplay.player.careers.medical.rankIndex, 0);
+
+  // Attempting promotion to Junior Bio-Aura Clinician (Rank 1) without clinical patient care or forensic case is rejected
+  const deniedMedPromo = store.getState().requestCareerPromotion('medical');
+  assert.equal(deniedMedPromo.ok, false);
+  assert.equal(store.getState().gameplay.player.careers.medical.rankIndex, 0);
+
+  // Completing actual clinical patient care ('pc-mercer') + Faith reputation satisfies the Clinical Credentials pathway
+  const careRes = store.getState().completePatientCareAssignment('pc-mercer', 'diag-veilwilt-desync', 'tx-warm-compress-vitals');
+  assert.equal(careRes.ok, true);
+  const approvedMedPromo = store.getState().requestCareerPromotion('medical');
+  assert.equal(approvedMedPromo.ok, true);
+  assert.equal(store.getState().gameplay.player.careers.medical.rankIndex, 1);
+  assert.equal(store.getState().gameplay.player.careers.medical.title, 'Junior Bio-Aura Clinician');
+
+  // Artist pathway: Accumulating XP alone does not promote; portfolio/commissions + reputation unlocks promotion without needing a medical/DGA degree
+  store.getState().addCareerXP('artist', 150);
+  assert.equal(store.getState().gameplay.player.careers.artist.rankIndex, 0);
+  const deniedArtPromo = store.getState().requestCareerPromotion('artist');
+  assert.equal(deniedArtPromo.ok, false);
+
+  // Synthesizing a new work in SpellForge builds the portfolio and allows Artist Rank 1 promotion
+  store.getState().compileSpellProtocol({
+    name: 'Luminous Chorus',
+    combo: 'Light.mod + Resonance.mod',
+    type: 'Performance Synthesis',
+    desc: 'Holographic harmonic projection',
+    power: 130,
+    isCanonical: true,
+  });
+  const approvedArtPromo = store.getState().requestCareerPromotion('artist');
+  assert.equal(approvedArtPromo.ok, true);
+  assert.equal(store.getState().gameplay.player.careers.artist.rankIndex, 1);
+  assert.equal(store.getState().gameplay.player.careers.artist.title, 'Independent Commission Artist');
+});
+
+
