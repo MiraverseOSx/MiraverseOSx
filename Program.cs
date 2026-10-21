@@ -35,6 +35,7 @@ namespace MiraverseOSx
         private static PhotinoWindow? _mainWindow;
         private static HttpListener? _httpServer;
         private static int _activePort = 5000;
+        private static WorldSaveApi? _worldApi;
         private static readonly HttpClient _httpClient = new HttpClient();
 
         [STAThread]
@@ -59,8 +60,19 @@ namespace MiraverseOSx
                 Console.WriteLine($"[Environment Warning] Failed to load .env: {ex.Message}");
             }
 
-            // 2. Start lightweight local HTTP server for wwwroot assets and API
-            _activePort = StartLocalWebServer();
+            string? Argument(string name) { int index = Array.IndexOf(args, name); return index >= 0 && index + 1 < args.Length ? args[index + 1] : null; }
+            var dataDirectory = Argument("--data-dir") ?? Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "MiraverseOSx");
+            _worldApi = new WorldSaveApi(dataDirectory);
+            var serverOnly = Array.Exists(args, value => value == "--server-only");
+            int requestedPort = int.TryParse(Argument("--port"), out var parsedPort) && parsedPort is >= 1024 and <= 65535 ? parsedPort : 5000;
+            // Native windows use their server's own origin; Vite targets the fixed development port.
+            _activePort = StartLocalWebServer(requestedPort, serverOnly);
+            if (serverOnly)
+            {
+                using var shutdown = new System.Threading.ManualResetEventSlim();
+                Console.CancelKeyPress += (_, eventArgs) => { eventArgs.Cancel = true; shutdown.Set(); };
+                shutdown.Wait(); StopLocalWebServer(); return;
+            }
 
             // 3. Initialize Photino native desktop window
             _mainWindow = new PhotinoWindow()
@@ -83,7 +95,7 @@ namespace MiraverseOSx
             StopLocalWebServer();
         }
 
-        private static int StartLocalWebServer()
+        private static int StartLocalWebServer(int requestedPort, bool fixedPort)
         {
             string wwwroot = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "wwwroot");
             if (!Directory.Exists(wwwroot))
@@ -91,8 +103,8 @@ namespace MiraverseOSx
                 wwwroot = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot");
             }
 
-            int port = 5000;
-            for (int p = 5000; p <= 5015; p++)
+            int port = requestedPort;
+            for (int p = requestedPort; p <= (fixedPort ? requestedPort : Math.Min(requestedPort + 15, 65535)); p++)
             {
                 try
                 {
@@ -126,6 +138,7 @@ namespace MiraverseOSx
                 });
             }
 
+            if (_httpServer == null) throw new InvalidOperationException($"Could not start the local backend on port {requestedPort}.");
             return port;
         }
 
@@ -134,6 +147,8 @@ namespace MiraverseOSx
             try
             {
                 string relPath = context.Request.Url?.AbsolutePath.TrimStart('/') ?? "index.html";
+
+                if (_worldApi != null && await _worldApi.Handle(context, relPath)) return;
 
                 // --- SQLITE API ROUTE INTERCEPTOR ---
                 if (relPath.Equals("api/documents", StringComparison.OrdinalIgnoreCase))
@@ -193,15 +208,22 @@ namespace MiraverseOSx
                     return;
                 }
 
+                if (relPath.StartsWith("api/", StringComparison.OrdinalIgnoreCase)) { await WorldSaveApi.Reply(context.Response, 404, new { error = "Unknown API route." }); return; }
+
                 // --- STATIC FILE HANDLING ---
                 if (string.IsNullOrEmpty(relPath)) relPath = "index.html";
 
-                string filePath = Path.Combine(wwwroot, relPath.Replace('/', Path.DirectorySeparatorChar));
+                string filePath = Path.GetFullPath(Path.Combine(wwwroot, Uri.UnescapeDataString(relPath).Replace('/', Path.DirectorySeparatorChar)));
+                string allowedRoot = Path.GetFullPath(wwwroot).TrimEnd(Path.DirectorySeparatorChar) + Path.DirectorySeparatorChar;
+                if (!filePath.StartsWith(allowedRoot, StringComparison.OrdinalIgnoreCase)) { context.Response.StatusCode = 403; context.Response.Close(); return; }
                 if (!File.Exists(filePath))
                 {
+                    if (Path.HasExtension(relPath)) { context.Response.StatusCode = 404; context.Response.Close(); return; }
                     filePath = Path.Combine(wwwroot, "index.html");
                 }
 
+                context.Response.Headers["X-Content-Type-Options"] = "nosniff";
+                if (relPath == "sw.js" || relPath == "index.html") context.Response.Headers["Cache-Control"] = "no-cache";
                 byte[] bytes = File.ReadAllBytes(filePath);
                 string ext = Path.GetExtension(filePath).ToLowerInvariant();
                 context.Response.ContentType = ext switch
@@ -238,7 +260,7 @@ namespace MiraverseOSx
             catch { }
         }
 
-        private static async void OnWebMessageReceived(object? sender, string rawMessage)
+        private static void OnWebMessageReceived(object? sender, string rawMessage)
         {
             try
             {

@@ -1,6 +1,7 @@
 import React, { useState, lazy, Suspense } from 'react';
 import { miraverseDb } from '../db/miraverseDb';
 import { useOSStore } from '../store/useOSStore';
+import SettingsApp from './SettingsApp';
 import { 
   Folder, FileText, Shield, Globe, Briefcase, BookOpen, 
   Mail, MessageSquare, UserCheck, Sparkles, Settings, 
@@ -156,70 +157,6 @@ const TerminalApp = () => {
         />
       </div>
     </div>
-  );
-};
-
-// ----------------------------------------------------------------------
-// Settings App: Database Metrics & Control
-// ----------------------------------------------------------------------
-const SettingsApp = () => {
-  const setWallpaper = useOSStore((s) => s.setWallpaper);
-  const currentWallpaper = useOSStore((s) => s.wallpaper);
-
-  const wallpapers = [
-    { name: 'Aureline Orbit', url: '' },
-    { name: 'Cosmic Nebula', url: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=2072&auto=format&fit=crop' },
-    { name: 'Neon City', url: 'https://images.unsplash.com/photo-1509198397868-475647b2a1e5?q=80&w=2070&auto=format&fit=crop' },
-    { name: 'Cyber Minimal', url: 'https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=2070&auto=format&fit=crop' },
-  ];
-
-  return (
-    <Panel>
-      <div className="space-y-6">
-        <div>
-          <h2 className="text-base font-semibold text-[#1c2650]">World Authority Engine Status</h2>
-          <div className="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-4">
-            <div className="rounded-lg border border-slate-300/70 bg-white/70 p-3 shadow-sm">
-              <div className="text-xs text-slate-500">Regions</div>
-              <div className="text-lg font-bold text-[#3b4785]">{miraverseDb.getRegions().length}</div>
-            </div>
-            <div className="rounded-lg border border-slate-300/70 bg-white/70 p-3 shadow-sm">
-              <div className="text-xs text-slate-500">Factions</div>
-              <div className="text-lg font-bold text-[#3b4785]">{miraverseDb.getFactions().length}</div>
-            </div>
-            <div className="rounded-lg border border-slate-300/70 bg-white/70 p-3 shadow-sm">
-              <div className="text-xs text-slate-500">NPCs</div>
-              <div className="text-lg font-bold text-[#3b4785]">{miraverseDb.getNPCs().length}</div>
-            </div>
-            <div className="rounded-lg border border-slate-300/70 bg-white/70 p-3 shadow-sm">
-              <div className="text-xs text-slate-500">Lore Entries</div>
-              <div className="text-lg font-bold text-[#3b4785]">{miraverseDb.getLoreEntries().length}</div>
-            </div>
-          </div>
-        </div>
-
-        <div>
-          <h2 className="mb-3 text-base font-semibold text-[#1c2650]">Wallpaper Select</h2>
-          <div className="grid grid-cols-3 gap-3">
-            {wallpapers.map((wp) => (
-              <button
-                key={wp.name}
-                onClick={() => setWallpaper(wp.url)}
-                aria-pressed={currentWallpaper === wp.url}
-                className={`flex flex-col items-center overflow-hidden rounded-lg border p-2 transition ${currentWallpaper === wp.url ? 'border-[#8c97d6] bg-[#eef0fb]' : 'border-slate-200 hover:bg-white'
-                  }`}
-              >
-                <div
-                  className="h-16 w-full rounded bg-gradient-to-br from-slate-800 to-purple-900 bg-cover bg-center"
-                  style={wp.url ? { backgroundImage: `url(${JSON.stringify(wp.url)})` } : undefined}
-                />
-                <span className="mt-2 text-xs text-slate-700 font-medium">{wp.name}</span>
-              </button>
-            ))}
-          </div>
-        </div>
-      </div>
-    </Panel>
   );
 };
 

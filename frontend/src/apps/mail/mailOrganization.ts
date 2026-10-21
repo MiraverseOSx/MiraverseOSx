@@ -38,10 +38,15 @@ export function groupConversations(emails: EmailItem[], enabled = true): EmailIt
   const seen = new Set<string>();
   return emails.filter(mail => { const key = enabled ? mail.threadId || mail.id : mail.id; if (seen.has(key)) return false; seen.add(key); return true; });
 }
+export function conversationMessageIds(emails: EmailItem[], ids: string[], enabled = true): string[] {
+  const selected = new Set(ids);
+  const keys = new Set(emails.filter(mail => selected.has(mail.id)).map(mail => mail.threadId || mail.id));
+  return emails.filter(mail => enabled ? keys.has(mail.threadId || mail.id) : selected.has(mail.id)).map(mail => mail.id);
+}
 export interface MailOrganizationActions {
   mailOrganization: MailOrganization;
   updateMailOrganization: (change: (value: MailOrganization) => MailOrganization) => void;
-  organizeMail: (ids: string[], action: 'spam' | 'not-spam' | 'snooze' | 'folder' | 'label', value?: string | number) => void;
+  organizeMail: (ids: string[], action: 'spam' | 'not-spam' | 'snooze' | 'folder' | 'label' | 'add-label', value?: string | number) => void;
   savePersonalContact: (contact: Partial<PersonalContact>) => { ok: boolean; message: string };
   deletePersonalContact: (id: string) => void;
   processMailRules: (all?: boolean) => void;
@@ -58,10 +63,10 @@ export function createMailOrganizationActions(set: any, get: any): MailOrganizat
         if (action === 'spam' || action === 'not-spam') meta.spam = action === 'spam';
         if (action === 'snooze' && typeof value === 'number' && Number.isFinite(value)) meta.snoozedUntil = value;
         if (action === 'folder' && typeof value === 'string' && (value === '' || org.folders.includes(value))) { meta.folder = value || undefined; meta.spam = false; meta.snoozedUntil = undefined; }
-        if (action === 'label' && typeof value === 'string' && org.labels.includes(value)) meta.labels = meta.labels?.includes(value) ? meta.labels.filter(label => label !== value) : [...(meta.labels || []), value];
+        if ((action === 'label' || action === 'add-label') && typeof value === 'string' && org.labels.includes(value)) meta.labels = action === 'label' && meta.labels?.includes(value) ? meta.labels.filter(label => label !== value) : [...new Set([...(meta.labels || []), value])];
         metadata[id] = meta;
       }
-      return { mailOrganization: { ...org, metadata }, ...(action === 'folder' ? { archivedEmailIds: state.archivedEmailIds.filter((id: string) => !validIds.includes(id)), trashedEmailIds: state.trashedEmailIds.filter((id: string) => !validIds.includes(id)), emails: state.emails.map((mail: EmailItem) => validIds.includes(mail.id) ? { ...mail, folder: 'inbox' } : mail) } : {}) };
+      return { mailOrganization: { ...org, metadata }, ...(action === 'folder' ? { archivedEmailIds: state.archivedEmailIds.filter((id: string) => !validIds.includes(id)), trashedEmailIds: state.trashedEmailIds.filter((id: string) => !validIds.includes(id)), emails: state.emails.map((mail: EmailItem) => validIds.includes(mail.id) ? { ...mail, folder: mail.folder === 'sent' || mail.folder === 'outbox' ? mail.folder : 'inbox' } : mail) } : {}) };
     }),
     savePersonalContact: contact => {
       const org: MailOrganization = get().mailOrganization;

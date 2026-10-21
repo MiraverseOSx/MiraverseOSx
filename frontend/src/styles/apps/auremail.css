@@ -20,6 +20,9 @@
 .mail-organization-bar small { font-size: 11px; color: #596977; }
 .mail-label-chip { background: #e4f1eb; color: #285b49; border-radius: 4px; padding: 4px 8px; font-size: 11px; }
 .mail-back, .mail-mobile-nav { display: none; }
+.mail-reward-card { flex-wrap: wrap; gap: 16px; }
+.mail-reward-card > div { flex: 1 1 210px; min-width: 0; }
+.mail-reward-card > button { max-width: 100%; white-space: normal; }
 .mail-rich-editor { border: 1px solid #ccd9e1; border-radius: 10px; overflow: hidden; }
 .mail-format-bar { padding: 8px; background: #f0f5f8; border-bottom: 1px solid #d4e0e6; gap: 5px; }
 .mail-format-bar button { font-size: 11px; padding: 6px 9px; min-height: 32px; }
@@ -61,14 +64,13 @@
 .mail-rule-row { display: flex; justify-content: space-between; align-items: center; gap: 12px; overflow-wrap: anywhere; }
 .mail-tool-notice { color: #285b49; min-height: 24px; }
 @container (max-width: 1000px) {
-  .auremail-client .mail-folders { min-width: 150px; width: 150px; }
-  .auremail-client .mail-list { min-width: 215px; }
-  .auremail-client .mail-reader { padding: 12px; }
-}
-@container (max-width: 760px) {
   .auremail-client .mail-folders { display: none; }
+  .auremail-client .mail-list { min-width: 230px; width: 33%; }
+  .auremail-client .mail-reader { padding: 16px; }
   .mail-mobile-nav { display: flex; flex-wrap: wrap; gap: 8px; padding: 10px 14px; border-bottom: 1px solid #d4dfe4; background: #edf3f2; }
   .mail-mobile-nav select { flex: 1; min-width: 120px; max-width: 100%; }
+}
+@container (max-width: 760px) {
   .auremail-client .mail-list { width: 100%; min-width: 0; max-width: none; }
   .auremail-client .mail-reader { width: 100%; min-width: 0; padding: 14px; }
   .mail-view-list .mail-reader, .mail-view-reader .mail-list { display: none; }

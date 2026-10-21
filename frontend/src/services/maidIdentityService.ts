@@ -272,27 +272,15 @@ export function allocateNextMaid(existingPersons: CanonicalPerson[]): string {
  * Helper to safely read from IndexedDB or localStorage
  */
 async function loadStoredCanonicalList(): Promise<CanonicalPerson[]> {
-  try {
-    if (typeof indexedDB !== 'undefined') {
-      const idbData = await idbGet<CanonicalPerson[]>(STORAGE_KEY_CANONICAL);
-      if (Array.isArray(idbData) && idbData.length > 0) {
-        return idbData;
-      }
-    }
-  } catch {
-    // fallback to localStorage
-  }
-
+  // The bootstrap restores the database snapshot here before apps initialize.
+  // Prefer this mirror so a stale IndexedDB copy cannot replace restored identities.
   try {
     const raw = localStorage.getItem(STORAGE_KEY_CANONICAL);
-    if (raw) {
-      const parsed = JSON.parse(raw);
-      if (Array.isArray(parsed)) return parsed;
-    }
-  } catch {
-    // ignore
-  }
-
+    if (raw !== null) { const parsed = JSON.parse(raw); if (Array.isArray(parsed)) return parsed; }
+  } catch { /* IndexedDB remains the fallback if device storage is unavailable. */ }
+  try {
+    if (typeof indexedDB !== 'undefined') { const stored = await idbGet<CanonicalPerson[]>(STORAGE_KEY_CANONICAL); if (Array.isArray(stored)) return stored; }
+  } catch { /* Keep a new session usable. */ }
   return [];
 }
 

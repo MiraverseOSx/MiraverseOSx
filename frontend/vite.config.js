@@ -14,9 +14,10 @@ export default defineConfig({
     apply: 'build',
     generateBundle(_options, bundle) {
       const assets = Object.keys(bundle).filter(name => /\.(js|css|woff2?|ttf)$/.test(name)).map(name => `/${name}`);
-      const revision = createHash('sha256').update(assets.join('\n')).digest('hex').slice(0, 16);
+      const workerSource = readFileSync(path.join(__dirname, 'offline-worker.js'), 'utf8');
+      const revision = createHash('sha256').update(assets.join('\n')).update(workerSource).update(readFileSync(path.join(__dirname, 'index.html'))).update(readFileSync(path.join(__dirname, 'public/manifest.json'))).digest('hex').slice(0, 16);
       const precache = ['/index.html', '/manifest.json', '/pwa-icon.svg', '/images/Logo_Icon - 1.png', ...assets];
-      this.emitFile({ type: 'asset', fileName: 'sw.js', source: `const CACHE_NAME = ${JSON.stringify(`miraverse-shell-${revision}`)};\nconst PRECACHE = ${JSON.stringify(precache)};\n${readFileSync(path.join(__dirname, 'offline-worker.js'), 'utf8')}` });
+      this.emitFile({ type: 'asset', fileName: 'sw.js', source: `const CACHE_NAME = ${JSON.stringify(`miraverse-shell-${revision}`)};\nconst PRECACHE = ${JSON.stringify(precache)};\n${workerSource}` });
     },
   }],
   publicDir: 'public',

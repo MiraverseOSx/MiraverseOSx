@@ -36,7 +36,7 @@ export function createWorknetActions(set: (update: (state: OSStoreState) => Part
       const definition = getWorkDefinition(missionId);
       if (!definition) return { ok: false, message: 'Unknown assignment.' };
       const existing: WorkOrder | undefined = player.worknetOrders?.[missionId];
-      if (existing?.status === 'active') { get().saveAssignmentBriefing(missionId); return { ok: true, message: 'Resumed your saved work order.' }; }
+      if (existing?.status === 'active') { get().recordAssignmentOpened(missionId); return { ok: true, message: 'Resumed your saved work order.' }; }
       const repeatable = definition.kind === 'shift' && definition.track !== 'medical';
       if ((!repeatable && player.completedWorknetMissionIds.includes(missionId)) || (existing && (!repeatable || existing.cycle >= state.gameplay.timeCycleCount))) {
         return { ok: false, message: repeatable ? 'This shift is already paid for this cycle. A new shift opens next cycle.' : 'This one-time assignment is already accepted and paid.' };
@@ -57,7 +57,7 @@ export function createWorknetActions(set: (update: (state: OSStoreState) => Part
       const care: TaskResult | undefined = player.taskResults?.[`${id}:care`];
       if (care?.compensationPaid && care.subject === definition.subject) order.resultIds.push(care.id);
       updatePlayer(current => ({ ...current, worknetOrders: { ...current.worknetOrders, [missionId]: order } }));
-      get().saveAssignmentBriefing(missionId);
+      get().recordAssignmentOpened(missionId);
       return { ok: true, message: `Work order opened for ${definition.subject}. Equipment reserved; 20 work units available.` };
     },
 

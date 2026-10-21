@@ -4,14 +4,14 @@ import { readFile } from 'node:fs/promises';
 import vm from 'node:vm';
 const source = await readFile(new URL('../offline-worker.js', import.meta.url), 'utf8');
 function worker() {
-  const listeners = {}; const added = []; const deleted = [];
+  const listeners = {}; const added = []; const deleted = []; const matches = [];
   const cached = new Response('<html>Offline shell</html>', { headers: { 'content-type': 'text/html' } });
   vm.runInNewContext(source, { CACHE_NAME: 'miraverse-shell-current', PRECACHE: ['/index.html', '/assets/mail.js'], URL, Response,
     self: { location: { origin: 'https://miraverse.test' }, clients: { claim: async () => {} }, addEventListener: (name, handler) => listeners[name] = handler },
-    caches: { open: async () => ({ addAll: async urls => added.push(...urls), put: async () => {} }), match: async key => key === '/index.html' ? cached : undefined, keys: async () => ['miraverse-shell-old', 'miraverse-shell-current', 'unrelated-cache'], delete: async key => deleted.push(key) },
+    caches: { open: async () => ({ addAll: async urls => added.push(...urls), put: async () => {}, match: async (request, options) => { matches.push({ request, options }); return new Response('cached asset'); } }), match: async key => key === '/index.html' ? cached : undefined, keys: async () => ['miraverse-shell-old', 'miraverse-shell-current', 'unrelated-cache'], delete: async key => deleted.push(key) },
     fetch: async () => { throw new Error('Offline'); },
   });
-  return { listeners, added, deleted };
+  return { listeners, added, deleted, matches };
 }
 test('offline worker precaches the shell and removes only its own obsolete caches', async () => {
   const { listeners, added, deleted } = worker();
@@ -20,6 +20,11 @@ test('offline worker precaches the shell and removes only its own obsolete cache
   assert.deepEqual(added, ['/index.html','/assets/mail.js']);
   listeners.activate({ waitUntil: value => pending = value }); await pending;
   assert.deepEqual(deleted, ['miraverse-shell-old']);
+});
+test('offline module and CSS requests match public precache entries despite Vary: Origin', async () => {
+  const { listeners, matches } = worker(); let response;
+  listeners.fetch({ request: { method: 'GET', url: 'https://miraverse.test/assets/mail.css' }, respondWith: value => response = value });
+  assert.equal(await (await response).text(), 'cached asset'); assert.equal(matches[0].options.ignoreVary, true);
 });
 test('offline navigation falls back to the shell while APIs and foreign requests are untouched', async () => {
   const { listeners } = worker(); let response;

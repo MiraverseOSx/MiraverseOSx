@@ -46,6 +46,7 @@ export interface EmailDraft {
 }
 
 export interface SendEmailPayload {
+  recipientContact?: AureMailDirectoryContact;
   fromAddress?: string;
   toAddress: string;
   cc?: string[];
@@ -78,7 +79,7 @@ function buildHybridReplyForContact(
   parentId: string
 ): EmailItem {
   const lowerBody = `${subject} ${body}`.toLowerCase();
-  const replyId = `MSG-RPL-${Date.now().toString().slice(-5)}-${Math.floor(10 + Math.random() * 89)}`;
+  const replyId = `MSG-RPL-${crypto.randomUUID()}`;
   const cleanSubj = subject.replace(/^re:\s*/i, '').trim();
 
   if (contact) {
@@ -233,6 +234,8 @@ Your message regarding "${cleanSubj}" was delivered to ${recipientInput}. The re
 }
 
 export interface CommsState extends MailOrganizationActions {
+  mailRequest?: { id: string; token: string };
+  requestMailMessage: (id: string) => void;
   emails: EmailItem[];
   playerAccounts: AureMailAccount[];
   activeAccountAddress: string; // 'ALL' or specific AureMailAccount.address
@@ -305,6 +308,7 @@ export const useCommsStore = create<CommsState>()(
   persist(
     (set, get) => ({
       ...createMailOrganizationActions(set, get),
+      requestMailMessage: id => { if (get().emails.some(mail => mail.id === id)) set({ mailRequest: { id, token: crypto.randomUUID() } }); },
       // Seeded institutional & personal dispatches
       emails: INITIAL_EMAILS,
       playerAccounts: DEFAULT_PLAYER_EMAIL_ACCOUNTS,
@@ -453,12 +457,13 @@ export const useCommsStore = create<CommsState>()(
 
       toggleArchiveEmail: (id) =>
         set((s) => {
-          const isArchived = s.archivedEmailIds.includes(id);
+          const isArchived = s.archivedEmailIds.includes(id) || s.emails.some(mail => mail.id === id && mail.folder === 'archive');
           return {
             archivedEmailIds: isArchived
               ? s.archivedEmailIds.filter((item) => item !== id)
               : [...s.archivedEmailIds, id],
             trashedEmailIds: s.trashedEmailIds.filter((item) => item !== id),
+            emails: s.emails.map(mail => mail.id === id && mail.folder === 'archive' ? { ...mail, folder: 'inbox' } : mail),
           };
         }),
 
@@ -472,6 +477,7 @@ export const useCommsStore = create<CommsState>()(
         set((s) => ({
           trashedEmailIds: s.trashedEmailIds.filter((item) => item !== id),
           archivedEmailIds: s.archivedEmailIds.filter((item) => item !== id),
+          emails: s.emails.map(mail => mail.id === id && (mail.folder === 'trash' || mail.folder === 'archive') ? { ...mail, folder: 'inbox' } : mail),
         })),
 
       markEmailRead: (id, read = true) =>
@@ -506,6 +512,7 @@ export const useCommsStore = create<CommsState>()(
             return {
               archivedEmailIds: Array.from(new Set([...s.archivedEmailIds, ...ids])),
               trashedEmailIds: s.trashedEmailIds.filter((id) => !idSet.has(id)),
+              emails: s.emails.map(mail => idSet.has(mail.id) && (mail.folder === 'trash' || mail.folder === 'archive') ? { ...mail, folder: 'inbox' } : mail),
             };
           }
           if (action === 'trash') {
@@ -518,6 +525,7 @@ export const useCommsStore = create<CommsState>()(
             return {
               trashedEmailIds: s.trashedEmailIds.filter((id) => !idSet.has(id)),
               archivedEmailIds: s.archivedEmailIds.filter((id) => !idSet.has(id)),
+              emails: s.emails.map(mail => idSet.has(mail.id) && (mail.folder === 'trash' || mail.folder === 'archive') ? { ...mail, folder: 'inbox' } : mail),
             };
           }
           return s;
@@ -527,7 +535,7 @@ export const useCommsStore = create<CommsState>()(
 
       saveDraft: (draftInput) => {
         const state = get();
-        const id = draftInput.id || `DRF-${Date.now().toString().slice(-5)}`;
+        const id = draftInput.id || `DRF-${crypto.randomUUID()}`;
         const existing = state.drafts.find((d) => d.id === id);
         const saved: EmailDraft = {
           id,
@@ -584,13 +592,15 @@ export const useCommsStore = create<CommsState>()(
 
         // Directory lookup by address, name, or MAID
         const lowerTo = rawTo.toLowerCase();
-        const matchedContact = AUREMAIL_DIRECTORY.find(
+        const personalDirectory: AureMailDirectoryContact[] = state.mailOrganization.contacts.map(contact => ({ ...contact, category: 'citizen', accountType: 'personal', role: 'Personal contact', institution: 'Your address book', faction: 'Personal', requiredClearance: 1, verified: false }));
+        const contextualContact = payload.recipientContact;
+        const matchedContact = [...AUREMAIL_DIRECTORY, ...personalDirectory].find(
           (c) =>
             c.address.toLowerCase() === lowerTo ||
             c.name.toLowerCase() === lowerTo ||
             (c.maid && c.maid.toLowerCase() === lowerTo) ||
             c.name.toLowerCase().includes(lowerTo)
-        );
+        ) || (contextualContact && (contextualContact.address.toLowerCase() === lowerTo || contextualContact.name.toLowerCase() === lowerTo || contextualContact.maid?.toLowerCase() === lowerTo) && Number.isFinite(contextualContact.requiredClearance) ? contextualContact : undefined);
 
         const resolvedToAddress = matchedContact
           ? matchedContact.address
@@ -599,11 +609,21 @@ export const useCommsStore = create<CommsState>()(
           : `${rawTo.toLowerCase().replace(/[^a-z0-9]/g, '.')}@auremail.aure`;
         const resolvedToName = matchedContact ? matchedContact.name : rawTo;
 
+        // Sanitize outgoing attachments: outgoing files are never claimable rewards
+        const safeAttachments: EmailAttachment[] = (payload.attachments || []).map((att, idx) => ({
+          ...att,
+          id: att.id || `att-out-${idx}`,
+          isReward: false,
+          amount: 0,
+          xp: 0,
+          claimed: false,
+        }));
+
         const clearance = payload.playerClearance ?? 1;
         if (matchedContact && matchedContact.requiredClearance > clearance) {
           const blockedMsg: EmailItem = {
-            id: `MSG-OUT-${Date.now().toString().slice(-5)}`,
-            threadId: payload.threadId || `THR-${Date.now().toString().slice(-5)}`,
+            id: `MSG-OUT-${crypto.randomUUID()}`,
+            threadId: payload.threadId || `THR-${crypto.randomUUID()}`,
             parentId: payload.parentId,
             sender: `${fromAccount.label} (${fromAccount.address})`,
             senderAddress: fromAccount.address,
@@ -620,8 +640,9 @@ export const useCommsStore = create<CommsState>()(
             verifiedSender: true,
             labels: ['Outbox', 'Clearance Held'],
             attachment: null,
-            attachments: payload.attachments || [],
+            attachments: safeAttachments,
             body: cleanBody,
+            bodyHtml: sanitizeMailHtml(payload.bodyHtml),
             auditLog: [
               `Delivery held: Recipient ${resolvedToName} (${resolvedToAddress}) requires Level ${matchedContact.requiredClearance} OS Clearance (Current: Level ${clearance}).`,
             ],
@@ -642,8 +663,8 @@ export const useCommsStore = create<CommsState>()(
           const currentTrust = payload.npcTrustMap[matchedContact.npcKey] ?? 50;
           if (currentTrust < matchedContact.requiredTrust) {
             const blockedTrustMsg: EmailItem = {
-              id: `MSG-OUT-${Date.now().toString().slice(-5)}`,
-              threadId: payload.threadId || `THR-${Date.now().toString().slice(-5)}`,
+              id: `MSG-OUT-${crypto.randomUUID()}`,
+              threadId: payload.threadId || `THR-${crypto.randomUUID()}`,
               parentId: payload.parentId,
               sender: `${fromAccount.label} (${fromAccount.address})`,
               senderAddress: fromAccount.address,
@@ -660,8 +681,9 @@ export const useCommsStore = create<CommsState>()(
               verifiedSender: true,
               labels: ['Outbox', 'Trust Gate'],
               attachment: null,
-              attachments: payload.attachments || [],
+              attachments: safeAttachments,
               body: cleanBody,
+              bodyHtml: sanitizeMailHtml(payload.bodyHtml),
               auditLog: [
                 `Delivery held: ${resolvedToName} requires ${matchedContact.requiredTrust} Trust standing before accepting direct mail.`,
               ],
@@ -679,18 +701,8 @@ export const useCommsStore = create<CommsState>()(
           }
         }
 
-        const threadId = payload.threadId || `THR-${Date.now().toString().slice(-5)}`;
-        const sentId = `MSG-SNT-${Date.now().toString().slice(-5)}-${Math.floor(10 + Math.random() * 89)}`;
-
-        // Sanitize outgoing attachments: outgoing files are never claimable rewards
-        const safeAttachments: EmailAttachment[] = (payload.attachments || []).map((att, idx) => ({
-          ...att,
-          id: att.id || `att-out-${idx}`,
-          isReward: false,
-          amount: 0,
-          xp: 0,
-          claimed: false,
-        }));
+        const threadId = payload.threadId || `THR-${crypto.randomUUID()}`;
+        const sentId = `MSG-SNT-${crypto.randomUUID()}`;
 
         const signature = state.mailOrganization.settings.signature || fromAccount.signature;
         const sentMessage: EmailItem = {
@@ -823,6 +835,7 @@ export const useCommsStore = create<CommsState>()(
         const key = `${emailId}_${attId}`;
         const mail = state.emails.find((m) => m.id === emailId);
         const att = mail?.attachments?.find((a) => a.id === attId);
+        if (!mail || !att || att.isReward) return { ok: false };
         if (state.savedAttachmentIds.includes(key)) {
           return { ok: false, alreadySaved: true, fileName: att?.name };
         }
@@ -840,12 +853,12 @@ export const useCommsStore = create<CommsState>()(
         }
         const mail = state.emails.find((m) => m.id === emailId);
         const att = mail?.attachments?.find((a) => a.id === attId);
-        if (!mail || !att) {
+        if (!mail || !att || att.isReward || (att.kind !== 'form' && !att.requiresFormSubmission)) {
           return { ok: false };
         }
 
         const receiptEmail: EmailItem = {
-          id: `MSG-FRM-${Date.now().toString().slice(-5)}`,
+          id: `MSG-FRM-${crypto.randomUUID()}`,
           threadId: mail.threadId || mail.id,
           parentId: mail.id,
           sender: mail.sender,
@@ -908,14 +921,17 @@ Your completed form has been verified and recorded in the institutional registry
         } else {
           // Ensure canonical initial emails carry upgraded multi-account and separated attachment metadata
           const initialById = new Map(INITIAL_EMAILS.map((m) => [m.id, m]));
-          merged.emails = merged.emails.map((m: EmailItem) => {
+          merged.emails = merged.emails.filter((m: EmailItem) => m && typeof m.id === 'string' && typeof m.sender === 'string' && typeof m.subject === 'string' && typeof m.body === 'string').map((m: EmailItem) => {
             const canonical = initialById.get(m.id);
-            return canonical ? { ...canonical, read: m.read ?? canonical.read } : m;
+            return canonical ? { ...canonical, read: m.read ?? canonical.read } : { ...m, faction: typeof m.faction === 'string' ? m.faction : 'AureMail', time: typeof m.time === 'string' ? m.time : '', labels: Array.isArray(m.labels) ? m.labels.filter(label => typeof label === 'string') : [], attachments: Array.isArray(m.attachments) ? m.attachments.filter(att => att && typeof att.id === 'string' && typeof att.name === 'string') : [] };
           });
         }
         if (!Array.isArray(merged.playerAccounts) || merged.playerAccounts.length === 0) {
           merged.playerAccounts = DEFAULT_PLAYER_EMAIL_ACCOUNTS;
         }
+        if (!merged.emails.length) merged.emails = INITIAL_EMAILS;
+        for (const key of ['starredEmailIds', 'archivedEmailIds', 'trashedEmailIds', 'readEmailIds', 'savedAttachmentIds', 'submittedFormIds', 'blockedAddresses', 'reportedEmailIds']) merged[key] = Array.isArray(merged[key]) ? merged[key].filter((item: unknown) => typeof item === 'string') : [];
+        merged.drafts = Array.isArray(merged.drafts) ? merged.drafts.filter(draft => draft && typeof draft.id === 'string' && typeof draft.subject === 'string' && typeof draft.body === 'string').map(draft => ({ ...draft, fromAddress: typeof draft.fromAddress === 'string' ? draft.fromAddress : currentState.selectedSenderAddress, toAddress: typeof draft.toAddress === 'string' ? draft.toAddress : '', cc: typeof draft.cc === 'string' ? draft.cc : '', bcc: typeof draft.bcc === 'string' ? draft.bcc : '', bodyHtml: sanitizeMailHtml(draft.bodyHtml), attachments: Array.isArray(draft.attachments) ? draft.attachments.filter(att => att && typeof att.id === 'string' && typeof att.name === 'string') : [] })) : [];
         merged.mailOrganization = restoreMailOrganization(persistedState?.mailOrganization);
         return merged;
       },

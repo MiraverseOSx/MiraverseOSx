@@ -16,6 +16,7 @@ export interface AssignmentFlowActions {
   claimActivityUnlock: (id: string) => Result;
   claimJourneyChapter: (id: string, chapterId: string) => Result;
   recordAssignmentCompletion: (id: string) => void;
+  recordAssignmentOpened: (id: string) => void;
 }
 export function createAssignmentActions(set: (update: (state: OSStoreState) => Partial<OSStoreState>) => void, get: () => OSStoreState): AssignmentFlowActions {
   const journal = (): AssignmentJournal => get().gameplay.player.assignmentJournal || emptyAssignmentJournal();
@@ -25,10 +26,28 @@ export function createAssignmentActions(set: (update: (state: OSStoreState) => P
     else get().toggleApp(id);
   };
   const saveFiles = (files: AssignmentFile[]) => update(current => ({ ...current, files: { ...current.files, ...Object.fromEntries(files.map(file => [file.id, file])) } }));
+  const sendReceipt = (id: string, phase: 'opened' | 'completed', file: AssignmentFile) => {
+    const opportunity = getOpportunity(id); const order = get().gameplay.player.worknetOrders?.[id];
+    if (!opportunity || !order) return;
+    const mailbox = useCommsStore.getState(); const mailId = `JOB-${phase.toUpperCase()}:${order.id}`;
+    if (mailbox.emails.some(mail => mail.id === mailId)) return;
+    const recipient = mailbox.playerAccounts.find(account => account.accountType === 'work')?.address || 'citizen@auremail.aure';
+    mailbox.addEmail({ id: mailId, assignmentId: id, threadId: `JOB-DISPATCH:${id}`, sender: opportunity.institution, senderAddress: 'dispatch@worknet.aure', recipientAddress: recipient,
+      faction: 'WORKNET', subject: `${phase === 'opened' ? 'Assignment accepted' : 'Work accepted'}: ${opportunity.title}`, timestamp: new Date().toISOString(), time: 'Just now', read: false, folder: 'inbox', verifiedSender: true, deliveryStatus: 'delivered', linkedApp: 'jobs', attachment: null,
+      attachments: [{ id: file.id, name: file.name, kind: 'record', isReward: false, type: 'document', amount: 0, xp: 0, claimed: false, previewTitle: file.desc, previewText: file.body }],
+      body: phase === 'opened' ? `Your work order ${order.id} is active.\n\nThe briefing and assignment checklist are ready in VAULT at ${file.dir}. Review the briefing in WorkNet before beginning. Accepting this assignment does not issue payment.` : `Work order ${order.id} has been accepted.\n\nYour completion receipt is saved in VAULT at ${file.dir}. Your career and compensation records have been updated by the verified work result. This message is a record, not an additional payment.\n\n${file.body}` });
+  };
   return {
+    recordAssignmentOpened: id => {
+      const opportunity = getOpportunity(id); const order = get().gameplay.player.worknetOrders?.[id];
+      if (!opportunity || order?.status !== 'active') return;
+      const files = assignmentFiles(opportunity); saveFiles(files); sendReceipt(id, 'opened', files[0]);
+    },
     refreshAssignmentDispatches: () => {
       if (!get().isLoggedIn) return;
       const player = get().gameplay.player;
+      // Older saves can already have active work without its AureMail confirmation.
+      for (const [id, order] of Object.entries(player.worknetOrders || {}) as [string, any][]) if (order.status === 'active') get().recordAssignmentOpened(id);
       const recipient = useCommsStore.getState().playerAccounts.find(account => account.accountType === 'work')?.address || 'citizen@auremail.aure';
       for (const scheduled of DISPATCH_SCHEDULE) {
         const opportunity = getOpportunity(scheduled.id)!;
@@ -121,6 +140,7 @@ export function createAssignmentActions(set: (update: (state: OSStoreState) => P
       const file: AssignmentFile = { id: `completion:${order.id}`, name: `Completion_cycle_${order.cycle}.log`, dir: `/assignments/${id}`, type: 'log', size: 'Receipt', desc: 'Accepted work and compensation', assignmentId: id,
         body: `${opportunity.title}\nWork order: ${order.id}\nStatus: accepted\nEvaluation: ${order.evaluation}/100\n\n${order.resultIds.map((resultId: string) => { const result = player.taskResults[resultId]; return `${result.stageId}\n${Object.entries(result.output).map(([key, value]) => `${key}: ${value}`).join('\n')}`; }).join('\n\n')}\n\n${carePaid ? 'Clinical compensation was already issued at treatment. No duplicate payment.' : `Paid: ${assignment.rewardCredits} credits, ${assignment.rewardBits || 0} bits, ${assignment.rewardXP} career XP.`}` };
       saveFiles([file]);
+      sendReceipt(id, 'completed', file);
       get().refreshContextualDiscoveries();
       get().refreshAssignmentDispatches();
     },

@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useEffect } from 'react';
+import React, { useState, useMemo, useEffect, useRef } from 'react';
 import {
   Mail,
   Inbox,
@@ -30,9 +30,10 @@ import {
 import { MailProvider, useMailState } from './mail/MailContext';
 import MailTools, { MailOrganizationBar } from './mail/MailTools';
 import RichMailEditor, { RichMailBody } from './mail/RichMailEditor';
-import { groupConversations, isSnoozed } from './mail/mailOrganization';
+import { groupConversations, conversationMessageIds, isSnoozed } from './mail/mailOrganization';
 import { escapeMailText } from './mail/richText';
 import '../styles/apps/auremail.css';
+import { launchDesktopApp } from '../components/desktop/appDirectory';
 import { useOSStore } from '../store/useOSStore';
 import {
   AUREMAIL_DIRECTORY,
@@ -96,6 +97,8 @@ function MailWorkspace() {
   const [toolsView, setToolsView] = useState<'contacts' | 'settings' | null>(null);
   const [mobileView, setMobileView] = useState('list');
   const [now, setNow] = useState(Date.now);
+  const mailRequest = useMailState(state => state.mailRequest);
+  const pendingRequestedReader = useRef(false);
   const [activeFolder, setActiveFolder] = useState<string>('inbox');
   const [activeFaction, setActiveFaction] = useState<string>('all');
   const [search, setSearch] = useState<string>('');
@@ -152,10 +155,6 @@ function MailWorkspace() {
   const setActiveAccountAddress = useMailState((s) => s.setActiveAccountAddress);
   const setSelectedSenderAddress = useMailState((s) => s.setSelectedSenderAddress);
   const toggleStarEmail = useMailState((s) => s.toggleStarEmail);
-  const toggleArchiveEmail = useMailState((s) => s.toggleArchiveEmail);
-  const moveToTrashEmail = useMailState((s) => s.moveToTrashEmail);
-  const restoreEmail = useMailState((s) => s.restoreEmail);
-  const markEmailRead = useMailState((s) => s.markEmailRead);
   const bulkUpdateEmails = useMailState((s) => s.bulkUpdateEmails);
   const setSortOrder = useMailState((s) => s.setSortOrder);
   const saveDraft = useMailState((s) => s.saveDraft);
@@ -173,7 +172,7 @@ function MailWorkspace() {
   const claimCommsAttachment = useOSStore((s) => s.claimCommsAttachment);
   const playerClearance = useOSStore((s) => (s.gameplay.player as any)?.clearanceLevel || s.gameplay.appRanks?.clearance || 1);
   const npcVectors = useOSStore((s) => s.gameplay.npcVectors);
-  const openWindow = useOSStore((s) => s.openWindow);
+  const openWindow = (id: string) => launchDesktopApp(id === 'docstudio' ? 'documentStudio' : id);
   const pushToast = useToastStore((s) => s.pushToast);
 
   const npcTrustMap = useMemo(() => {
@@ -196,7 +195,7 @@ function MailWorkspace() {
         const lower = acc.address.toLowerCase();
         if (!byAddress.has(lower)) {
           byAddress.set(lower, {
-            id: `maid-${person.id}-${acc.accountType}`,
+            id: `maid-${person.id}-${encodeURIComponent(lower)}`,
             name: person.name,
             address: acc.address,
             category: 'citizen',
@@ -219,7 +218,7 @@ function MailWorkspace() {
 
   useEffect(() => { processMailRules(); }, [emails, processMailRules]);
   useEffect(() => { const timer = window.setInterval(() => setNow(Date.now()), 30000); return () => clearInterval(timer); }, []);
-  useEffect(() => { setMobileView('list'); setSelectedBulkIds([]); }, [activeFolder]);
+  useEffect(() => { setMobileView(pendingRequestedReader.current ? 'reader' : 'list'); pendingRequestedReader.current = false; setSelectedBulkIds([]); }, [activeFolder]);
   useEffect(() => { if (isComposing) setMobileView('reader'); }, [isComposing]);
 
   function dropMail(event: React.DragEvent, destination: string) {
@@ -228,7 +227,7 @@ function MailWorkspace() {
       const requested = JSON.parse(event.dataTransfer.getData('application/x-auremail'));
       const ids = Array.isArray(requested) ? requested.filter(id => typeof id === 'string' && emails.some(mail => mail.id === id)) : [];
       if (!ids.length) return;
-      if (destination.startsWith('label:')) organizeMail(ids, 'label', destination.slice(6));
+      if (destination.startsWith('label:')) organizeMail(ids, 'add-label', destination.slice(6));
       else if (destination === 'spam') organizeMail(ids, 'spam');
       else if (destination === 'archive' || destination === 'trash') bulkUpdateEmails(ids, destination === 'archive' ? 'archive' : 'trash');
       else if (destination === 'inbox' || destination.startsWith('folder:')) organizeMail(ids, 'folder', destination === 'inbox' ? '' : destination.slice(7));
@@ -357,6 +356,23 @@ function MailWorkspace() {
       .reverse();
   }, [emails, selectedMail, trashedEmailIds, activeFolder, organization, activeAccountAddress]);
 
+  const selectedConversationIds = organization.settings.conversations ? threadMessages.map(mail => mail.id) : selectedMail ? [selectedMail.id] : [];
+  useEffect(() => { setReplyText(''); setReplyStatus(null); setFormNotes(''); }, [selectedMail?.id]);
+  useEffect(() => {
+    if ((activeFolder.startsWith('folder:') && !organization.folders.includes(activeFolder.slice(7))) || (activeFolder.startsWith('label:') && !organization.labels.includes(activeFolder.slice(6)))) setActiveFolder('inbox');
+  }, [activeFolder, organization.folders, organization.labels]);
+
+  useEffect(() => {
+    if (!mailRequest) return;
+    const mail = emails.find(item => item.id === mailRequest.id);
+    if (!mail) return;
+    const meta = organization.metadata[mail.id];
+    const folder = trashedEmailIds.includes(mail.id) || mail.folder === 'trash' ? 'trash' : meta?.spam ? 'spam' : isSnoozed(meta) ? 'snoozed' : archivedEmailIds.includes(mail.id) || mail.folder === 'archive' ? 'archive' : meta?.folder ? `folder:${meta.folder}` : mail.folder === 'sent' ? 'sent' : mail.folder === 'outbox' ? 'outbox' : 'inbox';
+    if (organization.settings.autoRead) bulkUpdateEmails(conversationMessageIds(emails, [mail.id], organization.settings.conversations), 'read');
+    pendingRequestedReader.current = activeFolder !== folder;
+    setActiveFolder(folder); setSelectedMailId(mail.id); setSearch(''); setActiveFaction('all'); setActiveAccountAddress('ALL'); setIsComposing(false); setMobileView('reader');
+  }, [mailRequest]);
+
   const getNormalizedAttachments = (mail: EmailItem | null): EmailAttachment[] => {
     if (!mail) return [];
     if (Array.isArray(mail.attachments) && mail.attachments.length > 0) {
@@ -448,6 +464,7 @@ function MailWorkspace() {
       });
       return;
     }
+    if (!res.ok) { pushToast({ title: 'Attachment unavailable', message: 'This attachment cannot be saved.', tone: 'warning' }); return; }
     pushToast({
       title: 'Saved to File Explorer Vault',
       message: `${att.name} (${att.version || 'v1.0'}) archived with full provenance. No automatic currency awarded.`,
@@ -466,6 +483,7 @@ function MailWorkspace() {
       });
       return;
     }
+    if (!res.ok) { pushToast({ title: 'Form unavailable', message: 'Only valid form attachments can be submitted.', tone: 'warning' }); return; }
     setFormNotes('');
     pushToast({
       title: 'Official Form Submitted',
@@ -488,6 +506,7 @@ function MailWorkspace() {
     const res = sendEmail({
       fromAddress: composeFrom || selectedSenderAddress,
       toAddress: composeRecipient.trim(),
+      recipientContact: directoryContacts.find(contact => [contact.address, contact.name, contact.maid].some(value => value?.toLowerCase() === composeRecipient.trim().toLowerCase())),
       cc: composeCc ? composeCc.split(',').map((s) => s.trim()) : undefined,
       bcc: composeBcc ? composeBcc.split(',').map((s) => s.trim()) : undefined,
       subject: composeSubject.trim(),
@@ -622,7 +641,8 @@ function MailWorkspace() {
 
   const handleBulkAction = (action: 'read' | 'unread' | 'star' | 'archive' | 'trash' | 'restore') => {
     if (selectedBulkIds.length === 0) return;
-    bulkUpdateEmails(selectedBulkIds, action);
+    const ids = conversationMessageIds(emails.filter(mail => matchesAccountFilter(mail) && (activeFolder === 'trash' || !trashedEmailIds.includes(mail.id))), selectedBulkIds, organization.settings.conversations);
+    bulkUpdateEmails(ids, action);
     pushToast({
       title: 'Bulk Action Applied',
       message: `Updated ${selectedBulkIds.length} message(s): ${action.toUpperCase()}.`,
@@ -963,6 +983,10 @@ function MailWorkspace() {
                 drafts.map((d) => (
                   <div
                     key={d.id}
+                    role="button"
+                    tabIndex={0}
+                    aria-label={`Resume draft ${d.subject}`}
+                    onKeyDown={event => { if (event.target === event.currentTarget && (event.key === 'Enter' || event.key === ' ')) { event.preventDefault(); handleResumeDraft(d.id); } }}
                     onClick={() => handleResumeDraft(d.id)}
                     className="cursor-pointer rounded-xl border border-amber-200 bg-amber-50/60 p-3 hover:bg-amber-50 transition space-y-1"
                   >
@@ -997,7 +1021,7 @@ function MailWorkspace() {
                     tabIndex={0}
                     aria-label={`Read ${mail.subject}`}
                     draggable
-                    onDragStart={event => { event.dataTransfer.setData('application/x-auremail', JSON.stringify(selectedBulkIds.includes(mail.id) ? selectedBulkIds : [mail.id])); event.dataTransfer.effectAllowed = 'move'; }}
+                    onDragStart={event => { const ids = conversationMessageIds(emails.filter(item => matchesAccountFilter(item) && (activeFolder === 'trash' || !trashedEmailIds.includes(item.id))), selectedBulkIds.includes(mail.id) ? selectedBulkIds : [mail.id], organization.settings.conversations); event.dataTransfer.setData('application/x-auremail', JSON.stringify(ids)); event.dataTransfer.effectAllowed = 'move'; }}
                     onKeyDown={event => { if (event.target === event.currentTarget && (event.key === 'Enter' || event.key === ' ')) { event.preventDefault(); handleSelectMail(mail); } }}
                     onClick={() => handleSelectMail(mail)}
                     className={`group relative cursor-pointer rounded-xl border p-3 transition shadow-2xs ${
@@ -1228,7 +1252,7 @@ function MailWorkspace() {
 
           {!isComposing && (selectedMail ? (
             <div className="flex h-full flex-col space-y-4">
-              <MailOrganizationBar ids={selectedBulkIds.length ? selectedBulkIds : [selectedMail.id]} />
+              <MailOrganizationBar ids={selectedBulkIds.length ? selectedBulkIds : selectedConversationIds} />
               <div className="rounded-2xl border border-slate-300/80 bg-white p-5 shadow-sm space-y-3">
                 <div className="flex flex-wrap items-start justify-between gap-2 border-b border-slate-200 pb-3">
                   <div>
@@ -1261,7 +1285,7 @@ function MailWorkspace() {
                   <div className="flex flex-wrap items-center gap-1.5">
                     <button
                       type="button"
-                      onClick={() => markEmailRead(selectedMail.id, !isEmailRead(selectedMail))}
+                      onClick={() => bulkUpdateEmails(selectedConversationIds, isEmailRead(selectedMail) ? 'unread' : 'read')}
                       className="rounded-lg border border-slate-200 bg-slate-50 px-2 py-1 text-[10px] font-semibold text-slate-600 hover:bg-slate-100 transition"
                     >
                       <CheckSquare size={11} className="inline mr-1" />
@@ -1270,8 +1294,8 @@ function MailWorkspace() {
                     <button
                       type="button"
                       onClick={() => {
-                        const wasArchived = archivedEmailIds.includes(selectedMail.id);
-                        toggleArchiveEmail(selectedMail.id);
+                        const wasArchived = archivedEmailIds.includes(selectedMail.id) || selectedMail.folder === 'archive';
+                        bulkUpdateEmails(selectedConversationIds, wasArchived ? 'restore' : 'archive');
                         pushToast({
                           title: wasArchived ? 'Restored to Inbox' : 'Message Archived',
                           message: selectedMail.subject,
@@ -1281,12 +1305,12 @@ function MailWorkspace() {
                       className="rounded-lg border border-slate-200 bg-slate-50 px-2 py-1 text-[10px] font-semibold text-slate-600 hover:bg-slate-100 flex items-center gap-1 transition"
                     >
                       <Archive size={11} />
-                      {archivedEmailIds.includes(selectedMail.id) ? 'Unarchive' : 'Archive'}
+                      {archivedEmailIds.includes(selectedMail.id) || selectedMail.folder === 'archive' ? 'Unarchive' : 'Archive'}
                     </button>
-                    {trashedEmailIds.includes(selectedMail.id) ? (
+                    {trashedEmailIds.includes(selectedMail.id) || selectedMail.folder === 'trash' ? (
                       <button
                         type="button"
-                        onClick={() => restoreEmail(selectedMail.id)}
+                        onClick={() => bulkUpdateEmails(selectedConversationIds, 'restore')}
                         className="rounded-lg border border-emerald-200 bg-emerald-50 px-2 py-1 text-[10px] font-semibold text-emerald-700 flex items-center gap-1"
                       >
                         <RotateCcw size={11} /> Restore
@@ -1294,7 +1318,7 @@ function MailWorkspace() {
                     ) : (
                       <button
                         type="button"
-                        onClick={() => moveToTrashEmail(selectedMail.id)}
+                        onClick={() => bulkUpdateEmails(selectedConversationIds, 'trash')}
                         className="rounded-lg border border-rose-200 bg-rose-50 px-2 py-1 text-[10px] font-semibold text-rose-700 flex items-center gap-1"
                       >
                         <Trash2 size={11} /> Trash
@@ -1492,7 +1516,7 @@ function MailWorkspace() {
                       return (
                         <div
                           key={att.id}
-                          className="rounded-xl border border-emerald-300 bg-emerald-50/60 p-3.5 shadow-2xs flex items-center justify-between"
+                          className="mail-reward-card rounded-xl border border-emerald-300 bg-emerald-50/60 p-3.5 shadow-2xs flex items-center justify-between"
                         >
                           <div>
                             <div className="text-xs font-bold text-emerald-950 flex items-center gap-2">
