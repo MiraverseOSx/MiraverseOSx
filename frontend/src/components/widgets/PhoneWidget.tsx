@@ -1,4 +1,4 @@
-﻿import React, { useState } from "react";
+﻿import React, { useEffect, useRef, useState } from "react";
 import { useOSStore } from "../../store/useOSStore";
 import { OPPORTUNITIES, getOpportunity } from '../../gameplay/AssignmentFlow';
 import {
@@ -12,6 +12,9 @@ import {
   AlertOctagon,
   Pin,
   ChevronLeft,
+  ChevronRight,
+  Settings,
+  Home,
   Sparkles,
   ShieldCheck,
   Search,
@@ -36,6 +39,7 @@ import {
 
 type PhoneScreen =
   | "home"
+  | "settings"
   | "messages"
   | "phone"
   | "passport"
@@ -45,14 +49,14 @@ type PhoneScreen =
   | "media"
   | "emergency";
 const phoneApps = [
-  { id: "messages", label: "Messages", icon: MessageSquare },
-  { id: "phone", label: "Phone", icon: Phone },
-  { id: "passport", label: "Passport", icon: UserCheck },
-  { id: "missions", label: "Missions", icon: ShieldCheck },
-  { id: "spellforge", label: "SpellForge", icon: Flame },
-  { id: "evidence", label: "Evidence", icon: Pin },
-  { id: "media", label: "Media", icon: Music },
-  { id: "emergency", label: "Emergency", icon: AlertOctagon },
+  { id: "messages", color: "blue", label: "Messages", icon: MessageSquare },
+  { id: "phone", color: "blue", label: "Phone", icon: Phone },
+  { id: "passport", color: "jade", label: "Passport", icon: UserCheck },
+  { id: "missions", color: "jade", label: "Missions", icon: ShieldCheck },
+  { id: "spellforge", color: "violet", label: "SpellForge", icon: Flame },
+  { id: "evidence", color: "sand", label: "Evidence", icon: Pin },
+  { id: "media", color: "slate", label: "Media", icon: Music },
+  { id: "emergency", color: "rose", label: "Emergency", icon: AlertOctagon },
 ] as const;
 
 export default function PhoneWidget({ onClose }: { onClose?: () => void }) {
@@ -61,8 +65,14 @@ export default function PhoneWidget({ onClose }: { onClose?: () => void }) {
   const [playingVm, setPlayingVm] = useState<number | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [smsThreads, setSmsThreads] = useState(INITIAL_SMS_THREADS);
-  const [activeSmsContact, setActiveSmsContact] = useState("Aelita");
-  const [smsInput, setSmsInput] = useState("");
+  const [activeSmsContact, setActiveSmsContact] = useState<string | null>(null);
+  const conversationRef = useRef<HTMLDivElement>(null);
+  const screenHeadingRef = useRef<HTMLHeadingElement>(null);
+  const [smsDrafts, setSmsDrafts] = useState<Record<string, string>>({});
+  const smsInput = activeSmsContact ? smsDrafts[activeSmsContact] || "" : "";
+  const setSmsInput = (value: string) => {
+    if (activeSmsContact) setSmsDrafts(previous => ({ ...previous, [activeSmsContact]: value }));
+  };
   const [evidenceItems, setEvidenceItems] = useState(INITIAL_EVIDENCE_ITEMS);
   const [spellElement, setSpellElement] = useState<string | null>(null);
   const [spellUtility, setSpellUtility] = useState<string | null>(null);
@@ -79,7 +89,7 @@ export default function PhoneWidget({ onClose }: { onClose?: () => void }) {
   );
 
   function sendSms(text: string) {
-    if (!text.trim()) return;
+    if (!text.trim() || !activeSmsContact) return;
     setSmsThreads((previous) => ({
       ...previous,
       [activeSmsContact]: [
@@ -91,6 +101,7 @@ export default function PhoneWidget({ onClose }: { onClose?: () => void }) {
   }
 
   function quickReply(vector: "trust" | "sync", text: string) {
+    if (!activeSmsContact) return;
     const npcKey = activeSmsContact.toLowerCase().split(" ")[0];
     useOSStore
       .getState()
@@ -131,147 +142,91 @@ export default function PhoneWidget({ onClose }: { onClose?: () => void }) {
 
   const activeApp = phoneApps.find((app) => app.id === activeScreen);
   const filteredApps = phoneApps.filter((app) =>
-    app.label.toLowerCase().includes(searchQuery.trim().toLowerCase()),
+    `${app.label} ${app.id === 'phone' ? 'calls voicemail' : ''}`.toLowerCase().includes(searchQuery.trim().toLowerCase()),
   );
 
+  useEffect(() => {
+    const conversation = conversationRef.current;
+    if (conversation) conversation.scrollTop = conversation.scrollHeight;
+  }, [activeSmsContact, smsThreads]);
+
+  useEffect(() => {
+    screenHeadingRef.current?.focus();
+  }, [activeScreen, activeSmsContact]);
+
+  function goHome() {
+    setActiveScreen("home");
+    setActiveSmsContact(null);
+    setSearchQuery("");
+    setNotice("");
+  }
+
+  function openPhoneApp(screen: PhoneScreen) {
+    setActiveScreen(screen);
+    setNotice("");
+  }
+
+  const searching = Boolean(searchQuery.trim());
+  const conversationOpen = activeScreen === "messages" && activeSmsContact !== null;
+
   return (
-    <PhoneSurface device aria-label="Personal phone">
+    <PhoneSurface device aria-label="Personal phone" data-phone-color={activeApp?.color}>
       <PhoneStatusBar />
       <header className="phone-device-header">
-        <h2>My signal</h2>
-        <PhoneThemePicker />
-        {onClose && (
-          <PhoneButton aria-label="Close phone" onClick={onClose}>
-            <X size={16} />
+        <h2>Phone<span> / Aureline</span></h2>
+        <div className="phone-header-actions">
+          <PhoneButton aria-label="Phone appearance" aria-pressed={activeScreen === "settings"} onClick={() => openPhoneApp("settings")}>
+            <Settings size={18} />
           </PhoneButton>
-        )}
+          {onClose && <PhoneButton aria-label="Close phone" onClick={onClose}><X size={18} /></PhoneButton>}
+        </div>
       </header>
       <div className="phone-screen">
         {activeScreen === "home" ? (
           <div className="phone-screen-scroll phone-home">
-            {incomingCalls.length > 0 && <PhonePanel className="phone-stack"><strong>Work dispatch · incoming call</strong><p>{incomingCalls[0].opportunity.title}</p><PhoneButton tone="primary" onClick={() => setActiveScreen('phone')}><Phone size={15} /> View work call</PhoneButton></PhonePanel>}
-            <PhonePanel>
-              <div className="phone-track">
-                <span className="phone-music-art">
-                  <Music size={23} />
-                </span>
-                <div>
-                  <strong>Twilight Dusk #04</strong>
-                  <small>
-                    Cycademy lo-fi · {isPlaying ? "Playing" : "Paused"}
-                  </small>
-                </div>
-                <PhoneButton
-                  aria-label={isPlaying ? "Pause music" : "Play music"}
-                  aria-pressed={isPlaying}
-                  onClick={() => setIsPlaying(!isPlaying)}
-                >
-                  {isPlaying ? <Pause size={16} /> : <Play size={16} />}
-                </PhoneButton>
-              </div>
-              <div className="phone-progress" aria-hidden="true">
-                <span />
-              </div>
-            </PhonePanel>
-            <div className="phone-widgets">
-              <PhonePanel>
-                <strong>
-                  {new Date().toLocaleDateString([], {
-                    month: "short",
-                    day: "numeric",
-                  })}
-                </strong>
-                <span>Aureline · Dusk</span>
-              </PhonePanel>
-              <PhonePanel>
-                <strong className="phone-success">
-                  Aura: 100% <Sparkles size={12} className="inline" />
-                </strong>
-                <span>Signal in harmony</span>
-              </PhonePanel>
+            <div className="phone-home-intro">
+              <h3 ref={screenHeadingRef} tabIndex={-1}>Your apps</h3>
             </div>
+            {incomingCalls.length > 0 && <PhonePanel className="phone-incoming phone-stack" data-phone-color="jade"><span className="phone-overline">Incoming work call</span><strong>{incomingCalls[0].opportunity.title}</strong><PhoneButton tone="primary" onClick={() => openPhoneApp('phone')}><Phone size={16} /> View call{incomingCalls.length > 1 ? `s (${incomingCalls.length})` : ''}</PhoneButton></PhonePanel>}
             <div className="phone-search">
-              <Search size={18} className="phone-accent" />
-              <input
-                className="phone-input"
-                type="search"
-                aria-label="Search phone apps"
-                placeholder="Find an app…"
-                value={searchQuery}
-                onChange={(event) => setSearchQuery(event.target.value)}
-              />
+              <Search size={18} aria-hidden="true" />
+              <input className="phone-input" type="search" aria-label="Search phone apps" placeholder="Find an app" value={searchQuery} onChange={event => setSearchQuery(event.target.value)} />
             </div>
+            {!searching && <nav className="phone-primary-apps" aria-label="Communication apps">
+              {phoneApps.slice(0, 2).map(app => <button key={app.id} className="phone-launch-row" data-phone-color={app.color} aria-label={`Open ${app.label}`} onClick={() => openPhoneApp(app.id)}>
+                <span className="phone-launch-icon"><app.icon size={21} strokeWidth={1.7} /></span>
+                <span><strong>{app.label === 'Phone' ? 'Calls' : app.label}</strong><small>{app.id === 'messages' ? 'Conversations & quick replies' : `${incomingCalls.length ? `${incomingCalls.length} incoming · ` : ''}${INITIAL_VOICEMAILS.length} voicemails`}</small></span>
+                <ChevronRight size={17} aria-hidden="true" />
+              </button>)}
+            </nav>}
+            <div className="phone-section-label">{searching ? 'Search results' : 'Essentials'}</div>
             <nav className="phone-app-grid" aria-label="Phone apps">
-              {filteredApps.map((app) => (
-                <PhoneAppButton
-                  key={app.id}
-                  icon={app.icon}
-                  label={app.label}
-                  badge={
-                    app.id === "phone"
-                      ? INITIAL_VOICEMAILS.length + incomingCalls.length
-                      : app.id === "evidence"
-                        ? evidenceItems.length
-                        : undefined
-                  }
-                  danger={app.id === "emergency"}
-                  onClick={() => {
-                    setActiveScreen(app.id);
-                    setNotice("");
-                  }}
-                />
-              ))}
+              {(searching ? filteredApps : phoneApps.slice(2)).map(app => <PhoneAppButton key={app.id} icon={app.icon} label={app.label} color={app.color} badge={app.id === 'phone' ? incomingCalls.length : undefined} danger={app.id === 'emergency'} onClick={() => openPhoneApp(app.id)} />)}
             </nav>
-            {!filteredApps.length && (
-              <p className="phone-empty">No apps match this search.</p>
-            )}
-            <PhonePanel className="phone-home-dock">
-              {phoneApps
-                .filter((app) =>
-                  ["messages", "phone", "passport", "spellforge"].includes(
-                    app.id,
-                  ),
-                )
-                .map((app) => (
-                  <PhoneButton
-                    key={app.id}
-                    aria-label={`Go to ${app.label}`}
-                    onClick={() => setActiveScreen(app.id)}
-                  >
-                    <app.icon size={18} />
-                  </PhoneButton>
-                ))}
-            </PhonePanel>
+            {!filteredApps.length && <p className="phone-empty">No apps match this search.</p>}
           </div>
         ) : (
           <>
             <div className="phone-screen-heading">
-              <PhoneButton
-                aria-label="Back to phone home"
-                onClick={() => setActiveScreen("home")}
-              >
-                <ChevronLeft size={18} />
-              </PhoneButton>
-              <h3>{activeApp?.label}</h3>
+              <PhoneButton aria-label={conversationOpen ? "Back to messages" : "Back to phone home"} onClick={() => conversationOpen ? setActiveSmsContact(null) : goHome()}><ChevronLeft size={20} /></PhoneButton>
+              <div><span className="phone-overline">{conversationOpen ? 'Messages' : 'Your phone'}</span><h3 ref={screenHeadingRef} tabIndex={-1}>{conversationOpen ? activeSmsContact : activeScreen === 'settings' ? 'Appearance' : activeScreen === 'phone' ? 'Calls' : activeApp?.label}</h3></div>
             </div>
             {activeScreen === "messages" ? (
-              <div className="phone-messages">
-                <nav
-                  className="phone-thread-list"
-                  aria-label="Message contacts"
-                >
-                  {Object.keys(smsThreads).map((contact) => (
-                    <PhoneButton
-                      key={contact}
-                      aria-pressed={activeSmsContact === contact}
-                      onClick={() => setActiveSmsContact(contact)}
-                    >
-                      {contact}
-                    </PhoneButton>
-                  ))}
+              activeSmsContact === null ? (
+                <nav className="phone-screen-scroll phone-inbox" aria-label="Message contacts">
+                  {Object.entries(smsThreads).map(([contact, messages]) => {
+                    const latest = messages.at(-1);
+                    return <button key={contact} className="phone-inbox-row" aria-label={`Read messages from ${contact}`} onClick={() => setActiveSmsContact(contact)}>
+                      <span className="phone-contact-avatar" aria-hidden="true">{contact.split(' ').map(part => part[0]).slice(0, 2).join('')}</span>
+                      <span className="phone-inbox-copy"><span className="phone-inbox-title"><strong>{contact}</strong><time>{latest?.time}</time></span><span className="phone-inbox-preview">{latest?.sender === 'You' ? 'You: ' : ''}{latest?.text || 'Start a conversation'}</span></span>
+                      <ChevronRight size={15} aria-hidden="true" />
+                    </button>;
+                  })}
                 </nav>
+              ) : <div className="phone-messages">
                 <div
                   className="phone-screen-scroll phone-stack"
+                  ref={conversationRef}
                   aria-label="Message conversation"
                   role="log"
                 >
@@ -288,7 +243,9 @@ export default function PhoneWidget({ onClose }: { onClose?: () => void }) {
                     </PhonePanel>
                   ))}
                 </div>
-                <div className="phone-replies">
+                <details className="phone-quick-replies">
+                  <summary>Quick replies</summary>
+                  <div className="phone-replies">
                   <PhoneButton
                     onClick={() =>
                       quickReply("trust", "Understood. On my way.")
@@ -304,6 +261,7 @@ export default function PhoneWidget({ onClose }: { onClose?: () => void }) {
                     +Sync · Ready to sync
                   </PhoneButton>
                 </div>
+                </details>
                 <form
                   className="phone-composer"
                   onSubmit={(event) => {
@@ -329,17 +287,24 @@ export default function PhoneWidget({ onClose }: { onClose?: () => void }) {
                 </form>
               </div>
             ) : (
-              <div className="phone-screen-scroll phone-stack">
+              <div key={activeScreen} className="phone-screen-scroll phone-stack">
+                {activeScreen === "settings" && <div className="phone-settings phone-stack"><p className="phone-muted">Choose the colors for your phone.</p><PhoneThemePicker /><p className="phone-muted">Your choice is saved on this device.</p></div>}
                 {activeScreen === 'phone' && calls.map(call => <PhonePanel key={call.id} className="phone-stack"><strong>{call.opportunity.institution}</strong><small className="phone-muted">{call.heardAt ? 'Answered work call' : 'Incoming work call'}</small><h3>{call.opportunity.title}</h3>{call.heardAt ? <><p>“{call.opportunity.description} Your briefing and assignments are ready in WorkNet. Review the work before accepting.”</p><small className="phone-muted">In-world call transcript · simulated audio</small><PhoneButton tone="primary" onClick={() => { useOSStore.getState().openAssignment(call.id); onClose?.(); }}>Review call assignment</PhoneButton></> : <><PhoneButton tone="primary" onClick={() => useOSStore.getState().answerAssignmentCall(call.id)}><Phone size={15} /> Answer work call</PhoneButton><small className="phone-muted">The call stays here if you want to answer later.</small></>}</PhonePanel>)}
+                {activeScreen === "phone" && <h4 className="phone-section-label">Voicemail · {INITIAL_VOICEMAILS.length}</h4>}
                 {activeScreen === "phone" &&
                   INITIAL_VOICEMAILS.map((voicemail) => (
-                    <PhonePanel key={voicemail.id} className="phone-stack">
-                      <div>
+                    <details key={voicemail.id} className="phone-voicemail">
+                      <summary>
+                        <span className="phone-launch-icon"><Phone size={18} /></span>
+                        <span>
                         <strong>{voicemail.sender}</strong>
                         <p className="phone-muted">
                           {voicemail.time} · {voicemail.duration}
                         </p>
-                      </div>
+                        </span>
+                        <ChevronRight size={16} aria-hidden="true" />
+                      </summary>
+                      <div className="phone-stack phone-voicemail-body">
                       <p>{voicemail.text}</p>
                       <PhoneButton
                         aria-pressed={playingVm === voicemail.id}
@@ -359,7 +324,8 @@ export default function PhoneWidget({ onClose }: { onClose?: () => void }) {
                           Transcript preview · audio is simulated
                         </small>
                       )}
-                    </PhonePanel>
+                      </div>
+                    </details>
                   ))}
                 {activeScreen === "passport" && (
                   <>
@@ -495,9 +461,10 @@ export default function PhoneWidget({ onClose }: { onClose?: () => void }) {
       <button
         className="phone-home-indicator"
         aria-label="Return to phone home"
-        onClick={() => setActiveScreen("home")}
+        onClick={goHome}
       >
-        <span />
+        <Home size={16} />
+        <span>Home</span>
       </button>
     </PhoneSurface>
   );

@@ -3,13 +3,13 @@
   "short_name": "Miraverse",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#000000",
-  "theme_color": "#000000",
+  "background_color": "#f5f7f8",
+  "theme_color": "#315b58",
   "icons": [
     {
-      "src": "logo_icon.png",
+      "src": "/images/Logo_Icon - 1.png",
       "type": "image/png",
-      "sizes": "192x192 512x512"
+      "sizes": "any"
     }
   ]
 }

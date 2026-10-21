@@ -2,7 +2,7 @@ export const PHONE_THEMES = [
   {
     id: "twilight",
     name: "Twilight",
-    description: "Plum glass and soft lavender",
+    description: "Soft grey, white and deep purple",
   },
   {
     id: "aureline",

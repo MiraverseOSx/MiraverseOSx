@@ -2,12 +2,23 @@ import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { readFileSync } from 'node:fs';
+import { createHash } from 'node:crypto';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 export default defineConfig({
-  plugins: [react()],
+  plugins: [react(), {
+    name: 'miraverse-offline-shell',
+    apply: 'build',
+    generateBundle(_options, bundle) {
+      const assets = Object.keys(bundle).filter(name => /\.(js|css|woff2?|ttf)$/.test(name)).map(name => `/${name}`);
+      const revision = createHash('sha256').update(assets.join('\n')).digest('hex').slice(0, 16);
+      const precache = ['/index.html', '/manifest.json', '/pwa-icon.svg', '/images/Logo_Icon - 1.png', ...assets];
+      this.emitFile({ type: 'asset', fileName: 'sw.js', source: `const CACHE_NAME = ${JSON.stringify(`miraverse-shell-${revision}`)};\nconst PRECACHE = ${JSON.stringify(precache)};\n${readFileSync(path.join(__dirname, 'offline-worker.js'), 'utf8')}` });
+    },
+  }],
   publicDir: 'public',
   resolve: {
     alias: {

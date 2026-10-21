@@ -72,6 +72,7 @@ export interface EmailItem {
   attachment: { type: string; amount: number; name: string; claimed: boolean } | null;
   attachments?: EmailAttachment[];
   body: string;
+  bodyHtml?: string;
 }
 
 export interface AureMailDirectoryContact {

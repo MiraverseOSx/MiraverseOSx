@@ -7,7 +7,7 @@
 ## 🌟 Core Architecture & Integrated Systems
 
 ### 1. Celestial Desktop Environment & Window Manager
-- **Unified Window & Workspace Shell**: Draggable, resizable, minimizable, and maximizable application windows (`Window.tsx`), a categorized protocol launcher (`AppLauncherModal.tsx`), live desktop widget rail (`DesktopWidgetRail.tsx`), and the `MAI` Civic Assistant dock (`MAIDock.tsx`).
+- **Unified Window & Workspace Shell**: Draggable, resizable, minimizable, and maximizable application windows (`Window.tsx`), a categorized protocol launcher (`AppLauncherModal.tsx`), saved desktop shortcuts (`DesktopShortcuts.tsx`) and a split floating taskbar (`DesktopTaskbar.tsx`), and the `MAI` Civic Assistant dock (`MAIDock.tsx`).
 - **Scoped Visual Systems**: Celestial glassmorphism and paper-ledger aesthetics across MiraverseOSx applications, paired with scoped Lavender-OS tactical styling (`.dgaos-scope`) for embedded DGAOS and TRACE workstations so both design systems coexist without CSS bleed.
 - **Master Typography**:
   - *Commissioner* & *Plus Jakarta Sans*: Primary UI, system telemetry, and municipal forms.

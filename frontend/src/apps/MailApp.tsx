@@ -25,8 +25,14 @@ import {
   Lock,
   BadgeCheck,
   Clock,
+  Tag as PinLabel,
 } from 'lucide-react';
-import { useCommsStore } from '../store/useCommsStore';
+import { MailProvider, useMailState } from './mail/MailContext';
+import MailTools, { MailOrganizationBar } from './mail/MailTools';
+import RichMailEditor, { RichMailBody } from './mail/RichMailEditor';
+import { groupConversations, isSnoozed } from './mail/mailOrganization';
+import { escapeMailText } from './mail/richText';
+import '../styles/apps/auremail.css';
 import { useOSStore } from '../store/useOSStore';
 import {
   AUREMAIL_DIRECTORY,
@@ -81,7 +87,15 @@ const VAULT_ATTACHABLE_FILES: EmailAttachment[] = [
   },
 ];
 
-export default function MailApp() {
+export default function MailApp() { return <MailProvider><MailWorkspace /></MailProvider>; }
+
+function MailWorkspace() {
+  const organization = useMailState(s => s.mailOrganization);
+  const organizeMail = useMailState(s => s.organizeMail);
+  const processMailRules = useMailState(s => s.processMailRules);
+  const [toolsView, setToolsView] = useState<'contacts' | 'settings' | null>(null);
+  const [mobileView, setMobileView] = useState('list');
+  const [now, setNow] = useState(Date.now);
   const [activeFolder, setActiveFolder] = useState<string>('inbox');
   const [activeFaction, setActiveFaction] = useState<string>('all');
   const [search, setSearch] = useState<string>('');
@@ -107,6 +121,7 @@ export default function MailApp() {
   const [composeBcc, setComposeBcc] = useState<string>('');
   const [composeSubject, setComposeSubject] = useState<string>('');
   const [composeBody, setComposeBody] = useState<string>('');
+  const [composeHtml, setComposeHtml] = useState('');
   const [composeAttachments, setComposeAttachments] = useState<EmailAttachment[]>([]);
 
   // Canonical MAID Citizens loaded for Universal Directory
@@ -119,39 +134,39 @@ export default function MailApp() {
   }, []);
 
   // Persisted AureMail store state & actions
-  const emails = useCommsStore((s) => s.emails);
-  const playerAccounts = useCommsStore((s) => s.playerAccounts);
-  const activeAccountAddress = useCommsStore((s) => s.activeAccountAddress);
-  const selectedSenderAddress = useCommsStore((s) => s.selectedSenderAddress);
-  const starredEmailIds = useCommsStore((s) => s.starredEmailIds);
-  const archivedEmailIds = useCommsStore((s) => s.archivedEmailIds);
-  const trashedEmailIds = useCommsStore((s) => s.trashedEmailIds);
-  const readEmailIds = useCommsStore((s) => s.readEmailIds);
-  const savedAttachmentIds = useCommsStore((s) => s.savedAttachmentIds);
-  const submittedFormIds = useCommsStore((s) => s.submittedFormIds);
-  const blockedAddresses = useCommsStore((s) => s.blockedAddresses);
-  const reportedEmailIds = useCommsStore((s) => s.reportedEmailIds);
-  const drafts = useCommsStore((s) => s.drafts);
-  const sortOrder = useCommsStore((s) => s.sortOrder);
+  const emails = useMailState((s) => s.emails);
+  const playerAccounts = useMailState((s) => s.playerAccounts);
+  const activeAccountAddress = useMailState((s) => s.activeAccountAddress);
+  const selectedSenderAddress = useMailState((s) => s.selectedSenderAddress);
+  const starredEmailIds = useMailState((s) => s.starredEmailIds);
+  const archivedEmailIds = useMailState((s) => s.archivedEmailIds);
+  const trashedEmailIds = useMailState((s) => s.trashedEmailIds);
+  const readEmailIds = useMailState((s) => s.readEmailIds);
+  const savedAttachmentIds = useMailState((s) => s.savedAttachmentIds);
+  const submittedFormIds = useMailState((s) => s.submittedFormIds);
+  const blockedAddresses = useMailState((s) => s.blockedAddresses);
+  const reportedEmailIds = useMailState((s) => s.reportedEmailIds);
+  const drafts = useMailState((s) => s.drafts);
+  const sortOrder = useMailState((s) => s.sortOrder);
 
-  const setActiveAccountAddress = useCommsStore((s) => s.setActiveAccountAddress);
-  const setSelectedSenderAddress = useCommsStore((s) => s.setSelectedSenderAddress);
-  const toggleStarEmail = useCommsStore((s) => s.toggleStarEmail);
-  const toggleArchiveEmail = useCommsStore((s) => s.toggleArchiveEmail);
-  const moveToTrashEmail = useCommsStore((s) => s.moveToTrashEmail);
-  const restoreEmail = useCommsStore((s) => s.restoreEmail);
-  const markEmailRead = useCommsStore((s) => s.markEmailRead);
-  const bulkUpdateEmails = useCommsStore((s) => s.bulkUpdateEmails);
-  const setSortOrder = useCommsStore((s) => s.setSortOrder);
-  const saveDraft = useCommsStore((s) => s.saveDraft);
-  const deleteDraft = useCommsStore((s) => s.deleteDraft);
-  const sendEmail = useCommsStore((s) => s.sendEmail);
-  const replyToEmail = useCommsStore((s) => s.replyToEmail);
-  const forwardEmail = useCommsStore((s) => s.forwardEmail);
-  const saveAttachmentToVault = useCommsStore((s) => s.saveAttachmentToVault);
-  const submitAttachmentForm = useCommsStore((s) => s.submitAttachmentForm);
-  const toggleBlockAddress = useCommsStore((s) => s.toggleBlockAddress);
-  const reportSuspiciousEmail = useCommsStore((s) => s.reportSuspiciousEmail);
+  const setActiveAccountAddress = useMailState((s) => s.setActiveAccountAddress);
+  const setSelectedSenderAddress = useMailState((s) => s.setSelectedSenderAddress);
+  const toggleStarEmail = useMailState((s) => s.toggleStarEmail);
+  const toggleArchiveEmail = useMailState((s) => s.toggleArchiveEmail);
+  const moveToTrashEmail = useMailState((s) => s.moveToTrashEmail);
+  const restoreEmail = useMailState((s) => s.restoreEmail);
+  const markEmailRead = useMailState((s) => s.markEmailRead);
+  const bulkUpdateEmails = useMailState((s) => s.bulkUpdateEmails);
+  const setSortOrder = useMailState((s) => s.setSortOrder);
+  const saveDraft = useMailState((s) => s.saveDraft);
+  const deleteDraft = useMailState((s) => s.deleteDraft);
+  const sendEmail = useMailState((s) => s.sendEmail);
+  const replyToEmail = useMailState((s) => s.replyToEmail);
+  const forwardEmail = useMailState((s) => s.forwardEmail);
+  const saveAttachmentToVault = useMailState((s) => s.saveAttachmentToVault);
+  const submitAttachmentForm = useMailState((s) => s.submitAttachmentForm);
+  const toggleBlockAddress = useMailState((s) => s.toggleBlockAddress);
+  const reportSuspiciousEmail = useMailState((s) => s.reportSuspiciousEmail);
 
   // OS Store progression & clearance
   const claimedComms = useOSStore((s) => s.gameplay.claimedComms);
@@ -198,8 +213,27 @@ export default function MailApp() {
       });
     });
 
+    organization.contacts.forEach(contact => { if (!byAddress.has(contact.address)) byAddress.set(contact.address, { ...contact, category: 'citizen', accountType: 'personal', role: 'Personal contact', institution: 'Your address book', faction: 'Personal', requiredClearance: 1, verified: false }); });
     return Array.from(byAddress.values());
-  }, [canonicalPersons]);
+  }, [canonicalPersons, organization.contacts]);
+
+  useEffect(() => { processMailRules(); }, [emails, processMailRules]);
+  useEffect(() => { const timer = window.setInterval(() => setNow(Date.now()), 30000); return () => clearInterval(timer); }, []);
+  useEffect(() => { setMobileView('list'); setSelectedBulkIds([]); }, [activeFolder]);
+  useEffect(() => { if (isComposing) setMobileView('reader'); }, [isComposing]);
+
+  function dropMail(event: React.DragEvent, destination: string) {
+    event.preventDefault();
+    try {
+      const requested = JSON.parse(event.dataTransfer.getData('application/x-auremail'));
+      const ids = Array.isArray(requested) ? requested.filter(id => typeof id === 'string' && emails.some(mail => mail.id === id)) : [];
+      if (!ids.length) return;
+      if (destination.startsWith('label:')) organizeMail(ids, 'label', destination.slice(6));
+      else if (destination === 'spam') organizeMail(ids, 'spam');
+      else if (destination === 'archive' || destination === 'trash') bulkUpdateEmails(ids, destination === 'archive' ? 'archive' : 'trash');
+      else if (destination === 'inbox' || destination.startsWith('folder:')) organizeMail(ids, 'folder', destination === 'inbox' ? '' : destination.slice(7));
+    } catch { /* Foreign drag payloads do not modify mail. */ }
+  }
 
   const isEmailRead = (mail: EmailItem) => Boolean(mail.read || readEmailIds.includes(mail.id));
 
@@ -215,13 +249,18 @@ export default function MailApp() {
   const filteredEmails = useMemo(() => {
     const list = emails.filter((mail) => {
       // Blocked sender check
-      if (mail.senderAddress && blockedAddresses.includes(mail.senderAddress.toLowerCase()) && activeFolder !== 'trash') {
+      if (mail.senderAddress && blockedAddresses.includes(mail.senderAddress.toLowerCase()) && !['trash', 'spam'].includes(activeFolder)) {
         return false;
       }
 
       // Account mailbox filter (Combined vs specific account)
       if (!matchesAccountFilter(mail)) return false;
 
+      const meta = organization.metadata[mail.id];
+      if (activeFolder === 'spam' ? !meta?.spam : meta?.spam && activeFolder !== 'trash') return false;
+      if (activeFolder === 'snoozed' ? !isSnoozed(meta, now) : isSnoozed(meta, now) && !['trash', 'spam'].includes(activeFolder)) return false;
+      if (activeFolder.startsWith('folder:') ? meta?.folder !== activeFolder.slice(7) : meta?.folder && ['inbox', 'official'].includes(activeFolder)) return false;
+      if (activeFolder.startsWith('label:') && !meta?.labels?.includes(activeFolder.slice(6))) return false;
       const isTrashed = trashedEmailIds.includes(mail.id) || mail.folder === 'trash';
       const isArchived = archivedEmailIds.includes(mail.id) || mail.folder === 'archive';
       const isSent = mail.folder === 'sent';
@@ -235,7 +274,7 @@ export default function MailApp() {
 
       if (activeFolder === 'archive') {
         if (!isArchived) return false;
-      } else if (isArchived && activeFolder !== 'starred') {
+      } else if (isArchived && !['starred', 'spam', 'snoozed'].includes(activeFolder) && !activeFolder.startsWith('label:')) {
         return false;
       }
 
@@ -298,7 +337,11 @@ export default function MailApp() {
     readEmailIds,
     blockedAddresses,
     sortOrder,
+    organization,
+    now,
   ]);
+
+  const conversationRows = groupConversations(filteredEmails, organization.settings.conversations);
 
   const selectedMail = useMemo(() => {
     return filteredEmails.find((m) => m.id === selectedMailId) || filteredEmails[0] || null;
@@ -309,10 +352,10 @@ export default function MailApp() {
     if (!selectedMail) return [];
     const threadKey = selectedMail.threadId || selectedMail.id;
     return emails
-      .filter((m) => (m.threadId || m.id) === threadKey && !trashedEmailIds.includes(m.id))
+      .filter((m) => (m.threadId || m.id) === threadKey && (activeFolder === 'trash' ? trashedEmailIds.includes(m.id) : !trashedEmailIds.includes(m.id)) && (activeFolder === 'spam' || !organization.metadata[m.id]?.spam) && matchesAccountFilter(m))
       .slice()
       .reverse();
-  }, [emails, selectedMail, trashedEmailIds]);
+  }, [emails, selectedMail, trashedEmailIds, activeFolder, organization, activeAccountAddress]);
 
   const getNormalizedAttachments = (mail: EmailItem | null): EmailAttachment[] => {
     if (!mail) return [];
@@ -342,8 +385,10 @@ export default function MailApp() {
 
   const handleSelectMail = (mail: EmailItem) => {
     setSelectedMailId(mail.id);
-    if (!isEmailRead(mail)) {
-      markEmailRead(mail.id, true);
+    setMobileView('reader');
+    if (organization.settings.autoRead) {
+      const ids = organization.settings.conversations ? filteredEmails.filter(item => (item.threadId || item.id) === (mail.threadId || mail.id)).map(item => item.id) : [mail.id];
+      bulkUpdateEmails(ids, 'read');
     }
     if (mail.recipientAddress && playerAccounts.some((a) => a.address.toLowerCase() === mail.recipientAddress!.toLowerCase())) {
       setSelectedSenderAddress(mail.recipientAddress);
@@ -447,6 +492,7 @@ export default function MailApp() {
       bcc: composeBcc ? composeBcc.split(',').map((s) => s.trim()) : undefined,
       subject: composeSubject.trim(),
       body: composeBody.trim(),
+      bodyHtml: composeHtml,
       attachments: composeAttachments,
       playerClearance,
       npcTrustMap,
@@ -478,6 +524,7 @@ export default function MailApp() {
     setIsComposing(false);
     setComposeSubject('');
     setComposeBody('');
+    setComposeHtml('');
     setComposeCc('');
     setComposeBcc('');
     setComposeAttachments([]);
@@ -498,6 +545,7 @@ export default function MailApp() {
       bcc: composeBcc,
       subject: composeSubject || '(Untitled Draft)',
       body: composeBody,
+      bodyHtml: composeHtml,
       attachments: composeAttachments,
     });
     setActiveDraftId(saved.id);
@@ -518,6 +566,7 @@ export default function MailApp() {
     setComposeBcc(d.bcc);
     setComposeSubject(d.subject);
     setComposeBody(d.body);
+    setComposeHtml(d.bodyHtml || `<div>${escapeMailText(d.body).replace(/\n/g, '<br>')}</div>`);
     setComposeAttachments(d.attachments || []);
     setIsComposing(true);
   };
@@ -582,22 +631,20 @@ export default function MailApp() {
     setSelectedBulkIds([]);
   };
 
+  const inInbox = (mail: EmailItem) => !trashedEmailIds.includes(mail.id) && !archivedEmailIds.includes(mail.id) && (!mail.folder || mail.folder === 'inbox') && !organization.metadata[mail.id]?.spam && !isSnoozed(organization.metadata[mail.id], now) && !organization.metadata[mail.id]?.folder && !blockedAddresses.includes(mail.senderAddress?.toLowerCase() || '');
   const unreadInboxCount = emails.filter(
     (m) =>
-      !trashedEmailIds.includes(m.id) &&
-      !archivedEmailIds.includes(m.id) &&
-      m.folder !== 'sent' &&
-      m.folder !== 'outbox' &&
+      inInbox(m) &&
       matchesAccountFilter(m) &&
       !isEmailRead(m)
   ).length;
 
   return (
-    <AppShell>
+    <AppShell className={`auremail-client mail-density-${organization.settings.density} mail-view-${mobileView}`}>
       <AppToolbar
         icon={Mail}
-        title="AureMail Universal Client"
-        subtitle="Multi-Account Personal, Academic, Work & Institutional Correspondence (MAID-OR-00481926)"
+        title="AureMail"
+        subtitle="Personal, academic & work mail · Fictional local relay"
         actions={
           <div className="flex items-center gap-2">
             <select
@@ -637,10 +684,12 @@ export default function MailApp() {
         }
       />
 
+      <nav className="mail-mobile-nav" aria-label="Mobile mailbox navigation"><select aria-label="Mailbox folder" value={activeFolder} onChange={event => setActiveFolder(event.target.value)}>{['inbox', 'starred', 'official', 'sent', 'drafts', 'outbox', 'archive', 'spam', 'snoozed', 'trash', 'directory', ...organization.folders.map(name => `folder:${name}`), ...organization.labels.map(name => `label:${name}`)].map(name => <option key={name} value={name}>{name.replace(/^(folder|label):/, '')}</option>)}</select><button onClick={() => setIsComposing(true)}>Compose</button><button onClick={() => setToolsView('contacts')}>Contacts</button><button onClick={() => setToolsView('settings')}>Settings</button></nav>
       {/* ── MAIN MAILBOX LAYOUT (3 PANES) ── */}
-      <div className="flex min-h-0 flex-1 overflow-hidden">
+      <div className="mail-layout flex min-h-0 flex-1 overflow-hidden">
         {/* PANE 1: LEFT FOLDERS, ACCOUNTS & DIRECTORY */}
-        <AppSidebar className="w-[22%] min-w-48 max-w-56 shrink-0 p-3 space-y-4 overflow-y-auto" label="Mailbox folders and accounts">
+        <AppSidebar className="mail-folders w-[22%] min-w-48 max-w-56 shrink-0 p-3 space-y-4 overflow-y-auto" label="Mailbox folders and accounts">
+          <div className="mail-sidebar-tools"><button onClick={() => setToolsView('contacts')}>Personal contacts</button><button onClick={() => setToolsView('settings')}>Settings & rules</button></div>
           <div className="space-y-1.5">
             <button
               onClick={() => {
@@ -672,14 +721,7 @@ export default function MailApp() {
                 id: 'inbox',
                 label: 'Inbox',
                 icon: Inbox,
-                count: emails.filter(
-                  (m) =>
-                    !archivedEmailIds.includes(m.id) &&
-                    !trashedEmailIds.includes(m.id) &&
-                    m.folder !== 'sent' &&
-                    m.folder !== 'outbox' &&
-                    matchesAccountFilter(m)
-                ).length,
+                count: emails.filter(m => inInbox(m) && matchesAccountFilter(m)).length,
               },
               { id: 'starred', label: 'Starred', icon: Star, count: starredEmailIds.length },
               {
@@ -713,11 +755,17 @@ export default function MailApp() {
               },
               { id: 'archive', label: 'Archive', icon: Archive, count: archivedEmailIds.length },
               { id: 'trash', label: 'Trash', icon: Trash2, count: trashedEmailIds.length },
+              { id: 'spam', label: 'Spam', icon: AlertTriangle, count: emails.filter(mail => organization.metadata[mail.id]?.spam && !trashedEmailIds.includes(mail.id) && matchesAccountFilter(mail)).length },
+              { id: 'snoozed', label: 'Snoozed', icon: Clock, count: emails.filter(mail => isSnoozed(organization.metadata[mail.id], now) && !trashedEmailIds.includes(mail.id) && matchesAccountFilter(mail)).length },
+              ...organization.folders.map(name => ({ id: `folder:${name}`, label: name, icon: Archive, count: emails.filter(mail => organization.metadata[mail.id]?.folder === name && !trashedEmailIds.includes(mail.id) && matchesAccountFilter(mail)).length })),
+              ...organization.labels.map(name => ({ id: `label:${name}`, label: name, icon: PinLabel, count: emails.filter(mail => organization.metadata[mail.id]?.labels?.includes(name) && !trashedEmailIds.includes(mail.id) && matchesAccountFilter(mail)).length })),
             ].map((f) => {
               const IconComp = f.icon;
               return (
                 <button
                   key={f.id}
+                  onDragOver={event => event.preventDefault()}
+                  onDrop={event => dropMail(event, f.id)}
                   onClick={() => setActiveFolder(f.id)}
                   className={`flex w-full items-center justify-between rounded-lg px-2.5 py-1.5 text-left text-xs transition ${
                     activeFolder === f.id
@@ -802,7 +850,7 @@ export default function MailApp() {
         </AppSidebar>
 
         {/* PANE 2: CENTER MESSAGE LIST / DRAFTS / UNIVERSAL DIRECTORY */}
-        <AppPane className="w-[33%] min-w-64 max-w-88 shrink-0 border-r border-slate-300/70 bg-white/40 flex flex-col">
+        <AppPane className="mail-list w-[33%] min-w-64 max-w-88 shrink-0 border-r border-slate-300/70 bg-white/40 flex flex-col">
           <div className="flex items-center justify-between border-b border-slate-300/60 px-3 py-2 text-[11px] font-semibold text-slate-500 bg-white/60">
             <span>{activeFolder.toUpperCase()}</span>
             <span>
@@ -932,10 +980,10 @@ export default function MailApp() {
                 <EmptyState icon={FileEdit} title="No saved drafts" description="Use Save Draft in the composer to store unfinished messages." />
               )
             ) : (
-              filteredEmails.map((mail) => {
-                const isSelected = selectedMail?.id === mail.id;
+              conversationRows.map((mail) => {
+                const isSelected = selectedMail && (organization.settings.conversations ? selectedMail.threadId || selectedMail.id : selectedMail.id) === (organization.settings.conversations ? mail.threadId || mail.id : mail.id);
                 const isStarred = starredEmailIds.includes(mail.id);
-                const isRead = isEmailRead(mail);
+                const isRead = organization.settings.conversations ? filteredEmails.filter(item => (item.threadId || item.id) === (mail.threadId || mail.id)).every(isEmailRead) : isEmailRead(mail);
                 const atts = getNormalizedAttachments(mail);
                 const fileCount = atts.filter((a) => !a.isReward).length;
                 const rewardCount = atts.filter((a) => a.isReward).length;
@@ -945,6 +993,12 @@ export default function MailApp() {
                 return (
                   <div
                     key={mail.id}
+                    role="button"
+                    tabIndex={0}
+                    aria-label={`Read ${mail.subject}`}
+                    draggable
+                    onDragStart={event => { event.dataTransfer.setData('application/x-auremail', JSON.stringify(selectedBulkIds.includes(mail.id) ? selectedBulkIds : [mail.id])); event.dataTransfer.effectAllowed = 'move'; }}
+                    onKeyDown={event => { if (event.target === event.currentTarget && (event.key === 'Enter' || event.key === ' ')) { event.preventDefault(); handleSelectMail(mail); } }}
                     onClick={() => handleSelectMail(mail)}
                     className={`group relative cursor-pointer rounded-xl border p-3 transition shadow-2xs ${
                       isSelected
@@ -980,6 +1034,8 @@ export default function MailApp() {
                             e.stopPropagation();
                             toggleStarEmail(mail.id);
                           }}
+                          aria-label={`Star ${mail.subject}`}
+                          aria-pressed={isStarred}
                           className="text-slate-300 hover:text-amber-400 transition ml-1"
                         >
                           <Star size={13} className={isStarred ? 'fill-amber-400 text-amber-400' : ''} />
@@ -1030,7 +1086,8 @@ export default function MailApp() {
         </AppPane>
 
         {/* PANE 3: RIGHT MESSAGE & THREAD READER + COMPOSER */}
-        <main className="flex min-w-0 flex-1 flex-col bg-[#FAFAFC] overflow-y-auto p-6">
+        <main className="mail-reader flex min-w-0 flex-1 flex-col bg-[#FAFAFC] overflow-y-auto p-6">
+          <button className="mail-back" onClick={() => setMobileView('list')}>← Back to mailbox</button>
           {isComposing && (
             <form
               onSubmit={handleSendNewDispatch}
@@ -1042,6 +1099,7 @@ export default function MailApp() {
                 </span>
                 <button
                   type="button"
+                  aria-label="Close composer"
                   onClick={() => setIsComposing(false)}
                   className="text-slate-400 hover:text-slate-600"
                 >
@@ -1055,7 +1113,8 @@ export default function MailApp() {
                     From (Verified Account)
                   </label>
                   <select
-                    value={composeFrom}
+                    aria-label="Sender account"
+                      value={composeFrom}
                     onChange={(e) => setComposeFrom(e.target.value)}
                     className="w-full rounded-xl border border-slate-300 bg-white px-2.5 py-1.5 text-xs font-mono text-slate-800"
                   >
@@ -1073,6 +1132,7 @@ export default function MailApp() {
                   </label>
                   <div className="flex gap-1">
                     <Input
+                      aria-label="Recipient"
                       value={composeRecipient}
                       onChange={(e) => setComposeRecipient(e.target.value)}
                       placeholder="e.g. registrar@cyacademy.edu or MAID..."
@@ -1099,32 +1159,29 @@ export default function MailApp() {
 
               <div className="grid grid-cols-1 md:grid-cols-3 gap-2">
                 <Input
-                  value={composeSubject}
+                  aria-label="Subject"
+                      value={composeSubject}
                   onChange={(e) => setComposeSubject(e.target.value)}
                   placeholder="Subject line..."
                   className="text-xs md:col-span-1"
                 />
                 <Input
-                  value={composeCc}
+                  aria-label="Cc"
+                      value={composeCc}
                   onChange={(e) => setComposeCc(e.target.value)}
                   placeholder="CC (comma separated)..."
                   className="text-xs"
                 />
                 <Input
-                  value={composeBcc}
+                  aria-label="Bcc"
+                      value={composeBcc}
                   onChange={(e) => setComposeBcc(e.target.value)}
                   placeholder="BCC (comma separated)..."
                   className="text-xs"
                 />
               </div>
 
-              <textarea
-                value={composeBody}
-                onChange={(e) => setComposeBody(e.target.value)}
-                placeholder="Write your personal, academic, professional, or institutional message..."
-                rows={4}
-                className="w-full rounded-xl border border-slate-300 p-2.5 text-xs text-slate-800 focus:border-indigo-500 focus:outline-none"
-              />
+              <RichMailEditor value={composeHtml} onChange={(html, text) => { setComposeHtml(html); setComposeBody(text); }} />
 
               {/* Vault File Attachments Selector */}
               <div className="flex flex-wrap items-center justify-between gap-2 pt-1">
@@ -1169,8 +1226,9 @@ export default function MailApp() {
             </form>
           )}
 
-          {selectedMail ? (
+          {!isComposing && (selectedMail ? (
             <div className="flex h-full flex-col space-y-4">
+              <MailOrganizationBar ids={selectedBulkIds.length ? selectedBulkIds : [selectedMail.id]} />
               <div className="rounded-2xl border border-slate-300/80 bg-white p-5 shadow-sm space-y-3">
                 <div className="flex flex-wrap items-start justify-between gap-2 border-b border-slate-200 pb-3">
                   <div>
@@ -1290,14 +1348,15 @@ export default function MailApp() {
                           <span>{tMsg.time}</span>
                         </div>
                         <div className="whitespace-pre-line font-serif text-[#243064] leading-relaxed">
-                          {tMsg.body}
+                          <RichMailBody html={tMsg.bodyHtml} text={tMsg.body} />
+                          {getNormalizedAttachments(tMsg).length > 0 && <button className="mail-thread-attachments" onClick={() => setSelectedMailId(tMsg.id)}>View this message’s attachments</button>}
                         </div>
                       </div>
                     ))}
                   </div>
                 ) : (
                   <div className="text-xs leading-relaxed text-[#243064] whitespace-pre-line font-serif bg-[#FAF9FF] p-4 rounded-xl border border-purple-200/50">
-                    {selectedMail.body}
+                    <RichMailBody html={selectedMail.bodyHtml} text={selectedMail.body} />
                   </div>
                 )}
 
@@ -1534,6 +1593,7 @@ export default function MailApp() {
 
                 <form onSubmit={handleSendReplyOrForward} className="flex items-center gap-2">
                   <Input
+                    aria-label="Reply message"
                     value={replyText}
                     onChange={(e) => setReplyText(e.target.value)}
                     placeholder={
@@ -1556,10 +1616,11 @@ export default function MailApp() {
               title="No message selected"
               description="Select a message from the list to read its thread, inspect enclosures, or reply."
             />
-          )}
+          ))}
         </main>
       </div>
 
+      {toolsView && <MailTools view={toolsView} onClose={() => setToolsView(null)} onCompose={address => { setComposeRecipient(address); setIsComposing(true); setMobileView('reader'); setToolsView(null); }} />}
       {/* Document Inspection Modal */}
       {openDocModal && <DocumentModal file={openDocModal} onClose={() => setOpenDocModal(null)} />}
     </AppShell>

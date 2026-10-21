@@ -1,3 +1,5 @@
+import { createMailOrganizationActions, restoreMailOrganization, type MailOrganizationActions } from '../apps/mail/mailOrganization';
+import { sanitizeMailHtml, escapeMailText } from '../apps/mail/richText';
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import {
@@ -36,6 +38,7 @@ export interface EmailDraft {
   bcc: string;
   subject: string;
   body: string;
+  bodyHtml?: string;
   threadId?: string;
   parentId?: string;
   updatedAt: string;
@@ -49,6 +52,7 @@ export interface SendEmailPayload {
   bcc?: string[];
   subject: string;
   body: string;
+  bodyHtml?: string;
   attachments?: EmailAttachment[];
   parentId?: string;
   threadId?: string;
@@ -228,7 +232,7 @@ Your message regarding "${cleanSubj}" was delivered to ${recipientInput}. The re
   };
 }
 
-export interface CommsState {
+export interface CommsState extends MailOrganizationActions {
   emails: EmailItem[];
   playerAccounts: AureMailAccount[];
   activeAccountAddress: string; // 'ALL' or specific AureMailAccount.address
@@ -300,6 +304,7 @@ export interface CommsState {
 export const useCommsStore = create<CommsState>()(
   persist(
     (set, get) => ({
+      ...createMailOrganizationActions(set, get),
       // Seeded institutional & personal dispatches
       emails: INITIAL_EMAILS,
       playerAccounts: DEFAULT_PLAYER_EMAIL_ACCOUNTS,
@@ -532,6 +537,7 @@ export const useCommsStore = create<CommsState>()(
           bcc: draftInput.bcc ?? existing?.bcc ?? '',
           subject: draftInput.subject ?? existing?.subject ?? '',
           body: draftInput.body ?? existing?.body ?? '',
+          bodyHtml: sanitizeMailHtml(draftInput.bodyHtml ?? existing?.bodyHtml ?? ''),
           threadId: draftInput.threadId ?? existing?.threadId,
           parentId: draftInput.parentId ?? existing?.parentId,
           updatedAt: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
@@ -686,6 +692,7 @@ export const useCommsStore = create<CommsState>()(
           claimed: false,
         }));
 
+        const signature = state.mailOrganization.settings.signature || fromAccount.signature;
         const sentMessage: EmailItem = {
           id: sentId,
           threadId,
@@ -708,7 +715,8 @@ export const useCommsStore = create<CommsState>()(
           labels: ['Sent', fromAccount.accountType.toUpperCase()],
           attachment: null,
           attachments: safeAttachments,
-          body: fromAccount.signature ? `${cleanBody}\n\n--\n${fromAccount.signature}` : cleanBody,
+          body: signature ? `${cleanBody}\n\n--\n${signature}` : cleanBody,
+          bodyHtml: payload.bodyHtml ? sanitizeMailHtml(payload.bodyHtml) + (signature ? `<p>—<br>${escapeMailText(signature).replace(/\n/g, '<br>')}</p>` : '') : undefined,
           auditLog: [
             `Transmitted from ${fromAccount.address} (${fromAccount.maid}) to ${resolvedToAddress} at ${new Date().toISOString()}`,
           ],
@@ -908,6 +916,7 @@ Your completed form has been verified and recorded in the institutional registry
         if (!Array.isArray(merged.playerAccounts) || merged.playerAccounts.length === 0) {
           merged.playerAccounts = DEFAULT_PLAYER_EMAIL_ACCOUNTS;
         }
+        merged.mailOrganization = restoreMailOrganization(persistedState?.mailOrganization);
         return merged;
       },
     }

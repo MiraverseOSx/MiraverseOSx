@@ -20,7 +20,11 @@ export interface SampleArchive {
 }
 
 export const PORTALS: Record<string, PortalInfo> = {
+    'companion.aure': { title: 'Aureline Companion', category: 'Dogs Cats Companions Community Profiles Enquiries', icon: Globe, accent: 'purple', domain: 'companion.aure' },
+    'gardenreview.aure': { title: 'Glassline Garden Review', category: 'Plants Garden Visitors Community Profiles', icon: Building, accent: 'purple', domain: 'gardenreview.aure' },
+    'readingroom.aure': { title: 'Aureline Open Reading Room', category: 'Library Education Research Profiles Records', icon: BookOpen, accent: 'purple', domain: 'readingroom.aure' },
     'versenet.aure': { title: 'Versenet Search Engine', category: 'Search Engine', icon: Globe, accent: 'green', domain: 'versenet.aure' },
+    'worknet.aure': { title: 'WorkNet', category: 'Work Careers Jobs Opportunities', icon: Building, accent: 'emerald', domain: 'worknet.aure' },
     'civinet.mer': { title: 'CIVINET Municipal Services Hub', category: 'Civic Governance', icon: Landmark, accent: 'indigo', domain: 'civinet.mer' },
     'questnotice.mer': { title: 'QUESTNOTICE Civic Notice Tracker', category: 'Public Errands', icon: FileText, accent: 'amber', domain: 'questnotice.mer' },
     'royalhistory.mer': { title: 'Royal Historic Society', category: 'Restricted Archive', icon: BookOpen, accent: 'cyan', domain: 'royalhistory.mer' },

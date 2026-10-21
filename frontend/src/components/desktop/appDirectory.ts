@@ -1,3 +1,4 @@
+import { DESKTOP_APP_IDS } from '../../store/desktopPreferences';
 import { Briefcase, Bookmark, Cpu, Home, Sparkles, Globe, Mail, MessageSquare, UserCheck, Radio, Folder, BookOpen, Terminal, Settings, Shield, Activity, Landmark, ContactRound, Fingerprint, FileText, GraduationCap, Grid2X2 } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 import { APPS } from '../../apps/contents';
@@ -285,7 +286,7 @@ const additionalApps: ProtocolItem[] = [
 
 const FALLBACK_ICONS: Record<string, LucideIcon> = { finance: Landmark, board: Bookmark, browser: Globe, process: Cpu, pulse: Radio, vitals: Activity, lore: BookOpen, files: Folder, spellforge: Sparkles, campus: GraduationCap };
 
-const APP_ORDER = ['browser', 'files', 'mail', 'comms', 'passport', 'board', 'housing', 'finance', 'spellforge', 'pulse', 'vitals', 'campus', 'lore', 'jobs', 'meridionRegistry', 'documentStudio', 'dgaos', 'traceForensics', 'process', 'terminal', 'settings'];
+const APP_ORDER = DESKTOP_APP_IDS;
 
 export const APPS_DIRECTORY = [...PROTOCOLS, ...additionalApps].map((app) => ({
   ...app,

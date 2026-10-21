@@ -1,31 +1,35 @@
 /* All phone palettes implement this semantic contract. Geometry is shared. */
 .phone-theme {
-  --phone-canvas: #1c1730;
-  --phone-wallpaper: linear-gradient(155deg, #342044, #1c1730 70%, #272142);
-  --phone-surface: #2d2440;
-  --phone-surface-raised: #3a2f50;
-  --phone-surface-hover: #493a60;
-  --phone-text: #f6efff;
-  --phone-muted: #c2b4d4;
-  --phone-accent: #d7b9ff;
-  --phone-accent-soft: #49345f;
-  --phone-on-accent: #28143e;
-  --phone-border: #655477;
-  --phone-success: #9ae3bd;
-  --phone-success-soft: #203f35;
-  --phone-danger: #ffb4bd;
-  --phone-danger-soft: #542b3c;
-  --phone-warning: #f4d898;
-  --phone-warning-soft: #493e28;
-  --phone-info: #a9d7fa;
-  --phone-info-soft: #263c52;
-  --phone-frame: #151020;
+  --phone-canvas: #f3f5f5;
+  --phone-wallpaper: linear-gradient(155deg, #f1f5f3, #f6f7f8 65%, #edf1f5);
+  --phone-surface: #ffffff;
+  --phone-surface-raised: #eeebf2;
+  --phone-surface-hover: #e8e2ee;
+  --phone-text: #302738;
+  --phone-muted: #706579;
+  --phone-accent: #4e2e69;
+  --phone-accent-soft: #eae2f1;
+  --phone-on-accent: #ffffff;
+  --phone-border: #d6dedf;
+  --phone-success: #256747;
+  --phone-success-soft: #e4f1e8;
+  --phone-danger: #a22d4a;
+  --phone-danger-soft: #fae3e9;
+  --phone-warning: #765511;
+  --phone-warning-soft: #f7edcf;
+  --phone-info: #285f87;
+  --phone-info-soft: #deedf8;
+  --phone-slate: #4e627a;
+  --phone-slate-soft: #e6ecf2;
+  --phone-frame: #cbd4d5;
   --phone-shadow: 0 20px 55px #0d09294d;
   --phone-scrim: #081225b8;
   --phone-radius: 18px;
   --phone-control-radius: 12px;
   --phone-target: 44px;
-  color-scheme: dark;
+  --phone-app-ink: var(--phone-accent);
+  --phone-app-fill: var(--phone-accent-soft);
+  color-scheme: light;
 }
 .phone-theme[data-phone-theme='aureline'] {
   --phone-canvas: #f4f1fa;
@@ -47,6 +51,8 @@
   --phone-warning-soft: #f7edcf;
   --phone-info: #2a6089;
   --phone-info-soft: #deedf8;
+  --phone-slate: #4e627a;
+  --phone-slate-soft: #e6ecf2;
   --phone-frame: #c9bfd8;
   --phone-shadow: 0 20px 55px #281d4938;
   color-scheme: light;
@@ -71,6 +77,8 @@
   --phone-warning-soft: #4b3e29;
   --phone-info: #a4d7ff;
   --phone-info-soft: #244359;
+  --phone-slate: #becfe4;
+  --phone-slate-soft: #2e3e55;
   --phone-frame: #0b1523;
   --phone-shadow: 0 20px 55px #08162766;
 }

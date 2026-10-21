@@ -1,3 +1,11 @@
+import { createBrowserActions } from './browserActions';
+import { createSiteActions, type SiteActions } from './siteActions';
+import { emptyVersenetSites, restoreVersenetSites, type VersenetSites } from '../apps/Browser/interactiveSites';
+import { createVersenetActions, type VersenetActions } from './versenetActions';
+import { emptyVersenetContent, restoreVersenetContent, type VersenetContent } from '../apps/Browser/searchCatalog';
+import { restoreDesktopPreferences, type DesktopPreferences } from './desktopPreferences';
+import { initialBrowserState, restoreBrowserState, type BrowserState } from '../apps/Browser/browserModel';
+export type { BrowserState, BrowserTab, TabHistory } from '../apps/Browser/browserModel';
 import { create } from 'zustand';
 import { createJSONStorage, persist } from 'zustand/middleware';
 import { NOTICES, evaluateNoticeObjective } from '../data/notices';
@@ -31,24 +39,6 @@ const spawnPosition = (count: number) => ({
   y: MENU_BAR_HEIGHT + 32 + (count % 6) * 32,
 });
 
-export interface BrowserTab {
-  id: number;
-  url: string;
-  title: string;
-}
-
-export interface TabHistory {
-  stack: string[];
-  index: number;
-}
-
-export interface BrowserState {
-  tabs: BrowserTab[];
-  activeTabId: number;
-  nextTabId: number;
-  historyMap: Record<number, TabHistory>;
-}
-
 export interface OSWindow {
   id: string;
   title: string;
@@ -62,15 +52,20 @@ export interface OSWindow {
   [key: string]: any;
 }
 
-export interface OSStoreState extends AssignmentFlowActions, ProgressionActions {
+export interface OSStoreState extends AssignmentFlowActions, ProgressionActions, VersenetActions, SiteActions {
   isLoggedIn: boolean;
   isSanctuary: boolean;
   toggleSanctuary: () => void;
   windows: OSWindow[];
   activeWindowId: string | null;
   wallpaper: string;
+  desktopPreferences: DesktopPreferences;
+  setDesktopShortcuts: (ids: string[]) => void;
+  resetDesktopShortcuts: () => void;
   browserUrl: string | null;
   browserState: BrowserState;
+  versenetContent: VersenetContent;
+  versenetSites: VersenetSites;
 
   setBrowserUrl: (url: string | null) => void;
   openBrowserTab: (url?: string, title?: string) => void;
@@ -79,6 +74,9 @@ export interface OSStoreState extends AssignmentFlowActions, ProgressionActions 
   navigateBrowserTab: (url: string, title?: string) => void;
   goBrowserBack: () => void;
   goBrowserForward: () => void;
+  toggleBrowserBookmark: () => void;
+  removeBrowserBookmark: (url: string) => void;
+  clearBrowserHistory: () => void;
 
   loginUser: (userData: any) => void;
   logoutUser: () => void;
@@ -182,177 +180,16 @@ export const useOSStore = create<OSStoreState>()(persist((set, get) => ({
   windows: [],
   activeWindowId: null,
   wallpaper: '',
+  desktopPreferences: restoreDesktopPreferences(undefined),
+  setDesktopShortcuts: (ids) => set({ desktopPreferences: restoreDesktopPreferences({ shortcutIds: ids }) }),
+  resetDesktopShortcuts: () => set({ desktopPreferences: restoreDesktopPreferences(undefined) }),
   browserUrl: null,
-  browserState: {
-    tabs: [
-      { id: 1, url: 'https://search.aure', title: 'New Tab' }
-    ],
-    activeTabId: 1,
-    nextTabId: 2,
-    historyMap: { 1: { stack: ['https://search.aure'], index: 0 } },
-  },
-
-  setBrowserUrl: (url) => set((s) => {
-    if (!url) return { browserUrl: null };
-    let formattedUrl = url;
-    if (!url.startsWith('http://') && !url.startsWith('https://')) {
-      formattedUrl = `https://${url}`;
-    }
-
-    const tabs = s.browserState.tabs;
-    const existing = tabs.find((t) => t.url === formattedUrl);
-    let newTabs = tabs;
-    let newActiveId = s.browserState.activeTabId;
-    let newNextId = s.browserState.nextTabId;
-    let newHistoryMap = s.browserState.historyMap;
-
-    if (existing) {
-      newActiveId = existing.id;
-    } else {
-      const newTab = { id: newNextId, url: formattedUrl, title: formattedUrl.replace(/^https?:\/\//, '').split('/')[0] };
-      newTabs = [...tabs, newTab];
-      newActiveId = newNextId;
-      newNextId = newNextId + 1;
-      newHistoryMap = {
-        ...s.browserState.historyMap,
-        [newActiveId]: { stack: [formattedUrl], index: 0 },
-      };
-    }
-
-    return {
-      browserUrl: formattedUrl,
-      browserState: {
-        ...s.browserState,
-        tabs: newTabs,
-        activeTabId: newActiveId,
-        nextTabId: newNextId,
-        historyMap: newHistoryMap,
-      },
-    };
-  }),
-
-  openBrowserTab: (url = 'https://search.aure', title = 'New Tab') => set((s) => {
-    let formattedUrl = url;
-    if (!url.startsWith('http://') && !url.startsWith('https://')) {
-      formattedUrl = `https://${url}`;
-    }
-    const tabs = s.browserState.tabs;
-    const existing = tabs.find((t) => t.url === formattedUrl);
-    if (existing) {
-      return {
-        browserState: {
-          ...s.browserState,
-          activeTabId: existing.id,
-        },
-      };
-    }
-    if (tabs.length >= 6) return s;
-    const newTabId = s.browserState.nextTabId;
-    const newTab = { id: newTabId, url: formattedUrl, title };
-    return {
-      browserState: {
-        ...s.browserState,
-        tabs: [...tabs, newTab],
-        activeTabId: newTabId,
-        nextTabId: newTabId + 1,
-        historyMap: {
-          ...s.browserState.historyMap,
-          [newTabId]: { stack: [formattedUrl], index: 0 },
-        },
-      },
-    };
-  }),
-
-  closeBrowserTab: (id) => set((s) => {
-    const tabs = s.browserState.tabs;
-    if (tabs.length <= 1) return s;
-    const idx = tabs.findIndex((t) => t.id === id);
-    const newTabs = tabs.filter((t) => t.id !== id);
-    let newActiveId = s.browserState.activeTabId;
-    if (id === s.browserState.activeTabId) {
-      newActiveId = newTabs[Math.min(idx, newTabs.length - 1)].id;
-    }
-    return {
-      browserState: {
-        ...s.browserState,
-        tabs: newTabs,
-        activeTabId: newActiveId,
-      },
-    };
-  }),
-
-  setActiveBrowserTab: (id) => set((s) => ({
-    browserState: {
-      ...s.browserState,
-      activeTabId: id,
-    },
-  })),
-
-  navigateBrowserTab: (url, title = 'Browsing') => set((s) => {
-    let formattedUrl = url;
-    if (!url.startsWith('http://') && !url.startsWith('https://')) {
-      formattedUrl = `https://${url}`;
-    }
-    const activeTabId = s.browserState.activeTabId;
-    const newTabs = s.browserState.tabs.map((t) =>
-      t.id === activeTabId ? { ...t, url: formattedUrl, title } : t
-    );
-    const h = s.browserState.historyMap[activeTabId] || { stack: [], index: -1 };
-    const newStack = h.stack.slice(0, h.index + 1).concat(formattedUrl);
-    const newHistoryMap = {
-      ...s.browserState.historyMap,
-      [activeTabId]: { stack: newStack, index: newStack.length - 1 },
-    };
-    return {
-      browserState: {
-        ...s.browserState,
-        tabs: newTabs,
-        historyMap: newHistoryMap,
-      },
-    };
-  }),
-
-  goBrowserBack: () => set((s) => {
-    const activeTabId = s.browserState.activeTabId;
-    const h = s.browserState.historyMap[activeTabId];
-    if (!h || h.index <= 0) return s;
-    const newIndex = h.index - 1;
-    const newUrl = h.stack[newIndex];
-    const newTabs = s.browserState.tabs.map((t) =>
-      t.id === activeTabId ? { ...t, url: newUrl } : t
-    );
-    return {
-      browserState: {
-        ...s.browserState,
-        tabs: newTabs,
-        historyMap: {
-          ...s.browserState.historyMap,
-          [activeTabId]: { ...h, index: newIndex },
-        },
-      },
-    };
-  }),
-
-  goBrowserForward: () => set((s) => {
-    const activeTabId = s.browserState.activeTabId;
-    const h = s.browserState.historyMap[activeTabId];
-    if (!h || h.index >= h.stack.length - 1) return s;
-    const newIndex = h.index + 1;
-    const newUrl = h.stack[newIndex];
-    const newTabs = s.browserState.tabs.map((t) =>
-      t.id === activeTabId ? { ...t, url: newUrl } : t
-    );
-    return {
-      browserState: {
-        ...s.browserState,
-        tabs: newTabs,
-        historyMap: {
-          ...s.browserState.historyMap,
-          [activeTabId]: { ...h, index: newIndex },
-        },
-      },
-    };
-  }),
+  browserState: initialBrowserState(),
+  versenetContent: emptyVersenetContent(),
+  versenetSites: emptyVersenetSites(),
+  ...createSiteActions(set, get),
+  ...createVersenetActions(set, get),
+  ...createBrowserActions(set, get),
 
   loginUser: (userData) =>
     set((s) => {
@@ -2387,11 +2224,15 @@ export const useOSStore = create<OSStoreState>()(persist((set, get) => ({
   version: 1,
   storage: createJSONStorage(() => osStorage),
   // Window metadata can contain React icons; recreate windows rather than serializing them.
-  partialize: ({ gameplay, wallpaper, isLoggedIn }) => ({ gameplay, wallpaper, isLoggedIn }),
+  partialize: ({ gameplay, wallpaper, isLoggedIn, browserState, desktopPreferences, versenetContent, versenetSites }) => ({ gameplay, wallpaper, isLoggedIn, browserState, desktopPreferences, versenetContent, versenetSites }),
   merge: (persisted, current) => {
     const saved = persisted as Partial<OSStoreState> | null;
     return {
       ...current,
+      desktopPreferences: restoreDesktopPreferences(saved?.desktopPreferences),
+      versenetContent: restoreVersenetContent(saved?.versenetContent),
+      versenetSites: restoreVersenetSites(saved?.versenetSites),
+      browserState: restoreBrowserState(saved?.browserState),
       gameplay: mergeSavedProgress(current.gameplay, saved?.gameplay),
       wallpaper: typeof saved?.wallpaper === 'string' ? saved.wallpaper : current.wallpaper,
       isLoggedIn: typeof saved?.isLoggedIn === 'boolean' ? saved.isLoggedIn : current.isLoggedIn,

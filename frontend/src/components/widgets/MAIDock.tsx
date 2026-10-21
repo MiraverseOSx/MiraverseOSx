@@ -106,7 +106,7 @@ export default function MAIDock() {
   };
 
   return (
-    <div className="relative z-40 font-sans">
+    <div className="mai-dock relative z-40 font-sans">
       {/* Expanded MAI Floating Panel */}
       <AnimatePresence>
         {isOpen && (
@@ -114,7 +114,7 @@ export default function MAIDock() {
             initial={{ opacity: 0, y: 10, scale: 0.96 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 10, scale: 0.96 }}
-            className={`absolute bottom-14 right-0 w-96 rounded-2xl border p-4 shadow-2xl select-none text-white ${
+            className={`mai-panel absolute bottom-14 right-0 w-96 rounded-2xl border p-4 shadow-2xl select-none text-white ${
               isCorrupted
                 ? 'border-pink-500 bg-slate-950 text-pink-100 shadow-[0_0_30px_rgba(236,72,153,0.3)]'
                 : 'border-purple-600 bg-slate-900 text-purple-100 shadow-2xl'
@@ -212,11 +212,13 @@ export default function MAIDock() {
 
       {/* Taskbar Toggle Button */}
       <button
+        aria-label="MAI"
+        aria-expanded={isOpen}
         onClick={() => {
           soundEngine.playClick();
           setIsOpen((prev) => !prev);
         }}
-        className={`flex h-8 items-center gap-1.5 rounded-none border px-2.5 text-xs font-semibold transition ${
+        className={`mai-toggle flex h-8 items-center gap-1.5 rounded-none border px-2.5 text-xs font-semibold transition ${
           isCorrupted
             ? 'border-pink-500/70 bg-black text-pink-300 animate-pulse shadow-[0_0_15px_rgba(236,72,153,0.4)]'
             : isOpen
@@ -226,7 +228,7 @@ export default function MAIDock() {
         title="Open MAI Civic Assistant & Help Desk"
       >
         <Bot size={14} className={isCorrupted ? 'text-pink-400' : ''} />
-        <span>MAI</span>
+        <span className="mai-label">MAI</span>
         {isCorrupted && <span className="h-1.5 w-1.5 rounded-full bg-pink-400 animate-ping" />}
       </button>
     </div>

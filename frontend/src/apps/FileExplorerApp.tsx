@@ -47,13 +47,15 @@ export default function FileExplorerApp() {
   const [viewMode, setViewMode] = useState('grid'); // 'grid' | 'list'
   const recordFileInspection = useOSStore((s) => s.recordFileInspection);
   const journal = useOSStore(state => state.gameplay.player.assignmentJournal);
+  const savedWebFiles = useOSStore(state => state.versenetContent.savedFiles);
+  const webFiles = Object.values(savedWebFiles);
   const assignmentFiles = Object.values(journal?.files || {}) as any[];
-  const directories = ['/root', '/documents', '/spells', '/diagnostics', '/system', '/assignments', ...new Set(assignmentFiles.map(file => file.dir))];
+  const directories = ['/root', '/documents', '/spells', '/diagnostics', '/system', '/assignments', ...new Set(assignmentFiles.map(file => file.dir)), ...(webFiles.length ? ['/downloads/versenet', ...new Set(webFiles.filter(file => file.type !== 'folder').map(file => file.dir))] : [])];
   useEffect(() => {
     if (journal?.fileDirectory) { setActiveDirectory(journal.fileDirectory); setSelectedFile(null); }
   }, [journal?.fileRequest]);
 
-  const filteredFiles = [...FILES_DATA, ...assignmentFiles].filter((file) => {
+  const filteredFiles = [...FILES_DATA, ...assignmentFiles, ...webFiles].filter((file) => {
     const matchesDir = file.dir === activeDirectory || (activeDirectory === '/assignments' && file.dir.startsWith('/assignments/'));
     const matchesSearch = !searchQuery.trim() || 
       file.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -72,6 +74,11 @@ export default function FileExplorerApp() {
 
   const executeFile = (file) => {
     if (!file) return;
+    if (file.webUrl && file.type === 'folder') {
+      setActiveDirectory(`/downloads/versenet/${file.id.slice(4).split(':')[0]}`);
+      setSelectedFile(null);
+      return;
+    }
     if (file.mockKey) {
       recordFileInspection(file.mockKey);
     }
@@ -84,8 +91,8 @@ export default function FileExplorerApp() {
       extension: '.' + file.type,
       category: file.type === 'sys' ? 'System' : 'Document',
       meta: {
-        classification: file.assignmentId ? 'PERSONAL ASSIGNMENT RECORD' : 'RESTRICTED OS COMPONENT',
-        author: file.assignmentId ? 'WORKNET DISPATCH' : 'SYSTEM DAEMON',
+        classification: file.webUrl ? 'PUBLIC WEB DOCUMENT' : file.assignmentId ? 'PERSONAL ASSIGNMENT RECORD' : 'RESTRICTED OS COMPONENT',
+        author: file.publisher || (file.assignmentId ? 'WORKNET DISPATCH' : 'SYSTEM DAEMON'),
         timestamp: 'WINTER',
         fileSize: file.size
       },
@@ -112,6 +119,7 @@ export default function FileExplorerApp() {
       case 'osform': return <FileText size={16} className="text-amber-700" />;
       case 'txt':
       case 'doc': return <FileText size={16} className="text-indigo-700" />;
+      case 'folder': return <Folder size={16} className="text-violet-700" />;
       case 'log': return <FileText size={16} className="text-amber-800" />;
       case 'map': return <Map size={16} className="text-amber-700" />;
       case 'node':
@@ -222,6 +230,9 @@ export default function FileExplorerApp() {
                 return (
                   <div
                     key={file.id}
+                    role="button"
+                    tabIndex={0}
+                    onKeyDown={event => { if (event.key === 'Enter') { event.preventDefault(); executeFile(file); } else if (event.key === ' ') { event.preventDefault(); handleFileSelect(file); } }}
                     onClick={() => handleFileSelect(file)}
                     onDoubleClick={() => handleFileDoubleClick(file)}
                     className={`file-grid-card ${
@@ -315,6 +326,12 @@ export default function FileExplorerApp() {
                 Inspect / View File <ExternalLink size={13} />
               </Button>
               {selectedFile.assignmentId && <Button size="sm" variant="ghost" onClick={() => useOSStore.getState().openAssignment(selectedFile.assignmentId)}>Continue in WorkNet</Button>}
+              {selectedFile.webUrl && <Button size="sm" variant="ghost" onClick={() => {
+                const store = useOSStore.getState();
+                store.setBrowserUrl(selectedFile.webUrl);
+                if (store.windows.some(win => win.id === 'browser')) store.focusWindow('browser');
+                else store.toggleApp({ id: 'browser', title: 'Web Terminal', contentKey: 'browser' });
+              }}>Open source in Versenet</Button>}
             </div>
           )}
         </div>

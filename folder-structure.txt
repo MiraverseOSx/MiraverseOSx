@@ -13,13 +13,7 @@ utils
 styles
   apps
     MSNPortal.css
-    Modals.css
-    NoticeBoardApp.css
-    SpellForge.css
     PhoneWidget.css
-    CivicProfile.css
-    BrowserApp.css
-    CommsApp.css
     FileExplorer.css
     Desktop.css
 games

@@ -105,17 +105,20 @@ export function PhoneAppButton({
   badge,
   onClick,
   danger = false,
+  color,
 }: {
   icon: LucideIcon;
   label: string;
   badge?: number;
   onClick: () => void;
   danger?: boolean;
+  color?: "blue" | "jade" | "violet" | "sand" | "slate" | "rose";
 }) {
   return (
     <button
       type="button"
       className={`phone-app ${danger ? "phone-app--danger" : ""}`}
+      data-phone-color={color}
       onClick={onClick}
       aria-label={`Open ${label}`}
     >

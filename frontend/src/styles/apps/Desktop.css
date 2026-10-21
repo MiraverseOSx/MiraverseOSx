@@ -55,25 +55,10 @@
 
 .desktop-search-button { position: absolute; right: 36px; bottom: 120px; display: flex; align-items: center; gap: 10px; background: transparent; border: 0; color: #c5bfd5; font-size: 10px; padding: 8px; }
 .desktop-search-button:hover { color: white; }
-.desktop-phone { position: absolute; bottom: 96px; right: 24px; z-index: 9001; width: min(360px, calc(100% - 32px)); height: min(680px, calc(100% - 124px)); }
+.desktop-phone { position: absolute; bottom: 96px; right: 24px; z-index: 9001; width: min(380px, calc(100% - 32px)); height: min(720px, calc(100% - 124px)); }
 .shell-icon-button { border: 0; background: transparent; color: #758099; display: grid; place-items: center; width: 34px; height: 34px; border-radius: 10px; flex-shrink: 0; transition: background .18s, color .18s; }
 .shell-icon-button:hover { background: #e8e7f1; color: #463464; }
-.desktop-dock { position: absolute; bottom: 21px; left: 50%; transform: translateX(-50%); width: min(880px, calc(100% - 64px)); max-width: calc(100% - 32px); z-index: 9000; display: grid; grid-template-columns: minmax(0, 1fr) 1px minmax(0, auto) 1px minmax(0, 1fr); align-items: center; gap: 18px; padding: 12px 18px; border: 1px solid #fff9; border-radius: 20px; background: #f8f7f2ed; backdrop-filter: blur(24px); box-shadow: 0 12px 40px #070f2f38, inset 0 1px 0 #fff; color: var(--shell-ink); }
-.dock-library { justify-self: start; height: 44px; padding: 0 14px; background: #e8e0ef; border: 1px solid #d9cbe5; color: #63517c; display: flex; align-items: center; gap: 9px; border-radius: 12px; font-size: 12px; font-weight: 650; flex-shrink: 0; transition: background .2s; }
-.dock-library:hover { background: #ded2e9; }
-.dock-divider { height: 25px; width: 1px; background: #dcdae4; flex-shrink: 0; margin: 0 3px; }
-.dock-apps, .dock-utilities { display: flex; align-items: center; gap: 4px; min-width: 0; }
-.dock-apps { justify-content: center; overflow-x: auto; scrollbar-width: thin; padding: 3px 0; }
-.dock-app { position: relative; width: 48px; height: 44px; border: 1px solid transparent; background: transparent; display: grid; place-items: center; border-radius: 11px; flex-shrink: 0; transition: background .18s, transform .18s; }
-.dock-app:hover { background: #e9e6ed; transform: translateY(-2px); }
-.dock-app.is-active { background: #e8e7f0; border-color: #dad5e7; }
-.dock-running-dot { position: absolute; bottom: 1px; width: 3px; height: 3px; border-radius: 50%; background: #a8a4b9; }
-.dock-running-dot.is-active { background: #8c74b5; width: 8px; border-radius: 3px; }
-.dock-tooltip { display: none; }
-.dock-utilities { justify-self: end; flex-shrink: 0; }
-.dock-power:hover { background: #f4dfe5; color: #a54b65; }
 /* Match the existing assistant toggle to the shell without changing its panel. */
-.dock-utilities > div > button { border-radius: 10px; border-color: #ddd5e8; background: #f0ebf6; color: #79648e; height: 34px; }
 
 /* Native dialog supplies modal stacking, focus containment, and focus return. */
 .app-drawer { --shell-ink: #243253; --shell-muted: #7e86a3; --shell-line: #e6e7f0; position: fixed; inset: 0; margin: auto; padding: 0; width: min(1130px, calc(100vw - 64px)); max-width: none; height: min(714px, calc(100dvh - 88px)); max-height: none; border: 1px solid #ffffffd9; border-radius: 24px; background: #fcfbff; color: var(--shell-ink); box-shadow: 0 30px 110px #070e2f5e; font-family: var(--font-ui); overflow: hidden; }
@@ -187,16 +172,7 @@
   .desktop-welcome h1 { font-size: clamp(27px, 5.5vw, 36px); }
   .desktop-welcome-description { font-size: 11px; }
 
-  .desktop-dock { display: flex; width: calc(100vw - 20px); bottom: 20px; padding: 8px; gap: 4px; border-radius: 17px; max-width: calc(100vw - 20px); }
-  .dock-library { padding: 0 10px; height: 38px; }
-  .dock-library span { display: none; }
-  .dock-app { width: 35px; height: 38px; }
-  .dock-apps { flex: 1; justify-content: safe center; }
-  .dock-utilities { gap: 1px; }
-  .dock-utilities .shell-icon-button { width: 29px; }
-  .dock-divider { margin: 0 2px; }
-  .dock-utilities > div > button { padding: 0 7px; }
-  .desktop-phone { right: 10px; bottom: 90px; width: min(360px, calc(100vw - 20px)); height: min(680px, calc(100dvh - 114px)); }
+  .desktop-phone { right: 10px; bottom: 90px; width: min(380px, calc(100vw - 20px)); height: min(720px, calc(100dvh - 114px)); }
   .app-drawer { width: calc(100vw - 24px); height: calc(100dvh - 32px); border-radius: 19px; }
   .drawer-header { padding: 18px 19px; }
   .drawer-heading h1 { font-size: 22px; }
@@ -259,11 +235,6 @@
 .desktop-welcome-description { color: #c3c2d4; font-size: 13px; line-height: 1.8; margin-bottom: 27px; }
 
 .desktop-search-button { bottom: 113px; right: 45px; color: #d2c9df; }
-.desktop-dock { background: linear-gradient(125deg, #f8f6f2e8, #f0eaf5e8); border-color: #ffffffb3; box-shadow: 0 12px 44px #080c253b, inset 0 1px 0 #fff; border-radius: 19px; padding: 10px 16px; }
-.dock-app { width: 47px; height: 47px; }
-.dock-app.is-active { background: #e4ddec; border-color: #cfc1dc; }
-.dock-app .app-glyph { pointer-events: none; }
-.dock-library { color: #614b7a; background: #e7ddf0; border-color: #d4c4e0; }
 .app-drawer { background: var(--mira-paper); border-color: #ffffffe0; }
 .drawer-header { justify-content: flex-start; padding: 22px 27px; background: linear-gradient(110deg, #fff, #f7f3fb); }
 .drawer-heading { text-align: left; gap: 13px; }
@@ -324,9 +295,6 @@
   .desktop-welcome-description { font-size: 12px; margin-bottom: 23px; }
 
   .desktop-search-button { display: none; }
-  .desktop-dock { padding: 8px; }
-  .dock-app { width: 35px; height: 39px; }
-  .dock-app .app-glyph { width: 29px; height: 29px; }
   .drawer-header { padding: 16px 18px; }
   .drawer-heading h1 { font-size: 25px; }
   .drawer-inspector .drawer-feature-icon { display: none; }
