@@ -133,7 +133,7 @@ export default function NoticeBoardApp() {
           <div>
             <div className="flex items-center gap-2 mb-1">
               <span className="text-[10px] font-ui uppercase bg-amber-100 text-amber-900 border border-amber-200 px-2 py-0.5 rounded font-bold">
-                CHRONICLE // CIVIC NOTICE BOARD & QUEST ENGINE
+                WORKNET // CIVIC NOTICES
               </span>
               <span className="text-[10px] font-ui text-slate-500">// Aureline Civic Grid</span>
             </div>

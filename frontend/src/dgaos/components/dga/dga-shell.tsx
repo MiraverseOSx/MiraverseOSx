@@ -64,6 +64,8 @@ import { DgaShiftSummaryModal } from './dga-shift-summary-modal';
 import { DgaOfflineModal } from './dga-offline-modal';
 import { DgaAgencyFeedDrawer } from './dga-agency-feed-drawer';
 import { DgaWorkWorkspace } from './work-management/dga-work-workspace';
+import DgaServiceWorkspace from './DgaServiceWorkspace';
+import { useOSStore } from '../../../store/useOSStore';
 
 export type DgaTab =
   | 'dashboard'
@@ -76,6 +78,7 @@ export type DgaTab =
   | 'intelligence'
   | 'government'
   | 'extranet'
+  | 'services'
   | 'world';
 
 interface DgaShellProps {
@@ -83,6 +86,7 @@ interface DgaShellProps {
 }
 
 export function DgaShell({ traceWorkbenchNode }: DgaShellProps) {
+  const workspaceRequest = useOSStore(s => s.workspaceRequests.dgaos);
   const [dgaState, setDgaState] = useState<DGAState | null>(null);
   const [activeTab, setActiveTab] = useState<DgaTab>('dashboard');
   const [activeMode, setActiveMode] = useState<'DGA_CORE' | 'TRACE'>('DGA_CORE');
@@ -137,6 +141,13 @@ export function DgaShell({ traceWorkbenchNode }: DgaShellProps) {
       clearInterval(simInterval);
     };
   }, []);
+
+  useEffect(() => {
+    if (!workspaceRequest || !dgaState || dgaState.isLocked) return;
+    if (workspaceRequest.section === 'trace') setActiveMode('TRACE');
+    else if (workspaceRequest.section === 'services') { setActiveMode('DGA_CORE'); setActiveTab('services'); }
+    useOSStore.getState().consumeWorkspaceRequest('dgaos', workspaceRequest.revision);
+  }, [workspaceRequest, dgaState?.isLocked]);
 
   if (!dgaState) {
     return (
@@ -487,6 +498,7 @@ export function DgaShell({ traceWorkbenchNode }: DgaShellProps) {
               />
             )}
 
+            {activeTab === 'services' && <DgaServiceWorkspace/>}
             {activeTab === 'extranet' && (
               <DgaExtranetBrowser
                 onOpenCase={handleSelectCase}

@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Diagnostics;
 using System.Net;
 using System.Net.Http;
 using System.Text;
@@ -37,6 +38,7 @@ namespace MiraverseOSx
         private static int _activePort = 5000;
         private static WorldSaveApi? _worldApi;
         private static readonly HttpClient _httpClient = new HttpClient();
+        private static readonly string _externalLaunchToken = Guid.NewGuid().ToString("N");
 
         [STAThread]
         static void Main(string[] args)
@@ -87,7 +89,7 @@ namespace MiraverseOSx
 
             // 5. Load app from local web server
             string localUrl = $"http://localhost:{_activePort}/index.html";
-            _mainWindow.Load(localUrl);
+            _mainWindow.Load($"{localUrl}?nativeLaunchToken={_externalLaunchToken}");
 
             _mainWindow.WaitForClose();
 
@@ -270,6 +272,19 @@ namespace MiraverseOSx
                 string action = jsonNode["action"]?.ToString() ?? "";
                 var payload = jsonNode["payload"]?.AsObject();
 
+                if (action == "open_external")
+                {
+                    var status = "rejected";
+                    var target = payload?["url"]?.ToString() ?? "";
+                    if (payload?["token"]?.ToString() == _externalLaunchToken && TryExternalLaunchTarget(target, out var launchTarget))
+                    {
+                        try { Process.Start(new ProcessStartInfo(launchTarget) { UseShellExecute = true }); status = "opened"; }
+                        catch { status = "failed"; }
+                    }
+                    _mainWindow?.SendWebMessage(JsonSerializer.Serialize(new { action = "open_external_ack", requestId = jsonNode["requestId"]?.ToString(), payload = new { status } }));
+                    return;
+                }
+
                 // Echo back native system acknowledgment
                 var ack = JsonSerializer.Serialize(new
                 {
@@ -283,6 +298,24 @@ namespace MiraverseOSx
             {
                 Console.WriteLine($"[IPC Error] {ex.Message}");
             }
+        }
+
+        internal static bool TryExternalLaunchTarget(string target, out string launchTarget)
+        {
+            launchTarget = "";
+            if (target.Length > 4096 || !Uri.TryCreate(target, UriKind.Absolute, out var uri) || !string.IsNullOrEmpty(uri.UserInfo)) return false;
+            if (uri.Scheme == "http" || uri.Scheme == "https")
+            {
+                var host = uri.Host.ToLowerInvariant();
+                if (host.EndsWith(".aure") || host.EndsWith(".mer") || host.EndsWith(".onion") || new[] { "versenet", "civinet", "questnotice", "royalhistory", "dga.gov", "cyacademy.edu", "records.orynvell.gov", "finance.oryn.gov", "mai.space" }.Contains(host)) return false;
+                launchTarget = uri.AbsoluteUri; return true;
+            }
+            // Explicit local HTML links only; never hand executable paths or network shares to the shell.
+            if (!uri.IsFile || uri.IsUnc || !string.IsNullOrEmpty(uri.Host) || uri.Query.Length > 0 || uri.Fragment.Length > 0) return false;
+            var extension = Path.GetExtension(uri.LocalPath);
+            if (!extension.Equals(".html", StringComparison.OrdinalIgnoreCase) && !extension.Equals(".htm", StringComparison.OrdinalIgnoreCase)) return false;
+            if (!File.Exists(uri.LocalPath)) return false;
+            launchTarget = uri.LocalPath; return true;
         }
     }
 }

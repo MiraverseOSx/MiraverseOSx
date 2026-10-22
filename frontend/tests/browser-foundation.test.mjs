@@ -39,7 +39,7 @@ test('back/forward restore titles and a new route drops only the forward branch'
   assert.equal(store.getState().browserState.tabs[0].title, 'WorkNet');
   actions.goBrowserForward(); assert.equal(store.getState().browserState.tabs[0].title, 'Faith Medical');
   actions.goBrowserBack(); actions.navigateBrowserTab('civinet.mer'); actions.goBrowserForward();
-  assert.equal(store.getState().browserState.tabs[0].title, 'CIVINET');
+  assert.equal(store.getState().browserState.tabs[0].title, 'Citizen Hub');
   actions.navigateBrowserTab('civinet.mer');
   assert.deepEqual(store.getState().browserState.historyMap[1].stack, [BROWSER_HOME, 'https://worknet.aure', 'https://civinet.mer']);
 });

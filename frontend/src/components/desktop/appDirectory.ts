@@ -37,21 +37,6 @@ export const PROTOCOLS: ProtocolItem[] = [
     border: 'border-purple-400'
   },
   {
-    id: 'traceForensics',
-    code: 'TRACE',
-    name: 'TRACE // Forensic Workstation',
-    label: 'TRACE // Forensic Workstation',
-    sector: 'DGAOS Investigations (EYES/SHIELD)',
-    icon: Fingerprint,
-    clearance: 'DGA Special Clearance',
-    aetherTrace: 'AT-0x0990',
-    flux: '33.8 MHz',
-    desc: 'Tactical forensic workstation: registry-linked subject analysis, evidence custody, case staging, and criminalistics.',
-    color: 'text-slate-900',
-    bg: 'bg-slate-100',
-    border: 'border-slate-400'
-  },
-  {
     id: 'meridionRegistry',
     code: 'AURA',
     name: 'AURA // Citizen Registry',
@@ -83,15 +68,15 @@ export const PROTOCOLS: ProtocolItem[] = [
   },
   {
     id: 'passport',
-    code: 'MIRROR',
-    name: 'MIRROR // Citizen Matrix',
-    label: 'MIRROR // Citizen Matrix',
-    sector: 'Aureline Civic Registry',
+    code: 'CIVIC',
+    name: 'Citizen Hub',
+    label: 'Citizen Hub',
+    sector: 'Personal civic services',
     icon: UserCheck,
     clearance: 'Level 1 Citizen',
     aetherTrace: 'AT-0x0114',
     flux: '18.4 MHz',
-    desc: 'Identity initialization, citizen record, bio-aura calibration, pronouns, wardrobe, and passport credentials.',
+    desc: 'Your personal profile, document history, civic services, residence, and progress. AURA retains the official identity record.',
     color: 'text-amber-800',
     bg: 'bg-amber-50',
     border: 'border-amber-300'
@@ -152,19 +137,6 @@ export const PROTOCOLS: ProtocolItem[] = [
     border: 'border-amber-400'
   },
   {
-    id: 'board',
-    code: 'CHRONICLE',
-    name: 'CHRONICLE // Notice Board',
-    sector: 'Meridion Notice Stream',
-    clearance: 'Civic Standard',
-    aetherTrace: 'AT-0x0619',
-    flux: '19.8 MHz',
-    desc: 'Public municipal bulletin board, active quests, community errands, adventure dossiers & lore codices.',
-    color: 'text-teal-800',
-    bg: 'bg-teal-50',
-    border: 'border-teal-300'
-  },
-  {
     id: 'browser',
     code: 'VERSENET',
     name: 'VERSENET // Web Terminal',
@@ -172,7 +144,7 @@ export const PROTOCOLS: ProtocolItem[] = [
     clearance: 'Unrestricted Gateway',
     aetherTrace: 'AT-0x0899',
     flux: '48.2 MHz',
-    desc: 'Public quantum web gateway: CIVINET, QUESTNOTICE, Faith Medical Intranet, DGA & Royal Archives.',
+    desc: 'Browse VerseNet, open Citizen Hub services and WORKNET opportunities, or access the external Service Directory.',
     color: 'text-sky-800',
     bg: 'bg-sky-50',
     border: 'border-sky-300'
@@ -193,12 +165,12 @@ export const PROTOCOLS: ProtocolItem[] = [
   {
     id: 'pulse',
     code: 'PULSE',
-    name: 'PULSE // Faction Telemetry',
+    name: 'PULSE // Pulse',
     sector: 'Aureline Broadcast Array',
     clearance: 'Observer Clearance',
     aetherTrace: 'AT-0x0732',
     flux: '22.0 MHz',
-    desc: 'Faction matrix tracker, regional announcements, influence vectors, and public broadcast stream.',
+    desc: 'Retained workspace awaiting a separate scope decision. Social profiles and posts belong to mai.space.',
     color: 'text-purple-800',
     bg: 'bg-purple-50',
     border: 'border-purple-300'
@@ -243,19 +215,6 @@ export const PROTOCOLS: ProtocolItem[] = [
     border: 'border-amber-300'
   },
   {
-    id: 'spellforge',
-    code: 'NEXLINK',
-    name: 'NEXLINK // SpellForge Matrix',
-    sector: 'Cycademy Arcane Lab',
-    clearance: 'Arcane Weaver',
-    aetherTrace: 'AT-0x0921',
-    flux: '36.4 MHz',
-    desc: 'Elemental protocol synthesis workbench, reality stabilization algorithms, and firewall rune weaving.',
-    color: 'text-purple-900',
-    bg: 'bg-purple-100/70',
-    border: 'border-purple-300'
-  },
-  {
     id: 'campus',
     code: 'CAMPUS',
     name: 'CAMPUS // Cycademy Network',
@@ -271,14 +230,15 @@ export const PROTOCOLS: ProtocolItem[] = [
 ];
 
 const GROUPS: Record<string, string> = {
-  dgaos: 'Agency', traceForensics: 'Agency', jobs: 'Agency',
-  meridionRegistry: 'Civic', documentStudio: 'Civic', board: 'Civic', campus: 'Civic',
+  dgaos: 'Agency', jobs: 'Agency',
+  meridionRegistry: 'Civic', documentStudio: 'Civic', campus: 'Civic',
   passport: 'Personal', housing: 'Personal', finance: 'Personal', vitals: 'Personal',
-  browser: 'Connect', comms: 'Connect', mail: 'Connect', pulse: 'Connect',
-  files: 'Tools', process: 'Tools', lore: 'Tools', spellforge: 'Tools', terminal: 'Tools', settings: 'Tools',
+  browser: 'Connect', comms: 'Connect', mail: 'Connect', maispace: 'Connect', pulse: 'Tools',
+  files: 'Tools', process: 'Tools', lore: 'Tools', terminal: 'Tools', settings: 'Tools',
 };
 
 const additionalApps: ProtocolItem[] = [
+  { id: 'maispace', code: 'mai.space', name: 'mai.space // Social Network', sector: 'Personal social network', icon: MessageSquare, clearance: 'Citizen Access', aetherTrace: 'AT-0x0733', flux: '22.0 MHz', desc: 'Your existing social profile, posts, friends, and community interactions.', color: 'text-rose-800', bg: 'bg-rose-50', border: 'border-rose-300' },
   { id: 'mail', code: 'AUREMAIL', name: 'AUREMAIL // Mailbox', sector: 'Aureline Postal Network', icon: Mail, clearance: 'Citizen Access', aetherTrace: 'AT-0x0413', flux: '22.0 MHz', desc: 'Your personal inbox for citizen correspondence, official notices, and new opportunities.', color: 'text-sky-800', bg: 'bg-sky-50', border: 'border-sky-300' },
   { id: 'terminal', code: 'TERMINAL', name: 'TERMINAL // System Console', sector: 'Local System Tools', icon: Terminal, clearance: 'Local Console', aetherTrace: 'AT-0x0002', flux: '14.2 MHz', desc: 'Explore the local system through the command console and SQL workspace.', color: 'text-slate-800', bg: 'bg-slate-100', border: 'border-slate-300' },
   { id: 'settings', code: 'SETTINGS', name: 'SETTINGS // Preferences', sector: 'System Preferences', icon: Settings, clearance: 'Citizen Access', aetherTrace: 'AT-0x0003', flux: '14.2 MHz', desc: 'Make your workspace your own. Manage your system preferences and audio settings.', color: 'text-indigo-800', bg: 'bg-indigo-50', border: 'border-indigo-300' },
@@ -291,7 +251,7 @@ const APP_ORDER = DESKTOP_APP_IDS;
 export const APPS_DIRECTORY = [...PROTOCOLS, ...additionalApps].map((app) => ({
   ...app,
   icon: app.icon || FALLBACK_ICONS[app.id] || Grid2X2,
-  label: app.name.split(' // ')[1] || app.code,
+  label: app.name.split(' // ')[1] || app.name,
   category: GROUPS[app.id] || 'Tools',
 })).sort((a, b) => APP_ORDER.indexOf(a.id) - APP_ORDER.indexOf(b.id));
 

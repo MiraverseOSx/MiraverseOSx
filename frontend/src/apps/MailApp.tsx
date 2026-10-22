@@ -56,6 +56,8 @@ import {
 import DocumentModal from '../components/widgets/DocumentModal';
 import { MOCK_DOCUMENTS } from '../data/mockDocuments';
 import { useToastStore } from '../store/useToastStore';
+import CommunicationsAccessPanel from './CommunicationsAccessPanel';
+import { senderAccess } from '../integration/communicationsAccess';
 
 const VAULT_ATTACHABLE_FILES: EmailAttachment[] = [
   {
@@ -91,6 +93,8 @@ const VAULT_ATTACHABLE_FILES: EmailAttachment[] = [
 export default function MailApp() { return <MailProvider><MailWorkspace /></MailProvider>; }
 
 function MailWorkspace() {
+  const [accessOpen, setAccessOpen] = useState(false);
+  const communicationsPlayer = useOSStore(s => s.gameplay.player);
   const organization = useMailState(s => s.mailOrganization);
   const organizeMail = useMailState(s => s.organizeMail);
   const processMailRules = useMailState(s => s.processMailRules);
@@ -154,6 +158,12 @@ function MailWorkspace() {
 
   const setActiveAccountAddress = useMailState((s) => s.setActiveAccountAddress);
   const setSelectedSenderAddress = useMailState((s) => s.setSelectedSenderAddress);
+  useEffect(() => {
+    const selected = playerAccounts.find(account => account.address === selectedSenderAddress);
+    if (senderAccess(communicationsPlayer, selected)) return;
+    const available = playerAccounts.find(account => senderAccess(communicationsPlayer, account));
+    if (available) setSelectedSenderAddress(available.address);
+  }, [playerAccounts, communicationsPlayer, selectedSenderAddress, setSelectedSenderAddress]);
   const toggleStarEmail = useMailState((s) => s.toggleStarEmail);
   const bulkUpdateEmails = useMailState((s) => s.bulkUpdateEmails);
   const setSortOrder = useMailState((s) => s.setSortOrder);
@@ -661,6 +671,7 @@ function MailWorkspace() {
 
   return (
     <AppShell className={`auremail-client mail-density-${organization.settings.density} mail-view-${mobileView}`}>
+      {accessOpen && <CommunicationsAccessPanel onClose={() => setAccessOpen(false)}/>}
       <AppToolbar
         icon={Mail}
         title="AureMail"
@@ -704,12 +715,12 @@ function MailWorkspace() {
         }
       />
 
-      <nav className="mail-mobile-nav" aria-label="Mobile mailbox navigation"><select aria-label="Mailbox folder" value={activeFolder} onChange={event => setActiveFolder(event.target.value)}>{['inbox', 'starred', 'official', 'sent', 'drafts', 'outbox', 'archive', 'spam', 'snoozed', 'trash', 'directory', ...organization.folders.map(name => `folder:${name}`), ...organization.labels.map(name => `label:${name}`)].map(name => <option key={name} value={name}>{name.replace(/^(folder|label):/, '')}</option>)}</select><button onClick={() => setIsComposing(true)}>Compose</button><button onClick={() => setToolsView('contacts')}>Contacts</button><button onClick={() => setToolsView('settings')}>Settings</button></nav>
+      <nav className="mail-mobile-nav" aria-label="Mobile mailbox navigation"><select aria-label="Mailbox folder" value={activeFolder} onChange={event => setActiveFolder(event.target.value)}>{['inbox', 'starred', 'official', 'sent', 'drafts', 'outbox', 'archive', 'spam', 'snoozed', 'trash', 'directory', ...organization.folders.map(name => `folder:${name}`), ...organization.labels.map(name => `label:${name}`)].map(name => <option key={name} value={name}>{name.replace(/^(folder|label):/, '')}</option>)}</select><button onClick={() => setIsComposing(true)}>Compose</button><button onClick={() => setToolsView('contacts')}>Contacts</button><button onClick={() => setToolsView('settings')}>Settings</button><button onClick={() => setAccessOpen(true)}>Accounts & memberships</button></nav>
       {/* ── MAIN MAILBOX LAYOUT (3 PANES) ── */}
       <div className="mail-layout flex min-h-0 flex-1 overflow-hidden">
         {/* PANE 1: LEFT FOLDERS, ACCOUNTS & DIRECTORY */}
         <AppSidebar className="mail-folders w-[22%] min-w-48 max-w-56 shrink-0 p-3 space-y-4 overflow-y-auto" label="Mailbox folders and accounts">
-          <div className="mail-sidebar-tools"><button onClick={() => setToolsView('contacts')}>Personal contacts</button><button onClick={() => setToolsView('settings')}>Settings & rules</button></div>
+          <div className="mail-sidebar-tools"><button onClick={() => setToolsView('contacts')}>Personal contacts</button><button onClick={() => setToolsView('settings')}>Settings & rules</button><button onClick={() => setAccessOpen(true)}>Accounts & memberships</button></div>
           <div className="space-y-1.5">
             <button
               onClick={() => {
@@ -842,7 +853,7 @@ function MailWorkspace() {
                     {acc.accountType.slice(0, 4)}
                   </span>
                 </div>
-                <div className="truncate text-[10px] text-slate-400">{acc.roleLabel}</div>
+                <div className="truncate text-[10px] text-slate-400">{acc.roleLabel} · {senderAccess(communicationsPlayer, acc) ? 'Can send' : 'History only'}</div>
               </button>
             ))}
           </div>
@@ -1134,7 +1145,7 @@ function MailWorkspace() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
                 <div>
                   <label className="block text-[10px] font-bold uppercase text-slate-500 mb-1">
-                    From (Verified Account)
+                    From account
                   </label>
                   <select
                     aria-label="Sender account"
@@ -1143,8 +1154,8 @@ function MailWorkspace() {
                     className="w-full rounded-xl border border-slate-300 bg-white px-2.5 py-1.5 text-xs font-mono text-slate-800"
                   >
                     {playerAccounts.map((acc) => (
-                      <option key={acc.id} value={acc.address}>
-                        {acc.address} — {acc.label} ({acc.maid})
+                      <option key={acc.id} value={acc.address} disabled={!senderAccess(communicationsPlayer, acc)}>
+                        {acc.address} — {senderAccess(communicationsPlayer, acc) ? acc.label : 'History only'}
                       </option>
                     ))}
                   </select>
@@ -1598,8 +1609,8 @@ function MailWorkspace() {
                       className="rounded-lg border border-slate-300 bg-white px-2 py-1 font-mono text-[11px] text-[#1d2650]"
                     >
                       {playerAccounts.map((acc) => (
-                        <option key={acc.id} value={acc.address}>
-                          {acc.address} ({acc.accountType})
+                        <option key={acc.id} value={acc.address} disabled={!senderAccess(communicationsPlayer, acc)}>
+                          {acc.address} ({senderAccess(communicationsPlayer, acc) ? acc.accountType : 'History only'})
                         </option>
                       ))}
                     </select>

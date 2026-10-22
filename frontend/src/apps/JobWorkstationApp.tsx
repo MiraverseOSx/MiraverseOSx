@@ -8,6 +8,7 @@ import { evaluateWorknetObjective, evaluateCareerPromotion } from '../gameplay/W
 import { WORK_DEFINITIONS } from '../gameplay/ActivityEngine';
 import WorknetOrderPanel from './WorknetOrderPanel';
 import AssignmentBoard from './AssignmentBoard';
+import NoticeBoardApp from './NoticeBoardApp';
 import { getOpportunity } from '../gameplay/AssignmentFlow';
 import type { CanonicalPerson } from '../services/maidIdentityService';
 import {
@@ -56,6 +57,14 @@ export default function JobWorkstationApp() {
   const [actionFeedback, setActionFeedback] = useState<string | null>(null);
   const [toolsOpen, setToolsOpen] = useState(false);
   const [discovering, setDiscovering] = useState(true);
+  const [showNotices, setShowNotices] = useState(false);
+  const workspaceRequest = useOSStore(s => s.workspaceRequests.jobs);
+  useEffect(() => {
+    if (!workspaceRequest) return;
+    setShowNotices(workspaceRequest.section === 'notices');
+    if (workspaceRequest.section === 'civic-jobs') { setActiveStation('questnotice'); setDiscovering(false); setToolsOpen(false); }
+    useOSStore.getState().consumeWorkspaceRequest('jobs', workspaceRequest.revision);
+  }, [workspaceRequest]);
   const selectedOpportunity = useOSStore(state => state.gameplay.player.assignmentJournal?.selectedId);
   const selectionVersion = useOSStore(state => state.gameplay.player.assignmentJournal?.selectionVersion);
   function openMission(id: string) {
@@ -67,10 +76,12 @@ export default function JobWorkstationApp() {
     setDgaBranchFilter('All');
     setSelectedMissionId(id);
     setDiscovering(false);
+    setShowNotices(false);
     setToolsOpen(false);
   }
   useEffect(() => {
-    if (!selectedOpportunity) return;
+    // An explicit section request takes precedence over the saved assignment selection.
+    if (!selectedOpportunity || workspaceRequest) return;
     if (getOpportunity(selectedOpportunity)?.unlock) setDiscovering(true);
     else openMission(selectedOpportunity);
   }, [selectedOpportunity, selectionVersion]);
@@ -232,12 +243,13 @@ export default function JobWorkstationApp() {
   return (
     <div className="worknet-workspace" data-tools-open={toolsOpen} onKeyDown={event => { if (event.key === 'Escape') setToolsOpen(false); }}>
       <header className="worknet-heading">
-        <div><span className="workspace-kicker">Federal career network</span><h1>WorkNet<span>/ {discovering ? 'Opportunities & stories' : currentStationInfo.org}</span></h1></div>
-        <button className="worknet-discover-toggle" onClick={() => { setDiscovering(value => !value); setToolsOpen(false); }}>{discovering ? 'Workplace desks' : 'Discover opportunities'}</button>
-        {!discovering && <button className="worknet-tools-toggle" aria-expanded={toolsOpen} aria-controls="worknet-record-tools" onClick={() => setToolsOpen(open => !open)}>{toolsOpen ? 'Close tools' : 'Career & records'}</button>}
+        <div><span className="workspace-kicker">Federal career network</span><h1>WorkNet<span>/ {showNotices ? 'Civic notices' : discovering ? 'Opportunities & stories' : currentStationInfo.org}</span></h1></div>
+        <button className="worknet-discover-toggle" onClick={() => { setShowNotices(false); setDiscovering(showNotices ? true : !discovering); setToolsOpen(false); }}>{showNotices || !discovering ? 'Discover opportunities' : 'Workplace desks'}</button>
+        <button className="worknet-discover-toggle" aria-pressed={showNotices} onClick={() => { setShowNotices(true); setToolsOpen(false); }}>Civic notices</button>
+        {!discovering && !showNotices && <button className="worknet-tools-toggle" aria-expanded={toolsOpen} aria-controls="worknet-record-tools" onClick={() => setToolsOpen(open => !open)}>{toolsOpen ? 'Close tools' : 'Career & records'}</button>}
         <div className="worknet-balances"><span><small>Credits</small>{(player?.credits ?? 500).toLocaleString()} <i>₢</i></span><span><small>Bits</small>{(player?.bits ?? 25).toLocaleString()} <i>◈</i></span></div>
       </header>
-      {discovering ? <AssignmentBoard onOpenMission={openMission} /> : <div className="worknet-layout">
+      {showNotices ? <div className="consolidated-body"><NoticeBoardApp/></div> : discovering ? <AssignmentBoard onOpenMission={openMission} /> : <div className="worknet-layout">
         <aside className="worknet-institutions" aria-label="Workplace institutions">
           <div className="workspace-kicker">Your workplaces</div>
           <nav className="worknet-station-list" aria-label="Choose an institution">

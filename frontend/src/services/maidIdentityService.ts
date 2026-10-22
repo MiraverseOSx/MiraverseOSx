@@ -608,9 +608,13 @@ export class MaidIdentityService {
     return { migratedCount, pendingCount, alreadyMigratedCount, backupCreated };
   }
 
-  /**
-   * Retrieves all canonical persons in the registry, ensuring verified multi-account email associations.
-   */
+  /** Reads existing identities without creating or migrating records. */
+  public static async readExistingPersons(): Promise<CanonicalPerson[]> {
+    // Citizen-facing views must not seed, register, or migrate a population on lookup.
+    return await loadStoredCanonicalList();
+  }
+
+  /** Retrieves the registry population with initialization and email associations. */
   public static async getAllPersons(): Promise<CanonicalPerson[]> {
     let list = await loadStoredCanonicalList();
     if (list.length === 0) {

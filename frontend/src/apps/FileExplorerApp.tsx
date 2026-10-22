@@ -1,7 +1,7 @@
 // src/apps/FileExplorerApp.jsx
 import React, { useEffect, useState } from 'react';
 import {
-  Folder, FileText, Map, ShieldAlert, Activity, Radio, Zap, ChevronRight, Cpu, MapPin, Search, LayoutGrid, List, Paperclip, ExternalLink
+  Folder, FileText, Map, ShieldAlert, Activity, Radio, Zap, ChevronRight, Cpu, MapPin, Search, LayoutGrid, List, Paperclip, ExternalLink, Home, HardDrive
 } from 'lucide-react';
 import Button from '../components/ui/button';
 import DocumentModal from '../components/widgets/DocumentModal';
@@ -45,7 +45,7 @@ export default function FileExplorerApp() {
   const [selectedFile, setSelectedFile] = useState(null);
   const [selectedDoc, setSelectedDoc] = useState(null);
   const [activeModal, setActiveModal] = useState(null); // 'document' | 'sig'
-  const [activeDirectory, setActiveDirectory] = useState('/root');
+  const [activeDirectory, setActiveDirectory] = useState('/home');
   const [searchQuery, setSearchQuery] = useState('');
   const [viewMode, setViewMode] = useState('grid'); // 'grid' | 'list'
   const recordFileInspection = useOSStore((s) => s.recordFileInspection);
@@ -62,7 +62,7 @@ export default function FileExplorerApp() {
   }, [journal?.fileRequest]);
 
   const filteredFiles = [...FILES_DATA, ...assignmentFiles, ...webFiles, ...mailFiles].filter((file) => {
-    const matchesDir = file.dir === activeDirectory || (activeDirectory === '/assignments' && file.dir.startsWith('/assignments/'));
+    const matchesDir = activeDirectory === '/home' || file.dir === activeDirectory || (activeDirectory === '/assignments' && file.dir.startsWith('/assignments/'));
     const matchesSearch = !searchQuery.trim() || 
       file.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       file.desc.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -73,6 +73,8 @@ export default function FileExplorerApp() {
   const handleFileSelect = (file) => {
     setSelectedFile(file);
   };
+  const goToDirectory = (dir: string) => { setActiveDirectory(dir); setSelectedFile(null); setSearchQuery(''); };
+  const directoryName = (dir: string) => dir === '/home' ? 'Home' : dir === '/root' ? 'My files' : (dir.split('/').filter(Boolean).pop() || 'Files').replace(/^./, letter => letter.toUpperCase());
 
   const handleFileDoubleClick = (file) => {
     executeFile(file);
@@ -152,14 +154,14 @@ export default function FileExplorerApp() {
   return (
     <div className="file-explorer-container font-sans select-none overflow-hidden text-xs">
       {/* Top Address & Action Bar */}
-      <div className="flex h-12 shrink-0 items-center justify-between border-b border-slate-200 bg-white px-4">
+      <div className="files-toolbar flex h-12 shrink-0 items-center justify-between border-b border-slate-200 bg-white px-4">
         {/* Left: Breadcrumbs */}
-        <div className="flex items-center gap-2 font-mono text-xs text-slate-700">
-          <Folder size={16} className="text-amber-700" />
-          <span className="font-bold">miraverse://storage</span>
+        <div className="files-breadcrumb flex items-center gap-2 text-xs text-slate-700">
+          <button aria-label="Go to file home" title="Home" onClick={() => goToDirectory('/home')}><Home size={16}/></button>
+          <span>My workspace</span>
           <ChevronRight size={13} className="text-slate-400" />
           <span className="text-indigo-950 font-bold bg-indigo-50 px-2 py-0.5 rounded border border-indigo-200">
-            {activeDirectory}
+            {directoryName(activeDirectory)}
           </span>
         </div>
 
@@ -169,6 +171,7 @@ export default function FileExplorerApp() {
             <Search size={14} className="absolute left-2.5 text-slate-400 pointer-events-none" />
             <input
               type="text"
+              aria-label="Search files"
               placeholder="Filter files..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
@@ -198,17 +201,17 @@ export default function FileExplorerApp() {
       </div>
 
       {/* Main Workspace */}
-      <div className="flex min-h-0 flex-1">
+      <div className="files-layout flex min-h-0 flex-1">
         {/* Left Directory Tree */}
-        <div className="w-[21%] min-w-40 max-w-48 shrink-0 border-r border-slate-200 bg-slate-50 p-3 space-y-1.5 font-mono text-[11px] overflow-y-auto">
-          <div className="text-[9px] font-bold text-slate-500 uppercase tracking-widest px-2 mb-2">Directories</div>
+        <nav aria-label="File directories" className="files-sidebar w-[21%] min-w-40 max-w-48 shrink-0 border-r border-slate-200 bg-slate-50 p-3 space-y-1.5 text-[11px] overflow-y-auto">
+          <button className="files-home-link" aria-current={activeDirectory === '/home' ? 'page' : undefined} onClick={() => goToDirectory('/home')}><Home size={16}/>Home</button>
+          <div className="files-sidebar-label">YOUR WORKSPACE</div>
           {directories.map((dir) => (
             <button
               key={dir}
-              onClick={() => {
-                setActiveDirectory(dir);
-                setSelectedFile(null);
-              }}
+              title={dir}
+              onClick={() => goToDirectory(dir)}
+              aria-current={activeDirectory === dir ? 'page' : undefined}
               className={`flex w-full items-center gap-2 rounded-lg px-2.5 py-2 transition text-left ${
                 activeDirectory === dir
                   ? 'bg-amber-100/80 text-amber-950 font-bold border border-amber-300 shadow-xs'
@@ -216,13 +219,17 @@ export default function FileExplorerApp() {
               }`}
             >
               <Folder size={14} className={activeDirectory === dir ? 'text-amber-700' : 'text-slate-400'} />
-              <span className="break-all">{dir.startsWith('/assignments/') ? dir.split('/').pop() : dir}</span>
+              <span className="break-all">{directoryName(dir)}</span>
             </button>
           ))}
-        </div>
+          <div className="files-device"><HardDrive size={19}/><div><strong>Miraverse storage</strong><small>Saved on your device</small></div></div>
+        </nav>
 
         {/* Center File Workspace */}
-        <div className="flex-1 p-4 overflow-auto space-y-3 bg-[#FAFBFD]">
+        <div className="files-canvas flex-1 p-4 overflow-auto space-y-3 bg-[#FAFBFD]">
+          <header className="files-page-heading"><span>YOUR PERSONAL VAULT</span><h1>{activeDirectory === '/home' ? 'A home for your files.' : directoryName(activeDirectory)}</h1><p>{activeDirectory === '/home' ? 'Notes, discoveries, and the things you keep along the way.' : `${activeDirectory} · ${filteredFiles.length} items`}</p></header>
+          {activeDirectory === '/home' && !searchQuery && <section className="files-quick-access" aria-label="Quick access folders"><h2>Quick access</h2><div>{['/root', '/documents', '/spells', '/diagnostics', '/assignments'].map((dir, index) => <button key={dir} data-folder-tone={index} onClick={() => goToDirectory(dir)}><span className="files-folder-art"><Folder size={38} strokeWidth={1.3}/></span><strong>{directoryName(dir)}</strong><small>{[...FILES_DATA, ...assignmentFiles, ...webFiles, ...mailFiles].filter(file => file.dir === dir || (dir === '/assignments' && file.dir.startsWith('/assignments/'))).length} items</small></button>)}</div></section>}
+          <div className="files-section-heading"><h2>{activeDirectory === '/home' ? 'Your collection' : 'Files'}</h2><span>{filteredFiles.length} items · {viewMode === 'grid' ? 'Grid view' : 'List view'}</span></div>
           {filteredFiles.length === 0 ? (
             <div className="flex flex-col items-center justify-center h-48 text-slate-400 font-mono text-xs">
               <Folder size={32} className="text-slate-300 mb-2" />
@@ -230,7 +237,7 @@ export default function FileExplorerApp() {
             </div>
           ) : viewMode === 'grid' ? (
             /* 1. Grid View Tiles */
-            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+            <div className="files-card-grid grid grid-cols-1 gap-3 sm:grid-cols-2">
               {filteredFiles.map((file) => {
                 const attCount = getAttachmentCount(file.mockKey);
                 return (
@@ -284,7 +291,7 @@ export default function FileExplorerApp() {
                     const attCount = getAttachmentCount(file.mockKey);
                     const isSelected = selectedFile?.id === file.id;
                     return (
-                      <tr
+                      <tr tabIndex={0} aria-label={`Open ${file.name}`} onKeyDown={event => { if (event.key === 'Enter') executeFile(file); }}
                         key={file.id}
                         onClick={() => handleFileSelect(file)}
                         onDoubleClick={() => handleFileDoubleClick(file)}

@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import SearchHome from './SearchHome';
 import { BROWSER_HOME, MAX_BROWSER_TABS, resolveBrowserInput } from './browserModel';
+import { externalWebUrl, SERVICE_DIRECTORY } from './externalWeb';
+import ExternalWebPage from './ExternalWebPage';
+import ServiceDirectory from './ServiceDirectory';
 import '../../styles/apps/versenet-browser.css';
 import WebContentPage from './WebContentPage';
 import UniversalSearch, { IndexedArchivePage } from './UniversalSearch';
@@ -16,11 +19,13 @@ import {
 import { MaiSpacePortal } from './MaiSpacePortal';
 import { useOSStore } from '../../store/useOSStore';
 import {
-    X, Plus, ChevronLeft, ChevronRight, RotateCw, Globe, Home, Star, History, Bookmark, Search
+    X, Plus, ChevronLeft, ChevronRight, RotateCw, Globe, Home, Star, History, Bookmark, Search, Grid2X2
 } from 'lucide-react';
 
-function ContentFrame({ url, openTab, navigateTab }: any) {
+function ContentFrame({ url, openTab, navigateTab, openService }: any) {
     if (!url) return <SearchHome navigateTab={navigateTab} openTab={openTab} />;
+    if (new URL(url).hostname === 'services.aure') return <ServiceDirectory navigateTab={openService}/>;
+    if (externalWebUrl(url)) return <ExternalWebPage url={url}/>;
     
     const stripped = url.replace(/^https?:\/\//, '');
     const domain = stripped.split('/')[0] || '';
@@ -75,6 +80,13 @@ export default function BrowserApp() {
     const state = useOSStore(s => s.browserState);
     const { tabs, activeTabId, historyMap, bookmarks, visits } = state;
     const openTab = useOSStore(s => s.openBrowserTab);
+    const openService = useOSStore(s => s.setBrowserUrl);
+    const workspaceRequest = useOSStore(s => s.workspaceRequests.browser);
+    useEffect(() => {
+        if (!workspaceRequest) return;
+        if (workspaceRequest.section === 'services') openService(SERVICE_DIRECTORY);
+        useOSStore.getState().consumeWorkspaceRequest('browser', workspaceRequest.revision);
+    }, [workspaceRequest, openService]);
     const closeTab = useOSStore(s => s.closeBrowserTab);
     const activate = useOSStore(s => s.setActiveBrowserTab);
     const navigateTab = useOSStore(s => s.navigateBrowserTab);
@@ -109,16 +121,17 @@ export default function BrowserApp() {
             <button className="vn-icon" onClick={() => setReload(value => value + 1)} aria-label="Reload page"><RotateCw size={15}/></button>
             <button className="vn-icon vn-home" onClick={() => navigateTab(BROWSER_HOME)} aria-label="Home"><Home size={16}/></button>
             <form className="vn-address" onSubmit={event => { event.preventDefault(); if (addressInput.trim()) navigateTab(resolveBrowserInput(addressInput)); }}>
-                <Globe size={14}/><input aria-label="Search Versenet or enter address" value={addressInput} onChange={event => setAddressInput(event.target.value)} onFocus={event => event.target.select()} spellCheck={false}/>
+                <Globe size={14}/><input aria-label="Search VerseNet or enter a web address" value={addressInput} onChange={event => setAddressInput(event.target.value)} onFocus={event => event.target.select()} spellCheck={false}/>
                 <button type="button" className={`vn-icon ${saved ? 'is-saved' : ''}`} aria-label={saved ? 'Remove current bookmark' : 'Bookmark this page'} aria-pressed={saved} onClick={toggleBookmark}><Star size={15} fill={saved ? 'currentColor' : 'none'}/></button>
                 <button type="submit" className="vn-icon" aria-label="Go to address"><Search size={15}/></button>
             </form>
+            <button className="vn-icon" aria-label="Service Directory" title="Service Directory" onClick={() => navigateTab(SERVICE_DIRECTORY)}><Grid2X2 size={16}/></button>
             <button className="vn-icon" aria-label="Bookmarks" aria-expanded={panel === 'bookmarks'} onClick={() => togglePanel('bookmarks')}><Bookmark size={16}/></button>
             <button className="vn-icon" aria-label="Browsing history" aria-expanded={panel === 'history'} onClick={() => togglePanel('history')}><History size={17}/></button>
         </div>
         <div className="vn-body">
             <main ref={pageRef} id="vn-page" role="tabpanel" aria-labelledby={`vn-tab-${activeTabId}`} className="vn-page">
-                <ContentFrame key={`${activeTabId}:${activeTab.url}:${reload}`} url={activeTab.url} openTab={openTab} navigateTab={navigateTab}/>
+                <ContentFrame key={`${activeTabId}:${activeTab.url}:${reload}`} url={activeTab.url} openTab={openTab} openService={openService} navigateTab={navigateTab}/>
             </main>
             {panel && <aside className="vn-library" aria-label={panel === 'history' ? 'Browsing history panel' : 'Bookmarks panel'}>
                 <header><h2>{panel === 'history' ? 'History' : 'Bookmarks'}</h2><button className="vn-icon" aria-label="Close browser library" onClick={() => setPanel(null)}><X size={16}/></button></header>
@@ -132,6 +145,6 @@ export default function BrowserApp() {
                 {!entries.length && <p role="status">{filter ? 'No matching pages.' : panel === 'history' ? 'Your next visit will appear here.' : 'Use the star beside an address to save a page.'}</p>}
             </aside>}
         </div>
-        <footer className="vn-status"><span>VERSENET</span><span>Fictional network · {tabs.length} / {MAX_BROWSER_TABS} tabs</span></footer>
+        <footer className="vn-status"><span>VERSENET</span><span>{externalWebUrl(activeTab.url) || activeTab.url.startsWith(SERVICE_DIRECTORY) ? 'External Internet gateway' : 'Fictional network'} · {tabs.length} / {MAX_BROWSER_TABS} tabs</span></footer>
     </div>;
 }

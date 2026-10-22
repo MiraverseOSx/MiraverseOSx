@@ -75,8 +75,8 @@ export const useWorldStore = create<WorldStoreState>((set) => ({
     if (q.includes('quest') || q.includes('mission')) {
       return {
         thought: 'Client MAI Assistant Rule Engine',
-        response: 'Check the Notice Board app to view all active Journeys, Quests, and District Operations.',
-        action: 'open_board',
+        response: 'Open WORKNET for opportunities and civic notices, including Journeys, Quests, and District Operations.',
+        action: 'open_worknet',
       };
     }
     return {

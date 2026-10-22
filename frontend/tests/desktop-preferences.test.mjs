@@ -44,3 +44,19 @@ test('older progress preserves gameplay, browser bookmarks and custom wallpaper 
   assert.equal(restored.browserState.bookmarks[0].url, 'https://worknet.aure');
   assert.deepEqual(restored.desktopPreferences.shortcutIds, DEFAULT_SHORTCUT_IDS);
 });
+
+test('appearance themes persist independently from shortcuts and gameplay', async () => {
+  storage(); const store = await fresh();
+  store.getState().loginUser({ name: 'Palette Tester', credits: 400 });
+  const gameplay = structuredClone(store.getState().gameplay);
+  store.getState().setDesktopTheme('pine');
+  store.getState().setDesktopShortcuts(['files', 'browser']);
+  assert.equal((await fresh()).getState().desktopPreferences.themeId, 'pine');
+  store.getState().resetDesktopShortcuts();
+  assert.equal(store.getState().desktopPreferences.themeId, 'pine');
+  assert.deepEqual(store.getState().desktopPreferences.shortcutIds, DEFAULT_SHORTCUT_IDS);
+  assert.deepEqual(store.getState().gameplay, gameplay);
+  store.getState().setDesktopTheme('unknown');
+  assert.equal(store.getState().desktopPreferences.themeId, 'heather');
+  assert.equal(restoreDesktopPreferences({ themeId: {}, shortcutIds: [] }).themeId, 'heather');
+});

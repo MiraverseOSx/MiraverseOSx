@@ -15,6 +15,30 @@
 .vn-start input{flex:1;min-width:0;border:0;outline:none;background:none;font-size:12px;color:var(--vn-ink)}
 .vn-start form button{background:var(--vn-purple);color:white;border:0;padding:10px 18px;border-radius:3px;font-size:11px}
 .vn-start form button:hover{background:#4b3264}
+.vn-directory-shortcut{text-align:center;margin-top:18px}
+.vn-external-page{display:flex;flex:1;flex-direction:column;min-height:100%;background:#faf8fe}
+.vn-gateway-bar{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:14px 20px;border-bottom:1px solid var(--vn-line);background:white;flex-wrap:wrap}
+.vn-gateway-bar strong,.vn-external-link a{display:inline-flex;align-items:center;gap:7px}
+.vn-external-link{display:inline-flex;flex-direction:column;gap:6px}.vn-external-link small{max-width:300px;color:#9c3038}
+.vn-external-link a,.vn-gateway-actions>a{color:var(--vn-purple);text-underline-offset:3px}
+.vn-gateway-intro{width:min(620px,100%);margin:auto;padding:40px 28px;color:var(--vn-purple)}
+.vn-gateway-intro h1{font:600 25px/1.3 system-ui;margin:18px 0}.vn-gateway-intro p{font-size:13px;line-height:1.8;color:var(--vn-muted)}
+.vn-destination{display:block;overflow-wrap:anywhere;font:11px/1.6 monospace;color:var(--vn-muted)}
+.vn-gateway-actions{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-top:18px}
+.vn-gateway-actions button,.vn-gateway-bar button,.vn-directory>header>button,.vn-embed-notice button{border:1px solid var(--vn-line);border-radius:6px;padding:8px 12px;background:#f0eaf9;color:var(--vn-purple);font-size:12px}
+.vn-fine-print{font-size:11px!important;color:var(--vn-muted);line-height:1.7}
+.vn-embed-notice{padding:10px 16px;display:flex;align-items:center;gap:14px;justify-content:space-between;font-size:11px;border-bottom:1px solid var(--vn-line)}
+.vn-external-page.is-embedded{height:100%;min-height:420px}.vn-external-page>iframe{border:0;flex:1;width:100%;min-height:280px;background:white}
+.vn-directory{padding:30px;max-width:1160px;width:100%;margin:0 auto}.vn-directory>header{display:flex;justify-content:space-between;align-items:center;gap:18px;flex-wrap:wrap}
+.vn-eyebrow{font-size:10px;letter-spacing:.14em;color:var(--vn-purple)}.vn-directory h1{font:500 32px/1.2 Georgia,serif;margin:8px 0}.vn-directory h2{font:500 21px/1.3 Georgia,serif;margin:28px 0 14px}
+.vn-directory p{font-size:12px;line-height:1.7;color:var(--vn-muted)}.vn-directory-note{border-bottom:1px solid var(--vn-line);padding:12px 0}
+.vn-directory-filters{display:flex;flex-wrap:wrap;gap:10px;margin-top:20px}.vn-directory-filters input{flex:1;min-width:150px}
+.vn-directory input:not([type=file]),.vn-directory select{font:12px system-ui;border:1px solid var(--vn-line);padding:10px 12px;background:white;border-radius:6px;color:var(--vn-ink);max-width:100%}
+.vn-directory select{max-width:100%}.vn-service-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(260px,100%),1fr));gap:14px}
+.vn-service-grid article{padding:20px;border:1px solid var(--vn-line);border-radius:10px;background:white;display:flex;flex-direction:column}.vn-service-grid h3{font:600 16px system-ui;margin:0 0 10px}.vn-service-grid p{flex:1}.vn-service-grid .vn-gateway-actions{gap:9px}.vn-service-grid button,.vn-service-grid a{font-size:11px}
+.vn-service-form{border:1px solid var(--vn-line);border-radius:10px;padding:20px;background:#faf8fe;margin:20px 0}.vn-service-form h2{margin-top:0}.vn-service-form label{display:flex;flex-direction:column;gap:6px;margin:12px 0;font-size:12px}
+.vn-local-tools{border-top:1px solid var(--vn-line);margin-top:32px}.vn-local-tools input[type=file]{max-width:100%;font-size:12px}.vn-local-preview{margin-top:20px;border:1px solid var(--vn-line);border-radius:8px;overflow:hidden}.vn-local-preview header{padding:12px;background:var(--vn-chrome)}.vn-local-preview iframe{display:block;width:100%;height:500px;border:0;background:white}
+@container (max-width:650px){.vn-directory{padding:20px 16px}.vn-gateway-bar{padding:12px}.vn-gateway-intro{padding:28px 18px}.vn-embed-notice{flex-wrap:wrap}.vn-status{letter-spacing:0}}
 .vn-shortcuts{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;column-gap:18px;row-gap:8px;margin-top:22px}
 .vn-shortcut{display:flex;align-items:center;gap:1px}
 .vn-shortcut-link{background:none;border:0;padding:5px 0;font-size:11px;color:var(--vn-muted)}

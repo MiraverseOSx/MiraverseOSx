@@ -4,7 +4,7 @@ import type { LucideIcon } from 'lucide-react';
 const TONES: Record<string, string> = {
   browser: 'sky', files: 'gold', mail: 'sky', comms: 'lilac',
   passport: 'gold', board: 'sage', housing: 'lilac', finance: 'gold',
-  spellforge: 'lilac', pulse: 'rose', vitals: 'sage', campus: 'sky',
+  spellforge: 'lilac', pulse: 'rose', maispace: 'rose', vitals: 'sage', campus: 'sky',
   lore: 'lilac', jobs: 'gold', meridionRegistry: 'lilac', documentStudio: 'rose',
   dgaos: 'ink', traceForensics: 'ink', process: 'ink', terminal: 'ink', settings: 'lilac',
 };

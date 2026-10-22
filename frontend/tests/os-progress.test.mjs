@@ -368,8 +368,13 @@ test('AureMail Decisions 006-011 enforce multi-account MAID links, persisted mai
   const maidMod = await import(`../src/services/maidIdentityService.ts?t=${Date.now()}-${Math.random()}`);
   const comms = commsMod.useCommsStore;
 
-  // 1. Decision 009 & 010: Multiple verified accounts per citizen & player
-  assert.ok(comms.getState().playerAccounts.length >= 4);
+  // Rev06: one starter mailbox; membership and institutional issuance are separate.
+  assert.equal(comms.getState().playerAccounts.length, 1);
+  osStore.getState().loginUser({ name: 'Mail Test Administrator', isAdmin: true });
+  for (const [organizationId, address] of [['cyacademy', 'scholar@cyacademy.edu'], ['dga', 'liaison@dga.gov']]) {
+    osStore.getState().setOrganizationMembership(organizationId, 'active');
+    assert.equal(comms.getState().issueInstitutionalAccount({ organizationId, address }).ok, true);
+  }
   const persons = await maidMod.MaidIdentityService.getAllPersons();
   assert.ok(persons.length >= 3);
   assert.ok(Array.isArray(persons[0].emailAccounts) && persons[0].emailAccounts.length >= 2);

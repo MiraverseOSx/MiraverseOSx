@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { SERVICE_DIRECTORY } from './externalWeb';
 import { ArrowUpRight, Search } from 'lucide-react';
 import { resolveBrowserInput, STARTER_SITES } from './browserModel';
 
@@ -17,6 +18,7 @@ export default function SearchHome({ navigateTab, openTab }: SearchHomeProps) {
           <button className="vn-icon" aria-label={`Open ${site.name} in new tab`} onClick={() => openTab?.(`https://${site.domain}`, site.name)}><ArrowUpRight size={12}/></button>
         </div>)}
       </nav>
+      <div className="vn-directory-shortcut"><button className="vn-shortcut-link" onClick={() => navigateTab(SERVICE_DIRECTORY)}>Service Directory & external Internet ↗</button></div>
     </section>
   </div>;
 }

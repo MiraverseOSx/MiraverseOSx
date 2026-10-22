@@ -53,7 +53,8 @@ export interface CitizenRecord {
 export interface IssuedDocumentSnapshot {
   id: string;
   documentType: string;
-  citizenRecordId: string;
+  citizenId?: string;
+  citizenRecordId?: string; // Older issuance logs may use this key.
   citizenName: string;
   issuedAt: string;
   issuingAuthority: string;
@@ -998,6 +999,7 @@ export function recordIssuedSnapshot(snapshot: Omit<IssuedDocumentSnapshot, 'id'
     const list: IssuedDocumentSnapshot[] = JSON.parse(localStorage.getItem(STORE) || '[]');
     list.unshift(record);
     localStorage.setItem(STORE, JSON.stringify(list));
+    if (typeof window !== 'undefined') window.dispatchEvent(new Event('miraverse-documents-issued'));
   } catch (err) {
     console.error('Failed to log document issuance snapshot:', err);
   }
@@ -1014,9 +1016,9 @@ export function getIssuedSnapshots(citizenIdOrMaid?: string, legacyRecord?: stri
     const list: IssuedDocumentSnapshot[] = JSON.parse(localStorage.getItem(STORE) || '[]');
     if (!Array.isArray(list)) return [];
     if (!citizenIdOrMaid && !legacyRecord) return list;
-    return list.filter(item =>
-      (citizenIdOrMaid && item.citizenId === citizenIdOrMaid) ||
-      (legacyRecord && item.citizenId === legacyRecord)
+    return list.filter(item => item && typeof item === 'object' && (
+      (citizenIdOrMaid && (item.citizenId || item.citizenRecordId) === citizenIdOrMaid) ||
+      (legacyRecord && (item.citizenId || item.citizenRecordId) === legacyRecord))
     );
   } catch {
     return [];

@@ -1,8 +1,9 @@
 ﻿import React, { useEffect, useRef, useState } from "react";
 import { useOSStore } from "../../store/useOSStore";
+import { useCommsStore } from '../../store/useCommsStore';
+import { LEGACY_DIRECT_CONTACTS } from '../../integration/phoneMessages';
 import { OPPORTUNITIES, getOpportunity } from '../../gameplay/AssignmentFlow';
 import {
-  INITIAL_SMS_THREADS,
   INITIAL_VOICEMAILS,
   INITIAL_EVIDENCE_ITEMS,
 } from "../../data/phoneData";
@@ -51,9 +52,9 @@ type PhoneScreen =
 const phoneApps = [
   { id: "messages", color: "blue", label: "Messages", icon: MessageSquare },
   { id: "phone", color: "blue", label: "Phone", icon: Phone },
-  { id: "passport", color: "jade", label: "Passport", icon: UserCheck },
+  { id: "passport", color: "jade", label: "Citizen Hub", icon: UserCheck },
   { id: "missions", color: "jade", label: "Missions", icon: ShieldCheck },
-  { id: "spellforge", color: "violet", label: "SpellForge", icon: Flame },
+  { id: "spellforge", color: "violet", label: "Cyacademy", icon: Flame },
   { id: "evidence", color: "sand", label: "Evidence", icon: Pin },
   { id: "media", color: "slate", label: "Media", icon: Music },
   { id: "emergency", color: "rose", label: "Emergency", icon: AlertOctagon },
@@ -64,19 +65,24 @@ export default function PhoneWidget({ onClose }: { onClose?: () => void }) {
   const [isPlaying, setIsPlaying] = useState(false);
   const [playingVm, setPlayingVm] = useState<number | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
-  const [smsThreads, setSmsThreads] = useState(INITIAL_SMS_THREADS);
+  const smsThreads = useCommsStore(s => s.phoneThreads);
+  const phoneRequest = useCommsStore(s => s.phoneRequest);
+  useEffect(() => { useCommsStore.getState().migratePersonalThreads(); }, []);
+  useEffect(() => {
+    if (!phoneRequest) return;
+    setActiveScreen('messages');
+    setActiveSmsContact(phoneRequest.contact && Object.hasOwn(useCommsStore.getState().phoneThreads, phoneRequest.contact) ? phoneRequest.contact : null);
+    useCommsStore.getState().consumePhoneRequest(phoneRequest.token);
+  }, [phoneRequest]);
   const [activeSmsContact, setActiveSmsContact] = useState<string | null>(null);
   const conversationRef = useRef<HTMLDivElement>(null);
   const screenHeadingRef = useRef<HTMLHeadingElement>(null);
-  const [smsDrafts, setSmsDrafts] = useState<Record<string, string>>({});
+  const smsDrafts = useCommsStore(s => s.phoneDrafts);
   const smsInput = activeSmsContact ? smsDrafts[activeSmsContact] || "" : "";
   const setSmsInput = (value: string) => {
-    if (activeSmsContact) setSmsDrafts(previous => ({ ...previous, [activeSmsContact]: value }));
+    if (activeSmsContact) useCommsStore.getState().setPhoneDraft(activeSmsContact, value);
   };
   const [evidenceItems, setEvidenceItems] = useState(INITIAL_EVIDENCE_ITEMS);
-  const [spellElement, setSpellElement] = useState<string | null>(null);
-  const [spellUtility, setSpellUtility] = useState<string | null>(null);
-  const [spellResult, setSpellResult] = useState("");
   const [notice, setNotice] = useState("");
   const player = useOSStore((state) => state.gameplay.player);
   const calls = Object.entries(player.assignmentJournal?.dispatches || {}).filter(([, dispatch]: [string, any]) => dispatch.channel === 'phone').map(([id, dispatch]: [string, any]) => ({ id, ...dispatch, opportunity: getOpportunity(id) })).filter(call => call.opportunity);
@@ -84,19 +90,10 @@ export default function PhoneWidget({ onClose }: { onClose?: () => void }) {
   const phoneOpportunities = OPPORTUNITIES.filter(item => player.worknetOrders?.[item.id]?.status === 'active' || player.assignmentJournal?.started?.[item.id]);
   const addCredits = useOSStore((state) => state.addCredits);
   const addXP = useOSStore((state) => state.addXP);
-  const purgePrismCorruption = useOSStore(
-    (state) => state.purgePrismCorruption,
-  );
 
   function sendSms(text: string) {
     if (!text.trim() || !activeSmsContact) return;
-    setSmsThreads((previous) => ({
-      ...previous,
-      [activeSmsContact]: [
-        ...(previous[activeSmsContact] || []),
-        { id: Date.now(), sender: "You", text: text.trim(), time: "Just now" },
-      ],
-    }));
+    useCommsStore.getState().sendPhoneMessage(activeSmsContact, text);
     setSmsInput("");
   }
 
@@ -107,6 +104,18 @@ export default function PhoneWidget({ onClose }: { onClose?: () => void }) {
       .getState()
       .updateNPCVector(npcKey === "dr." ? "voss" : npcKey, vector, 10);
     sendSms(text);
+  }
+
+  function legacyDialogue(cooperative: boolean) {
+    if (!activeSmsContact) return;
+    const channel = Object.entries(LEGACY_DIRECT_CONTACTS).find(([, name]) => name === activeSmsContact)?.[0];
+    if (!channel) return;
+    const npc = channel.slice(3);
+    const os = useOSStore.getState();
+    os.updateNPCVector(npc, 'trust', cooperative ? 10 : 5);
+    os.updateNPCVector(npc, cooperative ? 'sync' : 'rivalry', 10);
+    sendSms(cooperative ? 'I agree, let us coordinate security protocols.' : 'I am running independent diagnostic scans.');
+    useCommsStore.getState().sendPhoneMessage(activeSmsContact, cooperative ? 'Excellent choice. I have logged your authorization.' : 'Proceed with caution. The lower conduits are erratic.', activeSmsContact);
   }
 
   function captureEvidence() {
@@ -125,20 +134,6 @@ export default function PhoneWidget({ onClose }: { onClose?: () => void }) {
     setNotice("Snapshot pinned to Evidence. +50 credits, +25 XP.");
   }
 
-  function synthesizeSpell() {
-    if (!spellElement || !spellUtility) {
-      setSpellResult("Select one element and one utility.");
-      return;
-    }
-    addCredits(75);
-    addXP(40);
-    purgePrismCorruption(1.5);
-    setSpellResult(
-      `Synthesized ${spellElement} ${spellUtility}. +75 credits, +40 XP.`,
-    );
-    setSpellElement(null);
-    setSpellUtility(null);
-  }
 
   const activeApp = phoneApps.find((app) => app.id === activeScreen);
   const filteredApps = phoneApps.filter((app) =>
@@ -260,6 +255,7 @@ export default function PhoneWidget({ onClose }: { onClose?: () => void }) {
                   >
                     +Sync · Ready to sync
                   </PhoneButton>
+                  {Object.values(LEGACY_DIRECT_CONTACTS).includes(activeSmsContact) && <><PhoneButton onClick={() => legacyDialogue(true)}>Coordinate protocols · +Trust, +Sync</PhoneButton><PhoneButton onClick={() => legacyDialogue(false)}>Independent approach · +Rivalry</PhoneButton></>}
                 </div>
                 </details>
                 <form
@@ -333,8 +329,8 @@ export default function PhoneWidget({ onClose }: { onClose?: () => void }) {
                       <dl className="phone-record">
                         <dt>Citizen</dt>
                         <dd>{player.name}</dd>
-                        <dt>Aura serial</dt>
-                        <dd>CY-9021-X9</dd>
+                        <dt>Local citizen ID</dt>
+                        <dd>{useOSStore.getState().gameplay.identity.citizenId || 'Not issued'}</dd>
                         <dt>Level</dt>
                         <dd>
                           {player.level} · {player.xp} XP
@@ -344,8 +340,9 @@ export default function PhoneWidget({ onClose }: { onClose?: () => void }) {
                       </dl>
                     </PhonePanel>
                     <div className="phone-code">
-                      ||| | |||| ||| |||| | ||||| CY-9021
+                      {useOSStore.getState().gameplay.identity.barcode || 'No credential barcode issued'}
                     </div>
+                    <PhoneButton onClick={() => { useOSStore.getState().openAppWorkspace('passport'); onClose?.(); }}>Open Citizen Hub</PhoneButton>
                   </>
                 )}
                 {activeScreen === "missions" && (
@@ -353,41 +350,7 @@ export default function PhoneWidget({ onClose }: { onClose?: () => void }) {
                     {(phoneOpportunities.length ? phoneOpportunities : OPPORTUNITIES.slice(0, 3)).map(item => <PhonePanel key={item.id} className="phone-stack"><small className="phone-muted">{item.kind}</small><h3>{item.title}</h3><p>{item.description}</p><PhoneButton onClick={() => { useOSStore.getState().openAssignment(item.id); onClose?.(); }}>Open in WorkNet</PhoneButton></PhonePanel>)}
                   </>
                 )}
-                {activeScreen === "spellforge" && (
-                  <>
-                    <p className="phone-muted">Select an element</p>
-                    <div className="phone-choice-grid">
-                      {["Firewall", "Cryo", "Encryption"].map((element) => (
-                        <PhoneButton
-                          key={element}
-                          aria-pressed={spellElement === element}
-                          onClick={() => setSpellElement(element)}
-                        >
-                          {element}
-                        </PhoneButton>
-                      ))}
-                    </div>
-                    <p className="phone-muted">Select a utility</p>
-                    <div className="phone-choice-grid">
-                      {["Routing", "Anchor", "Pulse"].map((utility) => (
-                        <PhoneButton
-                          key={utility}
-                          aria-pressed={spellUtility === utility}
-                          onClick={() => setSpellUtility(utility)}
-                        >
-                          {utility}
-                        </PhoneButton>
-                      ))}
-                    </div>
-                    <PhoneButton tone="primary" onClick={synthesizeSpell}>
-                      <Sparkles size={16} />
-                      Synthesize spell
-                    </PhoneButton>
-                    <p className="phone-feedback" role="status">
-                      {spellResult}
-                    </p>
-                  </>
-                )}
+                {activeScreen === "spellforge" && <PhonePanel className="phone-stack"><h3>Cyacademy magic practice</h3><p>Continue your magical learning and workbench practice in the academy workspace.</p><PhoneButton tone="primary" onClick={() => { useOSStore.getState().openAppWorkspace('campus', 'magic'); onClose?.(); }}>Open magic practice</PhoneButton></PhonePanel>}
                 {activeScreen === "evidence" && (
                   <>
                     {evidenceItems.map((item) => (

@@ -29,6 +29,7 @@ import {
 } from '../integration/citizenBridge';
 import { generateProceduralPortrait, persistCitizenPortrait } from '../services/portraitService';
 import PortraitStudioModal from '../components/portrait/PortraitStudioModal';
+import { useOSStore } from '../store/useOSStore';
 
 const ARCHETYPE_OPTIONS: { id: CharacterArchetype; label: string; badge: string; desc: string }[] = [
   {
@@ -76,6 +77,8 @@ const OFFICIAL_DOC_CARDS = [
 ];
 
 export default function RegistryWorkspaceApp() {
+  const isWorldAdmin = useOSStore(s => Boolean(s.gameplay.player.isAdmin));
+  const [linkingCitizen, setLinkingCitizen] = useState(false);
   const [activeTab, setActiveTab] = useState<'lookup' | 'add' | 'ecosystem' | 'migration'>('lookup');
   const [dossierSection, setDossierSection] = useState<'overview' | 'ancestry' | 'institutions' | 'relationships' | 'documents' | 'edit'>('overview');
 
@@ -735,6 +738,17 @@ export default function RegistryWorkspaceApp() {
                     </div>
                   </div>
 
+                  {isWorldAdmin && <div className="registry-player-link">
+                    <div><strong>Player identity link</strong><p>Use this existing citizen for the current player's Citizen Hub. This does not edit the official identity or replace historical documents.</p></div>
+                    <button disabled={linkingCitizen || Boolean(activePerson.isRestricted)} onClick={async () => {
+                      setLinkingCitizen(true);
+                      try {
+                        const result = await useOSStore.getState().linkCitizenHubIdentity(activePerson.id);
+                        showBanner(result.message);
+                      } catch { showBanner('The player link could not be saved. Try again.'); }
+                      finally { setLinkingCitizen(false); }
+                    }}>{linkingCitizen ? 'Linking…' : 'Link to current player'}</button>
+                  </div>}
                   {/* Dossier Sub-Navigation Tabs */}
                   <div className="flex flex-wrap items-center justify-between gap-2 bg-[#181E23] px-6 py-2.5 border-b border-[#2F3C46]">
                     <div className="flex flex-wrap items-center gap-1.5">

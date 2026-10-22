@@ -13,7 +13,6 @@ export default function MAIDock() {
   const [status, setStatus] = useState('idle'); // 'idle' | 'thinking' | 'executing' | 'error' | 'glitched'
   const [aiResponse, setAiResponse] = useState<any>(null);
 
-  const toggleApp = useOSStore((s) => s.toggleApp);
   const addXP = useOSStore((s) => s.addXP);
   const sendMAIPrompt = useWorldStore((s) => s.sendMAIPrompt);
   const prismCorruptionLevel = useOSStore((s) => s.gameplay.prismCorruptionLevel || 0);
@@ -47,16 +46,21 @@ export default function MAIDock() {
     const appMatch = APPS.find(
       (a) => lowerQuery.includes(a.title.toLowerCase()) || lowerQuery.includes(a.id)
     );
+    const legacyCommands: Record<string, string> = { trace: 'traceForensics', spellforge: 'spellforge', chronicle: 'board', 'notice board': 'board', questnotice: 'questnotice', 'service directory': 'serviceDirectory', 'mai.space': 'maispace', cyacademy: 'campus', cycademy: 'campus', worknet: 'jobs' };
+    const citizenCommands: Record<string, string> = { mirror: 'mirror', civinet: 'civinet', 'citizen hub': 'citizenHub' };
+    const commandName = lowerQuery.replace(/^(open|launch)\s+/, '').trim();
+    const requestedApp = citizenCommands[commandName] || legacyCommands[commandName] || appMatch?.id;
 
     if (lowerQuery.startsWith('open ') || lowerQuery.startsWith('launch ')) {
-      if (appMatch) {
-        toggleApp(appMatch);
+      if (requestedApp) {
+        const title = appMatch?.title || requestedApp;
+        useOSStore.getState().openAppWorkspace(requestedApp);
         soundEngine.playWindowOpen();
         setStatus('executing');
         setAiResponse({
-          thought: `Command recognized: Launching [${appMatch.title}]`,
-          response: `Launching ${appMatch.title} application module.`,
-          action: { command: 'launch', app: appMatch.title }
+          thought: `Command recognized: Opening [${title}]`,
+          response: `Opening ${title} in its workspace.`,
+          action: { command: 'launch', app: title }
         });
         addXP(10);
         setTimeout(() => setStatus('idle'), 2000);
@@ -167,7 +171,7 @@ export default function MAIDock() {
               </div>
             ) : (
               <div className="mb-3 rounded-xl border border-purple-500/20 bg-purple-950/40 p-3 text-xs text-purple-200/90 leading-relaxed font-sans">
-                Welcome, citizen. Ask me about Aureline Year 1000 lore, Queen Ashara's decrees, onboarding forms (`.osform`), or type <span className="font-mono text-pink-300 font-bold">"launch SpellForge"</span>.
+                Welcome, citizen. Ask me about Aureline Year 1000 lore, Queen Ashara's decrees, onboarding forms (`.osform`), or type <span className="font-mono text-pink-300 font-bold">"open Cycademy"</span>.
               </div>
             )}
 

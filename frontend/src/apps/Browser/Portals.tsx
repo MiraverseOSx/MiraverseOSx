@@ -675,144 +675,38 @@ export function BankPortal() {
 // 6. CIVINET Municipal Services Hub (civinet.mer)
 // ==========================================
 export function CivinetPortal() {
-    const player = useOSStore((s) => s.gameplay?.player);
-    const claimPortalAction = useOSStore((s) => s.claimPortalAction);
-    const stipendClaimed = (player?.claimedPortalActionIds || []).includes('civinet-monthly-stipend');
-
-    const handleClaimStipend = () => {
-        if (claimPortalAction) {
-            claimPortalAction('civinet-monthly-stipend', 100, 0, 25, 'Claimed Provisional Citizen Monthly Welfare Stipend');
-        }
-    };
-
-    return (
-        <div className="p-6 space-y-6 bg-[#FAFBFD] min-h-full text-slate-800 font-sans select-none">
-            <header className="flex items-center justify-between border-b border-indigo-100 pb-4">
-                <div className="flex items-center gap-3">
-                    <div className="h-10 w-10 rounded-xl bg-indigo-600 text-white flex items-center justify-center font-bold shadow-xs">
-                        <Landmark size={22} />
-                    </div>
-                    <div>
-                        <h1 className="text-xl font-bold text-slate-900">CIVINET // Municipal Services Hub</h1>
-                        <p className="text-xs text-indigo-600 font-mono">Official Meridion Institutional Portal • civinet.mer</p>
-                    </div>
-                </div>
-                <div className="px-3 py-1 bg-indigo-50 border border-indigo-200 text-indigo-700 text-xs font-mono font-bold rounded-lg">
-                    Citizen Status: Registered
-                </div>
-            </header>
-
-            {/* Quick Actions Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div className="p-4 border border-slate-200 rounded-xl bg-white space-y-1.5 shadow-xs">
-                    <h3 className="text-xs font-bold text-slate-800 flex items-center gap-1.5">
-                        <FileText size={15} className="text-indigo-600" /> Public Archive Search
-                    </h3>
-                    <p className="text-[11px] text-slate-600 leading-relaxed">
-                        Access non-classified municipal charters, historical treaties, and zoning records.
-                    </p>
-                </div>
-                <div className="p-4 border border-slate-200 rounded-xl bg-white space-y-1.5 shadow-xs">
-                    <h3 className="text-xs font-bold text-slate-800 flex items-center gap-1.5">
-                        <Activity size={15} className="text-emerald-600" /> Health Appointments
-                    </h3>
-                    <p className="text-[11px] text-slate-600 leading-relaxed">
-                        Schedule Faith Medical wellness checks, Veil exposure diagnostics, and baseline scans.
-                    </p>
-                </div>
-                <div className="p-4 border border-slate-200 rounded-xl bg-white space-y-1.5 shadow-xs">
-                    <h3 className="text-xs font-bold text-slate-800 flex items-center gap-1.5">
-                        <Shield size={15} className="text-blue-600" /> Citizen Service Notices
-                    </h3>
-                    <p className="text-[11px] text-slate-600 leading-relaxed">
-                        Official declarations, transit schedules, and public infrastructure updates.
-                    </p>
-                </div>
-            </div>
-
-            {/* Citizen Municipal Welfare Section */}
-            <div className="p-5 border border-indigo-200 bg-indigo-50/50 rounded-2xl flex items-center justify-between shadow-xs">
-                <div className="space-y-1">
-                    <h3 className="text-sm font-bold text-indigo-950">Provisional Citizen Monthly Welfare Stipend</h3>
-                    <p className="text-xs text-indigo-700">Claim your government-authorized civic support funds (100 ₢ CREDITS).</p>
-                </div>
-                <button
-                    onClick={handleClaimStipend}
-                    disabled={stipendClaimed}
-                    className="px-5 py-2.5 bg-indigo-600 hover:bg-indigo-700 disabled:bg-slate-200 disabled:text-slate-400 text-white rounded-xl text-xs font-bold transition shadow-xs flex items-center gap-2 cursor-pointer"
-                >
-                    {stipendClaimed ? <CheckCircle2 size={16} /> : <ArrowRight size={16} />}
-                    <span>{stipendClaimed ? 'Stipend Claimed (+100 ₢)' : 'Claim Civic Stipend'}</span>
-                </button>
-            </div>
-        </div>
-    );
+    return <section className="workspace-transition"><Landmark size={30}/><span className="workspace-kicker">Citizen Hub / formerly CIVINET</span><h1>Your civic services have a new home.</h1><p>Open Citizen Hub for personal services, civic support, residence, and your document history. Your existing support claim and saved progress are retained.</p><button onClick={() => useOSStore.getState().openAppWorkspace('passport', 'services')}>Open Citizen Hub <ArrowRight size={15}/></button></section>;
 }
 
 // ==========================================
 // 7. QUESTNOTICE Public Errands (questnotice.mer)
 // ==========================================
 export function QuestNoticePortal() {
-    const player = useOSStore((s) => s.gameplay?.player);
-    const claimPortalAction = useOSStore((s) => s.claimPortalAction);
-    const claimedTasks = player?.claimedPortalActionIds || [];
-
-    const tasks = [
-        { id: 'qn-web-1', title: 'Library Return Cart Sorting', rewardCredits: 80, rewardXP: 40, desc: 'Sort 20 returned volumes by catalog number in the East Reading Room.' },
-        { id: 'qn-web-2', title: 'Lost Familiar Trace in Sector 4', rewardCredits: 120, rewardXP: 60, desc: 'Search for a glowing cyan sprite near the central district water fountain.' },
-        { id: 'qn-web-3', title: 'Apothecary Herb Delivery', rewardCredits: 150, rewardXP: 75, desc: 'Deliver dried Sunspire blossom bundles to Faith Medical Clinic Ward 2.' },
+    const claimedTasks = useOSStore(s => s.gameplay.player.claimedPortalActionIds || []);
+    const listings = [
+        { id: 'qn-web-1', title: 'Library Return Cart Sorting', desc: 'Sort 20 returned volumes by catalog number in the East Reading Room.' },
+        { id: 'qn-web-2', title: 'Lost Familiar Trace in Sector 4', desc: 'Search for a glowing cyan sprite near the central district water fountain.' },
+        { id: 'qn-web-3', title: 'Apothecary Herb Delivery', desc: 'Deliver dried Sunspire blossom bundles to Faith Medical Clinic Ward 2.' },
     ];
-
-    const handleClaim = (taskId: string, title: string, credits: number, xp: number) => {
-        if (claimPortalAction) {
-            claimPortalAction(taskId, credits, 0, xp, `Completed Public Errand: ${title}`);
-        }
-    };
-
     return (
-        <div className="p-6 space-y-6 bg-[#FAFBFD] min-h-full text-slate-800 font-sans select-none">
-            <header className="flex items-center justify-between border-b border-amber-100 pb-4">
-                <div className="flex items-center gap-3">
-                    <div className="h-10 w-10 rounded-xl bg-amber-500 text-white flex items-center justify-center font-bold shadow-xs">
-                        <FileText size={22} />
-                    </div>
-                    <div>
-                        <h1 className="text-xl font-bold text-slate-900">QUESTNOTICE // Public Errand Tracker</h1>
-                        <p className="text-xs text-amber-700 font-mono">Neighborhood Postings & Local Errand Engine • questnotice.mer</p>
-                    </div>
-                </div>
-                <div className="text-xs font-mono text-amber-800 bg-amber-100 px-3 py-1 rounded-lg border border-amber-200">
-                    Active Board Feed
-                </div>
-            </header>
-
-            <div className="space-y-3">
-                <h3 className="text-xs font-bold text-slate-700 uppercase tracking-wider">Active Community Postings</h3>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-                    {tasks.map((task) => {
-                        const isClaimed = claimedTasks.includes(task.id);
-                        return (
-                            <div key={task.id} className="p-4 border border-slate-200 rounded-xl bg-white space-y-2 flex flex-col justify-between shadow-xs">
-                                <div className="space-y-1">
-                                    <h4 className="text-xs font-bold text-slate-900">{task.title}</h4>
-                                    <p className="text-[11px] text-slate-600 leading-relaxed">{task.desc}</p>
-                                </div>
-                                <div className="pt-2 border-t border-slate-100 flex items-center justify-between">
-                                    <span className="text-xs font-mono font-bold text-amber-700">+{task.rewardCredits} ₢</span>
-                                    <button
-                                        onClick={() => handleClaim(task.id, task.title, task.rewardCredits, task.rewardXP)}
-                                        disabled={isClaimed}
-                                        className="px-3 py-1 bg-amber-600 hover:bg-amber-700 disabled:bg-slate-200 disabled:text-slate-400 text-white text-[11px] font-bold rounded-lg transition cursor-pointer"
-                                    >
-                                        {isClaimed ? 'Done' : 'Accept'}
-                                    </button>
-                                </div>
-                            </div>
-                        );
-                    })}
-                </div>
-            </div>
-        </div>
+        <section className="workspace-transition">
+            <FileText size={30}/>
+            <span className="workspace-kicker">QUESTNOTICE / WORKNET</span>
+            <h1>Civic work, together.</h1>
+            <p>Neighborhood jobs and playable assignments are managed in WORKNET. Review the work, complete its objectives, and submit it there.</p>
+            <button onClick={() => useOSStore.getState().openAppWorkspace('jobs', 'civic-jobs')}>
+                Open civic jobs in WORKNET <ArrowRight size={15}/>
+            </button>
+            <details style={{ marginTop: 28 }}>
+                <summary>Earlier public listings</summary>
+                <p>Earlier completion records are retained. These archived listings do not issue additional rewards.</p>
+                {listings.map(item => <article key={item.id} style={{ marginTop: 20 }}>
+                    <h2 style={{ fontSize: 15 }}>{item.title}</h2>
+                    <p>{item.desc}</p>
+                    <small>{claimedTasks.includes(item.id) ? 'Previously completed' : 'Archived listing'}</small>
+                </article>)}
+            </details>
+        </section>
     );
 }
 

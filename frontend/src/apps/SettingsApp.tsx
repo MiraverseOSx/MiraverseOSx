@@ -6,6 +6,7 @@ import { SoundFX } from '../utils/audio';
 import PurpleWallpaper from '../components/desktop/PurpleWallpaper';
 import WorldSaveSettings from './WorldSaveSettings';
 import '../styles/apps/Settings.css';
+import { DESKTOP_THEMES, desktopThemeStyle } from '../store/desktopThemes';
 
 const sections = [
   { id: 'appearance', title: 'Appearance', detail: 'Make it your space', icon: Palette },
@@ -14,7 +15,7 @@ const sections = [
   { id: 'about', title: 'About', detail: 'Your Miraverse system', icon: Info },
 ] as const;
 const wallpapers = [
-  { name: 'Aureline Orbit', detail: 'Purple, silver & starlight', url: '' },
+  { name: 'Aureline Orbit', detail: 'Your palette, ribbons & starlight', url: '' },
   { name: 'Blue horizon', detail: 'Earth from above', url: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=2072&auto=format&fit=crop' },
   { name: 'Machine study', detail: 'A quiet technical study', url: 'https://images.unsplash.com/photo-1509198397868-475647b2a1e5?q=80&w=2070&auto=format&fit=crop' },
   { name: 'Night district', detail: 'City lights after dark', url: 'https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=2070&auto=format&fit=crop' },
@@ -24,6 +25,8 @@ export default function SettingsApp() {
   const [selected, setSelected] = useState<typeof sections[number]['id']>('appearance');
   const wallpaper = useOSStore(state => state.wallpaper);
   const setWallpaper = useOSStore(state => state.setWallpaper);
+  const themeId = useOSStore(state => state.desktopPreferences.themeId);
+  const setDesktopTheme = useOSStore(state => state.setDesktopTheme);
   const soundEnabled = useSystemStore(state => state.soundEnabled);
   const setSoundEnabled = useSystemStore(state => state.setSoundEnabled);
   const section = sections.find(item => item.id === selected)!;
@@ -38,6 +41,12 @@ export default function SettingsApp() {
       <main key={selected} className="settings-content" id="settings-content" aria-labelledby="settings-section-title">
         <header className="settings-page-heading"><p>SYSTEM / {section.title.toUpperCase()}</p><h2 id="settings-section-title">{section.title}</h2><span>{selected === 'appearance' ? 'A familiar space, with your own point of view.' : selected === 'sound' ? 'Choose how your desktop sounds.' : selected === 'save' ? 'Keep your world ready for the next visit.' : 'One desktop. A connected world.'}</span></header>
         {selected === 'appearance' && <>
+          <div className="settings-section-heading"><div><h3>Color collection</h3><p>A palette for your desktop, windows, and workspace.</p></div></div>
+          <div className="settings-theme-collection" role="group" aria-label="Desktop color theme">{DESKTOP_THEMES.map(theme => <button key={theme.id} className="settings-theme-option" style={desktopThemeStyle(theme.id) as React.CSSProperties} aria-pressed={themeId === theme.id} onClick={() => setDesktopTheme(theme.id)}>
+            <span className="settings-theme-art"><span/>{themeId === theme.id && <Check size={16} aria-hidden="true"/>}</span>
+            <span className="settings-theme-palette">{theme.colors.map(color => <i key={color} style={{ background: color }}/>)}</span>
+            <strong>{theme.name}</strong><small>{theme.detail}</small>
+          </button>)}</div>
           <div className="settings-desktop-preview" aria-label={`Current wallpaper: ${selectedWallpaper?.name || 'Custom wallpaper'}`}>
             {wallpaper ? <div className="settings-wallpaper-image" style={{ backgroundImage: `url(${JSON.stringify(wallpaper)})` }} /> : <PurpleWallpaper animated={false} />}
             <div className="settings-preview-bar"><span>MIRAVERSE OS x</span><span>Aureline</span></div><div className="settings-preview-dock"><span /><span /><span /><span /></div>

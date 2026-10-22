@@ -4,6 +4,8 @@ import { emptyVersenetSites, restoreVersenetSites, type VersenetSites } from '..
 import { createVersenetActions, type VersenetActions } from './versenetActions';
 import { emptyVersenetContent, restoreVersenetContent, type VersenetContent } from '../apps/Browser/searchCatalog';
 import { restoreDesktopPreferences, type DesktopPreferences } from './desktopPreferences';
+import { resolveAppDestination, retiredWindowDestination, type WorkspaceRequest } from './appNavigation';
+import { organization, registerCommunicationsAuthority } from '../integration/communicationsAccess';
 import { initialBrowserState, restoreBrowserState, type BrowserState } from '../apps/Browser/browserModel';
 export type { BrowserState, BrowserTab, TabHistory } from '../apps/Browser/browserModel';
 import { create } from 'zustand';
@@ -60,8 +62,15 @@ export interface OSStoreState extends AssignmentFlowActions, ProgressionActions,
   activeWindowId: string | null;
   wallpaper: string;
   desktopPreferences: DesktopPreferences;
+  workspaceRequests: Record<string, WorkspaceRequest>;
+  workspaceRequestSequence: number;
+  openAppWorkspace: (id: string, section?: string) => void;
+  consumeWorkspaceRequest: (id: string, revision: number) => void;
+  linkCitizenHubIdentity: (id: string) => Promise<{ ok: boolean; message: string }>;
+  setOrganizationMembership: (id: string, status: 'active' | 'suspended' | 'revoked') => { ok: boolean; message: string };
   setDesktopShortcuts: (ids: string[]) => void;
   resetDesktopShortcuts: () => void;
+  setDesktopTheme: (id: string) => void;
   browserUrl: string | null;
   browserState: BrowserState;
   versenetContent: VersenetContent;
@@ -181,8 +190,56 @@ export const useOSStore = create<OSStoreState>()(persist((set, get) => ({
   activeWindowId: null,
   wallpaper: '',
   desktopPreferences: restoreDesktopPreferences(undefined),
-  setDesktopShortcuts: (ids) => set({ desktopPreferences: restoreDesktopPreferences({ shortcutIds: ids }) }),
-  resetDesktopShortcuts: () => set({ desktopPreferences: restoreDesktopPreferences(undefined) }),
+  workspaceRequests: {},
+  workspaceRequestSequence: 0,
+  setOrganizationMembership: (id, status) => {
+    const current = get();
+    if (!current.isLoggedIn || !current.gameplay.player.isAdmin) return { ok: false, message: 'Membership changes require the signed-in world administrator.' };
+    const institution = organization(id);
+    if (!institution || !['active', 'suspended', 'revoked'].includes(status)) return { ok: false, message: 'Unknown organization or membership status.' };
+    set(s => ({ gameplay: { ...s.gameplay, player: { ...s.gameplay.player, organizationMemberships: {
+      ...s.gameplay.player.organizationMemberships,
+      [id]: { status, issuedAt: new Date().toISOString(), issuedBy: s.gameplay.player.name },
+    } } } }));
+    return { ok: true, message: `${institution.name} membership ${status}. Email issuance is separate.` };
+  },
+  linkCitizenHubIdentity: async (id) => {
+    const before = get();
+    if (!before.isLoggedIn || !before.gameplay.player.isAdmin) return { ok: false, message: 'Only the signed-in world administrator can link a player to an AURA identity.' };
+    const { MaidIdentityService } = await import('../services/maidIdentityService');
+    const persons = await MaidIdentityService.readExistingPersons();
+    const matches = persons.filter(candidate => candidate && typeof candidate.id === 'string' && candidate.id === id && !candidate.isRestricted);
+    const person = matches.length === 1 ? matches[0] : undefined;
+    if (!person) return { ok: false, message: 'Choose an existing unrestricted AURA identity.' };
+    const current = get();
+    if (!current.isLoggedIn || !current.gameplay.player.isAdmin || current.gameplay.identity !== before.gameplay.identity || current.gameplay.player.name !== before.gameplay.player.name) {
+      return { ok: false, message: 'The player identity changed. Review the link again.' };
+    }
+    set(s => ({ gameplay: { ...s.gameplay, identity: { ...s.gameplay.identity, canonicalPersonId: person.id } } }));
+    return { ok: true, message: `Citizen Hub linked to ${person.name}. AURA records and issued documents are unchanged.` };
+  },
+  openAppWorkspace: (id, section) => {
+    const destination = resolveAppDestination(id);
+    const target = section || destination.section;
+    if (target) set(s => ({
+      workspaceRequestSequence: s.workspaceRequestSequence + 1,
+      workspaceRequests: {
+        ...s.workspaceRequests,
+        [destination.appId]: { section: target, revision: s.workspaceRequestSequence + 1 },
+      },
+    }));
+    if (get().windows.some(window => window.id === destination.appId)) get().focusWindow(destination.appId);
+    else get().addWindow({ id: destination.appId, contentKey: destination.appId });
+  },
+  consumeWorkspaceRequest: (id, revision) => set(s => {
+    if (s.workspaceRequests[id]?.revision !== revision) return {};
+    const workspaceRequests = { ...s.workspaceRequests };
+    delete workspaceRequests[id];
+    return { workspaceRequests };
+  }),
+  setDesktopShortcuts: (ids) => set(s => ({ desktopPreferences: restoreDesktopPreferences({ ...s.desktopPreferences, shortcutIds: ids }) })),
+  resetDesktopShortcuts: () => set(s => ({ desktopPreferences: restoreDesktopPreferences({ ...s.desktopPreferences, shortcutIds: undefined }) })),
+  setDesktopTheme: (themeId) => set(s => ({ desktopPreferences: restoreDesktopPreferences({ ...s.desktopPreferences, themeId }) })),
   browserUrl: null,
   browserState: initialBrowserState(),
   versenetContent: emptyVersenetContent(),
@@ -356,6 +413,7 @@ export const useOSStore = create<OSStoreState>()(persist((set, get) => ({
       facial: false,
       auraBaseline: false,
       citizenId: null,
+      canonicalPersonId: null,
       barcode: null,
       signalSignature: 'Aura-Code-Alpha',
       profileTags: ['#Netrunner', '#Scholar'],
@@ -1653,6 +1711,7 @@ export const useOSStore = create<OSStoreState>()(persist((set, get) => ({
 
   completeIdentityScan: (data) =>
     set((state) => {
+      if (state.gameplay.player.dgaVerified) return state;
       const newLocked = state.gameplay.lockedApps.filter((a: string) => a !== 'passport' && a !== 'pulse');
       return {
         gameplay: {
@@ -1662,8 +1721,9 @@ export const useOSStore = create<OSStoreState>()(persist((set, get) => ({
           identity: {
             ...state.gameplay.identity,
             ...data,
-            citizenId: data.citizenId || `CY-${Math.floor(1000 + Math.random() * 9000)}-CITIZEN`,
-            barcode: data.barcode || `||| |||| || ||| ${Math.floor(100000 + Math.random() * 900000)}`,
+            citizenId: state.gameplay.identity.citizenId || data.citizenId || `CY-${Math.floor(1000 + Math.random() * 9000)}-CITIZEN`,
+            barcode: state.gameplay.identity.barcode || data.barcode || `||| |||| || ||| ${Math.floor(100000 + Math.random() * 900000)}`,
+            canonicalPersonId: state.gameplay.identity.canonicalPersonId,
           },
           player: {
             ...state.gameplay.player,
@@ -2083,7 +2143,10 @@ export const useOSStore = create<OSStoreState>()(persist((set, get) => ({
   // ------------------------------------------------------------------
   // Window Management & OS Controls
   // ------------------------------------------------------------------
-  addWindow: (app) => set((state) => {
+  addWindow: (app) => {
+    const destination = retiredWindowDestination(app);
+    if (destination) { get().openAppWorkspace(destination.appId, destination.section); return; }
+    set((state) => {
     const maxZ = Math.max(100, ...state.windows.map((w) => w.zIndex || 100));
     const existing = state.windows.find((w) => w.id === app.id);
     if (existing) {
@@ -2111,9 +2174,13 @@ export const useOSStore = create<OSStoreState>()(persist((set, get) => ({
       windows: [...state.windows, newWindow],
       activeWindowId: newWindow.id,
     };
-  }),
+    });
+  },
 
-  toggleApp: (appOrId: any) => set((state) => {
+  toggleApp: (appOrId: any) => {
+    const destination = retiredWindowDestination(appOrId);
+    if (destination) { get().openAppWorkspace(destination.appId, destination.section); return; }
+    set((state) => {
     const appId = typeof appOrId === 'string' ? appOrId : appOrId?.id;
     if (!appId) return state;
     const appObj = typeof appOrId === 'object' ? appOrId : {};
@@ -2150,8 +2217,9 @@ export const useOSStore = create<OSStoreState>()(persist((set, get) => ({
       browser: 'Net Browser',
       mail: 'AureMail Mailbox',
       comms: 'Comms Portal',
-      passport: 'Citizen Record',
-      pulse: 'Mai.space Network',
+      passport: 'Citizen Hub',
+      pulse: 'Pulse',
+      maispace: 'mai.space',
       files: 'File Explorer',
       lore: 'Lore Explorer (Cloud)',
       terminal: 'System Terminal',
@@ -2174,7 +2242,8 @@ export const useOSStore = create<OSStoreState>()(persist((set, get) => ({
       windows: [...state.windows, newWindow],
       activeWindowId: newWindow.id,
     };
-  }),
+    });
+  },
 
   closeWindow: (id) => set((state) => {
     const remaining = state.windows.filter((w) => w.id !== id);
@@ -2239,3 +2308,8 @@ export const useOSStore = create<OSStoreState>()(persist((set, get) => ({
     };
   },
 }));
+
+registerCommunicationsAuthority(() => {
+  const state = useOSStore.getState();
+  return { player: state.gameplay.player, identity: state.gameplay.identity, isLoggedIn: state.isLoggedIn };
+});

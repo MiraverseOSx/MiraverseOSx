@@ -1,7 +1,7 @@
 // Initial phone data structures extracted from PhoneWidget.js
 
 export interface SmsMessage {
-  id: number;
+  id: number | string;
   sender: string;
   text: string;
   time: string;

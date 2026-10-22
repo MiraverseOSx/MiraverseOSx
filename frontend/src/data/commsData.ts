@@ -6,6 +6,10 @@ export type EmailFolder = 'inbox' | 'sent' | 'drafts' | 'outbox' | 'archive' | '
 export type EmailDeliveryStatus = 'delivered' | 'sent' | 'queued' | 'blocked_clearance' | 'blocked_trust' | 'failed';
 
 export interface AureMailAccount {
+  organizationId?: string;
+  issuanceSource?: 'starter' | 'institution' | 'legacy';
+  issuedAt?: string;
+  issuedBy?: string;
   id: string;
   address: string;
   label: string;
@@ -100,7 +104,7 @@ export interface ShadowChatItem {
   time: string;
 }
 
-export const DEFAULT_PLAYER_EMAIL_ACCOUNTS: AureMailAccount[] = [
+export const LEGACY_PLAYER_EMAIL_ACCOUNTS: AureMailAccount[] = [
   {
     id: 'acc-personal',
     address: 'citizen@auremail.aure',
@@ -164,6 +168,11 @@ export const DEFAULT_PLAYER_EMAIL_ACCOUNTS: AureMailAccount[] = [
     signature: 'Faith Medical Group · Clinical Telemetry Division',
   },
 ];
+
+export const DEFAULT_PLAYER_EMAIL_ACCOUNTS: AureMailAccount[] = [{
+  ...LEGACY_PLAYER_EMAIL_ACCOUNTS[0], maid: '', signature: 'Sent via AureMail Personal Relay',
+  issuanceSource: 'starter', roleLabel: 'Personal mailbox',
+}];
 
 export const AUREMAIL_DIRECTORY: AureMailDirectoryContact[] = [
   // Institutional Bureaus & Desks

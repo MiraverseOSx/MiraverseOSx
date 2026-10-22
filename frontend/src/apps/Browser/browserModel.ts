@@ -2,7 +2,7 @@ export const BROWSER_HOME = 'https://versenet.aure';
 export const MAX_BROWSER_TABS = 8;
 export const STARTER_SITES = [
   { name: 'WorkNet', domain: 'worknet.aure', category: 'Work & opportunity', description: 'Find work, read your briefing, and follow your next assignment.' },
-  { name: 'CIVINET', domain: 'civinet.mer', category: 'City services', description: 'Your guide to public services and life in Aureline.' },
+  { name: 'Citizen Hub', domain: 'civinet.mer', category: 'City services', description: 'Open your personal civic workspace, services, and document history.' },
   { name: 'Faith Medical', domain: 'faithmed.aure', category: 'Health & care', description: 'Explore the medical network and its care services.' },
   { name: 'Cycademy', domain: 'cyacademy.edu', category: 'Learning & research', description: 'Browse the academy, research, and educational opportunities.' },
   { name: 'Royal Historic Society', domain: 'royalhistory.mer', category: 'History & archives', description: 'Follow the traces of the city through its historic collections.' },
@@ -17,7 +17,7 @@ export interface BrowserState {
   visits: BrowserVisit[]; bookmarks: BrowserBookmark[];
 }
 
-// Addresses stay inside the fictional network: never open an external frame or execute a scheme.
+// Resolve addresses without executing schemes. External destinations first show an explicit gateway.
 export function resolveBrowserInput(input: string): string {
   const value = input.trim();
   if (!value) return BROWSER_HOME;
@@ -35,6 +35,7 @@ export function browserTitle(url: string): string {
       return section ? `${section} · ${siteNames[parsed.hostname]}` : siteNames[parsed.hostname];
     }
     if (parsed.hostname === 'fieldnotes.aure') return parsed.searchParams.get('title')?.slice(0, 200) || 'Fieldnotes · Public reading';
+    if (parsed.hostname === 'services.aure') return 'Service Directory';
     if (['versenet.aure', 'search.aure', 'versenet'].includes(parsed.hostname)) return parsed.pathname === '/find' ? `${parsed.searchParams.get('q') || 'Search'} — Versenet` : 'Versenet';
     return STARTER_SITES.find(site => site.domain === parsed.hostname)?.name || parsed.hostname;
   } catch { return 'Versenet'; }

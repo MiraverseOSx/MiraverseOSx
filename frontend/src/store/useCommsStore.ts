@@ -1,5 +1,8 @@
 import { createMailOrganizationActions, restoreMailOrganization, type MailOrganizationActions } from '../apps/mail/mailOrganization';
 import { sanitizeMailHtml, escapeMailText } from '../apps/mail/richText';
+import { channelAccess, senderAccess, communicationsAuthority, membershipSource, organization, restoreMailAccounts } from '../integration/communicationsAccess';
+import { restorePhoneThreads } from '../integration/phoneMessages';
+import type { SmsMessage } from '../data/phoneData';
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import {
@@ -114,7 +117,7 @@ ${
 Citizen MAID: ${fromAccount.maid}
 Sender Account: ${fromAccount.address}
 
-Your filing regarding "${cleanSubj}" has been cryptographically signed and indexed in the Orynvell Population Registry. All linked institutional accounts (@auremail.aure, @cyacademy.edu, @worknet.aure, @dga.gov, @faithmed.aure) remain in verified standing.
+Your correspondence regarding "${cleanSubj}" has been received. This receipt does not issue an identity, grant organization membership, or activate additional email accounts.
 
 — Orynvell Civic Identity Bureau`;
     } else if (contact.id === 'dir-faith-intake' || contact.address === 'intake@faithmed.aure' || contact.npcKey === 'ilyra') {
@@ -234,6 +237,14 @@ Your message regarding "${cleanSubj}" was delivered to ${recipientInput}. The re
 }
 
 export interface CommsState extends MailOrganizationActions {
+  phoneThreads: Record<string, SmsMessage[]>;
+  phoneDrafts: Record<string, string>;
+  migratePersonalThreads: () => void;
+  phoneRequest?: { contact?: string; token: string };
+  requestPhoneMessages: (contact?: string) => void;
+  consumePhoneRequest: (token: string) => void;
+  sendPhoneMessage: (contact: string, text: string, sender?: string) => boolean;
+  setPhoneDraft: (contact: string, text: string) => void;
   mailRequest?: { id: string; token: string };
   requestMailMessage: (id: string) => void;
   emails: EmailItem[];
@@ -261,17 +272,17 @@ export interface CommsState extends MailOrganizationActions {
   encryptionActive: boolean;
   messages: Record<string, ChatMessage[]>;
 
-  addChatMessage: (key: string, entry: ChatMessage) => void;
+  addChatMessage: (key: string, entry: ChatMessage) => boolean;
   addEmail: (email: any) => void;
   toggleEncryption: () => void;
   incrementInvestigationFlags: () => void;
-  purgeChannelCorruption: (channelId: string) => void;
+  purgeChannelCorruption: (channelId: string) => boolean;
 
   // AureMail Actions (Decisions 006-011)
   setActiveAccountAddress: (address: string) => void;
   setSelectedSenderAddress: (address: string) => void;
   updateAccountStatus: (address: string, status: 'active' | 'provisional' | 'suspended' | 'revoked') => void;
-  issueInstitutionalAccount: (account: AureMailAccount) => void;
+  issueInstitutionalAccount: (account: AureMailAccount) => { ok: boolean; message: string };
   toggleStarEmail: (id: string) => void;
   toggleArchiveEmail: (id: string) => void;
   moveToTrashEmail: (id: string) => void;
@@ -304,14 +315,35 @@ export interface CommsState extends MailOrganizationActions {
   reportSuspiciousEmail: (emailId: string) => void;
 }
 
+function initialPersonalEmails(): EmailItem[] {
+  return INITIAL_EMAILS.map(mail => {
+    const personal = { ...mail, recipientAddress: DEFAULT_PLAYER_EMAIL_ACCOUNTS[0].address };
+    if (mail.id === 'MSG-002') return { ...personal, subject: 'Your personal AureMail account', body: 'Your personal mailbox is ready: citizen@auremail.aure.\n\nYou begin with one personal account. Organization membership opens relevant Comms channels; an academic, workplace, or institutional email address must be issued separately by the institution.\n\nReview Accounts & memberships in AureMail or Comms. No additional account or organization membership is granted by reading this message.' };
+    if (mail.id === 'MSG-006') return { ...personal, body: 'AureMail handles personal and explicitly issued institutional email, threaded correspondence, files, and official notices.\n\nComms hosts public broadcasts and membership-based shared channels.\n\nPhone Messages holds personal conversations and saved drafts. Existing direct conversation history is available there.\n\nmai.space is the separate social network for profiles, posts, friendships, and communities. Membership and institutional email issuance are separate actions.' };
+    if (mail.id === 'MSG-007') return { ...personal, subject: 'WORKNET civic notices and opportunities', body: 'Civic notices and employment opportunities are available in WORKNET.\n\nTasks, Quests, Missions, Journeys, and Adventures keep their distinct objectives and progression. Review the briefing, perform the work, and claim verified completion once. Opening a notice does not grant membership or additional email accounts.' };
+    return personal;
+  });
+}
+
 export const useCommsStore = create<CommsState>()(
   persist(
     (set, get) => ({
       ...createMailOrganizationActions(set, get),
+      phoneThreads: restorePhoneThreads(undefined),
+      phoneDrafts: {},
+      migratePersonalThreads: () => set(s => ({ phoneThreads: restorePhoneThreads(s.phoneThreads, s.messages) })),
+      requestPhoneMessages: contact => set(s => ({ phoneThreads: restorePhoneThreads(s.phoneThreads, s.messages), phoneRequest: { contact, token: crypto.randomUUID() } })),
+      consumePhoneRequest: token => { if (get().phoneRequest?.token === token) set({ phoneRequest: undefined }); },
+      sendPhoneMessage: (contact, text, sender = 'You') => {
+        if (!Object.hasOwn(get().phoneThreads, contact) || !text.trim()) return false;
+        set(s => ({ phoneThreads: { ...s.phoneThreads, [contact]: [...s.phoneThreads[contact], { id: crypto.randomUUID(), sender, text: text.trim(), time: 'Just now' }] } }));
+        return true;
+      },
+      setPhoneDraft: (contact, text) => { if (Object.hasOwn(get().phoneThreads, contact)) set(s => ({ phoneDrafts: { ...s.phoneDrafts, [contact]: text } })); },
       requestMailMessage: id => { if (get().emails.some(mail => mail.id === id)) set({ mailRequest: { id, token: crypto.randomUUID() } }); },
       // Seeded institutional & personal dispatches
-      emails: INITIAL_EMAILS,
-      playerAccounts: DEFAULT_PLAYER_EMAIL_ACCOUNTS,
+      emails: initialPersonalEmails(),
+      playerAccounts: DEFAULT_PLAYER_EMAIL_ACCOUNTS.map(account => ({ ...account })),
       activeAccountAddress: 'ALL',
       selectedSenderAddress: DEFAULT_PLAYER_EMAIL_ACCOUNTS[0].address,
       starredEmailIds: [],
@@ -391,8 +423,10 @@ export const useCommsStore = create<CommsState>()(
       },
 
       addChatMessage: (key, entry) => {
+        if (!channelAccess(communicationsAuthority().player, key) || ['city-alerts', 'dga-bulletins'].includes(key)) return false;
         const current = get().messages[key] || [];
         set({ messages: { ...get().messages, [key]: [...current, entry] } });
+        return true;
       },
 
       addEmail: (email) => {
@@ -413,40 +447,60 @@ export const useCommsStore = create<CommsState>()(
 
       incrementInvestigationFlags: () => set((s) => ({ investigationFlags: s.investigationFlags + 1 })),
 
-      purgeChannelCorruption: (channelId) => set((s) => ({
-        corruptedChannels: s.corruptedChannels.filter((c) => c !== channelId)
-      })),
+      purgeChannelCorruption: (channelId) => {
+        if (!channelAccess(communicationsAuthority().player, channelId) || !get().corruptedChannels.includes(channelId)) return false;
+        set(s => ({ corruptedChannels: s.corruptedChannels.filter(id => id !== channelId) }));
+        return true;
+      },
 
       setActiveAccountAddress: (address) => {
         const accounts = get().playerAccounts || DEFAULT_PLAYER_EMAIL_ACCOUNTS;
-        const matched = accounts.find((a) => a.address.toLowerCase() === address.toLowerCase() && a.status === 'active');
+        const matched = accounts.find((a) => a.address.toLowerCase() === address.toLowerCase() && senderAccess(communicationsAuthority().player, a));
         set({
           activeAccountAddress: address,
           selectedSenderAddress: matched ? matched.address : get().selectedSenderAddress,
         });
       },
 
-      setSelectedSenderAddress: (address) => set({ selectedSenderAddress: address }),
+      setSelectedSenderAddress: address => {
+        const account = get().playerAccounts.find(item => item.address.toLowerCase() === address.toLowerCase());
+        if (senderAccess(communicationsAuthority().player, account)) set({ selectedSenderAddress: account!.address });
+      },
 
-      updateAccountStatus: (address, status) =>
+      updateAccountStatus: (address, status) => {
+        const authority = communicationsAuthority();
+        if (!authority.isLoggedIn || !authority.player.isAdmin || !['active', 'provisional', 'suspended', 'revoked'].includes(status)) return;
         set((s) => ({
           playerAccounts: s.playerAccounts.map((acc) =>
             acc.address.toLowerCase() === address.toLowerCase() ? { ...acc, status } : acc
           ),
-        })),
+        }));
+      },
 
-      issueInstitutionalAccount: (account) =>
+      issueInstitutionalAccount: (account) => {
+        if (!account || typeof account !== 'object') return { ok: false, message: 'Choose an institution and address.' };
+        const authority = communicationsAuthority();
+        const institution = organization(account.organizationId);
+        if (!authority.isLoggedIn || !authority.player.isAdmin) return { ok: false, message: 'Issuance requires the signed-in world administrator.' };
+        if (!institution || !membershipSource(authority.player, institution.id)) return { ok: false, message: 'An active membership is required before email issuance.' };
+        if (typeof account.address !== 'string' || !new RegExp(`^[a-z0-9._+-]+@${institution.domain.replaceAll('.', '\\.')}$`, 'i').test(account.address)) return { ok: false, message: 'Use a valid address at the selected institution.' };
+        const existing = get().playerAccounts.find(item => item.address.toLowerCase() === account.address.toLowerCase());
+        if (existing && existing.organizationId && existing.organizationId !== institution.id || existing?.accountType === 'personal') return { ok: false, message: 'This address already belongs to another account.' };
+        const issued: AureMailAccount = { id: existing?.id || `issued:${crypto.randomUUID()}`, address: account.address.toLowerCase(), label: `${institution.name} mail`, accountType: institution.type, organizationId: institution.id, institution: institution.name,
+          roleLabel: 'Issued member account', maid: authority.identity.citizenId || '', status: 'active', verified: true, issuanceSource: 'institution', issuedAt: new Date().toISOString(), issuedBy: authority.player.name };
         set((s) => {
           const exists = s.playerAccounts.some((a) => a.address.toLowerCase() === account.address.toLowerCase());
           if (exists) {
             return {
               playerAccounts: s.playerAccounts.map((a) =>
-                a.address.toLowerCase() === account.address.toLowerCase() ? { ...a, ...account, status: 'active', verified: true } : a
+                a.address.toLowerCase() === issued.address ? { ...a, ...issued } : a
               ),
             };
           }
-          return { playerAccounts: [...s.playerAccounts, { ...account, verified: true }] };
-        }),
+          return { playerAccounts: [...s.playerAccounts, issued] };
+        });
+        return { ok: true, message: `${issued.address} issued. Membership alone does not issue email.` };
+      },
 
       toggleStarEmail: (id) =>
         set((s) => ({
@@ -568,14 +622,13 @@ export const useCommsStore = create<CommsState>()(
         const state = get();
         const accounts = state.playerAccounts || DEFAULT_PLAYER_EMAIL_ACCOUNTS;
         const fromAccount =
-          accounts.find((a) => a.address.toLowerCase() === (payload.fromAddress || state.selectedSenderAddress).toLowerCase()) ||
-          accounts[0];
+          accounts.find((a) => a.address.toLowerCase() === (payload.fromAddress || state.selectedSenderAddress).toLowerCase());
 
-        if (!fromAccount || fromAccount.status !== 'active') {
+        if (!senderAccess(communicationsAuthority().player, fromAccount)) {
           return {
             ok: false,
             deliveryStatus: 'failed',
-            reason: `Sender account ${fromAccount?.address || 'unknown'} is currently ${fromAccount?.status || 'unavailable'}.`,
+            reason: `Sender account ${fromAccount?.address || 'unknown'} needs active status and, for institutional mail, current membership and explicit issuance.`,
           };
         }
 
@@ -914,21 +967,22 @@ Your completed form has been verified and recorded in the institutional registry
     }),
     {
       name: 'miraverse-comms',
+      partialize: ({ phoneRequest, ...saved }) => saved,
       merge: (persistedState: any, currentState) => {
         const merged = { ...currentState, ...(persistedState || {}) };
         if (!Array.isArray(merged.emails) || merged.emails.length === 0) {
-          merged.emails = INITIAL_EMAILS;
+          merged.emails = currentState.emails;
         } else {
           // Ensure canonical initial emails carry upgraded multi-account and separated attachment metadata
           const initialById = new Map(INITIAL_EMAILS.map((m) => [m.id, m]));
           merged.emails = merged.emails.filter((m: EmailItem) => m && typeof m.id === 'string' && typeof m.sender === 'string' && typeof m.subject === 'string' && typeof m.body === 'string').map((m: EmailItem) => {
             const canonical = initialById.get(m.id);
-            return canonical ? { ...canonical, read: m.read ?? canonical.read } : { ...m, faction: typeof m.faction === 'string' ? m.faction : 'AureMail', time: typeof m.time === 'string' ? m.time : '', labels: Array.isArray(m.labels) ? m.labels.filter(label => typeof label === 'string') : [], attachments: Array.isArray(m.attachments) ? m.attachments.filter(att => att && typeof att.id === 'string' && typeof att.name === 'string') : [] };
+            return canonical ? { ...canonical, subject: m.subject, body: m.body, recipientAddress: typeof m.recipientAddress === 'string' ? m.recipientAddress : canonical.recipientAddress, read: m.read ?? canonical.read } : { ...m, faction: typeof m.faction === 'string' ? m.faction : 'AureMail', time: typeof m.time === 'string' ? m.time : '', labels: Array.isArray(m.labels) ? m.labels.filter(label => typeof label === 'string') : [], attachments: Array.isArray(m.attachments) ? m.attachments.filter(att => att && typeof att.id === 'string' && typeof att.name === 'string') : [] };
           });
         }
-        if (!Array.isArray(merged.playerAccounts) || merged.playerAccounts.length === 0) {
-          merged.playerAccounts = DEFAULT_PLAYER_EMAIL_ACCOUNTS;
-        }
+        merged.playerAccounts = restoreMailAccounts(merged.playerAccounts, DEFAULT_PLAYER_EMAIL_ACCOUNTS);
+        merged.phoneThreads = restorePhoneThreads(persistedState?.phoneThreads, merged.messages);
+        merged.phoneDrafts = persistedState?.phoneDrafts && typeof persistedState.phoneDrafts === 'object' && !Array.isArray(persistedState.phoneDrafts) ? Object.fromEntries(Object.entries(persistedState.phoneDrafts).filter(([contact, text]) => Object.hasOwn(merged.phoneThreads, contact) && typeof text === 'string')) : {};
         if (!merged.emails.length) merged.emails = INITIAL_EMAILS;
         for (const key of ['starredEmailIds', 'archivedEmailIds', 'trashedEmailIds', 'readEmailIds', 'savedAttachmentIds', 'submittedFormIds', 'blockedAddresses', 'reportedEmailIds']) merged[key] = Array.isArray(merged[key]) ? merged[key].filter((item: unknown) => typeof item === 'string') : [];
         merged.drafts = Array.isArray(merged.drafts) ? merged.drafts.filter(draft => draft && typeof draft.id === 'string' && typeof draft.subject === 'string' && typeof draft.body === 'string').map(draft => ({ ...draft, fromAddress: typeof draft.fromAddress === 'string' ? draft.fromAddress : currentState.selectedSenderAddress, toAddress: typeof draft.toAddress === 'string' ? draft.toAddress : '', cc: typeof draft.cc === 'string' ? draft.cc : '', bcc: typeof draft.bcc === 'string' ? draft.bcc : '', bodyHtml: sanitizeMailHtml(draft.bodyHtml), attachments: Array.isArray(draft.attachments) ? draft.attachments.filter(att => att && typeof att.id === 'string' && typeof att.name === 'string') : [] })) : [];

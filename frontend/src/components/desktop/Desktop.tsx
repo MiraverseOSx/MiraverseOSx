@@ -14,12 +14,18 @@ import DesktopShortcuts from './DesktopShortcuts';
 import logoIcon from '../../assets/images/logo_icon.png';
 import '../../styles/apps/Desktop.css';
 import '../../styles/apps/PersonalDesktop.css';
+import '../../styles/studio-design.css';
+import { desktopThemeStyle } from '../../store/desktopThemes';
+import { useCommsStore } from '../../store/useCommsStore';
 
 export default function Desktop() {
   const { isLoggedIn, windows, isSanctuary, gameplay, wallpaper } = useOSStore();
+  const themeId = useOSStore(state => state.desktopPreferences.themeId);
   const appWorkspaceRef = useRef(null);
   const [authMode, setAuthMode] = useState(null);
   const [isPhoneOpen, setIsPhoneOpen] = useState(false);
+  const phoneRequest = useCommsStore(s => s.phoneRequest);
+  useEffect(() => { if (phoneRequest) setIsPhoneOpen(true); }, [phoneRequest]);
   const [isLauncherOpen, setIsLauncherOpen] = useState(false);
   const [now, setNow] = useState(() => new Date());
   const [pageVisible, setPageVisible] = useState(() => !document.hidden);
@@ -55,7 +61,7 @@ export default function Desktop() {
   }
 
   return (
-    <main className="mira-desktop">
+    <main className="mira-desktop" data-theme={themeId} style={desktopThemeStyle(themeId) as React.CSSProperties}>
       {wallpaper ? <div className="personal-wallpaper-image" aria-hidden="true" style={{ backgroundImage: `linear-gradient(#20132d44, #20132d66), url(${JSON.stringify(wallpaper)})` }}/> : <PurpleWallpaper animated={!reducedMotion && pageVisible}/>}
       <header className="desktop-menubar">
         <div className="desktop-wordmark"><img src={logoIcon} alt="" /><strong>MIRAVERSE<span>OS x</span></strong><span className="desktop-menu-divider" /><span className="desktop-location">Aureline</span></div>

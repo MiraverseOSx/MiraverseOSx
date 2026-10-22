@@ -10,22 +10,20 @@ import {
 
 export const APPS = [
   { id: 'dgaos', title: 'DGAOS Command Center', icon: Shield, category: 'Agency Systems' },
-  { id: 'traceForensics', title: 'TRACE Forensic Workstation', icon: Shield, category: 'Agency Systems' },
   { id: 'documentStudio', title: 'Document Studio', icon: FileText, category: 'Civic Records' },
   { id: 'meridionRegistry', title: 'AURA Citizen Registry', icon: UserCheck, category: 'Civic Records' },
   { id: 'jobs', title: 'WORKNET // Federal Access', icon: Briefcase, category: 'Workplace Portals' },
-  { id: 'board', title: 'CHRONICLE // Notice Board', icon: Bookmark, category: 'Civic Subsystems' },
   { id: 'process', title: 'Process Monitor', icon: Cpu, category: 'Security' },
   { id: 'housing', title: 'HOMECRAFT // Housing', icon: Home, category: 'Personal Apps' },
   { id: 'finance', title: 'ORYN // Treasury & Crypto Ledger', icon: Shield, category: 'Personal Apps' },
   { id: 'vitals', title: 'VITALS // Bio-Aura Matrix', icon: Activity, category: 'Personal Apps' },
   { id: 'campus', title: 'CAMPUS // Cycademy Network', icon: BookOpen, category: 'Civic Subsystems' },
-  { id: 'spellforge', title: 'SpellForge Matrix', icon: Sparkles, category: 'Security' },
   { id: 'browser', title: 'VERSENET // Browser', icon: Globe, category: 'Versenet Web' },
   { id: 'mail', title: 'AureMail Mailbox', icon: Mail, category: 'Communication' },
   { id: 'comms', title: 'COMMS // Institutional Network', icon: MessageSquare, category: 'Workplace Portals' },
-  { id: 'passport', title: 'MIRROR // Citizen Record', icon: UserCheck, category: 'Personal Apps' },
-  { id: 'pulse', title: 'PULSE // Telemetry', icon: Radio, category: 'Civic Subsystems' },
+  { id: 'passport', title: 'Citizen Hub', icon: UserCheck, category: 'Personal Apps' },
+  { id: 'pulse', title: 'PULSE', icon: Radio, category: 'Utility' },
+  { id: 'maispace', title: 'mai.space // Social Network', icon: MessageSquare, category: 'Communication' },
   { id: 'files', title: 'File Explorer', icon: Folder, category: 'Storage' },
   { id: 'lore', title: 'Lore Explorer', icon: BookOpen, category: 'Database' },
   { id: 'terminal', title: 'System Terminal', icon: Terminal, category: 'Intelligence' },
@@ -37,11 +35,9 @@ const DgaosApp = lazy(() => import('../dgaos/apps/DgaosApp'));
 const CommsApp = lazy(() => import('./Comms/CommsApp'));
 const DocumentStudioApp = lazy(() => import('./DocumentStudioApp'));
 const RegistryWorkspaceApp = lazy(() => import('./RegistryWorkspaceApp'));
-const TraceWorkspaceApp = lazy(() => import('./TraceWorkspaceApp'));
-const SpellForgeApp = lazy(() => import('./SpellForgeApp'));
 const CivicProfileApp = lazy(() => import('./CivicProfileApp'));
 const PulseApp = lazy(() => import('./Pulse/PulseApp'));
-const NoticeBoardApp = lazy(() => import('./NoticeBoardApp'));
+const MaiSpaceApp = lazy(() => import('./MaiSpaceApp'));
 const BrowserApp = lazy(() => import('./Browser/BrowserApp'));
 const MailApp = lazy(() => import('./MailApp'));
 const FileExplorerApp = lazy(() => import('./FileExplorerApp'));
@@ -51,7 +47,7 @@ const HousingApp = lazy(() => import('./HousingApp'));
 const JobWorkstationApp = lazy(() => import('./JobWorkstationApp'));
 const FinanceTerminal = lazy(() => import('./FinanceTerminal'));
 const VitalsApp = lazy(() => import('./VitalsApp'));
-const CampusApp = lazy(() => import('./Browser/Portals').then((module) => ({ default: module.CyacademyPortal })));
+const CampusApp = lazy(() => import('./CampusApp'));
 
 // Sleek loading fallback for lazy-loaded apps
 const AppLoadingFallback = ({ name = 'App' }) => (
@@ -171,20 +167,18 @@ export const CONTENTS = {
   dgaos: withSuspense(DgaosApp, 'DGAOS Command Center'),
   documentStudio: withSuspense(DocumentStudioApp, 'Document Studio'),
   meridionRegistry: withSuspense(RegistryWorkspaceApp, 'Citizen Registry'),
-  traceForensics: withSuspense(TraceWorkspaceApp, 'TRACE'),
   files: withSuspense(FileExplorerApp, 'File Explorer'),
   comms: withSuspense(CommsApp, 'Comms'),
   mail: withSuspense(MailApp, 'Mailbox'),
-  spellforge: withSuspense(SpellForgeApp, 'SpellForge'),
-  passport: withSuspense(CivicProfileApp, 'Civic Profile'),
+  passport: withSuspense(CivicProfileApp, 'Citizen Hub'),
   vitals: withSuspense(VitalsApp, 'VITALS Monitor'),
   vault: withSuspense(CivicProfileApp, 'VAULT Storage'),
   campus: withSuspense(CampusApp, 'CAMPUS Registrar'),
   pulse: withSuspense(PulseApp, 'Pulse Network'),
+  maispace: withSuspense(MaiSpaceApp, 'mai.space'),
   terminal: TerminalApp,
   browser: withSuspense(BrowserApp, 'Browser'),
   settings: SettingsApp,
-  board: withSuspense(NoticeBoardApp, 'Notice Board'),
   lore: withSuspense(LoreExplorerApp, 'Lore Explorer'),
   process: withSuspense(ProcessMonitorApp, 'Process Monitor'),
   housing: withSuspense(HousingApp, 'HOMECRAFT // Housing'),

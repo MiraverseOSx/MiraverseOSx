@@ -7,8 +7,10 @@ import {
   Globe, Flame, Folder, Layers, Phone, Radio, Eye, FileText, ExternalLink
 } from 'lucide-react';
 import Button from '../components/ui/button';
-import { getCanonicalCitizens, getActiveCitizenContext, openCitizenInApp, syncCyacademyOrCivicUpdate } from '../integration/citizenBridge';
-import { type CanonicalPerson } from '../services/maidIdentityService';
+import { subscribeCitizenUpdates } from '../integration/citizenEvents';
+import { resolvePersonalCitizen, personalIssuanceHistory } from '../integration/personalCitizen';
+import CitizenServices from './CitizenServices';
+import { MaidIdentityService, type CanonicalPerson } from '../services/maidIdentityService';
 
 const SKILL_ICONS = {
   Programming: Code,
@@ -25,7 +27,7 @@ const SKILL_ICONS = {
 const SKILL_DESCRIPTIONS = {
   Programming: { unlocks: 'New terminal commands, developer tools, NPC apps', raised: 'Coding 101, Programming Club, terminal usage' },
   Networking: { unlocks: 'New network locations, connection speeds, hidden servers', raised: 'Network Architecture class, Cyber Defense Team' },
-  Spellcasting: { unlocks: 'Advanced protocol spells, improved spell accuracy and range', raised: 'Spell Society, SpellForge use, Spell Theory class' },
+  Spellcasting: { unlocks: 'Advanced protocol spells, improved spell accuracy and range', raised: 'Spell Society, Cyacademy magic practice, Spell Theory class' },
   Engineering: { unlocks: 'Hardware upgrades, Robotics Club content, system modification', raised: 'Engineering elective, Robotics Club' },
   Communication: { unlocks: 'Richer NPC dialogue options, gift mechanics, persuasion paths', raised: 'Comms Portal use, social DMs, relationship deepening' },
   Creativity: { unlocks: 'Theme creation, in-OS software development, widget creation', raised: 'Art Club, Interface Weaving class, Publish tab' },
@@ -59,9 +61,9 @@ const SIGNATURE_PATTERNS = [
 export default function CivicProfileApp() {
   const [activeTab, setActiveTab] = useState('record'); // 'record' | 'inventory' | 'skills' | 'clubs' | 'housing' | 'loops'
   const [isFlipped, setIsFlipped] = useState(false);
-  const [canonicalCitizens, setCanonicalCitizens] = useState<CanonicalPerson[]>([]);
   const [selectedMaidPerson, setSelectedMaidPerson] = useState<CanonicalPerson | null>(null);
-  const [syncNotice, setSyncNotice] = useState<string | null>(null);
+  const [recordStatus, setRecordStatus] = useState('');
+  const [personalDocuments, setPersonalDocuments] = useState<Record<string, string>[]>([]);
 
   // Onboarding Scan Wizard States
   const [scanStep, setScanStep] = useState(1); // 1: Fingerprint Multi-Node, 2: Face & Iris, 3: Aura Telemetry, 4: Civic Persona, 5: Holographic ID Issuance
@@ -76,7 +78,7 @@ export default function CivicProfileApp() {
   const [auraProgress, setAuraProgress] = useState(0);
 
   // Customization choices
-  const [citizenName, setCitizenName] = useState('Provisional Citizen');
+  const [citizenName, setCitizenName] = useState(() => useOSStore.getState().gameplay.identity.profileDisplayName || useOSStore.getState().gameplay.player.name || 'Provisional Citizen');
   const [chosenSignature, setChosenSignature] = useState('Aura-Code-Alpha (Resonant)');
   const [chosenTags, setChosenTags] = useState(['#Netrunner', '#Scholar']);
   const [chosenRegion, setChosenRegion] = useState('Aureline Central');
@@ -89,18 +91,39 @@ export default function CivicProfileApp() {
   const advanceAppRank = useOSStore((s) => s.advanceAppRank);
   const completeStarterLoop = useOSStore((s) => s.completeStarterLoop);
 
+  const workspaceRequest = useOSStore(s => s.workspaceRequests.passport);
   useEffect(() => {
-    const loadMaid = async () => {
-      const list = await getCanonicalCitizens();
-      setCanonicalCitizens(list);
-      const ctx = getActiveCitizenContext();
-      const matched = list.find(p => p.maid === ctx?.citizenId || p.legacyRecord === ctx?.citizenId);
-      setSelectedMaidPerson(matched || list[0] || null);
+    if (!workspaceRequest) return;
+    const section = workspaceRequest.section;
+    const allowed = dgaVerified ? ['record', 'inventory', 'skills', 'clubs', 'housing', 'loops', 'documents', 'services'] : ['record', 'documents', 'services'];
+    setActiveTab(allowed.includes(section) ? section : 'record');
+    useOSStore.getState().consumeWorkspaceRequest('passport', workspaceRequest.revision);
+  }, [workspaceRequest]);
+
+  useEffect(() => {
+    let mounted = true;
+    let revision = 0;
+    const loadPersonalRecord = async () => {
+      const current = ++revision;
+      try {
+        const persons = await MaidIdentityService.readExistingPersons();
+        if (!mounted || revision !== current) return;
+        const person = resolvePersonalCitizen(persons, identity);
+        setSelectedMaidPerson(person);
+        setRecordStatus(person ? '' : 'Your gameplay identity is preserved. An AURA record has not been linked to this player.');
+        try { setPersonalDocuments(personalIssuanceHistory(JSON.parse(localStorage.getItem('miraverse-issued-documents') || '[]'), person)); }
+        catch { setPersonalDocuments([]); }
+      } catch {
+        if (mounted && revision === current) { setSelectedMaidPerson(null); setPersonalDocuments([]); setRecordStatus('AURA is unavailable. Your personal progress remains on this device.'); }
+      }
     };
-    loadMaid();
-    window.addEventListener('miraverse-citizen-context', loadMaid);
-    return () => window.removeEventListener('miraverse-citizen-context', loadMaid);
-  }, []);
+    void loadPersonalRecord();
+    const unsubscribe = subscribeCitizenUpdates(() => { void loadPersonalRecord(); });
+    const onDocuments = (event: StorageEvent) => { if (event.key === 'miraverse-issued-documents' || event.key === null) void loadPersonalRecord(); };
+    window.addEventListener('storage', onDocuments);
+    window.addEventListener('miraverse-documents-issued', loadPersonalRecord);
+    return () => { mounted = false; ++revision; unsubscribe(); window.removeEventListener('storage', onDocuments); window.removeEventListener('miraverse-documents-issued', loadPersonalRecord); };
+  }, [identity.citizenId, identity.canonicalPersonId]);
 
   // Handlers for Scanner Steps
   const handleFingerScan = () => {
@@ -158,6 +181,7 @@ export default function CivicProfileApp() {
 
   const handleFinalSubmit = () => {
     completeIdentityScan({
+      profileDisplayName: citizenName,
       fingerprint: true,
       facial: true,
       auraBaseline: true,
@@ -175,31 +199,32 @@ export default function CivicProfileApp() {
   ];
 
   const recordSections = [
-    { id: 'record', label: 'Identity record', icon: User }, { id: 'inventory', label: 'Personal vault', icon: Package },
+    { id: 'record', label: 'My profile', icon: User }, { id: 'services', label: 'Citizen services', icon: Globe },
+    { id: 'documents', label: 'Personal documents', icon: FileText }, { id: 'inventory', label: 'Personal vault', icon: Package },
     { id: 'skills', label: 'Skills & experience', icon: Activity }, { id: 'clubs', label: 'Associations', icon: Users },
     { id: 'housing', label: 'Residence', icon: Home }, { id: 'loops', label: 'World connections', icon: Network },
   ];
   return (
     <div className="civic-workspace">
       <aside className="civic-index" aria-label="Personal record navigation">
-        <span className="workspace-kicker">Mirror / citizen record</span><div className="civic-monogram">{(player?.name || 'Citizen').slice(0, 1)}</div><strong>{player?.name || 'Provisional citizen'}</strong><span className="civic-record-status">{dgaVerified ? 'Identity verified' : 'Awaiting verification'}</span>
-        {dgaVerified && <nav>{recordSections.map(item => { const Icon = item.icon; return <button key={item.id} aria-label={item.label} aria-pressed={activeTab === item.id} onClick={() => setActiveTab(item.id as typeof activeTab)}><Icon size={15} />{item.label}</button>; })}</nav>}
-        <p className="civic-index-note">Your identity, experience, and place in the world.</p>
+        <span className="workspace-kicker">Citizen Hub / personal workspace</span><div className="civic-monogram">{(identity.profileDisplayName || player?.name || 'Citizen').slice(0, 1)}</div><strong>{identity.profileDisplayName || player?.name || 'Provisional citizen'}</strong><span className="civic-record-status">{dgaVerified ? 'Profile ready' : 'Profile setup available'}</span>
+        <nav>{recordSections.filter(item => dgaVerified || ['record', 'documents', 'services'].includes(item.id)).map(item => { const Icon = item.icon; return <button key={item.id} aria-label={item.label} aria-pressed={activeTab === item.id} onClick={() => setActiveTab(item.id as typeof activeTab)}><Icon size={15} />{item.label}</button>; })}</nav>
+        <p className="civic-index-note">Your life and civic services. AURA keeps the official identity record.</p>
       </aside>
       <main className="civic-content">
-        <header className="civic-heading"><span className="workspace-kicker">Aureline civic administration</span><h1>{dgaVerified ? recordSections.find(item => item.id === activeTab)?.label : 'Establish your identity'}</h1></header>
+        <header className="civic-heading"><span className="workspace-kicker">Citizen Hub</span><h1>{!dgaVerified && activeTab === 'record' ? 'Set up your profile' : recordSections.find(item => item.id === activeTab)?.label}</h1></header>
       {/* ── STEP-BY-STEP DEEPENED BIOMETRIC IDENTITY SETUP SCANNER ── */}
-      {!dgaVerified ? (
+      {!dgaVerified && activeTab === 'record' ? (
         <div className="flex-1 flex flex-col items-center justify-center p-6 text-center">
           <div className="w-full max-w-2xl rounded-3xl border border-slate-300/80 bg-white p-8 shadow-xl space-y-6">
             {/* Step Progress Header */}
             <div className="flex items-center justify-between border-b border-slate-200 pb-4">
               <div className="text-left">
                 <h3 className="text-sm font-bold text-[#1d2650] font-serif uppercase tracking-wider flex items-center gap-2">
-                  <Shield size={16} className="text-indigo-600" /> DGA Directive 14-B: Civic Credential Calibration
+                  <Shield size={16} className="text-indigo-600" /> Personal profile calibration
                 </h3>
                 <p className="text-[11px] text-slate-500 mt-0.5">
-                  Complete all five telemetry steps to initialize your holographic municipal record.
+                  Complete the simulated scans to initialize your gameplay profile. Official identity records remain in AURA.
                 </p>
               </div>
               <span className="rounded-full bg-indigo-100 px-3 py-1 font-mono text-[10px] font-bold text-indigo-800">
@@ -318,7 +343,7 @@ export default function CivicProfileApp() {
               <div className="space-y-4 text-left">
                 {/* Legal Name */}
                 <div>
-                  <label className="font-bold text-xs text-[#1d2650] mb-1 block">Citizen Name / Handle:</label>
+                  <label className="font-bold text-xs text-[#1d2650] mb-1 block">Profile display name:</label>
                   <input
                     type="text"
                     value={citizenName}
@@ -404,7 +429,7 @@ export default function CivicProfileApp() {
                       </div>
                       <div>
                         <div className="font-bold text-sm text-[#1d2650]">{citizenName}</div>
-                        <div className="text-[10px] text-indigo-700 font-mono">DGA-CY-9021-CITIZEN</div>
+                        <div className="text-[10px] text-indigo-700 font-mono">{identity.citizenId || 'Local identifier assigned when saved'}</div>
                       </div>
                     </div>
                     <span className="rounded-full bg-emerald-100 px-3 py-1 font-mono text-[10px] font-bold text-emerald-800 flex items-center gap-1 border border-emerald-300">
@@ -443,7 +468,7 @@ export default function CivicProfileApp() {
                   className="w-full py-3.5 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-bold text-xs shadow-lg flex items-center justify-center gap-2 rounded-xl"
                 >
                   <Check size={16} />
-                  <span>Issue Official Citizen Passport & Activate OS</span>
+                  <span>Save personal calibration & activate OS</span>
                 </Button>
               </div>
             )}
@@ -455,94 +480,14 @@ export default function CivicProfileApp() {
           {/* TAB 1: CITIZEN RECORD */}
           {activeTab === 'record' && (
             <div className="space-y-4">
-              {/* Canonical MAID Registry Cross-Application Link Card */}
-              {selectedMaidPerson && (
-                <div className="rounded-2xl border border-indigo-200 bg-gradient-to-r from-indigo-50/80 via-white to-purple-50/80 p-4 shadow-xs flex flex-wrap items-center justify-between gap-3">
-                  <div className="flex items-center gap-3">
-                    <div className="h-11 w-11 rounded-xl overflow-hidden border border-indigo-300 bg-indigo-950 shrink-0">
-                      {selectedMaidPerson.portraitData ? (
-                        <img src={selectedMaidPerson.portraitData} alt={selectedMaidPerson.name} className="h-full w-full object-cover" />
-                      ) : null}
-                    </div>
-                    <div>
-                      <div className="flex items-center gap-2">
-                        <span className="text-[10px] font-mono font-bold uppercase px-2 py-0.5 rounded bg-indigo-900 text-amber-200">
-                          AUTHORITATIVE MAID LINKED
-                        </span>
-                        <span className="font-mono text-xs font-bold text-indigo-900">
-                          {selectedMaidPerson.maid || selectedMaidPerson.legacyRecord}
-                        </span>
-                      </div>
-                      <div className="font-bold text-xs text-slate-900 mt-0.5">
-                        {selectedMaidPerson.name} · <span className="font-normal text-slate-600">{selectedMaidPerson.affiliation} ({selectedMaidPerson.occupation})</span>
-                      </div>
-                      <div className="text-[11px] text-slate-500">
-                        Housing: <strong className="text-indigo-800">{selectedMaidPerson.household || selectedMaidPerson.residency}</strong> · Medical: <strong className="text-teal-800">{selectedMaidPerson.medical}</strong>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="flex flex-wrap items-center gap-2">
-                    <select
-                      aria-label="Select Canonical MAID Citizen"
-                      value={selectedMaidPerson.maid || selectedMaidPerson.legacyRecord}
-                      onChange={(e) => {
-                        const found = canonicalCitizens.find(c => c.maid === e.target.value || c.legacyRecord === e.target.value);
-                        if (found) setSelectedMaidPerson(found);
-                      }}
-                      className="rounded-lg border border-slate-300 bg-white px-2.5 py-1.5 text-xs font-semibold text-slate-800"
-                    >
-                      {canonicalCitizens.map(c => (
-                        <option key={c.id} value={c.maid || c.legacyRecord}>
-                          {c.name} ({c.maid || c.legacyRecord})
-                        </option>
-                      ))}
-                    </select>
-
-                    <button
-                      type="button"
-                      onClick={async () => {
-                        const idKey = selectedMaidPerson.maid || selectedMaidPerson.legacyRecord;
-                        const res = await syncCyacademyOrCivicUpdate(idKey, {
-                          residency: 'Cyacademy Vector Housing Suite 4B · Verified Residence',
-                          household: 'Cyacademy Vector Housing Suite 4B',
-                          academicNote: `Synced MIRROR academic & housing telemetry (Level ${player?.level || 1})`
-                        });
-                        if (res.success && res.person) {
-                          setSelectedMaidPerson(res.person);
-                          setSyncNotice(`Synced Cyacademy & Housing status to ${res.person.maid}!`);
-                          setTimeout(() => setSyncNotice(null), 3500);
-                        }
-                      }}
-                      className="px-3 py-1.5 rounded-lg bg-emerald-700 hover:bg-emerald-600 text-white text-xs font-bold transition"
-                    >
-                      Sync to MAID
-                    </button>
-
-                    <button
-                      type="button"
-                      onClick={() => openCitizenInApp(selectedMaidPerson.maid || selectedMaidPerson.legacyRecord, 'meridionRegistry', { sourceApp: 'passport' })}
-                      className="px-3 py-1.5 rounded-lg bg-[#1d2650] hover:bg-[#2b3875] text-white text-xs font-bold transition flex items-center gap-1"
-                    >
-                      MAID Registry <ExternalLink size={12} />
-                    </button>
-
-                    <button
-                      type="button"
-                      onClick={() => openCitizenInApp(selectedMaidPerson.maid || selectedMaidPerson.legacyRecord, 'documentStudio', { targetDocId: 9, sourceApp: 'passport' })}
-                      className="px-3 py-1.5 rounded-lg bg-amber-100 hover:bg-amber-200 text-amber-950 border border-amber-300 text-xs font-bold transition flex items-center gap-1"
-                    >
-                      <FileText size={12} /> Service Doc
-                    </button>
-                  </div>
+              <div className="citizen-record-source">
+                <Shield size={20}/>
+                <div><strong>{selectedMaidPerson ? 'Linked to your AURA record' : 'Personal gameplay profile'}</strong>
+                  <p>{selectedMaidPerson ? `${selectedMaidPerson.name} · ${selectedMaidPerson.maid || selectedMaidPerson.legacyRecord}` : recordStatus}</p>
+                  <p>Official identity details are read-only here. Browsing another citizen in AURA or DGAOS does not change your profile.</p>
                 </div>
-              )}
-
-              {syncNotice && (
-                <div className="rounded-xl bg-emerald-50 border border-emerald-200 px-4 py-2 text-xs font-bold text-emerald-800">
-                  ✓ {syncNotice}
-                </div>
-              )}
+                {player.isAdmin && <button onClick={() => useOSStore.getState().openAppWorkspace('meridionRegistry')}>Open AURA administration <ExternalLink size={13}/></button>}
+              </div>
 
               {/* Interactive Front & Back Citizen ID Card */}
               <div className="flex justify-center">
@@ -552,17 +497,17 @@ export default function CivicProfileApp() {
                       <div className="flex items-center justify-between border-b border-slate-200 pb-3">
                         <div className="flex items-center gap-3">
                           <div className="h-12 w-12 rounded-2xl bg-gradient-to-br from-[#8c97d6] to-[#5f6ab0] flex items-center justify-center font-bold text-white text-xl shadow-xs">
-                            {(selectedMaidPerson?.name || player?.name || 'P').charAt(0)}
+                            {(selectedMaidPerson?.name || identity.profileDisplayName || player?.name || 'P').charAt(0)}
                           </div>
                           <div>
-                            <div className="font-bold text-sm text-[#1d2650]">{selectedMaidPerson?.name || player?.name || 'Provisional Citizen'}</div>
+                            <div className="font-bold text-sm text-[#1d2650]">{selectedMaidPerson?.name || identity.profileDisplayName || player?.name || 'Provisional Citizen'}</div>
                             <div className="text-[10px] text-slate-500 font-mono">
-                              MAID: {selectedMaidPerson?.maid || identity?.citizenId || 'MAID-OR-00481926'}
+                              {selectedMaidPerson?.maid ? 'MAID' : 'Citizen ID'}: {selectedMaidPerson?.maid || selectedMaidPerson?.legacyRecord || identity?.citizenId || 'Not issued'}
                             </div>
                           </div>
                         </div>
                         <span className="rounded-full bg-emerald-100 px-2.5 py-1 font-mono text-[10px] font-bold text-emerald-800 flex items-center gap-1">
-                          <CheckCircle2 size={12} /> DGA VERIFIED
+                          <CheckCircle2 size={12} /> PROFILE VERIFIED
                         </span>
                       </div>
 
@@ -579,7 +524,7 @@ export default function CivicProfileApp() {
 
                       {/* Barcode Visualization */}
                       <div className="rounded-xl bg-[#FAFAFC] p-3 border border-slate-200 text-center font-mono text-xs text-slate-700 tracking-widest">
-                        {selectedMaidPerson?.maid || identity?.barcode || '||| |||| || ||| MAID-OR-00481926'}
+                        {selectedMaidPerson?.maid || identity?.barcode || 'Not issued'}
                       </div>
 
                       <div className="text-center text-[10px] text-slate-400 italic">
@@ -590,25 +535,25 @@ export default function CivicProfileApp() {
                     <div className="rounded-3xl border border-white/90 bg-[#17213f] p-6 shadow-lg space-y-4 text-white">
                       <div className="flex items-center justify-between border-b border-white/10 pb-3">
                         <div className="font-serif text-sm font-bold text-indigo-200">CITIZEN REVERSE CLEARANCE RECORD</div>
-                        <span className="text-[10px] font-mono text-indigo-300">{selectedMaidPerson?.maid || identity?.citizenId || 'MAID-OR-00481926'}</span>
+                        <span className="text-[10px] font-mono text-indigo-300">{selectedMaidPerson?.maid || selectedMaidPerson?.legacyRecord || identity?.citizenId || 'Not issued'}</span>
                       </div>
 
                       <div className="space-y-2 text-xs">
                         <div className="flex justify-between border-b border-white/10 pb-1.5">
                           <span className="text-slate-400">Clearance Tier:</span>
-                          <span className="font-bold text-amber-300">{selectedMaidPerson?.clearance || `Level ${player?.level || 1} Standard`}</span>
+                          <span className="font-bold text-amber-300">{selectedMaidPerson?.clearance || 'No AURA clearance linked'}</span>
                         </div>
                         <div className="flex justify-between border-b border-white/10 pb-1.5">
                           <span className="text-slate-400">Lineage Status:</span>
-                          <span className="font-bold text-purple-300">{selectedMaidPerson?.ancestry || player?.lineageClass || 'Lightborn · Ellawen Lineage'}</span>
+                          <span className="font-bold text-purple-300">{selectedMaidPerson?.ancestry || player?.lineageClass || 'Not recorded'}</span>
                         </div>
                         <div className="flex justify-between border-b border-white/10 pb-1.5">
                           <span className="text-slate-400">Primary Economy:</span>
-                          <span className="font-bold text-amber-400 font-mono">{player?.credits || 500} ₢ CREDITS</span>
+                          <span className="font-bold text-amber-400 font-mono">{player?.credits ?? 0} ₢ CREDITS</span>
                         </div>
                         <div className="flex justify-between border-b border-white/10 pb-1.5">
                           <span className="text-slate-400">Secondary Rare:</span>
-                          <span className="font-bold text-cyan-400 font-mono">{player?.bits || 25} ◈ BITS</span>
+                          <span className="font-bold text-cyan-400 font-mono">{player?.bits ?? 0} ◈ BITS</span>
                         </div>
                       </div>
 
@@ -621,6 +566,15 @@ export default function CivicProfileApp() {
               </div>
             </div>
           )}
+
+          {activeTab === 'services' && <CitizenServices/>}
+          {activeTab === 'documents' && <section className="citizen-documents" aria-label="Personal document history">
+            <p className="citizen-boundary">Issued document history from your linked AURA identity. These entries keep the name, date, and authority recorded at issuance.</p>
+            {!selectedMaidPerson ? <p>No AURA identity is linked. Other citizens' documents are not shown.</p> : personalDocuments.length === 0 ? <p>No personal document issuances are recorded for this identity.</p> : personalDocuments.map(item => <article key={item.id}>
+              <FileText size={22}/><div><h2>{item.documentType}</h2><strong>{item.citizenName}</strong><p>{item.issuingAuthority} · {item.issuedAt}</p><code>{item.id} · {item.hash}</code></div>
+            </article>)}
+            <p className="citizen-boundary">This is an issuance log. Stored entries do not contain the original document file; this view does not regenerate or reissue it.</p>
+          </section>}
 
           {/* TAB 2: INVENTORY */}
           {activeTab === 'inventory' && (
@@ -724,7 +678,7 @@ export default function CivicProfileApp() {
 
                 <div className="flex items-center gap-2">
                   <Button
-                    onClick={() => openCitizenInApp(selectedMaidPerson?.maid || 'MAID-OR-00481926', 'housing', { sourceApp: 'passport' })}
+                    onClick={() => useOSStore.getState().openAppWorkspace('housing')}
                     size="sm"
                     variant="outline"
                     className="px-3.5 py-2 font-bold"
