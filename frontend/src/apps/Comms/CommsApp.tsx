@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { MessageSquare, Lock, Unlock, Send, Radio, RefreshCw, Shield } from 'lucide-react';
 import { useCommsStore } from '../../store/useCommsStore';
 import { useOSStore } from '../../store/useOSStore';
-import { channelAccess, channelOrganization } from '../../integration/communicationsAccess';
+import { CHANNEL_ORGANIZATIONS, canAcceptInvitation, channelAccess, channelOrganization } from '../../integration/communicationsAccess';
 import { LEGACY_DIRECT_CONTACTS } from '../../integration/phoneMessages';
 import CommunicationsAccessPanel from '../CommunicationsAccessPanel';
 
@@ -39,13 +39,15 @@ export default function CommsApp() {
     <div className="institution-comms-layout"><aside aria-label="Comms channels">
       {groups.map(group => <div key={group.name}><h2>{group.name}</h2>{group.channels.map(channel => {
         const access = channelAccess(player, channel.id);
-        return <button key={channel.id} aria-pressed={activeId === channel.id} onClick={() => { setActiveId(channel.id); setDraft(''); setNotice(''); }}><span>{channel.name}</span><small>{!access ? 'Membership required' : channel.readOnly ? 'Read only' : 'Available'}</small>{!access && <Lock size={13}/>}</button>;
+        const reqOrgId = CHANNEL_ORGANIZATIONS[channel.id];
+        const invited = Boolean(reqOrgId && canAcceptInvitation(player, reqOrgId));
+        return <button key={channel.id} aria-pressed={activeId === channel.id} onClick={() => { setActiveId(channel.id); setDraft(''); setNotice(''); }}><span>{channel.name}</span><small>{!access ? (invited ? 'Invitation pending' : 'Membership required') : channel.readOnly ? 'Read only' : 'Available'}</small>{!access && <Lock size={13}/>}</button>;
       })}</div>)}
       <details><summary>Restricted network destinations</summary>{state.lockedChannels.map(channel => <p key={channel.id}><strong>{channel.name}</strong><small>{channel.req}</small></p>)}</details>
       <details><summary>Earlier direct conversations</summary><p>Personal conversations continue in phone Messages. Their existing history is retained.</p>{Object.entries(LEGACY_DIRECT_CONTACTS).map(([id, name]) => <button key={id} onClick={() => state.requestPhoneMessages(name)}>{name} · open Messages</button>)}</details>
     </aside><main>
       <div className="institution-comms-channel"><div><Radio size={18}/><h2>{active?.name || 'Choose a channel'}</h2><p>{active?.desc}</p></div><button aria-pressed={state.encryptionActive} onClick={state.toggleEncryption}>{state.encryptionActive ? <Lock size={14}/> : <Unlock size={14}/>}{state.encryptionActive ? 'Encrypted' : 'Unencrypted'}</button></div>
-      {!allowed ? <div className="institution-comms-empty"><Shield size={30}/><h2>Membership required</h2><p>{channelOrganization(activeId) || 'This institution'} controls access to this channel. No channel messages are displayed while membership is unavailable.</p><button onClick={() => setAccessOpen(true)}>Review memberships</button></div> : <>
+      {!allowed ? <div className="institution-comms-empty"><Shield size={30}/><h2>{CHANNEL_ORGANIZATIONS[activeId] && canAcceptInvitation(player, CHANNEL_ORGANIZATIONS[activeId]!) ? 'Invitation pending' : 'Membership required'}</h2><p>{channelOrganization(activeId) || 'This institution'} controls access to this channel. No channel messages are displayed while membership is unavailable.</p>{CHANNEL_ORGANIZATIONS[activeId] && canAcceptInvitation(player, CHANNEL_ORGANIZATIONS[activeId]!) && <div className="institution-comms-invite-actions"><button onClick={() => setNotice(useOSStore.getState().acceptOrganizationInvitation(CHANNEL_ORGANIZATIONS[activeId]!).message)}>Accept invitation</button><button onClick={() => setNotice(useOSStore.getState().declineOrganizationInvitation(CHANNEL_ORGANIZATIONS[activeId]!).message)}>Decline</button></div>}<button onClick={() => setAccessOpen(true)}>Review memberships</button></div> : <>
         {corrupted && <div className="institution-comms-notice">Data bleed detected.<button onClick={() => {
           if (!state.purgeChannelCorruption(activeId)) return;
           useOSStore.getState().addXP(25);

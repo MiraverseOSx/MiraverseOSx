@@ -283,6 +283,7 @@ export interface CommsState extends MailOrganizationActions {
   setSelectedSenderAddress: (address: string) => void;
   updateAccountStatus: (address: string, status: 'active' | 'provisional' | 'suspended' | 'revoked') => void;
   issueInstitutionalAccount: (account: AureMailAccount) => { ok: boolean; message: string };
+  revokeInstitutionalAccount: (address: string) => { ok: boolean; message: string };
   toggleStarEmail: (id: string) => void;
   toggleArchiveEmail: (id: string) => void;
   moveToTrashEmail: (id: string) => void;
@@ -371,7 +372,13 @@ export const useCommsStore = create<CommsState>()(
 
       tier2Channels: [
         { id: 'squad-ops-ironspire', name: 'Operation Ironspire Squad', desc: 'Tactical channel for Commander Halvorn intel heist.' },
-        { id: 'subconduit-sweep', name: 'Sub-Conduit Patrol Group', desc: 'Temporary network sweep channel for DGA ops.' }
+        { id: 'subconduit-sweep', name: 'Sub-Conduit Patrol Group', desc: 'Temporary network sweep channel for DGA ops.' },
+        { id: 'royal-archives-desk', name: 'Royal Archives Preservation Desk', desc: 'Archival cataloging, lineage indexes, and Orynvell preservation logs.' },
+        { id: 'oryn-treasury-ledger', name: 'Oryn Treasury Clearinghouse', desc: 'Municipal clearinghouse, stipend audits, and fiscal coordination.' },
+        { id: 'worknet-engineering-grid', name: 'Systems Engineering Grid', desc: 'Infrastructure diagnostics, power routing, and municipal relay maintenance.' },
+        { id: 'civic-council-chambers', name: 'Civic Administration Dispatch', desc: 'Inter-district policy coordination and diplomatic correspondence.' },
+        { id: 'arcadia-reserve-watch', name: 'Arcadia Reserve Ecological Watch', desc: 'Canopy sensors, biome preservation, and sanctuary patrols.' },
+        { id: 'cultural-studio-stage', name: 'Cultural Studio Collective', desc: 'Aureline creative guild, exhibitions, and acoustic resonance broadcasts.' }
       ],
 
       directs: [
@@ -414,6 +421,24 @@ export const useCommsStore = create<CommsState>()(
         ],
         'subconduit-sweep': [
           { id: 'sc-1', user: 'Agent Vance', team: 'DGA', text: 'Sweeping conduit gateways. Report unauthorized PRISM signatures.', time: '09:05 AM' }
+        ],
+        'royal-archives-desk': [
+          { id: 'ra-1', user: 'Master Archivist Rowan', team: 'Archives', text: 'Folio verification for Third Era manuscripts is underway in Vault 2.', time: '09:10 AM' }
+        ],
+        'oryn-treasury-ledger': [
+          { id: 'ot-1', user: 'Auditor Maris', team: 'Treasury', text: 'Cycle 28 clearinghouse settlements balanced across all municipal wards.', time: '09:12 AM' }
+        ],
+        'worknet-engineering-grid': [
+          { id: 'we-1', user: 'Chief Engineer Kael', team: 'Engineering', text: 'Substation 7 load balancing stabilized at 99.4% efficiency.', time: '09:14 AM' }
+        ],
+        'civic-council-chambers': [
+          { id: 'cc-1', user: 'Delegate Liora', team: 'Civic Admin', text: 'Regional Exchange Week briefing packets are ready for diplomatic review.', time: '09:16 AM' }
+        ],
+        'arcadia-reserve-watch': [
+          { id: 'ar-1', user: 'Warden Tali', team: 'Arcadia', text: 'Hydro-canopy misting cycle complete; spore levels nominal in Sector East.', time: '09:18 AM' }
+        ],
+        'cultural-studio-stage': [
+          { id: 'cs-1', user: 'Curator Ember', team: 'Cultural Studio', text: 'Acoustic calibration for the Glassline evening showcase is open.', time: '09:20 AM' }
         ],
         'dm:voss': [ { id: 'dmv-1', user: 'Dr. Voss', team: 'Direct', text: 'Keep your relay sanitized. Report any PRISM anomalies immediately.', time: '09:22 AM' } ],
         'dm:riven': [ { id: 'dmr-1', user: 'Riven', team: 'Direct', text: 'Got a shortcut to the factory? Meet near Block C stairs.', time: '09:05 AM' } ],
@@ -472,9 +497,35 @@ export const useCommsStore = create<CommsState>()(
         if (!authority.isLoggedIn || !authority.player.isAdmin || !['active', 'provisional', 'suspended', 'revoked'].includes(status)) return;
         set((s) => ({
           playerAccounts: s.playerAccounts.map((acc) =>
-            acc.address.toLowerCase() === address.toLowerCase() ? { ...acc, status } : acc
+            acc.address.toLowerCase() === address.toLowerCase()
+              ? (acc.accountType === 'personal' && status !== 'active' ? acc : { ...acc, status })
+              : acc
           ),
         }));
+      },
+
+      revokeInstitutionalAccount: (address) => {
+        const authority = communicationsAuthority();
+        if (!authority.isLoggedIn || !authority.player.isAdmin) {
+          return { ok: false, message: 'Revoking an institutional email account requires the signed-in world administrator.' };
+        }
+        const target = get().playerAccounts.find((acc) => acc.address.toLowerCase() === (address || '').toLowerCase());
+        if (!target) {
+          return { ok: false, message: 'Email account not found.' };
+        }
+        if (target.accountType === 'personal') {
+          return { ok: false, message: 'The starter personal AureMail account cannot be revoked.' };
+        }
+        set((s) => ({
+          playerAccounts: s.playerAccounts.map((acc) =>
+            acc.address.toLowerCase() === target.address.toLowerCase() ? { ...acc, status: 'revoked' } : acc
+          ),
+          selectedSenderAddress:
+            s.selectedSenderAddress.toLowerCase() === target.address.toLowerCase()
+              ? DEFAULT_PLAYER_EMAIL_ACCOUNTS[0].address
+              : s.selectedSenderAddress,
+        }));
+        return { ok: true, message: `${target.address} revoked. Historical correspondence and drafts are retained.` };
       },
 
       issueInstitutionalAccount: (account) => {
@@ -934,7 +985,7 @@ export const useCommsStore = create<CommsState>()(
           body: `Official Form Submission Receipt — ${mail.sender}:
 
 Form Filed: ${att.name} (${att.version || 'v1.0'})
-Citizen MAID: MAID-OR-00481926
+Citizen MAID: ${communicationsAuthority().identity?.citizenId || state.playerAccounts[0]?.maid || 'Unregistered (Pending AURA Verification)'}
 Declaration Notes: ${responseNotes?.trim() || 'Standard Citizen Attestation Confirmed'}
 
 Your completed form has been verified and recorded in the institutional registry.`,

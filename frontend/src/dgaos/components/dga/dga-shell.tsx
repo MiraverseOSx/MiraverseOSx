@@ -66,6 +66,14 @@ import { DgaAgencyFeedDrawer } from './dga-agency-feed-drawer';
 import { DgaWorkWorkspace } from './work-management/dga-work-workspace';
 import DgaServiceWorkspace from './DgaServiceWorkspace';
 import { useOSStore } from '../../../store/useOSStore';
+import {
+  canAccessDgaWorkspace,
+  canAccessTraceLab,
+  filterAuthorizedDgaCases,
+  resolveDGAAuthority,
+  type DGARole,
+  type DgaWorkspaceId,
+} from '@/lib/dga-permissions';
 
 export type DgaTab =
   | 'dashboard'
@@ -87,6 +95,10 @@ interface DgaShellProps {
 
 export function DgaShell({ traceWorkbenchNode }: DgaShellProps) {
   const workspaceRequest = useOSStore(s => s.workspaceRequests.dgaos);
+  const osPlayer = useOSStore(s => s.gameplay.player);
+  const isLoggedIn = useOSStore(s => s.isLoggedIn);
+  const [roleOverride, setRoleOverride] = useState<DGARole | null>(null);
+  const [accessNotice, setAccessNotice] = useState<string | null>(null);
   const [dgaState, setDgaState] = useState<DGAState | null>(null);
   const [activeTab, setActiveTab] = useState<DgaTab>('dashboard');
   const [activeMode, setActiveMode] = useState<'DGA_CORE' | 'TRACE'>('DGA_CORE');
@@ -170,7 +182,35 @@ export function DgaShell({ traceWorkbenchNode }: DgaShellProps) {
     );
   }
 
+  const dgaAuthority = resolveDGAAuthority({
+    profile: dgaState.profile,
+    player: osPlayer,
+    isLoggedIn,
+    roleOverride,
+  });
+  const authorizedCases = filterAuthorizedDgaCases(dgaState.cases, dgaAuthority);
+  const effectiveTab: DgaTab = canAccessDgaWorkspace(activeTab as DgaWorkspaceId, dgaAuthority).allowed
+    ? activeTab
+    : dgaAuthority.defaultWorkspace;
+
+  const handleNavigateTab = (tab: string) => {
+    const check = canAccessDgaWorkspace(tab as DgaWorkspaceId, dgaAuthority);
+    if (!check.allowed) {
+      setAccessNotice(check.reason || 'Unauthorized workspace');
+      return;
+    }
+    setAccessNotice(null);
+    setActiveTab(tab as DgaTab);
+    setActiveMode('DGA_CORE');
+  };
+
   const handleLaunchTrace = () => {
+    const traceAuth = canAccessTraceLab(dgaAuthority);
+    if (!traceAuth.allowed) {
+      setAccessNotice(traceAuth.reason || 'TRACE Forensic Laboratory access requires verified DGA/TRACE credentials.');
+      return;
+    }
+    setAccessNotice(null);
     setActiveMode('TRACE');
   };
 
@@ -180,6 +220,11 @@ export function DgaShell({ traceWorkbenchNode }: DgaShellProps) {
   };
 
   const handleOpenTraceWithCase = (traceCaseId: string) => {
+    const traceAuth = canAccessTraceLab(dgaAuthority);
+    if (!traceAuth.allowed) {
+      setAccessNotice(traceAuth.reason || 'TRACE Forensic Laboratory access requires verified DGA/TRACE credentials.');
+      return;
+    }
     setActiveMode('TRACE');
     if (typeof window !== 'undefined') {
       window.dispatchEvent(new CustomEvent('trace:open-case', { detail: { caseId: traceCaseId } }));
@@ -187,6 +232,11 @@ export function DgaShell({ traceWorkbenchNode }: DgaShellProps) {
   };
 
   const handleTransmitTraceResult = async () => {
+    if (!dgaAuthority.canTransmitTraceFindings) {
+      setAccessNotice('Transmitting certified TRACE forensic findings requires Forensic Criminalist, Medical Liaison, or Command Director authorization.');
+      setBridgeResultModalOpen(false);
+      return;
+    }
     const activeCase = dgaState.cases.find((c) => c.id === dgaState.activeCaseId) || dgaState.cases[0];
     const freqId = activeCase.forensicRequests[0]?.id || 'FREQ-194-01';
 
@@ -244,7 +294,7 @@ export function DgaShell({ traceWorkbenchNode }: DgaShellProps) {
           </button>
 
           <button
-            onClick={() => setActiveMode('TRACE')}
+            onClick={() => handleLaunchTrace()}
             className={`h-[22px] px-[6px] rounded-[2px] text-[10.5px] font-bold flex items-center gap-1 transition-all cursor-pointer ${
               activeMode === 'TRACE'
                 ? 'bg-[#524f77] text-white shadow-xs'
@@ -345,7 +395,7 @@ export function DgaShell({ traceWorkbenchNode }: DgaShellProps) {
               {dgaState.profile.name}
             </span>
             <span className="text-[9.5px] bg-amber-950/60 text-amber-300 border border-amber-800/80 px-1 rounded font-mono font-bold shrink-0">
-              LVL {dgaState.profile.clearanceLevel}
+              {dgaAuthority.roleLabel} · LVL {dgaAuthority.clearanceLevel}
             </span>
           </button>
 
@@ -372,15 +422,15 @@ export function DgaShell({ traceWorkbenchNode }: DgaShellProps) {
       <div className="flex-1 flex overflow-hidden">
         {/* PERSISTENT APPLICATION NAVIGATION RAIL (Visible throughout DGA CORE & systems unless collapsed) */}
         <DgaAppRail
-          currentTab={activeTab}
+          currentTab={effectiveTab}
           currentMode={activeMode}
           onNavigateTab={(tab) => {
-            setActiveTab(tab as any);
+            handleNavigateTab(tab);
             setActiveMode('DGA_CORE');
           }}
           onLaunchTrace={handleLaunchTrace}
           onOpenProfile={() => setIsProfileModalOpen(true)}
-          cases={dgaState.cases}
+          cases={authorizedCases}
           communications={dgaState.communications}
           alerts={dgaState.alerts}
           profile={dgaState.profile}
@@ -391,16 +441,22 @@ export function DgaShell({ traceWorkbenchNode }: DgaShellProps) {
         {/* WORKSPACE CONTENT AREA */}
         {activeMode === 'DGA_CORE' ? (
           <main className="min-w-0 flex-1 flex flex-col overflow-hidden bg-[#e9e8f1]">
-            {activeTab === 'dashboard' && (
+            {accessNotice && (
+              <div role="status" className="bg-amber-950 text-amber-200 border-b border-amber-700 px-3 py-1.5 text-xs flex items-center justify-between shrink-0">
+                <span>{accessNotice}</span>
+                <button onClick={() => setAccessNotice(null)} className="text-amber-300 hover:text-white font-bold px-1">✕</button>
+              </div>
+            )}
+            {effectiveTab === 'dashboard' && (
               <DgaDashboard
-                cases={dgaState.cases}
+                cases={authorizedCases}
                 alerts={dgaState.alerts}
                 profile={dgaState.profile}
                 activityFeed={dgaState.activityFeed}
                 scheduledEvents={dgaState.scheduledEvents}
                 communications={dgaState.communications}
                 onNavigateTab={(tab: string) => {
-                  setActiveTab(tab as any);
+                  handleNavigateTab(tab);
                   setActiveMode('DGA_CORE');
                 }}
                 onSelectCase={handleSelectCase}
@@ -409,22 +465,22 @@ export function DgaShell({ traceWorkbenchNode }: DgaShellProps) {
               />
             )}
 
-            {activeTab === 'cases' && (
+            {effectiveTab === 'cases' && (
               <DgaCaseRegistry
-                cases={dgaState.cases}
+                cases={authorizedCases}
                 selectedCaseId={dgaState.activeCaseId}
                 onSelectCase={handleSelectCase}
                 onOpenTraceWithCase={handleOpenTraceWithCase}
                 onNavigateTab={(tab: string) => {
-                  setActiveTab(tab as any);
+                  handleNavigateTab(tab);
                   setActiveMode('DGA_CORE');
                 }}
               />
             )}
 
-            {activeTab === 'assignments' && (
+            {effectiveTab === 'assignments' && (
               <DgaWorkWorkspace
-                cases={dgaState.cases}
+                cases={authorizedCases}
                 favoriteTaskIds={dgaState.favoriteTaskIds}
                 savedFilters={dgaState.savedFilters}
                 automationRules={dgaState.automationRules}
@@ -436,80 +492,80 @@ export function DgaShell({ traceWorkbenchNode }: DgaShellProps) {
               />
             )}
 
-            {activeTab === 'comms' && (
+            {effectiveTab === 'comms' && (
               <DgaCommsHub
                 messages={dgaState.communications}
-                cases={dgaState.cases}
+                cases={authorizedCases}
                 onOpenCase={handleSelectCase}
                 onNavigateTab={(tab: string) => {
-                  setActiveTab(tab as any);
+                  handleNavigateTab(tab);
                   setActiveMode('DGA_CORE');
                 }}
               />
             )}
 
-            {activeTab === 'phone' && (
+            {effectiveTab === 'phone' && (
               <DgaPhoneConsole
                 onOpenCase={handleSelectCase}
                 onNavigateTab={(tab: string) => {
-                  setActiveTab(tab as any);
+                  handleNavigateTab(tab);
                   setActiveMode('DGA_CORE');
                 }}
                 activeContactIdOverride={phoneActiveContactOverride}
               />
             )}
 
-            {activeTab === 'medstat' && (
+            {effectiveTab === 'medstat' && (
               <DgaMedicalChart
-                cases={dgaState.cases}
+                cases={authorizedCases}
                 activeCaseId={dgaState.activeCaseId}
                 onOpenCase={handleSelectCase}
                 onNavigateTab={(tab: string) => {
-                  setActiveTab(tab as any);
+                  handleNavigateTab(tab);
                   setActiveMode('DGA_CORE');
                 }}
               />
             )}
 
-            {activeTab === 'investigation' && (
+            {effectiveTab === 'investigation' && (
               <DgaInvestigationHub
                 onOpenCase={handleSelectCase}
                 onLaunchTrace={handleLaunchTrace}
               />
             )}
 
-            {activeTab === 'intelligence' && (
+            {effectiveTab === 'intelligence' && (
               <DgaIntelligenceHub
                 onOpenCase={handleSelectCase}
                 onNavigateTab={(tab: string) => {
-                  setActiveTab(tab as any);
+                  handleNavigateTab(tab);
                   setActiveMode('DGA_CORE');
                 }}
               />
             )}
 
-            {activeTab === 'government' && (
+            {effectiveTab === 'government' && (
               <DgaGovernmentHub
                 onOpenCase={handleSelectCase}
                 onNavigateTab={(tab: string) => {
-                  setActiveTab(tab as any);
+                  handleNavigateTab(tab);
                   setActiveMode('DGA_CORE');
                 }}
               />
             )}
 
-            {activeTab === 'services' && <DgaServiceWorkspace/>}
-            {activeTab === 'extranet' && (
+            {effectiveTab === 'services' && <DgaServiceWorkspace/>}
+            {effectiveTab === 'extranet' && (
               <DgaExtranetBrowser
                 onOpenCase={handleSelectCase}
                 onNavigateTab={(tab: string) => {
-                  setActiveTab(tab as any);
+                  handleNavigateTab(tab);
                   setActiveMode('DGA_CORE');
                 }}
               />
             )}
 
-            {activeTab === 'world' && (
+            {effectiveTab === 'world' && (
               <DgaWorldViewer
                 people={dgaState.people}
                 organizations={dgaState.organizations}

@@ -39,6 +39,7 @@ import { installDgaosApiInterceptor } from '../services/traceApiInterceptor';
 import { traceDurableStore, SaveState } from '../services/traceDurableStore';
 import TraceClosingSummaryModal from '../components/TraceClosingSummaryModal';
 import { useOSStore } from '@/store/useOSStore';
+import { authorizeTraceView, canAccessTraceLab, resolveDGAAuthority } from '../lib/dga-permissions';
 import '../styles/dgaos-integrated.css';
 
 // Ensure in-browser API interception is active
@@ -119,6 +120,10 @@ export default function TraceApp() {
   const [reportToTransmit, setReportToTransmit] = useState<string | null>(null);
   const [transmitting, setTransmitting] = useState(false);
   const [transmitNotice, setTransmitNotice] = useState<string | null>(null);
+  const osPlayer = useOSStore(s => s.gameplay.player);
+  const isLoggedIn = useOSStore(s => s.isLoggedIn);
+  const dgaAuthority = resolveDGAAuthority({ player: osPlayer, isLoggedIn });
+  const traceAccess = canAccessTraceLab(dgaAuthority);
 
   // 1. Session Restoration on Mount
   useEffect(() => {
@@ -176,6 +181,12 @@ export default function TraceApp() {
   }, [view, selectedRecordId, tabs, activeTabId]);
 
   function navigate(viewName: string, recordId?: string | null) {
+    const viewCheck = authorizeTraceView(viewName, dgaAuthority);
+    if (!viewCheck.allowed) {
+      setTransmitNotice(viewCheck.reason || `Access to ${viewName} requires division authorization.`);
+      setTimeout(() => setTransmitNotice(null), 5000);
+      return;
+    }
     setView(viewName);
     setSelectedRecordId(recordId || null);
 
@@ -228,6 +239,11 @@ export default function TraceApp() {
   }
 
   async function handleTransmitFindings(reportId: string) {
+    if (!dgaAuthority.canTransmitTraceFindings) {
+      setTransmitNotice('Transmitting certified TRACE laboratory findings requires Forensic Criminalist, Medical Liaison, or Command Director credentials.');
+      setTransmitModalOpen(false);
+      return;
+    }
     setTransmitting(true);
     try {
       const res = await traceDurableStore.transmitFindings(reportId, 'Lead Forensic Specialist');
@@ -246,7 +262,16 @@ export default function TraceApp() {
   );
 
   return (
-    <div className="dga-workstation-root flex-1 flex flex-col h-full w-full overflow-hidden bg-[#ebe9f3] text-[#0f0d1a] font-sans select-none relative">
+    !traceAccess.allowed ? (
+      <div className="dga-workstation-root flex-1 flex flex-col items-center justify-center h-full w-full bg-[#181722] text-white p-8 font-sans select-none">
+        <div className="max-w-md w-full bg-[#222030] border border-[#3c3954] rounded-xl p-6 text-center space-y-3 shadow-2xl">
+          <ShieldCheck size={36} className="mx-auto text-amber-400" />
+          <h2 className="text-base font-bold tracking-wide">TRACE Forensic Workstation Restricted</h2>
+          <p className="text-xs text-[#b8b5d1] leading-relaxed">{traceAccess.reason}</p>
+          <p className="text-[11px] font-mono text-amber-300">Active Role: {dgaAuthority.roleLabel} (Clearance Level {dgaAuthority.clearanceLevel})</p>
+        </div>
+      </div>
+    ) : <div className="dga-workstation-root flex-1 flex flex-col h-full w-full overflow-hidden bg-[#ebe9f3] text-[#0f0d1a] font-sans select-none relative">
       {/* ─── 1. TOP COMMAND STRIP (Tactical Agency Toolbar) ─── */}
       <header className="h-[42px] min-h-[42px] max-h-[42px] bg-[#1e1f2b] border-b border-[#2e3042] px-3 flex items-center justify-between gap-3 sticky top-0 z-40 shadow-sm text-white select-none">
         <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-[#a855f7]/50 to-transparent" />

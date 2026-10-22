@@ -340,7 +340,9 @@ async function persistVerified(caseId: string) {
 /**
  * Runs a periodic simulation cycle (typically every 3-5 seconds)
  */
+import { isWorldPaused } from '../../integration/worldStateManager';
 export async function runSimulationTick(): Promise<void> {
+  if (isWorldPaused()) return;
   const { updatedState, hasChanges, events } = processSimulationTick(cachedState);
   cachedState = updatedState;
   if (hasChanges) {

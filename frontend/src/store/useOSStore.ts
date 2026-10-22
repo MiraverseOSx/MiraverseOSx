@@ -5,7 +5,8 @@ import { createVersenetActions, type VersenetActions } from './versenetActions';
 import { emptyVersenetContent, restoreVersenetContent, type VersenetContent } from '../apps/Browser/searchCatalog';
 import { restoreDesktopPreferences, type DesktopPreferences } from './desktopPreferences';
 import { resolveAppDestination, retiredWindowDestination, type WorkspaceRequest } from './appNavigation';
-import { organization, registerCommunicationsAuthority } from '../integration/communicationsAccess';
+import { canAcceptInvitation, invitationForOrganization, membershipSource, organization, registerCommunicationsAuthority } from '../integration/communicationsAccess';
+import { isWorldPaused } from '../integration/worldStateManager';
 import { initialBrowserState, restoreBrowserState, type BrowserState } from '../apps/Browser/browserModel';
 export type { BrowserState, BrowserTab, TabHistory } from '../apps/Browser/browserModel';
 import { create } from 'zustand';
@@ -68,6 +69,11 @@ export interface OSStoreState extends AssignmentFlowActions, ProgressionActions,
   consumeWorkspaceRequest: (id: string, revision: number) => void;
   linkCitizenHubIdentity: (id: string) => Promise<{ ok: boolean; message: string }>;
   setOrganizationMembership: (id: string, status: 'active' | 'suspended' | 'revoked') => { ok: boolean; message: string };
+  inviteToOrganization: (id: string, note?: string) => { ok: boolean; message: string };
+  acceptOrganizationInvitation: (id: string) => { ok: boolean; message: string };
+  declineOrganizationInvitation: (id: string) => { ok: boolean; message: string };
+  removeOrganizationMembership: (id: string, reason?: string) => { ok: boolean; message: string };
+  leaveOrganizationMembership: (id: string) => { ok: boolean; message: string };
   setDesktopShortcuts: (ids: string[]) => void;
   resetDesktopShortcuts: () => void;
   setDesktopTheme: (id: string) => void;
@@ -202,6 +208,133 @@ export const useOSStore = create<OSStoreState>()(persist((set, get) => ({
       [id]: { status, issuedAt: new Date().toISOString(), issuedBy: s.gameplay.player.name },
     } } } }));
     return { ok: true, message: `${institution.name} membership ${status}. Email issuance is separate.` };
+  },
+  inviteToOrganization: (id, note) => {
+    const current = get();
+    if (!current.isLoggedIn || !current.gameplay.player.isAdmin) return { ok: false, message: 'Organization invitations require the signed-in world administrator.' };
+    const institution = organization(id);
+    if (!institution) return { ok: false, message: 'Unknown organization.' };
+    if (membershipSource(current.gameplay.player, id)) return { ok: false, message: `${institution.name} membership is already active.` };
+    const invitation = {
+      id: `INV:${institution.id}:${Date.now()}`,
+      organizationId: institution.id,
+      status: 'pending' as const,
+      invitedAt: new Date().toISOString(),
+      invitedBy: current.gameplay.player.name || 'World Administrator',
+      note: typeof note === 'string' && note.trim() ? note.trim() : `Official channel membership invitation from ${institution.name}.`,
+    };
+    set(s => ({
+      gameplay: {
+        ...s.gameplay,
+        player: {
+          ...s.gameplay.player,
+          organizationInvitations: {
+            ...(s.gameplay.player.organizationInvitations || {}),
+            [institution.id]: invitation,
+          },
+        },
+      },
+    }));
+    return { ok: true, message: `Invitation issued for ${institution.name}. The player must accept the invitation to activate Comms access.` };
+  },
+  acceptOrganizationInvitation: (id) => {
+    const current = get();
+    if (!current.isLoggedIn) return { ok: false, message: 'Sign in to accept an organization invitation.' };
+    const institution = organization(id);
+    if (!institution) return { ok: false, message: 'Unknown organization.' };
+    const invite = invitationForOrganization(current.gameplay.player, id);
+    if (!invite || !canAcceptInvitation(current.gameplay.player, id)) {
+      return { ok: false, message: `No pending invitation found for ${institution.name}.` };
+    }
+    const now = new Date().toISOString();
+    set(s => ({
+      gameplay: {
+        ...s.gameplay,
+        player: {
+          ...s.gameplay.player,
+          organizationInvitations: {
+            ...(s.gameplay.player.organizationInvitations || {}),
+            [institution.id]: { ...invite, status: 'accepted', respondedAt: now },
+          },
+          organizationMemberships: {
+            ...(s.gameplay.player.organizationMemberships || {}),
+            [institution.id]: { status: 'active', issuedAt: now, issuedBy: invite.invitedBy, via: 'invitation' },
+          },
+        },
+      },
+    }));
+    return { ok: true, message: `Joined ${institution.name}. Organization Comms channels are now accessible; institutional email requires separate issuance.` };
+  },
+  declineOrganizationInvitation: (id) => {
+    const current = get();
+    if (!current.isLoggedIn) return { ok: false, message: 'Sign in to respond to an organization invitation.' };
+    const institution = organization(id);
+    if (!institution) return { ok: false, message: 'Unknown organization.' };
+    const invite = invitationForOrganization(current.gameplay.player, id);
+    if (!invite || invite.status !== 'pending') {
+      return { ok: false, message: `No pending invitation found for ${institution.name}.` };
+    }
+    const now = new Date().toISOString();
+    set(s => ({
+      gameplay: {
+        ...s.gameplay,
+        player: {
+          ...s.gameplay.player,
+          organizationInvitations: {
+            ...(s.gameplay.player.organizationInvitations || {}),
+            [institution.id]: { ...invite, status: 'declined', respondedAt: now },
+          },
+        },
+      },
+    }));
+    return { ok: true, message: `Declined ${institution.name} invitation.` };
+  },
+  removeOrganizationMembership: (id, reason) => {
+    const current = get();
+    if (!current.isLoggedIn || !current.gameplay.player.isAdmin) return { ok: false, message: 'Removing a member from an organization requires the signed-in world administrator.' };
+    const institution = organization(id);
+    if (!institution) return { ok: false, message: 'Unknown organization.' };
+    const now = new Date().toISOString();
+    const existingInvite = invitationForOrganization(current.gameplay.player, id);
+    set(s => ({
+      gameplay: {
+        ...s.gameplay,
+        player: {
+          ...s.gameplay.player,
+          organizationInvitations: existingInvite
+            ? { ...(s.gameplay.player.organizationInvitations || {}), [institution.id]: { ...existingInvite, status: 'revoked', respondedAt: now } }
+            : s.gameplay.player.organizationInvitations,
+          organizationMemberships: {
+            ...(s.gameplay.player.organizationMemberships || {}),
+            [institution.id]: { status: 'revoked', issuedAt: now, issuedBy: s.gameplay.player.name, via: 'admin', ...(reason ? { reason } : {}) },
+          },
+        },
+      },
+    }));
+    return { ok: true, message: `Removed from ${institution.name}. Channel and institutional sender access closed; existing work and history remain intact.` };
+  },
+  leaveOrganizationMembership: (id) => {
+    const current = get();
+    if (!current.isLoggedIn) return { ok: false, message: 'Sign in to leave an organization.' };
+    const institution = organization(id);
+    if (!institution) return { ok: false, message: 'Unknown organization.' };
+    if (!membershipSource(current.gameplay.player, id)) {
+      return { ok: false, message: `You do not have an active membership with ${institution.name}.` };
+    }
+    const now = new Date().toISOString();
+    set(s => ({
+      gameplay: {
+        ...s.gameplay,
+        player: {
+          ...s.gameplay.player,
+          organizationMemberships: {
+            ...(s.gameplay.player.organizationMemberships || {}),
+            [institution.id]: { status: 'revoked', issuedAt: now, issuedBy: s.gameplay.player.name || 'Player Citizen', via: 'self_left' },
+          },
+        },
+      },
+    }));
+    return { ok: true, message: `Left ${institution.name}. Organization Comms channels are now locked.` };
   },
   linkCitizenHubIdentity: async (id) => {
     const before = get();
@@ -438,6 +571,8 @@ export const useOSStore = create<OSStoreState>()(persist((set, get) => ({
       completedWorknetMissionIds: [],
       worknetMissionProgress: {},
       employmentContracts: {},
+      organizationMemberships: {},
+      organizationInvitations: {},
       worknetOrders: {},
       assignmentJournal: emptyAssignmentJournal(),
       worldJournal: emptyWorldJournal(),
@@ -564,6 +699,7 @@ export const useOSStore = create<OSStoreState>()(persist((set, get) => ({
 
   advanceTime: () =>
     set((state) => {
+      if (isWorldPaused()) return state;
       const nextIndex = (state.gameplay.timeSegmentIndex + 1) % 4;
       const isNight = nextIndex === 3;
       const nextCycle = nextIndex === 0 ? state.gameplay.timeCycleCount + 1 : state.gameplay.timeCycleCount;

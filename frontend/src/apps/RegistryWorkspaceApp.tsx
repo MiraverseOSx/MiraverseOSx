@@ -30,6 +30,7 @@ import {
 import { generateProceduralPortrait, persistCitizenPortrait } from '../services/portraitService';
 import PortraitStudioModal from '../components/portrait/PortraitStudioModal';
 import { useOSStore } from '../store/useOSStore';
+import { authorizeAuraAction, evaluateAuraRecordPermissions, resolveAuraActor } from '../integration/auraPermissions';
 
 const ARCHETYPE_OPTIONS: { id: CharacterArchetype; label: string; badge: string; desc: string }[] = [
   {
@@ -78,6 +79,10 @@ const OFFICIAL_DOC_CARDS = [
 
 export default function RegistryWorkspaceApp() {
   const isWorldAdmin = useOSStore(s => Boolean(s.gameplay.player.isAdmin));
+  const osPlayer = useOSStore(s => s.gameplay.player);
+  const osIdentity = useOSStore(s => s.gameplay.identity);
+  const isLoggedIn = useOSStore(s => s.isLoggedIn);
+  const auraActor = useMemo(() => resolveAuraActor({ player: osPlayer, identity: osIdentity, isLoggedIn }), [osPlayer, osIdentity, isLoggedIn]);
   const [linkingCitizen, setLinkingCitizen] = useState(false);
   const [activeTab, setActiveTab] = useState<'lookup' | 'add' | 'ecosystem' | 'migration'>('lookup');
   const [dossierSection, setDossierSection] = useState<'overview' | 'ancestry' | 'institutions' | 'relationships' | 'documents' | 'edit'>('overview');
@@ -170,6 +175,7 @@ export default function RegistryWorkspaceApp() {
   // Filtered population list
   const filteredPersons = useMemo(() => {
     return persons.filter(p => {
+      if (p.isRestricted && !evaluateAuraRecordPermissions(p, auraActor).canViewRecord) return false;
       if (statusFilter !== 'all' && p.maidStatus !== statusFilter) return false;
       if (speciesFilter !== 'ALL' && !p.species.toLowerCase().includes(speciesFilter.toLowerCase())) return false;
       if (affiliationFilter !== 'ALL') {
@@ -196,7 +202,7 @@ export default function RegistryWorkspaceApp() {
       }
       return true;
     });
-  }, [persons, statusFilter, speciesFilter, affiliationFilter, searchQuery]);
+  }, [persons, statusFilter, speciesFilter, affiliationFilter, searchQuery, auraActor]);
 
   const handleSearch = async (e?: React.FormEvent) => {
     if (e) e.preventDefault();
@@ -209,7 +215,10 @@ export default function RegistryWorkspaceApp() {
     }
 
     setIsSearching(true);
-    const result = await MaidIdentityService.lookupPerson(searchQuery, { allowRestricted: true });
+    const result = await MaidIdentityService.lookupPerson(searchQuery, {
+      allowRestricted: evaluateAuraRecordPermissions({ isRestricted: true }, auraActor).canViewRestrictedFields,
+      actor: auraActor,
+    });
     setLookupResult(result);
     if (result.person) {
       setEditDraft(result.person);
@@ -223,6 +232,18 @@ export default function RegistryWorkspaceApp() {
   };
 
   const handleSelectPerson = async (person: CanonicalPerson) => {
+    const perms = evaluateAuraRecordPermissions(person, auraActor);
+    if (!perms.canViewRecord) {
+      setLookupResult({
+        status: 'restricted',
+        person: null,
+        matchedBy: person.maid ? 'maid' : 'legacy_alias',
+        matchedQuery: person.maid || person.legacyRecord,
+        message: perms.restrictionReason || 'Access Restricted: Compartmented classification level required.'
+      });
+      setActiveTab('lookup');
+      return;
+    }
     ++loadVersionRef.current;
     setLookupResult({
       status: person.maidStatus === 'pending_migration' ? 'pending_migration' : 'found',
@@ -242,7 +263,10 @@ export default function RegistryWorkspaceApp() {
   const handleQuickLookup = async (idOrMaid: string) => {
     setSearchQuery(idOrMaid);
     setIsSearching(true);
-    const result = await MaidIdentityService.lookupPerson(idOrMaid, { allowRestricted: true });
+    const result = await MaidIdentityService.lookupPerson(idOrMaid, {
+      allowRestricted: evaluateAuraRecordPermissions({ isRestricted: true }, auraActor).canViewRestrictedFields,
+      actor: auraActor,
+    });
     setLookupResult(result);
     if (result.person) setEditDraft(result.person);
     setIsSearching(false);
@@ -321,6 +345,7 @@ export default function RegistryWorkspaceApp() {
 
   const handleConfirmPendingRegion = async (personId: string) => {
     const res = await MaidIdentityService.confirmPendingRegistration(personId, 'Orynvell');
+    if (res.error) showBanner(res.error);
     if (res.success && res.person) {
       await loadData(res.person.maid || res.person.id);
       showBanner(`Registration region Orynvell (OR) confirmed! Issued permanent MAID: ${res.person.maid}`);
@@ -342,6 +367,49 @@ export default function RegistryWorkspaceApp() {
   };
 
   const handleSaveInlineProfile = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!lookupResult?.person) return;
+    const targetIdKey = lookupResult.person.maid || lookupResult.person.id;
+    const perms = evaluateAuraRecordPermissions(lookupResult.person, auraActor);
+    if (perms.editableFields.length === 0) {
+      showBanner(`Role '${auraActor.roleLabel}' is not authorized to modify this citizen record.`);
+      return;
+    }
+    const candidateUpdates: Record<string, any> = {
+      occupation: editDraft.occupation,
+      affiliation: editDraft.affiliation,
+      clearance: editDraft.clearance,
+      medical: editDraft.medical,
+      residency: editDraft.residency,
+      household: editDraft.household,
+      status: editDraft.status,
+      abilities: editDraft.abilities,
+      affinity: editDraft.affinity,
+      height: editDraft.height,
+      eyes: editDraft.eyes,
+      hair: editDraft.hair,
+      build: editDraft.build,
+      blood: editDraft.blood,
+      mark: editDraft.mark,
+      address: editDraft.address,
+      phone: editDraft.phone,
+      email: editDraft.email
+    };
+    const allowedUpdates: Record<string, any> = {};
+    for (const field of perms.editableFields) {
+      if (field in candidateUpdates) {
+        allowedUpdates[field] = candidateUpdates[field];
+      }
+    }
+    const updateRes = await MaidIdentityService.updatePerson(targetIdKey, allowedUpdates, { actor: auraActor });
+    if (updateRes.success && updateRes.person) {
+      await loadData(targetIdKey);
+      showBanner(`Updated canonical profile for ${updateRes.person.name}. Permanent MAID (${updateRes.person.maid}) verified immutable.`);
+      setDossierSection('overview');
+    } else if (updateRes.error) {
+      showBanner(updateRes.error);
+    }
+    return;
     e.preventDefault();
     if (!lookupResult?.person) return;
     const idKey = lookupResult.person.maid || lookupResult.person.id;
@@ -373,6 +441,11 @@ export default function RegistryWorkspaceApp() {
   };
 
   const handleQuickIssueDocument = (person: CanonicalPerson, docId: number, docTitle: string) => {
+    const auth = authorizeAuraAction('issue_document', { actor: auraActor, targetPerson: person, documentId: docId });
+    if (!auth.authorized) {
+      showBanner(auth.reason || `Authorization required to issue ${docTitle}.`);
+      return;
+    }
     const citizenRec: any = { ...person, record: person.maid || person.legacyRecord };
     const slug = person.name.toLowerCase().replace(/[^a-z0-9]+/g, '-');
     const idKey = person.maid || person.legacyRecord;
@@ -390,6 +463,11 @@ export default function RegistryWorkspaceApp() {
   };
 
   const handleQuickExportAllNine = (person: CanonicalPerson) => {
+    const auth = authorizeAuraAction('issue_full_packet', { actor: auraActor, targetPerson: person });
+    if (!auth.authorized) {
+      showBanner(auth.reason || 'Authorization required to export the complete 9-document sovereign packet.');
+      return;
+    }
     const citizenRec: any = { ...person, record: person.maid || person.legacyRecord };
     const slug = person.name.toLowerCase().replace(/[^a-z0-9]+/g, '-');
     const idKey = person.maid || person.legacyRecord;
@@ -434,7 +512,7 @@ export default function RegistryWorkspaceApp() {
                 Citizen registry
               </h1>
               <span className="rounded-md bg-emerald-950/90 border border-emerald-500/40 px-2.5 py-0.5 text-[10px] font-mono font-bold text-emerald-300">
-                ORYNVELL / OR
+                ORYNVELL / OR · {auraActor.roleLabel}
               </span>
             </div>
             <p className="text-xs text-slate-400">

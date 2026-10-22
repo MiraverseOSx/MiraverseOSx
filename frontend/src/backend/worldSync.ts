@@ -1,7 +1,7 @@
 export const WORLD_KEYS = [
   'miraverse-os-progress', 'miraverse-comms', 'miraverse-phone-preferences',
   'miraverse-canonical-identities-v1', 'miraverse-identity-registry-v3', 'miraverse-maid-counter-OR',
-  'DGAOS_WORKSTATION_STATE_V3', 'trace_active_case_data_v2',
+  'DGAOS_WORKSTATION_STATE_V3', 'trace_active_case_data_v2', 'miraverse-creator-studio-state-v1',
 ] as const;
 export type WorldEntries = Partial<Record<typeof WORLD_KEYS[number], string>>;
 export interface WorldSnapshot { serverId: string; revision: number; updatedAt: string | null; entries: WorldEntries }

@@ -12,6 +12,8 @@
 
 import { get as idbGet, set as idbSet } from 'idb-keyval';
 import { generateProceduralPortrait } from './portraitService';
+import { authorizeAuraAction, resolveAuraActor, type AuraActorContext } from '../integration/auraPermissions';
+import { communicationsAuthority } from '../integration/communicationsAccess';
 
 export type RegistrationRegionCode = 'OR';
 
@@ -633,7 +635,11 @@ export class MaidIdentityService {
   /**
    * Authoritative MAID / Legacy Alias / Name / Email Account Lookup.
    */
-  public static async lookupPerson(query: string, options?: { allowRestricted?: boolean }): Promise<LookupResult> {
+  public static async lookupPerson(query: string, options?: { allowRestricted?: boolean; actor?: AuraActorContext; enforceAuth?: boolean }): Promise<LookupResult> {
+    const isAuthenticatedOrEnforced = Boolean(options?.actor || options?.enforceAuth || communicationsAuthority().isLoggedIn);
+    const canViewRestricted = isAuthenticatedOrEnforced
+      ? Boolean(options?.allowRestricted && authorizeAuraAction('lookup_restricted', { actor: options?.actor ?? resolveAuraActor() }).authorized)
+      : Boolean(options?.allowRestricted);
     if (!query || typeof query !== 'string') {
       return { status: 'not_found', person: null, matchedBy: null, matchedQuery: '' };
     }
@@ -646,7 +652,7 @@ export class MaidIdentityService {
     // 1. Exact MAID Match
     const byMaid = persons.find(p => p.maid && p.maid.toUpperCase() === upperQuery);
     if (byMaid) {
-      if (byMaid.isRestricted && !options?.allowRestricted) {
+      if (byMaid.isRestricted && !canViewRestricted) {
         return {
           status: 'restricted',
           person: null,
@@ -665,7 +671,7 @@ export class MaidIdentityService {
     );
 
     if (byAlias) {
-      if (byAlias.isRestricted && !options?.allowRestricted) {
+      if (byAlias.isRestricted && !canViewRestricted) {
         return {
           status: 'restricted',
           person: null,
@@ -697,7 +703,7 @@ export class MaidIdentityService {
     );
 
     if (byName) {
-      if (byName.isRestricted && !options?.allowRestricted) {
+      if (byName.isRestricted && !canViewRestricted) {
         return {
           status: 'restricted',
           person: null,
@@ -733,7 +739,13 @@ export class MaidIdentityService {
    * Workflow 1: Add Person
    * Atomically issues a permanent MAID upon successful authoritative save.
    */
-  public static async addPerson(input: NewPersonInput): Promise<{ success: boolean; person: CanonicalPerson; error?: string }> {
+  public static async addPerson(input: NewPersonInput, options?: { actor?: AuraActorContext; enforceAuth?: boolean }): Promise<{ success: boolean; person: CanonicalPerson; error?: string }> {
+    if (options?.actor || options?.enforceAuth || communicationsAuthority().isLoggedIn) {
+      const auth = authorizeAuraAction('register_person', { actor: options?.actor });
+      if (!auth.authorized) {
+        return { success: false, person: null as any, error: auth.reason };
+      }
+    }
     // Enforce initial registration region validation
     if (input.registrationRegion !== 'Orynvell' && input.registrationRegion !== 'OR') {
       return {
@@ -850,7 +862,8 @@ export class MaidIdentityService {
    */
   public static async updatePerson(
     maidOrId: string, 
-    updates: Partial<Omit<CanonicalPerson, 'id' | 'maid' | 'registrationRegionCode' | 'legacyAliases'>>
+    updates: Partial<Omit<CanonicalPerson, 'id' | 'maid' | 'registrationRegionCode' | 'legacyAliases'>>,
+    options?: { actor?: AuraActorContext; enforceAuth?: boolean }
   ): Promise<{ success: boolean; person: CanonicalPerson; error?: string }> {
     const currentList = await this.getAllPersons();
     const idx = currentList.findIndex(p => p.maid === maidOrId || p.id === maidOrId || p.legacyRecord === maidOrId);
@@ -860,6 +873,19 @@ export class MaidIdentityService {
     }
 
     const current = currentList[idx];
+    if (options?.actor || options?.enforceAuth || communicationsAuthority().isLoggedIn) {
+      const requestedFields = Object.keys(updates || {}).filter(
+        key => (updates as any)[key] !== undefined && (updates as any)[key] !== (current as any)[key]
+      );
+      const auth = authorizeAuraAction('edit_identity_core', {
+        actor: options?.actor,
+        targetPerson: current,
+        requestedFields,
+      });
+      if (!auth.authorized) {
+        return { success: false, person: current, error: auth.reason };
+      }
+    }
 
     // Guarantee MAID, region code, and ID are immutable
     const updatedPerson: CanonicalPerson = {
@@ -884,8 +910,15 @@ export class MaidIdentityService {
    */
   public static async confirmPendingRegistration(
     personIdOrRecord: string,
-    region: 'Orynvell' | 'OR'
+    region: 'Orynvell' | 'OR',
+    options?: { actor?: AuraActorContext; enforceAuth?: boolean }
   ): Promise<{ success: boolean; person: CanonicalPerson; error?: string }> {
+    if (options?.actor || options?.enforceAuth || communicationsAuthority().isLoggedIn) {
+      const auth = authorizeAuraAction('confirm_migration', { actor: options?.actor });
+      if (!auth.authorized) {
+        return { success: false, person: null as any, error: auth.reason };
+      }
+    }
     if (region !== 'Orynvell' && region !== 'OR') {
       return { success: false, person: null as any, error: `Only 'OR' (Orynvell) is currently confirmed for MAID issuance.` };
     }
@@ -920,8 +953,15 @@ export class MaidIdentityService {
     targetMaidOrId: string,
     relationshipType: string,
     notes?: string,
-    bidirectional = true
+    bidirectional = true,
+    options?: { actor?: AuraActorContext; enforceAuth?: boolean }
   ): Promise<{ success: boolean; source?: CanonicalPerson; target?: CanonicalPerson; error?: string }> {
+    if (options?.actor || options?.enforceAuth || communicationsAuthority().isLoggedIn) {
+      const auth = authorizeAuraAction('link_relationships', { actor: options?.actor });
+      if (!auth.authorized) {
+        return { success: false, error: auth.reason };
+      }
+    }
     const currentList = await this.getAllPersons();
     const sIdx = currentList.findIndex(p => p.maid === sourceMaidOrId || p.id === sourceMaidOrId || p.legacyRecord === sourceMaidOrId);
     const tIdx = currentList.findIndex(p => p.maid === targetMaidOrId || p.id === targetMaidOrId || p.legacyRecord === targetMaidOrId);

@@ -23,6 +23,8 @@ import PortraitStudioModal from '../components/portrait/PortraitStudioModal';
 import { MaidIdentityService } from '../services/maidIdentityService';
 import { getActiveCitizenContext, openCitizenInApp } from '../integration/citizenBridge';
 import { citizenSelection, subscribeCitizenUpdates } from '../integration/citizenEvents';
+import { authorizeAuraAction, evaluateAuraRecordPermissions, resolveAuraActor } from '../integration/auraPermissions';
+import { useOSStore } from '../store/useOSStore';
 
 const DEFAULT_CITIZEN: CitizenRecord = {
   name: 'Elara Vale',
@@ -87,6 +89,11 @@ export default function DocumentStudioApp() {
   const [zoomScale, setZoomScale] = useState<number>(100);
   const [isPortraitModalOpen, setIsPortraitModalOpen] = useState(false);
   const [issuanceNotice, setIssuanceNotice] = useState<string | null>(null);
+  const osPlayer = useOSStore(s => s.gameplay.player);
+  const osIdentity = useOSStore(s => s.gameplay.identity);
+  const isLoggedIn = useOSStore(s => s.isLoggedIn);
+  const auraActor = resolveAuraActor({ player: osPlayer, identity: osIdentity, isLoggedIn });
+  const recordPermissions = evaluateAuraRecordPermissions(selectedCitizen as any, auraActor);
 
   const selectedCitizenRef = useRef(selectedCitizen);
   const mountedRef = useRef(false);
@@ -99,7 +106,9 @@ export default function DocumentStudioApp() {
       const rawList = await MaidIdentityService.ensureDefaultPopulationSeeded();
       if (!mountedRef.current || version !== loadVersionRef.current) return;
       if (Array.isArray(rawList) && rawList.length > 0) {
-        const list: CitizenRecord[] = rawList.map(person => ({ ...person, record: person.maid || person.legacyRecord || person.id }));
+        const list: CitizenRecord[] = rawList
+          .filter(person => evaluateAuraRecordPermissions(person, auraActor).canViewRecord)
+          .map(person => ({ ...person, record: person.maid || person.legacyRecord || person.id }));
         const current = selectedCitizenRef.current;
         const targetId = overrideCitizenId || current.maid || current.record;
         const matched = list.find(citizen => citizen.maid === targetId || citizen.record === targetId || (citizen as any).legacyRecord === targetId || (citizen as any).id === targetId);
@@ -145,6 +154,11 @@ export default function DocumentStudioApp() {
   };
 
   const handleDownloadCurrentHtml = () => {
+    const auth = authorizeAuraAction('issue_document', { actor: auraActor, targetPerson: selectedCitizen as any, documentId: activeDocId });
+    if (!auth.authorized) {
+      setIssuanceNotice(auth.reason || 'Institutional authorization required to export this document.');
+      return;
+    }
     const docInfo = DOCUMENT_TABS.find(t => t.id === activeDocId);
     const slug = (selectedCitizen.name || 'citizen').toLowerCase().replace(/[^a-z0-9]+/g, '-');
     const idKey = selectedCitizen.maid || selectedCitizen.record;
@@ -154,6 +168,11 @@ export default function DocumentStudioApp() {
   };
 
   const handleExportFullPacket = () => {
+    const auth = authorizeAuraAction('issue_full_packet', { actor: auraActor, targetPerson: selectedCitizen as any });
+    if (!auth.authorized) {
+      setIssuanceNotice(auth.reason || 'Sovereign Administrator or Registrar/DGA authorization required to export the full 9-document packet.');
+      return;
+    }
     const slug = (selectedCitizen.name || 'citizen').toLowerCase().replace(/[^a-z0-9]+/g, '-');
     const idKey = selectedCitizen.maid || selectedCitizen.record;
     const filename = `miraverse_nine_document_packet_${slug}_${idKey}.html`;
@@ -175,6 +194,11 @@ export default function DocumentStudioApp() {
   };
 
   const handleLogIssuance = () => {
+    const auth = authorizeAuraAction('issue_document', { actor: auraActor, targetPerson: selectedCitizen as any, documentId: activeDocId });
+    if (!auth.authorized) {
+      setIssuanceNotice(auth.reason || 'Institutional authorization required to log a formal issuance snapshot.');
+      return;
+    }
     const docInfo = DOCUMENT_TABS.find(t => t.id === activeDocId);
     const idKey = selectedCitizen.maid || selectedCitizen.record;
     const record = recordIssuedSnapshot({
@@ -192,6 +216,17 @@ export default function DocumentStudioApp() {
 
   // Render the active document HTML inline
   const renderActiveDocumentContent = () => {
+    if (!recordPermissions.allowedDocumentIds.includes(activeDocId)) {
+      return (
+        <div className="p-8 text-center text-slate-300 bg-slate-900/90 rounded-xl border border-amber-500/30">
+          <Shield size={28} className="mx-auto mb-2 text-amber-400" />
+          <h3 className="text-base font-bold text-white mb-1">Institutional Authorization Required</h3>
+          <p className="text-xs text-slate-300 max-w-md mx-auto">
+            {authorizeAuraAction('issue_document', { actor: auraActor, targetPerson: selectedCitizen as any, documentId: activeDocId }).reason}
+          </p>
+        </div>
+      );
+    }
     switch (activeDocId) {
       case 1:
         return <div dangerouslySetInnerHTML={{ __html: renderAuraIdHtml(selectedCitizen) }} />;
