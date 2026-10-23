@@ -1,24 +1,34 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Form from 'react-bootstrap/Form';
 import { Paperclip, FileText, Download, ShieldAlert, CheckCircle, ExternalLink } from 'lucide-react';
 import { useOSStore } from '../../store/useOSStore';
+import { normalizeDocument } from './documentModel';
+import DocumentContent from './DocumentContent';
+import { canReadDocument, documentActionDestination } from './documentAccess';
+import '../../styles/apps/DocumentReader.css';
 
-export default function DocumentModal({ file, onClose, onSubmitForm }) {
+export default function DocumentModal({ file: source, onClose, onSubmitForm }) {
+  const file = source ? normalizeDocument(source) : null;
   const player = useOSStore((s) => s.gameplay.player);
-  const verifyDGAIdentity = useOSStore((s) => s.verifyDGAIdentity);
-  const addCredits = useOSStore((s) => s.addCredits);
-  const toggleApp = useOSStore((s) => s.toggleApp);
-  const setBrowserUrl = useOSStore((s) => s.setBrowserUrl);
+  const openAppWorkspace = useOSStore((s) => s.openAppWorkspace);
+  const recordFileInspection = useOSStore((s) => s.recordFileInspection);
 
-  const [formData, setFormData] = useState({});
+  const [formData, setFormData] = useState(() => Object.fromEntries((file?.content.formFields || []).map(field => [field.id, field.defaultValue || ''])));
   const [decryptKey, setDecryptKey] = useState('');
   const [isDecrypted, setIsDecrypted] = useState(false);
   const [decryptError, setDecryptError] = useState(false);
   const [activeAttachmentNotice, setActiveAttachmentNotice] = useState(null);
+  const dialog = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const previous = document.activeElement as HTMLElement | null;
+    dialog.current?.focus();
+    return () => previous?.focus();
+  }, []);
 
-  // States for .map scan telemetry
-  const [selectedNode, setSelectedNode] = useState(null);
-  const [isScanning, setIsScanning] = useState(false);
+  const showEncrypted = file ? !canReadDocument(file, player, isDecrypted) : false;
+  useEffect(() => {
+    if (file?.inspectionKey && !showEncrypted) recordFileInspection(file.inspectionKey);
+  }, [file?.inspectionKey, showEncrypted, recordFileInspection]);
 
   if (!file) return null;
 
@@ -32,30 +42,14 @@ export default function DocumentModal({ file, onClose, onSubmitForm }) {
       return;
     }
 
-    if (actionTrigger === 'SUBMIT_CIVIC_REG') {
-      if (verifyDGAIdentity) verifyDGAIdentity();
-      if (addCredits) addCredits(100);
-      alert("Citizen registered successfully! +100 Credits awarded.");
-      onClose();
-    } else if (actionTrigger === 'SYNC_FAITHMED') {
-      setBrowserUrl('https://faithmed.aure/patient');
-      toggleApp({ id: 'browser', title: 'Net Browser (Web/Faith)', contentKey: 'browser' });
-      onClose();
-    } else if (actionTrigger === 'LOAD_SPELLFORGE') {
-      toggleApp({ id: 'spellforge', title: 'SpellForge Matrix', contentKey: 'spellforge' });
-      onClose();
-    } else if (actionTrigger === 'QUARANTINE_PRISM') {
-      if (addCredits) addCredits(50);
-      alert("PRISM malware quarantined. +50 Credits awarded.");
-      onClose();
-    }
+    const destination = documentActionDestination(actionTrigger);
+    if (!destination) { setActiveAttachmentNotice('This document has no connected action. Your progress is unchanged.'); return; }
+    openAppWorkspace(destination.appId, destination.section);
+    onClose();
   };
 
   const isPrism = file.extension === '.prism' || file.type === 'prism' || file.type === 'corrupt';
-  const isEncrypted = file.security?.isEncrypted;
   const cryptoLevel = player?.skills?.Cryptography?.level || 1;
-  const hasSkillBypass = cryptoLevel >= 3;
-  const showEncrypted = isEncrypted && !isDecrypted && !hasSkillBypass;
 
   const handleDecryptAttempt = () => {
     const key = decryptKey.trim().toUpperCase();
@@ -74,9 +68,16 @@ export default function DocumentModal({ file, onClose, onSubmitForm }) {
   };
 
   return (
-    <div className="fixed inset-0 bg-[#090710]/95 flex items-center justify-center p-4 z-50 select-none">
+    <div className="document-overlay">
       {/* Rose, Yellow & Lavender Window Frame */}
-      <div className={`w-full max-w-xl bg-[#141021] border ${isPrism ? 'border-rose-500/80 shadow-lg shadow-rose-950/50' : 'border-[#3a3052] shadow-xl'} text-purple-100 font-sans text-xs rounded-xl overflow-hidden flex flex-col`}>
+      <div ref={dialog} tabIndex={-1} className="document-reader" data-kind={file.kind} role="dialog" aria-modal="true" aria-label={file.name} onKeyDown={event => {
+        if (event.key === 'Escape') { event.stopPropagation(); onClose(); }
+        if (event.key !== 'Tab') return;
+        const controls = Array.from(dialog.current?.querySelectorAll<HTMLElement>('button:not(:disabled), input:not(:disabled), select:not(:disabled), a[href]') || []);
+        const first = controls[0]; const last = controls[controls.length - 1];
+        if (event.shiftKey && (document.activeElement === first || document.activeElement === dialog.current)) { event.preventDefault(); last?.focus(); }
+        else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first?.focus(); }
+      }}>
         
         {/* Window Header Bar */}
         <div className={`flex items-center justify-between px-4 py-3 ${isPrism ? 'bg-rose-950/80 border-b border-rose-800/40' : 'bg-[#1b162b] border-b border-[#2d2642]'}`}>
@@ -87,6 +88,7 @@ export default function DocumentModal({ file, onClose, onSubmitForm }) {
             <span className="font-bold tracking-wide text-white">{file.name || file.filename}</span>
           </div>
           <button 
+            aria-label="Close document"
             onClick={onClose}
             className="px-2.5 py-1 rounded-md text-white/50 hover:text-white hover:bg-white/10 font-bold transition text-xs"
           >
@@ -96,14 +98,14 @@ export default function DocumentModal({ file, onClose, onSubmitForm }) {
 
         {/* Metadata Header */}
         <div className="px-4 py-2.5 border-b border-[#2a233d] bg-[#100d1c] grid grid-cols-2 gap-2 text-[10px] text-white/60 font-mono">
-          <div><span className="text-[#f4d35e]">CLASSIFICATION:</span> {file.meta?.classification || 'RESTRICTED'}</div>
+          <div><span className="text-[#f4d35e]">TYPE:</span> {file.extension.toUpperCase()} · {file.meta.classification}</div>
           <div><span className="text-[#f4d35e]">AUTHOR:</span> {file.meta?.author || 'SYSTEM RECORD'}</div>
           <div><span className="text-[#f4d35e]">TIMESTAMP:</span> {file.meta?.timestamp || 'WINTER'}</div>
           <div><span className="text-[#f4d35e]">SIZE:</span> {file.meta?.fileSize || file.size || '4.0 KB'}</div>
         </div>
 
         {/* Body Content */}
-        <div className="p-5 space-y-4 overflow-y-auto max-h-[440px]">
+        <div className="document-reader-body">
           <div>
             <h2 className="text-sm font-bold text-[#f4d35e] tracking-wide uppercase">{file.content?.title || file.name}</h2>
             <p className="text-[10px] text-rose-300/80 tracking-wider uppercase mt-0.5">{file.content?.subtitle || file.desc}</p>
@@ -145,13 +147,7 @@ export default function DocumentModal({ file, onClose, onSubmitForm }) {
             /* Main Content Rendering */
             <>
               {/* Plain text / log content */}
-              {(file.type === 'txt' || file.type === 'log') ? (
-                <div className="p-3.5 rounded-xl border border-[#2e2642] bg-[#0c0915] text-[11px] leading-relaxed max-h-[220px] overflow-y-auto font-mono text-purple-200">
-                  <pre className="whitespace-pre-wrap">{file.content || file.content?.bodyText}</pre>
-                </div>
-              ) : (
-                <p className="text-white/90 leading-relaxed text-xs">{file.content?.bodyText}</p>
-              )}
+              <DocumentContent file={file} />
 
               {/* Embedded Attachments / Enclosures Section */}
               {file.attachments && file.attachments.length > 0 && (
@@ -186,11 +182,12 @@ export default function DocumentModal({ file, onClose, onSubmitForm }) {
                 <div className="space-y-3 pt-3 border-t border-[#2a233d]">
                   {file.content.formFields.map((field) => (
                     <div key={field.id} className="flex flex-col gap-1.5">
-                      <label className="text-[10px] text-rose-300 font-bold uppercase">{field.label}:</label>
+                      <label htmlFor={`doc-field-${field.id}`} className="text-[10px] text-rose-300 font-bold uppercase">{field.label}:</label>
 
                       {field.type === 'text' && (
                         <input
                           type="text"
+                          id={`doc-field-${field.id}`}
                           placeholder={field.placeholder}
                           value={formData[field.id] || ''}
                           onChange={(e) => handleInputChange(field.id, e.target.value)}
@@ -201,6 +198,7 @@ export default function DocumentModal({ file, onClose, onSubmitForm }) {
 
                       {field.type === 'select' && (
                         <Form.Select
+                          id={`doc-field-${field.id}`}
                           aria-label={field.label || 'Select option'}
                           value={formData[field.id] || ''}
                           onChange={(e) => handleInputChange(field.id, e.target.value)}
@@ -218,11 +216,12 @@ export default function DocumentModal({ file, onClose, onSubmitForm }) {
                         <label className="flex items-center gap-2 cursor-pointer mt-1">
                           <input
                             type="checkbox"
+                            id={`doc-field-${field.id}`}
                             checked={formData[field.id] ?? field.default ?? false}
                             onChange={(e) => handleInputChange(field.id, e.target.checked)}
                             className="accent-rose-500 h-3.5 w-3.5"
                           />
-                          <span className="text-[10px] text-white/80 uppercase tracking-wide">Authorize Aura Diagnostics</span>
+                          <span className="text-[10px] text-white/80 uppercase tracking-wide">{field.label}</span>
                         </label>
                       )}
                     </div>

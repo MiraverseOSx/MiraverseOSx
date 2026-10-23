@@ -105,12 +105,10 @@ export default function FileExplorerApp() {
       setSelectedFile(null);
       return;
     }
-    if (file.mockKey) {
-      recordFileInspection(file.mockKey);
-    }
 
     // Resolve Document Schema structure from MOCK_DOCUMENTS or fallback
-    const resolvedDoc = MOCK_DOCUMENTS[file.mockKey] || {
+    const catalogDoc = MOCK_DOCUMENTS[file.mockKey];
+    const resolvedDoc = file.document || (catalogDoc ? { ...catalogDoc, id: file.id, name: file.name, filename: file.name, size: file.size, type: file.type, inspectionKey: file.mockKey } : {
       id: file.id,
       name: file.name,
       filename: file.name,
@@ -129,11 +127,12 @@ export default function FileExplorerApp() {
         subtitle: file.desc,
         bodyText: file.body || `${file.desc}\n\nFile Location: ${activeDirectory}/${file.name}\nFile Size: ${file.size}`
       }
-    };
+    });
 
     setSelectedDoc(resolvedDoc);
 
     if (file.type === 'sig' || file.type === 'wav') {
+      if (file.mockKey) recordFileInspection(file.mockKey);
       setActiveModal('sig');
     } else {
       setActiveModal('document');
@@ -285,6 +284,7 @@ export default function FileExplorerApp() {
                           )}
                         </div>
                         <div className="text-[10px] text-slate-500 truncate mt-0.5">{file.desc}</div>
+                        <span className="files-type-label">.{file.type}</span>
                       </div>
                     </div>
 

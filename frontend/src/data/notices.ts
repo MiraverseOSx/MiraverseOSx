@@ -161,8 +161,7 @@ export function evaluateNoticeObjective(player: any, noticeId: string): NoticeOb
     }
     case 'n-04': {
       const inspectedPurge = Array.isArray(player.inspectedFiles) && player.inspectedFiles.includes('purge-archive');
-      const archivistRank = Number(player.careers?.archivist?.rankIndex || 0) > 0 || Number(player.careers?.archivist?.xp || 0) > 0;
-      const decrypted = Boolean(player.lineageDecrypted) || inspectedPurge || archivistRank;
+      const decrypted = Boolean(player.lineageDecrypted) || inspectedPurge;
       const current = decrypted ? 1 : 0;
       return {
         met: decrypted,

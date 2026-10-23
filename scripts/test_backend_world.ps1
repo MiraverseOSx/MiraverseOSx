@@ -30,7 +30,7 @@ try {
     Start-TestServer
     $empty = Invoke-RestMethod -Uri "$baseUrl/api/world"
     Check ($empty.revision -eq 0) 'A new database must start empty.'
-    $entries = @{ 'miraverse-os-progress' = '{"state":{"gameplay":{"player":{"name":"Backend tester","credits":100}}},"version":1}'; 'miraverse-comms' = '{"state":{"emails":[{"id":"dispatch"}],"savedAttachmentIds":["one"]}}' }
+    $entries = @{ 'miraverse-os-progress' = '{"state":{"gameplay":{"player":{"name":"Backend tester","credits":100}}},"version":1}'; 'miraverse-comms' = '{"state":{"emails":[{"id":"dispatch"}],"savedAttachmentIds":["one"]}}'; 'miraverse-creator-studio-state-v1' = '{"worldState":{"cases":[]},"publishedEntries":[]}' }
     $saved = Send-World @{ serverId = $empty.serverId; expectedRevision = 0; entries = $entries }
     Check ($saved.StatusCode -eq 200) 'Initial world import failed.'
     $world = $saved.Content | ConvertFrom-Json
@@ -54,6 +54,7 @@ try {
     $restored = Invoke-RestMethod -Uri "$baseUrl/api/world"
     Check ($restored.serverId -eq $empty.serverId -and $restored.revision -eq 1) 'Database identity and revision did not survive restart.'
     Check ($restored.entries.'miraverse-comms' -eq $entries.'miraverse-comms') 'Mail did not survive restart.'
+    Check ($restored.entries.'miraverse-creator-studio-state-v1' -eq $entries.'miraverse-creator-studio-state-v1') 'Creator journal did not survive restart.'
     Write-Output "Backend integration checks passed: $checks"
 }
 finally {

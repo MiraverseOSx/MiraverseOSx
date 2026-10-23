@@ -8,6 +8,7 @@ import { useSystemStore } from '../../store/useSystemStore';
 import { APPS_DIRECTORY } from '../desktop/appDirectory';
 import AppGlyph, { appTone } from './AppGlyph';
 import { fitWindow, boundWindowOffset } from './windowGeometry';
+import AppErrorBoundary from './AppErrorBoundary';
 
 export interface WindowProps {
   win: any;
@@ -44,8 +45,8 @@ export default function Window({ win, isFocusMode = false, windowIndex = 0 }: Wi
   useEffect(() => {
     const calculateGeometry = () => {
       const frameEl = document.getElementById('mira-screen-frame');
-      const screenW = Math.min(1920, frameEl?.clientWidth || window.innerWidth || 1920);
-      const screenH = Math.min(1080, frameEl?.clientHeight || window.innerHeight || 1080);
+      const screenW = frameEl?.clientWidth || window.innerWidth || 1920;
+      const screenH = frameEl?.clientHeight || window.innerHeight || 1080;
 
       const { width, height, left, top } = fitWindow(screenW, screenH, windowIndex);
 
@@ -100,6 +101,7 @@ export default function Window({ win, isFocusMode = false, windowIndex = 0 }: Wi
       transition={{ duration: reducedMotion ? 0 : 0.2, ease: [0.2, 0.8, 0.2, 1] }}
       className="os-window"
       data-active={isActive}
+      data-maximized={!!win.isMaximized}
       data-tone={appTone(win.id)}
       data-app={win.contentKey || win.id}
       role="region"
@@ -108,7 +110,7 @@ export default function Window({ win, isFocusMode = false, windowIndex = 0 }: Wi
         ...(win.isMaximized ? maximizedStyle : normalStyle),
         x: win.isMaximized ? 0 : safeOffset.x,
         y: win.isMaximized ? 0 : safeOffset.y,
-        zIndex: win.zIndex || 100,
+        zIndex: (win.zIndex || 100) + (win.isMaximized && isActive ? 10000 : 0),
       }}
       onMouseDown={() => focusWindow(win.id)}
     >
@@ -165,7 +167,7 @@ export default function Window({ win, isFocusMode = false, windowIndex = 0 }: Wi
 
       {/* Shared application frame; each app owns its navigation and workspace. */}
       <div className="os-window__body">
-        <Body />
+        <AppErrorBoundary onClose={() => closeWindow(win.id)}><Body /></AppErrorBoundary>
       </div>
     </motion.div>
   );

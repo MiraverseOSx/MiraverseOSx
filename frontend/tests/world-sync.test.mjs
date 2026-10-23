@@ -34,7 +34,7 @@ test('a fresh browser restores the database world before stores initialize', asy
 test('offline changes remain local and upload safely after reconnection', async () => {
   const storage = memory({ [OS]: save('Offline player') }); const api = backend(); api.offline = true;
   const { sync } = client(storage, api); await sync.start(); assert.equal(sync.getStatus().state, 'offline');
-  storage.setItem(OS, save('Progress while offline')); api.offline = false; await sync.sync();
+  storage.setItem(OS, save('Progress while offline')); api.offline = false; await sync.sync(true);
   assert.equal(api.world.entries[OS], save('Progress while offline')); assert.equal(sync.getStatus().state, 'saved');
 });
 test('unchanged local progress adopts a newer database revision on next boot', async () => {
@@ -79,6 +79,32 @@ test('unsupported endpoints and malformed snapshots keep device progress usable'
 test('unrelated local storage and credentials never enter the world snapshot', () => {
   const storage = memory({ [OS]: save('Player'), password: 'private', unrelated: 'not JSON' });
   assert.deepEqual(Object.keys(readWorldEntries(storage)), [OS]);
+});
+
+test('unavailable save servers back off, cap retries, and permit explicit reconnection', async () => {
+  const storage = memory({ [OS]: save('Retained offline') });
+  let requests = 0; let available = false; let now = 100000;
+  const originalNow = Date.now;
+  Date.now = () => now;
+  try {
+    const api = backend();
+    const { sync } = client(storage, { fetch: async (...args) => { requests++; if (!available) return new Response('Unavailable', { status: 500 }); return api.fetch(...args); } });
+    await sync.start();
+    for (const advance of [1500, 1500, 1999]) { now += advance; await sync.sync(); }
+    assert.equal(requests, 1);
+    now++; await sync.sync(); assert.equal(requests, 2);
+    now += 9999; await sync.sync(); assert.equal(requests, 2);
+    now++; await sync.sync(); assert.equal(requests, 3);
+    for (const delay of [20000, 40000, 60000]) { now += delay; await sync.sync(); }
+    const before = requests;
+    now += 59999; await sync.sync(); assert.equal(requests, before);
+    now++; await sync.sync(); assert.equal(requests, before + 1);
+    assert.equal(storage.getItem(OS), save('Retained offline'));
+    available = true;
+    await sync.sync(true);
+    assert.equal(sync.getStatus().state, 'saved');
+    assert.equal(api.world.entries[OS], save('Retained offline'));
+  } finally { Date.now = originalNow; }
 });
 test('WorkNet acceptance, mail, briefing files, completion receipts and career progress restore as one world', async () => {
   const storage = memory(); globalThis.localStorage = storage; globalThis.window = { localStorage: storage };

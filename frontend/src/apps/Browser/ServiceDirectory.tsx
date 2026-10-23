@@ -15,7 +15,7 @@ const emptyForm = { name: '', category: 'General', description: '', url: '' };
 const categoryIcons = { 'Medical & Clinical': Activity, 'Police & Law Enforcement': ShieldCheck, 'Investigation & Forensics': ScanSearch, 'Legal & Courtroom': Scale, 'Fictional Documents & Data': Files };
 const categoryTones: Record<string, string> = { 'Medical & Clinical': 'pine', 'Police & Law Enforcement': 'heather', 'Investigation & Forensics': 'mist', 'Legal & Courtroom': 'sienna', 'Fictional Documents & Data': 'autumn' };
 
-export default function ServiceDirectory({ navigateTab }: { navigateTab: (url: string, title?: string) => void }) {
+export default function ServiceDirectory({ navigateTab, showSidebar = true }: { navigateTab: (url: string, title?: string) => void; showSidebar?: boolean }) {
   const [services, setServices] = useState(loadServices);
   const [query, setQuery] = useState('');
   const [category, setCategory] = useState('All');
@@ -58,13 +58,13 @@ export default function ServiceDirectory({ navigateTab }: { navigateTab: (url: s
   };
   const categories = [...new Set(services.map(service => service.category))];
   const matches = services.filter(service => (category === 'All' || service.category === category) && `${service.name} ${service.category} ${service.description}`.toLowerCase().includes(query.toLowerCase()));
-  return <section className="vn-directory vn-directory-shell">
-    <aside className="vn-service-sidebar"><div className="vn-service-brand"><span><LayoutGrid size={22}/></span><div><strong>Service hub</strong><small>MIRAVERSE / VERSENET</small></div></div>
+  return <section className="vn-directory vn-directory-shell" data-sidebar={showSidebar}>
+    {showSidebar && <aside className="vn-service-sidebar"><div className="vn-service-brand"><span><LayoutGrid size={22}/></span><div><strong>Service hub</strong><small>MIRAVERSE / VERSENET</small></div></div>
       <span className="vn-sidebar-label">YOUR COLLECTION</span>
       <nav aria-label="Service categories"><button aria-pressed={category === 'All'} onClick={() => setCategory('All')}><LayoutGrid size={16}/><span>All services</span><small>{services.length}</small></button>{categories.map(name => { const Icon = categoryIcons[name] || Files; return <button key={name} aria-pressed={category === name} onClick={() => setCategory(name)}><Icon size={16}/><span>{name}</span><small>{services.filter(service => service.category === name).length}</small></button>; })}</nav>
       <button className="vn-sidebar-local" onClick={() => localTools.current?.scrollIntoView({ behavior: 'auto', block: 'start' })}><Upload size={16}/>Open a local HTML tool</button>
       <footer><Laptop size={17}/><div><strong>Your personal workspace</strong><small>Links saved on this device</small></div></footer>
-    </aside>
+    </aside>}
     <div className="vn-directory-content">
     <header className="vn-directory-header"><div><span className="vn-eyebrow">CONNECTED TO YOUR CRAFT</span><h1>Service Directory</h1><p>A little space for your most useful tools.</p></div><button className="vn-add-service" onClick={() => { setEditing('new'); setForm(emptyForm); }}><Plus size={15}/> Add service</button></header>
     <div className="vn-collection-banner"><div><span className="vn-banner-orbit"><GlobeIcon/></span><div><strong>Your world. A wider workspace.</strong><p>Independent services, together on your Miraverse desktop.</p></div></div><span>EXTERNAL INTERNET <ArrowUpRight size={13}/></span></div>

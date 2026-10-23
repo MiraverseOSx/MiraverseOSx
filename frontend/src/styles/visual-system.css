@@ -46,6 +46,7 @@
   font-family: var(--font-ui);
 }
 .os-window[data-tone='sage'] { --window-accent: #427c6d; }
+.mira-desktop .os-window[data-app][data-maximized='true'] { border-radius: 0; border: 0; outline: none; box-shadow: none; }
 .os-window[data-tone='gold'] { --window-accent: #94703f; }
 .os-window[data-tone='sky'] { --window-accent: #49718e; }
 .os-window[data-tone='rose'] { --window-accent: #9c627d; }

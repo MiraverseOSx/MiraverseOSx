@@ -1014,7 +1014,7 @@ export const useOSStore = create<OSStoreState>()(persist((set, get) => ({
       const inspected: string[] = Array.isArray(player.inspectedFiles) ? player.inspectedFiles : [];
       const alreadyInspected = inspected.includes(mockKey);
       const nextInspected = alreadyInspected ? inspected : [...inspected, mockKey];
-      const unlocksLineage = mockKey === 'purge-archive' || mockKey === 'aethercore-sys';
+      const unlocksLineage = mockKey === 'purge-archive';
       const xpGain = alreadyInspected ? 0 : 25;
       const newXP = player.xp + xpGain;
 

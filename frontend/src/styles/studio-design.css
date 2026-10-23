@@ -81,6 +81,7 @@
 .versenet-browser .vn-page { min-height: 0; }
 .mira-desktop .versenet-browser { --vn-paper: var(--studio-paper); --vn-ink: var(--studio-ink); --vn-purple: var(--studio-accent); --vn-muted: var(--studio-muted); --vn-line: var(--studio-line); --vn-chrome: color-mix(in srgb, var(--studio-paper) 68%, var(--studio-soft)); --vn-hover: var(--studio-soft); }
 .vn-directory.vn-directory-shell { display: grid; grid-template-columns: 205px minmax(0, 1fr); flex: 1; min-height: 0; height: 100%; max-width: none; padding: 0; margin: 0; background: var(--studio-paper); }
+.vn-directory.vn-directory-shell[data-sidebar='false'] { grid-template-columns: minmax(0, 1fr); }
 .vn-service-sidebar { padding: 25px 14px 16px; display: flex; flex-direction: column; min-height: 0; height: 100%; overflow: auto; background: linear-gradient(160deg, color-mix(in srgb, var(--studio-soft) 37%, white), color-mix(in srgb, var(--studio-paper) 75%, var(--studio-soft))); border-right: 1px solid var(--studio-line); }
 .vn-service-brand { display: flex; align-items: center; gap: 10px; padding: 0 6px 30px; }
 .vn-service-brand>span { display: grid; place-items: center; width: 38px; height: 38px; border-radius: 12px; background: var(--studio-accent); color: var(--studio-paper); box-shadow: 0 5px 12px color-mix(in srgb, var(--studio-accent) 15%, transparent); }

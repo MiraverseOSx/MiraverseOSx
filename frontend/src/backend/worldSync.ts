@@ -29,6 +29,8 @@ export class WorldSyncClient {
   private remote: WorldSnapshot | null = null;
   private connected = false;
   private busy = false;
+  private reconnectFailures = 0;
+  private nextReconnectAt = 0;
   private listeners = new Set<() => void>();
   private status: SaveStatus = { state: 'loading', message: 'Restoring saved world…' };
   private storage: StorageLike;
@@ -49,6 +51,7 @@ export class WorldSyncClient {
     throw new Error(typeof result?.error === 'string' ? result.error : 'The world server is unavailable.');
   }
   private async remember(snapshot: WorldSnapshot) {
+    this.reconnectFailures = 0; this.nextReconnectAt = 0;
     this.meta = { serverId: snapshot.serverId, revision: snapshot.revision, hash: await fingerprint(snapshot.entries) };
     try { this.storage.setItem(META_KEY, JSON.stringify(this.meta)); } catch { /* The backend copy remains durable. */ }
     this.remote = snapshot; this.connected = true;
@@ -67,7 +70,7 @@ export class WorldSyncClient {
       else if (allowRestore && (!Object.keys(local).length || (sameServer && localHash === this.meta?.hash))) { await this.apply(snapshot.entries); await this.remember(snapshot); }
       else if (sameServer && this.meta?.revision === snapshot.revision) { this.connected = true; await this.upload(local); }
       else this.report('conflict', 'Review saved world');
-    } catch (error) { this.connected = false; this.report('offline', 'Saved on this device · reconnect to sync'); }
+    } catch (error) { this.offline(); }
     finally { this.busy = false; }
   }
   private async upload(entries: WorldEntries) {
@@ -77,12 +80,17 @@ export class WorldSyncClient {
     if (!result.ok) { this.remote = result.snapshot; this.report('conflict', 'Review saved world'); return; }
     await this.remember(result.snapshot);
   }
-  async sync() {
+  private offline() {
+    this.connected = false;
+    this.nextReconnectAt = Date.now() + Math.min(60000, 5000 * 2 ** Math.min(this.reconnectFailures++, 4));
+    this.report('offline', 'Saved on this device · reconnect to sync');
+  }
+  async sync(reconnectNow = false) {
     if (this.busy || this.status.state === 'conflict') return;
-    if (!this.connected) { await this.start(false); return; }
+    if (!this.connected) { if (reconnectNow || Date.now() >= this.nextReconnectAt) await this.start(false); return; }
     this.busy = true;
     try { const entries = readWorldEntries(this.storage); if (await fingerprint(entries) !== this.meta?.hash) await this.upload(entries); }
-    catch { this.connected = false; this.report('offline', 'Saved on this device · reconnect to sync'); }
+    catch { this.offline(); }
     finally { this.busy = false; }
   }
   // Explicit conflict choices preserve a backup; a newer concurrent commit still wins a 409.

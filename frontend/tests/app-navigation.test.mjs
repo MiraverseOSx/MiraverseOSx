@@ -33,6 +33,26 @@ function storage() {
 }
 async function fresh() { return (await import(`../src/store/useOSStore.ts?navigation=${sequence++}`)).useOSStore; }
 
+test('a driver reference and unrelated archive career XP do not reveal the protected lineage story', async () => {
+  storage(); const store = await fresh();
+  store.getState().loginUser({ name: 'Archive Reader', clearance: 1, credits: 500 });
+  store.getState().recordFileInspection('aethercore-sys');
+  let player = store.getState().gameplay.player;
+  assert.equal(player.lineageDecrypted, false);
+  const { evaluateNoticeObjective } = await import('../src/data/notices.ts');
+  const { SPECIAL_LORE_DREAMS } = await import('../src/gameplay/WorldEventEngine.ts');
+  assert.equal(evaluateNoticeObjective('n-04', { ...player, careers: { archivist: { rankIndex: 2, xp: 500 } } }).met, false);
+  const dream = SPECIAL_LORE_DREAMS.find(entry => entry.id === 'dream-lightborn-lineage') || SPECIAL_LORE_DREAMS.find(entry => entry.title === 'The Year-0 Lineage Ledger');
+  assert.equal(dream.conditionCheck(player), false);
+  store.getState().recordFileInspection('purge-archive');
+  player = store.getState().gameplay.player;
+  assert.equal(player.lineageDecrypted, true);
+  assert.equal(dream.conditionCheck(player), true);
+  const xp = player.xp;
+  store.getState().recordFileInspection('purge-archive');
+  assert.equal(store.getState().gameplay.player.xp, xp);
+});
+
 test('legacy destinations resolve without treating inherited object keys as aliases', () => {
   for (const [oldId, appId, section] of destinations) {
     assert.deepEqual(resolveAppDestination(oldId), { appId, section });

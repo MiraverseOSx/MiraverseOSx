@@ -219,3 +219,22 @@ export const MOCK_DOCUMENTS: Record<string, MockDocument> = {
     }
   }
 };
+
+// Keep the stable file-inspection keys used by saved quests and mail links.
+MOCK_DOCUMENTS['dga-registration'] = MOCK_DOCUMENTS['citizen-registration'];
+MOCK_DOCUMENTS['aura-scan'] = MOCK_DOCUMENTS['faith-diag'];
+
+const additionalFiles = [
+  ['cryofreeze-mod', 'CryoFreeze.mod', 'mod', 'CryoFreeze module', 'Arcane Guild', 'A cooling protocol specification.', 'Module configuration', 'Element: Cryo\nRole: Thermal stabilization\nInput: Calibrated aura supply\nConstraint: Requires an isolated target channel.\nThis file is a specification; opening it does not execute the protocol.'],
+  ['void-shield', 'Void_Shield.spell', 'spell', 'Void Shield recipe', 'Arcane Guild', 'A compiled defensive spell recipe.', 'Protocol recipe', 'Stage 1: Establish a stable boundary.\nStage 2: Route incoming flux away from protected nodes.\nStage 3: Release the boundary when the supply is interrupted.\nOperating limit: Defensive use only. This reader does not cast spells.'],
+  ['bleed-manipulation', 'Bleed_Manipulation.veil', 'veil', 'Unstable Veil fragment', 'Recovery Service', 'A recovered reality fragment with uncertain integrity.', 'Recovery notice', 'The recovered fragment contains discontinuities between its recorded origin and its current position. Treat its contents as unverified. Do not interpret missing segments as confirmed events.'],
+  ['aura-lean', 'Aura_Lean_Biometrics.aura', 'aura', 'Aura resonance profile', 'Faith Medical Group', 'Biometric resonance observations.', 'Resonance assessment', 'Profile type: Elemental lean and biometric correlation.\nInterpretation: A resonance profile describes observed tendencies, not a diagnosis or an identity credential. Compare with the original intake scan before drawing conclusions.'],
+  ['net-relay', 'net_relay.sys', 'sys', 'Network relay driver', 'Municipal Systems Engineering', 'Read-only service configuration.', 'Service definition', 'SERVICE = net_relay\nPURPOSE = Municipal packet relay\nDEPENDENCY = stable power and authenticated routing\nDIAGNOSTIC = Check supply, signal continuity and terminal logs before replacing a relay.\nEXECUTION = Disabled in document reader'],
+  ['aethercore-sys', 'AETHERCORE.sys', 'sys', 'AetherCore driver', 'Core Systems Archive', 'A legacy subterranean service record.', 'Driver manifest', 'SERVICE = AETHERCORE\nLAYER = Subterranean infrastructure\nSOURCE = Legacy core archive\nSIGNATURE = Pre-code lineage reference retained\nACCESS = Read-only manifest; no driver is installed by opening this file.'],
+  ['prism-bleed', 'Malware_Infection.prism', 'prism', 'PRISM intrusion record', 'Kernel Monitor', 'A retained copy of a flagged process record.', 'Integrity findings', 'Unregistered thread: PID 512\nObserved target: /sys/veil/matrix\nEvent: Attempted memory override\nRecommendation: Compare with System_Audit.log. This retained record is evidence of an alert, not an executable malware sample.'],
+  ['corrupted-bleed', 'Corrupted_Bleed.corrupt', 'corrupt', 'Damaged system fragment', 'Recovery Service', 'A partially readable recovery record.', 'Recovered text', '[BLOCK 01] Header recovered.\n[BLOCK 02] Payload unreadable.\n[BLOCK 03] Sequence checksum mismatch.\nRecovery is incomplete. Missing bytes cannot establish what the original file contained.'],
+  ['intercept-sig', 'Transmission_Intercept.sig', 'sig', 'Intercepted signal', 'Signal Desk', 'A retained signal reference.', 'Signal record', 'Sub-conduit transmission reference. Use the signal player to inspect the available transmission record.'],
+] as const;
+for (const [key, title, type, category, author, summary, sectionTitle, body] of additionalFiles) {
+  MOCK_DOCUMENTS[key] = { title, type, category, author, summary, date: 'Current', content: { sections: [{ title: sectionTitle, body }] } };
+}

@@ -15,7 +15,7 @@
   - *JetBrains Mono*: Forensic instrumentation, kernel telemetry, and SQL/CLI consoles.
 
 ### 2. DGAOS Agency Command Center & TRACE Forensic Workstation
-- **Single Authoritative Forensic Engine**: `DGAOS` (`DgaosApp.tsx`) and `TRACE` (`TraceWorkspaceApp.tsx` / `TraceApp.tsx`) share a unified persistent store and IndexedDB/localStorage synchronization layer (`dgaos/lib/store.tsx`) across both navigation entry points (launching `TRACE` directly from the desktop or from inside `DGAOS`).
+- **Single Authoritative Forensic Engine**: DGAOS and its embedded TRACE laboratory share persistent agency and forensic records. Legacy TRACE desktop links open the laboratory inside DGAOS; they do not create a separate workspace.
 - **Session & Workspace Restoration**: `TRACE` automatically restores the investigator's active case, forensic laboratory station, selected evidence item, open case tabs, and working checkpoints, with a one-click return to **Laboratory Home**.
 - **Automatic Draft Saving & Hybrid Findings Transmission**:
   - Examination notes, forensic worksheets, evidence comparisons, and draft reports autosave continuously.
@@ -47,7 +47,7 @@
 | Category | Code / Title | Module | Description |
 | :--- | :--- | :--- | :--- |
 | **Agency** | `DGAOS // Command Center` | `dgaos/apps/DgaosApp.tsx` | Department of Global Affairs command dashboard, division queues, case assignments, and comms. |
-| **Agency** | `TRACE // Forensic Workstation` | `apps/TraceWorkspaceApp.tsx` | Multi-discipline forensic laboratory workbench, evidence comparison, and report transmission. |
+| **Agency** | `TRACE // Forensic Workstation` | `dgaos/apps/TraceApp.tsx` | Embedded DGAOS laboratory, evidence comparison, and report transmission. |
 | **Agency** | `WORKNET // Federal Access` | `apps/JobWorkstationApp.tsx` | Federal career network across DGA, Faith Medical, Oryn Treasury, and Royal Archives linked to MAID records. |
 | **Civic** | `AURA // Citizen Registry` | `apps/RegistryWorkspaceApp.tsx` | Population database, Add Person generator, Look Up MAID inspector, and Portrait Studio. |
 | **Civic** | `DOCUMENT STUDIO` | `apps/DocumentStudioApp.tsx` | Official 8-template municipal document renderer and inspector synchronized with MAID profiles. |
@@ -134,7 +134,6 @@ MiraverseOSx/
 │   │   │   ├── ProcessMonitorApp.tsx  # SYSTEM Kernel & PRISM Monitor
 │   │   │   ├── RegistryWorkspaceApp.tsx # AURA Citizen Registry (Add/Look Up MAID)
 │   │   │   ├── SpellForgeApp.tsx      # NEXLINK SpellForge Protocol Compiler
-│   │   │   ├── TraceWorkspaceApp.tsx  # TRACE Forensic Workstation Entry
 │   │   │   ├── VitalsApp.tsx          # VITALS Bio-Aura & PRISM Exposure Matrix
 │   │   │   └── contents.tsx           # App Registry, Terminal & Settings
 │   │   ├── components/

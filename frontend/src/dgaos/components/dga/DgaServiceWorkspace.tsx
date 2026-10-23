@@ -13,7 +13,7 @@ export default function DgaServiceWorkspace() {
           <span className="vn-destination">{url}</span>
         </nav>
         <ExternalWebPage key={url} url={url}/>
-      </> : <ServiceDirectory navigateTab={setUrl}/>}
+      </> : <ServiceDirectory navigateTab={setUrl} showSidebar={false}/>}
     </section>
   );
 }

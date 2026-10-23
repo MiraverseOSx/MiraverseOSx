@@ -15,7 +15,7 @@ internal sealed class WorldSaveApi
     {
         "miraverse-os-progress", "miraverse-comms", "miraverse-phone-preferences",
         "miraverse-canonical-identities-v1", "miraverse-identity-registry-v3", "miraverse-maid-counter-OR",
-        "DGAOS_WORKSTATION_STATE_V3", "trace_active_case_data_v2"
+        "DGAOS_WORKSTATION_STATE_V3", "trace_active_case_data_v2", "miraverse-creator-studio-state-v1"
     };
     private static readonly JsonSerializerOptions JsonOptions = new() { PropertyNamingPolicy = JsonNamingPolicy.CamelCase };
     public WorldSaveApi(string directory)

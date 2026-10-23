@@ -87,6 +87,7 @@ export default function BrowserApp() {
     useEffect(() => {
         if (!workspaceRequest) return;
         if (workspaceRequest.section === 'services') openService(SERVICE_DIRECTORY);
+        else if (/^https?:\/\//i.test(workspaceRequest.section)) openService(workspaceRequest.section);
         useOSStore.getState().consumeWorkspaceRequest('browser', workspaceRequest.revision);
     }, [workspaceRequest, openService]);
     const closeTab = useOSStore(s => s.closeBrowserTab);

@@ -5,6 +5,7 @@ import { isLocalWorld } from '../../../gameplay/localCredentials';
 import {
   Shield,
   LayoutDashboard,
+  Grid2X2,
   FolderLock,
   Radio,
   Globe,
@@ -331,7 +332,7 @@ export function DgaShell({ traceWorkbenchNode, onOpenCaseNotebook }: DgaShellPro
         )}
 
         {/* Right Operator Clearance & Lock Tools */}
-        <div className="flex items-center gap-1.5 shrink-0">
+        <div className="dga-operator-tools flex items-center gap-1.5 shrink-0">
           {isLocalWorld(location.hostname) && !osPlayer.isAdmin && <button className="dga-notebook-launch" onClick={() => setAccessNotice(useOSStore.getState().grantLocalFullAccess().message)}>Enable full access</button>}
           {onOpenCaseNotebook && <button className="dga-notebook-launch" onClick={onOpenCaseNotebook} title="Open Broad Street evidence notebook"><FolderLock size={15} /><span>Case notebook</span></button>}
           {/* Quick Telephone Console & Incoming Call Simulation */}
@@ -348,7 +349,17 @@ export function DgaShell({ traceWorkbenchNode, onOpenCaseNotebook }: DgaShellPro
             title="Open Agency Phone & Voicemail Console"
           >
             <Phone className="w-3 h-3 text-emerald-400" />
-            <span className="hidden 2xl:inline text-[9.5px] uppercase font-bold tracking-wider">PHONE</span>
+            <span className="text-[9.5px] uppercase font-bold tracking-wider">PHONE</span>
+          </button>
+
+          <button
+            className="dga-directory-launch"
+            title="Open Service Directory"
+            aria-pressed={activeMode === 'DGA_CORE' && effectiveTab === 'services'}
+            onClick={() => handleNavigateTab('services')}
+          >
+            <Grid2X2 size={16} aria-hidden="true" />
+            <span>Directory</span>
           </button>
 
           {/* Test Incoming Call from Agent Yumi (Shown on wide displays) */}
@@ -387,7 +398,7 @@ export function DgaShell({ traceWorkbenchNode, onOpenCaseNotebook }: DgaShellPro
             title="Open Global Agency Activity Feed"
           >
             <Activity className="w-3 h-3 text-[#b2b5df]" />
-            <span className="hidden xl:inline text-[9.5px] uppercase font-bold tracking-wider">FEED</span>
+            <span className="text-[9.5px] uppercase font-bold tracking-wider">FEED</span>
             <span className="bg-[#58537d] text-white text-[8.5px] px-1 py-0.2 rounded font-bold">
               {dgaState.activityFeed.length}
             </span>

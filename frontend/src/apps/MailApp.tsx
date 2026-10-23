@@ -55,7 +55,7 @@ import {
   StatusBadge,
 } from '../components/ui/app-shell';
 import DocumentModal from '../components/widgets/DocumentModal';
-import { MOCK_DOCUMENTS } from '../data/mockDocuments';
+import { attachmentDocument } from './mail/attachmentDocument';
 import { useToastStore } from '../store/useToastStore';
 import CommunicationsAccessPanel from './CommunicationsAccessPanel';
 import { senderAccess } from '../integration/communicationsAccess';
@@ -442,27 +442,7 @@ function MailWorkspace() {
 
   // Decision 011: Opening a document NEVER awards credits or XP
   const handleOpenDocumentAttachment = (att: EmailAttachment) => {
-    const mockKey = att.mockKey || 'dga-registration';
-    const docDef = MOCK_DOCUMENTS[mockKey] || {
-      id: att.id || 'doc',
-      filename: att.name,
-      name: att.name,
-      extension: att.name.endsWith('.osform') ? '.osform' : '.pdf',
-      category: att.kind === 'form' ? 'Interactive Civic Form' : 'Official Municipal Record',
-      meta: {
-        classification: selectedMail?.institutionalSeal || 'VERIFIED RECORD',
-        author: selectedMail?.sender || 'Civic Bureau',
-        timestamp: selectedMail?.time || 'TODAY',
-        fileSize: '12.4 KB',
-      },
-      security: { isEncrypted: Boolean(selectedMail?.encrypted) },
-      content: {
-        title: att.previewTitle || att.name,
-        subtitle: att.provenance || att.previewText || 'Verified AureMail Document Enclosure',
-        bodyText: `${att.previewText || ''}\n\n---\nOriginal Message Context:\n${selectedMail?.body || ''}`,
-      },
-    };
-    setOpenDocModal(docDef);
+    setOpenDocModal(attachmentDocument(att, selectedMail));
   };
 
   const handleSaveAttachmentToVault = (att: EmailAttachment) => {

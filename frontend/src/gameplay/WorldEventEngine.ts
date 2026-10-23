@@ -610,7 +610,7 @@ export const SPECIAL_LORE_DREAMS: SpecialLoreDream[] = [
     conditionCheck: (player) =>
       Boolean(player?.lineageDecrypted) ||
       (Array.isArray(player?.inspectedFiles) &&
-        (player.inspectedFiles.includes('purge-archive') || player.inspectedFiles.includes('aethercore-sys'))),
+        player.inspectedFiles.includes('purge-archive')),
   },
   {
     id: 'dream-veil-shrine-harmonic',

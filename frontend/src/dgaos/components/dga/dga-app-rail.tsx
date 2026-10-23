@@ -217,7 +217,6 @@ export function DgaAppRail({
             )}
           </button>
 
-          <button onClick={() => onNavigateTab('services')} title="Service Directory" aria-current={currentMode === 'DGA_CORE' && currentTab === 'services' ? 'page' : undefined} className={`w-full h-[38px] px-[10px] rounded-[4px] flex items-center gap-2.5 text-left cursor-pointer ${currentMode === 'DGA_CORE' && currentTab === 'services' ? 'bg-white text-[#181628] border-l-2 border-[#5d5a86]' : 'text-[#4b4866] hover:bg-[#e4e2ee]'}`}><Globe className="w-4 h-4 shrink-0"/>{!isCollapsed && <span className="text-[12px]">Service Directory</span>}</button>
           {/* Outside Research / Extranet */}
           <button
             onClick={() => onNavigateTab('extranet')}

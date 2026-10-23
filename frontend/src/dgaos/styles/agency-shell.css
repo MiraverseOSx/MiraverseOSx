@@ -24,6 +24,8 @@
   scrollbar-width: thin;
 }
 .dga-shell > header > div { flex-shrink: 0; }
+.dga-shell > header .dga-operator-tools { flex-wrap: wrap; max-width: 100%; }
+.dga-shell > header .dga-directory-launch { display: inline-flex; align-items: center; gap: 8px; padding: 6px 10px; color: #fff; white-space: nowrap; }
 .dga-shell > header button,
 .dga-app-rail button,
 .dga-case-navigation button {

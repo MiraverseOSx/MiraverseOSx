@@ -19,6 +19,6 @@ export async function connectWorld() {
   // App stores keep their existing offline persistence. Capture their records together
   // after synchronous WorkNet → mail → file changes have finished.
   window.setInterval(() => { if (!document.hidden) void worldConnection.sync(); }, 1500);
-  window.addEventListener('online', () => void worldConnection.sync());
+  window.addEventListener('online', () => void worldConnection.sync(true));
   document.addEventListener('visibilitychange', () => { if (document.hidden) void worldConnection.sync(); });
 }

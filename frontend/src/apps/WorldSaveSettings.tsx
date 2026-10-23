@@ -18,7 +18,7 @@ export default function WorldSaveSettings() {
       <div className="world-save-actions"><button onClick={() => void worldConnection.keepDeviceCopy()}>Keep this browser’s progress</button><button onClick={() => void worldConnection.loadDatabaseCopy()}>Load database save</button></div>
     </> : <>
       {status.updatedAt && <p className="world-save-timestamp">Last database save: {new Date(status.updatedAt).toLocaleString()}</p>}
-      <button disabled={busy} onClick={() => void worldConnection.sync()}>{busy ? status.message : 'Save now'}</button>
+      <button disabled={busy} onClick={() => void worldConnection.sync(true)}>{busy ? status.message : 'Save now'}</button>
     </>}
   </section>;
 }

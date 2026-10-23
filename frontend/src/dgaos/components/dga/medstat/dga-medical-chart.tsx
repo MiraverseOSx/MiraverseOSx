@@ -41,7 +41,8 @@ import { DGACase } from '@/lib/dga-types';
 import { playCardiacBeep } from '@/lib/phone-audio';
 import { escalateMedicalCaseToInvestigation } from '@/lib/dga-crosslink-engine';
 import { DgaMedicalRequestQueue } from './dga-medical-request-queue';
-import { MaidIdentityService, CanonicalCitizenRecord } from '../../../../services/maidIdentityService';
+import type { CanonicalPerson } from '../../../../services/maidIdentityService';
+import { subscribeCitizenUpdates } from '../../../../integration/citizenEvents';
 import {
   getCanonicalCitizens,
   getActiveCitizenContext,
@@ -64,26 +65,41 @@ export function DgaMedicalChart({ onOpenCase, onNavigateTab, cases = [], activeC
   const [escalateToast, setEscalateToast] = useState<string | null>(null);
   const [isEscalating, setIsEscalating] = useState(false);
   const [actionFeedback, setActionFeedback] = useState<string | null>(null);
-  const [canonicalCitizens, setCanonicalCitizens] = useState<CanonicalCitizenRecord[]>(() => {
-    MaidIdentityService.ensureDefaultPopulationSeeded();
-    return getCanonicalCitizens();
-  });
+  const [canonicalCitizens, setCanonicalCitizens] = useState<CanonicalPerson[]>([]);
+  const [registryLoading, setRegistryLoading] = useState(true);
+  const [registryError, setRegistryError] = useState('');
+  const [syncingCitizen, setSyncingCitizen] = useState(false);
   const [selectedMaidCitizen, setSelectedMaidCitizen] = useState<string>(() => {
     const ctx = getActiveCitizenContext();
-    return ctx?.maid || 'MAID-OR-00481926';
+    return ctx?.citizenId || '';
   });
 
   useEffect(() => {
-    const syncMaid = () => {
-      setCanonicalCitizens(getCanonicalCitizens());
-      const ctx = getActiveCitizenContext();
-      if (ctx?.maid) setSelectedMaidCitizen(ctx.maid);
+    let mounted = true;
+    let revision = 0;
+    const syncMaid = async () => {
+      const request = ++revision;
+      try {
+        const citizens = await getCanonicalCitizens();
+        if (!mounted || request !== revision) return;
+        setCanonicalCitizens(citizens);
+        setRegistryError('');
+        const context = getActiveCitizenContext()?.citizenId;
+        setSelectedMaidCitizen(previous => {
+          const selection = context || previous;
+          return citizens.some(c => (c.maid || c.id) === selection) ? selection : (citizens[0]?.maid || citizens[0]?.id || '');
+        });
+      } catch {
+        if (mounted && request === revision) setRegistryError('Citizen registry unavailable. The clinical chart remains available. Reopen MEDSTAT to retry.');
+      } finally {
+        if (mounted && request === revision) setRegistryLoading(false);
+      }
     };
-    window.addEventListener('maid-registry-updated', syncMaid);
-    window.addEventListener('active-citizen-changed', syncMaid);
+    void syncMaid();
+    const unsubscribe = subscribeCitizenUpdates(() => { void syncMaid(); });
     return () => {
-      window.removeEventListener('maid-registry-updated', syncMaid);
-      window.removeEventListener('active-citizen-changed', syncMaid);
+      mounted = false;
+      unsubscribe();
     };
   }, []);
 
@@ -575,11 +591,13 @@ export function DgaMedicalChart({ onOpenCase, onNavigateTab, cases = [], activeC
           <select
             aria-label="Select canonical MAID citizen for Faith Medical clinical chart sync"
             value={selectedMaidCitizen}
+            disabled={registryLoading || !canonicalCitizens.length}
             onChange={(e) => setSelectedMaidCitizen(e.target.value)}
             className="bg-slate-900 border border-emerald-700 text-white text-xs font-bold rounded px-2 py-1 outline-none cursor-pointer"
           >
+            {!canonicalCitizens.length && <option value="">{registryLoading ? 'Loading citizens…' : 'No citizen records available'}</option>}
             {canonicalCitizens.map((c) => (
-              <option key={c.maid} value={c.maid}>
+              <option key={c.id} value={c.maid || c.id}>
                 {c.name} ({c.maid}) • Blood {c.blood}
               </option>
             ))}
@@ -588,25 +606,27 @@ export function DgaMedicalChart({ onOpenCase, onNavigateTab, cases = [], activeC
         <div className="flex items-center gap-2">
           <button
             type="button"
-            onClick={() => {
-              const updated = syncFaithMedicalUpdate(selectedMaidCitizen, {
-                clinicalNote: `MEDSTAT Chart (${chart.caseId} - ${chart.clinicalStatus}): HR ${latestVitals.heartRate} BPM, BP ${latestVitals.bloodPressureSystolic}/${latestVitals.bloodPressureDiastolic} mmHg, SpO2 ${latestVitals.oxygenSaturation}% synced by ${chart.attendingPhysician}.`,
-              });
-              setActionFeedback(
-                updated
-                  ? `Synced Faith Medical MEDSTAT telemetry to canonical MAID citizen ${updated.name} (${updated.maid}).`
-                  : `Synced clinical telemetry to ${selectedMaidCitizen}.`
-              );
-              setTimeout(() => setActionFeedback(null), 4500);
+            disabled={registryLoading || !selectedMaidCitizen || syncingCitizen}
+            onClick={async () => {
+              setSyncingCitizen(true);
+              try {
+                const result = await syncFaithMedicalUpdate(selectedMaidCitizen, {
+                  medicalSummary: `MEDSTAT Chart (${chart.caseId} - ${chart.clinicalStatus}): HR ${latestVitals.heartRate} BPM, BP ${latestVitals.bloodPressureSystolic}/${latestVitals.bloodPressureDiastolic} mmHg, SpO2 ${latestVitals.oxygenSaturation}%.`,
+                  attendingClinician: chart.attendingPhysician,
+                });
+                setActionFeedback(result.success ? `Synced Faith Medical MEDSTAT telemetry to ${result.person?.name || selectedMaidCitizen}.` : result.error || 'Clinical sync failed. Please retry.');
+              } catch { setActionFeedback('Clinical sync unavailable. Your chart is still open; please retry.'); }
+              finally { setSyncingCitizen(false); }
             }}
             className="px-2.5 py-1 rounded bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-[11px] flex items-center gap-1 cursor-pointer transition"
           >
             <CheckCircle2 className="w-3.5 h-3.5" />
-            <span>Sync Chart Vitals to MAID</span>
+            <span>{syncingCitizen ? 'Syncing chart…' : 'Sync Chart Vitals to MAID'}</span>
           </button>
           <button
             type="button"
-            onClick={() => openCitizenInApp(selectedMaidCitizen, 'document_studio', { targetDocId: 8 })}
+            disabled={registryLoading || !selectedMaidCitizen}
+            onClick={() => openCitizenInApp(selectedMaidCitizen, 'documentStudio', { targetDocId: 8 })}
             className="px-2.5 py-1 rounded bg-slate-800 hover:bg-slate-700 text-emerald-200 border border-emerald-700 font-bold text-[11px] flex items-center gap-1 cursor-pointer transition"
           >
             <FileText className="w-3.5 h-3.5" />
@@ -614,7 +634,8 @@ export function DgaMedicalChart({ onOpenCase, onNavigateTab, cases = [], activeC
           </button>
           <button
             type="button"
-            onClick={() => openCitizenInApp(selectedMaidCitizen, 'registry_workspace', { targetTab: 'lookup' })}
+            disabled={registryLoading || !selectedMaidCitizen}
+            onClick={() => openCitizenInApp(selectedMaidCitizen, 'meridionRegistry', { targetTab: 'lookup' })}
             className="px-2.5 py-1 rounded bg-slate-800 hover:bg-slate-700 text-white border border-slate-600 font-bold text-[11px] flex items-center gap-1 cursor-pointer transition"
           >
             <User className="w-3.5 h-3.5" />
@@ -624,11 +645,11 @@ export function DgaMedicalChart({ onOpenCase, onNavigateTab, cases = [], activeC
       </div>
 
       {/* FEEDBACK TOAST */}
-      {(escalateToast || actionFeedback) && (
+      {(escalateToast || actionFeedback || registryError) && (
         <div className="bg-slate-900 text-white px-4 py-2 text-xs flex items-center justify-between shadow-md">
           <div className="flex items-center gap-2">
             <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
-            <span className="font-semibold">{escalateToast || actionFeedback}</span>
+            <span className="font-semibold" role="status">{escalateToast || actionFeedback || registryError}</span>
           </div>
           {escalateToast && onOpenCase && (
             <button

@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useMemo, useEffect } from 'react';
+import { subscribeCitizenUpdates } from '../../../integration/citizenEvents';
 import {
   Users,
   Search,
@@ -382,10 +383,9 @@ export const SEEDED_CITIZENS: CitizenRecord[] = [
   },
 ];
 
-function getCanonicalCitizens(): CitizenRecord[] {
+async function getCanonicalCitizens(): Promise<CitizenRecord[]> {
   try {
-    MaidIdentityService.ensureDefaultPopulationSeeded();
-    const list = MaidIdentityService.getAllPersons();
+    const list = await MaidIdentityService.ensureDefaultPopulationSeeded();
     if (!Array.isArray(list)) return [];
     return list.map((c: any) => ({
       id: c.maid || c.record || c.id,
@@ -451,32 +451,37 @@ export function CitizenRegistry({
   const [categoryFilter, setCategoryFilter] = useState<string>('All');
   const [selectedCitizenId, setSelectedCitizenId] = useState<string>(() => {
     const ctx = getActiveCitizenContext();
-    return ctx?.maid || 'MAID-OR-00481926';
+    return ctx?.citizenId || 'MAID-OR-00481926';
   });
   const [isQuerying, setIsQuerying] = useState(false);
   const [pinnedCitizens, setPinnedCitizens] = useState<string[]>(['CIT-90421', 'CIT-88192']);
   const [actionNotice, setActionNotice] = useState<string | null>(null);
-  const [registryVersion, setRegistryVersion] = useState(0);
+  const [canonicalCitizens, setCanonicalCitizens] = useState<CitizenRecord[]>([]);
 
   useEffect(() => {
-    const syncCtx = () => {
-      setRegistryVersion((v) => v + 1);
-      const ctx = getActiveCitizenContext();
-      if (ctx?.maid) setSelectedCitizenId(ctx.maid);
+    let mounted = true;
+    let revision = 0;
+    const syncCtx = async (update: { citizenId?: string } = {}) => {
+      const request = ++revision;
+      const records = await getCanonicalCitizens();
+      if (!mounted || request !== revision) return;
+      setCanonicalCitizens(records);
+      const id = update.citizenId || getActiveCitizenContext()?.citizenId;
+      if (id) setSelectedCitizenId(id);
     };
-    window.addEventListener('maid-registry-updated', syncCtx);
-    window.addEventListener('active-citizen-changed', syncCtx);
+    void syncCtx();
+    const unsubscribe = subscribeCitizenUpdates(update => { void syncCtx(update); });
     return () => {
-      window.removeEventListener('maid-registry-updated', syncCtx);
-      window.removeEventListener('active-citizen-changed', syncCtx);
+      mounted = false;
+      unsubscribe();
     };
   }, []);
 
   const combinedCitizens = useMemo(() => {
-    const canonical = getCanonicalCitizens();
+    const canonical = canonicalCitizens;
     const seen = new Set(canonical.map(c => c.id));
     return [...canonical, ...SEEDED_CITIZENS.filter(c => !seen.has(c.id))];
-  }, [searchQuery, registryVersion]);
+  }, [canonicalCitizens]);
 
   const filteredCitizens = useMemo(() => {
     return combinedCitizens.filter((c) => {
@@ -745,7 +750,7 @@ export function CitizenRegistry({
                 <div className="flex flex-wrap items-center gap-1.5">
                   <button
                     type="button"
-                    onClick={() => openCitizenInApp(selectedCitizen.id, 'registry_workspace', { targetTab: 'lookup' })}
+                    onClick={() => openCitizenInApp(selectedCitizen.id, 'meridionRegistry', { targetTab: 'lookup' })}
                     className="px-2.5 py-1.5 text-xs font-bold rounded-lg bg-[#4338ca] hover:bg-[#3730a3] text-white flex items-center gap-1 transition-all cursor-pointer shadow-2xs"
                   >
                     <ExternalLink size={12} />
@@ -753,7 +758,7 @@ export function CitizenRegistry({
                   </button>
                   <button
                     type="button"
-                    onClick={() => openCitizenInApp(selectedCitizen.id, 'document_studio', { targetDocId: 5 })}
+                    onClick={() => openCitizenInApp(selectedCitizen.id, 'documentStudio', { targetDocId: 5 })}
                     className="px-2.5 py-1.5 text-xs font-bold rounded-lg bg-[#f8f6fc] hover:bg-[#ece7f4] text-[#0f0d1a] border border-[#d4ceeb] flex items-center gap-1 transition-all cursor-pointer"
                   >
                     <FileText size={12} className="text-[#4338ca]" />
