@@ -157,6 +157,22 @@ export default function SevenRealmsMapPanel() {
               </div>
             </div>
 
+            {/* Postal Routing & Addressing Standard (RR-NNNN) */}
+            <div className="bg-slate-50/80 p-3.5 rounded-xl border border-slate-200 space-y-1.5">
+              <div className="flex items-center justify-between text-[11px] font-mono">
+                <span className="font-bold text-indigo-700 uppercase">National Postal Format (RR-NNNN)</span>
+                <span className="bg-indigo-50 border border-indigo-200 text-indigo-800 font-bold px-2 py-0.5 rounded">
+                  Prefix: {selectedRealm.regionCode}-####
+                </span>
+              </div>
+              <div className="text-xs text-slate-600">
+                <span className="text-slate-400 font-mono">Standard Address Syntax:</span>{' '}
+                <code className="font-mono text-slate-800 bg-white px-1.5 py-0.5 rounded border border-slate-200">
+                  [Building & Street], {selectedRealm.capital}, {selectedRealm.name} {selectedRealm.regionCode}-1000, Meridion
+                </code>
+              </div>
+            </div>
+
             {/* Realm Role & Law */}
             <div>
               <div className="text-xs font-mono font-bold text-slate-500 uppercase tracking-wider mb-1.5">

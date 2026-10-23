@@ -299,3 +299,76 @@ export function getCelestialState(cycle: number = 28): CelestialState {
     isFoundingDay
   };
 }
+
+export const REALM_POSTAL_PREFIXES: Record<string, string> = {
+  Orynvell: 'OR',
+  Fross: 'FR',
+  Lumia: 'LM',
+  Marlowe: 'MW',
+  Brisland: 'BR',
+  Kaji: 'KJ',
+  Nephele: 'NP',
+};
+
+export const ROAD_CLASSES = [
+  'Street',
+  'Avenue',
+  'Boulevard',
+  'Road',
+  'Lane',
+  'Drive',
+  'Court',
+  'Way',
+  'Crescent',
+  'Parkway',
+  'Highway',
+  'Passage',
+  'Quay',
+  'Causeway',
+  'Terrace',
+] as const;
+
+export interface HousingRepresentationTier {
+  tier: 'Tier A' | 'Tier B' | 'Tier C';
+  name: string;
+  functionDescription: string;
+}
+
+export const HOUSING_TIERS: HousingRepresentationTier[] = [
+  {
+    tier: 'Tier A',
+    name: 'Fully Interactive',
+    functionDescription: 'Visitable, furnished rooms, storage, occupants, and detailed gameplay.',
+  },
+  {
+    tier: 'Tier B',
+    name: 'Simplified Visitable',
+    functionDescription: 'Exterior/map location and selected interactions; limited interior.',
+  },
+  {
+    tier: 'Tier C',
+    name: 'Registered Only',
+    functionDescription: 'Stable address and owner/residence records, no fully playable interior.',
+  },
+];
+
+export interface CanonicalMailingAddress {
+  recipient?: string;
+  buildingNumberAndStreet: string;
+  buildingAndUnit?: string;
+  district?: string;
+  city: string;
+  realm: string;
+  postalCode: string;
+}
+
+export function formatMailingAddress(addr: CanonicalMailingAddress): string {
+  const parts: string[] = [];
+  if (addr.recipient) parts.push(addr.recipient);
+  parts.push(addr.buildingNumberAndStreet);
+  if (addr.buildingAndUnit) parts.push(addr.buildingAndUnit);
+  if (addr.district) parts.push(addr.district);
+  parts.push(`${addr.city}, ${addr.realm} ${addr.postalCode}`);
+  parts.push('Meridion');
+  return parts.join(', ');
+}
