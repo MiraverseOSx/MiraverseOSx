@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import LocalCredentials from './LocalCredentials';
 import { Check, ChevronRight, HardDrive, Info, Palette, Settings2, Volume2 } from 'lucide-react';
 import { useOSStore } from '../store/useOSStore';
 import { useSystemStore } from '../store/useSystemStore';
@@ -12,6 +13,7 @@ const sections = [
   { id: 'appearance', title: 'Appearance', detail: 'Make it your space', icon: Palette },
   { id: 'sound', title: 'Sound', detail: 'System audio', icon: Volume2 },
   { id: 'save', title: 'Save & sync', detail: 'Progress & recovery', icon: HardDrive },
+  { id: 'credentials', title: 'Credentials', detail: 'Player access & institutions', icon: Settings2 },
   { id: 'about', title: 'About', detail: 'Your Miraverse system', icon: Info },
 ] as const;
 const wallpapers = [
@@ -60,6 +62,7 @@ export default function SettingsApp() {
         </>}
         {selected === 'sound' && <section className="settings-group" aria-labelledby="settings-audio-heading"><h3 id="settings-audio-heading">Desktop audio</h3><div className="settings-preference-row"><div><strong id="settings-sound-label">System sounds</strong><p id="settings-sound-help">Interface sounds and desktop audio. This is the same control as the taskbar speaker.</p></div><button className="settings-switch" role="switch" aria-labelledby="settings-sound-label" aria-describedby="settings-sound-help" aria-checked={soundEnabled} onClick={() => setSoundEnabled(!soundEnabled)}><span /></button></div><div className="settings-preference-row"><div><strong>Listen to a preview</strong><p>Play a short interface sound.</p></div><button className="settings-secondary-button" disabled={!soundEnabled} onClick={() => SoundFX.playSnap()}><Volume2 size={16} aria-hidden="true" />Play sound</button></div></section>}
         {selected === 'save' && <WorldSaveSettings />}
+        {selected === 'credentials' && <LocalCredentials />}
         {selected === 'about' && <><div className="settings-about-mark"><Settings2 size={28} aria-hidden="true" /><div><h3>MiraverseOSx</h3><p>Your desktop in Aureline</p></div></div><section className="settings-group" aria-label="System information"><dl className="settings-details"><div><dt>World</dt><dd>Aureline</dd></div><div><dt>Experience</dt><dd>Local single-player</dd></div><div><dt>Storage</dt><dd>Local database with device fallback</dd></div><div><dt>Appearance</dt><dd>Neutral surfaces with purposeful accents</dd></div></dl></section><p className="settings-footnote">Your apps share one world. Manage database saves and recovery in <button className="settings-inline-link" onClick={() => setSelected('save')}>Save & sync</button>.</p></>}
       </main>
     </div>

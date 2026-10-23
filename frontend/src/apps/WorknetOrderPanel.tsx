@@ -3,6 +3,9 @@ import { useOSStore } from '../store/useOSStore';
 import { WORK_DEFINITIONS, nextWorkStage, resolveWorkStage, resultForStage, evaluateLinkedActivities, type TaskResult, type WorkOrder } from '../gameplay/ActivityEngine';
 import { getOpportunity, briefingText } from '../gameplay/AssignmentFlow';
 import { isOpportunityRevealed } from '../gameplay/ProgressionEngine';
+import ReportEditor from '../components/editor/ReportEditor';
+import BroadStreetCasePanel from './investigation/BroadStreetCasePanel';
+import { RichMailBody } from './mail/RichMailEditor';
 
 export default function WorknetOrderPanel({ missionId, onFeedback }: { missionId: string; onFeedback: (message: string) => void }) {
   const player = useOSStore(state => state.gameplay.player);
@@ -27,9 +30,11 @@ export default function WorknetOrderPanel({ missionId, onFeedback }: { missionId
   const canRepeat = definition.kind === 'shift' && definition.track !== 'medical' && order?.status === 'accepted' && cycle > order.cycle;
   const feedback = (result: { ok: boolean; message: string }) => onFeedback(`${result.ok ? '✓' : '⚠'} ${result.message}`);
   const activities = evaluateLinkedActivities(results).filter(activity => isOpportunityRevealed(activity.id, player) && activity.milestones.some(milestone => milestone.requirements.some(requirement => requirement.definitionId === missionId)));
+  if (missionId === 'ms-case-002') return <BroadStreetCasePanel />;
   return (
     <section className="space-y-3 text-xs font-ui" aria-label="Assignment work order">
       <div className="work-order-block space-y-3">
+        {missionId === 'ms-spec-01' && <button type="button" className="assignment-secondary" onClick={() => useOSStore.getState().openWindow('fieldOperations')}>Open playable Tunnel 09 field investigation</button>}
         <div className="flex justify-between gap-3 items-start">
           <h3 className="font-bold text-amber-950">{definition.kind === 'shift' ? 'Work shift' : definition.kind === 'quest' ? 'Civic quest' : 'Institutional mission'} · {definition.subject}</h3>
           <span className="text-[10px] uppercase text-amber-800">{order?.status || 'Available'}</span>
@@ -50,7 +55,7 @@ export default function WorknetOrderPanel({ missionId, onFeedback }: { missionId
           <ol className="space-y-1.5 pt-2" aria-label="Required stages">
             {definition.stages.map((stage, index) => {
               const result = resultForStage(order, stage.id, results);
-              return <li key={stage.id} className={result ? 'text-emerald-800' : current?.id === stage.id ? 'font-bold text-amber-950' : 'text-slate-500'}>{result ? '✓' : `${index + 1}.`} {stage.title}{result && <details className="mt-1 font-normal text-[11px]"><summary className="cursor-pointer">Saved output</summary><p className="break-all">{result.id}</p><dl>{Object.entries(result.output).map(([key, value]) => <div key={key} className="py-0.5"><dt className="inline font-semibold">{key}: </dt><dd className="inline whitespace-pre-wrap">{value}</dd></div>)}</dl></details>}</li>;
+              return <li key={stage.id} className={result ? 'text-emerald-800' : current?.id === stage.id ? 'font-bold text-amber-950' : 'text-slate-500'}>{result ? '✓' : `${index + 1}.`} {stage.title}{result && <details className="mt-1 font-normal text-[11px]"><summary className="cursor-pointer">Saved output</summary><p className="break-all">{result.id}</p><dl>{Object.entries(result.output).filter(([key]) => !key.endsWith('__html')).map(([key, value]) => <div key={key} className="py-0.5"><dt className="inline font-semibold">{key}: </dt><dd className="inline whitespace-pre-wrap">{result.output[`${key}__html`] ? <RichMailBody html={result.output[`${key}__html`]} text={value} /> : value}</dd></div>)}</dl></details>}</li>;
             })}
           </ol>
           </details>
@@ -62,11 +67,11 @@ export default function WorknetOrderPanel({ missionId, onFeedback }: { missionId
             <div><h4 className="font-bold text-slate-900">{current.title}</h4><span className="text-[10px] uppercase text-amber-800">{current.mechanic}</span></div>
             {current.approaches?.length && <label className="block">Choose your approach<select aria-label="Task approach" value={draft._approach || 'default'} onChange={event => saveDraft(missionId, current.id, { _approach: event.target.value })} className="block w-full border border-slate-300 bg-white p-2 mt-1"><option value="default">{current.defaultApproachLabel || 'Follow the assigned procedure'}</option>{current.approaches.map(approach => <option key={approach.id} value={approach.id}>{approach.label}</option>)}</select></label>}
             <p className="leading-relaxed text-slate-700">{current.brief}</p>
-            {current.fields.map(field => <label key={field.id} className="block text-slate-800 font-medium">{field.label}
+            {current.fields.map(field => <div key={field.id} className="block text-slate-800 font-medium"><span>{field.label}</span>
               {field.kind === 'select' ? <select aria-label={field.label} value={draft[field.id] || ''} onChange={event => saveDraft(missionId, current.id, { ...draft, [field.id]: event.target.value })} className="block w-full border border-slate-300 bg-white text-slate-900 rounded-lg p-2 mt-1"><option value="">Select…</option>{field.options!.map(option => <option key={option}>{option}</option>)}</select>
-                : field.kind === 'report' ? <textarea aria-label={field.label} maxLength={4000} value={draft[field.id] || ''} onChange={event => saveDraft(missionId, current.id, { ...draft, [field.id]: event.target.value })} className="block w-full border border-slate-300 bg-white text-slate-900 rounded-lg p-2 mt-1 min-h-28" />
+                : field.kind === 'report' ? <ReportEditor label={field.label} text={draft[field.id] || ''} html={draft[`${field.id}__html`]} onChange={(text, html) => saveDraft(missionId, current.id, { ...draft, [field.id]: text, [`${field.id}__html`]: html })} />
                   : <input aria-label={field.label} type={field.kind === 'number' ? 'number' : 'text'} step="any" maxLength={4000} value={draft[field.id] || ''} onChange={event => saveDraft(missionId, current.id, { ...draft, [field.id]: event.target.value })} className="block w-full border border-slate-300 bg-white text-slate-900 rounded-lg p-2 mt-1" />}
-            </label>)}
+            </div>)}
             <p className="text-[10px] text-slate-500">Drafts save automatically. Incorrect findings reduce evaluation; unsafe procedures lose supplies and require remediation.</p>
             <button type="submit" className="w-full rounded-lg bg-slate-900 text-white px-3 py-2 font-bold">Perform stage and save output</button>
           </form> : !current && <p className="font-semibold text-emerald-800">All required outputs accepted. {order.status === 'accepted' ? 'Work order finalized.' : 'Finalize below to close this work order.'}</p>)}

@@ -1,3 +1,4 @@
+@import 'tailwindcss/theme.css' layer(theme);
 @import './styles/tokens.css';
 @import './styles/theme.css';
 @import './styles/components.css';
@@ -5,9 +6,12 @@
 @import './styles/workspaces.css';
 @import './styles/progression.css';
 
-@tailwind base;
-@tailwind components;
+@config '../tailwind.config.js';
 @tailwind utilities;
+
+/* Fit the entire 16:9 desktop inside the browser, including wide/short views. */
+.mira-display-host { width: 100vw; height: 100dvh; display: grid; place-items: center; overflow: hidden; background: #100e16; }
+.mira-display-frame { position: relative; width: min(100vw, 177.7777778dvh, 1920px); aspect-ratio: 16 / 9; flex: none; overflow: hidden; box-shadow: 0 0 80px #0008; }
 
 /* ==========================================================================
    1. MASTER BASE LAYOUT & TYPOGRAPHY

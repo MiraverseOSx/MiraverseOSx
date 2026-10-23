@@ -1,0 +1,145 @@
+{
+  "schemaVersion": 1,
+  "seed": 42,
+  "purpose": "Fictional writing examples; no world-state or reward effects",
+  "cases": [
+    {
+      "id": "EXAMPLE-547345CAE1CE",
+      "fictional": true,
+      "title": "Resonance equipment review",
+      "subject": "Iona Reed",
+      "location": "Glassline District",
+      "premise": "A training instrument returned inconsistent readings during a fictional practice session.",
+      "sources": [
+        {
+          "id": "EXAMPLE-547345CAE1CE-S1",
+          "title": "Calibration log"
+        },
+        {
+          "id": "EXAMPLE-547345CAE1CE-S2",
+          "title": "Maintenance note"
+        },
+        {
+          "id": "EXAMPLE-547345CAE1CE-S3",
+          "title": "Operator statement"
+        }
+      ],
+      "writingPrompt": "Compare the sources, describe what is known, and identify what still needs verification. Do not invent missing evidence."
+    },
+    {
+      "id": "EXAMPLE-03DDF851127D",
+      "fictional": true,
+      "title": "Resonance equipment review",
+      "subject": "Talia Fen",
+      "location": "Orynvell Shallows",
+      "premise": "A training instrument returned inconsistent readings during a fictional practice session.",
+      "sources": [
+        {
+          "id": "EXAMPLE-03DDF851127D-S1",
+          "title": "Calibration log"
+        },
+        {
+          "id": "EXAMPLE-03DDF851127D-S2",
+          "title": "Maintenance note"
+        },
+        {
+          "id": "EXAMPLE-03DDF851127D-S3",
+          "title": "Operator statement"
+        }
+      ],
+      "writingPrompt": "Compare the sources, describe what is known, and identify what still needs verification. Do not invent missing evidence."
+    },
+    {
+      "id": "EXAMPLE-CDF56F9773DA",
+      "fictional": true,
+      "title": "Records discrepancy",
+      "subject": "Soren Mire",
+      "location": "Glassline District",
+      "premise": "Two fictional transit records disagree about a departure time.",
+      "sources": [
+        {
+          "id": "EXAMPLE-CDF56F9773DA-S1",
+          "title": "Ticket ledger"
+        },
+        {
+          "id": "EXAMPLE-CDF56F9773DA-S2",
+          "title": "Station clock log"
+        },
+        {
+          "id": "EXAMPLE-CDF56F9773DA-S3",
+          "title": "Passenger statement"
+        }
+      ],
+      "writingPrompt": "Compare the sources, describe what is known, and identify what still needs verification. Do not invent missing evidence."
+    },
+    {
+      "id": "EXAMPLE-9943B4BC886D",
+      "fictional": true,
+      "title": "Resonance equipment review",
+      "subject": "Liora Ash",
+      "location": "Glassline District",
+      "premise": "A training instrument returned inconsistent readings during a fictional practice session.",
+      "sources": [
+        {
+          "id": "EXAMPLE-9943B4BC886D-S1",
+          "title": "Calibration log"
+        },
+        {
+          "id": "EXAMPLE-9943B4BC886D-S2",
+          "title": "Maintenance note"
+        },
+        {
+          "id": "EXAMPLE-9943B4BC886D-S3",
+          "title": "Operator statement"
+        }
+      ],
+      "writingPrompt": "Compare the sources, describe what is known, and identify what still needs verification. Do not invent missing evidence."
+    },
+    {
+      "id": "EXAMPLE-720B4B48FE54",
+      "fictional": true,
+      "title": "Resonance equipment review",
+      "subject": "Neris Rowan",
+      "location": "Glassline District",
+      "premise": "A training instrument returned inconsistent readings during a fictional practice session.",
+      "sources": [
+        {
+          "id": "EXAMPLE-720B4B48FE54-S1",
+          "title": "Calibration log"
+        },
+        {
+          "id": "EXAMPLE-720B4B48FE54-S2",
+          "title": "Maintenance note"
+        },
+        {
+          "id": "EXAMPLE-720B4B48FE54-S3",
+          "title": "Operator statement"
+        }
+      ],
+      "writingPrompt": "Compare the sources, describe what is known, and identify what still needs verification. Do not invent missing evidence."
+    },
+    {
+      "id": "EXAMPLE-7CBAF57B7FF1",
+      "fictional": true,
+      "title": "Records discrepancy",
+      "subject": "Iona Reed",
+      "location": "Orynvell Shallows",
+      "premise": "Two fictional transit records disagree about a departure time.",
+      "sources": [
+        {
+          "id": "EXAMPLE-7CBAF57B7FF1-S1",
+          "title": "Ticket ledger"
+        },
+        {
+          "id": "EXAMPLE-7CBAF57B7FF1-S2",
+          "title": "Station clock log"
+        },
+        {
+          "id": "EXAMPLE-7CBAF57B7FF1-S3",
+          "title": "Passenger statement"
+        }
+      ],
+      "writingPrompt": "Compare the sources, describe what is known, and identify what still needs verification. Do not invent missing evidence."
+    }
+  ]
+}

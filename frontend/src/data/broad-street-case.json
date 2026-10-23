@@ -1,0 +1,91 @@
+{
+  "schemaVersion": 1,
+  "version": "broad-street-v1",
+  "seed": 42,
+  "reference": "BS-REVIEW-93810",
+  "caseId": "CASE-2026-002",
+  "caseNumber": "FS-2026-00422",
+  "title": "The Broad Street Vault Breach: Sub-Level Infiltration",
+  "missionId": "ms-case-002",
+  "chronology": [
+    {
+      "time": "01:58 UTC",
+      "title": "Sub-Level Access Terminal Credential Replay",
+      "source": "Audit Log Server (Vault Access Control)",
+      "description": "RFID badge ID #CRUZ-9012 duplicated and replayed via spoofed software handshake.",
+      "type": "surveillance",
+      "verified": true
+    },
+    {
+      "time": "02:11 UTC",
+      "title": "Physical Assault on Night Guard",
+      "source": "Audio Dispatch & Emergency Duress Alarm",
+      "description": "Officer Mateo Cruz attacked from behind with blunt instrument; secured with nylon zip-ties.",
+      "type": "dispatch",
+      "verified": true
+    },
+    {
+      "time": "02:24 UTC",
+      "title": "Exothermic Thermal Lance Activation",
+      "source": "HVAC Thermal & Smoke Sensors",
+      "description": "Extreme localized temperature spike (>2,400°C) recorded on vault door upper hinge.",
+      "type": "forensic",
+      "verified": true
+    },
+    {
+      "time": "03:02 UTC",
+      "title": "Perimeter Van Departure",
+      "source": "City Traffic Camera Intersection Broad & 4th",
+      "description": "Charcoal commercial van observed speeding northbound with obscured license plates.",
+      "type": "surveillance",
+      "verified": true
+    }
+  ],
+  "sources": [
+    {
+      "id": "access-audit",
+      "app": "files",
+      "title": "Vault access audit",
+      "publisher": "Depository access-control custodian",
+      "body": "FS-2026-00422 / Restricted access audit\n2026-09-12, 01:58 UTC. Sub-Level 2 accepted credential CRUZ-9012. The audit service flags this transaction as a duplicated credential replay rather than a fresh presentation by a verified person. A valid badge identifier is an identifier of the credential, not a photograph or biometric identification of its user.\n\nAt 02:11 UTC the emergency duress record identifies an assault on night security officer Mateo Cruz. The badge acceptance precedes the duress alarm. The audit cannot place Cruz at the reader when the replay occurred; access logs record transactions rather than continuous human presence.\n\nThe exported entries retain UTC timestamps. Do not treat a local display setting as a change to the underlying sequence. The replay determination concerns the credential transaction; it does not identify who created or used the duplicate. Compare the guard's account, physical findings, and published maintenance arrangements before attributing responsibility.\n\nCustody: original audit export received from the access-control custodian; this read-only copy retains the original case reference. No badge secret or replay procedure is included."
+    },
+    {
+      "id": "thermal-log",
+      "app": "files",
+      "title": "HVAC thermal and smoke record",
+      "publisher": "Depository facilities custodian",
+      "body": "FS-2026-00422 / Facilities sensor export\n2026-09-12, 02:24 UTC. The upper vault-door hinge sensor recorded an extreme localized temperature excursion exceeding 2,400 degrees Celsius, accompanied by smoke. The spatially concentrated trace is different from an ordinary room-wide HVAC temperature rise.\n\nThe sensor establishes when and where unusual heating was observed. It does not identify an operator or determine an exact chemical composition. Facilities staff preserved the original export and did not reset its clock after the incident.\n\nThe access audit contains an earlier sub-level credential event. Compare the two records without assuming that digital access alone opened the reinforced vault door. A physical breach can follow an electronic access event. The metallurgy examination of the recovered hinge-area slag is the relevant comparison for the mechanism of heating.\n\nThe recorded 02:24 observation is not the incident header's 02:15 timestamp; the header is a summary reference, not a replacement for individual source times. Retain source-level times in your reconstruction and state any remaining uncertainty about unobserved events."
+    },
+    {
+      "id": "guard-statement",
+      "app": "mail",
+      "title": "Mateo Cruz — requested clarification",
+      "publisher": "Mateo Cruz / recorded statement",
+      "body": "Question: What do you remember about your badge, the alarm, and the sequence of events?\n\nMateo Cruz: I was the night security officer. I did not authorize another person to use my badge. I was attacked from behind and restrained with nylon zip-ties. The duress record at 02:11 UTC is the available timing reference for that assault; I cannot give a reliable second-by-second account while restrained.\n\nI cannot identify the person at the reader from the badge number. I did not see who operated the cutting equipment. I heard activity later, but hearing noise is not enough for me to name a tool or an operator. Please distinguish what I saw from what I inferred afterward.\n\nRoutine contractors have to follow the depository's published maintenance arrangements. A maintenance listing alone would not prove that someone was present during the incident. Please compare the facilities notice with the case records.\n\nRecorder's note: this is a requested clarification, not independent corroboration of every assertion. Assess it alongside the transaction audit and laboratory findings. No statement of guilt or innocence is issued by this correspondence."
+    },
+    {
+      "id": "metallurgy",
+      "app": "dgaos",
+      "title": "EV-0010 — metallurgy examination",
+      "publisher": "Dr. Soren Dahl / Trace Metallurgy",
+      "evidenceId": "EV-0010",
+      "body": "FS-2026-00422 / EV-0010\nItem: Thermite Cutting Lance Slag & Copper Wire Core. Seal: intact. Custody begins with CSI Officer Jenkins transferring the item to Dr. Soren Dahl at 05:00 UTC on 2026-09-12 for SEM-EDS elemental characterization in Metallurgy Bay M-01.\n\nRecovered hinge-area material contains iron, copper, and aluminum oxide residues. The case examination identifies an exothermic cutting-lance composition; comparison material from Silas Drake's welding gloves shows an elemental profile consistent with the recovered slag. The thermal log provides a separate record of localized heating at the hinge.\n\nElemental consistency supports comparison of materials. It is not an individualizing identification of the person holding a tool, and this examination alone cannot establish when material reached the gloves. Describe the correspondence accurately rather than calling it a personal identification.\n\nReview the chain of custody and compare the source with the thermal record. The combined material and heat findings inform a physical-entry explanation. They do not, by themselves, resolve every participant's role. This laboratory source is a finding, not a courtroom verdict."
+    },
+    {
+      "id": "dna",
+      "app": "dgaos",
+      "title": "EV-0011 — bloodstain DNA findings",
+      "publisher": "Maya Patel / Forensic Biology",
+      "evidenceId": "EV-0011",
+      "body": "FS-2026-00422 / EV-0011\nItem: Hinge Bloodstain Swab. Seal: intact. CSI Officer Jenkins transferred the swab to Maya Patel at 05:15 UTC on 2026-09-12 for STR profiling. The source is a dried bloodstain on the severed vault hinge pin, not an access-control credential.\n\nThe case's GlobalFiler 24-Plex analysis associates the recovered profile with Silas Drake. The existing laboratory exhibit reports a random-match statistic of approximately one in twelve trillion. That statistic concerns a profile comparison under the stated model; it is not a numerical probability of guilt.\n\nThe swab location is relevant context, but this test cannot establish precisely when the blood was deposited, identify every person present, or reconstruct an entire incident. It cannot establish that the guard operated a reader merely because the transaction used his badge identifier.\n\nKeep observations and conclusions separate. Cite the profile association, its location, and the preservation record, then identify what additional reconstruction remains unproved. A DNA association and a material comparison may support further investigation; neither is a substitute for a documented chain of reasoning."
+    },
+    {
+      "id": "maintenance",
+      "app": "browser",
+      "title": "First Federal Depository — maintenance arrangements",
+      "publisher": "First Federal Depository / public facilities desk",
+      "url": "https://firstfederal.aure/maintenance",
+      "body": "First Federal Depository / Broad Street public facilities notice\nPublished 2026-09-01. This notice describes routine arrangements before the September 12 incident. Scheduled contractors must register their attendance and be escorted in restricted areas. Possession of a badge identifier is not a public authorization to enter a vault.\n\nStandard maintenance is scheduled and documented through the facilities desk. This page is a general policy notice, not a list of people present on a particular night. It neither confirms nor rules out a particular contractor's attendance. Only the restricted attendance and incident records can address a specific visit.\n\nPublic opening hours and maintenance arrangements describe different kinds of access. Investigators should not substitute a general policy for an individual access record. Questions about published arrangements can be directed to the facilities desk; personal security records are not published here.\n\nFictional VerseNet publication. The page contains no private laboratory findings, case solution, or external internet link."
+    }
+  ]
+}

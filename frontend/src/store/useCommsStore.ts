@@ -92,11 +92,11 @@ function buildHybridReplyForContact(
     if (contact.id === 'dir-cyacademy-reg' || contact.address === 'registrar@cyacademy.edu') {
       replyBody = `Automated & Clerk-Verified Response — Cyacademy Registration Office:
 
-We have logged your transmission regarding "${cleanSubj}" from ${fromAccount.address} (${fromAccount.maid}).
+We have received your transmission regarding "${cleanSubj}" from ${fromAccount.address}.
 ${
   lowerBody.includes('transcript') || lowerBody.includes('schedule') || lowerBody.includes('enroll')
-    ? 'Your provisional academic standing is active and synchronized with your Aura Passport. Course and seminar credits will automatically post to your scholarly transcript as you complete verified academic assignments.'
-    : 'Your academic correspondence has been appended to your permanent student file under Directive 14-B.'
+    ? 'Your enrollment or academic-records inquiry has been received. Membership must be recorded by the institution; this acknowledgement does not enroll you or issue an academic email account.'
+    : 'Your correspondence is available in this email thread. Official academic records remain with the institution.'
 }
 
 — Office of the Registrar (Seal #CYA-101)`;
@@ -114,7 +114,7 @@ ${
     } else if (contact.id === 'dir-civic-bureau' || contact.address === 'registry@orynvell.gov') {
       replyBody = `Aureline Civic Identity Bureau — Official Registry Receipt:
 
-Citizen MAID: ${fromAccount.maid}
+Citizen reference: ${fromAccount.maid || 'No AURA link recorded'}
 Sender Account: ${fromAccount.address}
 
 Your correspondence regarding "${cleanSubj}" has been received. This receipt does not issue an identity, grant organization membership, or activate additional email accounts.

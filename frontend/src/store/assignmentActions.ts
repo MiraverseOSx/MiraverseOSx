@@ -3,6 +3,7 @@ import { useCommsStore } from './useCommsStore';
 import { getOpportunity, opportunityStatus, assignmentFiles, emptyAssignmentJournal, DISPATCH_SCHEDULE, dispatchEmail, activityReady, type AssignmentJournal, type AssignmentFile } from '../gameplay/AssignmentFlow';
 import { WORKNET_ASSIGNMENTS, evaluateLinkedActivities } from '../gameplay/ActivityEngine';
 import { isOpportunityRevealed } from '../gameplay/ProgressionEngine';
+import { CASE_MISSION, caseCompletionText } from '../gameplay/BroadStreetCase';
 
 type Result = { ok: boolean; message: string };
 export interface AssignmentFlowActions {
@@ -50,6 +51,7 @@ export function createAssignmentActions(set: (update: (state: OSStoreState) => P
       for (const [id, order] of Object.entries(player.worknetOrders || {}) as [string, any][]) if (order.status === 'active') get().recordAssignmentOpened(id);
       const recipient = useCommsStore.getState().playerAccounts.find(account => account.accountType === 'work')?.address || 'citizen@auremail.aure';
       for (const scheduled of DISPATCH_SCHEDULE) {
+        if (scheduled.id === 'ms-case-002' && (!get().broadStreetEligible() || get().broadStreetPreviouslyComplete())) continue;
         const opportunity = getOpportunity(scheduled.id)!;
         if (journal().dispatches[opportunity.id] || !isOpportunityRevealed(opportunity.id, player) || !['Available', 'Open Journey'].includes(opportunityStatus(opportunity, player, get().gameplay.timeCycleCount)) || (scheduled.after && !player.completedWorknetMissionIds.includes(scheduled.after))) continue;
         const receivedAt = new Date().toISOString();
@@ -138,7 +140,7 @@ export function createAssignmentActions(set: (update: (state: OSStoreState) => P
       const assignment = WORKNET_ASSIGNMENTS[id];
       const carePaid = order.resultIds.some((resultId: string) => player.taskResults[resultId]?.compensationPaid);
       const file: AssignmentFile = { id: `completion:${order.id}`, name: `Completion_cycle_${order.cycle}.log`, dir: `/assignments/${id}`, type: 'log', size: 'Receipt', desc: 'Accepted work and compensation', assignmentId: id,
-        body: `${opportunity.title}\nWork order: ${order.id}\nStatus: accepted\nEvaluation: ${order.evaluation}/100\n\n${order.resultIds.map((resultId: string) => { const result = player.taskResults[resultId]; return `${result.stageId}\n${Object.entries(result.output).map(([key, value]) => `${key}: ${value}`).join('\n')}`; }).join('\n\n')}\n\n${carePaid ? 'Clinical compensation was already issued at treatment. No duplicate payment.' : `Paid: ${assignment.rewardCredits} credits, ${assignment.rewardBits || 0} bits, ${assignment.rewardXP} career XP.`}` };
+        body: `${opportunity.title}\nWork order: ${order.id}\nStatus: accepted\nEvaluation: ${order.evaluation}/100\n\n${id === CASE_MISSION ? caseCompletionText(order.caseProgress) : order.resultIds.map((resultId: string) => { const result = player.taskResults[resultId]; return `${result.stageId}\n${Object.entries(result.output).filter(([key]) => !key.endsWith('__html')).map(([key, value]) => `${key}: ${value}`).join('\n')}`; }).join('\n\n')}\n\n${carePaid ? 'Clinical compensation was already issued at treatment. No duplicate payment.' : `Paid: ${assignment.rewardCredits} credits, ${assignment.rewardBits || 0} bits, ${assignment.rewardXP} career XP.`}` };
       saveFiles([file]);
       sendReceipt(id, 'completed', file);
       get().refreshContextualDiscoveries();

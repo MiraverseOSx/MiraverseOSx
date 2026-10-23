@@ -1,0 +1,36 @@
+[
+  {
+    "id": "investigation",
+    "title": "Investigation report",
+    "sections": [
+      "Assignment and scope",
+      "Sources examined",
+      "Evidence and chain of custody",
+      "Witness account",
+      "Findings and uncertainties",
+      "Recommended action"
+    ]
+  },
+  {
+    "id": "clinical",
+    "title": "Fictional clinical report",
+    "sections": [
+      "Presenting concern",
+      "Observations",
+      "Assessment and uncertainty",
+      "Actions performed",
+      "Response and follow-up"
+    ]
+  },
+  {
+    "id": "administrative",
+    "title": "Administrative statement",
+    "sections": [
+      "Purpose",
+      "Chronology",
+      "Supporting records",
+      "Discrepancies",
+      "Conclusion and next steps"
+    ]
+  }
+]

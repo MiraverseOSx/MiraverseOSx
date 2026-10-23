@@ -9,6 +9,7 @@ import {
 } from 'lucide-react';
 
 export const APPS = [
+  { id: 'fieldOperations', title: 'Field Operations', icon: Shield, category: 'Agency Systems' },
   { id: 'dgaos', title: 'DGAOS Command Center', icon: Shield, category: 'Agency Systems' },
   { id: 'documentStudio', title: 'Document Studio', icon: FileText, category: 'Civic Records' },
   { id: 'meridionRegistry', title: 'AURA Citizen Registry', icon: UserCheck, category: 'Civic Records' },
@@ -48,6 +49,7 @@ const JobWorkstationApp = lazy(() => import('./JobWorkstationApp'));
 const FinanceTerminal = lazy(() => import('./FinanceTerminal'));
 const VitalsApp = lazy(() => import('./VitalsApp'));
 const CampusApp = lazy(() => import('./CampusApp'));
+const FieldOperationsApp = lazy(() => import('./FieldOperations/FieldOperationsApp'));
 
 // Sleek loading fallback for lazy-loaded apps
 const AppLoadingFallback = ({ name = 'App' }) => (
@@ -164,6 +166,7 @@ const withSuspense = (Component, name) => (props) => (
 );
 
 export const CONTENTS = {
+  fieldOperations: withSuspense(FieldOperationsApp, 'Field Operations'),
   dgaos: withSuspense(DgaosApp, 'DGAOS Command Center'),
   documentStudio: withSuspense(DocumentStudioApp, 'Document Studio'),
   meridionRegistry: withSuspense(RegistryWorkspaceApp, 'Citizen Registry'),

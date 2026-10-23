@@ -1,7 +1,7 @@
 import { getDesktopTheme, type DesktopThemeId } from './desktopThemes';
 import { resolveAppDestination } from './appNavigation';
 
-export const DESKTOP_APP_IDS = ['browser', 'files', 'mail', 'comms', 'maispace', 'passport', 'housing', 'finance', 'pulse', 'vitals', 'campus', 'lore', 'jobs', 'meridionRegistry', 'documentStudio', 'dgaos', 'process', 'terminal', 'settings'];
+export const DESKTOP_APP_IDS = ['browser', 'files', 'mail', 'comms', 'maispace', 'passport', 'housing', 'finance', 'pulse', 'vitals', 'campus', 'lore', 'jobs', 'fieldOperations', 'meridionRegistry', 'documentStudio', 'dgaos', 'process', 'terminal', 'settings'];
 export const DEFAULT_SHORTCUT_IDS = ['browser', 'files', 'mail', 'jobs', 'housing', 'lore'];
 export const MAX_DESKTOP_SHORTCUTS = 8;
 export interface DesktopPreferences { shortcutIds: string[]; themeId: DesktopThemeId }

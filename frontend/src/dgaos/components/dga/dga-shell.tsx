@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import { isLocalWorld } from '../../../gameplay/localCredentials';
 import {
   Shield,
   LayoutDashboard,
@@ -91,9 +92,10 @@ export type DgaTab =
 
 interface DgaShellProps {
   traceWorkbenchNode: React.ReactNode;
+  onOpenCaseNotebook?: () => void;
 }
 
-export function DgaShell({ traceWorkbenchNode }: DgaShellProps) {
+export function DgaShell({ traceWorkbenchNode, onOpenCaseNotebook }: DgaShellProps) {
   const workspaceRequest = useOSStore(s => s.workspaceRequests.dgaos);
   const osPlayer = useOSStore(s => s.gameplay.player);
   const isLoggedIn = useOSStore(s => s.isLoggedIn);
@@ -156,6 +158,7 @@ export function DgaShell({ traceWorkbenchNode }: DgaShellProps) {
 
   useEffect(() => {
     if (!workspaceRequest || !dgaState || dgaState.isLocked) return;
+    if (workspaceRequest.section.startsWith('broadstreet:')) return;
     if (workspaceRequest.section === 'trace') setActiveMode('TRACE');
     else if (workspaceRequest.section === 'services') { setActiveMode('DGA_CORE'); setActiveTab('services'); }
     useOSStore.getState().consumeWorkspaceRequest('dgaos', workspaceRequest.revision);
@@ -283,6 +286,7 @@ export function DgaShell({ traceWorkbenchNode }: DgaShellProps) {
         <div className="flex items-center bg-[#15141e] p-0.5 rounded-[3px] border border-[#353349] shrink-0">
           <button
             onClick={() => setActiveMode('DGA_CORE')}
+            aria-pressed={activeMode === 'DGA_CORE'}
             className={`h-[22px] px-[6px] rounded-[2px] text-[10.5px] font-bold flex items-center gap-1 transition-all cursor-pointer ${
               activeMode === 'DGA_CORE'
                 ? 'bg-[#524f77] text-white shadow-xs'
@@ -295,6 +299,7 @@ export function DgaShell({ traceWorkbenchNode }: DgaShellProps) {
 
           <button
             onClick={() => handleLaunchTrace()}
+            aria-pressed={activeMode === 'TRACE'}
             className={`h-[22px] px-[6px] rounded-[2px] text-[10.5px] font-bold flex items-center gap-1 transition-all cursor-pointer ${
               activeMode === 'TRACE'
                 ? 'bg-[#524f77] text-white shadow-xs'
@@ -327,6 +332,8 @@ export function DgaShell({ traceWorkbenchNode }: DgaShellProps) {
 
         {/* Right Operator Clearance & Lock Tools */}
         <div className="flex items-center gap-1.5 shrink-0">
+          {isLocalWorld(location.hostname) && !osPlayer.isAdmin && <button className="dga-notebook-launch" onClick={() => setAccessNotice(useOSStore.getState().grantLocalFullAccess().message)}>Enable full access</button>}
+          {onOpenCaseNotebook && <button className="dga-notebook-launch" onClick={onOpenCaseNotebook} title="Open Broad Street evidence notebook"><FolderLock size={15} /><span>Case notebook</span></button>}
           {/* Quick Telephone Console & Incoming Call Simulation */}
           <button
             onClick={() => {
@@ -433,7 +440,7 @@ export function DgaShell({ traceWorkbenchNode }: DgaShellProps) {
           cases={authorizedCases}
           communications={dgaState.communications}
           alerts={dgaState.alerts}
-          profile={dgaState.profile}
+          profile={{ ...dgaState.profile, title: dgaAuthority.roleLabel, department: dgaAuthority.department, clearanceLevel: dgaAuthority.clearanceLevel }}
           isCollapsed={isRailCollapsed}
           onToggleCollapse={() => setIsRailCollapsed(!isRailCollapsed)}
         />

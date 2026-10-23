@@ -63,6 +63,7 @@ export function DgaAppRail({
 
   return (
     <aside
+      data-collapsed={isCollapsed}
       className={`dga-app-rail bg-[#f0eff5] text-[#2c2a3e] border-r border-[#cfcddb] flex flex-col justify-between shrink-0 select-none transition-all duration-200 h-full overflow-hidden ${
         isCollapsed ? 'w-[62px] min-w-[62px]' : 'w-[var(--dga-sidebar-w,244px)] min-w-[var(--dga-sidebar-w,244px)] max-w-[var(--dga-sidebar-w,244px)]'
       }`}
@@ -456,7 +457,7 @@ export function DgaAppRail({
             </div>
             {!isCollapsed && (
               <span className="text-[9px] font-mono font-bold px-1.5 py-0.2 rounded shrink-0 whitespace-nowrap bg-rose-100 text-rose-800 border border-rose-300">
-                LOCKED
+                {profile.clearanceLevel >= 5 ? 'L5 ACCESS' : 'LOCKED'}
               </span>
             )}
           </button>

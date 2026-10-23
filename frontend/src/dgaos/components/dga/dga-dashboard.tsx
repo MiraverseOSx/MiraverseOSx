@@ -330,7 +330,7 @@ export function DgaDashboard({
   ];
 
   return (
-    <div className="h-full flex flex-col xl:flex-row overflow-y-auto xl:overflow-hidden bg-[#ebe9f3] p-[10px] gap-[10px] text-xs select-none">
+    <div className="dga-dashboard h-full flex flex-col xl:flex-row overflow-y-auto xl:overflow-hidden bg-[#ebe9f3] p-[10px] gap-[10px] text-xs select-none">
       {/* ========================================================
           LEFT & CENTER: FULL-HEIGHT COMMAND WORKSPACE
           ======================================================== */}

@@ -7,6 +7,7 @@ import { SoundFX } from '../../utils/audio';
 import { useSystemStore } from '../../store/useSystemStore';
 import { APPS_DIRECTORY } from '../desktop/appDirectory';
 import AppGlyph, { appTone } from './AppGlyph';
+import { fitWindow, boundWindowOffset } from './windowGeometry';
 
 export interface WindowProps {
   win: any;
@@ -46,20 +47,17 @@ export default function Window({ win, isFocusMode = false, windowIndex = 0 }: Wi
       const screenW = Math.min(1920, frameEl?.clientWidth || window.innerWidth || 1920);
       const screenH = Math.min(1080, frameEl?.clientHeight || window.innerHeight || 1080);
 
-      const margin = screenW < 768 ? 8 : 24;
-      const width = Math.max(0, Math.min(1180, screenW - (screenW < 768 ? 16 : 96)));
-      const menuSpace = screenW < 701 ? 66 : 76;
-      const height = Math.max(0, Math.min(760, screenH - menuSpace - 108));
-      const cascade = screenW < 768 ? 0 : (windowIndex % 5) * 22;
-      const left = Math.max(margin, Math.min(screenW - width - margin, Math.round((screenW - width) / 2) + cascade));
-      const top = Math.max(menuSpace, Math.min(screenH - height - 108, menuSpace + cascade));
+      const { width, height, left, top } = fitWindow(screenW, screenH, windowIndex);
 
       setWindowGeometry({ width, height, left, top, screenW, screenH });
     };
 
     calculateGeometry();
+    const observer = new ResizeObserver(calculateGeometry);
+    const frame = document.getElementById('mira-screen-frame');
+    if (frame) observer.observe(frame);
     window.addEventListener('resize', calculateGeometry);
-    return () => window.removeEventListener('resize', calculateGeometry);
+    return () => { observer.disconnect(); window.removeEventListener('resize', calculateGeometry); };
   }, [windowIndex]);
 
   const startDrag = (e: React.PointerEvent) => {
@@ -72,25 +70,19 @@ export default function Window({ win, isFocusMode = false, windowIndex = 0 }: Wi
 
   const handleDragEnd = (_event: any, info: any) => {
     if (win.isMaximized) return;
-    moveWindow(win.id, {
-      x: windowOffset.x + info.offset.x,
-      y: windowOffset.y + info.offset.y,
-    });
+    moveWindow(win.id, boundWindowOffset({ x: safeOffset.x + info.offset.x, y: safeOffset.y + info.offset.y }, normalFrame, windowGeometry.screenW, windowGeometry.screenH));
   };
 
-  const maxW = Math.min(1640, windowGeometry.screenW - 32);
-  const maximizedStyle = {
-    top: windowGeometry.screenW < 701 ? 62 : 72,
-    left: Math.max(16, Math.round((windowGeometry.screenW - maxW) / 2)),
-    width: maxW,
-    height: Math.max(0, windowGeometry.screenH - (windowGeometry.screenW < 701 ? 158 : 172)),
-  };
+  const normalFrame = fitWindow(windowGeometry.screenW, windowGeometry.screenH, windowIndex);
+  const safeOffset = boundWindowOffset(windowOffset, normalFrame, windowGeometry.screenW, windowGeometry.screenH);
+  const maximizedFrame = fitWindow(windowGeometry.screenW, windowGeometry.screenH, windowIndex, true);
+  const maximizedStyle = { top: maximizedFrame.top, left: maximizedFrame.left, width: maximizedFrame.width, height: maximizedFrame.height };
 
   const normalStyle = {
-    top: windowGeometry.top,
-    left: windowGeometry.left,
-    width: windowGeometry.width,
-    height: windowGeometry.height,
+    top: normalFrame.top,
+    left: normalFrame.left,
+    width: normalFrame.width,
+    height: normalFrame.height,
   };
 
   return (
@@ -114,8 +106,8 @@ export default function Window({ win, isFocusMode = false, windowIndex = 0 }: Wi
       aria-label={app?.label || win.title || win.id}
       style={{
         ...(win.isMaximized ? maximizedStyle : normalStyle),
-        x: win.isMaximized ? 0 : windowOffset.x,
-        y: win.isMaximized ? 0 : windowOffset.y,
+        x: win.isMaximized ? 0 : safeOffset.x,
+        y: win.isMaximized ? 0 : safeOffset.y,
         zIndex: win.zIndex || 100,
       }}
       onMouseDown={() => focusWindow(win.id)}

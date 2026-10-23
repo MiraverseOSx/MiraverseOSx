@@ -32,6 +32,7 @@ import MailTools, { MailOrganizationBar } from './mail/MailTools';
 import RichMailEditor, { RichMailBody } from './mail/RichMailEditor';
 import { groupConversations, conversationMessageIds, isSnoozed } from './mail/mailOrganization';
 import { escapeMailText } from './mail/richText';
+import { CASE_MAIL } from '../gameplay/BroadStreetCase';
 import '../styles/apps/auremail.css';
 import { launchDesktopApp } from '../components/desktop/appDirectory';
 import { useOSStore } from '../store/useOSStore';
@@ -93,6 +94,7 @@ const VAULT_ATTACHABLE_FILES: EmailAttachment[] = [
 export default function MailApp() { return <MailProvider><MailWorkspace /></MailProvider>; }
 
 function MailWorkspace() {
+  const [caseNotice, setCaseNotice] = useState('');
   const [accessOpen, setAccessOpen] = useState(false);
   const communicationsPlayer = useOSStore(s => s.gameplay.player);
   const organization = useMailState(s => s.mailOrganization);
@@ -1362,6 +1364,7 @@ function MailWorkspace() {
 
                 {/* Conversation Thread View */}
                 {selectedMail.assignmentId && <button type="button" className="assignment-mail-action" onClick={() => useOSStore.getState().openAssignment(selectedMail.assignmentId!)}>Review opportunity in WorkNet <ExternalLink size={14} /></button>}
+                {selectedMail.id === CASE_MAIL && <div className="assignment-mail-action"><button type="button" onClick={() => { const result = useOSStore.getState().acquireCaseSource('guard-statement', 'mail'); setCaseNotice(result.message); }}>Add guard statement to evidence notebook</button><button type="button" onClick={() => useOSStore.getState().openAppWorkspace('dgaos', 'broadstreet:notebook')}>Open Broad Street notebook</button><p role="status">{caseNotice}</p></div>}
                 {threadMessages.length > 1 ? (
                   <div className="space-y-2.5">
                     <div className="text-[10px] font-bold uppercase tracking-wider text-indigo-700">

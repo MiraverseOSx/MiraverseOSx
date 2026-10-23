@@ -1,8 +1,10 @@
 import { WORK_DEFINITIONS, WORKNET_ASSIGNMENTS, LINKED_ACTIVITIES, evaluateLinkedActivities, type ActivityKind } from './ActivityEngine';
 import type { EmailItem } from '../data/commsData';
 import { isOpportunityRevealed } from './ProgressionEngine';
+import { BROAD_STREET, CASE_MISSION } from './BroadStreetCase';
 
 export interface AssignmentFile {
+  caseSourceId?: string;
   id: string; name: string; dir: string; type: 'txt' | 'log'; size: string; desc: string; body: string; assignmentId: string;
 }
 export interface AssignmentJournal {
@@ -74,9 +76,11 @@ export function assignmentFiles(opportunity: Opportunity): AssignmentFile[] {
     { id: `briefing:${opportunity.id}`, name: 'Briefing.txt', dir, type: 'txt', size: 'Briefing', desc: opportunity.title, assignmentId: opportunity.id, body: briefingText(opportunity) },
     { id: `objectives:${opportunity.id}`, name: 'Assignment_checklist.txt', dir, type: 'txt', size: 'Checklist', desc: 'Required actions and equipment', assignmentId: opportunity.id,
       body: opportunity.missionIds.map(id => `${WORKNET_ASSIGNMENTS[id].title}\n${WORK_DEFINITIONS[id].stages.map((stage, index) => `${index + 1}. ${stage.title} — ${stage.mechanic}`).join('\n')}`).join('\n\n') },
+    ...(opportunity.id === CASE_MISSION ? BROAD_STREET.sources.filter(source => source.app === 'files').map(source => ({ id: `case002:${source.id}`, name: `${source.title}.txt`, dir, type: 'txt' as const, size: 'Case record', desc: source.title, assignmentId: CASE_MISSION, caseSourceId: source.id, body: source.body })) : []),
   ];
 }
 export const DISPATCH_SCHEDULE = [
+    { id: 'ms-case-002', channel: 'email' as const },
   { id: 'ms-shift-04', channel: 'email' as const },
   { id: 'qn-02', channel: 'email' as const },
   { id: 'adventure-old-factory', channel: 'phone' as const },

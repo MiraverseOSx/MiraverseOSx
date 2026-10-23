@@ -47,4 +47,4 @@ No canonical registry, forensic, legacy identity, social, employment, or issuanc
 
 ## Remaining roadmap
 
-Starter personal email and explicitly issued institutional accounts; organization-based Comms memberships; full AURA/DGAOS access permissions; deeper banking, health, housing, archive, and education gameplay; Pulse's final purpose; and Creator Studio pause/publish behavior remain separate work.
+Starter personal email, explicit institutional account issuance, organization-based Comms memberships, and persistent phone Messages were subsequently implemented in [phase three](application-cleanup-phase-three.md). Full AURA/DGAOS access permissions; deeper banking, health, housing, archive, and education gameplay; Pulse's final purpose; and Creator Studio pause/publish behavior remain separate work.

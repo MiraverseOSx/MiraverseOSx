@@ -5,6 +5,7 @@ import { PORTALS, SAMPLE_ARCHIVES } from './constants';
 import { NPCS } from '../../db/miraverseDb';
 import { SEARCH_FILTERS, normalizeSearch, getSearchBundle, matchingExternalLinks, canSearchArchive, type WebRecord, type SearchFilter } from './searchCatalog';
 import { CityMap, WebImage } from './SearchVisuals';
+import { publicCaseSearch } from '../investigation/publication';
 import '../../styles/apps/versenet-search.css';
 
 interface Hit { id: string; type: string; title: string; summary: string; url?: string; publisher: string; record?: WebRecord }
@@ -20,6 +21,7 @@ export default function UniversalSearch({ query, navigateTab, view = 'All' }: { 
   useEffect(() => { if (normalized) remember(normalized); }, [normalized, remember]);
   const indexed: Hit[] = useMemo(() => {
     if (!normalized) return [];
+    const casePublic: Hit[] = publicCaseSearch(normalized);
     const sites = Object.entries(PORTALS).filter(([url, portal]) => `${url} ${portal.title} ${portal.category}`.toLowerCase().includes(normalized)).map(([url, portal]) => ({ id: `site:${url}`, type: 'site', title: portal.title, summary: `Visit ${portal.title} · ${portal.category}.`, url: `https://${url}`, publisher: url }));
     const archives = SAMPLE_ARCHIVES.filter(arc => canSearchArchive(arc.id, player) && `${arc.title} ${arc.excerpt}`.toLowerCase().includes(normalized)).map(arc => ({ id: arc.id, type: 'archive', title: arc.title, summary: arc.excerpt, url: `https://fieldnotes.aure/archive/${arc.id}`, publisher: 'Public archive catalog' }));
     const people = NPCS.filter(npc => `${npc.name} ${npc.faction} ${npc.role}`.toLowerCase().includes(normalized)).map(npc => ({ id: `person:${npc.id || npc.name}`, type: 'person', title: npc.name, summary: `${npc.role} · ${npc.faction} · ${npc.region || 'Aureline'}`, publisher: 'Public people index' }));
@@ -32,7 +34,7 @@ export default function UniversalSearch({ query, navigateTab, view = 'All' }: { 
         summary: `${evt.institution} · ${evt.summary}`,
         publisher: evt.institution || 'Aureline Public Dispatches',
       }));
-    return [...sites, ...archives, ...people, ...worldEvents];
+    return [...casePublic, ...sites, ...archives, ...people, ...worldEvents];
   }, [normalized, player]);
   const generated: Hit[] = (bundle?.records || []).map(record => ({ ...record, record }));
   // Keep public institutions ahead of generated pages. Location entries remain reachable through Maps.

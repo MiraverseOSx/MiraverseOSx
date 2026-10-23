@@ -5,6 +5,7 @@
 
 import careersData from '../data/careers.json';
 import missionsData from '../data/missions.json';
+import caseAssignment from '../data/broad-street-assignment.json';
 import { CareerTrackInfo, WorknetMission } from '../types';
 
 export interface AppMetadata {
@@ -493,7 +494,7 @@ export const NPCS: any[] = [
   }
 ];
 export const CAREERS: CareerTrackInfo[] = careersData as CareerTrackInfo[];
-export const MISSIONS: WorknetMission[] = missionsData as WorknetMission[];
+export const MISSIONS: WorknetMission[] = [...(missionsData as WorknetMission[]).filter(mission => mission.id !== caseAssignment.id), caseAssignment as WorknetMission];
 export const LORE_ENTRIES: any[] = [
   ...HISTORICAL_CHRONOLOGY.map((era) => ({
     id: era.id,

@@ -29,3 +29,7 @@ yarn-error.log*
 
 bin/
 obj/
+
+# Python bytecode caches
+__pycache__/
+*.py[cod]

@@ -238,6 +238,7 @@ const GROUPS: Record<string, string> = {
 };
 
 const additionalApps: ProtocolItem[] = [
+  { id: 'fieldOperations', code: 'FIELD', name: 'Field Operations', sector: 'DGA service tunnels', icon: Shield, clearance: 'Assignment Clearance 2', aetherTrace: 'AT-0x0512', flux: '88.2 MHz', desc: 'Explore Tunnel 09, collect evidence, interview a witness, and submit containment findings to WORKNET.', color: 'text-emerald-900', bg: 'bg-emerald-50', border: 'border-emerald-300' },
   { id: 'maispace', code: 'mai.space', name: 'mai.space // Social Network', sector: 'Personal social network', icon: MessageSquare, clearance: 'Citizen Access', aetherTrace: 'AT-0x0733', flux: '22.0 MHz', desc: 'Your existing social profile, posts, friends, and community interactions.', color: 'text-rose-800', bg: 'bg-rose-50', border: 'border-rose-300' },
   { id: 'mail', code: 'AUREMAIL', name: 'AUREMAIL // Mailbox', sector: 'Aureline Postal Network', icon: Mail, clearance: 'Citizen Access', aetherTrace: 'AT-0x0413', flux: '22.0 MHz', desc: 'Your personal inbox for citizen correspondence, official notices, and new opportunities.', color: 'text-sky-800', bg: 'bg-sky-50', border: 'border-sky-300' },
   { id: 'terminal', code: 'TERMINAL', name: 'TERMINAL // System Console', sector: 'Local System Tools', icon: Terminal, clearance: 'Local Console', aetherTrace: 'AT-0x0002', flux: '14.2 MHz', desc: 'Explore the local system through the command console and SQL workspace.', color: 'text-slate-800', bg: 'bg-slate-100', border: 'border-slate-300' },

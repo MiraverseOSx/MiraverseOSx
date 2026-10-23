@@ -10,6 +10,7 @@ import UniversalSearch, { IndexedArchivePage } from './UniversalSearch';
 import InteractiveSite from './InteractiveSite';
 import { INTERACTIVE_SITES } from './interactiveSites';
 import AssignmentBoard from '../AssignmentBoard';
+import BroadStreetPublicPage from '../investigation/BroadStreetPublicPage';
 import AureSuiteApp from './AureSuiteApp';
 import {
     FaithMedPortal, DGAPortal, CyacademyPortal, OrynvellRecordsPortal,
@@ -24,6 +25,7 @@ import {
 
 function ContentFrame({ url, openTab, navigateTab, openService }: any) {
     if (!url) return <SearchHome navigateTab={navigateTab} openTab={openTab} />;
+    if (new URL(url).hostname === 'firstfederal.aure' && new URL(url).pathname === '/maintenance') return <BroadStreetPublicPage />;
     if (new URL(url).hostname === 'services.aure') return <ServiceDirectory navigateTab={openService}/>;
     if (externalWebUrl(url)) return <ExternalWebPage url={url}/>;
     

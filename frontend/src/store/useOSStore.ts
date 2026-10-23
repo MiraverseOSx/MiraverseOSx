@@ -1,4 +1,5 @@
 import { createBrowserActions } from './browserActions';
+import { grantLocalCredentials, isLocalWorld } from '../gameplay/localCredentials';
 import { createSiteActions, type SiteActions } from './siteActions';
 import { emptyVersenetSites, restoreVersenetSites, type VersenetSites } from '../apps/Browser/interactiveSites';
 import { createVersenetActions, type VersenetActions } from './versenetActions';
@@ -14,6 +15,8 @@ import { createJSONStorage, persist } from 'zustand/middleware';
 import { NOTICES, evaluateNoticeObjective } from '../data/notices';
 import { mergeSavedProgress, osStorage } from './osPersistence';
 import { createWorknetActions } from './worknetActions';
+import { createFieldActions } from './fieldActions';
+import { createBroadStreetActions, type BroadStreetActions } from './broadStreetActions';
 import { createAssignmentActions, type AssignmentFlowActions } from './assignmentActions';
 import { emptyAssignmentJournal } from '../gameplay/AssignmentFlow';
 import { createProgressionActions, type ProgressionActions } from './progressionActions';
@@ -55,7 +58,7 @@ export interface OSWindow {
   [key: string]: any;
 }
 
-export interface OSStoreState extends AssignmentFlowActions, ProgressionActions, VersenetActions, SiteActions {
+export interface OSStoreState extends AssignmentFlowActions, ProgressionActions, VersenetActions, SiteActions, BroadStreetActions {
   isLoggedIn: boolean;
   isSanctuary: boolean;
   toggleSanctuary: () => void;
@@ -94,6 +97,7 @@ export interface OSStoreState extends AssignmentFlowActions, ProgressionActions,
   clearBrowserHistory: () => void;
 
   loginUser: (userData: any) => void;
+  grantLocalFullAccess: () => { ok: boolean; message: string };
   logoutUser: () => void;
 
   gameplay: any;
@@ -112,6 +116,7 @@ export interface OSStoreState extends AssignmentFlowActions, ProgressionActions,
   completeWorknetDomainTask: (missionId: string, selectedOptionId: string) => { ok: boolean; message: string };
   acceptEmployment: (track: string) => { ok: boolean; message: string };
   openWorknetOrder: (missionId: string) => { ok: boolean; message: string };
+  fieldAction: (action: 'move' | 'interact' | 'record', payload?: any) => { ok: boolean; message: string };
   saveWorknetDraft: (missionId: string, stageId: string, values: WorkValues) => void;
   submitWorknetStage: (missionId: string, stageId: string, values: WorkValues) => { ok: boolean; message: string };
   remediateWorknetOrder: (missionId: string, note: string) => { ok: boolean; message: string };
@@ -381,6 +386,12 @@ export const useOSStore = create<OSStoreState>()(persist((set, get) => ({
   ...createVersenetActions(set, get),
   ...createBrowserActions(set, get),
 
+  grantLocalFullAccess: () => {
+    const current = get();
+    if (!current.isLoggedIn || !isLocalWorld(globalThis.location?.hostname || '')) return { ok: false, message: 'Full-access credentials are available in your signed-in local world.' };
+    set(s => ({ gameplay: grantLocalCredentials(s.gameplay, new Date().toISOString()) }));
+    return { ok: true, message: 'Full access enabled. Clearance 5, all institutions, DGAOS and TRACE are available. Your progress is preserved.' };
+  },
   loginUser: (userData) =>
     set((s) => {
       // Login resumes this browser's saved character without reapplying starter rewards.
@@ -866,6 +877,8 @@ export const useOSStore = create<OSStoreState>()(persist((set, get) => ({
     }),
 
   ...createWorknetActions(set, get),
+  ...createFieldActions(set, get),
+  ...createBroadStreetActions(set, get),
   ...createAssignmentActions(set, get),
   ...createProgressionActions(set, get),
 

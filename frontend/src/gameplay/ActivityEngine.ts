@@ -1,7 +1,8 @@
 import missionData from '../data/missions.json' with { type: 'json' };
+import caseAssignment from '../data/broad-street-assignment.json' with { type: 'json' };
 import type { WorknetMission } from '../types';
 
-export const WORKNET_ASSIGNMENTS = Object.fromEntries((missionData as WorknetMission[]).map(mission => [mission.id, mission]));
+export const WORKNET_ASSIGNMENTS = Object.fromEntries([...(missionData as WorknetMission[]), caseAssignment as WorknetMission].map(mission => [mission.id, mission]));
 
 /** Saved work is evidence. Activity containers reference it without copying its rewards. */
 export type ActivityKind = 'task' | 'quest' | 'mission' | 'journey' | 'adventure';
@@ -55,6 +56,8 @@ export interface EmploymentContract {
   payTerms: string;
 }
 export interface WorkOrder {
+  caseProgress?: import('./BroadStreetCase').CaseProgress;
+  fieldSession?: import('./FieldOperations').FieldSession;
   briefingReadAt?: string;
   id: string;
   definitionId: string;
@@ -79,6 +82,7 @@ const stage = (id: string, title: string, mechanic: InteractionMechanic, brief: 
 const define = (id: string, track: string, subject: string, kind: WorkDefinition['kind'], tools: string[], stages: WorkStage[], clearance = 1): WorkDefinition => ({ id, track, subject, kind, tools: WORKNET_ASSIGNMENTS[id]?.permittedTools || tools, stages, clearance: kind === 'quest' ? 0 : clearance });
 
 export const WORK_DEFINITIONS: Record<string, WorkDefinition> = Object.fromEntries([
+  define('ms-case-002', 'dga', 'CASE-2026-002', 'assignment', ['EvidenceNotebook', 'ReportEditor'], [stage('case-review', 'Submit an evidence-supported investigation report', 'investigation', 'Examine the original sources across the desktop, assess the evidence, and submit your findings for review. The source notebook and report are available from this assignment.', [])], 2),
   define('ms-shift-04', 'engineer', 'GL-12A', 'shift', ['Oscilloscope', 'FirmwareFlasher', 'CircuitSolder'], [
     stage('preflight', 'Accept and prepare the work site', 'equipment', 'Authorized site: Glassline Terminal Junction 12. Reserve the listed tools for this shift; keep transit power isolated during component work.', [pick('site', 'Work site', ['Terminal Junction 12', 'Terminal Junction 3'], 'Terminal Junction 12'), pick('kit', 'Reserved equipment', ['Oscilloscope, flasher and soldering kit', 'Display cleaning kit'], 'Oscilloscope, flasher and soldering kit')]),
     stage('inspect', 'Inspect the relay and logs', 'evidence', 'GL-12A log: packet loss 18%; C4 trace dips by 4.2 V while C1 remains stable. Annotate the affected node and the degraded signal.', [text('node', 'Affected node', 'C4'), number('loss', 'Observed packet loss (%)', '18')]),

@@ -12,6 +12,7 @@ import { useCommsStore } from '../store/useCommsStore';
 import { savedMailFiles } from './mail/savedMailFiles';
 import { launchDesktopApp } from '../components/desktop/appDirectory';
 import '../styles/apps/FileExplorer.css';
+import { CaseSourceView } from './investigation/BroadStreetCasePanel';
 
 const FILES_DATA = [
   // /documents
@@ -42,6 +43,16 @@ const FILES_DATA = [
 ];
 
 export default function FileExplorerApp() {
+  const [caseSourceId, setCaseSourceId] = useState<string | null>(null);
+  const caseRequest = useOSStore(s => s.workspaceRequests.files);
+  const casePlayer = useOSStore(s => s.gameplay.player);
+  useOSStore(s => s.isLoggedIn);
+  const caseEligible = useOSStore.getState().broadStreetEligible();
+  useEffect(() => {
+    if (!caseRequest?.section.startsWith('broadstreet:')) return;
+    setCaseSourceId(caseRequest.section.split(':')[1]);
+    useOSStore.getState().consumeWorkspaceRequest('files', caseRequest.revision);
+  }, [caseRequest]);
   const [selectedFile, setSelectedFile] = useState(null);
   const [selectedDoc, setSelectedDoc] = useState(null);
   const [activeModal, setActiveModal] = useState(null); // 'document' | 'sig'
@@ -58,10 +69,11 @@ export default function FileExplorerApp() {
   const assignmentFiles = Object.values(journal?.files || {}) as any[];
   const directories = ['/root', '/documents', '/spells', '/diagnostics', '/system', '/assignments', ...new Set(assignmentFiles.map(file => file.dir)), ...(mailFiles.length ? ['/downloads/auremail'] : []), ...(webFiles.length ? ['/downloads/versenet', ...new Set(webFiles.filter(file => file.type !== 'folder').map(file => file.dir))] : [])];
   useEffect(() => {
-    if (journal?.fileDirectory) { setActiveDirectory(journal.fileDirectory); setSelectedFile(null); }
+    if (journal?.fileDirectory) { setActiveDirectory(journal.fileDirectory); setSelectedFile(null); if (!caseRequest?.section.startsWith('broadstreet:')) setCaseSourceId(null); }
   }, [journal?.fileRequest]);
 
   const filteredFiles = [...FILES_DATA, ...assignmentFiles, ...webFiles, ...mailFiles].filter((file) => {
+    if ((file as any).assignmentId === 'ms-case-002' && !caseEligible) return false;
     const matchesDir = activeDirectory === '/home' || file.dir === activeDirectory || (activeDirectory === '/assignments' && file.dir.startsWith('/assignments/'));
     const matchesSearch = !searchQuery.trim() || 
       file.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -82,6 +94,12 @@ export default function FileExplorerApp() {
 
   const executeFile = (file) => {
     if (!file) return;
+    if (file.caseSourceId) {
+      const source = ['access-audit', 'thermal-log'].includes(file.caseSourceId);
+      if (source) setCaseSourceId(file.caseSourceId);
+      else useOSStore.getState().openCaseSource(file.caseSourceId);
+      return;
+    }
     if (file.webUrl && file.type === 'folder') {
       setActiveDirectory(`/downloads/versenet/${file.id.slice(4).split(':')[0]}`);
       setSelectedFile(null);
@@ -151,6 +169,7 @@ export default function FileExplorerApp() {
     return MOCK_DOCUMENTS[mockKey].attachments?.length || 0;
   };
 
+  if (caseSourceId) return <CaseSourceView id={caseSourceId} app="files" onBack={() => setCaseSourceId(null)} />;
   return (
     <div className="file-explorer-container font-sans select-none overflow-hidden text-xs">
       {/* Top Address & Action Bar */}

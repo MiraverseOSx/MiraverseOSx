@@ -1,4 +1,6 @@
 import type { OSStoreState } from './useOSStore';
+import { sanitizeMailHtml, mailHtmlToText } from '../apps/mail/richText';
+import { CASE_MISSION, restoreCaseProgress, reviewBroadStreet } from '../gameplay/BroadStreetCase';
 import { WORK_DEFINITIONS, getWorkDefinition, WORKNET_ASSIGNMENTS, nextWorkStage, resolveWorkStage, validateWorkStage, type WorkOrder, type WorkValues, type TaskResult, type EmploymentContract } from '../gameplay/ActivityEngine';
 import { CAREER_TRACK_SPECS, WORKNET_DOMAIN_TASKS, evaluateWorknetObjective } from '../gameplay/WorldEventEngine';
 
@@ -31,6 +33,7 @@ export function createWorknetActions(set: (update: (state: OSStoreState) => Part
     },
 
     openWorknetOrder: (missionId: string) => {
+      if (missionId === CASE_MISSION && (!get().broadStreetEligible() || get().broadStreetPreviouslyComplete())) return { ok: false, message: 'Existing DGA/TRACE access and clearance 2 are required. Previously closed or paid Broad Street cases cannot reopen as new paid assignments.' };
       const state = get();
       const player = state.gameplay.player;
       const definition = getWorkDefinition(missionId);
@@ -69,11 +72,16 @@ export function createWorknetActions(set: (update: (state: OSStoreState) => Part
       const selected = resolveWorkStage(stage, values);
       if (!selected) return;
       const draft = Object.fromEntries(selected.fields.map(field => [field.id, typeof values?.[field.id] === 'string' ? values[field.id].slice(0, 4000) : '']));
+      for (const field of selected.fields.filter(field => field.kind === 'report')) {
+        const html = sanitizeMailHtml(values?.[`${field.id}__html`]);
+        if (html && mailHtmlToText(html).trim() === draft[field.id].trim()) draft[`${field.id}__html`] = html;
+      }
       if (values?._approach) draft._approach = values._approach;
       updateOrder(missionId, saved => ({ ...saved, drafts: { ...saved.drafts, [stageId]: draft } }));
     },
 
     submitWorknetStage: (missionId: string, stageId: string, values: WorkValues) => {
+      if (missionId === CASE_MISSION) return { ok: false, message: 'Submit the structured findings and citations through the case report reviewer.' };
       const player = get().gameplay.player;
       const order: WorkOrder | undefined = player.worknetOrders?.[missionId];
       if (!order || order.status !== 'active') return { ok: false, message: 'Open an active work order first.' };
@@ -98,7 +106,7 @@ export function createWorknetActions(set: (update: (state: OSStoreState) => Part
       const result: TaskResult = {
         id: `${order.id}:${stageId}`, workOrderId: order.id, definitionId: missionId,
         stageId, subject: order.subject, mechanic: selected.mechanic,
-        output: { ...Object.fromEntries(selected.fields.map(field => [field.id, values[field.id]])), ...(values._approach ? { _approach: values._approach } : {}) }, completedAt: new Date().toISOString(),
+        output: { ...Object.fromEntries(selected.fields.map(field => [field.id, values[field.id]])), ...Object.fromEntries(Object.entries(get().gameplay.player.worknetOrders[missionId].drafts[stageId] || {}).filter(([key]) => key.endsWith('__html'))), ...(values._approach ? { _approach: values._approach } : {}) }, completedAt: new Date().toISOString(),
         // A legacy paid chart can be reviewed again for proof, without another clinical reward.
         compensationPaid: missionId === 'ms-shift-01' && stageId === 'care' ? true : undefined,
       };
@@ -123,6 +131,12 @@ export function createWorknetActions(set: (update: (state: OSStoreState) => Part
     },
 
     completeWorknetMission: (mission: { id: string; track: string; rewardCredits: number; rewardBits?: number; rewardXP: number; primaryAttribute?: string }) => {
+      if (mission?.id === CASE_MISSION) {
+        const order = get().gameplay.player.worknetOrders?.[CASE_MISSION];
+        const progress = restoreCaseProgress(order?.caseProgress);
+        const last = progress.reviews.at(-1);
+        if (!get().broadStreetEligible() || get().broadStreetPreviouslyComplete() || !last?.accepted || reviewBroadStreet(progress).length) return { ok: false, reason: 'A current accepted evidence review is required. Access changes or an existing completion receipt prevent another payout.' };
+      }
       const state = get();
       const player = state.gameplay.player;
       const order: WorkOrder | undefined = player.worknetOrders?.[mission?.id];
