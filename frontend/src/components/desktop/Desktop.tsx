@@ -1,4 +1,4 @@
-﻿import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { AnimatePresence } from 'framer-motion';
 import { useOSStore } from '../../store/useOSStore';
 import Window from '../ui/Window';
@@ -17,9 +17,11 @@ import '../../styles/apps/PersonalDesktop.css';
 import '../../styles/studio-design.css';
 import { desktopThemeStyle } from '../../store/desktopThemes';
 import { useCommsStore } from '../../store/useCommsStore';
+import { getCelestialState } from '../../data/meridionWorld';
 
 export default function Desktop() {
   const { isLoggedIn, windows, isSanctuary, gameplay, wallpaper } = useOSStore();
+  const celestial = getCelestialState(gameplay?.timeCycleCount ?? 28);
   const themeId = useOSStore(state => state.desktopPreferences.themeId);
   const appWorkspaceRef = useRef(null);
   const [authMode, setAuthMode] = useState(null);
@@ -65,7 +67,20 @@ export default function Desktop() {
       {wallpaper ? <div className="personal-wallpaper-image" aria-hidden="true" style={{ backgroundImage: `linear-gradient(#20132d44, #20132d66), url(${JSON.stringify(wallpaper)})` }}/> : <PurpleWallpaper animated={!reducedMotion && pageVisible}/>}
       <header className="desktop-menubar">
         <div className="desktop-wordmark"><img src={logoIcon} alt="" /><strong>MIRAVERSE<span>OS x</span></strong><span className="desktop-menu-divider" /><span className="desktop-location">Aureline</span></div>
-        <div className="desktop-menubar-right"><time dateTime={now.toISOString()}>{now.toLocaleDateString(undefined, { month: 'short', day: 'numeric' })}<span>{now.toLocaleTimeString(undefined, { hour: 'numeric', minute: '2-digit' })}</span></time></div>
+        <div className="desktop-menubar-right">
+          <button
+            type="button"
+            className="desktop-celestial-badge"
+            title={`Radiance (${celestial.radiance.phaseName}) · Echo (${celestial.echo.phaseName})\n${celestial.alignment}\nCycle ${celestial.cycle} • ${celestial.monthName} ${celestial.dayOfMonth}${celestial.isFoundingDay ? ' (Founding Day)' : ''}`}
+            onClick={() => useOSStore.getState().openAppWorkspace('lore', 'chronology')}
+            aria-label="Celestial Moons and Calendar"
+          >
+            <span className="moon-icon" title={`Radiance: ${celestial.radiance.phaseName}`}>{celestial.radiance.phaseIcon}</span>
+            <span className="moon-icon opacity-80" title={`Echo: ${celestial.echo.phaseName}`}>{celestial.echo.phaseIcon}</span>
+            <span className="celestial-cycle font-mono text-[11px] font-semibold opacity-90">C{celestial.cycle}</span>
+          </button>
+          <time dateTime={now.toISOString()}>{now.toLocaleDateString(undefined, { month: 'short', day: 'numeric' })}<span>{now.toLocaleTimeString(undefined, { hour: 'numeric', minute: '2-digit' })}</span></time>
+        </div>
       </header>
       <div ref={appWorkspaceRef} className="desktop-workspace">
         <DesktopShortcuts />

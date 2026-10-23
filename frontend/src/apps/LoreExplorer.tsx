@@ -4,9 +4,11 @@ import { useOSStore } from '../store/useOSStore';
 import { ALL_SHRINE_REGIONS } from '../data/notices';
 import { Shield, Globe, Users, RefreshCw, MapPin, Sparkles, CheckCircle2 } from 'lucide-react';
 import WorldJournalPanel from './WorldJournalPanel';
+import SevenRealmsMapPanel from './SevenRealmsMapPanel';
+import CelestialChronologyPanel from './CelestialChronologyPanel';
 
 export default function LoreExplorer() {
-    const [activeTab, setActiveTab] = useState<'exploration' | 'factions' | 'locations' | 'npcs'>('exploration');
+    const [activeTab, setActiveTab] = useState<'realms' | 'chronology' | 'exploration' | 'factions' | 'locations' | 'npcs'>('realms');
     const [factions, setFactions] = useState<any[]>([]);
     const [locations, setLocations] = useState<any[]>([]);
     const [npcs, setNPCs] = useState<any[]>([]);
@@ -14,7 +16,16 @@ export default function LoreExplorer() {
     const discoveredShrines = useOSStore((s) => s.gameplay.player?.discoveredShrines || []);
     const discoverRegionalShrine = useOSStore((s) => s.discoverRegionalShrine);
     const journalRequest = useOSStore(state => state.gameplay.player.worldJournal?.openRequest);
+    const workspaceRequest = useOSStore(state => state.workspaceRequests['lore']);
     useEffect(() => { setActiveTab('exploration'); }, [journalRequest]);
+    useEffect(() => {
+        if (workspaceRequest?.section) {
+            if (['realms', 'chronology', 'exploration', 'factions', 'locations', 'npcs'].includes(workspaceRequest.section)) {
+                setActiveTab(workspaceRequest.section as any);
+            }
+            useOSStore.getState().consumeWorkspaceRequest('lore', workspaceRequest.revision);
+        }
+    }, [workspaceRequest]);
 
     const loadData = () => {
         setLoading(true);
@@ -30,7 +41,7 @@ export default function LoreExplorer() {
 
     return (
         <div className="atlas-workspace flex flex-col h-full bg-[#f1f3f9] text-[#1a1f36] font-sans select-none overflow-hidden">
-            <header className="atlas-heading"><div><span className="workspace-kicker">Atlas / royal historic archive</span><h1>The Aureline collection.</h1><p>People, places, and the institutions that connect them.</p></div><div className="atlas-collection-switch"><label>Browse collection<select aria-label="Archive collection" value={activeTab} onChange={event => setActiveTab(event.target.value as typeof activeTab)}><option value="exploration">Explore & Discovery Journal</option><option value="factions">Institutions · {factions.length}</option><option value="locations">Regions · {locations.length}</option><option value="npcs">People · {npcs.length}</option></select></label><button onClick={loadData} disabled={loading} aria-label="Refresh archive"><RefreshCw size={15} className={loading ? 'animate-spin' : ''} /></button></div></header>
+            <header className="atlas-heading"><div><span className="workspace-kicker">Atlas / royal historic archive</span><h1>The Aureline collection.</h1><p>Seven Realms geography, celestial mechanics, chronology, and the institutions that connect them.</p></div><div className="atlas-collection-switch"><label>Browse collection<select aria-label="Archive collection" value={activeTab} onChange={event => setActiveTab(event.target.value as typeof activeTab)}><option value="realms">Seven Realms Atlas & Anchors</option><option value="chronology">Celestial Moons & Chronology</option><option value="exploration">Explore & Discovery Journal</option><option value="factions">Institutions & Lineages · {factions.length}</option><option value="locations">Regions & Landmarks · {locations.length}</option><option value="npcs">People & Monarchs · {npcs.length}</option></select></label><button onClick={loadData} disabled={loading} aria-label="Refresh archive"><RefreshCw size={15} className={loading ? 'animate-spin' : ''} /></button></div></header>
             {/* Content Area */}
             <div className="flex-1 p-6 overflow-y-auto">
                 {loading ? (
@@ -40,6 +51,8 @@ export default function LoreExplorer() {
                     </div>
                 ) : (
                     <>
+                        {activeTab === 'realms' && <SevenRealmsMapPanel />}
+                        {activeTab === 'chronology' && <CelestialChronologyPanel />}
                         {activeTab === 'exploration' && <WorldJournalPanel />}
                         {/* FACTIONS TAB */}
                         {activeTab === 'factions' && (

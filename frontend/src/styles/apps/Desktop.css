@@ -35,7 +35,9 @@
 .desktop-wordmark strong span { letter-spacing: .04em; color: #c0bdd8; font-weight: 400; margin-left: 8px; }
 .desktop-menu-divider { height: 16px; width: 1px; background: #ffffff24; margin: 0 8px; }
 .desktop-location { font-size: 12px; color: #c7c9dd; }
-.desktop-menubar-right { gap: 30px; font-size: 11px; color: #c8c9dc; }
+.desktop-menubar-right { gap: 20px; font-size: 11px; color: #c8c9dc; }
+.desktop-celestial-badge { display: inline-flex; align-items: center; gap: 6px; background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.16); border-radius: 9999px; padding: 3px 10px; color: #ede7ec; font-size: 11px; cursor: pointer; transition: all 180ms ease; }
+.desktop-celestial-badge:hover { background: rgba(255, 255, 255, 0.16); border-color: rgba(255, 255, 255, 0.32); transform: translateY(-1px); }
 .desktop-connection { gap: 8px; }
 .shell-status-dot { display: inline-block; width: 5px; height: 5px; background: #a4cdbd; border-radius: 50%; flex-shrink: 0; }
 .desktop-menubar time { white-space: nowrap; }

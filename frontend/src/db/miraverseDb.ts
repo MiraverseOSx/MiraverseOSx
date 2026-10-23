@@ -246,6 +246,17 @@ export const ORGANIZATIONS: OrganizationInfo[] = [
   }
 ];
 
+import { 
+  SEVEN_REALMS, 
+  GEOGRAPHIC_LANDMARKS, 
+  HISTORICAL_CHRONOLOGY, 
+  getCelestialState,
+  RealmDefinition,
+  GeographicLandmark,
+  ChronologyEra,
+  CelestialState
+} from '../data/meridionWorld';
+
 // ─── Department of Global Affairs Divisions (§10.1B) ────────────────────────
 export interface DgaDivision {
   division: 'Shield' | 'Eyes' | 'Blackout Team';
@@ -265,12 +276,250 @@ export const DGA_DIVISIONS: DgaDivision[] = [
   { division: 'Blackout Team', branch: 'Special Operations Co-op', focus: 'Five-agent unit dedicated to deep-level glitches and system corruption.' }
 ];
 
-export const REGIONS: any[] = [];
-export const FACTIONS: any[] = [];
-export const NPCS: any[] = [];
+export const REGIONS: any[] = [
+  ...SEVEN_REALMS.map((r) => ({
+    id: r.id,
+    name: r.name,
+    title: r.name,
+    type: `${r.element} Realm`,
+    category: 'Realm',
+    description: `${r.role} Capital: ${r.capital}${r.capitalIsStarred ? ' ★' : ''}${r.secondaryAnchor ? ` | Secondary: ${r.secondaryAnchor}` : ''}. Ruling: ${r.rulingLineage}. Climate: ${r.climate}`,
+    dangerLevel: r.dangerLevel,
+    danger: r.dangerLevel,
+    capital: r.capital,
+    element: r.element,
+    season: r.season,
+    rulingLineage: r.rulingLineage,
+    regionCode: r.regionCode,
+    color: r.color,
+    landmarks: r.landmarks,
+    subregions: r.subregions || [],
+  })),
+  ...GEOGRAPHIC_LANDMARKS.map((g) => ({
+    id: g.id,
+    name: g.name,
+    title: g.name,
+    type: g.designation,
+    category: 'Landmark',
+    description: `${g.description}${g.parentRealm ? ` (Under jurisdiction of ${g.parentRealm})` : ''}`,
+    dangerLevel: g.designation === 'Volcanic Rift' ? 5 : 2,
+    danger: g.designation === 'Volcanic Rift' ? 5 : 2,
+    parentRealm: g.parentRealm,
+  }))
+];
+export const FACTIONS: any[] = [
+  {
+    id: 'FAC_SERAPHIMA',
+    name: 'House Seraphima (Orynvell Crown)',
+    title: 'House Seraphima',
+    accentColor: '#D97706',
+    ideology: 'Sovereign matriarchal monarchs of Meridion. Stewards of imperial succession law, AETHERCORE legitimacy, and sanctuary authority.',
+    influenceLevel: 98,
+    realm: 'Orynvell',
+    seat: 'Aureline'
+  },
+  {
+    id: 'FAC_HOLLY',
+    name: 'House Holly (Wardens of Fross)',
+    title: 'House Holly',
+    accentColor: '#0284C7',
+    ideology: 'Endurance, northern border vigilance, glacial discipline, and winter survival rites between Southwake and Northwake.',
+    influenceLevel: 85,
+    realm: 'Fross',
+    seat: 'Southwake / Northwake'
+  },
+  {
+    id: 'FAC_LUCIA',
+    name: 'House Lucia (Sol-Council of Lumia)',
+    title: 'House Lucia',
+    accentColor: '#F59E0B',
+    ideology: 'Solar philosophy, public illumination, legislative transparency, and academy administration across the sunlit realm.',
+    influenceLevel: 88,
+    realm: 'Lumia',
+    seat: 'Rhyna'
+  },
+  {
+    id: 'FAC_NERYX',
+    name: 'House Neryx (Estuary Sovereigns of Marlowe)',
+    title: 'House Neryx',
+    accentColor: '#10B981',
+    ideology: 'Vernal river diplomacy, maritime healing currents, renewal sanctuaries, and tidal preservation.',
+    influenceLevel: 82,
+    realm: 'Marlowe',
+    seat: 'Island City'
+  },
+  {
+    id: 'FAC_YOKO',
+    name: 'House Yoko (Wind Consortium of Brisland)',
+    title: 'House Yoko',
+    accentColor: '#EA580C',
+    ideology: 'Global trade winds, cultural message routing, migration logistics, and autumnal legal mediation.',
+    influenceLevel: 84,
+    realm: 'Brisland',
+    seat: 'Elodia'
+  },
+  {
+    id: 'FAC_EMBER',
+    name: 'House Ember (High Forge Council of Kaji)',
+    title: 'House Ember',
+    accentColor: '#DC2626',
+    ideology: 'Volcanic mastery, advanced forge engineering, military vigilance, and sacred fire rites across Kailo, Kanifan, and Pyre.',
+    influenceLevel: 89,
+    realm: 'Kaji',
+    seat: 'Balisya'
+  },
+  {
+    id: 'FAC_KEKET',
+    name: 'House Keket (Ancestral Nether Keepers of Nephele)',
+    title: 'House Keket',
+    accentColor: '#7C3AED',
+    ideology: 'Ancestral remembrance, deep nether law, grief counseling, obsidian masonry, and veil twilight stewardship.',
+    influenceLevel: 86,
+    realm: 'Nephele',
+    seat: 'Serafin'
+  },
+  {
+    id: 'FAC_ROYAL_HISTORY',
+    name: 'Royal Historic Society',
+    title: 'Royal Historic Society',
+    accentColor: '#B45309',
+    ideology: 'Preservation of dynastic genealogies, coronation treaties from Year 0, and ancient historical codices.',
+    influenceLevel: 92,
+    realm: 'Orynvell',
+    seat: 'Aureline'
+  },
+  {
+    id: 'FAC_FAITH_MED',
+    name: 'Faith Medical Group',
+    title: 'Faith Medical Group',
+    accentColor: '#059669',
+    ideology: 'Universal patient care, bio-aura harmonic stabilization, trauma recovery, and epidemiological monitoring.',
+    influenceLevel: 94,
+    realm: 'Pan-Meridion',
+    seat: 'Aureline & Regional Clinics'
+  },
+  {
+    id: 'FAC_DGA',
+    name: 'Department of Global Affairs (DGAOS)',
+    title: 'DGAOS & TRACE Forensics',
+    accentColor: '#4F46E5',
+    ideology: 'Sovereign state security, border surveillance, criminal investigation, and forensic anomaly quarantine.',
+    influenceLevel: 96,
+    realm: 'Pan-Meridion',
+    seat: 'Command Sector, Aureline'
+  }
+];
+export const NPCS: any[] = [
+  {
+    id: 'npc-maeryn',
+    name: 'Queen Maeryn Seraphima',
+    title: 'Sovereign Monarch of Meridion',
+    role: 'Monarch',
+    dialogueTone: 'Regal, measured, and harmonically resonant',
+    affiliation: 'House Seraphima',
+    realm: 'Orynvell'
+  },
+  {
+    id: 'npc-holly',
+    name: 'High Warden Holly',
+    title: 'Warden of the Northern Ice',
+    role: 'Warden',
+    dialogueTone: 'Direct, stoic, and watchful',
+    affiliation: 'House Holly',
+    realm: 'Fross'
+  },
+  {
+    id: 'npc-lucia',
+    name: 'Chancellor Lucia',
+    title: 'High Speaker of the Sol-Forum',
+    role: 'Councilor',
+    dialogueTone: 'Eloquent, scholarly, and radiant',
+    affiliation: 'House Lucia',
+    realm: 'Lumia'
+  },
+  {
+    id: 'npc-neryx',
+    name: 'Lord Neryx',
+    title: 'Sovereign of the Vernal Estuaries',
+    role: 'Diplomat',
+    dialogueTone: 'Calm, soothing, and observant',
+    affiliation: 'House Neryx',
+    realm: 'Marlowe'
+  },
+  {
+    id: 'npc-yoko',
+    name: 'Grand Dispatcher Yoko',
+    title: 'Overseer of the Autumn Winds',
+    role: 'Consul',
+    dialogueTone: 'Brisk, pragmatic, and witty',
+    affiliation: 'House Yoko',
+    realm: 'Brisland'
+  },
+  {
+    id: 'npc-ember',
+    name: 'High Forge-Master Ember',
+    title: 'Lord of the Pyre Foundries',
+    role: 'Artificer',
+    dialogueTone: 'Intense, passionate, and exacting',
+    affiliation: 'House Ember',
+    realm: 'Kaji'
+  },
+  {
+    id: 'npc-keket',
+    name: 'Seer Keket',
+    title: 'Keeper of Ancestral Twilight',
+    role: 'Seer',
+    dialogueTone: 'Whispering, deep, and contemplative',
+    affiliation: 'House Keket',
+    realm: 'Nephele'
+  },
+  {
+    id: 'npc-vesper',
+    name: 'Senior Archivist K. Vesper',
+    title: 'Crown Registrar & Royal Archivist',
+    role: 'Archivist',
+    dialogueTone: 'Precise, encyclopedic, and courteous',
+    affiliation: 'Royal Historic Society',
+    realm: 'Orynvell'
+  },
+  {
+    id: 'npc-mercer',
+    name: 'Dr. Robert Mercer',
+    title: 'Chief Clinical Examiner',
+    role: 'Physician',
+    dialogueTone: 'Clinical, empathetic, and diagnostic',
+    affiliation: 'Faith Medical Group',
+    realm: 'Orynvell'
+  }
+];
 export const CAREERS: CareerTrackInfo[] = careersData as CareerTrackInfo[];
 export const MISSIONS: WorknetMission[] = missionsData as WorknetMission[];
-export const LORE_ENTRIES: any[] = [];
+export const LORE_ENTRIES: any[] = [
+  ...HISTORICAL_CHRONOLOGY.map((era) => ({
+    id: era.id,
+    title: `${era.period}: ${era.title}`,
+    category: 'Historical Chronology',
+    content: era.summary
+  })),
+  {
+    id: 'lore-moons',
+    title: 'The Twin Moons of Meridion — Radiance and Echo',
+    category: 'Celestial Astronomy',
+    content: 'Meridion orbits beneath a single sun and two moons. Radiance, the outer moon, is physically larger and distant, appearing pale luminous white. Echo, the inner moon, is smaller, orbits closer, and appears with a dark slate obsidian reflective sheen. Their conjunctions and oppositions mark celestial festivals and alter harmonic resonance frequencies across the Seven Realms.'
+  },
+  {
+    id: 'lore-realms',
+    title: 'The Seven Realms Concord & Geography',
+    category: 'World Geography',
+    content: 'The world of Meridion is organized into seven sovereign realms: Orynvell (Aether, Cap. Aureline ★), Fross (Winter, Cap. Southwake ★ / Northwake), Lumia (Light, Cap. Rhyna ★), Marlowe (Water, Cap. Island City ★), Brisland (Air, Cap. Elodia ★), Kaji (Fire, Cap. Balisya ★; encompassing Kailo, Kanifan, and Pyre), and Nephele (Nether, Cap. Serafin ★). Under the Concord, star markers designate capital anchors while borders preserve ancestral lineages.'
+  },
+  {
+    id: 'lore-housing-tiers',
+    title: 'Land Registry & Residential Tiers',
+    category: 'Civic Law',
+    content: 'HOMECRAFT and AURA Registry classify citizen housing into three tiers: Tier A (Fully Interactive with furnished interiors and room-level upgrades), Tier B (Simplified Visitable with address presence and visitor access), and Tier C (Registered Only with stable location IDs for identity records).'
+  }
+];
 
 export const miraverseDb = {
   getApps: (): AppMetadata[] => APPS,
