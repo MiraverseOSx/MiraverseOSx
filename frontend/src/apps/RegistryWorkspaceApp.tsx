@@ -31,6 +31,7 @@ import { generateProceduralPortrait, persistCitizenPortrait } from '../services/
 import PortraitStudioModal from '../components/portrait/PortraitStudioModal';
 import { useOSStore } from '../store/useOSStore';
 import { authorizeAuraAction, evaluateAuraRecordPermissions, resolveAuraActor } from '../integration/auraPermissions';
+import '../styles/apps/RegistryWorkspace.css';
 
 const ARCHETYPE_OPTIONS: { id: CharacterArchetype; label: string; badge: string; desc: string }[] = [
   {
@@ -612,7 +613,7 @@ export default function RegistryWorkspaceApp() {
                   type="button"
                   key={p.id}
                   onClick={() => handleSelectPerson(p)}
-                  className={`w-full text-left p-2.5 rounded-xl border transition flex items-start gap-2.5 ${
+                  className={`citizen-roster-card ${isSelected ? 'is-selected ' : ''}w-full text-left p-2.5 rounded-xl border transition flex items-start gap-2.5 ${
                     isSelected
                       ? 'bg-[#2A353E] border-[#C0AA7F] shadow-md'
                       : 'bg-[#192026] border-[#303C48] hover:border-[#52677B] hover:bg-[#212A32]'
@@ -747,7 +748,7 @@ export default function RegistryWorkspaceApp() {
               {activePerson && (
                 <div className="bg-[#212A32] border border-[#3A4958] rounded-2xl shadow-xl overflow-hidden">
                   {/* Citizen Master Banner */}
-                  <div className="bg-gradient-to-r from-[#29343D] via-[#212A32] to-[#2D3943] p-6 border-b border-[#3A4958] flex flex-wrap items-center justify-between gap-4">
+                  <div className="dossier-hero-banner bg-gradient-to-r from-[#29343D] via-[#212A32] to-[#2D3943] p-6 border-b border-[#3A4958] flex flex-wrap items-center justify-between gap-4">
                     <div className="flex items-center gap-4">
                       <div className="relative h-20 w-20 rounded-2xl overflow-hidden border-2 border-[#C0AA7F] bg-[#141D26] shadow-lg shrink-0 group">
                         {activePerson.portraitData ? (
@@ -1321,7 +1322,7 @@ export default function RegistryWorkspaceApp() {
 
                       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
                         {OFFICIAL_DOC_CARDS.map((doc) => (
-                          <div key={doc.id} className={`rounded-xl border p-3.5 flex flex-col justify-between space-y-3 ${doc.color}`}>
+                          <div key={doc.id} className={`official-doc-card rounded-xl border p-3.5 flex flex-col justify-between space-y-3 ${doc.color}`}>
                             <div>
                               <div className="flex items-center justify-between text-[10px] font-mono uppercase opacity-80">
                                 <span>DOC 0{doc.id}</span>

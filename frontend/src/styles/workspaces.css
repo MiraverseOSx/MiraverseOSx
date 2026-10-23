@@ -219,8 +219,8 @@
 .civic-workspace .civic-content :where(.text-indigo-900, .text-purple-700, .text-amber-700) { color: #476273; }
 
 /* Document Studio: a quiet filing library against a true paper pasteboard. */
-.document-studio { height: 100%; display: grid; grid-template-columns: 226px minmax(0, 1fr); background: #e7e9e8; color: #38444c; }
-.document-library { display: flex; flex-direction: column; min-height: 0; background: #28323b; color: #c9d1d6; overflow-y: auto; }
+.document-studio { height: 100%; display: grid; grid-template-columns: 248px minmax(0, 1fr); background: #f1f4f6; color: #1e293b; accent-color: #d97706; }
+.document-library { display: flex; flex-direction: column; min-height: 0; background: linear-gradient(180deg, #182230 0%, #111823 100%); color: #cbd5e1; border-right: 1px solid #283546; overflow-y: auto; box-shadow: 2px 0 16px rgba(0, 0, 0, 0.12); }
 .document-library > header { padding: 25px 22px 20px; }
 .document-library .workspace-kicker { font-size: 8px; color: #92a3ae; }
 .document-library h1 { font: 400 26px/1.2 var(--font-display); color: #e4e7e5; margin: 13px 0 7px; letter-spacing: -.035em; }

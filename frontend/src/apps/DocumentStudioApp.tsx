@@ -25,6 +25,7 @@ import { getActiveCitizenContext, openCitizenInApp } from '../integration/citize
 import { citizenSelection, subscribeCitizenUpdates } from '../integration/citizenEvents';
 import { authorizeAuraAction, evaluateAuraRecordPermissions, resolveAuraActor } from '../integration/auraPermissions';
 import { useOSStore } from '../store/useOSStore';
+import '../styles/apps/DocumentStudio.css';
 
 const DEFAULT_CITIZEN: CitizenRecord = {
   name: 'Elara Vale',
