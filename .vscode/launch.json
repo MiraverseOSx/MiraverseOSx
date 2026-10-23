@@ -1,33 +1,40 @@
+
 {
-    "version": "0.2.0",
-    "configurations": [
-        {
-            "name": "Desktop: Run MiraverseOSx (C# Photino)",
-            "type": "coreclr",
-            "request": "launch",
-            "preLaunchTask": "build",
-            "program": "${workspaceFolder}/bin/Debug/net8.0/MiraverseOSx.dll",
-            "args": [],
-            "cwd": "${workspaceFolder}",
-            "stopAtEntry": false,
-            "console": "internalConsole"
-        },
-        {
-            "name": "Web: Launch Vite Frontend (Chrome)",
-            "type": "chrome",
-            "request": "launch",
-            "url": "http://localhost:3000",
-            "preLaunchTask": "Start Vite dev server",
-            "webRoot": "${workspaceFolder}/frontend"
-        },
-        {
-            "name": "SWA: Run Cloud Deployment Emulator",
-            "request": "launch",
-            "type": "chrome",
-            "url": "http://localhost:4280",
-            "preLaunchTask": "swa: start MiraverseOSx",
-            "webRoot": "${workspaceFolder}/",
-            "timeout": 30000
-        }
-    ]
+  "version": "0.2.0",
+  "configurations": [
+    {
+        "name": "Launch Chrome",
+        "request": "launch",
+        "type": "chrome",
+        "url": "http://localhost:8080",
+        "webRoot": "${workspaceFolder}"
+    },
+    {
+      "name": "Web: Launch Vite Frontend (Chrome)",
+      "type": "chrome",
+      "request": "launch",
+      "url": "http://localhost:3000",
+      "webRoot": "${workspaceFolder}/frontend"
+    },
+    {
+      "name": "Desktop: Run MiraverseOSx (C# Photonio)",
+      "type": "coreclr",
+      "request": "launch",
+      "preLaunchTask": "build",
+      "program": "${workspaceFolder}/bin/Debug/net8.0/MiraverseOSx.dll",
+      "args": [],
+      "cwd": "${workspaceFolder}",
+      "stopAtEntry": false,
+      "console": "internalConsole"
+    },
+    {
+      "name": "SWA: Run Cloud Deployment Emulator",
+      "type": "chrome",
+      "request": "launch",
+      "url": "http://localhost:4280",
+      "preLaunchTask": "swa: start MiraverseOSx",
+      "webRoot": "${workspaceFolder}/",
+      "timeout": 30000
+    }
+  ]
 }

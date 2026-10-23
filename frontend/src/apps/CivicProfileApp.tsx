@@ -672,7 +672,7 @@ export default function CivicProfileApp() {
                     <Home size={15} className="text-[#5f6ab0]" /> Housing: {selectedMaidPerson?.household || (player?.houseAffiliation ? 'Cyacademy Vector Housing Suite 4B' : 'Provisional Citizen Housing')}
                   </h3>
                   <p className="text-[11px] text-slate-500 mt-0.5">
-                    Housing Comfort Rating: <span className="font-bold text-emerald-700">{player?.dormComfort || 50}% (+15% XP Multiplier)</span>
+                    Housing Comfort Rating: <span className="font-bold text-emerald-700">{player?.roomComfort ?? player?.dormComfort ?? 50}% (+15% XP Multiplier)</span>
                   </p>
                 </div>
 

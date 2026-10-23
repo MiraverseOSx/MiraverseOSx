@@ -49,6 +49,7 @@ export interface PublishedRecord {
   publishedBy: string;
   checkpointId: string;
   historicalEventId: string;
+  eventEntry?: Record<string, any>;
 }
 
 export interface CreatorStudioState {
@@ -335,15 +336,18 @@ export function restoreWorldCheckpoint(
   // 7. Preserve historical worldEventLog entries additively in miraverse-os-progress
   try {
     const restoredOsRaw = storage.getItem(OS_PROGRESS_KEY);
-    if (currentOsProgressRaw && restoredOsRaw) {
-      const currentOs = JSON.parse(currentOsProgressRaw);
+    if (restoredOsRaw) {
+      const currentOs = currentOsProgressRaw ? JSON.parse(currentOsProgressRaw) : null;
       const restoredOs = JSON.parse(restoredOsRaw);
       const currentLog: any[] = currentOs?.state?.gameplay?.worldEventLog || [];
       const restoredLog: any[] = restoredOs?.state?.gameplay?.worldEventLog || [];
-      if (Array.isArray(currentLog) && Array.isArray(restoredLog)) {
+      const publishedEvents: any[] = state.publishedHistory
+        .map(rec => rec.eventEntry)
+        .filter(Boolean);
+      if (Array.isArray(restoredLog)) {
         const seenIds = new Set(restoredLog.map(e => e?.id).filter(Boolean));
         const combinedLog = [...restoredLog];
-        for (const evt of currentLog) {
+        for (const evt of [...publishedEvents, ...(Array.isArray(currentLog) ? currentLog : [])]) {
           if (evt && typeof evt.id === 'string' && !seenIds.has(evt.id)) {
             combinedLog.push(evt);
             seenIds.add(evt.id);
@@ -536,6 +540,16 @@ export function publishCreatorDraft(
 
   const now = new Date().toISOString();
   const historicalEventId = `EVT-PUB-${crypto.randomUUID()}`;
+  const eventEntry = {
+    id: historicalEventId,
+    category: draft.payload?.eventCategory || 'civic',
+    title: draft.title,
+    summary: draft.summary,
+    institution: draft.payload?.institution || 'Creator Studio // Sovereign Archive',
+    cycle: 28,
+    timestamp: now,
+    tags: ['published', draft.category],
+  };
 
   // 2. Append to OS worldEventLog in storage if present (non-destructive)
   const storage = getStorage();
@@ -545,20 +559,12 @@ export function publishCreatorDraft(
       if (osRaw) {
         const parsed = JSON.parse(osRaw);
         if (parsed?.state?.gameplay) {
+          eventEntry.cycle = parsed.state.gameplay.timeCycleCount ?? 28;
           const existingLog = Array.isArray(parsed.state.gameplay.worldEventLog)
             ? parsed.state.gameplay.worldEventLog
             : [];
           parsed.state.gameplay.worldEventLog = [
-            {
-              id: historicalEventId,
-              category: draft.payload?.eventCategory || 'civic',
-              title: draft.title,
-              summary: draft.summary,
-              institution: draft.payload?.institution || 'Creator Studio // Sovereign Archive',
-              cycle: parsed.state.gameplay.timeCycleCount ?? 28,
-              timestamp: now,
-              tags: ['published', draft.category],
-            },
+            eventEntry,
             ...existingLog,
           ];
           storage.setItem(OS_PROGRESS_KEY, JSON.stringify(parsed));
@@ -585,6 +591,7 @@ export function publishCreatorDraft(
     publishedBy: auth.actorName,
     checkpointId: checkpoint.id,
     historicalEventId,
+    eventEntry,
   };
   state.publishedHistory.unshift(publishedRecord);
   saveCreatorStudioState(state);

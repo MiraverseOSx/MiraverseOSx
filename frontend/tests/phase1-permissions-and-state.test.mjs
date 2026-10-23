@@ -156,7 +156,7 @@ test('Comms supports organization invitations, acceptance, declining, leaving, a
   os.setState((s) => ({
     gameplay: {
       ...s.gameplay,
-      player: { ...s.gameplay.player, isAdmin: false, credits: 500, xp: 100 },
+      player: { ...s.gameplay.player, isAdmin: false, clearanceLevel: 2, credits: 500, xp: 100 },
     },
   }));
 
@@ -207,13 +207,13 @@ test('Comms supports organization invitations, acceptance, declining, leaving, a
   );
 
   // Admin can remove an active employment-based membership
-  os.getState().acceptEmployment('warden');
-  assert.equal(channelAccess(os.getState().gameplay.player, 'arcadia-reserve-watch'), true);
+  os.getState().acceptEmployment('medical');
+  assert.equal(channelAccess(os.getState().gameplay.player, 'faith-medical-hub'), true);
   os.setState((s) => ({
     gameplay: { ...s.gameplay, player: { ...s.gameplay.player, isAdmin: true } },
   }));
-  assert.equal(os.getState().removeOrganizationMembership('warden', 'Contract concluded').ok, true);
-  assert.equal(channelAccess(os.getState().gameplay.player, 'arcadia-reserve-watch'), false);
+  assert.equal(os.getState().removeOrganizationMembership('medical', 'Contract concluded').ok, true);
+  assert.equal(channelAccess(os.getState().gameplay.player, 'faith-medical-hub'), false);
 });
 
 test('AURA Registry enforces role-based access, record permissions, and document issuance authorization', async () => {

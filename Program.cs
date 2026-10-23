@@ -80,7 +80,7 @@ namespace MiraverseOSx
             _mainWindow = new PhotinoWindow()
                 .SetTitle("Miraverse OS x - Celestial Operating System")
                 .SetUseOsDefaultSize(false)
-                .SetSize(1440, 900)
+                .SetSize(1920, 1080)
                 .Center()
                 .SetResizable(true);
 
