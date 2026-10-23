@@ -23,7 +23,16 @@ export default function UniversalSearch({ query, navigateTab, view = 'All' }: { 
     const sites = Object.entries(PORTALS).filter(([url, portal]) => `${url} ${portal.title} ${portal.category}`.toLowerCase().includes(normalized)).map(([url, portal]) => ({ id: `site:${url}`, type: 'site', title: portal.title, summary: `Visit ${portal.title} · ${portal.category}.`, url: `https://${url}`, publisher: url }));
     const archives = SAMPLE_ARCHIVES.filter(arc => canSearchArchive(arc.id, player) && `${arc.title} ${arc.excerpt}`.toLowerCase().includes(normalized)).map(arc => ({ id: arc.id, type: 'archive', title: arc.title, summary: arc.excerpt, url: `https://fieldnotes.aure/archive/${arc.id}`, publisher: 'Public archive catalog' }));
     const people = NPCS.filter(npc => `${npc.name} ${npc.faction} ${npc.role}`.toLowerCase().includes(normalized)).map(npc => ({ id: `person:${npc.id || npc.name}`, type: 'person', title: npc.name, summary: `${npc.role} · ${npc.faction} · ${npc.region || 'Aureline'}`, publisher: 'Public people index' }));
-    return [...sites, ...archives, ...people];
+    const worldEvents: Hit[] = (useOSStore.getState().gameplay?.worldEventLog || [])
+      .filter((evt: any) => evt?.category !== 'forensic' && `${evt?.title} ${evt?.summary} ${evt?.institution}`.toLowerCase().includes(normalized))
+      .map((evt: any) => ({
+        id: `event:${evt.id}`,
+        type: 'site',
+        title: evt.title,
+        summary: `${evt.institution} · ${evt.summary}`,
+        publisher: evt.institution || 'Aureline Public Dispatches',
+      }));
+    return [...sites, ...archives, ...people, ...worldEvents];
   }, [normalized, player]);
   const generated: Hit[] = (bundle?.records || []).map(record => ({ ...record, record }));
   // Keep public institutions ahead of generated pages. Location entries remain reachable through Maps.

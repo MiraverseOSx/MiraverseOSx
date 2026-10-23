@@ -7,6 +7,7 @@ import { useOSStore } from '../../store/useOSStore';
 import { FORMAL_INVESTIGATION_CASES, PATIENT_CARE_ASSIGNMENTS } from '../../gameplay/WorldEventEngine';
 import Button from '../../components/ui/button';
 import FinanceTerminal from '../FinanceTerminal';
+import { syncFaithMedicalUpdate, syncDgaInvestigativeUpdate } from '../../integration/citizenBridge';
 
 // ==========================================
 // Shared Pillar III: Formal Case Reasoning Panel
@@ -32,7 +33,7 @@ function FormalCaseReasoningBoard({ filterInstitution }: { filterInstitution?: s
         setSelectedEvidenceByCase({ ...selectedEvidenceByCase, [caseId]: next });
     };
 
-    const handleSubmitCase = (caseId: string) => {
+    const handleSubmitCase = async (caseId: string) => {
         if (!submitInvestigationCase) return;
         const ev = selectedEvidenceByCase[caseId] || [];
         const hyp = selectedHypothesisByCase[caseId] || '';
@@ -41,6 +42,24 @@ function FormalCaseReasoningBoard({ filterInstitution }: { filterInstitution?: s
             ...feedbackByCase,
             [caseId]: { ok: res.ok, message: res.message }
         });
+        if (res.ok && res.verified) {
+            const caseDef = FORMAL_INVESTIGATION_CASES.find(c => c.id === caseId);
+            if (caseDef?.subjectMaid) {
+                if (caseDef.institution.toLowerCase().includes('faith medical')) {
+                    await syncFaithMedicalUpdate(caseDef.subjectMaid, {
+                        medicalSummary: `Forensic case ${caseDef.id} resolved: ${res.message}`,
+                        auraStatus: 'Stabilized Tier II · Investigation Closed',
+                        attendingClinician: 'Faith Medical & TRACE Forensics'
+                    });
+                } else {
+                    await syncDgaInvestigativeUpdate(caseDef.subjectMaid, {
+                        investigativeNote: `Case ${caseDef.id} resolved: ${res.message}`,
+                        caseId: caseDef.id,
+                        status: 'VERIFIED / CLEARED'
+                    });
+                }
+            }
+        }
     };
 
     return (
@@ -215,7 +234,7 @@ export function FaithMedPortal() {
         setClinicalMessage(res.message);
     };
 
-    const handleCompletePatientCare = (caseId: string) => {
+    const handleCompletePatientCare = async (caseId: string) => {
         if (!completePatientCareAssignment) return;
         const diagId = selectedDiagByCase[caseId] || '';
         const txId = selectedTxByCase[caseId] || '';
@@ -224,6 +243,18 @@ export function FaithMedPortal() {
             ...patientFeedbackByCase,
             [caseId]: res
         });
+        if (res.ok) {
+            const caseDef = PATIENT_CARE_ASSIGNMENTS.find(p => p.id === caseId);
+            if (caseDef?.patientMaid) {
+                const diagLabel = caseDef.diagnoses.find(d => d.id === diagId)?.label || diagId;
+                const txLabel = caseDef.treatments.find(t => t.id === txId)?.label || txId;
+                await syncFaithMedicalUpdate(caseDef.patientMaid, {
+                    medicalSummary: `Inpatient discharge sign-off: Diagnosed ${diagLabel}, administered ${txLabel}`,
+                    auraStatus: 'Stabilized Tier II',
+                    attendingClinician: player?.name || 'Staff Clinician'
+                });
+            }
+        }
     };
 
     const treatmentProtocols = [

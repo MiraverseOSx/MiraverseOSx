@@ -11,7 +11,6 @@
 
 import { MaidIdentityService, type CanonicalPerson, type LookupResult } from '../services/maidIdentityService';
 import { useOSStore } from '../store/useOSStore';
-import { APPS } from '../apps/contents';
 
 export interface CitizenRecordRef {
   id: string; // MAID or legacy ID
@@ -159,15 +158,10 @@ export function openCitizenInApp(
 
   try {
     const store = useOSStore.getState();
-    const appMeta = APPS.find(a => a.id === targetAppId) || { id: targetAppId, title: targetAppId };
-    const existingWin = (store.windows || []).find(w => w.id === targetAppId);
-    if (existingWin) {
-      if (existingWin.isMinimized) {
-        store.toggleMinimize(targetAppId);
-      }
-      store.focusWindow(targetAppId);
+    if (typeof store.openAppWorkspace === 'function') {
+      store.openAppWorkspace(targetAppId, options?.targetTab);
     } else {
-      store.addWindow(appMeta);
+      store.addWindow({ id: targetAppId, title: targetAppId });
     }
   } catch {
     // Fallback if store not mounted
@@ -180,15 +174,10 @@ export function openCitizenInApp(
 export function launchDesktopApp(targetAppId: string): void {
   try {
     const store = useOSStore.getState();
-    const appMeta = APPS.find(a => a.id === targetAppId) || { id: targetAppId, title: targetAppId };
-    const existingWin = (store.windows || []).find(w => w.id === targetAppId);
-    if (existingWin) {
-      if (existingWin.isMinimized) {
-        store.toggleMinimize(targetAppId);
-      }
-      store.focusWindow(targetAppId);
+    if (typeof store.openAppWorkspace === 'function') {
+      store.openAppWorkspace(targetAppId);
     } else {
-      store.addWindow(appMeta);
+      store.addWindow({ id: targetAppId, title: targetAppId });
     }
   } catch {
     // Fallback if store not mounted
