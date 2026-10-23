@@ -500,23 +500,23 @@ export default function RegistryWorkspaceApp() {
   );
 
   return (
-    <div className="registry-workspace flex h-full w-full flex-col bg-[#111820] text-slate-100 select-none font-sans overflow-hidden">
+    <div className="registry-workspace flex h-full w-full flex-col bg-[#f3f6fa] text-slate-900 select-none font-sans overflow-hidden">
       {/* Top Header */}
-      <header className="flex flex-wrap items-center justify-between border-b border-[#303C48] bg-[#18212B] px-6 py-3.5 shadow-md shrink-0">
+      <header className="flex flex-wrap items-center justify-between border-b border-slate-200 bg-white px-6 py-3.5 shadow-xs shrink-0">
         <div className="flex items-center gap-3">
           <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-[#C0AA7F] to-[#627D91] text-white shadow-lg">
             <Fingerprint size={22} />
           </div>
           <div>
             <div className="flex items-center gap-2.5">
-              <h1 className="text-base font-bold tracking-wider text-white font-serif">
+              <h1 className="text-base font-bold tracking-wider text-slate-900 font-serif">
                 Citizen registry
               </h1>
-              <span className="rounded-md bg-emerald-950/90 border border-emerald-500/40 px-2.5 py-0.5 text-[10px] font-mono font-bold text-emerald-300">
+              <span className="rounded-md bg-emerald-50 border border-emerald-300 px-2.5 py-0.5 text-[10px] font-mono font-bold text-emerald-800">
                 ORYNVELL / OR · {auraActor.roleLabel}
               </span>
             </div>
-            <p className="text-xs text-slate-400">
+            <p className="text-xs text-slate-500">
               Aureline population records and institutional connections
             </p>
           </div>
@@ -540,15 +540,15 @@ export default function RegistryWorkspaceApp() {
       {/* Main Content Area */}
       <div className="flex-1 flex min-h-0 overflow-hidden">
         {/* Left Sidebar: Population Roster & Multi-Criteria Filters */}
-        <aside className="w-80 border-r border-[#2C3742] bg-[#141D26] flex flex-col justify-between overflow-hidden shrink-0">
+        <aside className="registry-sidebar w-80 border-r border-slate-200 bg-slate-50 flex flex-col justify-between overflow-hidden shrink-0">
           <nav className="registry-workflows" aria-label="Registry workflows">
             <button aria-pressed={activeTab === 'lookup'} onClick={() => setActiveTab('lookup')}><Search size={15} />Population directory</button>
             <button aria-pressed={activeTab === 'add'} onClick={() => setActiveTab('add')}><UserPlus size={15} />Register a person</button>
             <details><summary>Registry services</summary><button aria-pressed={activeTab === 'ecosystem'} onClick={() => setActiveTab('ecosystem')}><Layers size={14} />Institutional connections</button><button aria-pressed={activeTab === 'migration'} onClick={() => setActiveTab('migration')}><Database size={14} />Ledger integrity</button></details>
           </nav>
-          <div className="p-3.5 border-b border-[#2C3742] space-y-2.5 bg-[#18232D]">
+          <div className="p-3.5 border-b border-slate-200 space-y-2.5 bg-slate-100/70">
             <div className="flex items-center justify-between">
-              <span className="text-[11px] font-bold tracking-wider uppercase text-[#C0AA7F]">
+              <span className="text-[11px] font-bold tracking-wider uppercase text-amber-800">
                 Population Database ({filteredPersons.length}/{persons.length})
               </span>
               <button
@@ -559,7 +559,7 @@ export default function RegistryWorkspaceApp() {
                   setAffiliationFilter('ALL');
                   setStatusFilter('all');
                 }}
-                className="text-[10px] text-slate-400 hover:text-white flex items-center gap-1"
+                className="text-[10px] text-slate-500 hover:text-slate-900 flex items-center gap-1"
                 title="Reset population filters"
               >
                 <RefreshCw size={11} /> Reset
@@ -569,12 +569,12 @@ export default function RegistryWorkspaceApp() {
             {/* Quick Filter Controls */}
             <div className="grid grid-cols-2 gap-1.5 text-[11px]">
               <div>
-                <label htmlFor="pop-filter-affiliation" className="block text-[10px] text-slate-400 mb-0.5">Institution</label>
+                <label htmlFor="pop-filter-affiliation" className="block text-[10px] text-slate-500 mb-0.5">Institution</label>
                 <select
                   id="pop-filter-affiliation"
                   value={affiliationFilter}
                   onChange={(e) => setAffiliationFilter(e.target.value)}
-                  className="w-full rounded-lg bg-[#1D252B] border border-[#34434F] px-2 py-1 text-[11px] text-slate-200 focus:outline-none focus:border-[#C0AA7F]"
+                  className="w-full rounded-lg bg-white border border-slate-300 px-2 py-1 text-[11px] text-slate-800 focus:outline-none focus:border-amber-500"
                 >
                   <option value="ALL">All Institutions</option>
                   <option value="Cyacademy">Cyacademy</option>
@@ -585,12 +585,12 @@ export default function RegistryWorkspaceApp() {
                 </select>
               </div>
               <div>
-                <label htmlFor="pop-filter-species" className="block text-[10px] text-slate-400 mb-0.5">Species</label>
+                <label htmlFor="pop-filter-species" className="block text-[10px] text-slate-500 mb-0.5">Species</label>
                 <select
                   id="pop-filter-species"
                   value={speciesFilter}
                   onChange={(e) => setSpeciesFilter(e.target.value)}
-                  className="w-full rounded-lg bg-[#1D252B] border border-[#34434F] px-2 py-1 text-[11px] text-slate-200 focus:outline-none focus:border-[#C0AA7F]"
+                  className="w-full rounded-lg bg-white border border-slate-300 px-2 py-1 text-[11px] text-slate-800 focus:outline-none focus:border-amber-500"
                 >
                   <option value="ALL">All Species</option>
                   <option value="Frostborn">Frostborn</option>
@@ -615,11 +615,11 @@ export default function RegistryWorkspaceApp() {
                   onClick={() => handleSelectPerson(p)}
                   className={`citizen-roster-card ${isSelected ? 'is-selected ' : ''}w-full text-left p-2.5 rounded-xl border transition flex items-start gap-2.5 ${
                     isSelected
-                      ? 'bg-[#2A353E] border-[#C0AA7F] shadow-md'
-                      : 'bg-[#192026] border-[#303C48] hover:border-[#52677B] hover:bg-[#212A32]'
+                      ? 'bg-amber-50/80 border-amber-500 shadow-sm ring-1 ring-amber-400/40'
+                      : 'bg-white border-slate-200 hover:border-amber-300 hover:bg-amber-50/20 shadow-xs'
                   }`}
                 >
-                  <div className="h-10 w-10 rounded-lg overflow-hidden border border-[#3A4958] bg-[#12171C] shrink-0">
+                  <div className="h-10 w-10 rounded-lg overflow-hidden border border-slate-200 bg-slate-100 shrink-0">
                     {p.portraitData ? (
                       <img src={p.portraitData} alt={p.name} className="h-full w-full object-cover" />
                     ) : (
@@ -630,7 +630,7 @@ export default function RegistryWorkspaceApp() {
                   </div>
                   <div className="min-w-0 flex-1">
                     <div className="flex items-center justify-between gap-1">
-                      <span className="font-bold text-xs text-white truncate">{p.name}</span>
+                      <span className="font-bold text-xs text-slate-900 truncate">{p.name}</span>
                       {p.maidStatus === 'active' && p.maid ? (
                         <span className="text-[9px] font-mono bg-emerald-950/90 text-emerald-300 px-1.5 py-0.5 rounded border border-emerald-600/40 shrink-0">
                           OR
@@ -644,7 +644,7 @@ export default function RegistryWorkspaceApp() {
                     <div className="text-[10px] font-mono text-[#C0AA7F] truncate mt-0.5">
                       {p.maid || p.legacyRecord}
                     </div>
-                    <div className="text-[10px] text-slate-400 truncate mt-0.5">
+                    <div className="text-[10px] text-slate-500 truncate mt-0.5">
                       {p.species} · {p.occupation}
                     </div>
                   </div>
@@ -659,34 +659,34 @@ export default function RegistryWorkspaceApp() {
             )}
           </div>
 
-          <div className="p-3 border-t border-[#2C3742] bg-[#0F1316] text-[11px] text-slate-400 space-y-1">
+          <div className="p-3 border-t border-slate-200 bg-slate-100/70 text-[11px] text-slate-600 space-y-1">
             <div className="flex justify-between">
               <span>Active MAIDs:</span>
-              <strong className="text-emerald-400 font-mono">{persons.filter(p => p.maidStatus === 'active').length}</strong>
+              <strong className="text-emerald-700 font-mono font-bold">{persons.filter(p => p.maidStatus === 'active').length}</strong>
             </div>
             <div className="flex justify-between">
               <span>Pending Migration:</span>
-              <strong className="text-amber-400 font-mono">{persons.filter(p => p.maidStatus === 'pending_migration').length}</strong>
+              <strong className="text-amber-700 font-mono font-bold">{persons.filter(p => p.maidStatus === 'pending_migration').length}</strong>
             </div>
           </div>
         </aside>
 
         {/* Right Main Workspace */}
-        <main className="flex-1 overflow-y-auto p-6 bg-[#181F25]">
+        <main className="flex-1 overflow-y-auto p-6 bg-[#f3f6fa]">
           {/* =====================================================================
               TAB 1: LOOK UP MAID & COMPREHENSIVE CITIZEN DOSSIER
              ===================================================================== */}
           {activeTab === 'lookup' && (
             <div className="max-w-5xl mx-auto space-y-5">
               {/* Search Bar */}
-              <div className="bg-[#212A32] border border-[#384754] rounded-2xl p-5 shadow-lg">
+              <div className="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm">
                 <form onSubmit={handleSearch} className="space-y-2">
-                  <label htmlFor="maid-lookup-input" className="block text-xs font-bold uppercase tracking-wider text-[#C0AA7F]">
+                  <label htmlFor="maid-lookup-input" className="block text-xs font-bold uppercase tracking-wider text-amber-800">
                     Authoritative MAID, Legacy MRD Alias, or Citizen Name Search
                   </label>
                   <div className="flex gap-2.5">
                     <div className="relative flex-1">
-                      <Search size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
+                      <Search size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-500" />
                       <input
                         id="maid-lookup-input"
                         type="text"
@@ -694,18 +694,18 @@ export default function RegistryWorkspaceApp() {
                         onChange={(e) => setSearchQuery(e.target.value)}
                         aria-describedby="maid-lookup-helper"
                         placeholder="Enter MAID (MAID-OR-00481926), Legacy ID (MRD-8492-319), Name, or Occupation..."
-                        className="w-full rounded-xl bg-[#141D26] border border-[#415361] pl-10 pr-4 py-2.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-[#C0AA7F]"
+                        className="w-full rounded-xl bg-slate-50 border border-slate-300 pl-10 pr-4 py-2.5 text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:border-amber-500 focus:bg-white"
                       />
                     </div>
                     <button
                       type="submit"
                       disabled={isSearching}
-                      className="rounded-xl bg-gradient-to-r from-[#C0AA7F] to-[#A7B8C6] hover:from-[#D4BC8B] hover:to-[#A9B8C5] text-[#18212B] px-5 py-2.5 text-xs font-bold shadow transition cursor-pointer"
+                      className="rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-white font-bold px-5 py-2.5 text-xs font-bold shadow transition cursor-pointer"
                     >
                       {isSearching ? 'Querying...' : 'Resolve Identity'}
                     </button>
                   </div>
-                  <p id="maid-lookup-helper" className="text-[11px] text-slate-400">
+                  <p id="maid-lookup-helper" className="text-[11px] text-slate-500">
                     Resolves permanent <code className="text-[#D3C9B5]">MAID-OR-XXXXXXXX</code> numbers, historical <code className="text-indigo-300">MRD-...</code> aliases, and partial name/institution queries.
                   </p>
                 </form>
@@ -746,11 +746,11 @@ export default function RegistryWorkspaceApp() {
 
               {/* Active Citizen Comprehensive Dossier */}
               {activePerson && (
-                <div className="bg-[#212A32] border border-[#3A4958] rounded-2xl shadow-xl overflow-hidden">
+                <div className="bg-white border border-slate-200 rounded-2xl shadow-sm overflow-hidden">
                   {/* Citizen Master Banner */}
-                  <div className="dossier-hero-banner bg-gradient-to-r from-[#29343D] via-[#212A32] to-[#2D3943] p-6 border-b border-[#3A4958] flex flex-wrap items-center justify-between gap-4">
+                  <div className="dossier-hero-banner p-6 border-b border-amber-200/90 flex flex-wrap items-center justify-between gap-4">
                     <div className="flex items-center gap-4">
-                      <div className="relative h-20 w-20 rounded-2xl overflow-hidden border-2 border-[#C0AA7F] bg-[#141D26] shadow-lg shrink-0 group">
+                      <div className="relative h-20 w-20 rounded-2xl overflow-hidden border-2 border-amber-400 bg-white shadow-md shrink-0 group">
                         {activePerson.portraitData ? (
                           <img src={activePerson.portraitData} alt={activePerson.name} className="h-full w-full object-cover" />
                         ) : (
@@ -771,38 +771,38 @@ export default function RegistryWorkspaceApp() {
 
                       <div>
                         <div className="flex flex-wrap items-center gap-2">
-                          <h2 className="text-xl font-bold text-white font-serif">{activePerson.name}</h2>
+                          <h2 className="text-xl font-bold text-slate-900 font-serif">{activePerson.name}</h2>
                           {activePerson.alias && (
                             <span className="text-xs text-[#C0AA7F] font-medium">“{activePerson.alias}”</span>
                           )}
-                          <span className="rounded-full bg-emerald-950/80 border border-emerald-500/40 px-2.5 py-0.5 text-[10px] font-mono font-bold text-emerald-300">
+                          <span className="rounded-full bg-emerald-50 border border-emerald-300 px-2.5 py-0.5 text-[10px] font-mono font-bold text-emerald-800">
                             {activePerson.status}
                           </span>
                         </div>
 
-                        <div className="text-xs text-slate-300 mt-1">
+                        <div className="text-xs text-slate-600 mt-1">
                           {activePerson.species} ({activePerson.ancestry}) · <span className="text-[#D3C9B5] font-semibold">{activePerson.occupation}</span>
                         </div>
-                        <div className="text-[11px] text-slate-400 mt-0.5">
-                          Institution: <strong className="text-slate-200">{activePerson.affiliation}</strong> · Residence: <strong className="text-slate-200">{activePerson.home}</strong>
+                        <div className="text-[11px] text-slate-500 mt-0.5">
+                          Institution: <strong className="text-slate-800">{activePerson.affiliation}</strong> · Residence: <strong className="text-slate-800">{activePerson.home}</strong>
                         </div>
                       </div>
                     </div>
 
                     {/* Authoritative MAID & Legacy Alias Box */}
-                    <div className="bg-[#151B1F] border border-[#415361] rounded-xl p-3.5 text-right space-y-1.5">
-                      <div className="text-[10px] font-mono uppercase tracking-wider text-slate-400">
+                    <div className="bg-white/95 border border-amber-200/90 rounded-xl p-3.5 text-right space-y-1.5 shadow-xs">
+                      <div className="text-[10px] font-mono uppercase tracking-wider text-slate-500 font-semibold">
                         OFFICIAL PERMANENT MAID (IMMUTABLE)
                       </div>
                       {activePerson.maid ? (
                         <div className="flex items-center justify-end gap-2">
-                          <span className="text-base font-mono font-bold text-[#D3C9B5] tracking-wider">
+                          <span className="text-base font-mono font-bold text-amber-800 tracking-wider">
                             {activePerson.maid}
                           </span>
                           <button
                             type="button"
                             onClick={() => handleCopy(activePerson.maid!)}
-                            className="p-1 rounded bg-[#242E37] hover:bg-[#35434F] text-slate-300"
+                            className="p-1 rounded bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200"
                             title="Copy MAID"
                           >
                             {copiedText === activePerson.maid ? <Check size={13} className="text-emerald-400" /> : <Copy size={13} />}
@@ -829,7 +829,7 @@ export default function RegistryWorkspaceApp() {
                     }}>{linkingCitizen ? 'Linking…' : 'Link to current player'}</button>
                   </div>}
                   {/* Dossier Sub-Navigation Tabs */}
-                  <div className="flex flex-wrap items-center justify-between gap-2 bg-[#181E23] px-6 py-2.5 border-b border-[#2F3C46]">
+                  <div className="flex flex-wrap items-center justify-between gap-2 bg-white px-6 py-2.5 border-b border-slate-200">
                     <div className="flex flex-wrap items-center gap-1.5">
                       {[
                         { id: 'overview', label: 'Identity & Biometrics', icon: Fingerprint },
@@ -848,11 +848,11 @@ export default function RegistryWorkspaceApp() {
                             onClick={() => setDossierSection(tab.id as any)}
                             className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition ${
                               isSel
-                                ? 'bg-[#344959] text-white border border-[#C0AA7F]/50 shadow-xs'
-                                : 'text-slate-400 hover:text-white hover:bg-white/5'
+                                ? 'bg-amber-50 text-amber-900 border border-amber-300 shadow-xs font-semibold'
+                                : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
                             }`}
                           >
-                            <Icon size={13} className={isSel ? 'text-[#C0AA7F]' : 'text-slate-400'} />
+                            <Icon size={13} className={isSel ? 'text-[#C0AA7F]' : 'text-slate-500'} />
                             <span>{tab.label}</span>
                           </button>
                         );
@@ -864,7 +864,7 @@ export default function RegistryWorkspaceApp() {
                       <button
                         type="button"
                         onClick={() => setPortraitModalTarget('dossier')}
-                        className="flex items-center gap-1 rounded-lg bg-[#27323B] hover:bg-[#364450] border border-[#52677B] px-2.5 py-1.5 text-[11px] font-semibold text-[#D3C9B5]"
+                        className="flex items-center gap-1 rounded-lg bg-white hover:bg-slate-50 border border-slate-300 px-2.5 py-1.5 text-[11px] font-semibold text-slate-700"
                       >
                         <Camera size={12} /> Portrait Studio
                       </button>
@@ -882,58 +882,58 @@ export default function RegistryWorkspaceApp() {
                   {dossierSection === 'overview' && (
                     <div className="p-6 space-y-6">
                       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                        <div className="bg-[#18212B] border border-[#2F3C46] rounded-xl p-4 space-y-2.5">
-                          <h3 className="text-[11px] font-bold uppercase tracking-wider text-[#C0AA7F] border-b border-[#2C3742] pb-1.5">
+                        <div className="bg-white border border-slate-200 shadow-xs rounded-xl p-4 space-y-2.5">
+                          <h3 className="text-[11px] font-bold uppercase tracking-wider text-[#C0AA7F] border-b border-slate-200 pb-1.5">
                             Vital & Domicile Coordinates
                           </h3>
                           <div className="space-y-1.5 text-xs">
-                            <div className="flex justify-between"><span className="text-slate-400">Date of Birth:</span><strong className="text-white font-mono">{activePerson.dob}</strong></div>
-                            <div className="flex justify-between"><span className="text-slate-400">Birthplace:</span><strong className="text-white">{activePerson.place}</strong></div>
-                            <div className="flex justify-between"><span className="text-slate-400">Current Home:</span><strong className="text-white">{activePerson.home}</strong></div>
-                            <div className="flex justify-between"><span className="text-slate-400">District:</span><strong className="text-slate-200">{activePerson.district}</strong></div>
-                            <div className="flex justify-between"><span className="text-slate-400">Housing Unit:</span><strong className="text-indigo-300">{activePerson.household || activePerson.residency}</strong></div>
-                            <div className="pt-1 border-t border-[#2C3742] text-[11px] text-slate-300">{activePerson.address}</div>
+                            <div className="flex justify-between"><span className="text-slate-500">Date of Birth:</span><strong className="text-slate-900 font-mono font-semibold">{activePerson.dob}</strong></div>
+                            <div className="flex justify-between"><span className="text-slate-500">Birthplace:</span><strong className="text-slate-900 font-semibold">{activePerson.place}</strong></div>
+                            <div className="flex justify-between"><span className="text-slate-500">Current Home:</span><strong className="text-slate-900 font-semibold">{activePerson.home}</strong></div>
+                            <div className="flex justify-between"><span className="text-slate-500">District:</span><strong className="text-slate-800">{activePerson.district}</strong></div>
+                            <div className="flex justify-between"><span className="text-slate-500">Housing Unit:</span><strong className="text-indigo-300">{activePerson.household || activePerson.residency}</strong></div>
+                            <div className="pt-1 border-t border-slate-200 text-[11px] text-slate-700">{activePerson.address}</div>
                           </div>
                         </div>
 
-                        <div className="bg-[#18212B] border border-[#2F3C46] rounded-xl p-4 space-y-2.5">
-                          <h3 className="text-[11px] font-bold uppercase tracking-wider text-[#C0AA7F] border-b border-[#2C3742] pb-1.5">
+                        <div className="bg-white border border-slate-200 shadow-xs rounded-xl p-4 space-y-2.5">
+                          <h3 className="text-[11px] font-bold uppercase tracking-wider text-[#C0AA7F] border-b border-slate-200 pb-1.5">
                             Physical & Biometric Descriptors
                           </h3>
                           <div className="space-y-1.5 text-xs">
-                            <div className="flex justify-between"><span className="text-slate-400">Height / Build:</span><strong className="text-white">{activePerson.height} · {activePerson.build}</strong></div>
-                            <div className="flex justify-between"><span className="text-slate-400">Eye Color:</span><strong className="text-white">{activePerson.eyes}</strong></div>
-                            <div className="flex justify-between"><span className="text-slate-400">Hair Color:</span><strong className="text-white">{activePerson.hair}</strong></div>
-                            <div className="flex justify-between"><span className="text-slate-400">Blood & Aura:</span><strong className="text-emerald-300">{activePerson.blood}</strong></div>
-                            <div className="pt-1 border-t border-[#2C3742] text-[11px] text-slate-300">
-                              <span className="text-slate-400 block">Distinguishing Marks:</span>
+                            <div className="flex justify-between"><span className="text-slate-500">Height / Build:</span><strong className="text-slate-900 font-semibold">{activePerson.height} · {activePerson.build}</strong></div>
+                            <div className="flex justify-between"><span className="text-slate-500">Eye Color:</span><strong className="text-slate-900 font-semibold">{activePerson.eyes}</strong></div>
+                            <div className="flex justify-between"><span className="text-slate-500">Hair Color:</span><strong className="text-slate-900 font-semibold">{activePerson.hair}</strong></div>
+                            <div className="flex justify-between"><span className="text-slate-500">Blood & Aura:</span><strong className="text-emerald-300">{activePerson.blood}</strong></div>
+                            <div className="pt-1 border-t border-slate-200 text-[11px] text-slate-700">
+                              <span className="text-slate-500 block">Distinguishing Marks:</span>
                               {activePerson.mark}
                             </div>
                           </div>
                         </div>
 
-                        <div className="bg-[#18212B] border border-[#2F3C46] rounded-xl p-4 space-y-2.5">
-                          <h3 className="text-[11px] font-bold uppercase tracking-wider text-[#C0AA7F] border-b border-[#2C3742] pb-1.5">
+                        <div className="bg-white border border-slate-200 shadow-xs rounded-xl p-4 space-y-2.5">
+                          <h3 className="text-[11px] font-bold uppercase tracking-wider text-[#C0AA7F] border-b border-slate-200 pb-1.5">
                             Sovereign Registration Metadata
                           </h3>
                           <div className="space-y-1.5 text-xs">
-                            <div className="flex justify-between"><span className="text-slate-400">Reg. Region:</span><strong className="text-emerald-400 font-mono">{activePerson.registrationRegionCode || 'PENDING'} (Orynvell)</strong></div>
-                            <div className="flex justify-between"><span className="text-slate-400">Passport No.:</span><strong className="text-amber-300 font-mono">{activePerson.passport}</strong></div>
-                            <div className="flex justify-between"><span className="text-slate-400">Clearance:</span><strong className="text-indigo-300">{activePerson.clearance}</strong></div>
-                            <div className="flex justify-between"><span className="text-slate-400">Comms / Phone:</span><strong className="text-slate-200 font-mono">{activePerson.phone}</strong></div>
-                            <div className="flex justify-between"><span className="text-slate-400">Versenet Mail:</span><strong className="text-slate-200 font-mono">{activePerson.email}</strong></div>
+                            <div className="flex justify-between"><span className="text-slate-500">Reg. Region:</span><strong className="text-emerald-400 font-mono">{activePerson.registrationRegionCode || 'PENDING'} (Orynvell)</strong></div>
+                            <div className="flex justify-between"><span className="text-slate-500">Passport No.:</span><strong className="text-amber-300 font-mono">{activePerson.passport}</strong></div>
+                            <div className="flex justify-between"><span className="text-slate-500">Clearance:</span><strong className="text-indigo-300">{activePerson.clearance}</strong></div>
+                            <div className="flex justify-between"><span className="text-slate-500">Comms / Phone:</span><strong className="text-slate-800 font-mono">{activePerson.phone}</strong></div>
+                            <div className="flex justify-between"><span className="text-slate-500">Versenet Mail:</span><strong className="text-slate-800 font-mono">{activePerson.email}</strong></div>
                           </div>
                         </div>
                       </div>
 
                       {/* 10-Print Dermal Ridge Classification Strip */}
-                      <div className="bg-[#18212B] border border-[#2F3C46] rounded-xl p-4 space-y-3">
+                      <div className="bg-white border border-slate-200 shadow-xs rounded-xl p-4 space-y-3">
                         <div className="flex items-center justify-between">
                           <div>
                             <h3 className="text-xs font-bold uppercase tracking-wider text-[#C0AA7F] flex items-center gap-2">
                               <Fingerprint size={15} /> Authoritative 10-Print Dermal Ridge Classification
                             </h3>
-                            <p className="text-[11px] text-slate-400">
+                            <p className="text-[11px] text-slate-500">
                               Deterministic biometric ridge matrix seeded from <code className="text-indigo-300">{activePerson.biometricSeed}</code> (synchronized with TRACE AFIS & Document 4).
                             </p>
                           </div>
@@ -948,13 +948,13 @@ export default function RegistryWorkspaceApp() {
 
                         <div className="grid grid-cols-2 sm:grid-cols-5 gap-2">
                           {activeTenPrints.map((fp) => (
-                            <div key={fp.fingerIndex} className="bg-[#1F282F] border border-[#34434F] rounded-lg p-2.5 text-center space-y-1">
-                              <div className="text-[10px] font-bold text-slate-300">{fp.label}</div>
-                              <div className="mx-auto h-10 w-10 rounded-full border border-indigo-400/40 bg-[#12171C] flex items-center justify-center">
+                            <div key={fp.fingerIndex} className="bg-slate-50 border border-slate-200 text-slate-800 rounded-lg p-2.5 text-center space-y-1">
+                              <div className="text-[10px] font-bold text-slate-700">{fp.label}</div>
+                              <div className="mx-auto h-10 w-10 rounded-full border border-indigo-200 bg-white flex items-center justify-center">
                                 <Fingerprint size={22} className="text-indigo-300 opacity-85" />
                               </div>
                               <div className="text-[10px] font-mono font-bold text-[#C0AA7F]">{fp.pattern}</div>
-                              <div className="text-[9px] font-mono text-slate-400">
+                              <div className="text-[9px] font-mono text-slate-500">
                                 {fp.henryCode} · {fp.minutiaeScore}%
                               </div>
                             </div>
@@ -968,52 +968,52 @@ export default function RegistryWorkspaceApp() {
                   {dossierSection === 'ancestry' && (
                     <div className="p-6 space-y-4">
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div className="bg-[#18212B] border border-[#2F3C46] rounded-xl p-5 space-y-3">
+                        <div className="bg-white border border-slate-200 shadow-xs rounded-xl p-5 space-y-3">
                           <h3 className="text-xs font-bold uppercase tracking-wider text-[#C0AA7F]">
                             Lineage, Species & Origin
                           </h3>
                           <div className="space-y-2 text-xs">
-                            <div className="flex justify-between border-b border-[#2C3742] pb-1.5">
-                              <span className="text-slate-400">Biological / Celestial Species:</span>
-                              <strong className="text-white">{activePerson.species}</strong>
+                            <div className="flex justify-between border-b border-slate-200 pb-1.5">
+                              <span className="text-slate-500">Biological / Celestial Species:</span>
+                              <strong className="text-slate-900 font-semibold">{activePerson.species}</strong>
                             </div>
-                            <div className="flex justify-between border-b border-[#2C3742] pb-1.5">
-                              <span className="text-slate-400">Ancestral House / Lineage:</span>
+                            <div className="flex justify-between border-b border-slate-200 pb-1.5">
+                              <span className="text-slate-500">Ancestral House / Lineage:</span>
                               <strong className="text-purple-300">{activePerson.ancestry}</strong>
                             </div>
-                            <div className="flex justify-between border-b border-[#2C3742] pb-1.5">
-                              <span className="text-slate-400">Archetype / Story Mode:</span>
+                            <div className="flex justify-between border-b border-slate-200 pb-1.5">
+                              <span className="text-slate-500">Archetype / Story Mode:</span>
                               <strong className="text-[#D3C9B5]">{activePerson.storyMode || 'Ordinary & Believable'}</strong>
                             </div>
                             <div className="pt-1">
-                              <span className="text-slate-400 block mb-1">Timeline & Migration Origin:</span>
-                              <p className="text-slate-200 leading-relaxed bg-[#1F282F] p-3 rounded-lg border border-[#34434F]">
+                              <span className="text-slate-500 block mb-1">Timeline & Migration Origin:</span>
+                              <p className="text-slate-800 leading-relaxed bg-slate-50 p-3 rounded-lg border border-slate-200 text-slate-700">
                                 {activePerson.timeline || `Origin: ${activePerson.place}; registered in ${activePerson.home}`}
                               </p>
                             </div>
                           </div>
                         </div>
 
-                        <div className="bg-[#18212B] border border-[#2F3C46] rounded-xl p-5 space-y-3">
+                        <div className="bg-white border border-slate-200 shadow-xs rounded-xl p-5 space-y-3">
                           <h3 className="text-xs font-bold uppercase tracking-wider text-[#C0AA7F]">
                             PRISM Resonance, Affinity & Abilities
                           </h3>
                           <div className="space-y-2 text-xs">
-                            <div className="flex justify-between border-b border-[#2C3742] pb-1.5">
-                              <span className="text-slate-400">Spectrum Affinity:</span>
+                            <div className="flex justify-between border-b border-slate-200 pb-1.5">
+                              <span className="text-slate-500">Spectrum Affinity:</span>
                               <strong className="text-indigo-300">{activePerson.affinity}</strong>
                             </div>
-                            <div className="flex justify-between border-b border-[#2C3742] pb-1.5">
-                              <span className="text-slate-400">Primary Power Source:</span>
+                            <div className="flex justify-between border-b border-slate-200 pb-1.5">
+                              <span className="text-slate-500">Primary Power Source:</span>
                               <strong className="text-amber-300">{activePerson.powerSource}</strong>
                             </div>
-                            <div className="flex justify-between border-b border-[#2C3742] pb-1.5">
-                              <span className="text-slate-400">Aura Calibration Tier:</span>
+                            <div className="flex justify-between border-b border-slate-200 pb-1.5">
+                              <span className="text-slate-500">Aura Calibration Tier:</span>
                               <strong className="text-emerald-300">{activePerson.aura || 'Aura Calibrated Standard'}</strong>
                             </div>
                             <div className="pt-1">
-                              <span className="text-slate-400 block mb-1">Recorded Abilities & Harmonic Traits:</span>
-                              <p className="text-slate-200 leading-relaxed bg-[#1F282F] p-3 rounded-lg border border-[#34434F]">
+                              <span className="text-slate-500 block mb-1">Recorded Abilities & Harmonic Traits:</span>
+                              <p className="text-slate-800 leading-relaxed bg-slate-50 p-3 rounded-lg border border-slate-200 text-slate-700">
                                 {activePerson.abilities}
                               </p>
                             </div>
@@ -1021,12 +1021,12 @@ export default function RegistryWorkspaceApp() {
                         </div>
                       </div>
 
-                      <div className="bg-[#18212B] border border-[#2F3C46] rounded-xl p-5 space-y-2">
+                      <div className="bg-white border border-slate-200 shadow-xs rounded-xl p-5 space-y-2">
                         <h3 className="text-xs font-bold uppercase tracking-wider text-[#C0AA7F]">
                           Archival Biography & Civic History
                         </h3>
-                        <p className="text-xs text-slate-200 leading-relaxed">{activePerson.lore || activePerson.history}</p>
-                        <p className="text-[11px] text-slate-400 pt-1 border-t border-[#2C3742]">{activePerson.history}</p>
+                        <p className="text-xs text-slate-800 leading-relaxed">{activePerson.lore || activePerson.history}</p>
+                        <p className="text-[11px] text-slate-500 pt-1 border-t border-slate-200">{activePerson.history}</p>
                       </div>
                     </div>
                   )}
@@ -1036,7 +1036,7 @@ export default function RegistryWorkspaceApp() {
                     <div className="p-6 space-y-4">
                       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                         {/* Faith Medical Group */}
-                        <div className="bg-[#18212B] border border-teal-500/30 rounded-xl p-4 flex flex-col justify-between space-y-3">
+                        <div className="bg-white border border-teal-200 shadow-xs rounded-xl p-4 flex flex-col justify-between space-y-3">
                           <div className="space-y-2">
                             <div className="flex items-center justify-between">
                               <span className="text-xs font-bold text-teal-300 flex items-center gap-1.5">
@@ -1046,10 +1046,10 @@ export default function RegistryWorkspaceApp() {
                                 MEDSTAT SYNCED
                               </span>
                             </div>
-                            <p className="text-xs text-slate-200 leading-relaxed bg-[#1F282F] p-3 rounded-lg border border-[#34434F]">
+                            <p className="text-xs text-slate-800 leading-relaxed bg-slate-50 p-3 rounded-lg border border-slate-200 text-slate-700">
                               {activePerson.medical}
                             </p>
-                            <div className="text-[11px] text-slate-400">
+                            <div className="text-[11px] text-slate-500">
                               Blood/Aura: <strong className="text-teal-200">{activePerson.blood}</strong> · <strong className="text-teal-200">{activePerson.aura}</strong>
                             </div>
                           </div>
@@ -1064,7 +1064,7 @@ export default function RegistryWorkspaceApp() {
                             <button
                               type="button"
                               onClick={() => openCitizenInApp(activePerson.maid || activePerson.legacyRecord, 'jobs', { targetTab: 'faithmed', sourceApp: 'meridionRegistry' })}
-                              className="w-full py-1.5 rounded-lg bg-[#232D35] hover:bg-[#303D48] text-slate-200 text-[11px] font-semibold transition flex items-center justify-center gap-1"
+                              className="w-full py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 border border-slate-200 text-slate-700 text-[11px] font-semibold transition flex items-center justify-center gap-1"
                             >
                               Open in Faith Medical Triage <ExternalLink size={11} />
                             </button>
@@ -1072,7 +1072,7 @@ export default function RegistryWorkspaceApp() {
                         </div>
 
                         {/* Cyacademy & Housing */}
-                        <div className="bg-[#18212B] border border-indigo-500/30 rounded-xl p-4 flex flex-col justify-between space-y-3">
+                        <div className="bg-white border border-indigo-200 shadow-xs rounded-xl p-4 flex flex-col justify-between space-y-3">
                           <div className="space-y-2">
                             <div className="flex items-center justify-between">
                               <span className="text-xs font-bold text-indigo-300 flex items-center gap-1.5">
@@ -1082,10 +1082,10 @@ export default function RegistryWorkspaceApp() {
                                 MIRROR / HOMECRAFT
                               </span>
                             </div>
-                            <div className="text-xs text-slate-200 space-y-1 bg-[#1F282F] p-3 rounded-lg border border-[#34434F]">
-                              <div><span className="text-slate-400">Affiliation:</span> <strong>{activePerson.affiliation}</strong></div>
-                              <div><span className="text-slate-400">Role:</span> <strong>{activePerson.occupation}</strong></div>
-                              <div><span className="text-slate-400">Housing:</span> <strong className="text-indigo-200">{activePerson.household || activePerson.residency}</strong></div>
+                            <div className="text-xs text-slate-800 space-y-1 bg-slate-50 p-3 rounded-lg border border-slate-200 text-slate-700">
+                              <div><span className="text-slate-500">Affiliation:</span> <strong>{activePerson.affiliation}</strong></div>
+                              <div><span className="text-slate-500">Role:</span> <strong>{activePerson.occupation}</strong></div>
+                              <div><span className="text-slate-500">Housing:</span> <strong className="text-indigo-200">{activePerson.household || activePerson.residency}</strong></div>
                             </div>
                           </div>
                           <div className="flex flex-col gap-1.5 pt-2">
@@ -1100,14 +1100,14 @@ export default function RegistryWorkspaceApp() {
                               <button
                                 type="button"
                                 onClick={() => openCitizenInApp(activePerson.maid || activePerson.legacyRecord, 'passport', { sourceApp: 'meridionRegistry' })}
-                                className="py-1.5 rounded-lg bg-[#232D35] hover:bg-[#303D48] text-slate-200 text-[11px] font-semibold transition"
+                                className="py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 border border-slate-200 text-slate-700 text-[11px] font-semibold transition"
                               >
                                 MIRROR Profile
                               </button>
                               <button
                                 type="button"
                                 onClick={() => openCitizenInApp(activePerson.maid || activePerson.legacyRecord, 'housing', { sourceApp: 'meridionRegistry' })}
-                                className="py-1.5 rounded-lg bg-[#232D35] hover:bg-[#303D48] text-slate-200 text-[11px] font-semibold transition"
+                                className="py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 border border-slate-200 text-slate-700 text-[11px] font-semibold transition"
                               >
                                 Housing App
                               </button>
@@ -1116,7 +1116,7 @@ export default function RegistryWorkspaceApp() {
                         </div>
 
                         {/* DGAOS & TRACE Forensics */}
-                        <div className="bg-[#18212B] border border-rose-500/30 rounded-xl p-4 flex flex-col justify-between space-y-3">
+                        <div className="bg-white border border-rose-200 shadow-xs rounded-xl p-4 flex flex-col justify-between space-y-3">
                           <div className="space-y-2">
                             <div className="flex items-center justify-between">
                               <span className="text-xs font-bold text-rose-300 flex items-center gap-1.5">
@@ -1126,9 +1126,9 @@ export default function RegistryWorkspaceApp() {
                                 EYES / AFIS
                               </span>
                             </div>
-                            <div className="text-xs text-slate-200 space-y-1 bg-[#1F282F] p-3 rounded-lg border border-[#34434F]">
-                              <div><span className="text-slate-400">Clearance:</span> <strong className="text-amber-300">{activePerson.clearance}</strong></div>
-                              <div><span className="text-slate-400">Standing:</span> <strong>{activePerson.links}</strong></div>
+                            <div className="text-xs text-slate-800 space-y-1 bg-slate-50 p-3 rounded-lg border border-slate-200 text-slate-700">
+                              <div><span className="text-slate-500">Clearance:</span> <strong className="text-amber-300">{activePerson.clearance}</strong></div>
+                              <div><span className="text-slate-500">Standing:</span> <strong>{activePerson.links}</strong></div>
                             </div>
                           </div>
                           <div className="flex flex-col gap-1.5 pt-2">
@@ -1143,14 +1143,14 @@ export default function RegistryWorkspaceApp() {
                               <button
                                 type="button"
                                 onClick={() => openCitizenInApp(activePerson.maid || activePerson.legacyRecord, 'dgaos', { sourceApp: 'meridionRegistry' })}
-                                className="py-1.5 rounded-lg bg-[#232D35] hover:bg-[#303D48] text-slate-200 text-[11px] font-semibold transition"
+                                className="py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 border border-slate-200 text-slate-700 text-[11px] font-semibold transition"
                               >
                                 Open DGAOS
                               </button>
                               <button
                                 type="button"
                                 onClick={() => openCitizenInApp(activePerson.maid || activePerson.legacyRecord, 'traceForensics', { sourceApp: 'meridionRegistry' })}
-                                className="py-1.5 rounded-lg bg-[#232D35] hover:bg-[#303D48] text-slate-200 text-[11px] font-semibold transition"
+                                className="py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 border border-slate-200 text-slate-700 text-[11px] font-semibold transition"
                               >
                                 Open TRACE
                               </button>
@@ -1166,12 +1166,12 @@ export default function RegistryWorkspaceApp() {
                     <div className="p-6 space-y-5">
                       <div className="grid grid-cols-1 md:grid-cols-12 gap-5">
                         {/* Existing Relationships Graph */}
-                        <div className="md:col-span-7 bg-[#18212B] border border-[#2F3C46] rounded-xl p-4 space-y-3">
+                        <div className="md:col-span-7 bg-white border border-slate-200 shadow-xs rounded-xl p-4 space-y-3">
                           <h3 className="text-xs font-bold uppercase tracking-wider text-[#C0AA7F] flex items-center gap-2">
                             <Users size={15} /> Verified Citizen Relationships & Associates
                           </h3>
                           {activePerson.relationships && (
-                            <p className="text-xs text-slate-300 bg-[#1F282F] p-3 rounded-lg border border-[#34434F]">
+                            <p className="text-xs text-slate-700 bg-slate-50 p-3 rounded-lg border border-slate-200 text-slate-700">
                               {activePerson.relationships}
                             </p>
                           )}
@@ -1182,10 +1182,10 @@ export default function RegistryWorkspaceApp() {
                               return (
                                 <div
                                   key={i}
-                                  className="flex items-center justify-between bg-[#20282F] border border-[#3A4958] rounded-xl p-3 hover:border-[#C0AA7F] transition"
+                                  className="flex items-center justify-between bg-slate-50 border border-slate-200 rounded-xl p-3 hover:border-amber-400 transition shadow-xs"
                                 >
                                   <div className="flex items-center gap-3">
-                                    <div className="h-9 w-9 rounded-lg overflow-hidden bg-[#12171C] border border-[#415361] flex items-center justify-center font-bold text-xs text-[#C0AA7F]">
+                                    <div className="h-9 w-9 rounded-lg overflow-hidden bg-slate-100 border border-slate-200 flex items-center justify-center font-bold text-xs text-amber-700">
                                       {linkedCitizen?.portraitData ? (
                                         <img src={linkedCitizen.portraitData} alt={linkedCitizen.name} className="h-full w-full object-cover" />
                                       ) : (
@@ -1198,14 +1198,14 @@ export default function RegistryWorkspaceApp() {
                                         <span className="ml-2 text-[10px] font-mono text-[#C0AA7F]">({rel.id})</span>
                                       </div>
                                       <div className="text-[11px] text-indigo-300 font-semibold">
-                                        {rel.type} {rel.notes ? <span className="text-slate-400 font-normal">· {rel.notes}</span> : null}
+                                        {rel.type} {rel.notes ? <span className="text-slate-500 font-normal">· {rel.notes}</span> : null}
                                       </div>
                                     </div>
                                   </div>
                                   <button
                                     type="button"
                                     onClick={() => handleQuickLookup(rel.id)}
-                                    className="px-3 py-1.5 rounded-lg bg-[#293B4A] hover:bg-[#3E4F5D] text-xs font-bold text-[#D3C9B5] flex items-center gap-1"
+                                    className="px-3 py-1.5 rounded-lg bg-amber-500 hover:bg-amber-600 text-xs font-bold text-white flex items-center gap-1 shadow-xs"
                                   >
                                     Inspect <ArrowRight size={12} />
                                   </button>
@@ -1214,7 +1214,7 @@ export default function RegistryWorkspaceApp() {
                             })}
 
                             {(!activePerson.relationshipIds || activePerson.relationshipIds.length === 0) && (
-                              <div className="text-xs text-slate-400 py-4 text-center">
+                              <div className="text-xs text-slate-500 py-4 text-center">
                                 No structured relationship links recorded yet. Use the form on the right to link another citizen.
                               </div>
                             )}
@@ -1222,7 +1222,7 @@ export default function RegistryWorkspaceApp() {
                         </div>
 
                         {/* Link New Relationship Form */}
-                        <div className="md:col-span-5 bg-[#18212B] border border-[#2F3C46] rounded-xl p-4">
+                        <div className="md:col-span-5 bg-white border border-slate-200 shadow-xs rounded-xl p-4">
                           <form onSubmit={handleLinkRelationship} className="space-y-3">
                             <fieldset className="space-y-3">
                               <legend className="text-xs font-bold uppercase tracking-wider text-[#C0AA7F] flex items-center gap-1.5 mb-1">
@@ -1230,7 +1230,7 @@ export default function RegistryWorkspaceApp() {
                               </legend>
 
                               <div>
-                                <label htmlFor="rel-target-select" className="block text-[11px] font-semibold text-slate-300 mb-1">
+                                <label htmlFor="rel-target-select" className="block text-[11px] font-semibold text-slate-700 mb-1">
                                   Target Citizen (MAID Registry)
                                 </label>
                                 <select
@@ -1238,7 +1238,7 @@ export default function RegistryWorkspaceApp() {
                                   value={relTargetMaid}
                                   onChange={(e) => setRelTargetMaid(e.target.value)}
                                   required
-                                  className="w-full rounded-lg bg-[#1F282F] border border-[#3A4958] px-3 py-2 text-xs text-white focus:outline-none focus:border-[#C0AA7F]"
+                                  className="w-full rounded-lg bg-white border border-slate-300 px-3 py-2 text-xs text-slate-900 focus:outline-none focus:border-amber-500"
                                 >
                                   <option value="">Select a citizen to link...</option>
                                   {persons
@@ -1252,14 +1252,14 @@ export default function RegistryWorkspaceApp() {
                               </div>
 
                               <div>
-                                <label htmlFor="rel-type-select" className="block text-[11px] font-semibold text-slate-300 mb-1">
+                                <label htmlFor="rel-type-select" className="block text-[11px] font-semibold text-slate-700 mb-1">
                                   Relationship Classification
                                 </label>
                                 <select
                                   id="rel-type-select"
                                   value={relType}
                                   onChange={(e) => setRelType(e.target.value)}
-                                  className="w-full rounded-lg bg-[#1F282F] border border-[#3A4958] px-3 py-2 text-xs text-white focus:outline-none focus:border-[#C0AA7F]"
+                                  className="w-full rounded-lg bg-white border border-slate-300 px-3 py-2 text-xs text-slate-900 focus:outline-none focus:border-amber-500"
                                 >
                                   <option value="Research Partner">Research Partner (Cyacademy)</option>
                                   <option value="Attending Clinician">Attending Clinician (Faith Medical)</option>
@@ -1273,7 +1273,7 @@ export default function RegistryWorkspaceApp() {
                               </div>
 
                               <div>
-                                <label htmlFor="rel-notes-input" className="block text-[11px] font-semibold text-slate-300 mb-1">
+                                <label htmlFor="rel-notes-input" className="block text-[11px] font-semibold text-slate-700 mb-1">
                                   Contextual Notes
                                 </label>
                                 <input
@@ -1282,7 +1282,7 @@ export default function RegistryWorkspaceApp() {
                                   value={relNotes}
                                   onChange={(e) => setRelNotes(e.target.value)}
                                   placeholder="e.g. Vector Housing Suite 4B / Joint Case"
-                                  className="w-full rounded-lg bg-[#1F282F] border border-[#3A4958] px-3 py-2 text-xs text-white focus:outline-none focus:border-[#C0AA7F]"
+                                  className="w-full rounded-lg bg-white border border-slate-300 px-3 py-2 text-xs text-slate-900 focus:outline-none focus:border-amber-500"
                                 />
                               </div>
 
@@ -1302,13 +1302,13 @@ export default function RegistryWorkspaceApp() {
                   {/* DOSSIER SECTION 5: OFFICIAL DOCUMENTS SUITE */}
                   {dossierSection === 'documents' && (
                     <div className="p-6 space-y-5">
-                      <div className="flex flex-wrap items-center justify-between gap-3 bg-[#18212B] border border-[#2F3C46] rounded-xl p-4">
+                      <div className="flex flex-wrap items-center justify-between gap-3 bg-white border border-slate-200 shadow-xs rounded-xl p-4">
                         <div>
                           <h3 className="text-xs font-bold uppercase tracking-wider text-[#C0AA7F]">
                             Sovereign 9-Document Packet & Official Credentials
                           </h3>
-                          <p className="text-[11px] text-slate-400">
-                            All 9 official documents dynamically bind to <strong className="text-white">{activePerson.name}</strong> (<code className="text-[#D3C9B5]">{activePerson.maid || activePerson.legacyRecord}</code>).
+                          <p className="text-[11px] text-slate-500">
+                            All 9 official documents dynamically bind to <strong className="text-slate-900 font-semibold">{activePerson.name}</strong> (<code className="text-[#D3C9B5]">{activePerson.maid || activePerson.legacyRecord}</code>).
                           </p>
                         </div>
                         <button
@@ -1353,22 +1353,22 @@ export default function RegistryWorkspaceApp() {
                       </div>
 
                       {/* Issued Snapshots History */}
-                      <div className="bg-[#18212B] border border-[#2F3C46] rounded-xl p-4 space-y-2.5">
+                      <div className="bg-white border border-slate-200 shadow-xs rounded-xl p-4 space-y-2.5">
                         <h4 className="text-xs font-bold uppercase tracking-wider text-[#C0AA7F]">
                           Issued Document Snapshot Ledger ({activeIssuedDocs.length})
                         </h4>
                         {activeIssuedDocs.length > 0 ? (
                           <div className="space-y-1.5 max-h-40 overflow-y-auto">
                             {activeIssuedDocs.map((snap) => (
-                              <div key={snap.id} className="flex items-center justify-between text-xs bg-[#1F282F] border border-[#34434F] rounded-lg px-3 py-2 font-mono">
+                              <div key={snap.id} className="flex items-center justify-between text-xs bg-slate-50 border border-slate-200 text-slate-800 rounded-lg px-3 py-2 font-mono">
                                 <span className="text-white font-semibold">{snap.documentType}</span>
-                                <span className="text-slate-400 text-[11px]">{new Date(snap.issuedAt).toLocaleString()}</span>
+                                <span className="text-slate-500 text-[11px]">{new Date(snap.issuedAt).toLocaleString()}</span>
                                 <span className="text-emerald-400 text-[10px]">HASH: {snap.hash}</span>
                               </div>
                             ))}
                           </div>
                         ) : (
-                          <div className="text-xs text-slate-400">
+                          <div className="text-xs text-slate-500">
                             No document snapshots logged for this citizen yet. Click any document above to issue and log a snapshot.
                           </div>
                         )}
@@ -1384,80 +1384,80 @@ export default function RegistryWorkspaceApp() {
                           <Lock size={14} /> Edit Citizen Attributes (MAID & Registration Region Permanently Locked)
                         </legend>
 
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-3 bg-[#151B1F] border border-[#34434F] rounded-xl p-3.5 text-xs">
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-3 bg-slate-50 border border-slate-200 rounded-xl p-3.5 text-xs">
                           <div>
-                            <span className="text-[10px] text-slate-400 block uppercase">Immutable Official MAID</span>
+                            <span className="text-[10px] text-slate-500 block uppercase">Immutable Official MAID</span>
                             <strong className="font-mono text-[#D3C9B5]">{activePerson.maid || 'PENDING'}</strong>
                           </div>
                           <div>
-                            <span className="text-[10px] text-slate-400 block uppercase">Registration Region Code</span>
+                            <span className="text-[10px] text-slate-500 block uppercase">Registration Region Code</span>
                             <strong className="font-mono text-emerald-400">{activePerson.registrationRegionCode || 'OR'} (Orynvell)</strong>
                           </div>
                           <div>
-                            <span className="text-[10px] text-slate-400 block uppercase">Permanent Legacy Alias</span>
+                            <span className="text-[10px] text-slate-500 block uppercase">Permanent Legacy Alias</span>
                             <strong className="font-mono text-indigo-300">{activePerson.legacyAliases?.join(', ') || activePerson.legacyRecord}</strong>
                           </div>
                         </div>
 
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                           <div>
-                            <label htmlFor="edit-occupation" className="block text-xs font-semibold text-slate-300 mb-1">Occupation / Role</label>
+                            <label htmlFor="edit-occupation" className="block text-xs font-semibold text-slate-700 mb-1">Occupation / Role</label>
                             <input
                               id="edit-occupation"
                               type="text"
                               value={editDraft.occupation || ''}
                               onChange={(e) => setEditDraft({ ...editDraft, occupation: e.target.value })}
-                              className="w-full rounded-lg bg-[#18212B] border border-[#3A4958] px-3 py-2 text-xs text-white"
+                              className="w-full rounded-lg bg-white border border-slate-300 px-3 py-2 text-xs text-slate-900 focus:outline-none focus:border-amber-500"
                             />
                           </div>
                           <div>
-                            <label htmlFor="edit-affiliation" className="block text-xs font-semibold text-slate-300 mb-1">Institutional Affiliation</label>
+                            <label htmlFor="edit-affiliation" className="block text-xs font-semibold text-slate-700 mb-1">Institutional Affiliation</label>
                             <input
                               id="edit-affiliation"
                               type="text"
                               value={editDraft.affiliation || ''}
                               onChange={(e) => setEditDraft({ ...editDraft, affiliation: e.target.value })}
-                              className="w-full rounded-lg bg-[#18212B] border border-[#3A4958] px-3 py-2 text-xs text-white"
+                              className="w-full rounded-lg bg-white border border-slate-300 px-3 py-2 text-xs text-slate-900 focus:outline-none focus:border-amber-500"
                             />
                           </div>
                           <div>
-                            <label htmlFor="edit-clearance" className="block text-xs font-semibold text-slate-300 mb-1">Clearance Level</label>
+                            <label htmlFor="edit-clearance" className="block text-xs font-semibold text-slate-700 mb-1">Clearance Level</label>
                             <input
                               id="edit-clearance"
                               type="text"
                               value={editDraft.clearance || ''}
                               onChange={(e) => setEditDraft({ ...editDraft, clearance: e.target.value })}
-                              className="w-full rounded-lg bg-[#18212B] border border-[#3A4958] px-3 py-2 text-xs text-white"
+                              className="w-full rounded-lg bg-white border border-slate-300 px-3 py-2 text-xs text-slate-900 focus:outline-none focus:border-amber-500"
                             />
                           </div>
                           <div>
-                            <label htmlFor="edit-housing" className="block text-xs font-semibold text-slate-300 mb-1">Housing / Domicile Assignment</label>
+                            <label htmlFor="edit-housing" className="block text-xs font-semibold text-slate-700 mb-1">Housing / Domicile Assignment</label>
                             <input
                               id="edit-housing"
                               type="text"
                               value={editDraft.residency || ''}
                               onChange={(e) => setEditDraft({ ...editDraft, residency: e.target.value, household: e.target.value })}
-                              className="w-full rounded-lg bg-[#18212B] border border-[#3A4958] px-3 py-2 text-xs text-white"
+                              className="w-full rounded-lg bg-white border border-slate-300 px-3 py-2 text-xs text-slate-900 focus:outline-none focus:border-amber-500"
                             />
                           </div>
                           <div>
-                            <label htmlFor="edit-medical" className="block text-xs font-semibold text-slate-300 mb-1">Faith Medical Summary</label>
+                            <label htmlFor="edit-medical" className="block text-xs font-semibold text-slate-700 mb-1">Faith Medical Summary</label>
                             <input
                               id="edit-medical"
                               type="text"
                               value={editDraft.medical || ''}
                               onChange={(e) => setEditDraft({ ...editDraft, medical: e.target.value })}
-                              className="w-full rounded-lg bg-[#18212B] border border-[#3A4958] px-3 py-2 text-xs text-white"
+                              className="w-full rounded-lg bg-white border border-slate-300 px-3 py-2 text-xs text-slate-900 focus:outline-none focus:border-amber-500"
                             />
                           </div>
                           <div>
-                            <label htmlFor="edit-status" className="block text-xs font-semibold text-slate-300 mb-1">Civic Status</label>
+                            <label htmlFor="edit-status" className="block text-xs font-semibold text-slate-700 mb-1">Civic Status</label>
                             <input
                               id="edit-status"
                               type="text"
                               value={editDraft.status || ''}
                               onChange={(e) => setEditDraft({ ...editDraft, status: e.target.value })}
-                              className="w-full rounded-lg bg-[#18212B] border border-[#3A4958] px-3 py-2 text-xs text-white"
+                              className="w-full rounded-lg bg-white border border-slate-300 px-3 py-2 text-xs text-slate-900 focus:outline-none focus:border-amber-500"
                             />
                           </div>
                         </div>
@@ -1466,7 +1466,7 @@ export default function RegistryWorkspaceApp() {
                           <button
                             type="button"
                             onClick={() => setDossierSection('overview')}
-                            className="px-4 py-2 rounded-xl bg-[#27323B] text-slate-300 text-xs font-semibold"
+                            className="px-4 py-2 rounded-xl bg-slate-100 border border-slate-200 text-slate-700 text-xs font-semibold"
                           >
                             Cancel
                           </button>
@@ -1490,13 +1490,13 @@ export default function RegistryWorkspaceApp() {
              ===================================================================== */}
           {activeTab === 'add' && (
             <div className="max-w-5xl mx-auto space-y-6">
-              <div className="bg-[#212A32] border border-[#3A4958] rounded-2xl p-6 shadow-xl space-y-6">
+              <div className="bg-white border border-slate-200 shadow-sm rounded-2xl p-6 shadow-xl space-y-6">
                 <div className="flex flex-wrap items-center justify-between gap-4 border-b border-[#34434F] pb-4">
                   <div>
-                    <h2 className="text-lg font-bold text-white font-serif flex items-center gap-2">
+                    <h2 className="text-lg font-bold text-slate-900 font-serif flex items-center gap-2">
                       <UserPlus size={20} className="text-[#C0AA7F]" /> Add Person — Character Generator & Sovereign Identity Studio
                     </h2>
-                    <p className="text-xs text-slate-400 mt-0.5">
+                    <p className="text-xs text-slate-500 mt-0.5">
                       Generate an archetype-calibrated citizen or customize every biometric, lineage, and institutional trait before permanent <code className="text-[#D3C9B5]">MAID-OR-XXXXXXXX</code> issuance.
                     </p>
                   </div>
@@ -1504,14 +1504,14 @@ export default function RegistryWorkspaceApp() {
                     <button
                       type="button"
                       onClick={handleRerollCharacter}
-                      className="flex items-center gap-1.5 rounded-xl bg-[#293B4A] hover:bg-[#3E4F5D] border border-[#C0AA7F]/40 px-3.5 py-2 text-xs font-bold text-[#D3C9B5] transition cursor-pointer"
+                      className="flex items-center gap-1.5 rounded-xl bg-white hover:bg-slate-50 border border-slate-300 px-3.5 py-2 text-xs font-bold text-slate-700 transition cursor-pointer"
                     >
                       <Sparkles size={14} /> Generate Archetype Draft
                     </button>
                     <button
                       type="button"
                       onClick={() => setPortraitModalTarget('add')}
-                      className="flex items-center gap-1.5 rounded-xl bg-[#344959] hover:bg-[#536A7D] border border-[#627D91] px-3.5 py-2 text-xs font-bold text-white transition cursor-pointer"
+                      className="flex items-center gap-1.5 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 px-3.5 py-2 text-xs font-bold text-white shadow-sm transition cursor-pointer"
                     >
                       <Camera size={14} className="text-[#C0AA7F]" /> Portrait Studio
                     </button>
@@ -1530,7 +1530,7 @@ export default function RegistryWorkspaceApp() {
 
                 <form onSubmit={handleAddPersonSubmit} className="space-y-6">
                   {/* FIELDSET 0: ARCHETYPE RADIO SELECTION (< 6 mutually exclusive options per modern-web-guidance forms) */}
-                  <fieldset className="bg-[#18212B] border border-[#2F3C46] rounded-xl p-4 space-y-3">
+                  <fieldset className="bg-white border border-slate-200 shadow-xs rounded-xl p-4 space-y-3">
                     <legend className="text-xs font-bold uppercase tracking-wider text-[#C0AA7F] px-1">
                       1. Select Character Generator Archetype (5 Institutional Presets)
                     </legend>
@@ -1544,8 +1544,8 @@ export default function RegistryWorkspaceApp() {
                             htmlFor={radioId}
                             className={`cursor-pointer rounded-xl border p-3 transition flex flex-col justify-between ${
                               checked
-                                ? 'bg-[#2C3841] border-[#C0AA7F] shadow-md'
-                                : 'bg-[#1D252B] border-[#313F4A] hover:border-[#52677B]'
+                                ? 'bg-amber-50 border-amber-500 text-amber-950 shadow-xs'
+                                : 'bg-white border-slate-200 hover:border-amber-300 text-slate-700'
                             }`}
                           >
                             <div className="space-y-1">
@@ -1559,12 +1559,12 @@ export default function RegistryWorkspaceApp() {
                                   onChange={() => handleArchetypeChange(opt.id)}
                                   className="accent-[#C0AA7F]"
                                 />
-                                <span className="text-[9px] font-mono uppercase px-1.5 py-0.5 rounded bg-black/30 text-[#D3C9B5]">
+                                <span className="text-[9px] font-mono uppercase px-1.5 py-0.5 rounded bg-amber-100 text-amber-800 font-bold">
                                   {opt.badge}
                                 </span>
                               </div>
-                              <div className="text-xs font-bold text-white pt-1">{opt.label}</div>
-                              <p className="text-[10px] text-slate-400 leading-snug">{opt.desc}</p>
+                              <div className="text-xs font-bold text-slate-900 pt-1">{opt.label}</div>
+                              <p className="text-[10px] text-slate-500 leading-snug">{opt.desc}</p>
                             </div>
                           </label>
                         );
@@ -1573,13 +1573,13 @@ export default function RegistryWorkspaceApp() {
                   </fieldset>
 
                   {/* FIELDSET 1: CORE IDENTITY & SOVEREIGN REGISTRATION */}
-                  <fieldset className="bg-[#18212B] border border-[#2F3C46] rounded-xl p-4 space-y-4">
+                  <fieldset className="bg-white border border-slate-200 shadow-xs rounded-xl p-4 space-y-4">
                     <legend className="text-xs font-bold uppercase tracking-wider text-[#C0AA7F] px-1">
                       2. Core Identity, Registration Region & Housing Coordinates
                     </legend>
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                       <div>
-                        <label htmlFor="add-name" className="block text-xs font-semibold text-slate-200 mb-1">
+                        <label htmlFor="add-name" className="block text-xs font-semibold text-slate-800 mb-1">
                           Full Legal Name *
                         </label>
                         <input
@@ -1589,13 +1589,13 @@ export default function RegistryWorkspaceApp() {
                           aria-describedby="add-name-help"
                           value={formData.name}
                           onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                          className="w-full rounded-lg bg-[#1F282F] border border-[#3A4958] px-3 py-2 text-xs text-white focus:outline-none focus:border-[#C0AA7F]"
+                          className="w-full rounded-lg bg-white border border-slate-300 px-3 py-2 text-xs text-slate-900 focus:outline-none focus:border-amber-500"
                         />
-                        <span id="add-name-help" className="text-[10px] text-slate-400">Primary legal name on Citizen ID & Passport.</span>
+                        <span id="add-name-help" className="text-[10px] text-slate-500">Primary legal name on Citizen ID & Passport.</span>
                       </div>
 
                       <div>
-                        <label htmlFor="add-region" className="block text-xs font-semibold text-slate-200 mb-1">
+                        <label htmlFor="add-region" className="block text-xs font-semibold text-slate-800 mb-1">
                           Initial Registration Region *
                         </label>
                         <select
@@ -1603,7 +1603,7 @@ export default function RegistryWorkspaceApp() {
                           aria-describedby="add-region-help"
                           value={formData.registrationRegion}
                           onChange={(e) => setFormData({ ...formData, registrationRegion: e.target.value as any })}
-                          className="w-full rounded-lg bg-[#1F282F] border border-emerald-500/50 px-3 py-2 text-xs text-emerald-300 font-semibold focus:outline-none"
+                          className="w-full rounded-lg bg-emerald-50/50 border border-emerald-300 px-3 py-2 text-xs text-emerald-900 font-semibold focus:outline-none"
                         >
                           <option value="Orynvell">Orynvell (Code: OR — Confirmed)</option>
                         </select>
@@ -1611,7 +1611,7 @@ export default function RegistryWorkspaceApp() {
                       </div>
 
                       <div>
-                        <label htmlFor="add-dob" className="block text-xs font-semibold text-slate-200 mb-1">
+                        <label htmlFor="add-dob" className="block text-xs font-semibold text-slate-800 mb-1">
                           Date of Birth *
                         </label>
                         <input
@@ -1620,12 +1620,12 @@ export default function RegistryWorkspaceApp() {
                           required
                           value={formData.dob}
                           onChange={(e) => setFormData({ ...formData, dob: e.target.value })}
-                          className="w-full rounded-lg bg-[#1F282F] border border-[#3A4958] px-3 py-2 text-xs text-white focus:outline-none focus:border-[#C0AA7F]"
+                          className="w-full rounded-lg bg-white border border-slate-300 px-3 py-2 text-xs text-slate-900 focus:outline-none focus:border-amber-500"
                         />
                       </div>
 
                       <div>
-                        <label htmlFor="add-place" className="block text-xs font-semibold text-slate-200 mb-1">
+                        <label htmlFor="add-place" className="block text-xs font-semibold text-slate-800 mb-1">
                           Place of Birth
                         </label>
                         <input
@@ -1633,12 +1633,12 @@ export default function RegistryWorkspaceApp() {
                           type="text"
                           value={formData.place}
                           onChange={(e) => setFormData({ ...formData, place: e.target.value })}
-                          className="w-full rounded-lg bg-[#1F282F] border border-[#3A4958] px-3 py-2 text-xs text-white focus:outline-none focus:border-[#C0AA7F]"
+                          className="w-full rounded-lg bg-white border border-slate-300 px-3 py-2 text-xs text-slate-900 focus:outline-none focus:border-amber-500"
                         />
                       </div>
 
                       <div>
-                        <label htmlFor="add-home" className="block text-xs font-semibold text-slate-200 mb-1">
+                        <label htmlFor="add-home" className="block text-xs font-semibold text-slate-800 mb-1">
                           Current Residence City
                         </label>
                         <input
@@ -1646,12 +1646,12 @@ export default function RegistryWorkspaceApp() {
                           type="text"
                           value={formData.home}
                           onChange={(e) => setFormData({ ...formData, home: e.target.value })}
-                          className="w-full rounded-lg bg-[#1F282F] border border-[#3A4958] px-3 py-2 text-xs text-white focus:outline-none focus:border-[#C0AA7F]"
+                          className="w-full rounded-lg bg-white border border-slate-300 px-3 py-2 text-xs text-slate-900 focus:outline-none focus:border-amber-500"
                         />
                       </div>
 
                       <div>
-                        <label htmlFor="add-housing" className="block text-xs font-semibold text-slate-200 mb-1">
+                        <label htmlFor="add-housing" className="block text-xs font-semibold text-slate-800 mb-1">
                           Assigned Housing Unit
                         </label>
                         <input
@@ -1659,20 +1659,20 @@ export default function RegistryWorkspaceApp() {
                           type="text"
                           value={formData.residency || ''}
                           onChange={(e) => setFormData({ ...formData, residency: e.target.value, household: e.target.value })}
-                          className="w-full rounded-lg bg-[#1F282F] border border-[#3A4958] px-3 py-2 text-xs text-white focus:outline-none focus:border-[#C0AA7F]"
+                          className="w-full rounded-lg bg-white border border-slate-300 px-3 py-2 text-xs text-slate-900 focus:outline-none focus:border-amber-500"
                         />
                       </div>
                     </div>
                   </fieldset>
 
                   {/* FIELDSET 2: SPECIES, ANCESTRY & RESONANCE */}
-                  <fieldset className="bg-[#18212B] border border-[#2F3C46] rounded-xl p-4 space-y-4">
+                  <fieldset className="bg-white border border-slate-200 shadow-xs rounded-xl p-4 space-y-4">
                     <legend className="text-xs font-bold uppercase tracking-wider text-[#C0AA7F] px-1">
                       3. Lineage, Species & PRISM Resonance
                     </legend>
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                       <div>
-                        <label htmlFor="add-species" className="block text-xs font-semibold text-slate-200 mb-1">
+                        <label htmlFor="add-species" className="block text-xs font-semibold text-slate-800 mb-1">
                           Species
                         </label>
                         <input
@@ -1680,12 +1680,12 @@ export default function RegistryWorkspaceApp() {
                           type="text"
                           value={formData.species}
                           onChange={(e) => setFormData({ ...formData, species: e.target.value })}
-                          className="w-full rounded-lg bg-[#1F282F] border border-[#3A4958] px-3 py-2 text-xs text-white"
+                          className="w-full rounded-lg bg-white border border-slate-300 px-3 py-2 text-xs text-slate-900 focus:outline-none focus:border-amber-500"
                         />
                       </div>
 
                       <div>
-                        <label htmlFor="add-ancestry" className="block text-xs font-semibold text-slate-200 mb-1">
+                        <label htmlFor="add-ancestry" className="block text-xs font-semibold text-slate-800 mb-1">
                           Ancestry / Bloodline
                         </label>
                         <input
@@ -1693,12 +1693,12 @@ export default function RegistryWorkspaceApp() {
                           type="text"
                           value={formData.ancestry}
                           onChange={(e) => setFormData({ ...formData, ancestry: e.target.value })}
-                          className="w-full rounded-lg bg-[#1F282F] border border-[#3A4958] px-3 py-2 text-xs text-white"
+                          className="w-full rounded-lg bg-white border border-slate-300 px-3 py-2 text-xs text-slate-900 focus:outline-none focus:border-amber-500"
                         />
                       </div>
 
                       <div>
-                        <label htmlFor="add-affinity" className="block text-xs font-semibold text-slate-200 mb-1">
+                        <label htmlFor="add-affinity" className="block text-xs font-semibold text-slate-800 mb-1">
                           Spectrum Affinity
                         </label>
                         <input
@@ -1706,12 +1706,12 @@ export default function RegistryWorkspaceApp() {
                           type="text"
                           value={formData.affinity}
                           onChange={(e) => setFormData({ ...formData, affinity: e.target.value })}
-                          className="w-full rounded-lg bg-[#1F282F] border border-[#3A4958] px-3 py-2 text-xs text-white"
+                          className="w-full rounded-lg bg-white border border-slate-300 px-3 py-2 text-xs text-slate-900 focus:outline-none focus:border-amber-500"
                         />
                       </div>
 
                       <div className="md:col-span-2">
-                        <label htmlFor="add-abilities" className="block text-xs font-semibold text-slate-200 mb-1">
+                        <label htmlFor="add-abilities" className="block text-xs font-semibold text-slate-800 mb-1">
                           Abilities & Resonance Signatures
                         </label>
                         <input
@@ -1719,12 +1719,12 @@ export default function RegistryWorkspaceApp() {
                           type="text"
                           value={formData.abilities}
                           onChange={(e) => setFormData({ ...formData, abilities: e.target.value })}
-                          className="w-full rounded-lg bg-[#1F282F] border border-[#3A4958] px-3 py-2 text-xs text-white"
+                          className="w-full rounded-lg bg-white border border-slate-300 px-3 py-2 text-xs text-slate-900 focus:outline-none focus:border-amber-500"
                         />
                       </div>
 
                       <div>
-                        <label htmlFor="add-powersource" className="block text-xs font-semibold text-slate-200 mb-1">
+                        <label htmlFor="add-powersource" className="block text-xs font-semibold text-slate-800 mb-1">
                           Power Source
                         </label>
                         <input
@@ -1732,21 +1732,21 @@ export default function RegistryWorkspaceApp() {
                           type="text"
                           value={formData.powerSource}
                           onChange={(e) => setFormData({ ...formData, powerSource: e.target.value })}
-                          className="w-full rounded-lg bg-[#1F282F] border border-[#3A4958] px-3 py-2 text-xs text-white"
+                          className="w-full rounded-lg bg-white border border-slate-300 px-3 py-2 text-xs text-slate-900 focus:outline-none focus:border-amber-500"
                         />
                       </div>
                     </div>
                   </fieldset>
 
                   {/* FIELDSET 3: BIOMETRICS, PORTRAIT & LIVE 10-PRINT PREVIEW */}
-                  <fieldset className="bg-[#18212B] border border-[#2F3C46] rounded-xl p-4 space-y-4">
+                  <fieldset className="bg-white border border-slate-200 shadow-xs rounded-xl p-4 space-y-4">
                     <legend className="text-xs font-bold uppercase tracking-wider text-[#C0AA7F] px-1">
                       4. Portrait Synthesis, Physical Biometrics & 10-Print Dermal Matrix
                     </legend>
                     <div className="grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
                       {/* Portrait Preview Box */}
-                      <div className="md:col-span-3 flex flex-col items-center bg-[#1F282F] border border-[#3A4958] rounded-xl p-3 space-y-2">
-                        <div className="h-28 w-24 rounded-xl overflow-hidden border-2 border-[#C0AA7F] bg-[#12171C]">
+                      <div className="md:col-span-3 flex flex-col items-center bg-slate-50 border border-slate-200 rounded-xl p-3 space-y-2">
+                        <div className="h-28 w-24 rounded-xl overflow-hidden border-2 border-amber-400 bg-white">
                           {formData.portraitData ? (
                             <img src={formData.portraitData} alt="Citizen Portrait Preview" className="h-full w-full object-cover" />
                           ) : null}
@@ -1755,14 +1755,14 @@ export default function RegistryWorkspaceApp() {
                           <button
                             type="button"
                             onClick={handleRegenerateDraftPortrait}
-                            className="flex-1 py-1.5 rounded-lg bg-[#2C3841] hover:bg-[#3A4A58] text-[10px] font-bold text-[#D3C9B5] transition"
+                            className="flex-1 py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 border border-slate-200 text-[10px] font-bold text-slate-700 transition"
                           >
                             Re-Roll SVG
                           </button>
                           <button
                             type="button"
                             onClick={() => setPortraitModalTarget('add')}
-                            className="flex-1 py-1.5 rounded-lg bg-[#344959] hover:bg-[#536A7D] text-[10px] font-bold text-white transition"
+                            className="flex-1 py-1.5 rounded-lg bg-amber-500 hover:bg-amber-600 text-[10px] font-bold text-white transition"
                           >
                             Studio
                           </button>
@@ -1772,74 +1772,74 @@ export default function RegistryWorkspaceApp() {
                       {/* Physical Biometric Inputs */}
                       <div className="md:col-span-9 grid grid-cols-2 sm:grid-cols-3 gap-3">
                         <div>
-                          <label htmlFor="add-height" className="block text-xs font-semibold text-slate-200 mb-1">Height</label>
+                          <label htmlFor="add-height" className="block text-xs font-semibold text-slate-800 mb-1">Height</label>
                           <input
                             id="add-height"
                             type="text"
                             value={formData.height || ''}
                             onChange={(e) => setFormData({ ...formData, height: e.target.value })}
-                            className="w-full rounded-lg bg-[#1F282F] border border-[#3A4958] px-3 py-1.5 text-xs text-white"
+                            className="w-full rounded-lg bg-white border border-slate-300 px-3 py-1.5 text-xs text-slate-900 focus:outline-none focus:border-amber-500"
                           />
                         </div>
                         <div>
-                          <label htmlFor="add-build" className="block text-xs font-semibold text-slate-200 mb-1">Build</label>
+                          <label htmlFor="add-build" className="block text-xs font-semibold text-slate-800 mb-1">Build</label>
                           <input
                             id="add-build"
                             type="text"
                             value={formData.build || ''}
                             onChange={(e) => setFormData({ ...formData, build: e.target.value })}
-                            className="w-full rounded-lg bg-[#1F282F] border border-[#3A4958] px-3 py-1.5 text-xs text-white"
+                            className="w-full rounded-lg bg-white border border-slate-300 px-3 py-1.5 text-xs text-slate-900 focus:outline-none focus:border-amber-500"
                           />
                         </div>
                         <div>
-                          <label htmlFor="add-blood" className="block text-xs font-semibold text-slate-200 mb-1">Blood & Aura Type</label>
+                          <label htmlFor="add-blood" className="block text-xs font-semibold text-slate-800 mb-1">Blood & Aura Type</label>
                           <input
                             id="add-blood"
                             type="text"
                             value={formData.blood || ''}
                             onChange={(e) => setFormData({ ...formData, blood: e.target.value })}
-                            className="w-full rounded-lg bg-[#1F282F] border border-[#3A4958] px-3 py-1.5 text-xs text-white"
+                            className="w-full rounded-lg bg-white border border-slate-300 px-3 py-1.5 text-xs text-slate-900 focus:outline-none focus:border-amber-500"
                           />
                         </div>
                         <div>
-                          <label htmlFor="add-eyes" className="block text-xs font-semibold text-slate-200 mb-1">Eye Color</label>
+                          <label htmlFor="add-eyes" className="block text-xs font-semibold text-slate-800 mb-1">Eye Color</label>
                           <input
                             id="add-eyes"
                             type="text"
                             value={formData.eyes || ''}
                             onChange={(e) => setFormData({ ...formData, eyes: e.target.value })}
-                            className="w-full rounded-lg bg-[#1F282F] border border-[#3A4958] px-3 py-1.5 text-xs text-white"
+                            className="w-full rounded-lg bg-white border border-slate-300 px-3 py-1.5 text-xs text-slate-900 focus:outline-none focus:border-amber-500"
                           />
                         </div>
                         <div>
-                          <label htmlFor="add-hair" className="block text-xs font-semibold text-slate-200 mb-1">Hair Color</label>
+                          <label htmlFor="add-hair" className="block text-xs font-semibold text-slate-800 mb-1">Hair Color</label>
                           <input
                             id="add-hair"
                             type="text"
                             value={formData.hair || ''}
                             onChange={(e) => setFormData({ ...formData, hair: e.target.value })}
-                            className="w-full rounded-lg bg-[#1F282F] border border-[#3A4958] px-3 py-1.5 text-xs text-white"
+                            className="w-full rounded-lg bg-white border border-slate-300 px-3 py-1.5 text-xs text-slate-900 focus:outline-none focus:border-amber-500"
                           />
                         </div>
                         <div>
-                          <label htmlFor="add-mark" className="block text-xs font-semibold text-slate-200 mb-1">Distinguishing Mark</label>
+                          <label htmlFor="add-mark" className="block text-xs font-semibold text-slate-800 mb-1">Distinguishing Mark</label>
                           <input
                             id="add-mark"
                             type="text"
                             value={formData.mark || ''}
                             onChange={(e) => setFormData({ ...formData, mark: e.target.value })}
-                            className="w-full rounded-lg bg-[#1F282F] border border-[#3A4958] px-3 py-1.5 text-xs text-white"
+                            className="w-full rounded-lg bg-white border border-slate-300 px-3 py-1.5 text-xs text-slate-900 focus:outline-none focus:border-amber-500"
                           />
                         </div>
                       </div>
                     </div>
 
                     {/* Compact 5-Finger Preview Strip */}
-                    <div className="pt-2 border-t border-[#2C3742] flex flex-wrap items-center justify-between gap-2 text-[11px] text-slate-400">
+                    <div className="pt-2 border-t border-slate-200 flex flex-wrap items-center justify-between gap-2 text-[11px] text-slate-500">
                       <span>Pre-Registration 10-Print Henry Vector:</span>
                       <div className="flex flex-wrap gap-1.5 font-mono text-[10px]">
                         {draftTenPrints.slice(0, 5).map(fp => (
-                          <span key={fp.fingerIndex} className="px-2 py-0.5 rounded bg-[#1F282F] border border-[#34434F] text-indigo-300">
+                          <span key={fp.fingerIndex} className="px-2 py-0.5 rounded bg-slate-50 border border-slate-200 text-slate-800 text-indigo-300">
                             {fp.label}: {fp.pattern} ({fp.henryCode})
                           </span>
                         ))}
@@ -1848,13 +1848,13 @@ export default function RegistryWorkspaceApp() {
                   </fieldset>
 
                   {/* FIELDSET 4: INSTITUTIONAL AFFILIATION & RELATIONSHIP LINKING */}
-                  <fieldset className="bg-[#18212B] border border-[#2F3C46] rounded-xl p-4 space-y-4">
+                  <fieldset className="bg-white border border-slate-200 shadow-xs rounded-xl p-4 space-y-4">
                     <legend className="text-xs font-bold uppercase tracking-wider text-[#C0AA7F] px-1">
                       5. Cross-Application Institutional Assignment & Initial Relationship
                     </legend>
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                       <div>
-                        <label htmlFor="add-affiliation" className="block text-xs font-semibold text-slate-200 mb-1">
+                        <label htmlFor="add-affiliation" className="block text-xs font-semibold text-slate-800 mb-1">
                           Primary Institution
                         </label>
                         <input
@@ -1862,11 +1862,11 @@ export default function RegistryWorkspaceApp() {
                           type="text"
                           value={formData.affiliation || ''}
                           onChange={(e) => setFormData({ ...formData, affiliation: e.target.value })}
-                          className="w-full rounded-lg bg-[#1F282F] border border-[#3A4958] px-3 py-2 text-xs text-white"
+                          className="w-full rounded-lg bg-white border border-slate-300 px-3 py-2 text-xs text-slate-900 focus:outline-none focus:border-amber-500"
                         />
                       </div>
                       <div>
-                        <label htmlFor="add-occupation" className="block text-xs font-semibold text-slate-200 mb-1">
+                        <label htmlFor="add-occupation" className="block text-xs font-semibold text-slate-800 mb-1">
                           Occupation / Assignment
                         </label>
                         <input
@@ -1874,11 +1874,11 @@ export default function RegistryWorkspaceApp() {
                           type="text"
                           value={formData.occupation || ''}
                           onChange={(e) => setFormData({ ...formData, occupation: e.target.value })}
-                          className="w-full rounded-lg bg-[#1F282F] border border-[#3A4958] px-3 py-2 text-xs text-white"
+                          className="w-full rounded-lg bg-white border border-slate-300 px-3 py-2 text-xs text-slate-900 focus:outline-none focus:border-amber-500"
                         />
                       </div>
                       <div>
-                        <label htmlFor="add-clearance" className="block text-xs font-semibold text-slate-200 mb-1">
+                        <label htmlFor="add-clearance" className="block text-xs font-semibold text-slate-800 mb-1">
                           Clearance Level
                         </label>
                         <input
@@ -1886,12 +1886,12 @@ export default function RegistryWorkspaceApp() {
                           type="text"
                           value={formData.clearance || ''}
                           onChange={(e) => setFormData({ ...formData, clearance: e.target.value })}
-                          className="w-full rounded-lg bg-[#1F282F] border border-[#3A4958] px-3 py-2 text-xs text-white"
+                          className="w-full rounded-lg bg-white border border-slate-300 px-3 py-2 text-xs text-slate-900 focus:outline-none focus:border-amber-500"
                         />
                       </div>
 
                       <div>
-                        <label htmlFor="add-medical" className="block text-xs font-semibold text-slate-200 mb-1">
+                        <label htmlFor="add-medical" className="block text-xs font-semibold text-slate-800 mb-1">
                           Faith Medical Intake Baseline
                         </label>
                         <input
@@ -1899,19 +1899,19 @@ export default function RegistryWorkspaceApp() {
                           type="text"
                           value={formData.medical || ''}
                           onChange={(e) => setFormData({ ...formData, medical: e.target.value })}
-                          className="w-full rounded-lg bg-[#1F282F] border border-[#3A4958] px-3 py-2 text-xs text-white"
+                          className="w-full rounded-lg bg-white border border-slate-300 px-3 py-2 text-xs text-slate-900 focus:outline-none focus:border-amber-500"
                         />
                       </div>
 
                       <div>
-                        <label htmlFor="add-rel-target" className="block text-xs font-semibold text-slate-200 mb-1">
+                        <label htmlFor="add-rel-target" className="block text-xs font-semibold text-slate-800 mb-1">
                           Link to Existing Citizen (Optional)
                         </label>
                         <select
                           id="add-rel-target"
                           value={initialRelTarget}
                           onChange={(e) => setInitialRelTarget(e.target.value)}
-                          className="w-full rounded-lg bg-[#1F282F] border border-[#3A4958] px-3 py-2 text-xs text-white"
+                          className="w-full rounded-lg bg-white border border-slate-300 px-3 py-2 text-xs text-slate-900 focus:outline-none focus:border-amber-500"
                         >
                           <option value="">None — Independent Entry</option>
                           {persons.map(p => (
@@ -1923,14 +1923,14 @@ export default function RegistryWorkspaceApp() {
                       </div>
 
                       <div>
-                        <label htmlFor="add-rel-type" className="block text-xs font-semibold text-slate-200 mb-1">
+                        <label htmlFor="add-rel-type" className="block text-xs font-semibold text-slate-800 mb-1">
                           Relationship Role
                         </label>
                         <select
                           id="add-rel-type"
                           value={initialRelType}
                           onChange={(e) => setInitialRelType(e.target.value)}
-                          className="w-full rounded-lg bg-[#1F282F] border border-[#3A4958] px-3 py-2 text-xs text-white"
+                          className="w-full rounded-lg bg-white border border-slate-300 px-3 py-2 text-xs text-slate-900 focus:outline-none focus:border-amber-500"
                         >
                           <option value="Colleague">Colleague</option>
                           <option value="Research Partner">Research Partner</option>
@@ -1945,14 +1945,14 @@ export default function RegistryWorkspaceApp() {
                   </fieldset>
 
                   {/* Submit Action Bar */}
-                  <div className="flex items-center justify-between bg-[#151B1F] border border-[#415361] rounded-xl p-4">
-                    <div className="text-xs text-slate-300">
+                  <div className="flex items-center justify-between bg-amber-50/60 border border-amber-200 rounded-xl p-4 text-amber-950">
+                    <div className="text-xs text-slate-700">
                       <strong className="text-[#D3C9B5] block">Permanent Atomic Issuance</strong>
                       Upon registration, the next sequential <code className="text-emerald-400">MAID-OR-XXXXXXXX</code> number is permanently bound to this citizen across all MiraverseOSx applications.
                     </div>
                     <button
                       type="submit"
-                      className="rounded-xl bg-gradient-to-r from-[#C0AA7F] to-[#A7B8C6] hover:from-[#D4BC8B] hover:to-[#A9B8C5] text-[#18212B] px-6 py-3 text-xs font-bold shadow-lg transition cursor-pointer shrink-0"
+                      className="rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-white font-bold px-6 py-3 text-xs font-bold shadow-lg transition cursor-pointer shrink-0"
                     >
                       Register Citizen & Issue Permanent MAID
                     </button>
@@ -1967,20 +1967,20 @@ export default function RegistryWorkspaceApp() {
              ===================================================================== */}
           {activeTab === 'ecosystem' && (
             <div className="max-w-5xl mx-auto space-y-5">
-              <div className="bg-[#212A32] border border-[#3A4958] rounded-2xl p-6 shadow-xl space-y-4">
+              <div className="bg-white border border-slate-200 shadow-sm rounded-2xl p-6 shadow-xl space-y-4">
                 <div className="flex flex-wrap items-center justify-between gap-4 border-b border-[#34434F] pb-4">
                   <div>
                     <h2 className="text-lg font-bold text-white font-serif flex items-center gap-2">
                       <Layers size={20} className="text-[#C0AA7F]" /> Cross-Application Citizen Record Architecture
                     </h2>
-                    <p className="text-xs text-slate-400 mt-0.5">
+                    <p className="text-xs text-slate-500 mt-0.5">
                       Every application in MiraverseOSx reads and updates the same canonical <code className="text-[#D3C9B5]">miraverse-canonical-identities-v1</code> store via <code className="text-indigo-300">CitizenBridge</code>.
                     </p>
                   </div>
                   {activePerson && (
-                    <div className="bg-[#151B1F] border border-[#415361] rounded-xl px-4 py-2 text-xs">
-                      <span className="text-slate-400">Active Context Citizen: </span>
-                      <strong className="text-white">{activePerson.name}</strong>{' '}
+                    <div className="bg-slate-50 border border-slate-200 rounded-xl px-4 py-2 text-xs">
+                      <span className="text-slate-500">Active Context Citizen: </span>
+                      <strong className="text-slate-900 font-semibold">{activePerson.name}</strong>{' '}
                       <span className="font-mono text-[#D3C9B5]">({activePerson.maid || activePerson.legacyRecord})</span>
                     </div>
                   )}
@@ -2032,31 +2032,31 @@ export default function RegistryWorkspaceApp() {
                     const Icon = item.icon;
                     const targetCitizenId = activePerson?.maid || activePerson?.legacyRecord || 'MAID-OR-00481926';
                     return (
-                      <div key={item.title} className={`bg-[#18212B] border ${item.color} rounded-2xl p-5 flex flex-col justify-between space-y-4`}>
+                      <div key={item.title} className={`bg-white border ${item.color} shadow-sm rounded-2xl p-5 flex flex-col justify-between space-y-4`}>
                         <div className="space-y-2">
                           <div className="flex items-center justify-between">
-                            <span className="text-sm font-bold text-white flex items-center gap-2">
+                            <span className="text-sm font-bold text-slate-900 flex items-center gap-2">
                               <Icon size={17} className="text-[#C0AA7F]" /> {item.title}
                             </span>
-                            <span className="text-[10px] font-mono bg-white/10 text-[#D3C9B5] px-2 py-0.5 rounded">
+                            <span className="text-[10px] font-mono bg-amber-50 border border-amber-200 text-amber-800 px-2 py-0.5 rounded font-bold">
                               {item.badge}
                             </span>
                           </div>
-                          <p className="text-xs text-slate-300 leading-relaxed">{item.desc}</p>
+                          <p className="text-xs text-slate-700 leading-relaxed">{item.desc}</p>
                         </div>
 
-                        <div className="flex items-center gap-2 pt-2 border-t border-[#2C3742]">
+                        <div className="flex items-center gap-2 pt-2 border-t border-slate-200">
                           <button
                             type="button"
                             onClick={() => openCitizenInApp(targetCitizenId, item.appId, { sourceApp: 'meridionRegistry' })}
-                            className="flex-1 py-2 rounded-xl bg-[#2C3841] hover:bg-[#3A4A58] border border-[#C0AA7F]/40 text-xs font-bold text-[#D3C9B5] transition flex items-center justify-center gap-1.5 cursor-pointer"
+                            className="flex-1 py-2 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-xs font-bold text-white shadow-xs transition flex items-center justify-center gap-1.5 cursor-pointer"
                           >
                             Launch Application <ExternalLink size={12} />
                           </button>
                           <button
                             type="button"
                             onClick={() => openCitizenInApp(targetCitizenId, 'documentStudio', { targetDocId: item.docId, sourceApp: 'meridionRegistry' })}
-                            className="px-3 py-2 rounded-xl bg-[#1F282F] hover:bg-[#2A353E] border border-[#3A4958] text-xs font-semibold text-slate-200 transition cursor-pointer"
+                            className="px-3 py-2 rounded-xl bg-white hover:bg-slate-50 border border-slate-300 text-xs font-semibold text-slate-700 transition cursor-pointer"
                           >
                             {item.docLabel}
                           </button>
@@ -2074,32 +2074,32 @@ export default function RegistryWorkspaceApp() {
              ===================================================================== */}
           {activeTab === 'migration' && (
             <div className="max-w-4xl mx-auto space-y-5">
-              <div className="bg-[#212A32] border border-[#3A4958] rounded-2xl p-6 space-y-4">
-                <h2 className="text-base font-bold text-white font-serif flex items-center gap-2">
+              <div className="bg-white border border-slate-200 shadow-sm rounded-2xl p-6 space-y-4">
+                <h2 className="text-base font-bold text-slate-900 font-serif flex items-center gap-2">
                   <Database size={18} className="text-[#C0AA7F]" /> Non-Destructive Legacy MRD Migration & MAID Ledger
                 </h2>
-                <p className="text-xs text-slate-300 leading-relaxed">
+                <p className="text-xs text-slate-700 leading-relaxed">
                   All legacy <code className="text-indigo-300">MRD-XXXX-XXX</code> records are preserved as permanent searchable aliases. Only records with confirmed Orynvell (<code className="text-emerald-300">OR</code>) registration receive automatic <code className="text-[#D3C9B5]">MAID-OR-XXXXXXXX</code> numbers; unconfirmed records remain safely queued for manual region confirmation.
                 </p>
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-center">
-                  <div className="bg-[#18212B] border border-[#2F3C46] rounded-xl p-3">
-                    <div className="text-[10px] text-slate-400 uppercase">Total Canonical</div>
-                    <div className="text-lg font-bold text-white font-mono mt-1">{persons.length}</div>
+                  <div className="bg-white border border-slate-200 shadow-xs rounded-xl p-3">
+                    <div className="text-[10px] text-slate-500 uppercase">Total Canonical</div>
+                    <div className="text-lg font-bold text-slate-900 font-mono mt-1">{persons.length}</div>
                   </div>
-                  <div className="bg-[#18212B] border border-[#2F3C46] rounded-xl p-3">
-                    <div className="text-[10px] text-slate-400 uppercase">Active MAID-OR</div>
+                  <div className="bg-white border border-slate-200 shadow-xs rounded-xl p-3">
+                    <div className="text-[10px] text-slate-500 uppercase">Active MAID-OR</div>
                     <div className="text-lg font-bold text-emerald-400 font-mono mt-1">
                       {persons.filter(p => p.maidStatus === 'active').length}
                     </div>
                   </div>
-                  <div className="bg-[#18212B] border border-[#2F3C46] rounded-xl p-3">
-                    <div className="text-[10px] text-slate-400 uppercase">Pending Region</div>
+                  <div className="bg-white border border-slate-200 shadow-xs rounded-xl p-3">
+                    <div className="text-[10px] text-slate-500 uppercase">Pending Region</div>
                     <div className="text-lg font-bold text-amber-400 font-mono mt-1">
                       {persons.filter(p => p.maidStatus === 'pending_migration').length}
                     </div>
                   </div>
-                  <div className="bg-[#18212B] border border-[#2F3C46] rounded-xl p-3">
-                    <div className="text-[10px] text-slate-400 uppercase">Backup Verified</div>
+                  <div className="bg-white border border-slate-200 shadow-xs rounded-xl p-3">
+                    <div className="text-[10px] text-slate-500 uppercase">Backup Verified</div>
                     <div className="text-lg font-bold text-indigo-300 font-mono mt-1">
                       {migrationStats?.backupCreated ? 'CREATED' : 'INTACT'}
                     </div>
