@@ -12,7 +12,7 @@ Run the existing local game, open Orbit, and launch **mai.space**. Choose **Cust
 4. Publish the layout. Earlier published designs remain in layout history; restoring one does not revert posts, relationships, or privacy settings.
 5. Save and exchange design-only JSON templates. Imported templates cannot run scripts or overwrite personal content.
 
-The freeform canvas is 960 pixels wide. Narrow app windows scroll across it; maximizing shows the complete composition. Existing customized layouts are preserved. Only untouched older starter layouts receive the updated Y2K arrangement.
+Standard profile templates use compact, content-led columns: identity, contact links, interests and albums on the left; the extended-network banner, profile song, blurbs, Top 8 and comments on the right. They stack on narrow windows and avoid empty fixed-height panels. Custom freeform designs keep a 960-pixel canvas and their saved coordinates; narrow windows can scroll across them. Existing customized layouts are preserved. Only untouched older starter layouts receive the updated Y2K arrangement.
 
 ## Social features
 

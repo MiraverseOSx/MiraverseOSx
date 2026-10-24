@@ -1,4 +1,15 @@
-# Refined celestial visual direction
+# Miraverse visual system
+
+## Universal foundations — October 24, 2026
+
+The [universal system implementation](universal-design-system-implementation.md)
+adds shared light/dark appearance, compact/comfortable density, compact window
+chrome, semantic component tokens, and Times New Roman as the default body font.
+The notes below describe the earlier celestial implementation; the new shared
+foundation takes precedence for common controls and chrome. App-specific
+identities remain local to each application.
+
+## Earlier celestial direction
 
 The desktop uses ink blue, lilac, warm white, and soft glass. Application content
 uses light surfaces with darker text. Reserve serif typography for editorial

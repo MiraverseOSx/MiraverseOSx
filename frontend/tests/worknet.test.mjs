@@ -13,9 +13,16 @@ registerHooks({
   }
 });
 
-const { INSTITUTIONAL_REGISTRY, CANONICAL_DYNAMIC_EVENTS, INITIAL_SCHEDULE_ITEMS } = await import('../src/apps/worknet/worknetData.ts');
+const {
+  INSTITUTIONAL_REGISTRY,
+  CANONICAL_DYNAMIC_EVENTS,
+  INITIAL_SCHEDULE_ITEMS,
+  INITIAL_DELEGATION_TASKS,
+  INITIAL_SUBORDINATE_LEAVES
+} = await import('../src/apps/worknet/worknetData.ts');
 const { evaluateCareerPromotion } = await import('../src/gameplay/WorldEventEngine.ts');
 const { WORK_DEFINITIONS } = await import('../src/gameplay/ActivityEngine.ts');
+const { useOSStore } = await import('../src/store/useOSStore.ts');
 
 test('WORKNET-001 & WORKNET-002: Institutional branding and modern visual identity registry', () => {
   const expectedInstitutions = ['dga', 'faithmed', 'finance', 'archives', 'engineer', 'diplomat', 'warden', 'artist', 'questnotice'];
@@ -111,4 +118,57 @@ test('WORKNET-009 & WORKNET-010: Career promotion requires verified qualificatio
   const definition = WORK_DEFINITIONS['ms-shift-01'];
   assert.ok(definition);
   assert.equal(definition.track, 'medical');
+});
+
+test('WORKNET-011 & WORKNET-012: Dual-Track progression and active supervisory delegation', () => {
+  // Check delegation tasks exist for major institutions
+  assert.ok(INITIAL_DELEGATION_TASKS.length >= 4);
+  const dgaTask = INITIAL_DELEGATION_TASKS.find(t => t.stationId === 'dga');
+  assert.ok(dgaTask);
+  assert.ok(dgaTask.minCompetence > 50);
+
+  // Check subordinate leave requests exist for supervisor review
+  assert.ok(INITIAL_SUBORDINATE_LEAVES.length >= 3);
+  const leave = INITIAL_SUBORDINATE_LEAVES[0];
+  assert.ok(leave.subordinateName);
+  assert.equal(leave.status, 'Pending');
+
+  // Verify pathway choice updates cleanly in the store
+  const testState = useOSStore.getState();
+  testState.acceptEmployment('engineer');
+  const res = testState.setCareerPathwayChoice('engineer', 'supervisor');
+  assert.equal(res.ok, true);
+  assert.equal(useOSStore.getState().gameplay.player.employmentContracts.engineer.pathwayChoice, 'supervisor');
+});
+
+test('WORKNET-015: Hybrid Base Stipend dispatches per cycle and avoids duplicate disbursement', () => {
+  const testState = useOSStore.getState();
+  testState.acceptEmployment('finance');
+
+  const initialCredits = useOSStore.getState().gameplay.player.credits;
+  const claimRes = testState.claimCycleStipends();
+  assert.equal(claimRes.ok, true);
+  assert.ok(useOSStore.getState().gameplay.player.credits > initialCredits);
+
+  // Calling claim again in the same cycle must reject duplicate payout
+  const dupRes = testState.claimCycleStipends();
+  assert.equal(dupRes.ok, false);
+  assert.match(dupRes.message, /already been disbursed/i);
+});
+
+test('WORKNET-016 & WORKNET-017: Flexible open shifts and scaled institutional complexity tiers', () => {
+  // Institutional tiers are properly categorized
+  assert.equal(INSTITUTIONAL_REGISTRY.dga.proceduralTier, 'Tier 3: Multi-Stage Technical');
+  assert.equal(INSTITUTIONAL_REGISTRY.faithmed.proceduralTier, 'Tier 3: Multi-Stage Technical');
+  assert.equal(INSTITUTIONAL_REGISTRY.finance.proceduralTier, 'Tier 3: Multi-Stage Technical');
+  assert.equal(INSTITUTIONAL_REGISTRY.engineer.proceduralTier, 'Tier 3: Multi-Stage Technical');
+  assert.equal(INSTITUTIONAL_REGISTRY.archives.proceduralTier, 'Tier 2: Field Synthesis & Sampling');
+  assert.equal(INSTITUTIONAL_REGISTRY.questnotice.proceduralTier, 'Tier 1: Agile Civic Dispatch');
+
+  // Shifts are flexible without attendance penalties
+  for (const item of INITIAL_SCHEDULE_ITEMS) {
+    assert.ok(item.dutyTitle);
+    assert.ok(item.location);
+    assert.ok(['Scheduled', 'Completed', 'Leave Approved', 'Pending'].includes(item.status));
+  }
 });

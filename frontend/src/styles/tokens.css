@@ -10,6 +10,7 @@
      ========================================================================== */
   --font-display: 'Playfair Display', 'Georgia', serif;
   --font-ui: 'Segoe UI', 'Carlito', system-ui, -apple-system, sans-serif;
+  --font-body: 'Times New Roman', Times, Georgia, serif;
   --font-mono: 'Cascadia Code', 'Consolas', monospace;
 
   --mira-ink: #24324b;

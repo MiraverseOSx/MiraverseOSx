@@ -31,6 +31,8 @@ export default function SettingsApp() {
   const setDesktopTheme = useOSStore(state => state.setDesktopTheme);
   const soundEnabled = useSystemStore(state => state.soundEnabled);
   const setSoundEnabled = useSystemStore(state => state.setSoundEnabled);
+  const interfacePreferences = useSystemStore(state => state.interfacePreferences);
+  const setInterfacePreferences = useSystemStore(state => state.setInterfacePreferences);
   const section = sections.find(item => item.id === selected)!;
   const selectedWallpaper = wallpapers.find(item => item.url === wallpaper);
   return <div className="settings-app">
@@ -43,6 +45,12 @@ export default function SettingsApp() {
       <main key={selected} className="settings-content" id="settings-content" aria-labelledby="settings-section-title">
         <header className="settings-page-heading"><p>SYSTEM / {section.title.toUpperCase()}</p><h2 id="settings-section-title">{section.title}</h2><span>{selected === 'appearance' ? 'A familiar space, with your own point of view.' : selected === 'sound' ? 'Choose how your desktop sounds.' : selected === 'save' ? 'Keep your world ready for the next visit.' : 'One desktop. A connected world.'}</span></header>
         {selected === 'appearance' && <>
+          <section className="settings-group mira-interface-settings" aria-labelledby="interface-preferences-heading">
+            <h3 id="interface-preferences-heading">Interface & reading</h3>
+            <div className="settings-preference-row"><div><label htmlFor="mira-appearance">System appearance</label><p>Shared windows and controls follow this choice. Apps keep their own identities.</p></div><select id="mira-appearance" value={interfacePreferences.appearance} onChange={event => setInterfacePreferences({ appearance: event.target.value as 'light' | 'dark' | 'system' })}><option value="system">System</option><option value="light">Light</option><option value="dark">Dark</option></select></div>
+            <div className="settings-preference-row"><div><label htmlFor="mira-density">Interface density</label><p>Adjust shared spacing without shrinking text.</p></div><select id="mira-density" value={interfacePreferences.density} onChange={event => setInterfacePreferences({ density: event.target.value as 'compact' | 'comfortable' })}><option value="compact">Compact</option><option value="comfortable">Comfortable</option></select></div>
+            <p className="mira-reading-preview">Body text uses Times New Roman, with Times and Georgia as fallbacks. Controls use a clear sans-serif font; technical records retain monospaced text.</p>
+          </section>
           <div className="settings-section-heading"><div><h3>Color collection</h3><p>A palette for your desktop, windows, and workspace.</p></div></div>
           <div className="settings-theme-collection" role="group" aria-label="Desktop color theme">{DESKTOP_THEMES.map(theme => <button key={theme.id} className="settings-theme-option" style={desktopThemeStyle(theme.id) as React.CSSProperties} aria-pressed={themeId === theme.id} onClick={() => setDesktopTheme(theme.id)}>
             <span className="settings-theme-art"><span/>{themeId === theme.id && <Check size={16} aria-hidden="true"/>}</span>

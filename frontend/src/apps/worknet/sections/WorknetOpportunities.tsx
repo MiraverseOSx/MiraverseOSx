@@ -1,6 +1,6 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect, useRef } from 'react';
 import {
-  Briefcase, Search, MapPin, Key, Zap, CheckCircle2, Lock, Play, FileText, ArrowRight, Compass
+  Briefcase, Search, MapPin, Key, Zap, CheckCircle2, Lock, Play, FileText, ArrowRight, Compass, Clock, Coins, Shield, Building2, FolderOpen, ChevronRight, CircleHelp
 } from 'lucide-react';
 import { useOSStore } from '../../../store/useOSStore';
 import { useSystemStore } from '../../../store/useSystemStore';
@@ -11,9 +11,13 @@ import { WORK_DEFINITIONS } from '../../../gameplay/ActivityEngine';
 import { evaluateWorknetObjective } from '../../../gameplay/WorldEventEngine';
 import WorknetOrderPanel from '../../WorknetOrderPanel';
 import type { WorkplaceStationId } from '../../JobWorkstationApp';
+import type { WorknetTabId } from '../useWorknetState';
+import { stationTrack } from '../workplaceModel';
 import { INSTITUTIONAL_REGISTRY } from '../worknetData';
 
 interface WorknetOpportunitiesProps {
+  onNavigate?: (section: WorknetTabId) => void;
+  onOpenDepartment?: (station: WorkplaceStationId) => void;
   activeStation: WorkplaceStationId;
   selectedMissionId: string;
   onSelectMission: (id: string) => void;
@@ -21,6 +25,8 @@ interface WorknetOpportunitiesProps {
 }
 
 export default function WorknetOpportunities({
+  onNavigate,
+  onOpenDepartment,
   activeStation,
   selectedMissionId,
   onSelectMission,
@@ -33,7 +39,10 @@ export default function WorknetOpportunities({
 
   const [categoryFilter, setCategoryFilter] = useState<string>('All');
   const [stationFilter, setStationFilter] = useState<string>(activeStation);
+  const detailScroll = useRef<HTMLElement | null>(null);
+  const [detailTab, setDetailTab] = useState('overview');
   const [searchQuery, setSearchQuery] = useState<string>('');
+  useEffect(() => { setStationFilter(activeStation); }, [activeStation]);
 
   const baseMissions = useMemo(() => miraverseDb.getMissions(), []);
   const completedIds = player?.completedWorknetMissionIds || [];
@@ -118,215 +127,35 @@ export default function WorknetOpportunities({
     );
   };
 
-  return (
-    <div className="worknet-two-panel">
-      {/* Left Panel: Search & Opportunities List */}
-      <aside className="worknet-panel-left" aria-label="Opportunity directory">
-        <div className="worknet-search-box">
-          <input
-            type="search"
-            placeholder="Search opportunities, titles, keywords..."
-            value={searchQuery}
-            onChange={e => setSearchQuery(e.target.value)}
-          />
-          <div className="grid grid-cols-2 gap-2 text-xs">
-            <select
-              aria-label="Filter by Institution"
-              value={stationFilter}
-              onChange={e => setStationFilter(e.target.value)}
-              className="p-1.5 border border-slate-300 rounded bg-white text-slate-800 text-[11px]"
-            >
-              <option value="all">All Institutions</option>
-              {Object.values(INSTITUTIONAL_REGISTRY).map(inst => (
-                <option key={inst.id} value={inst.id}>{inst.shortOrg}</option>
-              ))}
-            </select>
-            <select
-              aria-label="Filter by Category"
-              value={categoryFilter}
-              onChange={e => setCategoryFilter(e.target.value)}
-              className="p-1.5 border border-slate-300 rounded bg-white text-slate-800 text-[11px]"
-            >
-              <option value="All">All Categories</option>
-              <option value="Work Shifts">Work Shifts</option>
-              <option value="Special Assignments">Special Assignments</option>
-              <option value="Career Development">Career Development</option>
-              <option value="Field Operations">Field Operations</option>
-              <option value="QUESTNOTICE">QUESTNOTICE</option>
-            </select>
-          </div>
-        </div>
-
-        <div className="worknet-opp-list">
-          {filteredMissions.map((mission, idx) => {
-            const isSelected = selectedMission?.id === mission.id;
-            const isCompleted = mission.completed;
-            const orderStatus = player.worknetOrders?.[mission.id]?.status;
-
-            return (
-              <button
-                key={mission.id}
-                data-selected={isSelected}
-                className="worknet-opp-item"
-                onClick={() => {
-                  onSelectMission(mission.id);
-                  if (soundEnabled) SoundFX.playButtonTap();
-                }}
-              >
-                <div className="flex items-center justify-between">
-                  <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">
-                    {mission.type} · {mission.department}
-                  </span>
-                  <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded ${
-                    isCompleted
-                      ? 'bg-emerald-100 text-emerald-800'
-                      : orderStatus === 'active'
-                      ? 'bg-amber-100 text-amber-900'
-                      : 'bg-slate-100 text-slate-600'
-                  }`}>
-                    {isCompleted ? 'Cleared' : orderStatus === 'active' ? 'In Progress' : mission.severity}
-                  </span>
-                </div>
-                <h4 className="text-xs font-bold text-slate-900">{mission.title}</h4>
-                <div className="flex items-center justify-between text-[11px] text-slate-500 mt-1">
-                  <span>{mission.location}</span>
-                  <div className="flex items-center gap-1.5 font-semibold text-slate-700">
-                    <span>+{mission.rewardCredits} ₢</span>
-                    <span>+{mission.rewardXP} XP</span>
-                  </div>
-                </div>
-              </button>
-            );
-          })}
-
-          {filteredMissions.length === 0 && (
-            <div className="p-8 text-center text-xs text-slate-500">
-              <Briefcase size={28} className="mx-auto mb-2 opacity-40" />
-              <p>No matching opportunities found.</p>
-              <p className="text-[11px] mt-1">Try resetting the search or selecting another institution.</p>
-            </div>
-          )}
-        </div>
-      </aside>
-
-      {/* Right Panel: Selected Opportunity & Playable Work Order */}
-      <main className="worknet-panel-right" aria-label="Selected opportunity detail">
-        {selectedMission ? (
-          <div className="space-y-4 max-w-3xl">
-            {/* Header Block */}
-            <div className="border-b border-slate-200 pb-4 space-y-2">
-              <div className="flex items-center justify-between">
-                <span className="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded bg-amber-50 text-amber-900 border border-amber-200">
-                  {selectedMission.department}
-                </span>
-                <span className="text-xs text-slate-500 flex items-center gap-1 font-medium">
-                  <MapPin size={13} className="text-amber-600" /> {selectedMission.location}
-                </span>
-              </div>
-              <h2 className="text-lg font-bold text-slate-900">
-                {selectedMission.title}
-              </h2>
-              <p className="text-xs text-slate-600 leading-relaxed">
-                {selectedMission.description}
-              </p>
-            </div>
-
-            {/* Target Subject & Technical Specifications */}
-            <div className="grid grid-cols-2 gap-3 text-xs">
-              <div className="p-3 bg-slate-50 border border-slate-200 rounded-lg space-y-1">
-                <span className="text-[10px] text-slate-500 uppercase font-semibold">Target / Subject</span>
-                <p className="font-semibold text-slate-900">{selectedMission.targetSubject || 'Institutional Asset'}</p>
-              </div>
-              <div className="p-3 bg-slate-50 border border-slate-200 rounded-lg space-y-1">
-                <span className="text-[10px] text-slate-500 uppercase font-semibold">Threat / Anomaly Matrix</span>
-                <p className="font-semibold text-rose-900">{selectedMission.threatOrSymptom || 'Standard Workplace Procedure'}</p>
-              </div>
-            </div>
-
-            {/* Authorized Tools Bar */}
-            <div className="p-3 bg-slate-50 border border-slate-200 rounded-lg space-y-2 text-xs">
-              <div className="flex items-center justify-between">
-                <span className="text-[10px] uppercase font-bold text-slate-700 flex items-center gap-1.5">
-                  <Key size={12} className="text-amber-600" /> Authorized Station Tools ({selectedMission.track.toUpperCase()})
-                </span>
-                <span className={`text-[10px] font-bold px-2 py-0.5 rounded ${
-                  isObjectiveVerified ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800'
-                }`}>
-                  {isObjectiveVerified ? `✓ Verified (${objectiveEval.source || 'Completed'})` : 'Objective Pending'}
-                </span>
-              </div>
-              <div className="flex flex-wrap gap-1.5">
-                {selectedMission.permittedTools.map(tool => (
-                  <span
-                    key={tool}
-                    className="px-2 py-1 bg-white border border-slate-200 rounded text-[11px] font-medium text-slate-800 flex items-center gap-1"
-                  >
-                    <Zap size={11} className="text-amber-600" /> {tool}
-                  </span>
-                ))}
-              </div>
-            </div>
-
-            {/* The Full Interactive Work Order Panel */}
-            <div className="border border-slate-200 rounded-xl p-4 bg-[#fafcfa]">
-              <WorknetOrderPanel
-                key={selectedMission.id}
-                missionId={selectedMission.id}
-                onFeedback={onFeedback}
-              />
-            </div>
-
-            {/* Compensation & Final Submit Footer */}
-            <div className="pt-3 border-t border-slate-200 space-y-3">
-              <div className="flex items-center justify-between text-xs px-1">
-                <span className="text-slate-500">Requires 10 stamina on finalization</span>
-                <div className="flex items-center gap-3 font-bold">
-                  <span className="text-amber-900">+{clinicalPayIssued ? 0 : selectedMission.rewardCredits} ₢ CREDITS</span>
-                  {!clinicalPayIssued && selectedMission.rewardBits > 0 && (
-                    <span className="text-emerald-700">+{selectedMission.rewardBits} ◈ BITS</span>
-                  )}
-                  <span className="text-slate-600">+{clinicalPayIssued ? 0 : selectedMission.rewardXP} Career XP ({selectedMission.track})</span>
-                </div>
-              </div>
-
-              <button
-                onClick={() => handleExecuteMission(selectedMission)}
-                disabled={!canFinalize}
-                className={`w-full py-2.5 rounded-lg font-bold text-xs transition flex items-center justify-center gap-2 ${
-                  selectedMission.completed
-                    ? 'bg-slate-100 text-slate-400 cursor-not-allowed border border-slate-200'
-                    : !canFinalize
-                    ? 'bg-slate-100 text-slate-500 cursor-not-allowed border border-slate-200'
-                    : 'bg-emerald-700 hover:bg-emerald-800 text-white cursor-pointer shadow-xs active:scale-[0.99]'
-                }`}
-              >
-                {selectedMission.completed ? (
-                  <>
-                    <CheckCircle2 size={16} className="text-emerald-600" />
-                    <span>Work Order Finalized & Cleared</span>
-                  </>
-                ) : !canFinalize ? (
-                  <>
-                    <Lock size={14} />
-                    <span>Complete required work stages above before final submission</span>
-                  </>
-                ) : (
-                  <>
-                    <Play size={14} />
-                    <span>Submit Work Order & Issue Compensation</span>
-                  </>
-                )}
-              </button>
-            </div>
-          </div>
-        ) : (
-          <div className="p-12 text-center text-xs text-slate-500">
-            <FileText size={32} className="mx-auto mb-3 opacity-40" />
-            <h3 className="font-bold text-sm text-slate-800">No Opportunity Selected</h3>
-            <p className="mt-1">Select an opportunity from the list on the left to review terms and perform work.</p>
-          </div>
-        )}
-      </main>
-    </div>
-  );
+  const definition = selectedMission ? WORK_DEFINITIONS[selectedMission.id] : undefined;
+  const organization = Object.values(INSTITUTIONAL_REGISTRY).find(o => stationTrack(o.id) === selectedMission?.track) || INSTITUTIONAL_REGISTRY[activeStation];
+  const art = (mission: WorknetMission) => mission.id === 'ms-case-002' ? '/images/worknet/depository.png' : /subway|junction|relay|tunnel/i.test(`${mission.title} ${mission.location}`) ? '/images/worknet/transit-junction.png' : '';
+  const selectedOrder = selectedMission ? player.worknetOrders?.[selectedMission.id] : undefined;
+  const status = selectedMission?.completed ? 'Completed' : selectedOrder?.status === 'active' ? 'In progress' : 'Available';
+  useEffect(() => { setDetailTab('overview'); detailScroll.current?.scrollTo({ top: 0 }); }, [selectedMission?.id]);
+  const showWork = () => setDetailTab('deliverables');
+  return <div className="worknet-two-panel wn-editorial-browser">
+    <aside className="worknet-panel-left" aria-label="Opportunity directory">
+      <div className="worknet-search-box"><span className="worknet-kicker">WORKNET / VERSENET</span><h2>Find your next <br/>chapter.</h2><p>A shift, a small favor, or a story worth following.</p><label className="wn-search-field"><Search size={17}/><input aria-label="Search opportunities" type="search" placeholder="Search opportunities, workplaces, or skills…" value={searchQuery} onChange={e=>setSearchQuery(e.target.value)}/></label>
+      <div className="wn-browser-filters"><select aria-label="Filter by Institution" value={stationFilter} onChange={e=>setStationFilter(e.target.value)}><option value="all">All institutions</option>{Object.values(INSTITUTIONAL_REGISTRY).map(o=><option value={o.id} key={o.id}>{o.shortOrg}</option>)}</select><select aria-label="Filter by Category" value={categoryFilter} onChange={e=>setCategoryFilter(e.target.value)}><option value="All">All opportunities</option>{['Work Shifts','Special Assignments','Career Development','Field Operations','QUESTNOTICE'].map(c=><option key={c}>{c}</option>)}</select></div>
+      <div className="wn-category-pills" aria-label="Opportunity types">{[['All','All'],['Missions','Special Assignments'],['Quests','QUESTNOTICE'],['Jobs','Work Shifts'],['Fieldwork','Field Operations']].map(([label,value])=><button aria-pressed={categoryFilter===value} key={value} onClick={()=>setCategoryFilter(value)}>{label}</button>)}</div></div>
+      <div className="wn-list-count"><strong>Opportunities ({filteredMissions.length})</strong><span>By institution</span></div>
+      <div className="worknet-opp-list">{filteredMissions.map(m=>{const order=player.worknetOrders?.[m.id];const image=art(m);return <button key={m.id} aria-pressed={selectedMission?.id===m.id} data-selected={selectedMission?.id===m.id} className="worknet-opp-item" onClick={()=>{onSelectMission(m.id);if(soundEnabled)SoundFX.playButtonTap();}}>
+        {image ? <img className="wn-list-art" src={image} alt="" loading="lazy"/> : <span className="wn-list-art wn-art-placeholder"><Briefcase size={25}/></span>}<span className="wn-list-copy"><span className="wn-list-eyebrow">{m.type} · {m.track}</span><strong>{m.title}</strong><span className="wn-list-location"><MapPin size={12}/>{m.location}</span><span className="wn-list-pay"><Coins size={13}/>{m.rewardCredits} credits <span>◇ {m.rewardXP} career XP</span></span><span className={`wn-list-status ${m.completed ? 'is-complete' : order?.status==='active' ? 'is-progress' : m.severity==='Critical' ? 'is-urgent' : ''}`}>{m.completed?'✓ Completed':order?.status==='active'?'● In progress':m.severity==='Critical'?'● Critical':'Available'}</span></span><ChevronRight className="wn-list-chevron" size={16}/>
+      </button>})}{!filteredMissions.length&&<div className="wn-empty"><Briefcase/><div><strong>No matching opportunities</strong><p>Try another institution or reset the search.</p><button className="wn-text-link" onClick={()=>{setSearchQuery('');setCategoryFilter('All');setStationFilter('all');}}>Reset filters</button></div></div>}</div>
+    </aside>
+    <main ref={detailScroll} className="worknet-panel-right" aria-label="Selected opportunity detail">{selectedMission ? <div className="wn-assignment-detail">
+      <div className="wn-scope-trail"><div><span>Journey <ChevronRight/> Adventure <ChevronRight/> Mission <ChevronRight/> Quest <ChevronRight/> Task</span><p>Layers of scope. Activities can connect without requiring every layer.</p></div><button title="Open briefing in VAULT" aria-label="Open briefing in VAULT" onClick={()=>{useOSStore.getState().saveAssignmentBriefing(selectedMission.id);useOSStore.getState().openAssignmentFiles(selectedMission.id);}}><FolderOpen size={18}/></button></div>
+      <section className="wn-assignment-hero"><div><div className="wn-hero-label"><span>{selectedMission.type} / {organization.name}</span><span className={`wn-status ${selectedMission.completed?'is-positive':''}`}>{status}</span></div><h2>{selectedMission.title}</h2><p>{selectedMission.description}</p></div>{art(selectedMission)&&<figure><img src={art(selectedMission)} alt={`Illustrative location artwork for ${selectedMission.title}`}/><figcaption>Illustrative location artwork</figcaption></figure>}</section>
+      <div className="wn-assignment-meta"><div><MapPin/><span><small>Location</small><strong>{selectedMission.location}</strong></span></div><div><Coins/><span><small>Compensation</small><strong>{selectedMission.rewardCredits} credits</strong><span>{selectedMission.rewardXP} career XP{selectedMission.rewardBits ? ` · ${selectedMission.rewardBits} bits` : ''}</span></span></div><div><Clock/><span><small>Work structure</small><strong>{selectedMission.id === 'ms-case-002' ? 'Six evidence sources' : definition?.stages.length ? `${definition.stages.length} stages` : 'Assignment briefing'}</strong><span>Flexible schedule</span></span></div><div><Shield/><span><small>Access</small><strong>Clearance {definition?.clearance ?? organization.clearanceRequired}+</strong><span>Existing permissions apply</span></span></div></div>
+      <nav className="wn-detail-tabs" aria-label="Assignment sections">{[['overview','Overview'],['objectives','Objectives'],['requirements','Requirements'],['deliverables','Saved work'],['rewards','Rewards'],['related','Related opportunities']].map(([value,label])=><button key={value} aria-current={detailTab===value?'page':undefined} onClick={()=>setDetailTab(value)}>{label}</button>)}</nav>
+      <div className="wn-detail-layout"><div className="wn-detail-body">
+        {(detailTab==='overview'||detailTab==='objectives')&&<><section><h3>{detailTab==='overview'?'About this assignment':'Assignment objectives'}</h3><p>{selectedMission.description}</p>{selectedMission.requiredAction&&<p>{selectedMission.requiredAction}</p>}</section><section><h3>Key objectives</h3>{definition?.stages.length ? <ol className="wn-objective-list">{definition.stages.map(stage=><li key={stage.id}><strong>{stage.title}</strong>{detailTab==='objectives'&&<p>{stage.brief}</p>}</li>)}</ol> : <p>{selectedMission.id === 'ms-case-002' ? 'Follow the case briefing, acquire the six sources, request witness clarification, and submit supported findings. Your evidence notebook tracks the remaining objectives.' : 'Review the assignment briefing and complete its published deliverables. Your work-order reader tracks accepted stages and remaining requirements.'}</p>}</section></>}
+        {detailTab==='requirements'&&<><section><h3>Responsibilities & access</h3><p>Clearance {definition?.clearance ?? organization.clearanceRequired} or above is required. Accepting work does not issue credentials or bypass source access checks.</p><p>{definition?.kind==='shift'?'A division employment contract is required for this shift. Review and accept terms in Career Record.':'Review the assignment briefing and any institutional access requirements before starting.'}</p><p>{selectedMission.targetSubject && `Subject: ${selectedMission.targetSubject}`}</p></section><section><h3>Authorized tools</h3><div className="wn-tool-tags">{selectedMission.permittedTools.map(t=><span key={t}><Key size={13}/>{t}</span>)}</div><p>{selectedMission.threatOrSymptom}</p></section></>}
+        <section hidden={detailTab!=='deliverables'} className="wn-saved-work"><h3>Assignment briefing & saved work</h3><WorknetOrderPanel key={selectedMission.id} missionId={selectedMission.id} onFeedback={onFeedback}/><div className="wn-finalize"><p>Finalization costs 10 stamina. Reading, downloading, and reviewing documents do not pay additional rewards.</p><button disabled={!canFinalize} onClick={()=>handleExecuteMission(selectedMission)} className="worknet-btn-primary">{selectedMission.completed?'Work already finalized':canFinalize?'Submit work & issue compensation':'Complete required work before final submission'}<ArrowRight size={15}/></button></div></section>
+        {detailTab==='rewards'&&<section><h3>Compensation & completion</h3><p>{clinicalPayIssued?'Clinical compensation has already been issued. Chart acceptance creates no second payment.':`${selectedMission.rewardCredits} credits, ${selectedMission.rewardXP} career XP${selectedMission.rewardBits?`, and ${selectedMission.rewardBits} bits`:''} are issued after verified completion.`}</p><p>Payment is tied to the existing work receipt. Returning to this reader, switching themes, or revisiting the briefing does not issue another reward.</p><button className="worknet-btn-secondary" onClick={showWork}>Review saved work <ArrowRight size={14}/></button></section>}
+        {detailTab==='related'&&<section><h3>More from {organization.shortOrg}</h3>{missions.filter(m=>m.id!==selectedMission.id&&m.track===selectedMission.track).map(m=><button className="wn-related-link" key={m.id} onClick={()=>{setCategoryFilter('All');setSearchQuery('');setStationFilter(organization.id);onSelectMission(m.id);}}><span>{m.title}<small>{m.location}</small></span><ArrowRight size={15}/></button>)}{!missions.some(m=>m.id!==selectedMission.id&&m.track===selectedMission.track)&&<p>No other published opportunities for this division.</p>}</section>}
+      </div><aside className="wn-detail-actions"><button className="worknet-btn-primary" onClick={showWork}>{selectedOrder?.status==='active'?'Continue saved work':'Review assignment & employment terms'}<ArrowRight size={17}/></button><div className="wn-status-card"><span className="worknet-kicker">Assignment status</span><strong>{status}</strong><p>{selectedMission.completed?'Your completion receipt is retained.':selectedOrder?.status==='active'?'Your work is saved. Continue to complete the deliverables.':'Review responsibilities and requirements before accepting.'}</p></div><button className="wn-resource-card" onClick={()=>onOpenDepartment?.(organization.id)}><Building2/><span><small>Participating department</small><strong>{organization.name}</strong><span>{organization.shortOrg}</span></span><ChevronRight size={17}/></button><button className="wn-resource-card" onClick={()=>onNavigate?.('career-record')}><CircleHelp/><span><small>Need help getting started?</small><strong>Qualifications & employment</strong><span>Open your career record</span></span><ArrowRight size={16}/></button></aside></div>
+    </div> : <div className="wn-empty"><FileText/><div><h3>No opportunity selected</h3><p>Choose a listing to review its responsibilities and saved work.</p></div></div>}</main>
+  </div>;
 }

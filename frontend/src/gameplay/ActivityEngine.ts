@@ -54,6 +54,9 @@ export interface EmploymentContract {
   duties: string[];
   schedule: string;
   payTerms: string;
+  baseSalaryCredits?: number;
+  lastStipendClaimedCycle?: number;
+  pathwayChoice?: 'specialist' | 'supervisor';
 }
 export interface WorkOrder {
   caseProgress?: import('./BroadStreetCase').CaseProgress;

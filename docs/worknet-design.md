@@ -1,3 +1,9 @@
+Current visual direction: [approved October 24 specification](worknet-visual-spec.md). Its earthy palette, editorial typography, and equal light/dark support supersede the tentative visual guidance below.
+
+# Implementation follow-through
+
+See [the WORKNET completion guide](worknet-completion-guide.md) for the implemented game-time delegation, management rules, persistence, and verification. Original design decisions follow.
+
 # WORKNET: Complete Design & Decision Report
 
 MiraverseOSx · October 23, 2026 · Design status: Planning · GitHub unchanged
@@ -48,6 +54,13 @@ Hybrid authored + dynamic work
 | WORKNET-008 | Preserve distinct Tasks, Quests, Missions, Adventures, and Journeys                      | Previously established gameplay rule |
 | WORKNET-009 | Earned professional progression through experience, skills, qualifications, and approval | Previously established gameplay rule |
 | WORKNET-010 | Avoid duplicate rewards for connected work                                               | Previously established gameplay rule |
+| WORKNET-011 | Dual-Track Career Progression: Elite Specialist vs. Department Supervisor                | Confirmed via design alignment       |
+| WORKNET-012 | Active Supervisory Oversight: Subordinate assignment, docket review, and leave approval  | Confirmed via design alignment       |
+| WORKNET-013 | Institutional & Civic Scope: Business founding reserved for dedicated commerce app       | Confirmed via design alignment       |
+| WORKNET-014 | Semi-Autonomous Coworker Daily Life: Active routines without offscreen mission resolution| Confirmed via design alignment       |
+| WORKNET-015 | Hybrid Base Stipend + Piece-Rate Production: Stable cycle baseline plus work order pay   | Confirmed via design alignment       |
+| WORKNET-016 | Flexible Open Shift Attendance: Shifts guide rhythm with zero unexcused missed penalties | Confirmed via design alignment       |
+| WORKNET-017 | Scaled Complexity: Rigorous technical tiers for agencies; agile tasks for civic dispatch | Confirmed via design alignment       |
 
 These identifiers organize this report. They are not claims that all ten entries have been written into the repository or an existing decision register.
 
@@ -295,24 +308,19 @@ WORKNET is the central employment environment, but specialized work remains with
 
 The connected Broad Street Investigation demonstrates how one professional assignment can span several applications while retaining a single coherent work history and reward outcome.
 
-## 18. What remains undecided
+## 18. Resolved decisions from design interview (October 23, 2026)
 
-These items were discussed but not formally approved as final decisions.
+The outstanding design questions were resolved during the formal design alignment session:
 
-| Area                  | Outstanding design question                                                            |
-| --------------------- | -------------------------------------------------------------------------------------- |
-| Leadership            | How far players can progress into supervisory, executive, or organizational leadership |
-| Business ownership    | Whether WORKNET directly supports founding and managing businesses                     |
-| Hiring NPCs           | Rules for player-controlled recruitment and employee management                        |
-| Institutional ranks   | Exact career ladders, titles, qualifications, and promotion rules                      |
-| Department management | Staffing, budgets, operational authority, and accountability                           |
-| NPC autonomy          | How detailed autonomous coworker decision-making becomes                               |
-| Economy               | Salary calculations, contract rates, benefits, taxation, and payroll                   |
-| Leave policies        | Exact vacation, absence, illness, and employment-break rules                           |
-| Interface             | Final typography, spacing, icons, tab labels, and institutional visual assets          |
-| Career balance        | How simulation depth varies across occupations and employment types                    |
-
-There is no need to decide these now.
+| Area                  | Resolved Design Decision | Decision ID |
+| --------------------- | ------------------------ | ----------- |
+| Leadership            | Dual-Track: Elite Specialist (technical/field mastery with advisory influence) vs. Department Supervisor (personnel assignments, docket reviews, leave approvals, and division budgets). | WORKNET-011 |
+| Supervisory gameplay  | Active Oversight & Delegation: Player supervisors assign routine and surge duties to NPC subordinates based on skill/status, review outputs, and approve/reject leave. | WORKNET-012 |
+| Business ownership    | Pure Institutional & Civic Scope: WORKNET remains exclusively dedicated to public, institutional, and civic employment. Business founding and commercial enterprise belong to a dedicated external commerce app. | WORKNET-013 |
+| NPC autonomy          | Semi-Autonomous Daily Life: Coworkers follow shift routines, attend meetings, take breaks, request coverage, and react to player performance without resolving authored missions offscreen. | WORKNET-014 |
+| Economy & Payroll     | Hybrid Base Stipend + Piece-Rate: Active employment contracts disburse a baseline cycle salary (if shift obligations are fulfilled) plus bonus compensation for completed work orders and surge duties. | WORKNET-015 |
+| Leave & Attendance    | Flexible Open Shifts: Scheduled shifts serve as cadence guides with zero unexcused missed penalties, preserving exploratory freedom across multiple jobs. | WORKNET-016 |
+| Career balance        | Scaled Complexity by Institutional Tier: High-clearance institutions (DGA, Faith Med, Engineering, Treasury) require multi-stage technical workflows; creative and ecological tracks use field sampling; civic dispatch offers rapid, low-friction tasks. | WORKNET-017 |
 
 ## 19. Design decisions versus implementation
 

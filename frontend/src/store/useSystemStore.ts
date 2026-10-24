@@ -1,4 +1,5 @@
 import { create } from 'zustand';
+import { normalizeInterfacePreferences, readInterfacePreferences, saveInterfacePreferences, type InterfacePreferences } from './interfacePreferences';
 
 interface SystemStoreState {
   soundEnabled: boolean;
@@ -6,6 +7,8 @@ interface SystemStoreState {
   setSoundEnabled: (enabled: boolean) => void;
   activeTheme: string;
   setTheme: (theme: string) => void;
+  interfacePreferences: InterfacePreferences;
+  setInterfacePreferences: (patch: Partial<InterfacePreferences>) => void;
 }
 
 export const useSystemStore = create<SystemStoreState>((set) => ({
@@ -14,6 +17,12 @@ export const useSystemStore = create<SystemStoreState>((set) => ({
   setSoundEnabled: (enabled) => set({ soundEnabled: enabled }),
   activeTheme: 'aureline-light',
   setTheme: (theme) => set({ activeTheme: theme }),
+  interfacePreferences: readInterfacePreferences(),
+  setInterfacePreferences: (patch) => set((state) => {
+    const preferences = normalizeInterfacePreferences({ ...state.interfacePreferences, ...patch });
+    saveInterfacePreferences(preferences);
+    return { interfacePreferences: preferences };
+  }),
 }));
 
 export default useSystemStore;

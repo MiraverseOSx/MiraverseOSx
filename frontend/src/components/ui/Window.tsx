@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion, useDragControls, useReducedMotion } from 'framer-motion';
 import { useOSStore } from '../../store/useOSStore';
 import { getContent } from '../../apps/contents';
-import { Minus, Square, X, Grid2X2, Copy } from 'lucide-react';
+import { Minus, Square, X, Grid2X2, Copy, Maximize, Minimize } from 'lucide-react';
 import { SoundFX } from '../../utils/audio';
 import { useSystemStore } from '../../store/useSystemStore';
 import { APPS_DIRECTORY } from '../desktop/appDirectory';
@@ -28,6 +28,26 @@ export default function Window({ win, isFocusMode = false, windowIndex = 0 }: Wi
 
   const dragControls = useDragControls();
   const reducedMotion = useReducedMotion();
+  const windowElement = useRef<HTMLDivElement>(null);
+  const [isFullscreen, setIsFullscreen] = useState(false);
+  const [fullscreenError, setFullscreenError] = useState('');
+  useEffect(() => {
+    if (typeof document === 'undefined') return;
+    const update = () => setIsFullscreen(document.fullscreenElement === windowElement.current);
+    document.addEventListener('fullscreenchange', update);
+    return () => document.removeEventListener('fullscreenchange', update);
+  }, []);
+  const toggleFullscreen = async () => {
+    if (typeof document === 'undefined') return;
+    setFullscreenError('');
+    try {
+      if (document.fullscreenElement === windowElement.current) await document.exitFullscreen();
+      else await windowElement.current?.requestFullscreen();
+    } catch {
+      if (!win.isMaximized) toggleMaximize(win.id);
+      setFullscreenError('Browser fullscreen is unavailable. The window is maximized instead.');
+    }
+  };
   const Body = getContent(win.contentKey || win.id);
   const isActive = activeWindowId === win.id;
   const windowOffset = win.windowOffset || { x: 0, y: 0 };
@@ -88,6 +108,7 @@ export default function Window({ win, isFocusMode = false, windowIndex = 0 }: Wi
 
   return (
     <motion.div
+      ref={windowElement}
       drag={!win.isMaximized}
       dragControls={dragControls}
       dragListener={false}
@@ -131,6 +152,11 @@ export default function Window({ win, isFocusMode = false, windowIndex = 0 }: Wi
 
         {/* Window Controls: Minimize, Maximize, Close */}
         <div className="os-window__controls">
+          {typeof document !== 'undefined' && document.fullscreenEnabled && <button
+            onClick={(event) => { event.stopPropagation(); void toggleFullscreen(); }}
+            title={isFullscreen ? 'Exit fullscreen' : 'Fullscreen'}
+            aria-pressed={isFullscreen}
+          >{isFullscreen ? <Minimize size={13} /> : <Maximize size={13} />}</button>}
           <button
             onClick={(e) => {
               e.stopPropagation();
@@ -166,6 +192,7 @@ export default function Window({ win, isFocusMode = false, windowIndex = 0 }: Wi
       </div>
 
       {/* Shared application frame; each app owns its navigation and workspace. */}
+      {fullscreenError && <div role="status" className="mira-window-status"><span>{fullscreenError}</span><button type="button" onClick={() => setFullscreenError('')} aria-label="Dismiss window message"><X size={13} /></button></div>}
       <div className="os-window__body">
         <AppErrorBoundary onClose={() => closeWindow(win.id)}><Body /></AppErrorBoundary>
       </div>

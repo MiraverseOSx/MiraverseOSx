@@ -27,7 +27,7 @@ const buttonVariants = cva(
 
 export function Button({ className, variant, size, asChild, ...props }) {
   const Comp = asChild ? 'span' : 'button';
-  return <Comp className={twMerge(buttonVariants({ variant, size }), className)} {...props} />;
+  return <Comp className={twMerge(buttonVariants({ variant, size }), 'mira-control', className)} data-variant={variant || 'soft'} data-size={size || 'md'} {...props} />;
 }
 
 export default Button;

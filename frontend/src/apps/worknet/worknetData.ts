@@ -21,6 +21,7 @@ export interface InstitutionalTheme {
   cardBorder: string;
   icon: any;
   clearanceRequired: number;
+  proceduralTier: "Tier 3: Multi-Stage Technical" | "Tier 2: Field Synthesis & Sampling" | "Tier 1: Agile Civic Dispatch";
   divisions: {
     id: string;
     name: string;
@@ -72,6 +73,7 @@ export interface InstitutionalTheme {
 export const INSTITUTIONAL_REGISTRY: Record<WorkplaceStationId, InstitutionalTheme> = {
   dga: {
     id: 'dga',
+    proceduralTier: 'Tier 3: Multi-Stage Technical',
     name: 'Dept. of Global Affairs',
     fullName: 'Meridion Department of Global Affairs (DGA)',
     shortOrg: 'DGA',
@@ -161,6 +163,7 @@ export const INSTITUTIONAL_REGISTRY: Record<WorkplaceStationId, InstitutionalThe
   },
   faithmed: {
     id: 'faithmed',
+    proceduralTier: 'Tier 3: Multi-Stage Technical',
     name: 'Faith Medical Group',
     fullName: 'Faith Medical Clinical & Bio-Resonance Group',
     shortOrg: 'Faith Medical',
@@ -234,6 +237,7 @@ export const INSTITUTIONAL_REGISTRY: Record<WorkplaceStationId, InstitutionalThe
   },
   finance: {
     id: 'finance',
+    proceduralTier: 'Tier 3: Multi-Stage Technical',
     name: 'Oryn Dept. of Finance',
     fullName: 'Oryn Treasury & Municipal Revenue Administration',
     shortOrg: 'Treasury',
@@ -307,6 +311,7 @@ export const INSTITUTIONAL_REGISTRY: Record<WorkplaceStationId, InstitutionalThe
   },
   archives: {
     id: 'archives',
+    proceduralTier: 'Tier 2: Field Synthesis & Sampling',
     name: 'City Library & Royal Society',
     fullName: 'Royal Society Archival Research Node & Historical Conservatory',
     shortOrg: 'Royal Archives',
@@ -362,6 +367,7 @@ export const INSTITUTIONAL_REGISTRY: Record<WorkplaceStationId, InstitutionalThe
   },
   engineer: {
     id: 'engineer',
+    proceduralTier: 'Tier 3: Multi-Stage Technical',
     name: 'Tech Labs & Infrastructure',
     fullName: 'Meridion Systems Engineering Deck & Infrastructure Directorate',
     shortOrg: 'Systems Engineering',
@@ -417,6 +423,7 @@ export const INSTITUTIONAL_REGISTRY: Record<WorkplaceStationId, InstitutionalThe
   },
   diplomat: {
     id: 'diplomat',
+    proceduralTier: 'Tier 2: Field Synthesis & Sampling',
     name: 'Civic Administration & Council',
     fullName: 'High Council of Aureline Civic Administration',
     shortOrg: 'Civic Council',
@@ -473,6 +480,7 @@ export const INSTITUTIONAL_REGISTRY: Record<WorkplaceStationId, InstitutionalThe
   },
   warden: {
     id: 'warden',
+    proceduralTier: 'Tier 2: Field Synthesis & Sampling',
     name: 'Arcadia Ecological Reserve',
     fullName: 'Arcadia Biosphere Post & Ecological Conservation Ward',
     shortOrg: 'Arcadia Reserve',
@@ -528,6 +536,7 @@ export const INSTITUTIONAL_REGISTRY: Record<WorkplaceStationId, InstitutionalThe
   },
   artist: {
     id: 'artist',
+    proceduralTier: 'Tier 2: Field Synthesis & Sampling',
     name: 'Media & Performance Guild',
     fullName: 'The Velvet Cultural Studio & Media Guild',
     shortOrg: 'Velvet Cultural Studio',
@@ -583,6 +592,7 @@ export const INSTITUTIONAL_REGISTRY: Record<WorkplaceStationId, InstitutionalThe
   },
   questnotice: {
     id: 'questnotice',
+    proceduralTier: 'Tier 1: Agile Civic Dispatch',
     name: 'Aureline Public Notice Board',
     fullName: 'QUESTNOTICE Civic Dispatch & Public Labor Board',
     shortOrg: 'Civic Dispatch',
@@ -768,5 +778,110 @@ export const INITIAL_SCHEDULE_ITEMS: ScheduledShiftItem[] = [
     location: 'Glassline Terminal Junction 12',
     isMandatory: false,
     status: 'Scheduled'
+  }
+];
+
+
+export interface DelegationTask {
+  id: string;
+  stationId: WorkplaceStationId;
+  title: string;
+  requiredRole: string;
+  estUnits: number;
+  description: string;
+  rewardDesc: string;
+  minCompetence: number;
+}
+
+export interface SubordinateLeaveRequest {
+  id: string;
+  subordinateName: string;
+  subordinateId: string;
+  stationId: WorkplaceStationId;
+  shiftDuty: string;
+  reason: string;
+  status: 'Pending' | 'Approved' | 'Denied';
+}
+
+export const INITIAL_DELEGATION_TASKS: DelegationTask[] = [
+  {
+    id: 'dt-dga-01',
+    stationId: 'dga',
+    title: 'Archive Carrier Packet Log Audit',
+    requiredRole: 'Senior Field Analyst',
+    estUnits: 2,
+    description: 'Cross-reference 88.2 MHz packet traces against unregistered Netrunner mac-addresses.',
+    rewardDesc: '+35 Department Merit · +20 ₢',
+    minCompetence: 75
+  },
+  {
+    id: 'dt-dga-02',
+    stationId: 'dga',
+    title: 'Perimeter Barrier Seal Diagnostics',
+    requiredRole: 'Tactical Dispatch Coordinator',
+    estUnits: 1,
+    description: 'Perform routine cryptographic handshake verification at Gate 07.',
+    rewardDesc: '+25 Department Merit · +15 ₢',
+    minCompetence: 70
+  },
+  {
+    id: 'dt-fm-01',
+    stationId: 'faithmed',
+    title: 'Ward Inpatient Triage Log Review',
+    requiredRole: 'Resident Bio-Aura Clinician',
+    estUnits: 1,
+    description: 'Audit 15 inpatient charts for thermal flux calibration and symptom clearance.',
+    rewardDesc: '+30 Department Merit · +20 ₢',
+    minCompetence: 80
+  },
+  {
+    id: 'dt-fin-01',
+    stationId: 'finance',
+    title: 'Regional Grant Roll Balancing',
+    requiredRole: 'Senior Ledger Analyst',
+    estUnits: 2,
+    description: 'Reconcile scholarship stipends disbursed to Cyacademy against student rosters.',
+    rewardDesc: '+40 Department Merit · +25 ₢',
+    minCompetence: 80
+  },
+  {
+    id: 'dt-eng-01',
+    stationId: 'engineer',
+    title: 'Glassline Terminal 12 Firmware Flashing',
+    requiredRole: 'Lead Relay Diagnostics Specialist',
+    estUnits: 2,
+    description: 'Deploy Bus Telemetry v2.4 patch image to secondary junction nodes.',
+    rewardDesc: '+45 Department Merit · +25 ₢',
+    minCompetence: 85
+  }
+];
+
+export const INITIAL_SUBORDINATE_LEAVES: SubordinateLeaveRequest[] = [
+  {
+    id: 'sub-lv-01',
+    subordinateName: 'Vance Lowe',
+    subordinateId: 'cw-dga-1',
+    stationId: 'dga',
+    shiftDuty: 'Evening SIGINT Carrier Sweep',
+    reason: 'Field acoustic calibration at Seraphima Tower',
+    status: 'Pending'
+  },
+  {
+    id: 'sub-lv-02',
+    subordinateName: 'Soren Lind',
+    subordinateId: 'cw-fm-2',
+    stationId: 'faithmed',
+    shiftDuty: 'Afternoon Intake Desk Coverage',
+    reason: 'Bio-resonance recovery following high-load synthesis intake',
+    status: 'Pending'
+  },
+  {
+    id: 'sub-lv-03',
+    subordinateName: 'Tobias Gale',
+    subordinateId: 'cw-fin-2',
+    stationId: 'finance',
+    shiftDuty: 'Disbursement Roll Verification',
+    reason: 'Annual civic audit testimony before Council',
+    status: 'Pending'
   }
 ];

@@ -1,8 +1,10 @@
-#requires -Version 7.0
 $ErrorActionPreference = 'Stop'
 $workspaceRoot = Split-Path -Parent $PSScriptRoot
 $assembly = Join-Path $workspaceRoot 'bin/Release/net8.0/MiraverseOSx.dll'
-if (-not (Test-Path -LiteralPath $assembly)) { throw 'Build the Release backend before running this test.' }
+if (-not (Test-Path -LiteralPath $assembly)) {
+    $assembly = Join-Path $workspaceRoot 'bin/Debug/net8.0/MiraverseOSx.dll'
+}
+if (-not (Test-Path -LiteralPath $assembly)) { throw 'Build the backend before running this test.' }
 $temporaryRoot = [IO.Path]::GetFullPath([IO.Path]::GetTempPath())
 $testDirectory = [IO.Path]::GetFullPath((Join-Path $temporaryRoot ('miraverse-world-tests-' + [Guid]::NewGuid().ToString('N'))))
 if (-not $testDirectory.StartsWith($temporaryRoot, [StringComparison]::OrdinalIgnoreCase)) { throw 'Invalid test directory.' }
@@ -24,7 +26,28 @@ function Start-TestServer {
 function Check($condition, $message) { if (-not $condition) { throw $message }; $script:checks++ }
 function Send-World($envelope, $origin = $null) {
     $headers = @{}; if ($origin) { $headers.Origin = $origin }
-    Invoke-WebRequest -Uri "$baseUrl/api/world" -Method Put -ContentType 'application/json' -Body ($envelope | ConvertTo-Json -Depth 100 -Compress) -Headers $headers -SkipHttpErrorCheck
+    $body = ($envelope | ConvertTo-Json -Depth 100 -Compress)
+    $uri = "$baseUrl/api/world"
+    if ($PSVersionTable.PSVersion.Major -ge 7) {
+        return Invoke-WebRequest -Uri $uri -Method Put -ContentType 'application/json' -Body $body -Headers $headers -SkipHttpErrorCheck
+    }
+    try {
+        return Invoke-WebRequest -Uri $uri -Method Put -ContentType 'application/json' -Body $body -Headers $headers -UseBasicParsing
+    } catch [System.Net.WebException] {
+        $resp = $_.Exception.Response
+        if ($resp) {
+            $stream = $resp.GetResponseStream()
+            $reader = [System.IO.StreamReader]::new($stream)
+            $content = $reader.ReadToEnd()
+            $reader.Close()
+            return [PSCustomObject]@{
+                StatusCode = [int]$resp.StatusCode
+                Content = $content
+                Headers = @{ 'Content-Type' = $resp.ContentType }
+            }
+        }
+        throw
+    }
 }
 try {
     Start-TestServer
@@ -45,7 +68,19 @@ try {
     Check ($badRevision.StatusCode -eq 400) 'Malformed envelopes must return JSON validation errors.'
     $foreign = Send-World @{ serverId = $empty.serverId; expectedRevision = 1; entries = $entries } 'https://unrelated.example'
     Check ($foreign.StatusCode -eq 403) 'Unrelated origins cannot write the local world.'
-    $missing = Invoke-WebRequest -Uri "$baseUrl/api/missing" -SkipHttpErrorCheck
+    if ($PSVersionTable.PSVersion.Major -ge 7) {
+        $missing = Invoke-WebRequest -Uri "$baseUrl/api/missing" -SkipHttpErrorCheck
+    } else {
+        try {
+            $missing = Invoke-WebRequest -Uri "$baseUrl/api/missing" -UseBasicParsing
+        } catch [System.Net.WebException] {
+            $resp = $_.Exception.Response
+            $missing = [PSCustomObject]@{
+                StatusCode = [int]$resp.StatusCode
+                Headers = @{ 'Content-Type' = $resp.ContentType }
+            }
+        }
+    }
     Check ($missing.StatusCode -eq 404 -and $missing.Headers.'Content-Type' -match 'application/json') 'Unknown APIs must not return the HTML application.'
     $afterInvalid = Invoke-RestMethod -Uri "$baseUrl/api/world"
     Check ($afterInvalid.revision -eq 1 -and $afterInvalid.entries.'miraverse-os-progress' -eq $entries.'miraverse-os-progress') 'Rejected writes modified the saved world.'

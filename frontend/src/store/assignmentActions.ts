@@ -68,6 +68,7 @@ export function createAssignmentActions(set: (update: (state: OSStoreState) => P
       if (opportunity.kind === 'task' && get().gameplay.player.worknetOrders?.[opportunity.parentMissionId!]?.status !== 'active') return;
       id = opportunity.parentMissionId || id;
       update(current => ({ ...current, selectedId: id, selectionVersion: current.selectionVersion + 1 }));
+      set(state => ({ workspaceRequests: { ...state.workspaceRequests, jobs: { section: 'assignment', revision: (state.workspaceRequests.jobs?.revision ?? 0) + 1 } } }));
       showApp('jobs');
     },
     saveAssignmentBriefing: id => {

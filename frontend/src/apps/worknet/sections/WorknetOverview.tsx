@@ -1,233 +1,51 @@
 import React from 'react';
-import {
-  Briefcase, Calendar, Clock, AlertTriangle, CheckCircle2, ChevronRight,
-  Shield, UserCheck, Coffee, FileText, ArrowRight, Activity, Zap
-} from 'lucide-react';
+import { ArrowRight, Briefcase, Calendar, CheckCircle2, Clock, FileText, Users, Wallet, Shield, Coffee, Building2 } from 'lucide-react';
+import { canSupervise, employed, restoreWorkplace, stationTrack, workTick } from '../workplaceModel';
 import { useOSStore } from '../../../store/useOSStore';
+import { getOpportunity } from '../../../gameplay/AssignmentFlow';
+import { WORK_DEFINITIONS } from '../../../gameplay/ActivityEngine';
 import { INSTITUTIONAL_REGISTRY, CANONICAL_DYNAMIC_EVENTS } from '../worknetData';
 import type { WorkplaceStationId } from '../../JobWorkstationApp';
 import type { WorknetTabId } from '../useWorknetState';
-
-interface WorknetOverviewProps {
-  activeStation: WorkplaceStationId;
-  onNavigate: (tab: WorknetTabId) => void;
-  onResolveDynamicEvent: (id: string) => void;
-  onVisitBreakRoom: () => void;
-  resolvedEventIds: string[];
+interface Props {
+  activeStation: WorkplaceStationId; onNavigate: (tab: WorknetTabId) => void;
+  onOpenMission: (id: string) => void; onSwitchWorkplace: (station: WorkplaceStationId) => void;
+  onResolveDynamicEvent: (id: string) => void; onVisitBreakRoom: () => void;
+  onClaimBaseStipends?: () => void; resolvedEventIds: string[];
 }
-
-export default function WorknetOverview({
-  activeStation,
-  onNavigate,
-  onResolveDynamicEvent,
-  onVisitBreakRoom,
-  resolvedEventIds
-}: WorknetOverviewProps) {
-  const player = useOSStore(s => s.gameplay.player);
-  const timeCycle = useOSStore(s => s.gameplay.timeCycleCount);
-  const theme = INSTITUTIONAL_REGISTRY[activeStation] || INSTITUTIONAL_REGISTRY.dga;
-
-  // Active contracts across all employers
-  const contracts = player.employmentContracts || {};
-  const activeContractsList = Object.values(contracts);
-
-  // Active dynamic events for this station
-  const stationEvents = CANONICAL_DYNAMIC_EVENTS.filter(e => e.stationId === activeStation);
-
-  // Active work orders count
-  const activeOrders = Object.values(player.worknetOrders || {}).filter(o => o.status === 'active');
-  const completedCount = player.completedWorknetMissionIds?.length || 0;
-
-  return (
-    <div className="worknet-view-scroll">
-      {/* Top Welcome Banner */}
-      <div
-        className="worknet-card"
-        style={{
-          borderLeft: `4px solid ${theme.accentColor}`,
-          background: `linear-gradient(to right, #ffffff, ${theme.badgeBg})`
-        }}
-      >
-        <div className="flex items-start justify-between">
-          <div>
-            <span className="worknet-kicker" style={{ color: theme.accentColor }}>
-              {theme.shortOrg} Operations Desk · Cycle {timeCycle}
-            </span>
-            <h2 className="text-xl font-bold text-slate-900 mt-1">
-              Welcome back to {theme.name}
-            </h2>
-            <p className="text-xs text-slate-600 mt-1 max-width-xl">
-              {theme.tagline}. Your verified personnel standing and departmental duties are synchronized across the federal network.
-            </p>
-          </div>
-          <div className="flex items-center gap-2">
-            <span className="worknet-badge">
-              <Shield size={12} /> Clearance Level {player.clearanceLevel ?? 2}
-            </span>
-            <span className="worknet-badge" style={{ background: theme.badgeBg, color: theme.badgeText, borderColor: theme.badgeBorder }}>
-              {theme.shortOrg} Active
-            </span>
-          </div>
-        </div>
-
-        {/* Quick Duty Metrics */}
-        <div className="grid grid-cols-4 gap-4 mt-4 pt-3 border-t border-slate-100 text-xs">
-          <div>
-            <span className="text-[10px] text-slate-500 uppercase font-semibold">Active Assignments</span>
-            <p className="font-bold text-slate-800 text-sm">{activeOrders.length} in progress</p>
-          </div>
-          <div>
-            <span className="text-[10px] text-slate-500 uppercase font-semibold">Accepted Work Orders</span>
-            <p className="font-bold text-slate-800 text-sm">{completedCount} cleared</p>
-          </div>
-          <div>
-            <span className="text-[10px] text-slate-500 uppercase font-semibold">Affiliated Employers</span>
-            <p className="font-bold text-slate-800 text-sm">{activeContractsList.length || 1} position(s)</p>
-          </div>
-          <div>
-            <span className="text-[10px] text-slate-500 uppercase font-semibold">Stamina Reserves</span>
-            <p className="font-bold text-emerald-700 text-sm">{player.stamina} / 100</p>
-          </div>
-        </div>
-      </div>
-
-      {/* Main Grid: Multi-Employer Careers & Today's Shift */}
-      <div className="worknet-grid-2">
-        {/* Multi-Employer Career Card */}
-        <div className="worknet-card">
-          <div className="worknet-card-header">
-            <h3 className="worknet-card-title">
-              <Briefcase size={16} className="text-slate-600" />
-              Multi-Employer Positions & Affiliations
-            </h3>
-            <button className="text-xs text-slate-500 hover:text-slate-800 font-medium" onClick={() => onNavigate('career-record')}>
-              View Records →
-            </button>
-          </div>
-          <p className="text-xs text-slate-500 mb-3">
-            Meridion citizens may maintain separate employment records, authorizations, and supervisor reviews across certified institutions.
-          </p>
-
-          <div className="space-y-2">
-            {activeContractsList.length > 0 ? (
-              activeContractsList.map(contract => (
-                <div key={contract.id} className="p-3 bg-slate-50 border border-slate-200 rounded-lg flex items-center justify-between text-xs">
-                  <div>
-                    <span className="font-bold text-slate-800">{contract.position}</span>
-                    <p className="text-[11px] text-slate-500">{contract.track.toUpperCase()} Division · {contract.schedule}</p>
-                  </div>
-                  <span className="text-[10px] uppercase font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
-                    Active
-                  </span>
-                </div>
-              ))
-            ) : (
-              <div className="p-3 bg-amber-50/70 border border-amber-200 rounded-lg text-xs space-y-1">
-                <span className="font-semibold text-amber-900">No formally accepted shift contract yet.</span>
-                <p className="text-[11px] text-amber-800">
-                  You are eligible for open assignments and specialist missions. To accept permanent shifts, open Opportunities.
-                </p>
-              </div>
-            )}
-          </div>
-
-          <button
-            onClick={() => onNavigate('opportunities')}
-            className="worknet-btn-secondary w-full mt-3 justify-center text-xs"
-          >
-            Browse New Positions & Opportunities <ArrowRight size={13} />
-          </button>
-        </div>
-
-        {/* Dynamic Workplace Conditions & Alerts */}
-        <div className="worknet-card">
-          <div className="worknet-card-header">
-            <h3 className="worknet-card-title">
-              <Zap size={16} className="text-amber-600" />
-              Live Department Conditions & Surge Work
-            </h3>
-            <span className="text-[10px] uppercase font-bold text-amber-700 bg-amber-50 px-2 py-0.5 rounded border border-amber-200">
-              Option C Simulation
-            </span>
-          </div>
-          <p className="text-xs text-slate-500 mb-3">
-            Real-time departmental responsibilities arising from staffing shortages, equipment telemetry anomalies, and service requests.
-          </p>
-
-          <div className="space-y-2">
-            {stationEvents.map(event => {
-              const isResolved = resolvedEventIds.includes(event.id);
-              return (
-                <div
-                  key={event.id}
-                  className={`p-3 rounded-lg border text-xs transition ${
-                    isResolved
-                      ? 'bg-emerald-50/50 border-emerald-200'
-                      : 'bg-white border-amber-200 shadow-2xs hover:border-amber-300'
-                  }`}
-                >
-                  <div className="flex items-center justify-between mb-1">
-                    <span className="font-bold text-slate-900">{event.title}</span>
-                    <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded ${
-                      isResolved ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-900'
-                    }`}>
-                      {isResolved ? '✓ Resolved' : event.severity}
-                    </span>
-                  </div>
-                  <p className="text-[11px] text-slate-600 leading-relaxed mb-2">
-                    {event.description}
-                  </p>
-                  {!isResolved ? (
-                    <button
-                      onClick={() => onResolveDynamicEvent(event.id)}
-                      className="worknet-btn-primary text-[11px] py-1.5 px-3"
-                    >
-                      <Activity size={12} /> {event.actionLabel}
-                    </button>
-                  ) : (
-                    <span className="text-[10px] text-emerald-700 font-medium">
-                      ✓ Completed this cycle: {event.rewardCredits} ₢ and {event.rewardXP} XP credited.
-                    </span>
-                  )}
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      </div>
-
-      {/* Quick Launch & Lounge Bar */}
-      <div className="worknet-card bg-slate-50 border-slate-200">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-lg bg-white border border-slate-200 flex items-center justify-center text-slate-700">
-              <Coffee size={18} />
-            </div>
-            <div>
-              <h4 className="text-xs font-bold text-slate-900">
-                Department Break Room & Watercooler
-              </h4>
-              <p className="text-[11px] text-slate-500">
-                Take a moment to converse with colleagues, review the daily roster, and restore focus.
-              </p>
-            </div>
-          </div>
-          <div className="flex items-center gap-2">
-            <button
-              onClick={onVisitBreakRoom}
-              className="worknet-btn-secondary text-xs"
-            >
-              <Coffee size={13} /> Rest & Chamomile Break
-            </button>
-            <button
-              onClick={() => onNavigate('workplace')}
-              className="worknet-btn-primary text-xs"
-            >
-              Enter Workplace Simulation <ChevronRight size={13} />
-            </button>
-          </div>
-        </div>
-      </div>
+export default function WorknetOverview({activeStation, onNavigate, onOpenMission, onSwitchWorkplace, onResolveDynamicEvent, onVisitBreakRoom, onClaimBaseStipends, resolvedEventIds}: Props) {
+  const game = useOSStore(s => s.gameplay), player = game.player, cycle = game.timeCycleCount ?? 0;
+  const theme = INSTITUTIONAL_REGISTRY[activeStation], track = stationTrack(activeStation);
+  const contract = player.employmentContracts?.[track], affiliated = employed(player, activeStation), supervisor = canSupervise(player, activeStation);
+  const workplace = restoreWorkplace(player.worknetWorkplace, workTick(game));
+  const orders = Object.values(player.worknetOrders || {}).filter(o => WORK_DEFINITIONS[o.definitionId || o.missionId]?.track === track);
+  const active = orders.filter(o => o.status === 'active');
+  const crew = theme.coworkers.map(c => ({...c,...workplace.coworkerStats[c.id]}));
+  const dockets = workplace.delegatedTasks.filter(d => d.stationId === activeStation && d.status === 'Review Ready');
+  const contracts = Object.values(player.employmentContracts || {}).map(c => ({contract:c, org:Object.values(INSTITUTIONAL_REGISTRY).find(o => stationTrack(o.id) === c.track)})).filter(c => c.org);
+  const payable = contracts.filter(({contract:c,org}) => employed(player,org!.id) && (c.lastStipendClaimedCycle ?? cycle - 1) < cycle);
+  const events = CANONICAL_DYNAMIC_EVENTS.filter(e => e.stationId === activeStation);
+  const shifts = workplace.scheduleItems.filter(s => s.institutionId === activeStation);
+  return <div className="worknet-view-scroll wn-overview">
+    <section className="wn-desk-heading"><div><span className="worknet-kicker">{theme.shortOrg} / Operations desk</span><h2>Your work, in view.</h2><p>{affiliated ? `${contract.position} · ${contract.pathwayChoice === 'supervisor' ? 'Department supervisor' : 'Specialist pathway'}` : 'Explore this division, find an assignment, or begin your employment record.'}</p></div><div className="wn-heading-actions"><span className={`wn-status ${affiliated ? 'is-positive' : ''}`}>{affiliated ? 'Employment active' : contract ? 'Access review required' : 'Exploring division'}</span><button className="worknet-btn-primary" onClick={() => active.length ? onOpenMission(active[0].definitionId || active[0].missionId) : onNavigate(affiliated ? 'workplace' : 'career-record')}>{active.length ? 'Continue work' : affiliated ? 'Enter workplace' : 'Review employment'}<ArrowRight size={15}/></button></div></section>
+    <div className="wn-stat-grid">
+      <button onClick={() => onNavigate('my-work')}><FileText/><span>Active work<strong>{active.length}</strong></span><ArrowRight/></button>
+      <button onClick={() => onNavigate('workplace')}><CheckCircle2/><span>Dockets to review<strong>{supervisor ? dockets.length : '—'}</strong></span><ArrowRight/></button>
+      <button onClick={() => onNavigate('workplace')}><Users/><span>Colleagues at desk<strong>{crew.filter(c => c.status === 'Desk').length}<small> / {crew.length}</small></strong></span><ArrowRight/></button>
+      <button onClick={() => onNavigate('career-record')}><Briefcase/><span>Employment records<strong>{contracts.length}</strong></span><ArrowRight/></button>
     </div>
-  );
+    <div className="wn-desk-columns"><div className="wn-desk-main">
+      <section className="worknet-card"><div className="worknet-card-header"><div><span className="worknet-kicker">Continue where you left off</span><h3 className="worknet-card-title">Active assignments</h3></div><button className="wn-text-link" onClick={() => onNavigate('my-work')}>All my work <ArrowRight size={13}/></button></div>
+      {active.length ? <div className="wn-assignment-list">{active.slice(0,4).map(o => <button key={o.id} onClick={() => onOpenMission(o.definitionId || o.missionId)}><span className="wn-row-icon"><FileText size={18}/></span><span><strong>{getOpportunity(o.definitionId || o.missionId)?.title || o.subject}</strong><small>{o.remediationRequired ? 'Revision required' : 'Saved work order'} · {o.id}</small></span><span className={`wn-status ${o.remediationRequired ? 'is-attention' : ''}`}>{o.remediationRequired ? 'Needs attention' : 'In progress'}</span><ArrowRight size={16}/></button>)}</div> : <div className="wn-empty"><FileText size={24}/><div><strong>No active assignments in this division</strong><p>Browse available work when you are ready. Your other employers’ records remain separate.</p></div><button className="worknet-btn-secondary" onClick={() => onNavigate('opportunities')}>Find work <ArrowRight size={14}/></button></div>}
+      </section>
+      <section className="worknet-card"><div className="worknet-card-header"><div><span className="worknet-kicker">People & daily work</span><h3 className="worknet-card-title">On the operations floor</h3></div><button className="wn-text-link" onClick={() => onNavigate('workplace')}>View workplace <ArrowRight size={13}/></button></div><div className="wn-roster">{crew.map(c => <div key={c.id}><span className="wn-initials">{c.avatar}</span><span><strong>{c.name}</strong><small>{c.title}</small></span><span className={`wn-status ${c.status === 'Desk' ? 'is-positive' : ''}`}>{c.status}</span></div>)}</div><div className="wn-card-note"><Clock size={13}/> Availability follows game time. Flexible shifts carry no missed-attendance penalty.</div></section>
+      <section className="worknet-card"><div className="worknet-card-header"><div><span className="worknet-kicker">Department inbox</span><h3 className="worknet-card-title">Operational notices</h3></div><span className="wn-count">{events.filter(e=>!resolvedEventIds.includes(e.id)).length} open</span></div>{events.length ? events.map(e => <article className="wn-notice" key={e.id}><div><span className={`wn-status ${resolvedEventIds.includes(e.id) ? 'is-positive' : 'is-attention'}`}>{resolvedEventIds.includes(e.id) ? 'Resolved' : e.severity}</span><h4>{e.title}</h4><p>{e.description}</p><small>{e.staminaCost} stamina · {e.rewardCredits} credits · {e.rewardXP} career XP</small></div>{!resolvedEventIds.includes(e.id) && <button disabled={!affiliated} className="worknet-btn-secondary" onClick={() => onResolveDynamicEvent(e.id)}>{affiliated ? e.actionLabel : 'Employment required'}</button>}</article>) : <div className="wn-empty"><CheckCircle2 size={22}/><div><strong>The notice queue is clear</strong><p>Routine duties and authored assignments are available through the workplace and opportunities.</p></div></div>}</section>
+    </div><aside className="wn-desk-aside">
+      <section className="wn-pay-panel"><span className="worknet-kicker">Cycle {cycle} / Compensation</span><Wallet size={24}/><h3>{payable.length ? `${payable.length * 150} credits available` : contracts.length ? 'No cycle pay currently due' : 'Build your employment record'}</h3><p>{contracts.length ? 'Base salary and accepted assignment pay are tracked separately.' : 'Accept employment to establish cycle pay. Assignment compensation remains available for eligible work.'}</p><button className="worknet-btn-primary" disabled={!payable.length} onClick={onClaimBaseStipends}>Claim cycle pay <ArrowRight size={14}/></button><small>Once per eligible contract. No duplicate payouts.</small></section>
+      <section className="worknet-card"><div className="worknet-card-header"><h3 className="worknet-card-title">Your next step</h3></div><span className="wn-status">{theme.proceduralTier}</span><h4 className="wn-next-title">{supervisor && dockets.length ? 'Review returned dockets' : active.length ? 'Continue your saved assignment' : !affiliated ? 'Set up your personnel record' : 'Choose your next duty'}</h4><p>{supervisor && dockets.length ? 'Read each returned report before approval or requesting a revision.' : active.length ? 'Your documents, findings, and accepted stages are saved.' : !affiliated ? 'Review employment terms and existing access requirements in Career Record.' : 'Explore routine work or take an authored assignment at your own pace.'}</p><button className="wn-text-link" onClick={() => supervisor && dockets.length ? onNavigate('workplace') : active.length ? onOpenMission(active[0].definitionId || active[0].missionId) : !affiliated ? onNavigate('career-record') : onNavigate('opportunities')}>Open next step <ArrowRight size={14}/></button></section>
+      <section className="worknet-card"><div className="worknet-card-header"><h3 className="worknet-card-title">Shift planner</h3><Calendar size={16}/></div>{shifts.map(s=><div className="wn-shift" key={s.id}><strong>{s.dutyTitle}</strong><small>{s.timeSlot} · {s.status}</small></div>)}<button className="wn-text-link" onClick={()=>onNavigate('schedule')}>Open schedule <ArrowRight size={14}/></button></section>
+      <section className="worknet-card"><div className="worknet-card-header"><h3 className="worknet-card-title">Employment network</h3><Building2 size={16}/></div>{contracts.length ? contracts.map(({contract:c,org})=><button key={c.id} className="wn-employer-link" onClick={()=>onSwitchWorkplace(org!.id)}><span style={{background:org!.accentColor}}/><span><strong>{org!.shortOrg}</strong><small>{employed(player,org!.id) ? c.position : 'Current access review required'}</small></span><ArrowRight size={14}/></button>) : <p>No employment contracts yet. Explore the workplace switcher to compare divisions.</p>}<button className="wn-text-link" onClick={()=>onNavigate('departments')}>Department directory <ArrowRight size={14}/></button></section>
+      <div className="wn-lounge-link"><Coffee size={19}/><span><strong>A moment off duty</strong><small>Breaks are part of the workday.</small></span><button className="wn-text-link" onClick={onVisitBreakRoom}>Take a break</button></div>
+    </aside></div>
+  </div>;
 }

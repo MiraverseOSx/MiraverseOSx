@@ -9,7 +9,7 @@
     "dev:frontend": "npm run dev --prefix frontend",
     "dev:backend": "dotnet run --project MiraverseOSx.csproj -- --server-only --port 5000",
     "desktop": "dotnet run --project MiraverseOSx.csproj",
-    "test:backend": "pwsh -NoProfile -File scripts/test_backend_world.ps1",
+    "test:backend": "node -e \"import { spawnSync, execSync } from 'child_process'; let ps = 'powershell'; try { execSync('pwsh -v', { stdio: 'ignore' }); ps = 'pwsh'; } catch {} process.exit(spawnSync(ps, ['-NoProfile', '-File', 'scripts/test_backend_world.ps1'], { stdio: 'inherit' }).status ?? 1);\"",
     "build": "npm run build --prefix frontend && dotnet build",
     "build:frontend": "npm run build --prefix frontend",
     "build:backend": "dotnet build",

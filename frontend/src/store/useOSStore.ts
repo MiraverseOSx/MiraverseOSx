@@ -123,6 +123,9 @@ export interface OSStoreState extends AssignmentFlowActions, ProgressionActions,
   remediateWorknetOrder: (missionId: string, note: string) => { ok: boolean; message: string };
   completeWorknetMission: (mission: { id: string; track: string; rewardCredits: number; rewardBits?: number; rewardXP: number; primaryAttribute?: string }) => { ok: boolean; reason?: string };
   resetWorknetMissionsAdmin: () => void;
+  worknetWorkplaceAction: (action: any) => { ok: boolean; message: string };
+  claimCycleStipends: () => { ok: boolean; message: string; creditsClaimed?: number };
+  setCareerPathwayChoice: (track: string, pathway: 'specialist' | 'supervisor') => { ok: boolean; message: string };
   compileSpellProtocol: (spell: { name: string; combo?: string; comboLabel?: string; type: string; desc: string; power: number; isCanonical: boolean; regions?: string[] }) => { ok: boolean; isNewDiscovery: boolean; status: 'mastered_new' | 'recast' | 'insufficient_stamina'; message: string };
   quarantineProcess: (pid: number) => boolean;
   recordFileInspection: (mockKey: string) => void;

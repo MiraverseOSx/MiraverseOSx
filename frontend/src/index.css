@@ -5,6 +5,7 @@
 @import './styles/visual-system.css';
 @import './styles/workspaces.css';
 @import './styles/progression.css';
+@import './styles/universal-system.css';
 
 @config '../tailwind.config.js';
 @tailwind utilities;

@@ -1,3 +1,4 @@
+import { changeWorkplace, workTick, stationTrack, employed } from '../apps/worknet/workplaceModel';
 import type { OSStoreState } from './useOSStore';
 import { sanitizeMailHtml, mailHtmlToText } from '../apps/mail/richText';
 import { CASE_MISSION, restoreCaseProgress, reviewBroadStreet } from '../gameplay/BroadStreetCase';
@@ -17,16 +18,17 @@ export function createWorknetActions(set: (update: (state: OSStoreState) => Part
     },
 
     acceptEmployment: (track: string) => {
-      const definition = Object.values(WORK_DEFINITIONS).find(item => item.track === track && item.kind === 'shift');
-      if (!definition) return { ok: false, message: 'This assignment does not require an employment contract.' };
+      const definition = Object.values(WORK_DEFINITIONS).find(item => item.track === track);
+      if (!definition) return { ok: false, message: 'No institutional position is available for this career track.' };
       const player = get().gameplay.player;
       if (player.employmentContracts?.[track]) return { ok: false, message: 'Your employment contract is already active.' };
       if ((player.clearanceLevel ?? 2) < definition.clearance) return { ok: false, message: 'Institutional clearance is required for this position.' };
       const contract: EmploymentContract = {
         id: `EMP:${track}`, track, position: CAREER_TRACK_SPECS[track]?.rankTitles[0] || track,
-        duties: Object.values(WORK_DEFINITIONS).filter(item => item.track === track && item.kind === 'shift').map(item => item.subject),
+        duties: Object.values(WORK_DEFINITIONS).filter(item => item.track === track).map(item => item.subject),
         schedule: 'Available shifts; accept an individual work order when ready.',
-        payTerms: 'Published compensation on accepted work; the same patient chart is paid once.',
+        payTerms: '150 credits per cycle plus published assignment compensation. Patient charts and work receipts are paid once.',
+        baseSalaryCredits: 150, lastStipendClaimedCycle: (get().gameplay.timeCycleCount ?? 0) - 1, pathwayChoice: 'specialist',
       };
       updatePlayer(current => ({ ...current, employmentContracts: { ...current.employmentContracts, [track]: contract } }));
       return { ok: true, message: `Employment accepted: ${contract.position}. You can now open a work shift.` };
@@ -176,6 +178,83 @@ export function createWorknetActions(set: (update: (state: OSStoreState) => Part
       if (!get().gameplay.player.isAdmin) return;
       // Payout receipts and saved outputs survive administrative panel resets.
       updatePlayer(player => ({ ...player, worknetMissionProgress: {} }));
+    },
+
+    worknetWorkplaceAction: (action: any) => {
+      const game = get().gameplay, player = game.player;
+      const raw = player.worknetWorkplace ?? (action.type === 'initialize' ? action.legacy : undefined);
+      const result = changeWorkplace(raw, action, player, workTick(game));
+      if (!result.ok) return { ok: false, message: result.message };
+      // Commit the receipt and any compensation together into the ordinary world save.
+      if (JSON.stringify(player.worknetWorkplace) !== JSON.stringify(result.state)) updatePlayer(p => ({ ...p, worknetWorkplace: result.state, credits: p.credits + result.credits, stamina: p.stamina - result.stamina }));
+      if (result.xp) get().addCareerXP(result.track, result.xp);
+      return { ok: true, message: result.message };
+    },
+
+    claimCycleStipends: () => {
+      const state = get();
+      const player = state.gameplay.player;
+      const contracts = player.employmentContracts || {};
+      const currentCycle = Math.max(0, state.gameplay.timeCycleCount ?? 0);
+      let totalClaimed = 0;
+      let eligibleCount = 0;
+      const updatedContracts = { ...contracts };
+
+      for (const [track, contract] of Object.entries(contracts)) {
+        const station = track === 'medical' ? 'faithmed' : track === 'archivist' ? 'archives' : track;
+        if (!employed(player, station)) continue;
+        const lastClaim = Number.isSafeInteger(contract.lastStipendClaimedCycle) ? contract.lastStipendClaimedCycle! : currentCycle - 1;
+        if (lastClaim < currentCycle) {
+          const stipend = 150;
+          totalClaimed += stipend;
+          eligibleCount += 1;
+          updatedContracts[track] = { ...contract, lastStipendClaimedCycle: currentCycle };
+        }
+      }
+
+      if (eligibleCount === 0) {
+        return { ok: false, message: 'Institutional stipends for this cycle have already been disbursed.' };
+      }
+
+      updatePlayer(current => ({
+        ...current,
+        credits: current.credits + totalClaimed,
+        employmentContracts: updatedContracts
+      }));
+
+      get().recordWorldEvent({
+        category: 'worknet',
+        title: 'Institutional Payroll Disbursement',
+        summary: `Disbursed ${totalClaimed} ₢ in baseline cycle stipends across ${eligibleCount} active position(s).`,
+        institution: 'WORKNET // TREASURY PAYROLL',
+      });
+
+      return {
+        ok: true,
+        message: `Disbursed +${totalClaimed} ₢ base stipend across ${eligibleCount} active position(s) for Cycle ${currentCycle}.`,
+        creditsClaimed: totalClaimed
+      };
+    },
+
+    setCareerPathwayChoice: (track: string, pathway: 'specialist' | 'supervisor') => {
+      const player = get().gameplay.player;
+      if (!['specialist', 'supervisor'].includes(pathway)) return { ok: false, message: 'Choose a valid career pathway.' };
+      const contract = player.employmentContracts?.[track];
+      const station = track === 'medical' ? 'faithmed' : track === 'archivist' ? 'archives' : track;
+      if (!employed(player, station) || !contract) return { ok: false, message: 'An active employment contract is required to select a career pathway.' };
+
+      updatePlayer(current => ({
+        ...current,
+        employmentContracts: {
+          ...current.employmentContracts,
+          [track]: { ...contract, pathwayChoice: pathway }
+        }
+      }));
+
+      return {
+        ok: true,
+        message: `Career pathway updated: ${pathway} for ${track}.`
+      };
     },
   };
 }

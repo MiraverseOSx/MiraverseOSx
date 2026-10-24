@@ -51,7 +51,7 @@ export default function WorknetSchedule({
               Work Schedule & Approved Leave
             </h2>
             <p className="text-xs text-slate-600 mt-1 max-w-2xl">
-              Cross-institutional shift planner, mandatory meetings, and supervisor-approved absence manager.
+              Suggested shift rhythms across employers. You can switch work or take breaks without missed-shift penalties. Leave records help organize your plans.
             </p>
           </div>
           <span className="worknet-badge">
@@ -65,7 +65,7 @@ export default function WorknetSchedule({
         <div className="worknet-card-header">
           <h3 className="worknet-card-title">
             <Clock size={16} className="text-slate-600" />
-            Upcoming Assigned Shifts & Deadlines
+            Suggested Shifts & Meeting Times
           </h3>
           <span className="text-xs text-slate-500 font-medium">
             Multi-Employer Conflict Status: <strong className="text-emerald-700">✓ No Overlaps Detected</strong>
@@ -101,7 +101,7 @@ export default function WorknetSchedule({
                   <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded ${
                     shift.isMandatory ? 'bg-amber-100 text-amber-900' : 'bg-slate-100 text-slate-700'
                   }`}>
-                    {shift.isMandatory ? 'Mandatory' : 'Flexible'}
+                    Flexible · no absence penalty
                   </span>
                 </td>
                 <td>
