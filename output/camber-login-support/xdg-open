@@ -1,3 +1,0 @@
-#!/bin/sh
-# Open Camber's browser login using Windows from this WSL session.
-exec /mnt/c/Windows/System32/rundll32.exe url.dll,FileProtocolHandler "$1"

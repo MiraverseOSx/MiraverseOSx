@@ -21,7 +21,8 @@
     "data:fiction": "python scripts/generate_fictional_content.py",
     "test:fiction": "python -m unittest discover -s scripts -p test_fictional_content.py",
     "data:case": "python scripts/build_broad_street.py",
-    "test:case": "python scripts/build_broad_street.py --check && python -m unittest discover -s scripts -p test_broad_street.py"
+    "test:case": "python scripts/build_broad_street.py --check && python -m unittest discover -s scripts -p test_broad_street.py",
+    "test:skills": "python scripts/test_skills.py"
   },
   "description": "MIRAVERSEOSX - Celestial Operating System Desktop Host",
   "repository": {

@@ -1,8 +1,0 @@
-{
-  "approved_by_user": true,
-  "first_attempt": "Interrupted before stable-version commit after generated obj files appeared in Windows staging. UI remained at v3. Temporary staging upload was not committed.",
-  "final_staging": "/home/cyberbrat/mai-context-upload-20261024-01",
-  "final_staging_verified": "586 approved source/skill files plus sync config; exact set and hashes verified. No generated files.",
-  "canon": "Existing indexed Game Doc.docx downloaded and backed up. Substantially differs from proposed bible, including PRISM definition; additional bible withheld rather than silently replacing/adding conflicting canon.",
-  "mcp": "OAuth remains unresolved; authenticated CLI is the Context Mirror transport."
-}

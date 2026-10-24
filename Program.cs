@@ -11,7 +11,6 @@ using Microsoft.Data.Sqlite;
 using Dapper;
 using Photino.NET;
 using DotNetEnv;
-using Sentry;
 using MiraverseOSx.Ai;
 
 namespace MiraverseOSx
@@ -59,21 +58,6 @@ namespace MiraverseOSx
                     Env.Load();
                 }
                 Console.WriteLine("[Environment] Loaded .env configuration.");
-
-            // 1b. Initialize Sentry backend error & performance telemetry
-            string? sentryBackendDsn = Environment.GetEnvironmentVariable("SENTRY_DSN_BACKEND")
-                ?? "https://c6d189e69cb7d5f5f5b8d26b31aad65b@o4512311772905472.ingest.us.sentry.io/4512311829331968";
-            IDisposable? sentrySubscription = null;
-            if (!string.IsNullOrWhiteSpace(sentryBackendDsn))
-            {
-                sentrySubscription = SentrySdk.Init(o =>
-                {
-                    o.Dsn = sentryBackendDsn;
-                    o.Environment = Environment.GetEnvironmentVariable("NODE_ENV") ?? "production";
-                    o.TracesSampleRate = 1.0;
-                });
-                Console.WriteLine("[Sentry] Backend monitoring initialized.");
-            }
 
             }
             catch (Exception ex)
