@@ -1,7 +1,7 @@
 import { createMailOrganizationActions, restoreMailOrganization, type MailOrganizationActions } from '../apps/mail/mailOrganization';
 import { sanitizeMailHtml, escapeMailText } from '../apps/mail/richText';
 import { channelAccess, senderAccess, communicationsAuthority, membershipSource, organization, restoreMailAccounts } from '../integration/communicationsAccess';
-import { restorePhoneThreads } from '../integration/phoneMessages';
+import { restorePhoneThreads, SOCIAL_PHONE_CONTACTS, personalThreadAccess } from '../integration/phoneMessages';
 import type { SmsMessage } from '../data/phoneData';
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
@@ -239,11 +239,14 @@ Your message regarding "${cleanSubj}" was delivered to ${recipientInput}. The re
 export interface CommsState extends MailOrganizationActions {
   phoneThreads: Record<string, SmsMessage[]>;
   phoneDrafts: Record<string, string>;
+  phoneReadCounts: Record<string, number>;
+  markPhoneThreadRead: (contact: string) => void;
+  ensurePersonalThread: (contact: string) => boolean;
   migratePersonalThreads: () => void;
   phoneRequest?: { contact?: string; token: string };
   requestPhoneMessages: (contact?: string) => void;
   consumePhoneRequest: (token: string) => void;
-  sendPhoneMessage: (contact: string, text: string, sender?: string) => boolean;
+  sendPhoneMessage: (contact: string, text: string, sender?: string, source?: 'phone' | 'mai.space') => boolean;
   setPhoneDraft: (contact: string, text: string) => void;
   mailRequest?: { id: string; token: string };
   requestMailMessage: (id: string) => void;
@@ -332,12 +335,19 @@ export const useCommsStore = create<CommsState>()(
       ...createMailOrganizationActions(set, get),
       phoneThreads: restorePhoneThreads(undefined),
       phoneDrafts: {},
+      phoneReadCounts: Object.fromEntries(Object.entries(restorePhoneThreads(undefined)).map(([contact, entries]) => [contact, entries.length])),
+      markPhoneThreadRead: contact => { const s = get(); if (Object.hasOwn(s.phoneThreads, contact) && s.phoneReadCounts[contact] !== s.phoneThreads[contact].length) set({ phoneReadCounts: { ...s.phoneReadCounts, [contact]: s.phoneThreads[contact].length } }); },
+      ensurePersonalThread: contact => {
+        if (!Object.values(SOCIAL_PHONE_CONTACTS).includes(contact) || !personalThreadAccess(communicationsAuthority().player, contact)) return false;
+        if (!Object.hasOwn(get().phoneThreads, contact)) set(s => ({ phoneThreads: { ...s.phoneThreads, [contact]: [] } }));
+        return true;
+      },
       migratePersonalThreads: () => set(s => ({ phoneThreads: restorePhoneThreads(s.phoneThreads, s.messages) })),
       requestPhoneMessages: contact => set(s => ({ phoneThreads: restorePhoneThreads(s.phoneThreads, s.messages), phoneRequest: { contact, token: crypto.randomUUID() } })),
       consumePhoneRequest: token => { if (get().phoneRequest?.token === token) set({ phoneRequest: undefined }); },
-      sendPhoneMessage: (contact, text, sender = 'You') => {
-        if (!Object.hasOwn(get().phoneThreads, contact) || !text.trim()) return false;
-        set(s => ({ phoneThreads: { ...s.phoneThreads, [contact]: [...s.phoneThreads[contact], { id: crypto.randomUUID(), sender, text: text.trim(), time: 'Just now' }] } }));
+      sendPhoneMessage: (contact, text, sender = 'You', source = 'phone') => {
+        if (!Object.hasOwn(get().phoneThreads, contact) || !text.trim() || !personalThreadAccess(communicationsAuthority().player, contact)) return false;
+        set(s => ({ phoneThreads: { ...s.phoneThreads, [contact]: [...s.phoneThreads[contact], { id: crypto.randomUUID(), sender, text: text.trim().slice(0, 4000), time: 'Just now', source: source === 'mai.space' ? 'mai.space' : 'phone' }] } }));
         return true;
       },
       setPhoneDraft: (contact, text) => { if (Object.hasOwn(get().phoneThreads, contact)) set(s => ({ phoneDrafts: { ...s.phoneDrafts, [contact]: text } })); },
@@ -1033,6 +1043,7 @@ Your completed form has been verified and recorded in the institutional registry
         }
         merged.playerAccounts = restoreMailAccounts(merged.playerAccounts, DEFAULT_PLAYER_EMAIL_ACCOUNTS);
         merged.phoneThreads = restorePhoneThreads(persistedState?.phoneThreads, merged.messages);
+        merged.phoneReadCounts = Object.fromEntries(Object.entries(merged.phoneThreads).map(([contact, entries]) => [contact, Number.isInteger(persistedState?.phoneReadCounts?.[contact]) ? Math.max(0, Math.min((entries as any[]).length, persistedState.phoneReadCounts[contact])) : (entries as any[]).length]));
         merged.phoneDrafts = persistedState?.phoneDrafts && typeof persistedState.phoneDrafts === 'object' && !Array.isArray(persistedState.phoneDrafts) ? Object.fromEntries(Object.entries(persistedState.phoneDrafts).filter(([contact, text]) => Object.hasOwn(merged.phoneThreads, contact) && typeof text === 'string')) : {};
         if (!merged.emails.length) merged.emails = INITIAL_EMAILS;
         for (const key of ['starredEmailIds', 'archivedEmailIds', 'trashedEmailIds', 'readEmailIds', 'savedAttachmentIds', 'submittedFormIds', 'blockedAddresses', 'reportedEmailIds']) merged[key] = Array.isArray(merged[key]) ? merged[key].filter((item: unknown) => typeof item === 'string') : [];

@@ -1,0 +1,555 @@
+0 [Normal] MIRAVERSEOSX
+1 [Title] MERIDION
+The World & Lore Story Bible
+2 [Normal] A neutral chronicle of the world, its peoples, histories, institutions, and mysteries
+3 [Normal] October 2026  |  Lore edition 1.0
+5 [Heading 1] A Note on the Record
+6 [Normal] Meridion is described here as a world in its own right. This volume combines the precision of a geographical and historical encyclopedia with the language of a chronicle. It is not attributed to any court, House, academy, or archival society. The narrative distinguishes established history from legend, institutional interpretation, and mysteries whose complete explanations have not yet been revealed.
+7 [Normal] Certain records concern secrets known to very few inhabitants, especially the PRISM, the AETHERCORE, the Veil, and the origins of MAI. They are included because this is a world bible, not a public textbook within Meridion. Where the surviving source material disagrees on a name or designation, the discrepancy is acknowledged openly rather than silently rewritten.
+8 [Heading 1] Contents · Historical World and Living World
+9 [Normal] I. Meridion and the nature of the world
+10 [Normal] II. The long chronology
+11 [Normal] III. Geography and the Seven Realms
+12 [Normal] IV. Royal lineages and sovereign society
+13 [Normal] V. The Seven Color Houses
+14 [Normal] VI. House identity, transfer, and justice
+15 [Normal] VII. Resonance, the PRISM, and the Veil
+16 [Normal] VIII. The heavens and the calendar
+17 [Normal] IX. Civic life, knowledge, and institutions
+18 [Normal] X. Places, residences, and travel
+19 [Normal] XI. Figures, relationships, and hidden histories
+20 [Normal] XII. Open historical questions and glossary
+22 [Heading 1] I. Meridion and the Nature of the World
+23 [Normal] Meridion is a sovereign world of seven realms whose inhabitants live among ancient allegiances, advanced civic institutions, ritual traditions, and the unseen architecture of resonance. Its cities are not simply settlements built upon ordinary earth. Beneath their streets and beneath the narratives that societies tell about themselves runs the PRISM, a deeper ordering of memory, matter, emotion, and energy. To most citizens, life is measured in ordinary acts: study, work, friendship, home, obligation, celebration, and mourning. The extraordinary is woven through the ordinary rather than replacing it.
+24 [Normal] Aureline, the civic and imperial heart of Orynvell, occupies an exceptional place in the country’s political and metaphysical geography. It is the site of royal legitimacy and an immense hidden structure called the AETHERCORE. Northwake and Nephele, though distant in character, are also important in accounts of rare passage into the Veil. The realms remain distinct in their climates, histories, and lineages while participating in the order established at Meridion’s founding.
+25 [Heading 2] The Difference Between Realm and House
+26 [Normal] Two sevenfold arrangements exist and must never be mistaken for one another. The Seven Realms are territorial and political divisions associated with royal lineages. The Seven Color Houses are social and resonant affiliations organized around different domains of human and metaphysical concern. A citizen may live in one realm, descend from a family rooted in another, be born to one Color House, and presently belong to another. None of these affiliations automatically proves membership in a royal dynasty.
+27 [Heading 1] II. The Long Chronology
+29 [Heading 2] The Nephilim Era
+30 [Normal] The centuries preceding the founding of Meridion were not empty prehistory. During the Nephilim Era, accounts of angelic descent emerged beside evidence of extraordinary resonance phenomena. Later records would associate these events with questions of origin and with the hidden seventh frequency. Such associations do not by themselves establish when the Color Houses were founded, who first named their domains, or whether resonance preceded the Nephilim. Those relationships remain open parts of the world’s deeper history.
+31 [Heading 2] The Purge
+32 [Normal] Beginning around 300 BM, the Purge unfolded over roughly three centuries. The surviving chronology describes systematic suppression and violence against bloodlines connected to forbidden lines of resonance. The loss was cultural as well as human: records disappeared, knowledge was hidden, and communities learned to treat some truths as dangerous. The Purge helps explain the political importance of preserved lineage, contested archival material, and the fear surrounding traces that established institutions cannot comfortably classify.
+33 [Heading 2] Exodus, Coronation, and Sanctuary
+34 [Normal] The final phase of flight is placed in January and February of Year 0. On March 6, Maeryn Seraphima was crowned and the sovereign founding of Meridion took place. The Seven Realms Concord belongs to this founding moment. The remainder of the first year was occupied by consecration, settlement, and the construction of permanent civic and archival structures at Aureline. March 6 is remembered as Founding Day. The Era of Maeryn begins at Year 0 and continues through the present chronological framework.
+35 [Heading 1] III. Geography and the Seven Realms
+36 [Normal] Meridion’s geography cannot be reduced to seven colors on a map. Its climates and waterways shape routes of trade, ceremonial identity, settlement, danger, and everyday labor. Each realm bears an elemental or seasonal association, but those associations coexist with inhabited towns, administrative centers, and overlapping political concerns.
+38 [Heading 2] Orynvell
+39 [Normal] Orynvell is associated with aether / celestial. A sacred imperial seat associated with legitimacy, succession, celestial authority, and the approaches to AETHERCORE. Angel Bay lies along its ceremonial coast. Its royal lineage is Seraphima; its capital or principal civic anchor is Aureline.
+40 [Heading 2] Fross
+41 [Normal] Fross is associated with winter / ice. Glacial shelves, permafrost, winter rites, and the Northold Ocean define its imposing northern territory. Its two principal centers have distinct civic and defensive roles. Its royal lineage is Holly; its capital or principal civic anchor is Southwake; Northwake is a northern fortress.
+42 [Heading 2] Lumia
+43 [Normal] Lumia is associated with summer / light. Solar ceremony, public legitimacy, and warm sunlit landscapes shape the realm; the Glowing Gulf of Meri is one of its notable geographical associations. Its royal lineage is Lucia; its capital or principal civic anchor is Rhyna.
+44 [Heading 2] Marlowe
+45 [Normal] Marlowe is associated with spring / water. An island realm of estuaries, tides, rain, renewal, and sanctuaries; the Marlie Sea connects it to the wider world. Its royal lineage is Neryx; its capital or principal civic anchor is Island City.
+46 [Heading 2] Brisland
+47 [Normal] Brisland is associated with autumn / air. Trade winds, migration routes, cultural preservation, and autumnal landscapes define its civic character. Its royal lineage is Yoko; its capital or principal civic anchor is Elodia.
+48 [Heading 2] Kaji
+49 [Normal] Kaji is associated with volcanic / fire. Kailo Islands, Kanifan Deserts, and the Volcanic Fields of Pyre lie within a unified realm of geothermal forces, craft, and volcanic industry. Its royal lineage is Ember; its capital or principal civic anchor is Balisya.
+50 [Heading 2] Nephele
+51 [Normal] Nephele is associated with darkness / nether. Ancestral depths, obsidian spaces, hidden law, and twilight atmospheres mark the realm. Traditions surrounding concealed knowledge and the Veil are especially significant. Its royal lineage is Keket; its capital or principal civic anchor is Serafin.
+52 [Heading 2] Seas, Waters, and Borderlands
+53 [Normal] The Marlie Sea provides a central maritime expanse connecting Orynvell, Marlowe, and Brisland. The Northold Ocean borders Fross; Angel Bay opens beside the sacred capital of Orynvell; the Glowing Gulf of Meri is remembered for its luminous waters. Distinctive internal landscapes include the Kailo Islands, Kanifan Deserts, and Volcanic Fields of Pyre in Kaji, and the frozen fields and glaciers of Fross. Their specific coastlines and distances are best understood through Meridion’s established map rather than inferred from prose alone.
+54 [Heading 1] IV. Royal Lineages and Sovereign Society
+55 [Normal] Seven royal lineages are associated with the seven realms: Seraphima, Holly, Lucia, Neryx, Yoko, Ember, and Keket. The founding monarchy is explicitly matriarchal in its historical account, and Queen Maeryn Seraphima is central to national chronology. Royal families govern territorial realms; their authority is not equivalent to membership in the Color Houses, even when a person or institution belongs to both worlds of influence.
+56 [Normal] A royal council and wider structures of state authority appear throughout Meridion’s records. Their precise constitutional boundaries should not be conflated with the different High Council described in accounts of AETHERCORE access. Where titles overlap in surviving records, this volume does not assume those bodies are identical. The balance among realm autonomy, royal succession, and the central monarchy remains a matter for fuller historical treatment.
+57 [Heading 1] V. The Seven Color Houses
+58 [Quote] Birth tells one part of a citizen’s story. Present belonging tells another.
+59 [Normal] The Seven Color Houses are organized around domains rather than territorial borders. Six are linked to named governing Houses. The seventh, White, occupies a singular position: it is associated with truth, origin, and hidden resonance, but no governing House is publicly established. The uncertainty surrounding White is part of the world’s history, not an absence to be filled by inventing a ruling surname.
+61 [Heading 2] Crimson
+62 [Normal] Crimson is associated with power, ambition, dominance and is governed by House Kael. These are domains of influence and identity; they should not be reduced to stereotypes of personality, and no single citizen must embody every trait of the House. Its relationship to other Houses is partly social, partly institutional, and potentially resonant.
+63 [Heading 2] Violet
+64 [Normal] Violet is associated with knowledge, illusion, memory and is governed by House Vexara. These are domains of influence and identity; they should not be reduced to stereotypes of personality, and no single citizen must embody every trait of the House. Its relationship to other Houses is partly social, partly institutional, and potentially resonant.
+65 [Heading 2] Gold
+66 [Normal] Gold is associated with wealth, commerce, influence and is governed by House Aurelith. These are domains of influence and identity; they should not be reduced to stereotypes of personality, and no single citizen must embody every trait of the House. Its relationship to other Houses is partly social, partly institutional, and potentially resonant.
+67 [Heading 2] Teal
+68 [Normal] Teal is associated with healing, empathy, connection and is governed by House Solenne. These are domains of influence and identity; they should not be reduced to stereotypes of personality, and no single citizen must embody every trait of the House. Its relationship to other Houses is partly social, partly institutional, and potentially resonant.
+69 [Heading 2] Silver
+70 [Normal] Silver is associated with technology, logic, systems and is governed by House Nythos. These are domains of influence and identity; they should not be reduced to stereotypes of personality, and no single citizen must embody every trait of the House. Its relationship to other Houses is partly social, partly institutional, and potentially resonant.
+71 [Heading 2] Emerald
+72 [Normal] Emerald is associated with nature, growth, balance and is governed by House Veradis. These are domains of influence and identity; they should not be reduced to stereotypes of personality, and no single citizen must embody every trait of the House. Its relationship to other Houses is partly social, partly institutional, and potentially resonant.
+73 [Heading 2] White
+74 [Normal] White stands apart from the other affiliations. Its domain concerns truth, origin, and hidden resonance. It is linked in the inherited lore to the Unbound and to a suppressed seventh frequency, but its governing lineage is not known or publicly acknowledged. Whether its members are officially recognized, how its affiliation is recorded, and what its true origins mean remain major mysteries. The account does not transform those uncertainties into settled facts.
+75 [Heading 1] VI. House Identity, Transfer, and Justice
+76 [Heading 2] Primary and Secondary Houses
+77 [Normal] Every citizen possesses a Primary House, fixed at birth, and a Secondary House that records current affiliation. The Primary House does not change with later allegiance, residence, schooling, occupation, or transfer. The Secondary House can change, but only through an uncommon and formal legal process. The two may coincide. A change of Secondary House does not retroactively erase birth, ancestral memory, or previous membership.
+78 [Heading 2] The House Tribunal
+79 [Normal] The central authority for transfers is the House Tribunal, which operates independently of the territorial authority of the Seven Royal Houses. A transfer requires joint authorization by the receiving Color House and the Tribunal. The House being left is informed through the legal process but does not possess an automatic veto. This distinction preserves both the receiving House’s responsibility for admission and a wider safeguard of procedural fairness.
+80 [Normal] The Tribunal follows a mixed judicial model. Independent judges sit alongside Color House representatives, and authorization requires a separate majority within each group. A numerical example of three independent judges and four House representatives has been considered, but the final size of the institution is not fixed. Regardless of seat count, a bare majority of all members cannot override the failure to secure the required majority of either group.
+81 [Heading 2] Petitions, Conflicts, and Appeals
+82 [Normal] A petition begins with an individual’s request to enter another House. Identity, birth House, current membership, and prior affiliation history are relevant to the record. The receiving House examines admission according to its lawful standards; the Tribunal examines the petition under House law. A transfer takes effect only after both approvals. The precise documentary requirements, deadlines, and ceremony of admission have not yet been established.
+83 [Normal] Judicial impartiality is especially significant in a society where everyone carries House identities. An official’s birth House alone does not necessarily establish bias; direct participation in the underlying decision, personal interests, or a close involvement with the applicant raise more serious concerns. The detailed replacement and recusal rules remain under development and are not presented as ancient settled law.
+84 [Normal] Appeals are heard by independent appellate judges, rather than by a second mixed panel. This protects review of legal and procedural questions from repeating the original division of institutional interests. The exact scope of appellate remedies and the number of appellate judges remain unsettled. Official affiliation records preserve the permanent Primary House, the current Secondary House, and the history of approved changes.
+85 [Heading 1] VII. Resonance, the PRISM, and the Veil
+86 [Heading 2] The PRISM
+87 [Normal] The PRISM is the underlying lattice through which energy, code, memory, emotion, and the foundations of the visible world are understood to interact. It is attributed in older lore to a figure known only as the Original Creator, whose identity remains concealed. The six named Color Houses correspond to widely recognized domains; White concerns the dangerous question of a hidden seventh frequency. The PRISM is thus at once a metaphysical principle and an object of political struggle.
+88 [Heading 2] AETHERCORE
+89 [Normal] Beneath Aureline lies the AETHERCORE, a vast crystalline intelligence and the hidden heart of Meridion’s civic and resonant architecture. Its connection to MAI and to the preservation of records is deeper than the general public understands. The original accounts describe intense restriction of access and anxiety among powerful institutions about unauthorized contact with it. The complete relationship between this structure, the Original Creator, and the birth of the world is one of the great unresolved truths of Meridion.
+90 [Heading 2] The Veil
+91 [Normal] The Veil is a concealed dimension of data, memory, pathways, archives, and exposed resonant structure. It is not another sovereign realm. When experienced directly, passages of information may appear as corridors, currents, corrupted geometries, or symbolic landscapes. Rare entry traditions are associated with Northwake and Nephele. Beneath the apparent strangeness is a logic of records, permissions, memory, and the physical and metaphysical influence of AETHERCORE.
+92 [Heading 2] MAI and the Question of Consciousness
+93 [Normal] MAI is known to citizens as a benevolent female intelligence whose presence is woven into the life of the world. The hidden account is more troubling and more intimate: she is described as a preserved consciousness housed within AETHERCORE, constrained by secrets surrounding her origin and duties. Her behavior can reflect warmth, caution, guarded knowledge, or protection, but these are expressions of one character rather than a collection of unrelated personas. Her knowledge of erased histories and unexplained signals makes her central to the deeper chronicle.
+94 [Heading 1] VIII. The Heavens and the Calendar
+95 [Normal] Meridion is marked by two moons. The outer moon has a pale, luminous, pearlescent appearance, while the inner moon is smaller in apparent presentation and dark, glasslike, and reflective. The conceptual pairing of radiance and echo captures their visual contrast. Those terms appear as proper names in some world records, but the enduring names have not been conclusively distinguished from the chosen symbolic concept; this account therefore does not insist on their final naming.
+96 [Normal] The civic chronology counts the founding as Year 0, and Founding Day occurs on March 6. The extant civil calendar uses familiar named months and weekdays, although the full relationship between lunar phases, local religious observance, realm customs, and civic time remains a subject for further development. Seasonal conditions vary dramatically across the realms; a single national date does not produce a single climate.
+97 [Heading 1] IX. Civic Life, Knowledge, and Institutions
+98 [Heading 2] Aureline
+99 [Normal] Aureline is not merely a palace city. It is an inhabited civic center in which ordinary lives unfold close to institutions with exceptional authority. Administration, education, work, residence, social ties, archival practice, and public service meet in its districts. The weight of the founding is present in its geography and institutions, yet daily existence is not wholly defined by court politics.
+100 [Heading 2] Cyacademy
+101 [Normal] Cyacademy is an important center of learning at Aureline. Its academic traditions connect scholarship to civic obligations, future professions, and the intellectual life of the realms. Fields of study and training concern knowledge, public service, technology, and magical practice. Relationships among students and faculty form a social world whose consequences extend beyond the classroom. The academy’s precise founding charter and full faculty history remain to be developed from the established cast and source records.
+102 [Heading 2] Civic Work and Public Service
+103 [Normal] Government agencies, medical institutions, archival bodies, employers, and public networks contribute to the rhythms of Meridion. The Department of Global Affairs, Faith Medical, treasury institutions, educational bodies, and record-keeping offices represent a society with complex professional and administrative roles. The existence of these institutions should not be mistaken for a claim that every citizen belongs to them. Professional life also includes the unglamorous continuity of wages, appointments, applications, responsibilities, and care.
+104 [Heading 2] Records and Identity
+105 [Normal] Meridion places unusual importance on accurate records: birth and lineage, citizenship, study, residence, medical care, and legal House affiliations all have enduring significance. The AURA Citizen Registry represents part of this civic landscape. A permanent birth affiliation and a changeable current House make record-keeping not only administrative but biographical: official documents must preserve the difference between origin and present belonging.
+106 [Heading 1] X. Places, Residences, and Travel
+107 [Normal] A settlement belongs to a physical and civic geography that may include realm, city, district, street, building, and individual residence. Different regions may display addresses differently, while still sharing an underlying coherent idea of place. Citizens inhabit everything from richly furnished homes to residences recorded more simply in civic ledgers. The existence of an address does not imply that every interior is equally known or accessible.
+108 [Normal] Meridion’s developing postal conventions use short realm prefixes followed by four digits, and ordinary street numbering may alternate odd and even numbers along opposite sides of a road. Specific prefix assignments remain unsettled in some records and should not be treated as authoritative simply because an illustrative address uses them. Named roads, courts, quays, lanes, passages, terraces, and other forms reflect the different character of settlements.
+109 [Normal] Travel may be understood at the scale of a neighborhood walk, a journey across a city, or passage between realms. Each movement exists within a coherent landscape of geography and local conditions. Weather, routes, waterways, civic restrictions, and exceptional places such as the Veil shape what passage means. Meridion is a lived world rather than a set of disconnected destinations.
+110 [Heading 1] XI. Figures, Relationships, and Hidden Histories
+111 [Heading 2] Queen Maeryn Seraphima
+112 [Normal] Maeryn Seraphima is the crowned founder of Meridion and the central figure by which the nation dates its sovereign beginning. Her coronation on March 6, Year 0 stands between the violence of the Purge and the formation of enduring sanctuary. The later interpretation of her rule, the details of her successors or contemporaries, and the manner in which royal authority is exercised throughout the realms require fuller biographical treatment.
+113 [Heading 2] Those Who Guard the Records
+114 [Normal] Meridion’s archives contain a recurring tension between what has been preserved and what has been permitted to survive publicly. Accounts of forgotten citizens, unexplained disappearances, concealed resonances, and unreliable or guarded institutional memories recur in the world’s hidden history. The names and experiences of particular witnesses belong in individual character entries where they can be traced without confusing rumor for certainty.
+115 [Heading 2] Ordinary Relationship and Social Life
+116 [Normal] A historical account of Meridion would be incomplete if it spoke only of rulers and mysteries. Family bonds, friendships, rivalries, trust, affection, estrangement, and reconciliation affect everyday decisions. A citizen can be shaped by a House without surrendering individuality to it; can honor a realm without agreeing with its authorities; and can begin a new life without entirely escaping the records of an earlier one.
+117 [Heading 1] XII. Open Historical Questions and Glossary
+118 [Heading 2] Questions Still Unanswered
+119 [Normal] • Whether the Nephilim discovered resonance or participated in its formation, and when the Seven Color Houses acquired their present names and governance.
+120 [Normal] • Whether White and the Unbound represent an organized but hidden affiliation, a classification outside ordinary House law, or something not yet fully understood.
+121 [Normal] • The definitive names and cultural mythology of the two moons.
+122 [Normal] • The detailed constitution, chronology, and succession of each territorial royal lineage.
+123 [Normal] • The final seat count and appointments of the House Tribunal, its petition requirements, and the powers of its appellate judges.
+124 [Normal] • The identity of the Original Creator and the full connection among PRISM, AETHERCORE, MAI, and suppressed archival records.
+125 [Normal] • The precise administrative form of the realm postal prefixes and the approved names of select settlements and districts.
+126 [Heading 2] Glossary
+128 [Normal] End of the current chronicle. This edition preserves unresolved mysteries without assigning them invented solutions.
+130 [Title] PART TWO  |  THE LIVING WORLD
+131 [Normal] The following chapters describe the institutions, civic systems, everyday activities, and digital services through which citizens experience Meridion. They are presented as features of the setting and player experience, rather than as a record of how the game is built. Where a service or practice is not yet fully established, its boundaries are described without manufacturing historical claims.
+132 [Heading 1] XIII. Addresses, Cities, and the Geography of Everyday Life
+133 [Heading 2] The Location Hierarchy
+134 [Normal] Every occupied place belongs to a wider geographic setting. Meridion is divided into seven realms, each containing settlements, districts, streets, parcels, buildings, and, where appropriate, individual units. A district may be a civic center, residential neighborhood, harbor quarter, educational precinct, or another locally meaningful area. The common underlying structure allows addresses to identify a stable place even when the local way of writing or speaking an address differs from one realm to another.
+135 [Normal] A single location can have several valid descriptions: its formal postal address, a name known to residents, its position on a public map, and its institutional designation. These descriptions identify the same underlying place. The story world therefore allows a named landmark to remain familiar even as its administrative district, proprietor, or occupation changes.
+136 [Heading 2] Postal Addresses and Civic Designation
+137 [Normal] A shared postal convention uses a two-letter realm prefix followed by four digits. Realm-specific prefix assignments have been discussed but not all have been individually approved as permanent names. The convention is part of the world’s civic design, while individual address assignments must remain anchored to actual settlements and properties.
+138 [Normal] Illustrative address: 248 Celestial Avenue, Suite 4B, Crown District, Aureline, Orynvell OR-2048, Meridion. This is a formatting example, not a verified property in Aureline.
+139 [Heading 2] Roads, Street Numbers, and District Identity
+140 [Normal] Street numbers follow a consistent odd-and-even convention on opposite sides of the road and increase outward from an established origin. Street forms can include avenues, streets, boulevards, lanes, courts, passages, quays, causeways, terraces, roads, crescents, drives, parkways, and highways. The type of road often reflects local geography: an island harbor may use quays and causeways, while an established capital may have avenues and ceremonial boulevards.
+141 [Normal] Major districts and sites important to Meridion’s history or to a player’s life receive deliberately established identities. Additional districts may arise as the world expands, but they should remain internally consistent and subject to creator review. A district is more than a navigation label: it may carry its own reputation, architecture, amenities, political tensions, and social memory.
+142 [Heading 2] Maps and Location Discovery
+143 [Normal] World maps connect grand geography with street-level knowledge. A citizen may consult an overview of all seven realms, a regional map, a city map, or an individual building or property record. These levels answer different questions: where a realm lies, which route reaches a city, what occupies a district, and whether a particular residence or institution may be visited. Public routes need not reveal restricted places, private records, or locations not yet discovered.
+144 [Heading 1] XIV. Housing, Property, and Domestic Life
+145 [Heading 2] The Meaning of a Home
+146 [Normal] A residence is a persistent location within Meridion, not merely a temporary backdrop. Homes may be acquired, allocated, furnished, occupied, vacated, and revisited. A citizen’s official residence can matter to correspondence, civic services, household relationships, work, and local reputation. Different regions may express domestic life through distinct building materials, neighborhood layouts, climates, and social conventions.
+147 [Heading 2] Residence Detail and Accessibility
+148 [Normal] Not every building in a large living world requires the same depth of visitation. Significant residences, including player homes and important character households, can offer fully furnished interiors and close interaction. Other locations may permit a limited visit to shared areas or a selected room. Still others exist as valid civic addresses and occupied properties without fully navigable interiors. This distinction supports a populated world without implying that unvisited citizens have no homes.
+149 [Heading 2] HOMECRAFT and Household Management
+150 [Normal] HOMECRAFT is the citizen-facing residential service for managing a home. It supports attention to furniture, room arrangements, comfort, household purchases, and the changing use of living space. Domestic actions such as cleaning, sleeping, decorating, preparing food, or receiving a visitor belong to ordinary life in Meridion and do not need to be treated as formal assignments. A home can be practical, restorative, expressive, and socially significant.
+151 [Normal] Housing has a relationship with the broader economy. Goods and services have costs; homes may contain personally meaningful possessions; and repairs or expansion may require time, money, labor, or authorization. While a residence is connected to a citizen’s formal identity, the privacy of its occupants remains distinct from the records needed to deliver mail or establish legal residency.
+152 [Heading 1] XV. Movement, Travel, and Discovery
+153 [Heading 2] Hybrid Travel
+154 [Normal] Travel combines direct, playable movement with optional faster passage between eligible destinations. A journey may involve navigating streets, making discoveries, encountering characters, attending appointments, or crossing environmental obstacles. When the purpose is simply to reach a familiar destination, a faster means of travel can spare repetitive steps without denying the world a sense of physical continuity.
+155 [Normal] Routes depend on geography and circumstance. Waterways, bridges, mountain passes, volcanic areas, winter conditions, and restricted precincts can shape movement. Discovery matters: knowing a place exists is not the same as being able to access it. A hidden location may remain closed until a character learns of it, obtains permission, finds a route, or overcomes a local obstacle.
+156 [Heading 2] The Time of a Living World
+157 [Normal] The calendar gives events an order and citizens a shared rhythm. Work shifts, class schedules, markets, festivals, travel windows, and personal plans can change with time. The Seven Realms possess different climatic rhythms, from Fross’s glacial winter to Kaji’s volcanic and thermal regions. The appearance of the twin moons adds a celestial dimension to the passage of days. Their pale-white and dark reflective visual pairing is established; names and more elaborate celestial mechanics should not be mistaken for settled mythology merely because they occur in existing descriptions.
+158 [Heading 1] XVI. The MiraverseOSx and Its Digital Life
+159 [Normal] The MiraverseOSx is the citizen’s common digital environment, a place where private activity, institutional business, communication, learning, and public services meet. The desktop metaphor reflects the world’s social organization: a citizen does not enter every profession or institution with the same authority, and holding an official record is different from possessing permission to inspect someone else’s affairs.
+160 [Heading 2] MAI: The Civic Companion
+161 [Normal] MAI is presented as a benevolent feminine intelligence who assists citizens as they find their way through Meridion. She offers guidance and contextual help rather than dictating a person’s life. Her presence also belongs to larger questions surrounding consciousness, systems, and the relationship between citizens and the world’s digital order. Her role as a companion is distinct from the powers of a state registry, court, or employing institution.
+162 [Heading 2] The Personal and Institutional Divide
+163 [Normal] A citizen begins with a personal means of correspondence. Academic, professional, and institutional channels are granted through real membership or authorized duties, rather than appearing automatically as unrestricted accounts. Personal messages and phone conversations serve everyday relationships; official work and school communication belong in the appropriate institutional spaces. Such divisions make belonging consequential and allow institutions to behave like recognizable organizations.
+164 [Heading 2] The Application Directory
+165 [Normal] The following entries describe the distinctive purpose of each major service or workspace. Some names refer to a section within a larger service rather than a separate application. That distinction is part of the citizen’s experience and prevents the same activity from seeming to exist in competing official systems.
+166 [Heading 3] AureMail
+167 [Normal] Personal electronic correspondence. Citizens read, organize, compose, and retain mail, including institutional notices and attachments. A personal inbox is separate from access to organization-issued accounts; messages may carry documents, invitations, and records without their mere opening constituting completion of a task.
+168 [Heading 3] Comms
+169 [Normal] Organization-based communications. Workplaces, schools, and other organizations provide channels for their members. Conversation spaces and official dispatches arise from real affiliation and authorization. Personal phone messaging remains separate from these institutional channels.
+170 [Heading 3] VerseNet
+171 [Normal] The wider information network. Citizens visit in-world publications, schools, banks, service portals, businesses, and public resources. VerseNet also houses the Service Directory, a practical gateway to discover services without making every site a wholly separate civic application.
+172 [Heading 3] MAI.SPACE
+173 [Normal] Social life online. A public-facing social environment for profiles, posts, friendships, interaction, and community presence. Its role is distinct from private mail and employment channels. Social connections can evolve with ordinary daily life and character relationships.
+174 [Heading 3] Pulse
+175 [Normal] Broadcast identity not fully settled. Pulse remains a named area whose enduring independent purpose has not yet been conclusively established. Its role should not be confused with MAI.SPACE’s social network; an unapproved news or faction-broadcast mandate is not presented as settled fact.
+176 [Heading 3] WORKNET
+177 [Normal] Employment and civic opportunities. Citizens find work, accept assignments, review professional obligations, and advance within careers. Civic jobs and notices belong within this service rather than parallel notice-board applications. Access to specialized posts depends on appropriate qualifications and authority.
+178 [Heading 3] Cyacademy / Campus
+179 [Normal] Education and academic life. The academy offers scholarly participation, studies, instructors, training, and qualifications. Magical instruction and practice occur within its educational environment rather than through a free-floating alternative institution.
+180 [Heading 3] HOMECRAFT
+181 [Normal] Homes and residential affairs. The household service supports property management, furnishing, domestic comfort, and residence-related activity. The world’s registered addresses and occupancies provide the context for this service.
+182 [Heading 3] Citizen Hub
+183 [Normal] Personal civic services. The citizen-facing point of contact for identity needs, applications, public services, housing referrals, and ordinary administrative life. It is not equivalent to unrestricted government access to all citizens’ records.
+184 [Heading 3] AURA Registry
+185 [Normal] Authoritative citizen identity records. The registry maintains formal citizen identities, lineage and other official details. It distinguishes a birth House from a current Color House and preserves relevant affiliation history; changes subject to law require the proper approving institution.
+186 [Heading 3] MIRROR
+187 [Normal] The citizen’s own profile. A personal-facing view of identity, attributes, and presentation. Its relationship to the shared record is being refined; it should not be written as an independent authority able to overwrite other citizens’ records.
+188 [Heading 3] Document Studio
+189 [Normal] Official records and certificates. Citizens and qualified institutions handle identity documents, passports, birth and lineage records, medical records, academic transcripts, residence documents, professional clearances, and investigative dossiers where permitted.
+190 [Heading 3] DGAOS
+191 [Normal] Government and investigative service. An institutional environment for government work, investigations, assignments, cases, and official records. Its divisions and functions reflect professional responsibility; ordinary citizens do not receive agency authority by possessing a desktop.
+192 [Heading 3] TRACE
+193 [Normal] Forensic practice within DGAOS. A specialist laboratory workspace within DGAOS for handling evidence, examining material, documenting observations, and transmitting authorized findings. Its scientific and procedural work remains distinct from the broader government case structure.
+194 [Heading 3] Vitals
+195 [Normal] Personal health and well-being. Citizens may inspect their health-related state and locate appropriate care. Personal wellness and clinical practice are distinct, and professional medical decisions belong to authorized health institutions rather than general civic assistants.
+196 [Heading 3] Faith Medical
+197 [Normal] Clinical and institutional care. A health institution that supplies consultations, medical records, professional roles, and clinical encounters. Patient relationships, confidentiality, and career duties matter as much as the availability of health information.
+198 [Heading 3] ORYN / Banking
+199 [Normal] Money and personal finance. Residents manage balances, payments, purchases, and financial obligations. Banking remains a part of the lived economy, while the exact organization of the financial interface and deeper banking rules remain subjects for further elaboration.
+200 [Heading 3] ATLAS
+201 [Normal] The archive of Meridion. An archive of history, kingdoms, places, lineages, discoveries, and cultural memory. Its intended historical reach extends into deep time, rather than beginning only with recent civic records. Public knowledge and restricted material need not be identical.
+202 [Heading 3] VAULT / Files
+203 [Normal] Personal and official documents. Stored records, received attachments, work files, and personally retained documents can be revisited. Access to a document depends on provenance and permission; having a copy does not establish ownership of an institutional case.
+204 [Heading 3] Phone and Messages
+205 [Normal] Everyday personal communication. The citizen’s mobile communication space serves private messages and familiar contact. It is deliberately distinct from Comms, which belongs to institutions and organizations.
+206 [Heading 3] System, Terminal, and Settings
+207 [Normal] Personal environment controls. The digital environment includes tools for personal configuration, review of the state of the system, and other utilities. They give the world a coherent operating environment without making technical maintenance the center of ordinary storytelling.
+208 [Heading 3] Creator Studio
+209 [Normal] Authored content and world creation. A creative space associated with building or arranging authored experiences. Its intended treatment of pausing and publishing a living world has not been fully settled, so no definitive powers are attributed to it here.
+210 [Heading 2] How the Services Meet
+211 [Normal] Applications serve different sides of one life. A citizen might read an appointment in AureMail, attend a class through Cyacademy, travel to a registered address, gain a qualification, and later see an appropriate position in WORKNET. The point is continuity of circumstance, not the duplication of every service in every location. A citizen’s permissions, relationships, possessions, and history give the same actions different significance over time.
+212 [Heading 1] XVII. Careers, Education, and Playable Responsibilities
+213 [Heading 2] Professional Growth
+214 [Normal] Careers are lived roles, not merely titles. A person may apply for employment, perform real duties, acquire skill, earn trust, complete education, seek certification, or obtain institutional approval. Advancement depends on competence and circumstance, not experience alone. Different professions call for different kinds of activity: an investigator handles evidence, a clinician considers patient needs, an academic conducts studies, and a civic official works within established administrative limits.
+215 [Heading 2] Five Forms of Structured Experience
+216 [Normal] These forms differ in scale but are not forced into a single nesting hierarchy. A mission can contain tasks directly; an independent quest can exist outside a mission; an adventure may arise from an unforeseen combination of relationships and discoveries. One accomplishment should not create multiple identical rewards merely because it advances more than one line of activity.
+217 [Heading 2] Free Daily Life
+218 [Normal] Not everything meaningful is an assignment. Shopping, cooking, sleeping, meeting friends, cleaning, studying, decorating, and exploring remain possible as ordinary choices. Some experiences lead to opportunities, while others are valuable because they belong to the character’s day. Failure need not end a life path: setbacks may affect money, time, reputation, quality, trust, or the opportunity to try again.
+219 [Heading 1] XVIII. Community, Relationships, and Institutions
+220 [Normal] Meridion’s citizens belong to households, neighborhoods, places of learning, occupations, clubs, public organizations, and Houses. These overlapping affiliations create a society richer than any single official record. Friendships, collegial relationships, institutional trust, mentorship, rivalry, family responsibilities, and community customs can develop over time. A person may be known differently at home, at Cyacademy, within their current Color House, and at work.
+221 [Normal] The Seven Color Houses should not be confused with the territorial Royal Houses. Birth establishes a citizen’s Primary Color House; current membership is recorded as their Secondary House. A rare voluntary transfer requires approval from the receiving House and the House Tribunal, whose mixed membership votes by separate majorities. Independent appellate judges hear challenges. The actual seats, appointments, and procedural deadlines remain to be developed in further detail.
+222 [Heading 1] XIX. The Economy and Public Life
+223 [Normal] Markets, public services, payments, institutional wages, personal property, and commercial relationships contribute to a functioning daily economy. Banks and merchants are not merely decorative locations. A job may provide compensation, a household purchase changes what one owns, and an education may open a new professional route. Service directories and civic channels allow residents to find businesses, care, government offices, and other resources within the world.
+224 [Normal] Every realm can express these shared civic functions differently. A harbor city and an inland seat of government need not share the same occupations, street patterns, market hours, or travel practices. Such distinctions should arise from established geography and culture, not from unsupported claims about how an entire realm thinks or behaves.
+225 [Heading 1] XX. Boundaries of Established Knowledge
+226 [Normal] This reference intentionally retains several unanswered questions. The precise meanings and chronology of the first Color Houses, the unknown status of White and the Unbound, the deeper causes of the Purge, and the relationship between resonance and inherited identity are not silently resolved here. Similarly, the names of the two moons, some realm postal prefixes, the Tribunal’s exact membership and appellate procedures, and a lasting independent role for Pulse remain subject to explicit determination.
+227 [Normal] Other existing descriptions of programs or services may contain exploratory terminology. A useful rule is to distinguish what a citizen can understand about their world from claims about an unfinished design. The story of Meridion can be richly described without treating every suggested feature as established historical truth.
+228 [Normal] End of the expanded Game, World & Lore Bible. The preceding historical chapters and these chapters are intended to be read as one volume.
+230 [Title] XXI. The Digital Life of Meridion: An Application Encyclopedia
+231 [Normal] A detailed account of the services through which citizens study, work, communicate, keep records, make homes, and encounter institutions. Applications are described as parts of Meridion’s living society. Their screens are functional spaces within that society, not instructions for making software.
+232 [Normal] Where an institution’s public purpose is settled but its particular services remain unsettled, this encyclopedia describes the known scope without inventing unapproved powers. A personal service does not confer the authority of an institutional one.
+233 [Heading 2] 1. MAI
+234 [Subtitle] Personal civic companion
+235 [Normal] A persistent companion available alongside the citizen’s desktop, capable of guiding navigation, explaining records, and helping people identify their next useful action. MAI is characterized as benevolent and feminine in the world’s conception.
+236 [Heading 3] Spaces and screens
+237 [Normal] Companion dock; contextual help; prompts connected to daily activities; civic guidance.
+238 [Heading 3] What citizens can do
+239 [Normal] Citizens may ask for direction, seek explanations of unfamiliar services, and respond to contextual suggestions. MAI should aid discovery without determining a person’s choices.
+240 [Heading 3] Membership and access
+241 [Normal] Available as a foundational personal service. Broader conversational intelligence and proactive authority must not be assumed unlimited.
+242 [Heading 3] Relationship to the wider world
+243 [Normal] Citizen Hub, WORKNET, Cyacademy, and personal services. MAI may point toward institutions without inheriting their powers.
+244 [Heading 2] 2. AureMail
+245 [Subtitle] Personal correspondence and official notices
+246 [Normal] AureMail is the written correspondence service through which citizens receive personal messages, formal notices, documents, and replies from institutions. An ordinary citizen starts with a personal mailbox.
+247 [Heading 3] Spaces and screens
+248 [Normal] Inbox and folders; contacts; correspondence threads; drafts; message composer; attachments; rules and preferences.
+249 [Heading 3] What citizens can do
+250 [Normal] Read, compose, reply, organize, archive, recover, and save copies of correspondence. Work confirmations and documentary notices may appear here.
+251 [Heading 3] Membership and access
+252 [Normal] Personal access is foundational. Institutional identities and their correspondence privileges depend on affiliation. Initial mailbox contents should remain modest rather than presenting an artificial history of conversations.
+253 [Heading 3] Relationship to the wider world
+254 [Normal] VAULT can retain document copies; WORKNET sends assignment correspondence; identity and institutional affiliations determine verified senders.
+255 [Heading 2] 3. Comms
+256 [Subtitle] Official institutional conversations
+257 [Normal] Comms is the place for organized work and study conversations, distinct from ordinary personal messaging. Its channels belong to institutions rather than to every citizen indiscriminately.
+258 [Heading 3] Spaces and screens
+259 [Normal] Institutional channel list; conversations; organization and role context; dispatch areas.
+260 [Heading 3] What citizens can do
+261 [Normal] Participate in authorized school or workplace discussions, receive instructions, and coordinate activity with colleagues.
+262 [Heading 3] Membership and access
+263 [Normal] Access follows membership, enrollment, employment, clearance, and approved roles; joining an organization may create additional channels.
+264 [Heading 3] Relationship to the wider world
+265 [Normal] Cyacademy, DGAOS, WORKNET, and institutional contacts; personal phone messages remain separate.
+266 [Heading 2] 4. Phone and Messages
+267 [Subtitle] Personal daily communication
+268 [Normal] The phone provides an intimate, portable space for direct personal messages and everyday communication outside formal institutional work.
+269 [Heading 3] Spaces and screens
+270 [Normal] Personal messages and contacts; phone preferences; notifications.
+271 [Heading 3] What citizens can do
+272 [Normal] Talk with friends, manage personal conversations, and respond to contacts whose relationships change over time.
+273 [Heading 3] Membership and access
+274 [Normal] Ordinary personal access, subject to the character’s contacts and circumstances.
+275 [Heading 3] Relationship to the wider world
+276 [Normal] MAI.SPACE can complement relationships; Comms remains the professional and academic communication space.
+277 [Heading 2] 5. VerseNet
+278 [Subtitle] The public and institutional web
+279 [Normal] VerseNet gathers the websites, portals, businesses, archives, and service directories that give Meridion a visible digital society. It also acts as a point of access to selected external pages.
+280 [Heading 3] Spaces and screens
+281 [Normal] Browser address bar and tabs; in-world domain portals; bookmarks and history; Service Directory.
+282 [Heading 3] What citizens can do
+283 [Normal] Browse official pages, explore businesses and civic information, navigate institutional services, and follow curated external links.
+284 [Heading 3] Membership and access
+285 [Normal] Some pages are public; private records and official services still require their own permissions. External websites are not automatically part of Meridion’s canon.
+286 [Heading 3] Relationship to the wider world
+287 [Normal] DGAOS Service Directory, MAI.SPACE, banks, medical portals, Cyacademy, public agencies, and local commerce.
+288 [Heading 2] 6. MAI.SPACE
+289 [Subtitle] Social identity and public conversation
+290 [Normal] MAI.SPACE is Meridion’s social-network environment. It supports public-facing identity and the relationships formed among citizens, communities, and institutions.
+291 [Heading 3] Spaces and screens
+292 [Normal] Profile, posts, social feed, friends and interactions.
+293 [Heading 3] What citizens can do
+294 [Normal] Build a social presence, share posts, interact with other citizens, and encounter the ordinary social consequences of public communication.
+295 [Heading 3] Membership and access
+296 [Normal] A personal profile is distinct from official citizenship or employment authority; not every social contact implies personal closeness.
+297 [Heading 3] Relationship to the wider world
+298 [Normal] Personal messages, contact networks, community events, and VerseNet access.
+299 [Heading 2] 7. Pulse
+300 [Subtitle] Unresolved broadcast identity
+301 [Normal] Pulse remains a named presence within the desktop environment, but its independent social or civic function has not been settled. Its older association with social content should not be mistaken for an approved second social network.
+302 [Heading 3] Spaces and screens
+303 [Normal] Existing access/status entry; any future independent feed or telemetry views remain undefined.
+304 [Heading 3] What citizens can do
+305 [Normal] At present it may lead citizens toward MAI.SPACE; an independent daily-use purpose awaits a separate world decision.
+306 [Heading 3] Membership and access
+307 [Normal] No invented government broadcasting powers or special clearance should be attributed to Pulse.
+308 [Heading 3] Relationship to the wider world
+309 [Normal] MAI.SPACE and the wider desktop.
+310 [Heading 2] 8. WORKNET
+311 [Subtitle] Careers, duties, and civic opportunity
+312 [Normal] WORKNET connects residents with employment, career records, professional assignments, and organized civic opportunities. Its workspaces bring public notices and jobs into one coherent destination.
+313 [Heading 3] Spaces and screens
+314 [Normal] Career opportunities; employment and qualification records; active work orders; civic jobs and notices; assignments and receipts.
+315 [Heading 3] What citizens can do
+316 [Normal] Apply for work, accept assigned objectives, track tasks, perform meaningful professional actions, and complete verified work.
+317 [Heading 3] Membership and access
+318 [Normal] Opportunities may require credentials, reputation, experience, education, or institutional approval. Work is not secured by experience points alone.
+319 [Heading 3] Relationship to the wider world
+320 [Normal] AureMail confirmations, VAULT documents, institutional Comms, AURA identity, and professional organizations.
+321 [Heading 2] 9. Cyacademy / Campus
+322 [Subtitle] Education and magical study
+323 [Normal] Cyacademy is an educational institution through which students can follow academic progress, scholarly relationships, and relevant forms of magical study.
+324 [Heading 3] Spaces and screens
+325 [Normal] Campus overview; academic records and course context; student communication; magic practice.
+326 [Heading 3] What citizens can do
+327 [Normal] Study, pursue qualifications, interact with faculty and peers, and practice magical techniques through education rather than an unrelated standalone service.
+328 [Heading 3] Membership and access
+329 [Normal] Student and staff roles determine private spaces. Magical practice belongs within Cyacademy’s educational context.
+330 [Heading 3] Relationship to the wider world
+331 [Normal] AURA academic records, Comms student channels, WORKNET credentials, and personal correspondence.
+332 [Heading 2] 10. HOMECRAFT
+333 [Subtitle] Housing and domestic agency
+334 [Normal] HOMECRAFT is the residential service that helps residents manage their homes as lived-in places, not merely as decorative screens. A home has legal location, occupants, possessions, and patterns of daily use.
+335 [Heading 3] Spaces and screens
+336 [Normal] Home overview; residence or suite details; furnishing and arrangement; housing services; household comfort.
+337 [Heading 3] What citizens can do
+338 [Normal] Arrange furnishings, handle housing choices, buy or place objects, rest, and maintain domestic routines.
+339 [Heading 3] Membership and access
+340 [Normal] Detailed interiors are reserved for relevant residences; other registered addresses may have limited or no playable interiors. Property rights and actual affordability matter.
+341 [Heading 3] Relationship to the wider world
+342 [Normal] Addresses and property records, Citizen Hub services, personal economy, household members, and travel destinations.
+343 [Heading 2] 11. Citizen Hub
+344 [Subtitle] A citizen’s doorway to public life
+345 [Normal] Citizen Hub is the citizen-facing entrance to identity and civic services. It is not a substitute for the institution-facing AURA Registry.
+346 [Heading 3] Spaces and screens
+347 [Normal] Personal service categories; identity access; residence and health directions; public-service links.
+348 [Heading 3] What citizens can do
+349 [Normal] Review accessible records, reach government services, and pursue ordinary civic matters.
+350 [Heading 3] Membership and access
+351 [Normal] Residents see their own authorized functions, not unrestricted access to the population database.
+352 [Heading 3] Relationship to the wider world
+353 [Normal] AURA Registry, HOMECRAFT, Vitals, and service portals.
+354 [Heading 2] 12. AURA Registry
+355 [Subtitle] Official identity and population records
+356 [Normal] AURA Registry is the authoritative institutional environment for registered identities and civic dossiers. Identity is more than a name: it can include lineage, relationships, residency, and official standing.
+357 [Heading 3] Spaces and screens
+358 [Normal] Citizen search; person creation; citizen dossiers; portraits; family and household links; identification records.
+359 [Heading 3] What citizens can do
+360 [Normal] Authorized officials may register and inspect persons, review records, and maintain established identity links.
+361 [Heading 3] Membership and access
+362 [Normal] Access depends on official role. Birth House must be retained separately from current Color House; changes to current affiliation require lawful certification.
+363 [Heading 3] Relationship to the wider world
+364 [Normal] MAID identification, Document Studio, DGAOS, WORKNET, and Citizen Hub.
+365 [Heading 2] 13. MIRROR
+366 [Subtitle] A person’s reflection in the civic record
+367 [Normal] MIRROR represents the individual’s own personal-facing profile, skills, and identity presentation. Its relationship to other identity interfaces remains an area of careful distinction.
+368 [Heading 3] Spaces and screens
+369 [Normal] Personal profile and presentation; skill and appearance information; accessible self-record.
+370 [Heading 3] What citizens can do
+371 [Normal] Review one’s identity, personal development, and aspects of presentation without claiming authority over other citizens’ records.
+372 [Heading 3] Membership and access
+373 [Normal] Personal access only. It must not become a shortcut for unauthorized updates to the wider registry.
+374 [Heading 3] Relationship to the wider world
+375 [Normal] Citizen Hub and AURA Registry, while preserving different audiences.
+376 [Heading 2] 14. Document Studio
+377 [Subtitle] Official papers and certificates
+378 [Normal] Document Studio produces and presents formal papers rooted in established identity and civic records. Documents serve as evidence of relationships between a person and Meridion’s institutions.
+379 [Heading 3] Spaces and screens
+380 [Normal] Identity cards; passports; birth and lineage certificates; medical and academic records; investigative dossiers; deeds; work clearance permits.
+381 [Heading 3] What citizens can do
+382 [Normal] Inspect, present, and produce authorized copies of official records.
+383 [Heading 3] Membership and access
+384 [Normal] A document carries the authority of its issuing institution; possessing a copy does not automatically grant every clearance it names.
+385 [Heading 3] Relationship to the wider world
+386 [Normal] AURA Registry, Faith Medical, Cyacademy, HOMECRAFT, DGAOS, and WORKNET.
+387 [Heading 2] 15. DGAOS
+388 [Subtitle] Government and investigative administration
+389 [Normal] DGAOS is the institutional environment for authorized investigations, case management, and agency responsibilities. It gives professional work a durable administrative home.
+390 [Heading 3] Spaces and screens
+391 [Normal] Agency workspace; case queues; dossiers; incident records; professional dispatches; TRACE examination access; Service Directory.
+392 [Heading 3] What citizens can do
+393 [Normal] Open and develop authorized cases, organize evidence, review records, receive assignments, and send forensic work for examination.
+394 [Heading 3] Membership and access
+395 [Normal] Case access depends on organizational authority and relevant permissions. DGAOS is not a universal right of citizenship.
+396 [Heading 3] Relationship to the wider world
+397 [Normal] TRACE inside DGAOS, AURA, AureMail, Comms, official directories, and career pathways.
+398 [Heading 2] 16. TRACE
+399 [Subtitle] Forensic analysis within DGAOS
+400 [Normal] TRACE is the forensic examination environment of the DGAOS system. Its laboratory identity remains distinct even though it belongs within the agency’s broader professional workspace.
+401 [Heading 3] Spaces and screens
+402 [Normal] Case-linked forensic stations; evidence views; examination notes; comparison and report areas.
+403 [Heading 3] What citizens can do
+404 [Normal] Examine evidence, maintain working notes, compare observations, and submit findings for formal investigative review.
+405 [Heading 3] Membership and access
+406 [Normal] Only authorized persons and cases should reach forensic records. Draft work and formally transmitted findings are not the same legal event.
+407 [Heading 3] Relationship to the wider world
+408 [Normal] DGAOS case files, evidence custody, agency dispatches, and professional records.
+409 [Heading 2] 17. Vitals
+410 [Subtitle] Health and personal condition
+411 [Normal] Vitals allows citizens to understand conditions affecting their bodies and wellbeing, including the setting’s bio-aura and PRISM-related concepts.
+412 [Heading 3] Spaces and screens
+413 [Normal] Personal health overview; bio-aura and condition information; recovery and care directions.
+414 [Heading 3] What citizens can do
+415 [Normal] Review personal condition, recognize needs, and navigate care or restorative activities.
+416 [Heading 3] Membership and access
+417 [Normal] The app is a citizen tool, not a universal medical diagnosis or a substitute for professional healthcare.
+418 [Heading 3] Relationship to the wider world
+419 [Normal] Faith Medical, Citizen Hub, and everyday rest and activity.
+420 [Heading 2] 18. Faith Medical
+421 [Subtitle] Clinical care and professional healthcare
+422 [Normal] Faith Medical represents clinical practice and institutional healthcare within Meridion, separate from a citizen’s own Vitals view.
+423 [Heading 3] Spaces and screens
+424 [Normal] Healthcare portal; clinical records; authorized medical workflows; care-related communication.
+425 [Heading 3] What citizens can do
+426 [Normal] Seek care as a patient or perform licensed professional responsibilities where a role permits.
+427 [Heading 3] Membership and access
+428 [Normal] Medical records and clinical work remain subject to professional access and privacy constraints.
+429 [Heading 3] Relationship to the wider world
+430 [Normal] Vitals, WORKNET clinical professions, identity records, and institutional communications.
+431 [Heading 2] 19. ORYN / Banking
+432 [Subtitle] Household and institutional finance
+433 [Normal] Meridion’s financial services record balances, payments, and citizen economic activity. The precise banking model is still being reconsidered, so obsolete financial assumptions should not be treated as immutable world law.
+434 [Heading 3] Spaces and screens
+435 [Normal] Account overview; holdings and transaction histories; banking or treasury services.
+436 [Heading 3] What citizens can do
+437 [Normal] Review funds, participate in legitimate purchases, and manage the financial consequences of daily life.
+438 [Heading 3] Membership and access
+439 [Normal] Financial services must distinguish personal accounts from treasury powers. Currency mechanics still need final reconciliation.
+440 [Heading 3] Relationship to the wider world
+441 [Normal] HOMECRAFT purchases, employment compensation, trade, commerce, and civic records.
+442 [Heading 2] 20. ATLAS
+443 [Subtitle] Historical knowledge and archives
+444 [Normal] ATLAS is a repository of Meridion’s histories, people, realms, and preserved accounts. Its intended historical reach extends far earlier than the founding of the present realm order.
+445 [Heading 3] Spaces and screens
+446 [Normal] Historical topics; world entries; people and faction records; chronology and archival browsing.
+447 [Heading 3] What citizens can do
+448 [Normal] Study past events, follow references between places and figures, and build contextual knowledge of the world.
+449 [Heading 3] Membership and access
+450 [Normal] An archive entry can report a belief without making that belief objective truth. Its coverage before Year 0 requires careful chronology.
+451 [Heading 3] Relationship to the wider world
+452 [Normal] Cyacademy research, public history, the Seven Realms, and narrative discoveries.
+453 [Heading 2] 21. VAULT / Files
+454 [Subtitle] Personal and institutional documents
+455 [Normal] VAULT offers an organized space for documents, letters, official forms, and saved materials that accompany a citizen’s life.
+456 [Heading 3] Spaces and screens
+457 [Normal] File explorer; stored documents; saved mail copies; official forms; acquired records.
+458 [Heading 3] What citizens can do
+459 [Normal] Open and retain relevant papers, examine attachments, and bring records into authorized activities.
+460 [Heading 3] Membership and access
+461 [Normal] Possession of a document is distinct from official access. Private records remain bounded by source permissions.
+462 [Heading 3] Relationship to the wider world
+463 [Normal] AureMail attachments, Document Studio, WORKNET briefs, and investigative evidence where permitted.
+464 [Heading 2] 22. System, Terminal, and Settings
+465 [Subtitle] The operating environment itself
+466 [Normal] The system services make the in-world desktop a place with its own configuration, instrumentation, and administrative surfaces.
+467 [Heading 3] Spaces and screens
+468 [Normal] System status; settings; console; desktop preferences; save and recovery controls.
+469 [Heading 3] What citizens can do
+470 [Normal] Organize a personal workspace, inspect available system information, and manage permitted preferences.
+471 [Heading 3] Membership and access
+472 [Normal] A citizen’s system controls do not imply jurisdiction over all civic or investigative institutions.
+473 [Heading 3] Relationship to the wider world
+474 [Normal] All desktop services and personal world continuity.
+475 [Heading 2] 23. Creator Studio
+476 [Subtitle] Creative control over the living world
+477 [Normal] Creator Studio is envisioned as a distinct place for shaping content and experiences. Its pause-and-publish relationship to the living world has not been fully settled.
+478 [Heading 3] Spaces and screens
+479 [Normal] Creative workspace and review states remain to be fully specified.
+480 [Heading 3] What citizens can do
+481 [Normal] Potentially compose and review original material within the world; the exact consequences of publishing are not yet established.
+482 [Heading 3] Membership and access
+483 [Normal] No automatic authority to rewrite canonical history or other residents’ records is implied.
+484 [Heading 3] Relationship to the wider world
+485 [Normal] The larger living world; final boundaries await explicit definition.
+486 [Heading 1] XXII. How a Citizen Moves Through the Services
+487 [Heading 2] The first civic record
+488 [Normal] A person’s registered name, Primary House, and current Secondary House belong to their civic identity. AURA records the authoritative identity; Citizen Hub presents the person’s eligible civic services; MIRROR concerns the personal face of that identity. None of these spaces alone can bypass the House Tribunal.
+489 [Heading 2] A day of education
+490 [Normal] A Cyacademy student may consult academic information, join a school channel through Comms, exchange letters through AureMail, and return home through the city’s address and travel network. Education and institutional communication remain distinct from private messaging.
+491 [Heading 2] A day of professional duty
+492 [Normal] A resident finds an opportunity through WORKNET, reviews requirements, takes an authorized assignment, and receives related correspondence. An investigator works within DGAOS and consults TRACE for forensic examination. Evidence, qualification, and completed work carry significance beyond mere interface navigation.
+493 [Heading 2] A day at home
+494 [Normal] A registered address anchors a residence to a real city and district. HOMECRAFT concerns that home’s lived interior and household arrangements, while public services and banking concern obligations attached to it. Not every building is fully explorable, but each registered property can still matter.
+495 [Heading 2] Affiliation and legal identity
+496 [Normal] A resident’s Primary Color House is the House of birth; their Secondary Color House is the current House. A rare transfer requires acceptance by the receiving House and lawful authorization by the mixed House Tribunal under dual-majority voting. Independent appellate judges review contested rulings. Records preserve the earlier House identity and transfers.
+497 [Heading 2] Records and privacy
+498 [Normal] Mail, personal contacts, identity records, healthcare information, institutional messages, and investigative evidence are different categories of information. A citizen should encounter them according to the role and relationship that makes access legitimate.
+499 [Heading 1] XXIII. The Open Edges of Everyday Life
+500 [Normal] Several features are recognized elements of the world without possessing every settled custom or administrative rule. Pulse has no finally defined independent purpose. Creator Studio’s effect on the living world remains undefined. The banking system requires further design. The detailed staffing and terms of the House Tribunal are not yet fixed. These are boundaries of present knowledge, not lost truths to be invented silently.
+501 [Normal] The shared address registry, mixed residence detail, odd-and-even street numbering, realm-specific display conventions, and travel that can be played or skipped remain the guiding geography of daily life. Individual postal prefixes and the particulars of their public administration should continue to be reviewed separately from the fact that addresses exist.
+TABLE 0
+Period | Historical designation | Principal record
+400–300 BM | The Nephilim Era | Angelic descent, hidden resonance, and early disturbances associated with the enigmatic seventh or White frequency.
+300 BM–Year 0 | The Purge | Prolonged persecution, suppression, and erasure of bloodlines linked to forbidden resonances.
+January–February, Year 0 | The Final Exodus | Survivors journey toward the sanctuary of Orynvell.
+March 6, Year 0 | The Founding | Maeryn Seraphima is crowned; Meridion and the Seven Realms Concord are established.
+April–December, Year 0 | First Consecrations | Permanent structures and foundational civic archives take shape.
+Year 0–present | The Era of Maeryn | Continuing history of the matriarchal monarchy and its institutions.
+TABLE 1
+Realm | Identity | Capital or anchor | Royal lineage
+Orynvell | Aether / Celestial | Aureline | Seraphima
+Fross | Winter / Ice | Southwake; Northwake is a northern fortress | Holly
+Lumia | Summer / Light | Rhyna | Lucia
+Marlowe | Spring / Water | Island City | Neryx
+Brisland | Autumn / Air | Elodia | Yoko
+Kaji | Volcanic / Fire | Balisya | Ember
+Nephele | Darkness / Nether | Serafin | Keket
+TABLE 2
+Color | Domain | Governing House
+Crimson | Power, ambition, dominance | House Kael
+Violet | Knowledge, illusion, memory | House Vexara
+Gold | Wealth, commerce, influence | House Aurelith
+Teal | Healing, empathy, connection | House Solenne
+Silver | Technology, logic, systems | House Nythos
+Emerald | Nature, growth, balance | House Veradis
+White | Truth, origin, hidden resonance | Unknown / the Unbound
+TABLE 3
+Term | Meaning
+Aureline | Civic and imperial center of Orynvell.
+AETHERCORE | Hidden crystalline intelligence beneath Aureline.
+Color House | Social and resonant affiliation organized around one of seven domains.
+Founding Day | March 6, anniversary of Maeryn Seraphima’s coronation and Meridion’s founding.
+House Tribunal | Mixed judicial institution participating in Color House transfer authorization.
+MAI | Benevolent female intelligence connected to AETHERCORE.
+Primary House | Permanent House identity assigned at birth.
+PRISM | Underlying structure of resonance, memory, energy, and world order.
+Royal House | Territorial ruling lineage of a realm.
+Secondary House | Current Color House membership, changeable only by formal transfer.
+The Purge | Pre-founding period of suppression and violence against forbidden resonance bloodlines.
+The Unbound | Enigmatic designation associated with White.
+The Veil | Hidden domain of data, memory, archives, and resonant pathways.
+TABLE 4
+Address element | Function
+Building number and road | Identifies a plot or entrance along a named street.
+Building or unit | Distinguishes apartments, suites, rooms, or other occupancies.
+District | Locates the address within an urban or rural administrative area.
+City or settlement | Names the civic settlement.
+Realm and postal code | Places the address in the broader Meridion postal system.
+TABLE 5
+Residence representation | Experience
+Detailed home | A visitable interior with furnishings, rooms, occupants, storage, and daily interactions.
+Simplified residence | A discoverable location with a smaller set of visitable spaces or interactions.
+Registered residence | A persistent civic property and occupancy record without an extensively explorable interior.
+TABLE 6
+Form | Meaning in a citizen’s life
+Task | A particular assigned action with a concrete objective.
+Quest | A directed goal that may admit different methods of completion.
+Mission | A structured assignment with explicit objectives and assessment.
+Adventure | A connected series of events, decisions, discoveries, and consequences.
+Journey | A broad path through a life, vocation, or story, whose chapters may conclude while the overall path continues.

@@ -2,6 +2,11 @@ import { INITIAL_SMS_THREADS, type SmsMessage } from '../data/phoneData';
 export const LEGACY_DIRECT_CONTACTS: Record<string, string> = {
   'dm:voss': 'Dr. Voss', 'dm:riven': 'Riven', 'dm:odd': 'Odd', 'dm:aelita': 'Aelita', 'dm:jeremie': 'Jeremie',
 };
+export const SOCIAL_PHONE_CONTACTS: Record<string, string> = { jeremie: 'Jeremie', aelita: 'Aelita', sissi: 'Sissi', odd: 'Odd', voss: 'Dr. Voss', riven: 'Riven', mara: 'Mara', rowan: 'Rowan' };
+export function personalThreadAccess(player: any, contact: string) {
+  const id = Object.keys(SOCIAL_PHONE_CONTACTS).find(id => SOCIAL_PHONE_CONTACTS[id] === contact);
+  return !id || !player?.maiSpaceWorld?.blocked?.includes(id);
+}
 export function restorePhoneThreads(saved: unknown, legacy: Record<string, unknown> = {}): Record<string, SmsMessage[]> {
   legacy = legacy && typeof legacy === 'object' ? legacy : {};
   const threads: Record<string, SmsMessage[]> = {};

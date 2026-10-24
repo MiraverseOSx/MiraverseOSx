@@ -1,4 +1,5 @@
 import { createBrowserActions } from './browserActions';
+import { createSocialActions, type SocialActions } from './socialActions';
 import { grantLocalCredentials, isLocalWorld } from '../gameplay/localCredentials';
 import { createSiteActions, type SiteActions } from './siteActions';
 import { emptyVersenetSites, restoreVersenetSites, type VersenetSites } from '../apps/Browser/interactiveSites';
@@ -58,7 +59,7 @@ export interface OSWindow {
   [key: string]: any;
 }
 
-export interface OSStoreState extends AssignmentFlowActions, ProgressionActions, VersenetActions, SiteActions, BroadStreetActions {
+export interface OSStoreState extends AssignmentFlowActions, ProgressionActions, VersenetActions, SiteActions, BroadStreetActions, SocialActions {
   isLoggedIn: boolean;
   isSanctuary: boolean;
   toggleSanctuary: () => void;
@@ -385,6 +386,7 @@ export const useOSStore = create<OSStoreState>()(persist((set, get) => ({
   ...createSiteActions(set, get),
   ...createVersenetActions(set, get),
   ...createBrowserActions(set, get),
+  ...createSocialActions(set, get),
 
   grantLocalFullAccess: () => {
     const current = get();
@@ -1276,216 +1278,14 @@ export const useOSStore = create<OSStoreState>()(persist((set, get) => ({
     };
   },
 
-  acceptMaiSpaceFriend: (friendId) => {
-    const state = get();
-    const player = state.gameplay.player;
-    const profile = player.maiSpaceProfile || {
-      handle: player.name || 'Aureline_Netrunner',
-      statusThought: 'Exploring the digital conduits of Aureline Central ✨',
-      headerFont: 'Cookie',
-      acceptedFriends: [],
-      pingedFriendsCycle: {},
-      lastBulletinPostCycle: 0,
-      bulletinPosts: [],
-    };
-    const accepted: string[] = Array.isArray(profile.acceptedFriends) ? profile.acceptedFriends : [];
-    if (accepted.includes(friendId)) {
-      return { ok: false, message: `Connection with ${friendId} is already active in your Mai.space network.` };
-    }
-
-    const newXP = player.xp + 75;
-    const newLevel = Math.floor(newXP / 100) + 1;
-    const currentVec = player.npcVectors?.[friendId] || { friendship: 50, trust: 50, rivalry: 10, sync: 50, corruption: 0 };
-    const completedLoops: string[] = Array.isArray(state.gameplay.starterCompletedLoops) ? state.gameplay.starterCompletedLoops : [];
-
-    set((s) => ({
-      gameplay: {
-        ...s.gameplay,
-        starterCompletedLoops: completedLoops.includes('mai_space') ? completedLoops : [...completedLoops, 'mai_space'],
-        player: {
-          ...s.gameplay.player,
-          credits: s.gameplay.player.credits + 100,
-          xp: newXP,
-          level: newLevel,
-          maiSpaceProfile: {
-            ...profile,
-            acceptedFriends: [...accepted, friendId],
-          },
-          npcVectors: {
-            ...s.gameplay.player.npcVectors,
-            [friendId]: {
-              ...currentVec,
-              trust: Math.min(100, (currentVec.trust || 50) + 15),
-              friendship: Math.min(100, (currentVec.friendship || 50) + 10),
-            },
-          },
-        },
-      },
-    }));
-
-    get().recordWorldEvent({
-      category: 'social',
-      title: `Mai.space Onboarding Connection: ${friendId}`,
-      summary: `Accepted first-time Mai.space onboarding link with ${friendId} (+15 Trust, +10 Friendship, +100 ₢ Starter Bonus, +75 XP).`,
-      institution: 'Mai.space Social Grid',
-      impact: { reputationTrack: 'campus', reputationDelta: 10 },
-    });
-
-    return { ok: true, message: `Connected with ${friendId} on Mai.space! (+15 Trust, +10 Friendship, +100 ₢ Starter Bonus, +75 XP)` };
-  },
-
-  updateMaiSpaceProfile: (updates) =>
-    set((state) => {
-      const player = state.gameplay.player;
-      const profile = player.maiSpaceProfile || {
-        handle: player.name || 'Aureline_Netrunner',
-        statusThought: 'Exploring the digital conduits of Aureline Central ✨',
-        headerFont: 'Cookie',
-        acceptedFriends: [],
-        pingedFriendsCycle: {},
-        lastBulletinPostCycle: 0,
-        bulletinPosts: [],
-      };
-      return {
-        gameplay: {
-          ...state.gameplay,
-          player: {
-            ...player,
-            maiSpaceProfile: {
-              ...profile,
-              ...updates,
-            },
-          },
-        },
-      };
-    }),
-
-  postMaiSpaceBulletin: (content) => {
-    const trimmed = (content || '').trim();
-    if (!trimmed) return { ok: false, message: 'Bulletin content cannot be empty.' };
-
-    const state = get();
-    const player = state.gameplay.player;
-    const currentCycle = state.gameplay.timeCycleCount ?? 28;
-    const profile = player.maiSpaceProfile || {
-      handle: player.name || 'Aureline_Netrunner',
-      statusThought: 'Exploring the digital conduits of Aureline Central ✨',
-      headerFont: 'Cookie',
-      acceptedFriends: [],
-      pingedFriendsCycle: {},
-      lastBulletinPostCycle: 0,
-      bulletinPosts: [],
-    };
-
-    const alreadyPostedThisCycle = profile.lastBulletinPostCycle === currentCycle;
-    const repGain = alreadyPostedThisCycle ? 0 : 5;
-    const newPost = {
-      id: Date.now(),
-      author: profile.handle || player.name || 'Aureline_Netrunner',
-      time: `Cycle ${currentCycle}`,
-      content: trimmed,
-      likes: 1,
-    };
-
-    const currentVectors = player.npcVectors || {};
-    const nextVectors = alreadyPostedThisCycle
-      ? currentVectors
-      : {
-          ...currentVectors,
-          jeremie: {
-            ...(currentVectors.jeremie || { friendship: 60, trust: 75, rivalry: 10, sync: 80, corruption: 0 }),
-            friendship: Math.min(100, (currentVectors.jeremie?.friendship || 60) + 2),
-          },
-          aelita: {
-            ...(currentVectors.aelita || { friendship: 85, trust: 90, rivalry: 5, sync: 85, corruption: 5 }),
-            friendship: Math.min(100, (currentVectors.aelita?.friendship || 85) + 2),
-          },
-          odd: {
-            ...(currentVectors.odd || { friendship: 95, trust: 85, rivalry: 15, sync: 80, corruption: 0 }),
-            friendship: Math.min(100, (currentVectors.odd?.friendship || 95) + 2),
-          },
-        };
-
-    set((s) => ({
-      gameplay: {
-        ...s.gameplay,
-        player: {
-          ...s.gameplay.player,
-          npcVectors: nextVectors,
-          maiSpaceProfile: {
-            ...profile,
-            lastBulletinPostCycle: currentCycle,
-            bulletinPosts: [newPost, ...(Array.isArray(profile.bulletinPosts) ? profile.bulletinPosts.slice(0, 19) : [])],
-          },
-        },
-      },
-    }));
-
-    if (!alreadyPostedThisCycle) {
-      get().recordWorldEvent({
-        category: 'social',
-        title: 'Broadcasted Public Mai.space Bulletin',
-        summary: `Posted to Aureline social grid: "${trimmed.slice(0, 60)}" (+5 Campus Reputation, +2 Peer Friendship).`,
-        institution: 'Mai.space Social Grid',
-        impact: { reputationTrack: 'campus', reputationDelta: repGain },
-      });
-    }
-
-    return {
-      ok: true,
-      message: alreadyPostedThisCycle
-        ? 'Bulletin posted to the public grid.'
-        : 'Bulletin broadcasted! Strengthened peer friendships (+2) and earned +5 Campus Reputation.',
-    };
-  },
-
-  pingMaiSpaceFriend: (friendId) => {
-    const state = get();
-    const player = state.gameplay.player;
-    const currentCycle = state.gameplay.timeCycleCount ?? 28;
-    const profile = player.maiSpaceProfile || {
-      handle: player.name || 'Aureline_Netrunner',
-      statusThought: 'Exploring the digital conduits of Aureline Central ✨',
-      headerFont: 'Cookie',
-      acceptedFriends: [],
-      pingedFriendsCycle: {},
-      lastBulletinPostCycle: 0,
-      bulletinPosts: [],
-    };
-    const pingedMap: Record<string, number> = { ...(profile.pingedFriendsCycle || {}) };
-    if (pingedMap[friendId] === currentCycle) {
-      return {
-        ok: false,
-        message: `Already synced signal with ${friendId} during Cycle ${currentCycle}. Advance cycle to check in again.`,
-      };
-    }
-
-    pingedMap[friendId] = currentCycle;
-    const currentVec = player.npcVectors?.[friendId] || { friendship: 50, trust: 50, rivalry: 10, sync: 50, corruption: 0 };
-
-    set((s) => ({
-      gameplay: {
-        ...s.gameplay,
-        player: {
-          ...s.gameplay.player,
-          maiSpaceProfile: {
-            ...profile,
-            pingedFriendsCycle: pingedMap,
-          },
-          npcVectors: {
-            ...s.gameplay.player.npcVectors,
-            [friendId]: {
-              ...currentVec,
-              friendship: Math.min(100, (currentVec.friendship || 50) + 5),
-              trust: Math.min(100, (currentVec.trust || 50) + 3),
-            },
-          },
-        },
-      },
-    }));
-
-    return { ok: true, message: `Signal synced with ${friendId} on Mai.space (+5 Friendship, +3 Trust).` };
-  },
+  acceptMaiSpaceFriend: (friendId) => get().socialAction({ type: 'friend', person: friendId, decision: 'accept' }),
+  updateMaiSpaceProfile: (updates) => set(state => ({ gameplay: { ...state.gameplay, player: { ...state.gameplay.player, maiSpaceProfile: { ...state.gameplay.player.maiSpaceProfile,
+    ...(typeof updates.handle === 'string' ? { handle: updates.handle.slice(0, 80) } : {}),
+    ...(typeof updates.statusThought === 'string' ? { statusThought: updates.statusThought.slice(0, 300) } : {}),
+    ...(['Cookie', 'Yeseva One', 'Esteban'].includes(updates.headerFont) ? { headerFont: updates.headerFont } : {}),
+  } } } })),
+  postMaiSpaceBulletin: content => get().socialAction({ type: 'post', kind: 'bulletin', title: 'Bulletin', html: `<p>${String(content || '').replace(/&/g, '&amp;').replace(/</g, '&lt;')}</p>`, audience: 'public' }),
+  pingMaiSpaceFriend: () => ({ ok: false, message: 'Friendship grows through conversations and shared experiences. Open a profile or personal Messages.' }),
 
   claimPortalAction: (actionId, rewardCredits, rewardBits = 0, rewardXP = 0, label = 'Institutional Portal Action') => {
     const state = get();

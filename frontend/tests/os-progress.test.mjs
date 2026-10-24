@@ -274,7 +274,7 @@ test('FAITH-003, MAI.SPACE-004, and Formal Case Reasoning enforce canonical prog
   assert.equal(afterPatientCare.credits, beforePatientCare.credits + 220);
   assert.ok(afterPatientCare.completedPatientCareIds.includes('pc-mercer'));
 
-  // 2. MAI.SPACE-004 (Option C): First-time onboarding grants +75 XP & +100 credits; ongoing social actions affect relationships/reputation only
+  // MAI.SPACE-004 welcome receipt remains once-only. Routine social clicks no longer farm relationships.
   const beforeJeremie = store.getState().gameplay.player;
   assert.equal(store.getState().acceptMaiSpaceFriend('jeremie').ok, true);
   const afterJeremie = store.getState().gameplay.player;
@@ -285,13 +285,13 @@ test('FAITH-003, MAI.SPACE-004, and Formal Case Reasoning enforce canonical prog
   store.getState().updateMaiSpaceProfile({ handle: 'Cipher_Valkyrie', headerFont: 'Yeseva One' });
   const beforeSocial = store.getState().gameplay.player;
   assert.equal(store.getState().postMaiSpaceBulletin('Verified Sector 7 conduit telemetry.').ok, true);
-  assert.equal(store.getState().pingMaiSpaceFriend('aelita').ok, true);
+  assert.equal(store.getState().pingMaiSpaceFriend('aelita').ok, false);
   const afterSocial = store.getState().gameplay.player;
-  // Ongoing social actions grant 0 XP and 0 credits, while increasing campus reputation & NPC friendship/trust
+  // Ordinary posting grants neither money nor automatic friendship/reputation.
   assert.equal(afterSocial.xp, beforeSocial.xp);
   assert.equal(afterSocial.credits, beforeSocial.credits);
-  assert.ok(afterSocial.reputation.campus > beforeSocial.reputation.campus);
-  assert.ok(afterSocial.npcVectors.aelita.friendship > beforeSocial.npcVectors.aelita.friendship);
+  assert.equal(afterSocial.reputation.campus, beforeSocial.reputation.campus);
+  assert.equal(afterSocial.npcVectors.aelita.friendship, beforeSocial.npcVectors.aelita.friendship);
 
   // 3. Formal Case Reasoning: rejects wrong hypothesis or unverified rumor exhibit, rewards valid reasoning once
   const badCase = store.getState().submitInvestigationCase(

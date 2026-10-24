@@ -5,6 +5,7 @@ export interface SmsMessage {
   sender: string;
   text: string;
   time: string;
+  source?: 'phone' | 'mai.space';
 }
 
 export interface Voicemail {

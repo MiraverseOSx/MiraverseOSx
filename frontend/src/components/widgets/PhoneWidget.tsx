@@ -75,6 +75,7 @@ export default function PhoneWidget({ onClose }: { onClose?: () => void }) {
     useCommsStore.getState().consumePhoneRequest(phoneRequest.token);
   }, [phoneRequest]);
   const [activeSmsContact, setActiveSmsContact] = useState<string | null>(null);
+  useEffect(() => { if (activeScreen === 'messages' && activeSmsContact) useCommsStore.getState().markPhoneThreadRead(activeSmsContact); }, [activeScreen, activeSmsContact, smsThreads]);
   const conversationRef = useRef<HTMLDivElement>(null);
   const screenHeadingRef = useRef<HTMLHeadingElement>(null);
   const smsDrafts = useCommsStore(s => s.phoneDrafts);
