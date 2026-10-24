@@ -1,0 +1,613 @@
+{
+  "_App-7qqHdMPi.js": {
+    "file": "assets/App-7qqHdMPi.js",
+    "name": "App",
+    "isDynamicEntry": true,
+    "imports": [
+      "_framer-motion-B0GbNFm6.js",
+      "index.html",
+      "_lucide-icons-mtOjvRVy.js"
+    ],
+    "dynamicImports": [
+      "_maidIdentityService-Cx6AF6pj.js",
+      "src/dgaos/apps/DgaosApp.tsx",
+      "src/apps/Comms/CommsApp.tsx",
+      "src/apps/DocumentStudioApp.tsx",
+      "src/apps/RegistryWorkspaceApp.tsx",
+      "src/apps/CivicProfileApp.tsx",
+      "src/apps/Pulse/PulseApp.tsx",
+      "src/apps/MaiSpaceApp.tsx",
+      "src/apps/Browser/BrowserApp.tsx",
+      "src/apps/MailApp.tsx",
+      "src/apps/FileExplorerApp.tsx",
+      "src/apps/LoreExplorer.tsx",
+      "src/apps/ProcessMonitorApp.tsx",
+      "src/apps/HousingApp.tsx",
+      "src/apps/JobWorkstationApp.tsx",
+      "src/apps/FinanceTerminal.tsx",
+      "src/apps/VitalsApp.tsx",
+      "src/apps/CampusApp.tsx",
+      "src/apps/FieldOperations/FieldOperationsApp.tsx"
+    ],
+    "css": [
+      "assets/App-BjDC7XPS.css"
+    ],
+    "assets": [
+      "assets/meridion_world-Bx744lBB.jpg",
+      "assets/mixkit-flying-over-a-relaxing-creek-full-of-rock-on-the-51585-hd-ready-BCqJ8giU.mp4",
+      "assets/everything_is_great_but_do_not-ibzqC-2F.mp4",
+      "assets/mixkit-a-woman-monitoring-close-circuit-surveillance-23673-hd-ready-DO32EXpQ.mp4",
+      "assets/mixkit-black-ink-splashing-505-hd-ready-5xOo6vN8.mp4",
+      "assets/mixkit-glitter-stars-and-snowflakes-19007-hd-ready-jJGDjwg1.mp4",
+      "assets/logo_icon-CUPqIqiP.png"
+    ]
+  },
+  "_App-BjDC7XPS.css": {
+    "file": "assets/App-BjDC7XPS.css",
+    "src": "_App-BjDC7XPS.css"
+  },
+  "_BroadStreetCasePanel-CTXv3cAt.js": {
+    "file": "assets/BroadStreetCasePanel-CTXv3cAt.js",
+    "name": "BroadStreetCasePanel",
+    "imports": [
+      "index.html",
+      "_framer-motion-B0GbNFm6.js",
+      "_App-7qqHdMPi.js",
+      "_RichTextEditor-B-u7U6p1.js",
+      "_RichMailEditor-Br8GN-EZ.js"
+    ],
+    "dynamicImports": [
+      "src/apps/investigation/EvidenceBoard.tsx"
+    ],
+    "css": [
+      "assets/case-workspace-CJUr1qgd.css"
+    ]
+  },
+  "_CommunicationsAccessPanel-Bj__aiNh.js": {
+    "file": "assets/CommunicationsAccessPanel-Bj__aiNh.js",
+    "name": "CommunicationsAccessPanel",
+    "imports": [
+      "_framer-motion-B0GbNFm6.js",
+      "_App-7qqHdMPi.js"
+    ]
+  },
+  "_Form-yyTfbMzo.js": {
+    "file": "assets/Form-yyTfbMzo.js",
+    "name": "Form",
+    "imports": [
+      "_framer-motion-B0GbNFm6.js"
+    ]
+  },
+  "_Portals-DD6wo7Rd.js": {
+    "file": "assets/Portals-DD6wo7Rd.js",
+    "name": "Portals",
+    "imports": [
+      "_framer-motion-B0GbNFm6.js",
+      "_App-7qqHdMPi.js",
+      "src/apps/FinanceTerminal.tsx",
+      "_citizenBridge-ajHOZvAl.js",
+      "_mai-space-ys9Hw3ML.js",
+      "_lucide-icons-mtOjvRVy.js"
+    ]
+  },
+  "_PortraitStudioModal-DeCyjvfu.js": {
+    "file": "assets/PortraitStudioModal-DeCyjvfu.js",
+    "name": "PortraitStudioModal",
+    "imports": [
+      "_framer-motion-B0GbNFm6.js",
+      "_maidIdentityService-Cx6AF6pj.js",
+      "_lucide-icons-mtOjvRVy.js"
+    ]
+  },
+  "_RichMailEditor-Br8GN-EZ.js": {
+    "file": "assets/RichMailEditor-Br8GN-EZ.js",
+    "name": "RichMailEditor",
+    "imports": [
+      "_framer-motion-B0GbNFm6.js",
+      "_App-7qqHdMPi.js",
+      "_RichTextEditor-B-u7U6p1.js"
+    ]
+  },
+  "_RichTextEditor-B-u7U6p1.js": {
+    "file": "assets/RichTextEditor-B-u7U6p1.js",
+    "name": "RichTextEditor",
+    "isDynamicEntry": true,
+    "imports": [
+      "_framer-motion-B0GbNFm6.js",
+      "_App-7qqHdMPi.js"
+    ],
+    "css": [
+      "assets/RichTextEditor-DZHZoGHi.css"
+    ]
+  },
+  "_RichTextEditor-DZHZoGHi.css": {
+    "file": "assets/RichTextEditor-DZHZoGHi.css",
+    "src": "_RichTextEditor-DZHZoGHi.css"
+  },
+  "_SocialApp-8fGwhqGc.js": {
+    "file": "assets/SocialApp-8fGwhqGc.js",
+    "name": "SocialApp",
+    "imports": [
+      "_framer-motion-B0GbNFm6.js",
+      "_App-7qqHdMPi.js",
+      "_mai-space-ys9Hw3ML.js"
+    ]
+  },
+  "_attachmentDocument-BGXzAA3f.js": {
+    "file": "assets/attachmentDocument-BGXzAA3f.js",
+    "name": "attachmentDocument",
+    "imports": [
+      "_framer-motion-B0GbNFm6.js",
+      "_Form-yyTfbMzo.js",
+      "_App-7qqHdMPi.js",
+      "_lucide-icons-mtOjvRVy.js"
+    ],
+    "css": [
+      "assets/attachmentDocument-BtUdRknX.css"
+    ]
+  },
+  "_attachmentDocument-BtUdRknX.css": {
+    "file": "assets/attachmentDocument-BtUdRknX.css",
+    "src": "_attachmentDocument-BtUdRknX.css"
+  },
+  "_case-workspace-CJUr1qgd.css": {
+    "file": "assets/case-workspace-CJUr1qgd.css",
+    "src": "_case-workspace-CJUr1qgd.css"
+  },
+  "_citizenBridge-ajHOZvAl.js": {
+    "file": "assets/citizenBridge-ajHOZvAl.js",
+    "name": "citizenBridge",
+    "imports": [
+      "_maidIdentityService-Cx6AF6pj.js",
+      "_App-7qqHdMPi.js"
+    ]
+  },
+  "_citizenEvents-Ch6-1qqe.js": {
+    "file": "assets/citizenEvents-Ch6-1qqe.js",
+    "name": "citizenEvents"
+  },
+  "_framer-motion-B0GbNFm6.js": {
+    "file": "assets/framer-motion-B0GbNFm6.js",
+    "name": "framer-motion"
+  },
+  "_lucide-icons-mtOjvRVy.js": {
+    "file": "assets/lucide-icons-mtOjvRVy.js",
+    "name": "lucide-icons",
+    "imports": [
+      "_framer-motion-B0GbNFm6.js"
+    ]
+  },
+  "_mai-space-Drcbb3-d.css": {
+    "file": "assets/mai-space-Drcbb3-d.css",
+    "src": "_mai-space-Drcbb3-d.css"
+  },
+  "_mai-space-ys9Hw3ML.js": {
+    "file": "assets/mai-space-ys9Hw3ML.js",
+    "name": "mai-space",
+    "imports": [
+      "index.html",
+      "_framer-motion-B0GbNFm6.js",
+      "_App-7qqHdMPi.js"
+    ],
+    "dynamicImports": [
+      "_RichTextEditor-B-u7U6p1.js"
+    ],
+    "css": [
+      "assets/mai-space-Drcbb3-d.css"
+    ]
+  },
+  "_maidIdentityService-Cx6AF6pj.js": {
+    "file": "assets/maidIdentityService-Cx6AF6pj.js",
+    "name": "maidIdentityService",
+    "isDynamicEntry": true,
+    "imports": [
+      "index.html",
+      "_App-7qqHdMPi.js"
+    ],
+    "dynamicImports": [
+      "index.html"
+    ]
+  },
+  "_versenet-browser-BE-fPvFy.css": {
+    "file": "assets/versenet-browser-BE-fPvFy.css",
+    "src": "_versenet-browser-BE-fPvFy.css"
+  },
+  "_versenet-browser-Hy8KfIUR.js": {
+    "file": "assets/versenet-browser-Hy8KfIUR.js",
+    "name": "versenet-browser",
+    "imports": [
+      "_framer-motion-B0GbNFm6.js",
+      "index.html",
+      "_lucide-icons-mtOjvRVy.js"
+    ],
+    "css": [
+      "assets/versenet-browser-BE-fPvFy.css"
+    ]
+  },
+  "index.html": {
+    "file": "assets/index-cE5NLxM9.js",
+    "name": "index",
+    "src": "index.html",
+    "isEntry": true,
+    "isDynamicEntry": true,
+    "imports": [
+      "_framer-motion-B0GbNFm6.js"
+    ],
+    "dynamicImports": [
+      "_App-7qqHdMPi.js"
+    ],
+    "css": [
+      "assets/index-XPQ3PKhR.css"
+    ]
+  },
+  "src/apps/Browser/BrowserApp.tsx": {
+    "file": "assets/BrowserApp-DSmEl2ZJ.js",
+    "name": "BrowserApp",
+    "src": "src/apps/Browser/BrowserApp.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_framer-motion-B0GbNFm6.js",
+      "index.html",
+      "_App-7qqHdMPi.js",
+      "_lucide-icons-mtOjvRVy.js",
+      "_versenet-browser-Hy8KfIUR.js",
+      "_Portals-DD6wo7Rd.js",
+      "_SocialApp-8fGwhqGc.js",
+      "src/apps/FinanceTerminal.tsx",
+      "_citizenBridge-ajHOZvAl.js",
+      "_maidIdentityService-Cx6AF6pj.js",
+      "_mai-space-ys9Hw3ML.js"
+    ],
+    "css": [
+      "assets/BrowserApp-BCMvgYNp.css",
+      "assets/case-workspace-CJUr1qgd.css"
+    ]
+  },
+  "src/apps/CampusApp.tsx": {
+    "file": "assets/CampusApp-i7_K5HF8.js",
+    "name": "CampusApp",
+    "src": "src/apps/CampusApp.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "index.html",
+      "_framer-motion-B0GbNFm6.js",
+      "_Portals-DD6wo7Rd.js",
+      "_App-7qqHdMPi.js",
+      "src/apps/FinanceTerminal.tsx",
+      "_lucide-icons-mtOjvRVy.js",
+      "_citizenBridge-ajHOZvAl.js",
+      "_maidIdentityService-Cx6AF6pj.js",
+      "_mai-space-ys9Hw3ML.js"
+    ],
+    "dynamicImports": [
+      "src/apps/SpellForgeApp.tsx"
+    ]
+  },
+  "src/apps/CivicProfileApp.tsx": {
+    "file": "assets/CivicProfileApp-DR9injCb.js",
+    "name": "CivicProfileApp",
+    "src": "src/apps/CivicProfileApp.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_framer-motion-B0GbNFm6.js",
+      "_Form-yyTfbMzo.js",
+      "_App-7qqHdMPi.js",
+      "_citizenEvents-Ch6-1qqe.js",
+      "_lucide-icons-mtOjvRVy.js",
+      "_maidIdentityService-Cx6AF6pj.js",
+      "index.html"
+    ]
+  },
+  "src/apps/Comms/CommsApp.tsx": {
+    "file": "assets/CommsApp-CCwYGJvE.js",
+    "name": "CommsApp",
+    "src": "src/apps/Comms/CommsApp.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_framer-motion-B0GbNFm6.js",
+      "_App-7qqHdMPi.js",
+      "_CommunicationsAccessPanel-Bj__aiNh.js",
+      "_lucide-icons-mtOjvRVy.js",
+      "index.html"
+    ]
+  },
+  "src/apps/DocumentStudioApp.tsx": {
+    "file": "assets/DocumentStudioApp-CeB5bNOb.js",
+    "name": "DocumentStudioApp",
+    "src": "src/apps/DocumentStudioApp.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_framer-motion-B0GbNFm6.js",
+      "_PortraitStudioModal-DeCyjvfu.js",
+      "_maidIdentityService-Cx6AF6pj.js",
+      "_citizenBridge-ajHOZvAl.js",
+      "_citizenEvents-Ch6-1qqe.js",
+      "_App-7qqHdMPi.js",
+      "_lucide-icons-mtOjvRVy.js",
+      "index.html"
+    ],
+    "css": [
+      "assets/DocumentStudioApp-BTys34W0.css"
+    ]
+  },
+  "src/apps/FieldOperations/FieldOperationsApp.tsx": {
+    "file": "assets/FieldOperationsApp-B8LiKWUz.js",
+    "name": "FieldOperationsApp",
+    "src": "src/apps/FieldOperations/FieldOperationsApp.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "index.html",
+      "_framer-motion-B0GbNFm6.js",
+      "_App-7qqHdMPi.js",
+      "_lucide-icons-mtOjvRVy.js"
+    ],
+    "dynamicImports": [
+      "src/apps/FieldOperations/TunnelScene.ts"
+    ],
+    "css": [
+      "assets/FieldOperationsApp-DxWZrlgh.css"
+    ]
+  },
+  "src/apps/FieldOperations/TunnelScene.ts": {
+    "file": "assets/TunnelScene-BGFEf0Mw.js",
+    "name": "TunnelScene",
+    "src": "src/apps/FieldOperations/TunnelScene.ts",
+    "isDynamicEntry": true,
+    "imports": [
+      "_App-7qqHdMPi.js",
+      "_framer-motion-B0GbNFm6.js",
+      "index.html",
+      "_lucide-icons-mtOjvRVy.js"
+    ]
+  },
+  "src/apps/FileExplorerApp.tsx": {
+    "file": "assets/FileExplorerApp-CohIlS01.js",
+    "name": "FileExplorerApp",
+    "src": "src/apps/FileExplorerApp.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_framer-motion-B0GbNFm6.js",
+      "_App-7qqHdMPi.js",
+      "_attachmentDocument-BGXzAA3f.js",
+      "_lucide-icons-mtOjvRVy.js",
+      "_BroadStreetCasePanel-CTXv3cAt.js",
+      "index.html",
+      "_Form-yyTfbMzo.js",
+      "_RichTextEditor-B-u7U6p1.js",
+      "_RichMailEditor-Br8GN-EZ.js"
+    ],
+    "css": [
+      "assets/FileExplorerApp-BLQR67_R.css",
+      "assets/case-workspace-CJUr1qgd.css"
+    ]
+  },
+  "src/apps/FinanceTerminal.tsx": {
+    "file": "assets/FinanceTerminal-eS2mrYS1.js",
+    "name": "FinanceTerminal",
+    "src": "src/apps/FinanceTerminal.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_framer-motion-B0GbNFm6.js",
+      "_App-7qqHdMPi.js",
+      "_lucide-icons-mtOjvRVy.js",
+      "index.html"
+    ]
+  },
+  "src/apps/HousingApp.tsx": {
+    "file": "assets/HousingApp-Df5lDwdN.js",
+    "name": "HousingApp",
+    "src": "src/apps/HousingApp.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_framer-motion-B0GbNFm6.js",
+      "_App-7qqHdMPi.js",
+      "_lucide-icons-mtOjvRVy.js",
+      "index.html"
+    ]
+  },
+  "src/apps/JobWorkstationApp.tsx": {
+    "file": "assets/JobWorkstationApp-BljhqCmK.js",
+    "name": "JobWorkstationApp",
+    "src": "src/apps/JobWorkstationApp.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_framer-motion-B0GbNFm6.js",
+      "_App-7qqHdMPi.js",
+      "_lucide-icons-mtOjvRVy.js",
+      "_BroadStreetCasePanel-CTXv3cAt.js",
+      "_RichMailEditor-Br8GN-EZ.js",
+      "_citizenBridge-ajHOZvAl.js",
+      "index.html",
+      "_RichTextEditor-B-u7U6p1.js",
+      "_maidIdentityService-Cx6AF6pj.js"
+    ],
+    "css": [
+      "assets/JobWorkstationApp-SYHCKhcG.css",
+      "assets/case-workspace-CJUr1qgd.css"
+    ]
+  },
+  "src/apps/LoreExplorer.tsx": {
+    "file": "assets/LoreExplorer-4SOx-lxW.js",
+    "name": "LoreExplorer",
+    "src": "src/apps/LoreExplorer.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_framer-motion-B0GbNFm6.js",
+      "_App-7qqHdMPi.js",
+      "_lucide-icons-mtOjvRVy.js",
+      "index.html"
+    ]
+  },
+  "src/apps/MaiSpaceApp.tsx": {
+    "file": "assets/MaiSpaceApp-C9Ju6ulX.js",
+    "name": "MaiSpaceApp",
+    "src": "src/apps/MaiSpaceApp.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_framer-motion-B0GbNFm6.js",
+      "_SocialApp-8fGwhqGc.js",
+      "_App-7qqHdMPi.js",
+      "index.html",
+      "_lucide-icons-mtOjvRVy.js",
+      "_mai-space-ys9Hw3ML.js"
+    ]
+  },
+  "src/apps/MailApp.tsx": {
+    "file": "assets/MailApp-D_76xc1h.js",
+    "name": "MailApp",
+    "src": "src/apps/MailApp.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_framer-motion-B0GbNFm6.js",
+      "_App-7qqHdMPi.js",
+      "_RichMailEditor-Br8GN-EZ.js",
+      "_maidIdentityService-Cx6AF6pj.js",
+      "_lucide-icons-mtOjvRVy.js",
+      "_attachmentDocument-BGXzAA3f.js",
+      "_CommunicationsAccessPanel-Bj__aiNh.js",
+      "index.html",
+      "_RichTextEditor-B-u7U6p1.js",
+      "_Form-yyTfbMzo.js"
+    ],
+    "css": [
+      "assets/MailApp-JMX_z9Xy.css"
+    ]
+  },
+  "src/apps/ProcessMonitorApp.tsx": {
+    "file": "assets/ProcessMonitorApp-M6CsfGZs.js",
+    "name": "ProcessMonitorApp",
+    "src": "src/apps/ProcessMonitorApp.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_framer-motion-B0GbNFm6.js",
+      "_App-7qqHdMPi.js",
+      "_lucide-icons-mtOjvRVy.js",
+      "index.html"
+    ]
+  },
+  "src/apps/Pulse/PulseApp.tsx": {
+    "file": "assets/PulseApp-JLngbtNK.js",
+    "name": "PulseApp",
+    "src": "src/apps/Pulse/PulseApp.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_framer-motion-B0GbNFm6.js",
+      "_App-7qqHdMPi.js",
+      "_lucide-icons-mtOjvRVy.js",
+      "index.html"
+    ]
+  },
+  "src/apps/RegistryWorkspaceApp.tsx": {
+    "file": "assets/RegistryWorkspaceApp-BKpWqkcn.js",
+    "name": "RegistryWorkspaceApp",
+    "src": "src/apps/RegistryWorkspaceApp.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_framer-motion-B0GbNFm6.js",
+      "_citizenEvents-Ch6-1qqe.js",
+      "_maidIdentityService-Cx6AF6pj.js",
+      "_PortraitStudioModal-DeCyjvfu.js",
+      "_citizenBridge-ajHOZvAl.js",
+      "_App-7qqHdMPi.js",
+      "_lucide-icons-mtOjvRVy.js",
+      "index.html"
+    ],
+    "css": [
+      "assets/RegistryWorkspaceApp-Dt2SnHHz.css"
+    ]
+  },
+  "src/apps/SpellForgeApp.tsx": {
+    "file": "assets/SpellForgeApp-DB3Wm6dD.js",
+    "name": "SpellForgeApp",
+    "src": "src/apps/SpellForgeApp.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_framer-motion-B0GbNFm6.js",
+      "_App-7qqHdMPi.js",
+      "_lucide-icons-mtOjvRVy.js",
+      "index.html"
+    ]
+  },
+  "src/apps/VitalsApp.tsx": {
+    "file": "assets/VitalsApp-BmNJsaYt.js",
+    "name": "VitalsApp",
+    "src": "src/apps/VitalsApp.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_framer-motion-B0GbNFm6.js",
+      "_App-7qqHdMPi.js",
+      "_lucide-icons-mtOjvRVy.js",
+      "index.html"
+    ],
+    "css": [
+      "assets/VitalsApp-CjunPQJt.css"
+    ]
+  },
+  "src/apps/investigation/EvidenceBoard.tsx": {
+    "file": "assets/EvidenceBoard-BYyZlftQ.js",
+    "name": "EvidenceBoard",
+    "src": "src/apps/investigation/EvidenceBoard.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_framer-motion-B0GbNFm6.js",
+      "_RichTextEditor-B-u7U6p1.js",
+      "_App-7qqHdMPi.js",
+      "index.html",
+      "_lucide-icons-mtOjvRVy.js"
+    ],
+    "css": [
+      "assets/EvidenceBoard-V3rltzWT.css"
+    ]
+  },
+  "src/assets/images/logo_icon.png": {
+    "file": "assets/logo_icon-CUPqIqiP.png",
+    "src": "src/assets/images/logo_icon.png"
+  },
+  "src/assets/images/meridion_world.jpg": {
+    "file": "assets/meridion_world-Bx744lBB.jpg",
+    "src": "src/assets/images/meridion_world.jpg"
+  },
+  "src/assets/videos/everything_is_great_but_do_not.mp4": {
+    "file": "assets/everything_is_great_but_do_not-ibzqC-2F.mp4",
+    "src": "src/assets/videos/everything_is_great_but_do_not.mp4"
+  },
+  "src/assets/videos/mixkit-a-woman-monitoring-close-circuit-surveillance-23673-hd-ready.mp4": {
+    "file": "assets/mixkit-a-woman-monitoring-close-circuit-surveillance-23673-hd-ready-DO32EXpQ.mp4",
+    "src": "src/assets/videos/mixkit-a-woman-monitoring-close-circuit-surveillance-23673-hd-ready.mp4"
+  },
+  "src/assets/videos/mixkit-black-ink-splashing-505-hd-ready.mp4": {
+    "file": "assets/mixkit-black-ink-splashing-505-hd-ready-5xOo6vN8.mp4",
+    "src": "src/assets/videos/mixkit-black-ink-splashing-505-hd-ready.mp4"
+  },
+  "src/assets/videos/mixkit-flying-over-a-relaxing-creek-full-of-rock-on-the-51585-hd-ready.mp4": {
+    "file": "assets/mixkit-flying-over-a-relaxing-creek-full-of-rock-on-the-51585-hd-ready-BCqJ8giU.mp4",
+    "src": "src/assets/videos/mixkit-flying-over-a-relaxing-creek-full-of-rock-on-the-51585-hd-ready.mp4"
+  },
+  "src/assets/videos/mixkit-glitter-stars-and-snowflakes-19007-hd-ready.mp4": {
+    "file": "assets/mixkit-glitter-stars-and-snowflakes-19007-hd-ready-jJGDjwg1.mp4",
+    "src": "src/assets/videos/mixkit-glitter-stars-and-snowflakes-19007-hd-ready.mp4"
+  },
+  "src/dgaos/apps/DgaosApp.tsx": {
+    "file": "assets/DgaosApp-CkdfctVO.js",
+    "name": "DgaosApp",
+    "src": "src/dgaos/apps/DgaosApp.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "_framer-motion-B0GbNFm6.js",
+      "_App-7qqHdMPi.js",
+      "_BroadStreetCasePanel-CTXv3cAt.js",
+      "_lucide-icons-mtOjvRVy.js",
+      "_citizenEvents-Ch6-1qqe.js",
+      "_citizenBridge-ajHOZvAl.js",
+      "_versenet-browser-Hy8KfIUR.js",
+      "_RichTextEditor-B-u7U6p1.js",
+      "_maidIdentityService-Cx6AF6pj.js",
+      "index.html",
+      "_RichMailEditor-Br8GN-EZ.js"
+    ],
+    "css": [
+      "assets/DgaosApp-CJoWwCyL.css",
+      "assets/case-workspace-CJUr1qgd.css"
+    ]
+  }
+}

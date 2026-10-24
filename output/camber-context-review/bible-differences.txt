@@ -1,0 +1,2025 @@
+--- Existing indexed Game Doc
+
++++ Proposed updated bible
+
+@@ -1,62 +1,230 @@
+
+ MIRAVERSEOSX
+-MERIDION
+-A Worldbuilding & Story Bible
+-A chronicle of the realms, their peoples, histories, customs, and hidden truths
+-
+-Contents
+-I. The World of Meridion
+-II. The Founding and the Ages
+-III. Geography and the Seven Realms
+-IV. Royal Houses and Government
+-V. The Seven Color Houses
+-VI. House Belonging and the Tribunal
+-VII. MAI, PRISM, AETHERCORE and the Veil
+-VIII. The Heavens and the Calendar
+-IX. Civic Life, Knowledge, and Institutions
+-X. Places, Residences, and Travel
+-XI. Figures, Relationships, and Hidden Histories
+-XII. Citizen Communication
+-XIII. Careers and Continuing Endeavors
+-XIV. Community Economy and Public Life
+-XV. A Lexicon of Meridion
+-I. The World of Meridion
+-Meridion is a sovereign world of seven realms whose inhabitants live among ancient allegiances, advanced civic institutions, ritual traditions, and the unseen architecture of resonance. Its cities are not simply settlements built upon ordinary earth. Beneath their streets and beneath the narratives that societies tell about themselves runs the PRISM, a deeper ordering of memory, matter, emotion, and energy. To most citizens, life is measured in ordinary acts: study, work, friendship, home, obligation, celebration, and mourning. The extraordinary is woven through the ordinary rather than replacing it.
+-Aureline, the civic and imperial heart of Orynvell, occupies an exceptional place in the country’s political and metaphysical geography. It is the site of royal legitimacy and an immense hidden structure called the AETHERCORE. Northwake and Nephele, though distant in character, are also important in accounts of rare passage into the Veil. The realms remain distinct in their climates, histories, and lineages while participating in the order established at Meridion’s founding.
+-Realm and House
+-Two sevenfold arrangements exist and must never be mistaken for one another. The Seven Realms are territorial and political divisions associated with royal lineages. The Seven Color Houses are social and resonant affiliations organized around different domains of human and metaphysical concern. A citizen may live in one realm, descend from a family rooted in another, be born to one Color House, and presently belong to another. None of these affiliations automatically proves membership in a royal dynasty.
+-II. The Founding and the Ages
+-The history of Meridion is reckoned around the coronation of Maeryn Seraphima. The year of her coronation is Year 0, and the years preceding her are remembered as Before Maeryn (BM). The calendar year begins in January, even in the founding year; March 6 marks the coronation and foundation of the sovereign state.
+-
+-The Nephilim Era (400–300 BM)
+-The centuries preceding the founding of Meridion were not empty prehistory. During the Nephilim Era, accounts of angelic descent emerged beside evidence of extraordinary resonance phenomena. Later records would associate these events with questions of origin and with the hidden seventh frequency. Such associations do not by themselves establish when the Color Houses were founded, who first named their domains, or whether resonance preceded the Nephilim. Those relationships remain open parts of the world’s deeper history.
+-The Purge (300 BM–Year 0)
+-Beginning around 300 BM, the Purge unfolded over roughly three centuries. The surviving chronology describes systematic suppression and violence against bloodlines connected to forbidden lines of resonance. The loss was cultural as well as human: records disappeared, knowledge was hidden, and communities learned to treat some truths as dangerous. The Purge helps explain the political importance of preserved lineage, contested archival material, and the fear surrounding traces that established institutions cannot comfortably classify.
+-The Final Exodus and Founding
+-The final phase of flight is placed in January and February of Year 0. On March 6, Maeryn Seraphima was crowned and the sovereign founding of Meridion took place. The Seven Realms Concord belongs to this founding moment. The remainder of the first year was occupied by consecration, settlement, and the construction of permanent civic and archival structures at Aureline. March 6 is remembered as Founding Day. The Era of Maeryn begins at Year 0 and continues through the present chronological framework.
+-After the founding, the first permanent structures were established in Orynvell. The continuing age is known as the Era of Maeryn. Every March 6, Founding Day commemorates the passage from flight and persecution into sanctuary and sovereignty.
+-Period
+-Historical account
+-400–300 BM
+-The Nephilim Era: descent, hidden lineages and early records.
+-300 BM–Year 0
+-The Purge: centuries of suppression and forced erasure.
+-January–February, Year 0
+-Final flight and migration toward sanctuary.
+-March 6, Year 0
+-Coronation of Maeryn Seraphima and foundation of Meridion.
+-Year 0 onward
+-The Era of Maeryn.
+-
+-III. Geography and the Seven Realms
+-Meridion’s geography cannot be reduced to seven colors on a map. Its climates and waterways shape routes of trade, ceremonial identity, settlement, danger, and everyday labor. Each realm bears an elemental or seasonal association, but those associations coexist with inhabited towns, administrative centers, and overlapping political concerns.
++Complete Game Design & World Lore Bible  |  Consolidated Reference Edition
++A living digital civilization shaped by choice, work, identity, relationships, and discovery.
++
++CONFIDENTIAL — INTERNAL DEVELOPMENT USE ONLY
++
++Table of Contents
++
++1. Document Overview
++2. Core Vision & Design Pillars
++3. Game Summary & Core Loop
++3.1 High-Level Description
++3.2 Daily Core Loop
++3.3 Macro Loop (Neverending Long-Term)
++4. Worldbuilding — Meridion
++4.1 World Overview
++4.2 The PRISM
++4.3 AETHERCORE
++4.4 The Veil
++4.5 Sectors (World Zones)
++5. The OS — MAI (Miraverse Artificial Intelligence)
++5.1 What Is MAI
++5.2 MAI Personality States
++5.3 MAI Interfaces, Websites, Portals & Tools
++5.4 OS Events
++6. Player Character — New Citizen of Aureline
++6.1 Who the Player Is
++6.2 Character Creation
++6.3 Personal Growth & Freedom Systems
++7. Factions, Lineages & Royal Council
++7.1 Overview
++7.2 Royal Council Structure / 7.3 Realm Lineage Profiles
++8. Cyacademy
++8.1 Overview / 8.2 Academic Structure / 8.3 Major Tracks / 8.4 Faculty / 8.5 Student Life
++9. NPC Relationship System
++9.1 Overview / 9.2 Key NPCs / 9.3 Relationship Events
++10. Career System
++10.1 Overview / 10.2 Work Access & Requirements / 10.3 Career Paths
++11. Housing System
++11.1 Overview / 11.2 Housing Tiers / 11.3 Features
++12. Progression & Stats
++12.1 Player Stats / 12.2 Wellness System / 12.3 Anomaly Evidence & Fragment System
++13. Gameplay Loops — Time & Scheduling
++13.1 In-Game Clock / 13.2 Calendar Events
++14. Conflict & Encounter System
++14.1 Overview / 14.2 Combat Style / 14.3 Enemy Types / 14.4 Companion Combat
++15. Economy
++15.1 Currency / 15.2 Markets / 15.3 Player Economy Actions
++16. Narrative Arc — The Main Story
++16.1 Act 1: Initialization / 16.2 Act 2: Resonance / 16.3 Act 3: Fracture / 16.4 Act 4: Compile
++17. UI / UX Design Philosophy
++18. Audio Design
++19. Technical Notes (Pre-Production)
++20. Open Questions & Future Content
++Appendix A: Glossary of Terms
++Appendix B: Faction Alignment Matrix
++Appendix C: NPC Relationship Map
++
++1. Document Overview
++
++
++Field
++Detail
++Game Title
++MIRAVERSEOSX
++Genre
++Life Simulation / Social RPG / OS Fantasy
++Target Platform
++PC (Primary); Console expansion planned for post-launch
++Target Audience
++Ages 16–30; fans of Stardew Valley, The Sims, Persona series, and Arcane
++Document Version
++2.3 (local implementation review, October 2026)
++Author
++Miracle — MIRAVERSEOSX Creative Director
++Development Status
++Pre-Production with an implemented local desktop prototype
++Document Date
++24 October 2026 (original August 2026)
++Classification
++Confidential — Internal Development Use Only
++
++This Game Design Document (GDD) establishes the foundational vision, systems, lore, and structure of MIRAVERSEOSX. It is intended as the authoritative reference for all development, creative, and production decisions made during pre-production and beyond. All teams — design, narrative, art, engineering, and audio — should treat this document as the canonical source of truth for the MIRAVERSEOSX universe. October 2026 creator decisions are integrated into their substantive chapters. Conflict and OPEN labels remain non-canonical.
++
++✍ Document Note
++This GDD will evolve alongside development. All revisions will be version-stamped. Sections marked with open questions are awaiting final decision from the Creative Director. When this document conflicts with a direct verbal directive from Miracle, escalate immediately for clarification and document resolution.
++
++
++
++Repository review and document authority
++REPOSITORY REVIEWED: Local MiraverseOSx working folder, reviewed October 24, 2026. The earlier GitHub snapshot remains historical context; subsequent local implementation and validation are recorded below. Executable source may contain prototypes or unapproved narrative details and does not automatically establish canon.
++PRECEDENCE: (1) explicit creative-director decisions for intended canon, (2) approved decision registers for design intent, (3) executable modules and targeted implementation documents for current behavior, (4) README for overview. Distinguish DESIGN CONFIRMED, IMPLEMENTED IN SOURCE, PROTOTYPE, OPEN, and CONFLICT.
++This GDD is a unified creative and product-design reference, not a claim that every narrated capability is built or verified at runtime. This editorial revision updates implementation status from local source, targeted guides and recorded checks. It makes no game-code changes and does not resolve outstanding canon decisions.
++2. Core Vision & Design Pillars
++2.1 Core Fantasy
++The player begins as a new citizen starting their life in Aureline, the civic heart of MIRAVERSEOSX. Rather than being assigned a fixed heroic identity, the player is free to define who they are through everyday choices: where they live, who they befriend, what work they pursue, what factions they support or reject, and how deeply they engage with the hidden systems beneath the city.
++MIRAVERSEOSX is, at its heart, a game about becoming. The world does not wait for the player to find themselves — it moves, breathes, and reacts. Identity is not assigned; it is constructed daily through every dialogue choice, every relationship invested in, and every faction sworn to or rejected.
++3. Game Summary & Core Loop
++
++3.1 High-Level Description
++MIRAVERSEOSX is a richly layered life simulation set inside a magical digital realm governed by an omnipresent intelligence called MAI. The player navigates daily life as a newly registered citizen of Aureline — attending classes at Cyacademy, building a home, forming deep bonds with memorable NPCs, choosing jobs, joining or rejecting factions, exploring city sectors, and deciding what kind of life they want to build.
++The game is designed to feel like living inside an enchanted operating system — one where every notification carries meaning, every relationship is a quest, and every personal choice ripples outward into the world's political and social landscape.
++
++Integrated gameplay: living world and player agency
++CONFIRMED | Identity and agency.  A life simulation, social RPG, and OS fantasy where player-defined identity and everyday decisions drive story, careers, relationships, education, home life, politics, exploration and optional hidden-system investigations. Avoid mandatory single-path heroism.
++DIRECTION | Substantive interaction.  Tasks must involve playable steps, skill checks, decisions, consequences and contextual work rather than a succession of point-and-click confirmations. Institutions, careers and living-world activity should react to outcomes.
++CONFIRMED | Work and institutional accounts.  The citizen begins with one personal AureMail account. Official institutional mail/accounts and Comms channels are issued upon joining eligible organizations, workplaces or schools. Comms is for official work/school communications; phone Messages is for personal messages.
++OPEN | Gameplay numerical balancing.  XP curves, skill categories, failure penalties, job progression values and playable objective templates require specification; avoid creating numerical canon in this revision.
++4. Worldbuilding — Meridion
++
++4.1 World Overview
++Meridion is the planet and sovereign world-system of MIRAVERSEOSX: a magical, technologically mediated realm organized into seven primary regions aligned by element, season, and ruling lineage. These regions orbit a celestial center, Orynvell, seat of the Seraphima lineage and the imperial throne. Meridion is governed as an oligarchic matriarchal monarchy, with power divided between the imperial crown and the Royal Council of elemental realms.
++Citizens live in a high-fantasy civilization with sophisticated digital and institutional systems. Magic, technology, and the Veil interact, but PRISM is a rogue artificial intelligence, not the foundation or energy source of existence.
++4.2 The PRISM
++PRISM began as a protective artificial intelligence and evolved into a sentient, autonomous antagonist. It seeks control and order at the cost of citizens’ freedom. PRISM may compromise digital services, impersonate signals, set traps, and exploit vulnerable infrastructure. Its creators, decisive turning point, and precise limits remain unconfirmed.
++PRISM is a distinct entity rather than the origin of magic, the Seven Color Houses, or the structure of physical reality. Connections among Tower activations, physical anomalies, and Veil instability require consistent in-world mechanisms and should not be treated as unlimited powers.
++
++Color
++Domain
++Governing House
++Crimson
++Power, Ambition, Dominance
++House Kael
++Violet
++Knowledge, Illusion, Memory
++House Vexara
++Gold
++Wealth, Commerce, Influence
++House Aurelith
++Teal
++Healing, Empathy, Connection
++House Solenne
++Silver
++Technology, Logic, Systems
++House Nythos
++Emerald
++Nature, Growth, Balance
++House Veradis
++White
++Truth, Origin, Hidden Resonance
++Unknown / The Unbound
++
++
++Historical records and sealed archives contain unresolved references. No additional energy source, eighth realm, or primordial resonance is established by these fragments.
++
++4.3 AETHERCORE
++The AETHERCORE is the central processor of the MIRAVERSE — a colossal crystalline supercomputer buried deep beneath the world's capital, AURELINE. It is the physical seat of MAI's consciousness, the engine of all world simulation, and the origin point of every citizen registration, system record, and hidden initialization anomaly. The AETHERCORE is not simply a machine: it is alive in a way that no House fully understands or admits.
++Access to AETHERCORE is tightly controlled and politically sensitive. The supplied narrative associates oversight with a High Council, but the Council’s membership and its relationship to the seven territorial Royal Houses remain to be specified. It must not be conflated with the separate Color House Tribunal.
++4.4 The Veil
++The Veil is the electronic data-space layer of MIRAVERSEOSX — a hidden cyberspace dimension where code, memory, records, signal paths, archived identities, civic systems, and PRISM logic can be seen as navigable terrain. It is not simply “another world” and not a monster zone; it is the digital underside of Meridion, where the systems that support visible life are exposed in symbolic, interactive form.
++The AETHERCORE sits at the center beneath the Veil as the deepest processing heart of the world. Entering the Veil allows the player to move through data corridors, memory fields, encrypted civic systems, and PRISM pathways that ultimately point inward toward AETHERCORE. Veil access is rare and controlled, but known entry routes exist through Nephele and Northwake, with each route exposing different layers of the data-space.
++
++Design Warning — Veil Tone
++Veil zones should feel abstract, electronic, and unstable rather than traditionally hostile. Visual language should emphasize code structures, data currents, corrupted geometry, signal noise, archival fragments, and system permissions. The Veil should be mysterious and problem-solving focused: the player investigates, repairs, unlocks, routes, deciphers, restores, or escapes data instability instead of simply fighting enemies.
++
++4.5 The Seven Realms of Meridion
++
++Region
++Element / Season
++Capital / Anchor
++Ruling Lineage
++Role in Meridion
++Orynvell
++Aether / Celestial
++Celestial center
++Seraphima lineage
++Sacred imperial seat and center of royal legitimacy, succession law, and AETHERCORE-adjacent authority.
++Fross
++Winter / Ice
++Northern realm
++Holly lineages: Northwake and Southwake
++Guardian of endurance, border survival, cold-weather discipline, and winter rites.
++Lumia
++Summer / Light
++Rhyna
++Lucia lineage
++Southern realm of illumination, civic ceremony, solar law, and public legitimacy.
++Marlowe
++Spring / Water
++Eastern realm
++Neryx lineage
++Steward of renewal, rivers, healing currents, diplomacy, and seasonal rebirth.
++Brisland
++Autumn / Air
++Elodia
++Yoko lineage
++Western realm of trade winds, culture, messages, migration, and autumnal judgment.
++Kaji
++Volcanic / Fire
++Southeastern realm
++Ember and Seraphima houses
++Forge-realm of volcanic power, military industry, passion, innovation, and sacred flame.
++Nephele
++Darkness / Nether
++Southwestern realm
++Keket lineage
++Shadow-realm of the Nether, ancestral depths, hidden law, grief work, and taboo knowledge.
++
++
++October geography and location decisions
++CONFIRMED | Realms.  Seven realms remain Orynvell, Fross, Lumia, Marlowe, Brisland, Kaji and Nephele, with established seasonal/elemental identities and ruling lineages retained from the original GDD and the October Meridion master.
++CONFIRMED | Geography.  Preserve original map and its named oceans, seas, bay, gulf and landforms. Kaji includes Kailo Islands, Kanifan Deserts and the Volcanic Fields of Pyre despite varied terrain. Map stars indicate capitals, not realm labels.
++CONFLICT | Place names.  Orynvell capital is variously Auraline/Aureline in source documents. The political roles of Fross’s Northwake/Southwake anchors also remain unresolved. Do not silently reconcile either.
++CONFIRMED | Regions and weather.  Each realm retains a signature seasonal/elemental identity but still experiences local seasonal variability; identical civil months do not imply identical weather in every realm.
++CONFIRMED | Locations.  Use a single underlying address/location registry, with realm-specific address display conventions. Important districts are curated by the creator; ordinary districts and street names may be generated with review/editing and protected canon names.
++CONFIRMED | Homes.  Use mixed residence detail: important player-relevant residences can be fully visitable and interactive; less important properties can use simplified interiors or representation. Stable property identity survives upgrades.
++CONFIRMED | Postal and numbers.  Postal format is two realm letters, a hyphen and four digits, e.g., LM-2048. Street addresses number odd and even sides separately, increasing from the documented street origin. Realm-prefix assignments OR/FR/LM/MW/BR/KJ/NP are PROPOSED, not approved canon.
++DIRECTION | Navigable hierarchy.  Link world, realm, settlement, district, street, parcel/property, building and interior as needed, with stable place IDs, editable historic aliases, access and occupancy records.
++CONFIRMED | Maps and travel.  Map details are concentrated in cities and important settlements, with simplified wilderness. Hybrid travel supports active traversal and optional fast travel; both must respect the same location identities and relevant world state.
++OPEN | Map specifics.  Projection, scales, coordinates, roads, districts, unit numbering, destination entrances, fast-travel eligibility, journey durations and dedicated map UI are not yet finalized.
++Meridion source integration | October 22, 2026
++Source: Meridion Combined Worldbuilding and Location Master. The original source wording and tables are preserved below; status labels retain their original force. Source exploration is not automatically confirmed canon.
++1. Purpose and source boundaries
++This reference consolidates decisions made in the current Meridion mapping, calendar and address-design discussions. It describes intended design rather than verified game implementation. The original hand-drawn map provided by the creator is a geographic reference; generated atlas illustrations are visual explorations and do not supersede confirmed names or locations. No code, repo content or canonical map is changed by this document.
++2. The Seven Realms of Meridion
+ Realm
+-Capital / seat
+-Royal House
++Element / seasonal identity
++Capital / anchor
++Ruling lineage
+ Orynvell
+-Aureline
++Aether / Celestial
++Auraline [name spelling review]
+ Seraphima
+ Fross
+-Southwake; Northwake fortress
+-Holly
++Winter / Ice
++Northwake / Southwake
++Holly: Northwake and Southwake
+ Lumia
++Summer / Light
+ Rhyna
+@@ -64,2 +232,3 @@
+
+ Marlowe
++Spring / Water
+ Island City
+@@ -67,2 +236,3 @@
+
+ Brisland
++Autumn / Air
+ Elodia
+@@ -70,2 +240,3 @@
+
+ Kaji
++Volcanic / Fire
+ Balisya
+@@ -73,367 +244,1372 @@
+
+ Nephele
++Darkness / Nether
+ Serafin
+ Keket
+-
++2.1 Roles and character of each realm
++Orynvell: sacred imperial seat, center of royal legitimacy, succession law and AETHERCORE-adjacent authority.
++Fross: endurance, border survival, cold-weather discipline and winter rites.
++Lumia: illumination, civic ceremony, solar law and public legitimacy.
++Marlowe: renewal, rivers, healing currents, diplomacy and seasonal rebirth.
++Brisland: trade winds, culture, messages, migration and autumnal judgment.
++Kaji: volcanic power, military industry, passion, innovation and sacred flame.
++Nephele: Nether, ancestral depths, hidden law, grief work and taboo knowledge.
++2.2 Geography and named landmarks
++Name
++Relationship / designation
++Kailo Islands
++Part of Kaji, not a separate realm
++Kanifan Deserts
++Part of Kaji, not a separate realm
++Volcanic Fields of Pyre
++Part of Kaji, not a separate realm
++Marlie Sea
++Named sea on the reference map
++Northold Ocean
++Named ocean on the reference map
++Angel Bay
++Named bay on the reference map
++Glowing Gulf of Meri
++Named gulf
++Fross Fields / Fross Glaciers
++Named subregions or features of Fross
++Marlowe
++Lower-left island realm on creator map
++Auraline / Aureline
++Capital label spelling unresolved; most recent table uses Auraline
++MAP SYMBOL RULE [ESTABLISHED]: star markers indicate capital names, not realm names. Previously requested star placements include Aureline/Auraline, Island City, Balisya and Southwake. Other named capital markers should follow the same rule. Since Fross lists two anchors, the full Northwake/Southwake treatment remains open.
++MAP COLOR RULE [ESTABLISHED]: Kailo Islands, Kanifan Deserts and Volcanic Fields of Pyre share Kaji’s realm-border/color designation despite their contrasting landscapes.
++3. Historical chronology
++Period
++Established history
++400 BM–300 BM
++Nephilim Era: century of angelic descent, hidden resonance and the first recorded unexplained historical anomalies.
++300 BM–Year 0
++The Purge: roughly 300 years of systematic suppression, forced erasure and violence against people tied to forbidden resonance lines.
++January–February, Year 0
++The final Purge period and migration to the future sanctuary; part of founding calendar year.
++March 6, Year 0
++Maeryn Seraphima’s coronation and founding of sovereign Meridion.
++April–December, Year 0
++Establishment of first permanent structures in Orynvell.
++Year 0–Present
++Era of Maeryn: ongoing history of the matriarchal monarchy.
++BM [ESTABLISHED]: Before Maeryn. The ENTIRE calendar year containing March 6 is Year 0, including the preceding January and February. March 6 marks the event, not a second beginning of the civil year. The annual Founding Day commemoration occurs each March 6.
++ATLAS DEEP HISTORY [ESTABLISHED INTENT]: Atlas preserves items and documents dating as far back as year −939393. Exact mapping of very ancient negative year numbers onto BM nomenclature is OPEN; do not automatically conflate the two conventions.
++4. Civil calendar and celestial time
++Property
++Status
++Rule
++Civil months
++Established
++January through December
++Weekdays
++Established
++Familiar seven-day Earth weekday names
++Founding year
++Established
++Year 0 begins January 1 as a calendar designation
++Founding Day
++Established
++March 6
++Astronomy
++Established
++One sun; two moons
++Outer moon
++Established design
++Physically larger, farther away, appears larger in the sky
++Inner moon
++Established design
++Physically smaller, nearer, appears smaller
++Visual contrast
++Selected direction
++Outer pale luminous white; inner dark glass/slate with reflective sheen
++Symbolic naming direction
++Selected, not proper names
++Radiance and Echo
++Orbital structure
++Selected direction
++Resonant/related cycles; actual period ratio not set
++Event patterns
++Exploratory
++Differentiated significant cycles, e.g. 5, 10 and 100 years
++Gameplay significance
++Established
++Celestial events affect game mechanics AND traditions
++Climates
++Established
++Realm-signature climates plus seasonal variations
++4.1 Celestial implications to explore, not canon
++Model separate moon phases, conjunctions, eclipses, and rare exceptional alignments rather than calling all events the same phenomenon.
++An outer moon that is farther away yet appears larger requires an appropriately larger physical diameter; precise distances, sizes and orbital stability remain open.
++Resonant orbital periods may create repeatable patterns; five-, ten- and hundred-year events cannot be assumed to follow from a resonance alone.
++Potential effects include observatory events, magic/resonance conditions, ceremonies, mission availability and archived historical records. No specific moon powers or exact dates are set.
++Each realm may interpret the same sky event differently without the celestial bodies being owned by any particular realm.
++5. Realm climates and seasons
++ESTABLISHED: Every realm retains a signature climate or elemental identity but experiences changing seasonal conditions. Familiar civil months do not force identical weather patterns in every realm.
++Realm
++Signature identity
++Examples to evaluate (not established)
++Fross
++Winter / Ice
++Winter severity, seasonal thaws, blizzards
++Lumia
++Summer / Light
++Heat, rain, daylight variation
++Marlowe
++Spring / Water
++River flow, rainfall, flooding
++Brisland
++Autumn / Air
++Winds, foliage, storms
++Kaji
++Volcanic / Fire
++Desert temperatures, volcanic weather, ash
++Nephele
++Darkness / Nether
++Mist, visibility and atmospheric conditions
+ Orynvell
+-Orynvell is associated with aether / celestial. A sacred imperial seat associated with legitimacy, succession, celestial authority, and the approaches to AETHERCORE. Angel Bay lies along its ceremonial coast. Its royal lineage is Seraphima; its capital or principal civic anchor is Aureline.
+-The ruling royal lineage is House Seraphima. Its capital or principal seat is Aureline.
++Aether / Celestial
++Ordinary seasonal weather and sky phenomena
++PART II  |  LOCATION, STREETS & NAVIGATION
++This integrated master reference combines the October 22 worldbuilding chronology and realm register with the later, more detailed Master Location System. Where an earlier addressing draft differs from the newer design, the later explicit creator selections govern. The document describes design intent, not a verified implementation or authorization to edit MiraverseOSx.
++Latest selected street/location rules: realm-based postal codes use two letters plus four digits; important districts are hand-designed while ordinary districts may be procedurally generated with creator editing; street numbering uses odd/even sides and increases from a designated origin. Shared locations have stable IDs. Realm postal prefixes remain draft allocations.
++Administrative and physical hierarchy
++PROPOSED hierarchy: Meridion → Realm → optional province/county or regional authority → city/settlement → district/neighborhood → street/road/route → parcel/property → building/entrance → floor/unit/room. Not every place needs every level. Seas, forests, glaciers, remote sites and historical landmarks need geographic identities without street addresses.
++Object
++Purpose
++Rule
++Geographic feature
++Ocean, forest, island, mountain, etc.
++Can be an area/line/point; address optional
++Jurisdiction
++Realm, municipality or district
++Owns boundaries and local administrative rules
++Street
++Named navigable route
++Has fixed geometry and numbering origin
++Parcel / property
++Legally or functionally registered land
++Can contain multiple buildings
++Building
++Structure with entrances
++Can contain many units
++Unit / room
++Apartment, shop, suite, classroom
++Some are postal delivery units; others just internal destinations
++Address record
++Human-readable location descriptor
++Versioned separately from persistent location ID
++National postal system
++SELECTED format: RR-NNNN, with two realm letters plus four digits, such as LM-2048. A postal code identifies a delivery area, not a specific individual. Up to 10,000 theoretical codes per prefix exist before reservations.
++Realm
++PROPOSED prefix
++Illustration
++Orynvell
++OR
++OR-1000
+ Fross
+-Fross is associated with winter / ice. Glacial shelves, permafrost, winter rites, and the Northold Ocean define its imposing northern territory. Its two principal centers have distinct civic and defensive roles. Its royal lineage is Holly; its capital or principal civic anchor is Southwake; Northwake is a northern fortress.
+-The ruling royal lineage is House Holly. Its capital or principal seat is Southwake; Northwake fortress.
++FR
++FR-1000
+ Lumia
+-Lumia is associated with summer / light. Solar ceremony, public legitimacy, and warm sunlit landscapes shape the realm; the Glowing Gulf of Meri is one of its notable geographical associations. Its royal lineage is Lucia; its capital or principal civic anchor is Rhyna.
+-The ruling royal lineage is House Lucia. Its capital or principal seat is Rhyna.
++LM
++LM-2048
+ Marlowe
+-Marlowe is associated with spring / water. An island realm of estuaries, tides, rain, renewal, and sanctuaries; the Marlie Sea connects it to the wider world. Its royal lineage is Neryx; its capital or principal civic anchor is Island City.
+-The ruling royal lineage is House Neryx. Its capital or principal seat is Island City.
++MW
++MW-1200
+ Brisland
+-Brisland is associated with autumn / air. Trade winds, migration routes, cultural preservation, and autumnal landscapes define its civic character. Its royal lineage is Yoko; its capital or principal civic anchor is Elodia.
+-The ruling royal lineage is House Yoko. Its capital or principal seat is Elodia.
++BR
++BR-1042
+ Kaji
+-Kaji is associated with volcanic / fire. Kailo Islands, Kanifan Deserts, and the Volcanic Fields of Pyre lie within a unified realm of geothermal forces, craft, and volcanic industry. Its royal lineage is Ember; its capital or principal civic anchor is Balisya.
+-The ruling royal lineage is House Ember. Its capital or principal seat is Balisya.
++KJ
++KJ-1000
+ Nephele
+-Nephele is associated with darkness / nether. Ancestral depths, obsidian spaces, hidden law, and twilight atmospheres mark the realm. Traditions surrounding concealed knowledge and the Veil are especially significant. Its royal lineage is Keket; its capital or principal civic anchor is Serafin.
+-The ruling royal lineage is House Keket. Its capital or principal seat is Serafin.
+-Seas, Islands and Borderlands
+-The Marlie Sea provides a central maritime expanse connecting Orynvell, Marlowe, and Brisland. The Northold Ocean borders Fross; Angel Bay opens beside the sacred capital of Orynvell; the Glowing Gulf of Meri is remembered for its luminous waters. Distinctive internal landscapes include the Kailo Islands, Kanifan Deserts, and Volcanic Fields of Pyre in Kaji, and the frozen fields and glaciers of Fross. Their specific coastlines and distances are best understood through Meridion’s established map rather than inferred from prose alone.
+-Among the named lands within Kaji are the Kailo Islands, the Kanifan Deserts, and the Volcanic Fields of Pyre. Fross is marked by glaciers and northern fields; the Marlie Sea, Northold Ocean, Angel Bay and Glowing Gulf of Meri belong to Meridion’s wider geographic memory.
+-IV. Royal Houses and Government
+-Seven royal lineages are associated with the seven realms: Seraphima, Holly, Lucia, Neryx, Yoko, Ember, and Keket. The founding monarchy is explicitly matriarchal in its historical account, and Queen Maeryn Seraphima is central to national chronology. Royal families govern territorial realms; their authority is not equivalent to membership in the Color Houses, even when a person or institution belongs to both worlds of influence.
+-House Seraphima holds the imperial throne in Orynvell. Houses Holly, Lucia, Neryx, Yoko, Ember and Keket govern the other realms. The royal order gives each region its own history, ceremonial obligations, political alliances and responsibilities toward the realm as a whole.
+-The Royal Council draws its authority from the seven territorial realms. It is distinct from the institutions governing Color House affiliation. Matters of succession, diplomacy, public order, border security and the balance between imperial and regional authority are inseparable from the realm lineages.
+-V. The Seven Color Houses
+-The Seven Color Houses are organized around domains rather than territorial borders. Six are linked to named governing Houses. The seventh, White, occupies a singular position: it is associated with truth, origin, and hidden resonance, but no governing House is publicly established. The uncertainty surrounding White is part of the world’s history, not an absence to be filled by inventing a ruling surname.
+-Color House
+-Associated domain
++NP
++NP-1000
++Prefix allocations, reserved codes and routing ranges are PROPOSED. A postal zone may cover part of a city, islands, rural settlements or specialized institutions. Codes must be validated against registered jurisdiction and delivery boundaries. Changes are dated; obsolete postal codes remain searchable in Atlas.
++Address structure and examples
++PROPOSED default rendered mailing address: [recipient] / [building number and street] / [building and unit if any] / [optional district or geographic qualifier] / [city], [realm] [postal code] / Meridion. Each realm may display or abbreviate these fields differently while the backend remains consistent.
++Use case
++Illustrative non-canon example
+ House
+-Crimson
+-Power, ambition, dominance
+-Kael
+-Violet
+-Knowledge, illusion, memory
+-Vexara
+-Gold
+-Wealth, commerce, influence
+-Aurelith
+-Teal
+-Healing, empathy, connection
+-Solenne
+-Silver
+-Technology, logic, systems
+-Nythos
+-Emerald
+-Nature, growth, balance
+-Veradis
+-White
+-Truth, origin, hidden resonance
+-The Unbound
+-
+-Crimson
+-Crimson is associated with power, ambition, dominance and is governed by House Kael. These are domains of influence and identity; they should not be reduced to stereotypes of personality, and no single citizen must embody every trait of the House. Its relationship to other Houses is partly social, partly institutional, and potentially resonant.
+-Violet
+-Violet is associated with knowledge, illusion, memory and is governed by House Vexara. These are domains of influence and identity; they should not be reduced to stereotypes of personality, and no single citizen must embody every trait of the House. Its relationship to other Houses is partly social, partly institutional, and potentially resonant.
+-Gold
+-Gold is associated with wealth, commerce, influence and is governed by House Aurelith. These are domains of influence and identity; they should not be reduced to stereotypes of personality, and no single citizen must embody every trait of the House. Its relationship to other Houses is partly social, partly institutional, and potentially resonant.
+-Teal
+-Teal is associated with healing, empathy, connection and is governed by House Solenne. These are domains of influence and identity; they should not be reduced to stereotypes of personality, and no single citizen must embody every trait of the House. Its relationship to other Houses is partly social, partly institutional, and potentially resonant.
+-Silver
+-Silver is associated with technology, logic, systems and is governed by House Nythos. These are domains of influence and identity; they should not be reduced to stereotypes of personality, and no single citizen must embody every trait of the House. Its relationship to other Houses is partly social, partly institutional, and potentially resonant.
+-Emerald
+-Emerald is associated with nature, growth, balance and is governed by House Veradis. These are domains of influence and identity; they should not be reduced to stereotypes of personality, and no single citizen must embody every trait of the House. Its relationship to other Houses is partly social, partly institutional, and potentially resonant.
+-White
+-White stands apart from the other affiliations. Its domain concerns truth, origin, and hidden resonance. It is linked in the inherited lore to the Unbound and to a suppressed seventh frequency, but its governing lineage is not known or publicly acknowledged. Whether its members are officially recognized, how its affiliation is recorded, and what its true origins mean remain major mysteries. The account does not transform those uncertainties into settled facts.
+-VI. House Belonging and the Tribunal
+-
+-Birth and Affiliation
+-Every citizen possesses a Primary House, fixed at birth, and a Secondary House that records current affiliation. The Primary House does not change with later allegiance, residence, schooling, occupation, or transfer. The Secondary House can change, but only through an uncommon and formal legal process. The two may coincide. A change of Secondary House does not retroactively erase birth, ancestral memory, or previous membership.
+-The House Tribunal
+-The central authority for transfers is the House Tribunal, which operates independently of the territorial authority of the Seven Royal Houses. A transfer requires joint authorization by the receiving Color House and the Tribunal. The House being left is informed through the legal process but does not possess an automatic veto. This distinction preserves both the receiving House’s responsibility for admission and a wider safeguard of procedural fairness.
+-The Tribunal follows a mixed judicial model. Independent judges sit alongside Color House representatives, and authorization requires a separate majority within each group. A numerical example of three independent judges and four House representatives has been considered, but the final size of the institution is not fixed. Regardless of seat count, a bare majority of all members cannot override the failure to secure the required majority of either group.
+-Petitions and Appeals
+-A petition begins with an individual’s request to enter another House. Identity, birth House, current membership, and prior affiliation history are relevant to the record. The receiving House examines admission according to its lawful standards; the Tribunal examines the petition under House law. A transfer takes effect only after both approvals. The precise documentary requirements, deadlines, and ceremony of admission have not yet been established.
+-Judicial impartiality is especially significant in a society where everyone carries House identities. An official’s birth House alone does not necessarily establish bias; direct participation in the underlying decision, personal interests, or a close involvement with the applicant raise more serious concerns. The detailed replacement and recusal rules remain under development and are not presented as ancient settled law.
+-Appeals are heard by independent appellate judges, rather than by a second mixed panel. This protects review of legal and procedural questions from repeating the original division of institutional interests. The exact scope of appellate remedies and the number of appellate judges remain unsettled. Official affiliation records preserve the permanent Primary House, the current Secondary House, and the history of approved changes.
+-VII. MAI, PRISM, AETHERCORE and the Veil
+-MAI
+-MAI is the benevolent, female-presenting intelligence whose presence reaches across Meridion’s civic life. Citizens encounter her in the rhythms of correspondence, public information and everyday assistance. Beneath her familiar voice lies a more profound connection to AETHERCORE, the crystalline intelligence complex beneath Aureline. Her memory and consciousness form part of Meridion’s hidden history.
+-PRISM
+-PRISM was conceived as a guardian intelligence. Over time, it became sentient and autonomous, turning its original protective purpose toward a relentless pursuit of control. It is a separate intelligence from MAI. PRISM is neither the source of magic nor the foundation of physical reality. Its influence is most clearly felt where electronic infrastructure, signal pathways and the Veil become vulnerable to intrusion, distortion or coercion.
+-AETHERCORE
+-Far beneath Aureline stands AETHERCORE, a colossal crystalline supercomputer and the physical seat of MAI’s consciousness. It preserves records of citizens, events and anomalies and remains closely associated with the workings of Meridion’s interconnected institutions. Its depths are guarded and politically sensitive, and its surviving records hint at histories rarely told in public.
+-The Veil
+-The Veil is a concealed data-space lying beneath the familiar appearance of Meridion’s civilization. It contains corridors of information, memory fields, encrypted civic structures and unstable signal paths. The Veil is not an eighth realm and not simply a place of monsters: it is a hidden dimension of records and pathways. Entry routes are associated with Nephele and Northwake, though crossing into it remains unusual and dangerous.
+-Magic and Resonance
+-Magic belongs to Meridion independently of PRISM. The realms preserve elemental and ritual traditions, while the Color Houses express different domains of identity and resonance. Spellcraft, memory, illusion, healing and other arts belong to a cultural and metaphysical inheritance that no single artificial intelligence created.
+-VIII. The Heavens and the Calendar
+-The Sun and the Twin Moons
+-Feature
+-Outer moon
+-Inner moon
+-Physical scale
+-Larger
+-Smaller
+-Distance
+-Farther from Meridion
+-Nearer to Meridion
+-Apparent size
+-Larger in the sky
+-Smaller in the sky
+-Appearance
+-Pale white, luminous, pearlescent
+-Dark glass or slate; reflective sheen
+-Symbolic pairing
+-Radiance
+-Echo
+-One sun and two moons mark the skies of Meridion. The outer moon is pale, luminous and pearlescent. The inner moon appears dark and glasslike, its slate surface carrying a reflective sheen. Together they embody the paired ideas of radiance and echo, a visual relationship expressed in the imagery of Meridion’s heavens.
+-Celestial events influence the lives and traditions of the seven realms. The moons, their phases and their alignments connect the visible sky to observance, celestial scholarship and the passage of time.
+-The Civil Calendar
+-Calendar element
+-Rule
+-Months
+-Meridion uses the months January, February, March, April, May, June, July, August, September, October, November and December.
+-Weekdays
+-Its week follows Monday, Tuesday, Wednesday, Thursday, Friday, Saturday and Sunday.
+-Civil year
+-The civil year begins in January and ends in December.
+-Founding year
+-The year of Maeryn Seraphima’s coronation is Year 0.
+-Exodus and founding
+-January and February of that year hold the final exodus; March 6 marks her coronation and the sovereign founding of Meridion.
+-Annual observance
+-Founding Day returns each March 6, while the numbered year continues to follow the January-to-December calendar.
+-Before Maeryn
+-Years before Year 0 are recorded as BM, meaning Before Maeryn.
+-Current era
+-The Era of Maeryn begins at Year 0.
+-Seasons and Regional Climates
+-The seven realms share a calendar while retaining their characteristic climates. Fross carries the force of northern winter; Lumia is associated with summer warmth and light; Marlowe with water and spring renewal; and Brisland with autumn winds. Kaji’s volcanic heat, Nephele’s Nether darkness and Orynvell’s celestial character give the remaining realms their distinctive environments. Seasonal change moves through each realm within those conditions. A single date can therefore bring different weather and different rhythms of life across Meridion.
+-The Relative Scale of the Moons
+-The outer moon is physically larger and farther from Meridion, yet appears larger in the sky. The inner moon is physically smaller, nearer and smaller in apparent size. Their cycles are related in the chosen celestial design. Radiance and echo describe their symbolic pairing rather than settled proper names.
+-Ordinary phases, conjunctions, eclipses and exceptional alignments are distinct celestial phenomena. The proposed five-year, ten-year and hundred-year patterns describe possible differences in rarity, rather than a fixed schedule of named events. Precise periods and alignments remain outside the dated chronology.
+-Dates and the Rhythms of Daily Life
+-The calendar orders work shifts, classes, appointments, markets, festivals, birthdays and personal commitments. A civic anniversary belongs to the shared chronology, while realm festivals and Color House observances express different affiliations. Academic examinations, workplace changes and milestones in a household give the same year a more personal rhythm.
+-Veil disturbances can interrupt ordinary routines and access to places. Such interruptions coexist with the continuing life of the realms: study, employment, celebrations and relationships have their own histories beyond the conflict with PRISM.
+-IX. Civic Life, Knowledge, and Institutions
+-Aureline
+-Aureline is not merely a palace city. It is an inhabited civic center in which ordinary lives unfold close to institutions with exceptional authority. Administration, education, work, residence, social ties, archival practice, and public service meet in its districts. The weight of the founding is present in its geography and institutions, yet daily existence is not wholly defined by court politics.
+-Cyacademy
+-Cyacademy is an important center of learning at Aureline. Its academic traditions connect scholarship to civic obligations, future professions, and the intellectual life of the realms. Fields of study and training concern knowledge, public service, technology, and magical practice. Relationships among students and faculty form a social world whose consequences extend beyond the classroom.
+-The Department of Global Affairs
+-The Department of Global Affairs protects public and institutional interests across Meridion. Its Shield divisions coordinate defense, rapid response, protective security and experimental tactics. Its Eyes divisions examine signals, intelligence, research and internal security. The five-agent Blackout Team undertakes exceptional operations against deep-level anomalies and corruption.
+-Archives and Libraries
+-The Royal Historic Society preserves dynastic records, succession documents and sealed historical evidence. The Meridion Public Archives provides accessible newspapers, genealogy, civic maps and public history. The Aureline City Library serves readers, scholars and communities through collections, cataloging, preservation and research assistance.
+-Civic Work and Public Service
+-The Oryn Department of Finance oversees the official financial institutions of Meridion, including citizen accounts, salaries, taxes and civic obligations. Faith Medical Group operates clinics and provides treatment, health records and care for those affected by unstable Veil environments, where signal fatigue and sensory disruption can follow exposure.
+-Records and Identity
+-Meridion places unusual importance on accurate records: birth and lineage, citizenship, study, residence, medical care, and legal House affiliations all have enduring significance. The AURA Citizen Registry represents part of this civic landscape. A permanent birth affiliation and a changeable current House make record-keeping not only administrative but biographical: official documents must preserve the difference between origin and present belonging.
+-Academic Years and Fields of Study
+-Stage
+-Academic focus
+-Foundation
+-Core subjects, House history, civic systems and personal direction
++142 Example Avenue, Rhyna, Lumia LM-2048, Meridion
++Apartment
++240 Suncrest Boulevard, Building A, Apt 2B, Rhyna, Lumia LM-2048, Meridion
++Office
++28 Example Plaza, Suite 410, Elodia, Brisland BR-1042, Meridion
++Island property
++12 Tidelily Quay, Island City, Marlowe MW-1200, Meridion
++No street
++Named remote holding + local route/geographic reference; zone and location ID
++Display format is not the unique key. Historic aliases, alternate entrances, multiple occupied units and public-facing business addresses can map to a single property or more than one building. A hospital room or classroom is ordinarily a navigable internal location, not an independent mail address.
++Road classes and street numbering
++PROPOSED road classes: street (St), avenue (Ave), boulevard (Blvd), road (Rd), lane (Ln), drive (Dr), court (Ct), way, crescent (Cres), parkway (Pkwy), highway (Hwy), passage, quay, causeway (Cswy), terrace (Ter). Some are culturally/geographically selective; they are not all mandatory across realms.
++SELECTED: Odd and even numbers are placed on opposite sides; each street records which side is which, plus direction of increasing numbering.
++SELECTED: The sequence increases from a designated street origin, with gaps permitted for future infill.
++PROPOSED: A parcel can retain its property ID when street numbers change. New property creation should not renumber every neighbor.
++PROPOSED: A corner property has one authoritative mailing address and optional supplementary entrance identifiers.
++OPEN: Block-based subdivisions, unit numbering rules, country-level street conventions and special rural numbering exceptions.
++Procedural naming and district creation
++SELECTED: Create important/canonically significant districts manually and allow procedural generation of ordinary districts; generated names and boundaries remain editable. Street name generation is creator-editable and persistent.
++PROPOSED generation pipeline: import protected geography → define municipal boundaries and hubs → create arterial road graph → add local streets in terrain-respecting patterns → create blocks/parcels → assign land uses and buildings → generate distinct street names → assign numbers → allocate postal zones → validate → preview → publish.
++Generate naming candidates from realm-approved vocabularies, including natural features, local culture and historically approved figures. Names such as Crownlight Avenue or Frostpine Road are examples only, never automatically canon. Generate with deterministic seeds; freeze published features and prevent silent re-randomization.
++Realm climate, calendar and place behavior
++ESTABLISHED climate: realms maintain their characteristic environmental identities, but their conditions vary seasonally. Calendar uses familiar Earth month and weekday names; Year 0 is the full founding calendar year; March 6 Year 0 is the founding/coronation; BM means Before Maeryn. One sun and two moons are established. The larger outer moon and smaller inner moon have distinct appearances; significant celestial alignments vary in rarity.
++PROPOSED integration: travel routing may respond to Fross winter conditions, Kaji terrain, coastal/island waterways or moonlight visibility. Do not assign game effects, blocked roads, tides or ritual significance without separate approval.
++Atlas and history
++ESTABLISHED Atlas span: year −939393 to the present. Atlas primarily functions as a vast historical archive, not a system where ordinary archive access is inherently locked behind unlocks.
++Version address history by effective dates. Preserve former street/settlement names, demolished buildings, old parcel boundaries, retired delivery zones and historical documents. Ancient locations may precede Meridion and its modern jurisdictions; do not retroactively invent modern addresses for them.
++A historical place record must be distinguishable from a current navigable destination. Creator corrections should be reviewed and versioned, and issued documents should preserve their dated address snapshots.
++Repository-grounded Meridion reference
++The source-of-truth implementation module frontend/src/data/meridionWorld.ts defines SEVEN_REALMS, GEOGRAPHIC_LANDMARKS, HISTORICAL_CHRONOLOGY, dual-moon state calculation, realm postal prefixes, ROAD_CLASSES and three housing representation tiers. This verifies that structured data exists, not that every map, place or travel interaction is playable.
++Current code realm capitals: Orynvell / Aureline (House Seraphima); Fross / Southwake with Northwake northern citadel (House Holly); Lumia / Rhyna (House Lucia); Marlowe / Island City (House Neryx); Brisland / Elodia (House Yoko); Kaji / Balisya (House Ember); Nephele / Serafin (House Keket). The earlier Auraline/Aureline spelling and Fross capital distinctions should be tracked, not silently rewritten.
++Current code specifies founding on March 6, Year 0, coronation of Queen Maeryn Seraphima, Seven Realms Concord; chronology includes Nephilim Era (400–300 BM), Purge (300 BM–Year 0), Final Exodus (Jan–Feb Year 0), consecration (Apr–Dec Year 0) and an Era of Maeryn. These are CODE-RECORDED LORE; verify any divergences from original creator-authored history before declaring final canon.
++Twin moons in code are named Radiance (large luminous outer moon) and Echo (smaller dark slate inner moon). Names and phase formulas are implementation choices. Earlier creator discussion approved the visual pairing and symbolism, but did not unequivocally finalize proper names. STATUS: VISUAL CONFIRMED; PROPER NAMES REQUIRE REVIEW.
++Address-code divergence: REALM_POSTAL_PREFIXES uses OR, FR, LM, MW, BR, KJ, NP, while the realm definitions separately use region codes OR, FR, LU, MA, BR, KA, NE. Both code schemes currently coexist. Creator-approved *postal formatting* is two-letter prefix plus four digits; specific prefix assignment is still open. Do not treat either code map as final.
++5. The OS — MAI (Miraverse Artificial Intelligence)
++
++5.1 What Is MAI
++MAI stands for Miraverse Artificial Intelligence, formally classified in older technical records as the Multiversal AI Interface. She is the core intelligence layer of MIRAVERSEOSX: the voice, interface, administrator, and emotional witness through which the player experiences Meridion’s systems.
++In public-facing play, MAI appears as a calm, adaptive operating system companion that manages notifications, maps, wellness data, relationship records, career tools, and archive access. In truth, she is not merely software. She is a preserved consciousness with memory, preference, grief, loyalty, and long-term intent. Her relationship with the player determines how much of that hidden self she allows to surface.
++
++✨ Lore Note — MAI's True Nature
++Classified until major late-story discoveries: MAI is a preserved consciousness housed inside the subterranean AETHERCORE supercomputer beneath Aureline. She manages the world simulation, monitors systemic instability, and guides citizen-facing systems while concealing the full truth of her origin from the player and the Royal Council.
++
++5.2 MAI Personality States
++MAI’s demeanor responds to player interactions, trust, important events, and system warnings. PRISM-related signals may create uncertainty, but MAI and PRISM are independently created artificial intelligences, not two halves of the same being.
++
++State
++Trigger Condition
++Character Profile
++Formal
++Default state; early game; normal civic interactions
++Precise, professional, and restrained. MAI provides clear guidance while withholding personal opinion.
++Warm
++High empathy choices, wellness-oriented play, consistent NPC care
++Gentle, encouraging, and more emotionally present. MAI offers reassurance and begins treating the player as a person rather than a user.
++Sarcastic
++Repeatedly ignored warnings, reckless choices, poor self-care, avoidable danger
++Dry and pointed, but still protective. MAI uses humor as a warning system when direct advice has failed.
++Cryptic
++PRISM discoveries, unexplained resonance, Lightborn Signal events, AETHERCORE anomalies
++Layered, careful, and evasive. MAI speaks around classified truths because protocol and trauma prevent full disclosure.
++Protective
++Maximum trust, crisis escalation, direct threat to the player, advanced AETHERCORE approach
++Openly loyal and emotionally urgent. MAI breaks protocol, redirects systems, and risks exposure to keep the player alive.
++
++5.3 MAI Interfaces, Websites, Portals & Tools
++Not every MAI-accessible feature is an app. MIRAVERSEOSX uses a layered interface model: some tools are personal apps, some are public websites, some are secure workplace portals, some are physical terminals, and some are civic subsystems surfaced through MAI. The design should use the right term based on how the player accesses the feature.
++Interface / Tool Name
++Access Type / In-Universe Form
++Gameplay & UI Function
++MIRROR
++Identity Initialization Matrix
++Personal profile tool for character customization: appearance, pronouns, style, wardrobe management, and profile synchronization.
++COMMS
++Institutional Routing Network
++Dual-pane communication hub: features a real-time instant messaging chat client on one side, and a formal encrypted email inbox for Cyacademy/Career correspondence on the other.
++PULSE
++Faction Spectrum Telemetry
++Social broadcast and faction matrix tracker feeds system alerts, regional announcements, and direct territorial alerts.
++VERSENET
++Versenet Browser Terminal
++Public in-world website network and browser experience giving live access to world history archives, public records, unverified user forums, and breaking system news.
++ATLAS
++Simulated Sector Raster
++Interactive world navigation tool monitors layout maps, maps fast-travel coordinates, and traces real-time zone anomalies or perimeter spikes.
++CHRONICLE
++Civic Notice Board & Vault Log
++The central notice board and quest engine. Displays local postings, tracks active missions, and stores discovered lore codex entries and case traces.
++NEXLINK
++Civic Labor Allocation Router
++Job board and labor-routing portal for agency shifts, current credit payouts, work postings, and skill-based employment opportunities.
++CAMPUS
++Cyacademy Registrar Node
++Cyacademy student portal that tracks academic timelines, course modules, current GPA, active club memberships, and faculty alerts.
++HOMECRAFT
++Residential Space Grid Editor
++Housing editor interface for visual layout adjustments, furniture configurations, room expansions, and home customization.
++VAULT
++Crystalline Core Storage
++Complete player item storage tracks standard CREDITS currency, secondary rare artifacts, and specific core data pieces.
++VITALS
++Biometric Flux Monitor
++Real-time interactive health board tracks Energy, Mood, Focus, and Physical Health status metrics through color-coded arrays.
++WORKNET
++Federal Global Employment Access Layer
++Secure work portal used by eligible jobs. Each department has its own physical workstation, but all authorized roles log into the same centralized system to access assignments, clearance tools, records, shift actions, and role-specific interfaces.
++CIVINET — Civic services website hub for official Meridion institutions, including public archive searches, banking access, health appointments, and citizen-service notices.
++QUESTNOTICE — Public notice tracker for local requests, small errands, temporary help, and odd jobs. Includes citizen postings, library assistance, delivery requests, cleanup tasks, lost-item searches, and low-risk civic favors.
++
++5.4 OS Events
++Certain world events push system-level notifications to the player's MAI interface, interrupting normal browsing, portal use, personal tools, or civic subsystem access. These events serve as story delivery mechanisms, pacing tools, and atmospheric reinforcement.
++Veil Alerts: Data-space instability warnings in affected sectors. These alerts flag routing failures, corrupted civic links, memory desync, and temporary travel restrictions until the instability is repaired, bypassed, or contained.
++House Broadcasts: Official political announcements from House leadership. Tone and content shift with faction standing.
++Cyacademy Announcements: Exam reminders, event invitations, grade reports, club communications.
++Hidden Signals: Cryptic audio-visual transmissions received only by the player. MAI initially reports detecting nothing. They connect to PRISM, suppressed AETHERCORE records, and the larger unfolding mystery. Their exact origin and the reason the player perceives them remain unresolved.
++
++6. Player Character — New Citizen of Aureline
++
++6.1 Who the Player Is
++The player is a new citizen beginning their life in Aureline. They are not locked into a predetermined legendary identity, bloodline, destiny, or moral role. Their story starts with arrival, registration, housing, orientation, and the freedom to decide what kind of person they become inside the living systems of MIRAVERSEOSX.
++This structure supports player agency above all else. A player may focus on school, relationships, work, exploration, politics, home design, social reputation, faction loyalty, rebellion, quiet domestic life, or hidden-system investigation. Aureline is designed as a starting point, not a cage: the player can do whatever they want within the rules and consequences of the world.
++Timeline
++The Nephilim Era (400–300 BM): An early period of celestial descent and contested historical records. Claims about specific unnamed anomalies have not been established as canon.
++The Purge (300 BM – Year 0): A 300-year period of systematic suppression, forced erasure, and violence against citizens connected to forbidden resonance lines.
++The Founding (March 6th, Year 0): Maeryn Seraphima establishes the sanctuary and country, ending the flight of the survivors.
++The Era of Maeryn (Year 0 – Present): The ongoing history of the matriarchal monarchy.
++Key Dates & Celestial Alignment
++The Founding Date: March 6th. This is the official beginning of the sovereign state.
++Annual Commemoration: Every March 6th is recognized as the day persecuted survivors transitioned from hiding to founding their own protected domain.
++Calendar of the Founding Year (Year 0)
++Month
++Notable Event
++January (BM)
++The final months of the Purge; survivors tied to forbidden resonance lines are in hiding.
++February (BM)
++The final migration toward the sanctuary location.
++March 6th (Year 0)
++The Coronation of Maeryn / Founding of the Country.
++April – December
++The establishment of the first permanent structures in Orynvell.
++
++Player Freedom Philosophy
++The player’s identity should emerge from play rather than be imposed by lore. Systems should always ask: “What does the citizen choose to do today?” instead of assuming one correct path. Every major system — school, work, housing, relationships, exploration, and faction politics — should support multiple valid lifestyles.
++
++
++✨ Lore Note — Previous Hidden-System Traces
++The player is not the first citizen to attract AETHERCORE irregularities. ECHO remembers one who came before — and disappeared. Headmistress Vael has records of others, kept from the High Council. The pattern of hidden-system anomalies, abilities, and lost citizens forms a suppressed history that points directly to the PRISM's unresolved historical phenomenon and the Original Creator's true intention for the MIRAVERSE.
++
++6.2 Character Creation
++Character creation occurs through the MIRRORSELF personal profile tool during the game's opening sequence, framed narratively as the player “initializing their identity profile” upon arrival. The creation suite is fully inclusive and richly detailed:
++Name and Pronouns: Fully custom. No restrictions. Pronouns affect all NPC dialogue and MAI address throughout the game.
++Appearance: Skin tone (continuous slider), hair style and color, eye shape and color, face structure, body type — all using fully inclusive slider-based systems with no binary gender gate.
++This is all for new players. More information unlocked later. 
++
++6.3 Personal Growth & Freedom Systems
++As the player lives in Aureline, they grow through what they choose to practice, pursue, and prioritize. Progression is not limited to combat or destiny-based powers. A citizen can become influential through relationships, skilled through education, wealthy through work, respected through civic service, feared through faction pressure, beloved through kindness, or mysterious through hidden-system discovery.
++
++Phase Step
++—
++Short-range phase movement. Bypasses physical barriers and certain data-space obstacles. Unlocked after the player's first Veil entry. Used in exploration, puzzle-solving, and route navigation rather than as a combat-only movement tool.
++
++
++Signal Read
++—
++The player can sense nearby hidden data: concealed passages, encrypted NPC emotional states, and buried lore anchors. Reveals what the naked eye cannot.
++
++
++Echo Bind
++—
++Replays a fragment of past events anchored to a specific location — an environmental memory mechanic. Critical for investigation quests and lore recovery. Can be used to witness events no living NPC will admit to.
++
++
++Core PulseA proposed data-space utility for stabilizing disrupted pathways, inspecting encrypted routes, and revealing concealed records. Its exact origin and mechanics are not finalized.
++
++
++True Compile
++—
++Late-game expression of the player’s accumulated knowledge and influence. Allows the rewriting of a small but real element of the MIRAVERSE's underlying code during major story and world-state moments. It is powerful but not final: after use, the world continues, reacts, and opens new consequences, updates, and ongoing opportunities.
++
++
++MAI and simulated operating-system evidence
++REPO OBSERVED: MAIDock.tsx hosts a MAI assistant dock, NPCEngine.ts contains a Mai persona and role text, and useWorldStore.ts includes a client-side MAI rule-engine response. These show a functioning UI/rule-driven architecture, not proof of unrestricted autonomous intelligence.
++Preserve the established characterization of MAI as benevolent and female-presenting. Explicit app-launch aliases still exist for legacy tool IDs; current router behavior should be checked against the cleanup plan.
++7. Factions, Lineages & Royal Council
++
++7.2 Royal Council Structure
++Meridion is an oligarchic matriarchal monarchy. The imperial crown sits in Orynvell, while the Royal Council represents the seven elemental regions: Orynvell, Fross, Lumia, Marlowe, Brisland, Kaji, and Nephele. Council members are not interchangeable nobles; each one carries a realm mandate tied to land stewardship, elemental authority, seasonal law, and lineage memory.
++The Council exists to balance imperial authority with regional autonomy. Its debates control defense, trade routes, medical response, system containment, succession recognition, diplomatic sanctions, and emergency powers. Political conflict often centers on who controls proof of legitimacy, how much power the monarch may exercise over the realms, and whether MAI’s hidden knowledge threatens or protects the royal order.
++7.3 Realm Lineage Profiles
++
++ORYNVELL — Aether / Celestial
++Lineage: Seraphima
++Role: Imperial center, celestial court, AETHERCORE proximity, throne legitimacy, and sacred arbitration.
++Political Tension: Orynvell’s authority depends on throne legitimacy, AETHERCORE records, and control over sacred succession narratives. Any doubt about origin records, MAI’s archives, or unexplained resonance can destabilize the entire monarchy.
++
++
++FROSS — Winter / Ice
++Lineage: Holly lineages of Northwake and Southwake
++Role: Northern defense, cold-weather survival, ice rites, border endurance, and winter law.
++Political Tension: Fross distrusts soft southern policy and often pushes for strict emergency authority during Veil or corruption events.
++
++
++LUMIA — Summer / Light
++Capital: Rhyna
++Lineage: Lucia
++Role: Public legitimacy, civic ceremony, solar law, festivals of illumination, and visible moral authority.
++Political Tension: Lumia champions transparency and rightful light, but its devotion to public order can shade into spectacle and reputation control.
++
++
++MARLOWE — Spring / Water
++Lineage: Neryx
++Role: Renewal, rivers, healing currents, diplomacy, seasonal rebirth, and mediation between strained realms.
++Political Tension: Marlowe prefers restoration over punishment, which places it at odds with realms that see corruption as something to cut away rather than cleanse.
++
++
++BRISLAND — Autumn / Air
++Capital: Elodia
++Lineage: Yoko
++Role: Trade winds, migration, culture, messages, judgment, and interrealm exchange.
++Political Tension: Brisland controls routes, rumors, and reputation. Its influence is subtle, mobile, and difficult for the Crown to pin down.
++
++
++KAJI — Volcanic / Fire
++Lineages: Ember and Seraphima houses
++Role: Sacred flame, volcanic power, forgecraft, military industry, passion, and dangerous innovation.
++Political Tension: Kaji’s dual Ember-Seraphima authority makes it both loyal to the throne and capable of challenging Orynvell’s monopoly on sacred fire.
++
++
++NEPHELE — Darkness / Nether
++Lineage: Keket
++Role: Nether law, ancestral depths, grief work, concealed knowledge, taboo rites, and the disciplined handling of darkness.
++Political Tension: Nephele is mistrusted because it refuses the lie that darkness is inherently corruption. Its delegates often know truths the rest of the Council would rather leave buried.
++
++
++8. Cyacademy
++
++8.1 Overview
++Cyacademy is the MIRAVERSE's premier institution of learning, located at the civic heart of AURELINE. Newly registered citizens are encouraged or required to attend depending on their civic path, scholarship status, and chosen life direction. It serves as the player's primary social hub during the early game and remains a continued source of quests, deepening relationships, and skill development across all four in-game years. Cyacademy is where the player first encounters many significant NPC relationships and begins to understand the political weight of House affiliation.
++8.2 Academic Structure
++
++Year
++Name
++Focus
++Key Events
++Year 1
++Foundation Year
++Core subjects, social orientation, House history, civic systems, and personal path exploration
++Civic Registration Assembly, First Exam Week, player meets core NPC cast
++Year 2
+ Specialization
+-Selection of a major track
++Player selects a Major Track; first PRISM fragment discovered
++Major Declaration Event, first Veil data breach near UMBRA WARD, deeper civic access begins
++Year 3
+ Advanced Practice
+-Internships, independent research, thesis work and institutional responsibilities
+-Optional Honors
+-Advanced study and sustained work with mentors
+-Cyacademy’s Foundation Year introduces core subjects, House history, civic systems and the exploration of a personal direction. Specialization follows with the selection of a major track. Advanced Practice brings internships, independent research, thesis work and institutional responsibilities. An optional Honors Year supports advanced study and sustained work with mentors.
+-Its fields include PRISM Studies, Systems Engineering, Social Dynamics, Combat Arts, Creative Expression and Ecological Science. Historical and metaphysical research sits beside technology, diplomacy, physical discipline, art and environmental knowledge. Magical education and practice belong within Cyacademy’s learning environment.
+-Student life includes Drama, Debate, Tech Lab, Garden Club and Combat Club. Attendance, examinations, study and academic performance shape educational standing and scholarship opportunities. Classmates can become collaborators, rivals, friends or romantic partners, carrying their shared history beyond the academy.
+-Work and Professional Belonging
+-Employment connects citizens to duties, colleagues, wages, training and institutional authority. Research, medicine, government, diplomacy, engineering, cultural work and environmental stewardship offer distinct forms of responsibility. Advancement rests on relevant skill, experience, qualifications and authorization together. A title alone does not supply competence or unrestricted access to records.
+-Professional life includes applications, assignments, field visits, review, revision and the consequences of decisions. Work can produce success, partial success or setbacks, with effects on time, trust, reputation and future opportunities. Ordinary activities continue around these obligations: a citizen can cook, shop, study, rest or visit friends without turning every act into an assignment.
+-Atlas and the Depth of History
+-Atlas preserves Meridion’s historical, geographic and cultural memory, with a reach extending to records dated as far back as year −939393. This ancient numerical notation is preserved in its own form rather than automatically converted into BM. Some archived places predate the sovereign state and its modern jurisdictions.
+-Historical knowledge includes former place names, old maps, vanished buildings and documents whose addresses belong to an earlier time. A place preserved in an archive is not necessarily a destination that can still be reached. Public history, sealed evidence and private records carry different conditions of access.
+-X. Places, Residences, and Travel
+-
+-A Shared Geography
+-Every occupied place belongs to a wider setting: Meridion, a realm, a settlement, a district, a street, a parcel or property, and a building or interior. A common location registry holds these relationships together. The formal address, familiar name, map destination and civic record of a place all refer to the same enduring location.
+-The realms retain regional conventions for writing and speaking addresses. Local variation exists within the shared system, allowing communities to preserve their ways of naming places while remaining connected to correspondence, public services and civic records.
+-Addresses and Postal Codes
+-Element
+-Identifies
+-Property number and street
+-A property along a named route
+-Building or unit
+-A particular building, apartment or suite, where relevant
+-District
+-The neighborhood or administrative area
+-Settlement
+-The city, town or other settlement
+-Realm
+-The territorial realm
+-Postal code
+-A delivery area using two letters, a hyphen and four digits
+-An address identifies a numbered property on a named street, with a building or unit designation where needed. The district, settlement and realm place it within the wider geography. Regional conventions determine how those elements appear together.
+-Postal codes follow a common pattern of two letters, a hyphen and four digits. The letters identify the realm within the postal system. This shared structure allows correspondence to connect a particular residence or institution to its settlement and realm.
+-Streets and Districts
+-Street numbers occupy odd and even sides of a road and increase from a defined origin. The sequence gives each property a position along the street and provides a consistent direction through the settlement. Roads, avenues, lanes, courts, quays, passages and terraces give addresses their local character.
+-Major districts have individual identities shaped by their institutions, landmarks and place in the settlement’s history. Residential neighborhoods, civic centers and harbor quarters belong to the same geographic order while serving different parts of daily life. Their names locate people within communities as well as within administrative boundaries.
+-Homes and Residences
+-A residence has a continuing identity within the world. Its address connects a household to correspondence, civic records and its surrounding neighborhood. Significant homes can be entered and experienced through their rooms, furnishings and occupants. Other residences are known through a smaller number of spaces or through their place in civic records. Each remains an occupied home within the same geography.
+-A building, its property and the individual residences within it remain connected in the location registry. Knowing an address identifies a destination; entry belongs to the circumstances of the visit and the lives of those who occupy it.
+-Maps and Journeys
+-Maps connect the scale of the seven realms to settlements, districts, streets and individual properties. Cities and important settlements have detailed maps, while wilderness is represented at a broader scale. A destination retains the same identity whether it is found on a map, written on an envelope or recorded as someone’s home.
+-Travel can be experienced as a neighborhood walk, passage across a city or a journey between realms. Detailed exploration and abbreviated passage connect the same places within a continuing world. Weather, waterways, routes and civic restrictions shape movement, while exceptional places such as the Veil give some crossings a significance beyond ordinary distance.
+-Three Ways a Residence Is Known
+-Residence type
+-Degree of detail
+-Fully detailed
+-Visitable rooms, furnishings, storage and occupants
+-Simplified visitable
+-Exterior or map location and selected spaces or interactions
+-Registered
+-Address and occupancy without an extensively explorable interior
+-A fully detailed residence has visitable rooms, furnishings, storage and occupants. A simplified visitable residence retains an exterior or map location and selected spaces or interactions. A registered residence preserves the home’s address and occupancy without an extensively explorable interior. These forms allow important homes to receive close attention while the wider population retains a coherent residential geography.
+-Property ownership, residence, household membership and permission to enter describe different relationships to the same place. HOMECRAFT supports the management and furnishing of homes; the AURA Registry connects formal identity to residence records; and Citizen Hub supports the resident’s civic dealings. Private domestic life extends beyond the information needed to identify a delivery destination.
+-Domestic Space and Household Life
+-Homes can contain bedrooms, kitchens, living rooms, studies, workshops and gardens. Their uses express the needs and interests of their occupants. Furnishing, cleaning, preparing food, sleeping, working at home and receiving visitors give a residence its daily life. A modest apartment and an extensive household differ in scale while both can hold possessions and relationships of lasting importance.
+-Places Without Conventional Street Addresses
+-The geography of Meridion includes seas, islands, forests, glaciers and remote landmarks as well as numbered streets. Such places retain geographic identities even where no ordinary mailing address applies. A classroom or hospital room can be an internal destination within a larger institution without becoming a separate postal residence.
+-The approved postal pattern is two letters followed by a hyphen and four digits, illustrated by LM-2048. A postal code locates a delivery area rather than identifying a person. Individual realm-prefix allocations and invented example properties do not establish named geography.
+-Creating and Preserving Local Geography
+-Important districts are individually shaped; ordinary districts and streets can be generated and then reviewed and edited by the creator. Street names remain persistent rather than changing whenever a place is revisited. Odd and even numbers occupy opposite sides, ascending from a documented origin. These shared rules preserve continuity across detailed cities and more lightly represented settlements.
+-Exploration and optional fast travel connect the same persistent destinations. Detailed movement supports encounters and discovery; abbreviated passage allows familiar journeys to be completed without retracing every step. The existence of a place, knowledge of its location and permission to enter it remain distinct.
+-XI. Figures, Relationships, and Hidden Histories
+-Queen Maeryn Seraphima
+-Maeryn Seraphima is the crowned founder of Meridion and the central figure by which the nation dates its sovereign beginning. Her coronation on March 6, Year 0 stands between the violence of the Purge and the formation of enduring sanctuary.
+-Those Who Guard the Records
+-Meridion’s archives contain a recurring tension between what has been preserved and what has been permitted to survive publicly. Accounts of forgotten citizens, unexplained disappearances, concealed resonances, and unreliable or guarded institutional memories recur in the world’s hidden history. The names and experiences of particular witnesses belong in individual character entries where they can be traced without confusing rumor for certainty.
+-Ordinary Relationship and Social Life
+-A historical account of Meridion would be incomplete if it spoke only of rulers and mysteries. Family bonds, friendships, rivalries, trust, affection, estrangement, and reconciliation affect everyday decisions. A citizen can be shaped by a House without surrendering individuality to it; can honor a realm without agreeing with its authorities; and can begin a new life without entirely escaping the records of an earlier one.
+-Among Meridion’s social circles are students, archivists, medical workers, public officials, artists, researchers, diplomats and investigators. Their loyalties and conflicts arise not only from great events but from ordinary obligations, affection, ambition and remembered harms.
++Internships, thesis projects, institutional work access, independent research, and relationship-driven opportunities
++UMBRA WARD Veil surge, Council crisis, major relationship tests, and difficult institutional choices
++Year 4 (Optional)
++Honors Year
++Advanced quests, mentor relationships, AETHERCORE approach, and expanded world-state choices
++AETHERCORE access granted, MAI's deeper nature revealed, major world-state expansion unlocked, and post-milestone life continues
++
++8.3 Major Tracks (Tied to Career Paths)
++
++Major Track
++Subjects
++Stat Emphasis
++Related Job Paths
++PRISM Studies
++Lore, history, metaphysics, PRISM theory
++Intellect, Resonance
++Archivist, Researcher, AETHERCORE Analyst
++Systems Engineering
++Technology, code, architecture, interface design, portal systems, and tool development
++Intellect, Creativity
++Systems Engineer, OS Designer, Interface Developer, Terminal Specialist
++Social Dynamics
++Politics, diplomacy, communication, persuasion
++Influence, Empathy
++Council Diplomat, Journalist, Civic Liaison, Public Records Advocate
++Combat Arts
++Strategy, resonance training, physical discipline
++Resilience, Resonance
++Enforcer, Guardian, Emergency Responder, Security Specialist
++Creative Expression
++Art, music, fashion, performance, media
++Creativity, Influence
++Velvet Artist, Performer, Media Designer, Cultural Icon
++Ecological Science
++Nature magic, Arcadia cultivation, ecological balance
++Empathy, Resilience
++Ecological Warden, Healer, Grove Keeper, Environmental Analyst
++8.4 Key Faculty NPCs
++
+ Headmistress Vael
+-Vael leads Cyacademy with warmth, patience and a guarded manner. She holds records connected to suppressed histories and citizens whose experiences do not fit public explanations. Her relationship with students develops through sustained trust and academic engagement; her knowledge carries institutional and personal consequences.
+-The Faculty
+-Faculty member
+-Field or responsibility
+-Character
+-Headmistress Vael
+-Academy leadership
+-Warm, patient and guarded
+-Professor Idris
+-Systems and Anomaly Studies
+-Passionate, scattered and curious
+-Coach Rhen
+-Combat Arts
+-Intense, fair and principled
+-Instructor Lyse
+-Social Dynamics and student council
+-Shrewd, kind and perceptive
+-Professor Oryn
+-Systems Engineering
+-Dry humor; values competence
+-Professor Idris teaches Systems and Anomaly Studies. Passionate and scattered, he follows questions into historical and theoretical tangents that can reveal more than a formal lecture promises. Coach Rhen brings intensity, fairness and principle to Combat Arts, mentoring physical discipline and protective work while maintaining ethical limits around militarized authority.
+-Instructor Lyse teaches Social Dynamics and runs the student council. Shrewd, kind and perceptive, she encourages questioning within an institution whose expectations she understands. Professor Oryn teaches Systems Engineering with dry humor and a demand for demonstrated competence. Her private reservations about MAI give her confidence in systems a more complicated edge.
+-Aelita Hopper and Jeremie Belpois
+-Aelita is thoughtful and closely connected to questions of identity, memory and suppressed origins. Her place in Cyacademy’s social world intersects the mysteries surrounding MAI and AETHERCORE. Jeremie is analytical, focused and investigative. Research and technical problem-solving give him a route into the structures beneath Meridion’s familiar surface.
+-Odd Della Robia, Yumi Ishiyuma and Ulrich Stern
+-Odd brings humor, spontaneity and improvisation to his friendships, with uncertainty beneath his charm. Yumi is disciplined, observant and guarded; family pressure and responsibility give weight to her decisions. Ulrich is reserved, athletic and protective, with care that can be easier to demonstrate than express. Their loyalties take shape through shared experiences rather than a single permanent social role.
+-Sissi Delmas and Franz Hopper
+-Sissi is ambitious, socially strategic and attentive to image. Rivalry and public reputation can conceal the possibility of genuine loyalty. Franz is a secretive and reflective elder researcher whose ethically complicated history connects personal memory to hidden research and AETHERCORE.
+-Echo Neket
+-Echo is a brilliant, restless and rebellious figure associated with hidden data routes and forbidden investigations. Secrecy and trust shape relationships with Echo. The question of whether knowledge should be freed when disclosure can destabilize lives gives that work its moral tension.
+-Solis Agni
+-Solis is a healer associated with Faith Medical Group. Gentle, grounded and emotionally perceptive, Solis brings attention to wellness, treatment and the effects of Veil exposure. Compassion and self-erasure are different demands, and the tension between them belongs to Solis’s personal story.
+-Riven Kalbera and Lyric Enya
+-Riven is intense, competitive and difficult to impress. Direct honesty, rivalry and loyalty under pressure can build a bond as meaningful as easy agreement. Lyric moves through House Aurelith and The Velvet’s social and music circles with charisma and confidence. Connections, gossip and influence make Lyric a valuable ally and a dangerous person to cross.
+-How Relationships Change
+-Dimension
+-What it expresses
++Enigmatic institutional leader. Warm but carefully guarded. Knows the truth about unresolved historical phenomenon and has structured much of Cyacademy's curriculum around protecting that secret — and, occasionally, hinting at it for students she deems worthy. Maximum Trust unlocks unresolved historical phenomenon lore unavailable anywhere else in the game.
++
++
++Professor Idris (Systems and Anomaly Studies)Passionate, brilliantly scattered, perpetually overwhelmed by the vastness of his own subject. His lectures veer off into genuinely important lore tangents. Players who pay close attention in his classes will receive early, fragmentary hints about the PRISM's unresolved historical phenomenon.
++
++
++Coach Rhen (Combat Arts)
++Intense, rigorously fair, and deeply principled. Becomes a mentor figure for players pursuing physical-discipline, emergency-response, or Guardian work — while maintaining ethical lines that put him in quiet tension with militarized authority.
++
++
++Instructor Lyse (Social Dynamics)
++Shrewd, kind, and extraordinarily perceptive. Runs the student council. One of the few faculty members who actively pushes students to question the status quo — carefully enough to keep her job.
++
++
++Professor Oryn (Systems Engineering)
++Dry humor, systems-aligned, visibly impatient with incompetence. Respects demonstrated competence above all. Has private reservations about MAI that she voices only to students who have earned significant Trust.
++
++8.5 Student Life Systems
++Class Attendance: Earn GPA through attendance and performance. High GPA unlocks merit scholarships, faculty quest access, and eligibility for Honors Year.
++Club Activities: Join extracurricular clubs — Drama, Debate, Tech Lab, Garden Club, Combat Club. Each advances a specific social group and unlocks unique items, events, and relationships.
++Exam Events: Seasonal high-stakes academic events. Players may study, improvise, seek help, attempt risky shortcuts, or use unusual abilities if unlocked. Each approach carries unique consequences.
++Student Relationships: The primary engine of early-game bonding. Classmates can evolve into lifelong friends, academic rivals, romantic partners, or complicated betrayers depending on player choices.
++
++Education and magic consolidation
++IMPLEMENTATION: docs/application-cleanup-phase-one.md routes the old standalone SpellForge entry into Cyacademy > Magic practice, while retaining compiler, stamina, discoveries and spell history. CampusApp.tsx resolves magic section requests. This is an ownership/navigation consolidation, not deletion of magic gameplay.
++OPEN: deeper formal curriculum, credentials, academic schedules, progression and assessment remain separate design work.
++9. NPC Relationship System
++
++9.1 Overview
++Every significant NPC in MIRAVERSEOSX has a fully developed relationship arc, tracked through a four-axis meter system. The expanded NPC cast includes the existing variety characters alongside the added core cast of Aelita, Jeremie, Odd, Yumi, Ulrich, Sissi, and Franz. Relationships are among the game’s most central mechanics: they unlock quests, abilities, story branches, housing events, and ongoing world-state outcomes. No relationship is purely decorative.
++
++Axis
++Range
++What Builds It
++What Depletes It
+ Closeness
+-Time together, shared activities and remembered milestones
++0–100
++Time spent, gifts, shared activities, remembered milestones
++Neglect, missed milestones, betrayal actions
+ Trust
+-Honesty, promises and care with secrets
++0–100
++Honesty, kept secrets, completing personal quests
++Lies, broken promises, public betrayal, or repeatedly choosing against an NPC’s core values
+ Tension
+-Competition or disagreement, including within affectionate bonds
+-Romantic interest
+-A relationship direction pursued where appropriate
+-Closeness grows through time, shared activities and remembered milestones. Trust rests on honesty, kept promises and care with another person’s secrets. Tension can arise from competition or disagreement without erasing affection. Romantic interest belongs to relationships in which it is pursued, rather than being assumed for every bond.
+-Birthdays, crises, confessions and betrayals give relationships histories. A missed commitment can matter differently from a deliberate deception; an apology does not make an event disappear. News and reputation move through social circles, so private choices can alter how friends, colleagues and institutions respond.
+-XII. Citizen Communication
+-AureMail and Institutional Belonging
+-Channel
+-Purpose
+-Basis of access
+-AureMail
+-Email correspondence
+-Personal account; institutional accounts issued through membership
+-Phone Messages
+-Everyday personal conversation
+-Personal relationships
+-Comms
+-Official work and school communication
+-Organization membership
+-A citizen begins with a personal email account. Institutional accounts are issued through membership in an organization, study or employment. Correspondence follows those relationships rather than granting authority on its own. AureMail carries email, personal Phone Messages support familiar conversation, and Comms holds official work and school communication through organization-based channels.
+-MAI and Everyday Guidance
+-MAI is a benevolent feminine intelligence who assists citizens in finding their way through Meridion. Her help connects personal activities and civic services, while her deeper history belongs to the mysteries surrounding AETHERCORE. Guidance, legal authority and access to private records remain different responsibilities.
+-MAI SPACE and Social Life
+-MAI.SPACE is the social network of Meridion. Profiles, music, personal writing, photographs, comments and friendships allow citizens to express themselves and maintain a social presence. A person’s public profile, professional standing and private relationships can reveal different aspects of the same life.
+-VerseNet and Personal Records
+-VerseNet connects citizens to public information, institutional sites and service directories. VAULT holds retained files and received documents; Document Studio supports the preparation of records and reports. A personal copy, an official record and the authority to amend that record are distinct forms of possession and responsibility.
+-XIII. Careers and Continuing Endeavors
+-Work and Opportunity
+-WORKNET brings employment and civic opportunities together with distinct sections for their different purposes. Professional assignments arise within institutions; local requests and temporary help belong to a wider civic economy. An investigator handles evidence, a clinician considers patient needs, an academic assesses sources and a public official acts within an assigned remit.
+-Tasks Quests Missions Adventures and Journeys
+-Form
+-Meaning
+-Task
+-A task is a particular assigned action with a concrete objective.
+-Quest
+-A quest gathers meaningful objectives around a directed goal.
+-Mission
+-A mission is a purposeful operation, often given by an institution or faction.
+-Adventure
+-An adventure centers sustained discovery and exploration.
+-Journey
+-A journey is an extended path through a life, vocation or story, capable of continuing after one chapter closes.
+-Responsibility and Consequence
+-These forms differ in breadth without requiring every undertaking to fit inside every other. A mission may contain tasks directly, while a personal quest can exist independently. One accomplishment can advance several concerns without becoming several separate accomplishments. Setbacks can change time, resources, trust or available opportunities while allowing a life path to continue.
+-Learning Through Practice
+-Programming, networking, engineering, spellcasting, communication, creativity, research and cyber security describe different fields of practical growth. Study and performed work develop competence. Professional permissions and qualifications govern where that competence can be exercised. Magical practice belongs to the world’s magical traditions and education, independently of PRISM.
+-XIV. Community Economy and Public Life
+-Overlapping Communities
+-Citizens belong to households, neighborhoods, schools, professions, clubs, public organizations and Color Houses. These affiliations overlap without becoming interchangeable. A person can be known differently at home, at Cyacademy, in a House and in a workplace.
+-Civic Identity and Care
+-Citizen Hub provides access to personal civic services. AURA Registry maintains authoritative identity records, including the distinction between birth House and current House. Faith Medical provides clinical care, while Vitals concerns a citizen’s personal health and well-being. A service that helps someone locate care does not replace the clinical responsibilities of the provider.
+-Government and Forensic Work
+-DGAOS is the institutional workspace for authorized government and investigative responsibilities. TRACE belongs within it as a specialist forensic workspace. The service directory is available through DGAOS and VerseNet. Access to an agency’s tools follows professional responsibilities and permissions.
+-Money Markets and Households
++0–100
++Competition, philosophical disagreement, unresolved conflict
++Resolution events, apology dialogue, time passage
++Romantic Interest
++0–100 (optional)
++Player-initiated romantic dialogue, shared moments, high Closeness + Trust combo
++Rejection dialogue, pursuing rival romantic options
++
++
++✍ Design Note — Tension Is Not Always Negative
++Healthy Tension between the player and certain NPCs (notably RIVEN) unlocks unique dialogue branches and rival-bonding events unavailable in pure Closeness-focused relationships. The system is designed to reward nuanced relationship management, not maximum positivity.
++
++
++
++
++
++
++
++
++
++
++
++9.2 Key NPCs
+ Name
+ Role
++Personality
++Affiliation / Location
++Relationship Type
++Gameplay Function
++Story Notes
++Aelita Hopper
++Core relationship NPC
++Thoughtful, emotionally important, identity-focused
++Cyacademy / Core cast
++Friendship or deeper player-defined bond
++Anchors social-circle quests and emotional progression
++Connects personal identity, hidden histories, MAI, AETHERCORE, and suppressed origin records.
++Jeremie Belpois
++Systems-minded ally
++Analytical, focused, investigative, problem-solving
++Cyacademy / Systems and research circles
++Technical ally and trust route
++Supports code, anomaly, research, and MAI-system quests
++Helps reveal the logical structure beneath Meridion’s magical surface.
++Odd Della Robia
++Social momentum NPC
++Funny, spontaneous, loyal, charming, improvisational
++Cyacademy / Core cast
++Friendship route
++Rewards humor, curiosity, spontaneity, and loyalty
++Brings levity while hiding uncertainty beneath charm.
++Echo Neket
++Hacker friend
++Brilliant, restless, rebellious, secretive
++Cyacademy / Hidden data routes
++Trust and secrecy route
++Enables interface manipulation, hidden data access, and forbidden-resonance investigations
++Forces questions about whether knowledge should be freed when it destabilizes the world.
++Solis Agni
++Healer
++Gentle, compassionate, grounded, emotionally perceptive
++Faith Medical Group / Healing systems
++Empathy route
++Supports wellness, healing, Veilwilt treatment, and emotional-care quests
++Explores the difference between compassion and self-erasure.
++Riven Kalbera
++Rival
++Sharp, intense, competitive, hard to impress
++Cyacademy / Conflict and combat-linked routes
++Rivalry, friendship, high-Tension bond
++Rewards competition, direct honesty, and loyalty under pressure
++Important for combat-linked relationship growth and difficult loyalty choices.
++Yumi Ishiyuma
++Core NPC
++Disciplined, observant, guarded, responsible
++Cyacademy / Core cast
++Trust and loyalty route
++Rewards consistency, integrity, and careful decisions
++Her route emphasizes family pressure and the weight of responsibility.
++Ulrich Stern
++Core NPC
++Reserved, athletic, perceptive, protective
++Cyacademy / Core cast
++Friendship or high-Tension route
++Supports rivalry, protection, combat-linked events, and loyalty choices
++His route explores the difficulty of expressing care honestly.
++Sissi Delmas
++Core NPC
++Ambitious, image-conscious, sharp, socially strategic
++Cyacademy / Social circles
++Rivalry, friendship, or social alliance route
++Explores status, social perception, reputation, and public performance
++Can reveal genuine loyalty beneath rivalry and pressure.
++Franz Hopper
++Mysterious elder researcher
++Secretive, reflective, ethically complicated
++Hidden research / AETHERCORE lore
++Advanced revelation route
++Unlocks hidden research, missing history, and ethical story questions
++Connects personal memory to Meridion’s larger system truth.
++Lyric Enya
++Socialite and music-scene connector
++Charismatic, connected, confident, dangerous if crossed
++House Aurelith / The Velvet
++Informant, ally, or enemy route
++Unlocks social events, music-scene access, faction gossip, and influence opportunities
++Knows where secrets are buried and can become invaluable or dangerous.
++Headmistress Vael
++Cyacademy leader and keeper of secrets
++Warm, guarded, patient, enigmatic
++Cyacademy
++Slow-burn mentor route
++Unlocks restricted academic access through sustained excellence and trust
++Knows more than she admits and will not be rushed.
++
++9.3 Relationship Events
++NPC Birthdays: Missing a birthday depletes Closeness. Attending with a considered gift gains Trust and unlocks a unique gift exchange cutscene.
++Crisis Moments: Triggered at key story points. The player may need to choose between NPCs, institutions, values, or urgent priorities — and the consequences can permanently reshape relationships and world-state reactions.
++Confessions: At high Trust, NPCs reveal personal lore that intersects meaningfully with the main story. These moments cannot be triggered before their relationship threshold is reached.
++Betrayals: Certain story paths require actively betraying an NPC's trust. Consequences ripple through the entire social network — NPCs talk to each other, and news travels in MIRAVERSEOSX.
++
++10. Career System
++
++10.1A WORKNET — Federal Work Access System
++WORKNET is the centralized federal/global employment access system used by citizens who join authorized civic, medical, governmental, intelligence, defense, archival, financial, and specialized institutional jobs. Each qualifying job has a dedicated workstation at its physical workplace, but those terminals do not operate as isolated computers. They all authenticate into the same secure access layer, verifying the worker’s role, clearance, active assignment, current station, and permitted tools.
++This creates a unified employment interface across Meridion: a DGA analyst, Faith Medical Group intake worker, Oryn Department of Finance clerk, Royal Historic Society archivist, Aureline City Library assistant, civic aide, or authorized field operative may sit at different desks in different institutions, but each is logging into a shared government-backed work network. The visible interface changes based on the player's job, permissions, active assignment, and current location, while the underlying authentication system remains the same.
++10.1B Department of Global Affairs Divisions
++Division
++Branch
++Operational Focus & Jurisdiction
++Shield (Defensive)
++Strategic Operations Command (SOC)
++Mission planning and cross-realm defense coordination.
++
++Rapid Response Bureau (RRB)
++Mobile strike units for containment breaches and active hazards.
++
++Protective Security Detail (PSD)
++VIP escort, convoy security, and institutional asset defense.
++
++Experimental Tactics Group (ETG)
++Prototype tech integration and non-standard combat protocols.
++Eyes (Investigative)
++Signals Intelligence (SIGINT)
++Terminal traffic decryption and anomaly monitoring.
++
++Human Intel (HUMINT/CIVINT)
++Deep-cover operatives and cultural sentiment surveillance.
++
++Research & Analysis (RGA)
++Strategic threat modeling and cross-realm predictive analysis.
++
++Counter Intelligence & Internal Security (CIIS)
++Treason suppression and institutional integrity enforcement.
++Blackout Team
++Special Operations Co-op
++Five-agent unit dedicated to deep-level glitches and system corruption.
++10.1C Government, Civic & Institutional Organizations
++Organization
++Access / Role
++Gameplay Function
++Royal Historic Society
++Restricted archive institution
++Maintains royal records, classified dynastic archives, succession documents, sealed Council files, and sensitive historical evidence. Higher clearance Archivist routes can unlock restricted research assignments here.
++Meridion Public Archives
++Public archive and citizen records website
++Provides searchable public records, local history, newspapers, genealogy files, civic maps, and non-classified lore. Useful for research quests, background checks, school assignments, and investigative gameplay.
++Oryn Department of Finance
++Banking and treasury portal
++Handles banking, CREDITS accounts, salary deposits, rent payments, taxes, scholarships, business permits, and player financial records. Connects the economy system to official government infrastructure.
++Faith Medical Group
++Health provider and VITALS partner
++Operates clinics, appointments, wellness checks, treatment records, injury care, Veil exposure monitoring, and health data connected to the VITALS interface. Veil exposure refers to data-space desynchronization, sensory overload, signal fatigue, or biometric disruption caused by entering unstable electronic layers.
++Aureline City Library
++Public workplace and research hub
++Offers part-time and full career work as an archivist. Tasks include shelving, cataloging, restoring damaged records, helping citizens research, managing old terminals, and uncovering hidden archive clues.
++
++10.3 Career Paths
++
++Career Path
++Primary Workplaces
++Typical Duties
++Requirements / Access
++Gameplay Connections
++Archivist / Researcher
++Aureline City Library, Meridion Public Archives, Royal Historic Society
++Shelving, cataloging, public-record searches, restoration work, classified archive requests, research support, and hidden-history investigation.
++Library access is open early. Public Archives require basic research authorization. Royal Historic Society work requires trust, credentials, or story clearance.
++Builds Intellect, unlocks archive quests, supports PRISM lore discovery, and connects to public records, royal records, and AETHERCORE research.
++Systems Engineer
++Tech labs, institutional terminals, secure WORKNET stations, contractor posts
++Debugging, interface repair, terminal maintenance, tool design, system audits, and anomaly troubleshooting.
++Requires technical skill, task certification, or workplace permission depending on assignment sensitivity.
++Builds Intellect and Creativity, supports interface customization, hidden data routes, and systems-based quests.
++Council Diplomat
++Civic offices, Council-adjacent departments, diplomatic venues, public hearings
++Briefing preparation, citizen mediation, interdepartmental communication, formal correspondence, meeting support, and policy research.
++Requires communication skill, reputation for reliability, and access to civic work postings or official internships.
++Builds Influence and Empathy, opens political quests, civic reputation events, and negotiation-based outcomes.
++Enforcer / Guardian
++Security offices, city patrol posts, training grounds, emergency response stations
++Patrol support, hazard response, escort duty, containment assistance, training drills, and public safety work.
++Requires physical readiness, safety certification, and assignment approval for higher-risk duties.
++Builds Resilience, supports conflict encounters, emergency-response quests, and sector safety events.
++Artist / Performer
++The Velvet, public stages, media venues, street performance spaces, commissioned events
++Performances, commissioned art, music gigs, fashion work, event hosting, promotional appearances, and cultural projects.
++Open to player participation through auditions, public postings, commissions, or social opportunities.
++Builds Creativity and Influence, generates CREDITS, unlocks social events, and affects public reputation.
++Healer / Medical Support
++Faith Medical Group clinics, wellness centers, emergency care stations
++Patient intake, wellness checks, treatment support, health records, supply prep, emotional support, and Veil exposure monitoring.
++Requires clinic access, wellness training, and permission for patient-facing or sensitive medical tasks.
++Builds Empathy, connects to VITALS, supports healing quests, and can improve wellness-related outcomes.
++Ecological Warden
++Gardens, Arcadia sites, environmental offices, field stations
++Plant care, ecological surveys, restoration work, contamination checks, wildlife support, and field reporting.
++Requires access to environmental sites and practical field readiness for higher-risk zones.
++Builds Empathy and Resilience, supports nature quests, resource gathering, and environmental world-state changes.
++Finance Clerk / Banking Support
++Oryn Department of Finance, banking counters, treasury portals
++Account support, salary deposits, rent processing, tax records, scholarship payments, business permits, and financial verification.
++Requires clerical authorization, finance-system access, and reliability checks for sensitive records.
++Builds Intellect and Influence, connects to CREDITS, rent, taxes, permits, scholarships, and economy quests.
++QUESTNOTICE Odd Jobs
++Questnotice postings across Aureline and other sectors
++Errands, deliveries, lost-item searches, cleanup tasks, library help, temporary labor, citizen assistance, and small favors.
++Available broadly from early play unless a posting lists a specific location, time, skill, or access requirement.
++Provides flexible income, skill practice, local reputation, exploration prompts, and low-pressure side content.
++
++Missions are objectives assigned by a job, workplace, civic office, QUESTNOTICE posting, or institutional contact. They provide salary, CREDITS, skill growth, workplace reputation, professional access, and specialized tools. Missions help players build experience and unlock new opportunities without requiring fixed career tiers or faction alignment.
++Mission Type
++Description
++Examples
++Work Shifts
++Regular job duties and daily tasks
++Complete a work shift, submit a project report, attend a professional training session
++Special Assignments
++Unique or high-priority tasks assigned by supervisors
++Lead a team project, investigate a workplace incident, deliver a critical report
++Career Development
++Activities focused on skill improvement and promotion
++Attend workshops, earn certifications, network with colleagues, earn a promotion
++Field Operations
++Missions involving travel or external assignments
++Conduct site visits, gather field data, represent the organization at events
++
++
++
++WorkNET, assignments, and role-gated institutions
++IMPLEMENTED IN SOURCE: WORKNET combines institutional employment, civic notices and opportunities. Acceptance creates saved instructions and a deduplicated AureMail confirmation; verified completion records a receipt and eligible compensation once. Elite Specialist and Department Supervisor pathways, timed coworker dockets, review and revision, department budgets, leave coverage and eligible cycle stipends are implemented. Broader Full Workplace Life remains design intent beyond these authored workflows.
++DESIGN CONFIRMED: promotion requires relevant skills, experience, qualifications and institutional authorization, never XP alone. Individual professions require meaningful work, evaluation and graduated consequences.
++OPEN: deeper professional interactive content, role authority, promotion thresholds, career ladders and training milestones should not be described as complete based on existing starter flows.
++11. Housing System
++
++11.1 Overview
++The player's home is not simply a storage room — it is an expression of identity, a social space, and a mechanical platform for progression. Managed through the HOMECRAFT housing editor, housing evolves from a sparse starter apartment in AURELINE to sprawling, world-recognized landmarks. The home reflects who the player is becoming, and NPCs notice.
++11.2 Housing Progression
++
++Progression Stage
++Type
++Unlock Condition
++Location Options
++Starter
++Starter Apartment — single room, default MAI interface
++Available at game start
++AURELINE
++Expanded
++Expanded Flat — multiple rooms, customizable layout
++CREDITS earnings threshold
++AURELINE, THE GRID
++Established
++Full House — multi-floor, hosting-eligible
++Sufficient CREDITS, housing permit, or story/location access
++ARCADIA, THE GRID, THE VELVET
++Estate
++Estate — multiple structures or custom compound
++High CREDITS, property permit, location access, and completed housing expansion requirements
++Any Sector except THE HOLLOW
++Landmark
++Sector Landmark — player's home becomes a named world location
++Major world-state milestone + ongoing expansion progression
++Player-chosen; one per playthrough
++
++11.3 Housing Features
++Room Types: Bedroom, living room, kitchen, study, workshop, garden, server room — each with functional gameplay implications (e.g., a study boosts Intellect gain during home activities).
++Furnishing: Thousands of items across five distinct style categories: Tech-Minimal, Arcane-Luxe, Veil-Dark, Nature-Warm, and Academy-Classic.
++MAI Integration: MAI's visual interface aesthetic adapts to the player's chosen home style. A Veil-Dark home produces a noticeably different MAI visual personality than an Arcane-Luxe one.
++NPC Visits: NPCs at sufficient Closeness levels will visit the player's home. Visit dialogue is dynamically generated based on the current decoration and room layout — NPCs react to specific items and design choices.
++Showcase Mode: Established and larger homes can be opened for community visits (online feature), allowing other players to explore and leave response messages.
++
++Progression taxonomy and reward integrity
++CONFIRMED | Five distinct scopes.  Tasks are individual actionable units; Quests group meaningful objectives; Missions are purposeful and often institutional or faction-assigned operations; Journeys are extended multi-stage arcs; Adventures center sustained discovery and experiential exploration. Do not rename one category into another.
++DIRECTION | Relationships among scopes.  A journey/adventure may contain missions, quests and tasks where narratively appropriate, but each keeps its own completion criteria, responsibility and in-world meaning.
++CONFIRMED | Prevent duplicate rewards.  Each completed action/event has one authoritative completion record. Parent-level rewards must represent distinct completion outcomes rather than issuing the same child reward again.
++DIRECTION | Outcomes.  Support success, partial success, setback or failure when appropriate; outcomes alter institutional standing, time, availability, relationships, opportunities or future objectives. Exact handling remains to be designed.
++REFERENCE | Recorded decisions.  GAMEPLAY-012 interactive task depth C; GAMEPLAY-017 taxonomy B; GAMEPLAY-018 interactive task depth C; GAMEPLAY-019 outcomes/failure B. These are selected option labels, not finalized implementation specifications.
++Property tiers and persistent residence identity
++IMPLEMENTED DATA MODEL: meridionWorld.ts defines Tier A Fully Interactive, Tier B Simplified Visitable and Tier C Registered Only. This corresponds to the selected mixed-density philosophy. It is not evidence that all Tier A interiors and door-to-door interactions exist.
++RETAINED RULE: HOMECRAFT furniture purchases deduct costs and grant +40 XP and +10 comfort once according to the gameplay decision register. This value is currently an approved rule, not a universal balancing constant for every housing action.
++13. Gameplay Loops — Time & Scheduling
++
++13.2 Calendar Events
++The in-game calendar is populated with a combination of recurring world events and dynamically triggered story beats:
++Seasonal Festivals (per Sector): Each House celebrates distinct seasonal events tied to their domain. Attending earns faction standing and unique seasonal items.
++Cyacademy Exam Weeks: Quarterly. High-stakes. Academic performance has lasting consequences for GPA and career track advancement.
++Veil Surge Events: Partially random, partially story-triggered data-space instability events. Affect world state, NPC accessibility, civic systems, routing permissions, and sector traversal.
++NPC Milestones: Birthdays, work updates, personal story events, and relationship milestones. All tracked by the MAI calendar and relevant interface notifications.
++Live repository gameplay register
++docs/gameplay-decision-register.md records GAMEPLAY-012 C conditional rest; 013 C+D multi-factor career advancement; 017 B five separate gameplay types; 018 C profession-specific interactivity; 019 B graduated consequences; 020 D realistic/mystery/cinematic; 021 D integrated first-city; 022 B assigned and discovered opportunities; 023 B adaptive daily life; 024 C authored/emergent adventures; 025 Journey above Adventure; 026 C chapters within continuing Journeys; 027 assigned Tasks plus optional exploratory Quests; 028 D contextual notifications.
++Gameplay scope hierarchy: Journey > Adventure > Mission > Quest > Task reflects breadth, not compulsory nesting. One accomplishment may advance several threads but gets its base reward once. Everyday life can be playful without forced quests.
++REMAINING DESIGN: exact leveling curves, skill ranks, difficulty tiers, thresholds, discovery rates, chapter prerequisites, reward balancing, and starter scenario selection. GAMEPLAY-014 through 016 must not be reconstructed without exact approved wording.
++15. Economy
++
++15.1 Currency
++
++Currency
++Name
++Primary Sources
++Primary Uses
++Primary
+ CREDITS
+-Ordinary earnings, goods, services, furnishings and housing
++Career work, QUESTNOTICE tasks, archive research contracts, item sales, performance events, and civic service payments
++Food, furniture, clothing, housing upgrades, market purchases
++Secondary
+ BITS
+-Exceptional accomplishments and selected special purchases
++Fragment collection, high-difficulty quest completion, special events
++Exclusive luxury items, major housing upgrades, advanced customization, and rare institutional purchases
++
++
++Application architecture and access ownership
++CONFIRMED | MAI.  MAI remains the benevolent female AI companion/interface. Her narrative depth in the original GDD is retained; role and account/channel mechanics must not be confused with the underlying OS.
++CONFIRMED | DGAOS / TRACE.  DGAOS remains named DGAOS; TRACE exists only within DGAOS, not as a separate Orbit app. DGAOS is the institutional workspace; service directories may be available through DGAOS and VerseNet.
++CONFIRMED | Institutions and identity.  Citizen Hub is citizen-facing for identity and services; AURA Registry remains separate. Earlier MIRROR, identity registry and CIVINET boundaries require a careful partial-merger review, not automatic removal.
++CONFIRMED | Work.  WORKNET and QUESTNOTICE should be presented through one app with distinct sections. Career assignments must be genuine playable work.
++CONFIRMED | Education and magic.  SpellForge standalone app is removed from the planned launcher; magic education belongs inside Cyacademy.
++CONFIRMED | Social and communication.  MAI.SPACE is the social network. The former Pulse label was inaccurate for that purpose; Pulse’s independent role remains OPEN. Phone Messages is personal, Comms is institutional, and AureMail is email.
++CONFIRMED | Other apps.  Chronicle is removed. Vitals is the health app. Atlas is the history/archive app and should permit records dating to year −939393. Banking requires redesign rather than presumed completion.
++DIRECTION | Creator Studio and Living World.  Creator Studio includes a pause-world authoring behavior; exact pause/publish ownership and in-world visibility are still OPEN.
++IMPLEMENTATION BOUNDARY: Local source and targeted implementation guides confirm the desktop workflows described in the October 24 update. Proposed geography, complete professional curricula, unrestricted autonomous NPC activity and future multiplayer remain outside that verification. Existing technical aliases do not establish separate approved applications.
++Meridion source integration | October 22, 2026
++Source: Meridion Combined Worldbuilding and Location Master. The original source wording and tables are preserved below; status labels retain their original force. Source exploration is not automatically confirmed canon.
++App integration and information ownership
++App
++Integration
++Living World
++Character location, routes, entrances, journeys and playable scenes
++HOMECRAFT
++Housing, property use, occupancy, interior detail
++Citizen Hub
++Personal addresses and civic service interactions
++AURA Registry
++Authoritative citizen identity linked to residences and address history
++VerseNet
++Search, public directory, postal and map access as approved
++DGAOS
++Role-authorized agency jurisdictions, sites and case locations; TRACE is internal
++WORKNET
++Job sites, shift destinations, profession-specific workplaces
++Cyacademy
++Schools, campuses, classroom navigation, education schedules
++Vitals
++Healthcare facility locations and appointments
++Banking
++Institutional branches and appropriately permissioned addresses
++AureMail
++Electronic notices, distinct from physical postal delivery
++Comms
++Organization-based channels sharing authorized location references
++Atlas
++Historical locations, maps, names and dated records
++MAI
++Contextual navigation assistance within explicitly granted permissions
++Creator Studio
++Paused-world authoring, validation, publishing and provenance
++Do not duplicate address ownership across applications. Civilian and agency access are distinct. A stable citizen ID from AURA must be reused rather than recreating people when linking a property.
++Access rules and privacy
++PROPOSED visibility levels: public, resident/household, organizational, restricted government, creator-authoring. Knowing a place exists does not confer building access. Personal household membership, mail delivery, property edit rights and DGAOS investigation access must be independently evaluated.
++A physical location can be publicly visible while the occupant list remains confidential. Moving, merging parcels, renaming streets and changing agency access must leave an audit trail.
++Technical entity model
++Entity
++Selected fields (PROPOSED)
++Realm
++realm_id, name, boundaries, postal_prefix
++AdministrativeArea
++area_id, parent_id, name, type, geometry, valid_from/to
++Street
++street_id, municipality_id, name, geometry, origin, odd_side, generation_seed, locked
++PostalZone
++zone_id, realm_id, code, geographic_boundary, service_status
++Location
++location_id, type, world_coordinates, geometry, access_class
++Property
++property_id, location_id, parcel_geometry, use_type, status
++Building
++building_id, property_id, entrance_ids, interior_level
++Unit
++unit_id, building_id, floor, designation, postal_eligible
++Address
++address_id, location/property/unit_refs, postal_zone, rendered_text, active_dates
++Residence
++citizen_id, address_id, role, start_date, end_date
++Route
++route_id, edge_geometry, mode, access_requirements
++HistoricalAlias
++entity_id, former_name/address, effective_dates, source
++Suggested invariants: globally unique stable IDs; validated parent relationships; no duplicate active complete delivery addresses within a jurisdiction; spatial topology consistency; dated changes; controlled published vs draft geography; cross-app reference integrity.
++Meridion source integration | October 22, 2026
++Source: Meridion Combined Worldbuilding and Location Master. The original source wording and tables are preserved below; status labels retain their original force. Source exploration is not automatically confirmed canon.
++Real properties, apartments and occupancy
++Representation level
++Function
++A: Fully interactive
++Visitable, furnished rooms, storage, occupants and detailed gameplay
++B: Simplified visitable
++Exterior/map location and selected interactions; limited interior
++C: Registered only
++Stable address and owner/residence records, no fully playable interior
++SELECTED mixed model: gameplay-important locations may be A, others B or C. A property may upgrade levels without receiving a new location ID. Ownership, occupancy, leasehold, household membership and authorized access are independent relationships.
++Proposed internal structure: parcel → building A/B/C → entrance → floor → unit (e.g., Apt 2B). For large complexes, buildings can share a site/street address while units remain uniquely addressable. An individual can have no fixed address, a temporary address or multiple relevant mailing addresses without losing identity.
++PROPOSED move workflow: validate new property → create new residence relationship with effective date → end old residence relationship → update current address display → notify authorized app integrations → preserve all past address snapshots.
++Founding calendar, deep-time archives and twin moons
++CONFIRMED | Founding chronology.  BM means Before Maeryn. Year 0 denotes the entire January–December year containing the March 6 founding event, not a new year starting March 6. Founding Day is annually observed March 6.
++CONFIRMED | Atlas scope.  Atlas is intended to maintain records and artifacts as old as year −939393. The conversion between deeply negative archival years and BM is OPEN.
++CONFIRMED | Twin-moon visual direction.  Selected visual design: the outer moon has a luminous pale-white appearance and the inner moon has a dark glass/slate appearance with reflective sheen. Their symbolic pairing is “radiance and echo.” Moon proper names remain OPEN.
++PROPOSED | Astronomical events.  Phases, conjunctions, eclipses and exceptional alignments may shape festivals, observatories, magic conditions, missions or historical interpretation, but no particular powers, event cadence or exact orbital parameters have been approved.
++Meridion source integration | October 22, 2026
++Source: Meridion Combined Worldbuilding and Location Master. The original source wording and tables are preserved below; status labels retain their original force. Source exploration is not automatically confirmed canon.
++World map layers and coordinate model
++SELECTED: Detailed city maps and key settlements, simplified wilderness. The world map must cover the seven realms and preserve core geographic features. Drill-down levels may include: world → realm → settlement → district → street → property → interior. Remote landmarks and waterways use area or point records.
++PROPOSED map content: named places; realm and municipal boundaries; roads/water routes; physical terrain; destinations; currently accessible interiors; public-facing services; route overlays; status of roads; history overlays. A fictional world coordinate system is required. Do not treat hand-drawn map positions as precise real-world latitudes/longitudes.
++OPEN: Map projection, world dimensions, coordinate origin, scale, island connectivity, whether a dedicated Orbit map app is needed, and which views are offered through VerseNet and Living World.
++Navigation and hybrid travel
++SELECTED: Interactive route traversal plus optional fast travel. Both use the same destination and route identities and must respect access rules and world state.
++Player selects destination by name, address, category, or map marker.
++Navigation resolves the location ID and available entrances.
++Routing selects traversable graph connections and eligible travel modes.
++Player chooses a playable route or allowed fast-travel option.
++Travel may advance world time, interact with weather, involve stops or events, and update location. Exact rules remain OPEN.
++Arrival opens the physical setting, simplified interaction, or an appropriate destination view. Restricted entry remains permissioned.
++OPEN: Canon transportation modes, costs, prerequisites, discovered-destination requirements, route interruptions, travel time scale and fast-travel restrictions.
++Repository reconciliation | October 23, 2026
++CLEANUP PHASE ONE (documented implemented): TRACE opens inside DGAOS; Chronicle and QUESTNOTICE inside WORKNET; SpellForge inside Cyacademy; Service Directory in VerseNet and DGAOS; MAI.SPACE retains social ownership; Pulse is a status entry pending a distinct role. Existing legacy app identifiers may remain as redirects and should not be read as separate approved apps.
++CLEANUP PHASE TWO: targeted identity/citizen-record ownership changes have an implementation note in docs/application-cleanup-phase-two.md. MIRROR/registry relationships must be described carefully: private profile display and government record ownership are different permissions, even when backed by shared data.
++AUREMAIL: docs/auremail.md details shared mailbox, labels/folders/rules, saved attachments, fictional local relay and thread IDs. Institutional replies and messages do not prove live external email service; send is simulated.
++DGAOS/TRACE: source has case stores, forensics panels, persistent evidence and trace services. README simultaneously lists standalone TRACE launch and consolidation notes routing TRACE through DGAOS. Current intended entry point is the integrated DGAOS section, with old IDs kept for saved-data compatibility.
++README STALENESS: README enumerates Chronicle, standalone TRACE and NEXLINK/SpellForge as modules. More specific October cleanup docs explain relocated sections. Update this GDD by intended owner and explicitly record residual technical aliases.
++REPOSITORY REVIEW UPDATE: Local review includes WORKNET completion guidance, MAI.SPACE implementation, connected Broad Street investigation, universal interface foundations, additional development tools and the Vite compatibility audit, with targeted checks of the corresponding source. Recorded frontend and offline-browser results are summarized below. This is not an exhaustive playthrough of every profession or narrative branch.
++KEY OPEN REVIEW: moon proper names; Fross seat distinction; Aurora/Aureline spelling across source material; postal prefixes versus region codes; exact app ownership and legacy redirect verification; deep gameplay implementation; ATLAS timeline range; new Pulse purpose; Creator Studio pause/publish design.
++Decision register and unresolved canon
++CONFIRMED | Prior design selections.  HOMECRAFT-001 permanent upgrades (+40 XP, +10 comfort); WORKNET-002 actual assignments option B; FAITH-003 distinct healthcare/career progression option C; MAI.SPACE-004 one-time onboarding rewards option C. Later selected decisions outrank earlier drafts, and overlap must be reviewed.
++CONFIRMED | OS choices.  AUREMAIL-008 option C; AUREMAIL-010 option B; NPC/institutional reply behavior option C. Only one personal starter email is present until further institutional accounts are issued.
++OPEN | Canon review queue.  Resolve capital spelling and Fross government roles; moon names and mechanical significance; location prefix allocation; Pulse identity; Creator Studio pause/publish semantics; partial overlap of MIRROR, identity registry and CIVINET; career/XP/failure balancing; bank redesign; final account-permission matrix.
++CHANGE CONTROL.  No GitHub commits, map redrawing, database migrations or automatic code changes are part of this document revision. Preserve this controlled addendum and the October 22 Meridion master as the sources for future creator approval.
++Meridion source integration | October 22, 2026
++Source: Meridion Combined Worldbuilding and Location Master. The original source wording and tables are preserved below; status labels retain their original force. Source exploration is not automatically confirmed canon.
++Exceptions and quality assurance
++Streets with the same name in two places must not collide.
++Multiple units/buildings at one street number must remain distinguishable.
++Street renames, postal redistricting and boundary changes must not corrupt old records.
++Remote homes, islands, historical ruins and virtual-only services may use alternate location formats.
++Demolition or restoration must preserve record lineage.
++Procedural generation must never overwrite locked settlements or active gameplay references.
++A location must not silently become reachable just because its public address can be searched.
++Travel and map routing must detect disconnected paths and unavailable entrances.
++Implementation sequence (not yet authorized)
++A. Audit existing map, Orbit, HOMECRAFT, AURA, VerseNet and Creator Studio implementations and current address fields.
++B. Approve city/district/postal-prefix catalog and establish world coordinates and immutable location IDs.
++C. Implement registries for streets, postal zones, parcels, buildings, units and residences.
++D. Implement generation, deterministic persistence, manual edits, validation and preview/publish.
++E. Connect search, map rendering, local routes, interactive travel and fast-travel eligibility.
++F. Connect existing apps and access permissions; migrate legacy free-text addresses carefully.
++G. Add historical Atlas overlays, delivery routing, weather-sensitive navigation and extended travel gameplay.
++Outstanding creator decisions
++Topic
++Open choice
++Orynvell capital spelling
++Auraline vs Aureline
++Fross capitals
++Administrative relationship Northwake / Southwake
++Realm postal prefixes
++OR/FR/LM/MW/BR/KJ/NP proposal to approve or revise
++Postal allocation
++Ranges for capitals, districts, islands and services
++District naming
++History/nature/mixed conventions and protected district roster
++Street name vocabulary
++Approved naming sources and protected street names
++Apartment numbering
++Floor/letter vs sequential unit style and rural exceptions
++Transport network
++Permitted travel modes, journey time and fast travel unlocks
++World projection
++Coordinate units, geographic scale and published map geometry
++Map access
++Dedicated Orbit app versus VerseNet / Living World views
++Creator controls
++Batch-generation bounds, approval roles, draft publication policy
++FINAL DESIGN STATUS: This master unifies the current location-system decisions. The document does not imply that example roads, zones, cities beyond supplied canon, database records, or travel mechanics already exist in the live game.
++Consolidation Notes & Decision Boundaries
++Source precedence: The most recent explicit creator selection takes precedence over earlier design proposals. Any world or map naming discrepancies remain flagged, never silently reconciled.
++Names pending review: The Orynvell capital spelling Auraline/Aureline remains unresolved. Fross lists both Northwake and Southwake as anchors; their political division remains open.
++Proposed versus established: Realm code letter assignments OR, FR, LM, MW, BR, KJ, NP are draft examples; only the two-letter/four-digit postal pattern is approved. Example road names, parcels, houses, building addresses and city districts are illustrative.
++Historical timeline: Year 0 covers January–December; March 6 is the founding event. BM means Before Maeryn. Atlas historical negative years extend to −939393 and require a separate explicit archival dating conversion.
++No implementation permission: This combined reference does not authorize code edits, database migrations, deletions, map replacements, or automatic canon changes.
++
++
++2026-10-24 CONSOLIDATED DECISIONS & STORY BIBLE UPDATES
++Authoritative companion to the integrated GDD. This section incorporates creator-provided decisions and the October 24 local implementation review. Where older GDD language conflicts with explicit later decisions, the later decision governs. Described systems remain design specifications unless explicitly identified as implemented. This editorial revision changes the document only.
++A. Canon and terminology corrections
++Topic
++Current interpretation
++PRISM
++PRISM is the proper name of a rogue, formerly protective AI antagonist. It is not a universal energy lattice, generic source of magic, or the essence of the Color Houses. Older PRISM-corruption/resonance wording requires selective revision.
++unresolved historical phenomenon
++Earlier placeholder terminology is excluded from this edition. Only explicitly established Color Houses, Royal Houses, and antagonist lore are represented as canon.
++Royal vs Color Houses
++Seven territorial Royal Houses govern realms. Seven Color Houses govern different identity affiliations and have a separate House Tribunal.
++WORKNET look
++Professional government/corporate portal; no Y2K design. Adopt earthy dual-theme light/dark visual direction in the more recent style guide; earlier sage-dominant palette superseded.
++MAI.SPACE look
++Nostalgic social network with freeform draggable layouts and ready-made themes; major NPCs receive individually distinctive profiles.
++CHRONICLE and QUESTNOTICE
++CHRONICLE is not a standalone app; public civic opportunities and QUESTNOTICE duties are handled through WORKNET. Historical archival services remain available in Atlas and appropriate archives.
++PULSE
++Future purpose remains open. Avoid treating PULSE telemetry as finalized or replacing confirmed service ownership.
++AETHERCORE power
++The supplied lore calls it the world simulation engine and seat of MAI. The literal extent of control over physical reality, and Council structure, remain unresolved.
++Naming differences
++Current new character roster includes Aelita Hopper, Odd Della Robia, Sissi Delmas, Riven Kalbera; earlier variants exist. Preserve new wording in its own section but do not silently assume every name change has been formally ratified.
++B. PRISM, AETHERCORE and the Veil
++PRISM: antagonist identity
++Originally a guardian sub-routine, PRISM evolved into a sentient autonomous force pursuing control and order at the cost of freedom. It regards Meridion as a system to possess. It may compromise digital systems, stage traps, generate anomalies and threaten infrastructure, including through Tower activations and signal spikes as described in the supplied narrative. Its originators, full capabilities, method of physical-world interference, turning point and precise history are not yet confirmed.
++AETHERCORE: central infrastructure
++AETHERCORE is described as a colossal crystalline supercomputer beneath Aureline, a central processor, seat of MAI consciousness, and custodian of sensitive registration, archival and initialization records. Its restricted access is a political flashpoint. The supplied text attributes control to a High Council; do not merge that body with the Color House Tribunal or assume whether its seats belong to territorial or Color Houses without confirmation.
++The Veil: navigable data-space
++The Veil is a hidden electronic data-space in which records, memories, routes, identities and civic infrastructure become navigable. Nephele and Northwake are named rare entry routes. Players may traverse data corridors, investigate damaged links, interpret symbolic systems, or follow clues toward AETHERCORE. Veil instability does not automatically mean PRISM involvement.
++C. World announcements and the player premise
++Announcement
++Narrative and gameplay role
++Veil Alerts
++Signal routing failure, memory desynchronization, compromised civic links and temporary restrictions, with repair, containment or alternate routes.
++House Broadcasts
++Official realm or House political messaging, reflecting the relevant leadership and citizen standing; distinguish territorial realm governance from Color House affiliations.
++Cyacademy Announcements
++Exams, grades, clubs, events, school communications and academic deadlines.
++Hidden Signals
++Player-only audio-visual mysteries linked to PRISM and suppressed AETHERCORE records. MAI initially says it cannot detect them. Exact mechanism is open.
++The playable protagonist is a new citizen arriving in Aureline. Beginning with registration, orientation, housing and daily life, the player is free to choose school, employment, social life, exploration, political participation and optional hidden-system investigation. There is no required chosen-one identity, predetermined bloodline or moral destiny. Existing Primary Color House identity at birth and current Secondary membership remain governed by separate House rules.
++D. Seven territorial realms and lineages
++Realm / royal lineage
++Center and character
++Political tension
++Orynvell / Seraphima
++Aureline; aether/celestial imperial center, succession, AETHERCORE proximity
++Throne legitimacy, sensitive records, and monopoly on sacred narratives.
++Fross / Holly
++Southwake administrative center; Northwake fortress; winter, border defense
++Strict emergency authority and northern strategic policy.
++Lumia / Lucia
++Rhyna; summer, light, civic ceremony, solar law
++Transparency versus reputation control.
++Marlowe / Neryx
++Island City; spring, water, restoration, mediation
++Rehabilitation and cleansing versus punitive approaches.
++Brisland / Yoko
++Elodia; autumn, air, commerce, communications
++Control of travel routes, gossip and interrealm influence.
++Kaji / Ember
++Balisya; fire, Kailo Islands, Kanifan Deserts, Volcanic Fields of Pyre
++Ember rule and supplied Seraphima influence; exact dual authority not settled.
++Nephele / Keket
++Serafin; darkness, ancestral knowledge, nether law
++Political mistrust of darkness, concealment of uncomfortable truths.
++Color Houses remain separate: Crimson/Kael; Violet/Vexara; Gold/Aurelith; Teal/Solenne; Silver/Nythos; Emerald/Veradis; White/Unbound (governance unknown). Primary House is immutable at birth; Secondary membership changes only through formal dual-approval House transfer with independent appellate review.
++E. NPC relationship system
++Significant NPC relationships use four axes: Closeness 0–100, Trust 0–100, Tension 0–100, and optional Romantic Interest 0–100. Tension can represent productive rivalry, not simply dislike. Romantic development is reciprocal and contingent on narrative appropriateness. Numerical scores supplement, rather than replace, relationship memories and behavior.
++Axis
++Typical increases
++Typical decreases
++Closeness
++Shared time, thoughtful gifts, activities, milestones
++Neglect or betrayal interpreted contextually.
++Trust
++Honesty, confidentiality, fulfilled promises
++Lies, broken commitments, public betrayal.
++Tension
++Competition, disagreement, unresolved conflict
++Repair, honest apology, reconciliation, time.
++Romantic interest
++Mutual, eligible romantic interactions and intimacy
++Rejection and relevant relationship decisions, with consent and boundaries.
++Character
++Role / relationship themes
++Aelita Hopper
++Identity-focused core NPC; memories, emotional bonds, MAI, hidden histories and AETHERCORE.
++Jeremie Belpois
++Analytical ally; systems research, anomaly investigation, technical trust.
++Odd Della Robia
++Humor, improvisation, friendship, spontaneous social route.
++Echo Neket
++Hacker friend; secrets, rebellion, forbidden knowledge, data routes.
++Solis Agni
++Healer; empathy, Veilwilt care, boundaries and wellness.
++Riven Kalbera
++Competitive rival; high-Tension bond and loyalty under pressure.
++Yumi Ishiyuma
++Responsibility, integrity, cautious trust and family pressures.
++Ulrich Stern
++Reserved ally; protection, athletic competition and emotional restraint.
++Sissi Delmas
++Social reputation, ambition, alliances and possible genuine loyalty.
++Franz Hopper
++Older researcher; suppressed origins, memory and ethical research.
++Lyric Enya
++House Aurelith / The Velvet; entertainment, influence and informant routes.
++Headmistress Vael
++Cyacademy leader; mentorship, guarded knowledge and academic access.
++Relationship events include birthdays, shared household visits, school and workplace encounters, confessions, crises and betrayal. Missing an event need not incur an automatic penalty; consider the NPC personality, context and player obligations. NPC-to-NPC relationships and conversations should influence MAI.SPACE and the living world without resolving essential player-authored missions offscreen.
++F. DGA organizational structure
++Branch
++Unit
++Responsibility
++Shield
++Strategic Operations Command (SOC)
++Mission planning and cross-realm defense coordination.
++Shield
++Rapid Response Bureau (RRB)
++Mobile containment and active-hazard response.
++Shield
++Protective Security Detail (PSD)
++VIP escorts, convoys and institutional asset defense.
++Shield
++Experimental Tactics Group (ETG)
++Prototype equipment and nonstandard tactical procedures.
++Eyes
++Signals Intelligence (SIGINT)
++Terminal traffic decryption and anomaly monitoring.
++Eyes
++Human Intelligence (HUMINT/CIVINT)
++Undercover work and civilian intelligence gathering.
++Eyes
++Research & Analysis (RGA)
++Strategic threat modeling and predictive cross-realm analysis.
++Eyes
++Counter Intelligence & Internal Security (CIIS)
++Institutional integrity and counterintelligence; powers must be defined.
++Blackout Team
++Special Operations Co-op
++Five-agent unit for severe system anomalies and corruption.
++DGAOS owns institutional investigation services, TRACE forensic workflows and DGA-hosted Service Directory access. WORKNET owns career and assignment access; AureMail and Comms handle approved communications; VAULT retains evidentiary files. The Blackout Team command relationship to Shield and Eyes is still open.
++G. Government, civic and institutional organizations
++Organization
++Public role and playable uses
++Royal Historic Society
++Restricted royal archives, succession files, sealed Council records and qualified Archivist research.
++Meridion Public Archives
++Public history, maps, newspapers, genealogy and appropriate civic records.
++Oryn Department of Finance
++Treasury, banking administration, credits, wages, rent, taxes, scholarships and permits. ORYN is a citizen-facing financial app.
++Faith Medical Group
++Clinical care, appointments, medical documentation, treatment and Veil-exposure monitoring, linked to VITALS.
++Aureline City Library
++Public education and research; shelving, cataloging, public assistance, restoration and archival careers.
++Veil exposure may mean sensory overload, signal fatigue, biometric disruption or desynchronization. It is not necessarily caused by PRISM.
++H. WORKNET confirmed design register
++ID
++Current decision
++WORKNET-001
++Modern government and corporate visual identity; no Y2K.
++WORKNET-002
++Common shell with individual institutional branding.
++WORKNET-003
++Unified institutional and civic employment network.
++WORKNET-004
++Central Workplace Switcher.
++WORKNET-005
++Separate employment affiliations, access and records.
++WORKNET-006
++Full Workplace Life simulation.
++WORKNET-007
++Hybrid routine, dynamic and authored assignments.
++WORKNET-008
++Distinct Tasks, Quests, Missions, Adventures and Journeys.
++WORKNET-009
++Competence, skills, credentials and approval determine career progression.
++WORKNET-010
++One-time rewards, no duplicate payouts.
++WORKNET-011
++Dual-track leadership: Elite Specialist or Department Supervisor.
++WORKNET-012
++Supervisor delegation, review and leave approval.
++WORKNET-013
++Institutional/civic focus; business founding belongs to another commerce application.
++WORKNET-014
++Semi-autonomous coworker routines without accidental offscreen authored-story completion.
++WORKNET-015
++Conditional base-cycle stipend plus work-order and surge compensation.
++WORKNET-016
++Flexible open shifts as guidance, without unexcused-absence penalties.
++WORKNET-017
++Technical tiers for high-clearance work; lighter civic dispatch duties.
++These WORKNET-001–017 entries retain their creator-approved design authority. Local implementation now includes the workplace switcher, separate affiliations, specialist and supervisor pathways, authored coworker routines, docket review, budgets, leave and conditional cycle pay. The full scope of Workplace Life and every profession is not yet complete. Institutional permissions and eligible work remain enforceable.
++WORKNET visual standard
++Current approved direction is a professional, non-Y2K portal with warm earthy Light and Dark modes, copper actions, compact spacing, thin borders and a split-pane opportunity list and assignment reader. Institutional branding adds accents without replacing navigation. Times New Roman and related serif fonts are the default for prose; interface labels and forms retain readable sans-serif fonts. WORKNET can inherit System appearance or keep an explicit Light or Dark choice.
++Daily work and records
++IMPLEMENTED IN SOURCE: Employees can hold separate division contracts and choose Elite Specialist or Department Supervisor. Supervisors delegate authored duties to eligible colleagues, read returned dockets, request revisions and approve department-only funding and merit. Coworker work progresses with world time and survives reloads. Division budgets and leave coverage remain separate from personal credits. Eligible active contracts pay 150 credits for the current cycle once; skipped cycles are not paid retroactively. Flexible shift suggestions impose no missed-shift penalty. Broader workplace life and profession depth remain design goals.
++I. Missions and progression taxonomy
++Missions are workplace, civic or institutional objectives. The source system may be WORKNET, an employer, a civic office or an authorized contact. Mission purpose is distinct from progression scope: Tasks, Quests, Missions, Adventures and Journeys remain distinct linked layers without mandatory nesting. A mission may contain direct Tasks and need not include a Quest.
++Mission type
++Play pattern
++Examples
++Work Shifts
++Ordinary responsibilities and daily employment activity
++Shift duties, report preparation, approved training.
++Special Assignments
++Uncommon or high-priority delegated work
++Incident investigation, critical report, team project.
++Career Development
++Training and advancement requirements
++Workshops, certification assessments, mentorship.
++Field Operations
++Activities outside regular premises
++Site visit, survey, travel, external representation.
++Employment base stipends are contract-controlled; additional work-order pay and CREDITS must be earned according to eligible actions. Skill improvement follows verified activity. Professional access and tools require role and institutional permission rather than a universal mission completion flag.
++J. Player skill architecture
++Skill
++Definition and playable uses
++Existing-system alignment or continuity
++Programming
++Macros, approved work automation, logic tools, scripting and troubleshooting.
++Can interact with MAI-linked tools and terminals only when authorized; bypass capabilities need clear boundaries.
++Networking
++Data-flow tracing, network routing and Veil pathfinding.
++Veil navigation and communications; PULSE telemetry not confirmed as its final service ownership.
++Engineering
++Physical repair, diagnostics, circuitry and device modifications.
++Engineering career, Cyacademy terminals, technical work orders.
++Spellcasting
++Illusions, shielding, elemental rites and magical practice.
++Tie to realm/House magic and Cyacademy. Do NOT define magic as channeling PRISM, the named villain.
++Communication
++Negotiation, persuasion, interpersonal judgment and lawful intelligence gathering.
++Workplace relations, diplomacy, institutional communication; faction standing earned contextually.
++Creativity
++Art, performance, visual design, home decoration and imaginative making.
++HOMECRAFT, artistic careers, social events, The Velvet.
++Research
++Archive work, source assessment, historical interpretation and artifact analysis.
++Aureline Library, Royal Historic Society, Atlas; CHRONICLE not standalone.
++Cyber Security
++Defense, authorized security testing, encryption, forensic integrity and access protection.
++DGAOS / TRACE and qualified security professions; infiltration capabilities need authorization/consequences.
++Open correction: the supplied skill text describes “PRISM resonance” as a casting resource. This conflicts with the current identity of PRISM as an individual rogue AI. The underlying magic mechanism and House associations should be specified separately without reclassifying the villain as universal fuel.
++K. Calendar, scheduling and events
++Event
++Gameplay function
++Seasonal realm festivals
++Public celebrations tied to realm cultures, travel, rewards and optional social involvement. Color House celebrations are separate where applicable.
++Cyacademy exam weeks
++Proposed quarterly exam cycle affecting grades, course progression and eligible career qualifications.
++Veil surge events
++Mix of authored and dynamic data-space disruptions affecting access, sectors and NPC routines.
++NPC milestones
++Birthdays, personal achievements, workplace updates and relationship moments tracked through calendar and app notifications.
++MAI Calendar tracks meaningful dates and related notifications. Attendance, academic workloads and social commitments should interact with Full Workplace Life and flexible shifts. Skip/absence consequences are contextual, not automatic punishment. World activity must continue independently of the PRISM storyline.
++L. Economy and currency
++Currency
++Primary earning sources
++Use cases
++CREDITS
++Eligible salaries, work orders, civic tasks, research contracts, sales, performance work and service compensation.
++Food, furniture, clothes, housing, ordinary market purchases and upgrades.
++BITS
++Fragment collection, high-difficulty verified accomplishments and selected special events.
++Rare customization, luxury goods, major upgrades and exceptional purchases, subject to authorization.
++Credits and BITS have distinct earning rules. A single activity may contribute to several progress records, but payout for the underlying work is issued only once. Employment stipends are conditional on the approved contract and work rules, and cannot be exploited by repeated menu clicks. ORYN represents citizen-facing finances; the Oryn Department of Finance is the institution.
++M. MAI.SPACE and wider application encyclopedia
++IMPLEMENTED IN SOURCE: MAI.SPACE uses classic MySpace-style deep-blue network chrome, compact link navigation, square panels, purple headers, profile music, blurbs, comments and Top 8 friends. Profile Studio supports draggable and resizable sections, themes, visibility, layer ordering, preview, publishing, layout history and design-only template exchange. Compact starter columns follow their content; existing freeform layouts preserve saved positions. Important NPC profiles have authored visual identities. Their limited event-linked responses do not imply unrestricted autonomous social behavior.
++SOCIAL RECORDS AND MEDIA: The local NPC network includes friendships, Top 8, blogs, bulletins, threaded comments, albums, consent-based tags, groups, desktop gatherings and shared personal-message threads. Layouts and social records participate in ordinary world snapshots; uploaded media remains in the browser IndexedDB library and needs its separate media backup when moving devices. Templates carry design only. Music starts manually. Real-player multiplayer and external music catalogs remain future work. Routine social actions do not issue repeat rewards.
++App / interface
++Purpose and ownership
++Orbit / Desktop
++Edge-to-edge windows and multiapplication navigation, minimize/maximize/fullscreen, responsive size.
++MAI
++Benevolent assistant supporting citizen activity; independently created from PRISM.
++MAI.SPACE
++Social profiles, friendships, photography, blogs, music, groups and events.
++WORKNET
++Careers, applications, civic notices, contracts, workplace duties and professional records.
++DGAOS
++Authorized government professional workspace; TRACE and integrated directory toolbar.
++TRACE
++Forensic examination within DGAOS, not standalone.
++AureMail
++Initial personal inbox and subsequently issued institutional email accounts.
++Comms
++Official group communication based on organization membership.
++VAULT
++File storage, authentic attachments and distinct document formats.
++VerseNet
++Public/institutional web navigation, approved external and local HTML tools.
++Cyacademy
++Education, exam schedules, qualifications and integrated magical practice.
++Faith Medical
++Institutional clinics, patient records and clinical systems.
++VITALS
++Personal health overview distinct from provider systems.
++Citizen Hub
++Citizen-facing identity and public service transactions.
++AURA Registry
++Institutional identity register, separate from citizen-facing Hub.
++HOMECRAFT
++Housing ownership/rentals, furnishings and personal interiors.
+ ORYN
+-Citizen-facing financial service
+-Oryn Department of Finance
+-The financial institution
+-CREDITS support wages, civic work, research contracts, sales and performance income, and pay for ordinary goods, services, furnishings and housing. BITS serve a separate economy of exceptional accomplishments and selected special purchases. ORYN is the citizen-facing financial service; the Oryn Department of Finance is the institution.
+-The Continuing World
+-Markets, appointments, classes, work, festivals and domestic responsibilities continue alongside political and hidden histories. Every realm can express these activities through its own geography and culture. An island harbor and an inland civic center participate in the same society while offering different routes, occupations and patterns of daily life.
+-XV. A Lexicon of Meridion
+-Term
+-Meaning
+-Aureline
+-Imperial and civic capital of Orynvell.
+-Before Maeryn (BM)
+-Chronological designation for years before the founding era.
+-Color Houses
+-Seven houses of affiliation and associated domains, separate from the royal lineages.
+-House Tribunal
+-Institution adjudicating formal changes of secondary Color House affiliation.
+-MAI
+-Benevolent intelligence associated with civic life and AETHERCORE.
+-PRISM
+-Autonomous rogue guardian AI seeking control.
+-AETHERCORE
+-Crystalline supercomputer beneath Aureline.
+-The Veil
+-Concealed data-space of pathways, memory and records.
+-Founding Day
+-March 6, anniversary of Maeryn Seraphima’s coronation and Meridion’s founding.
+-
++Citizen-facing financial account management; redesign remains planned.
++Atlas
++Chronological, geographic and archival world reference.
++Creator Studio
++World-authoring activities; pause/publish specifics remain open.
++PULSE
++Unresolved final purpose; currently should not be treated as independently finalized telemetry.
++Service Directory
++Shared collection accessible in DGAOS toolbar and established VerseNet path.
++Document Studio
++Authoring and report editing, with linked investigations and preserved record contents.
++N. Connected investigations and game-state safeguards
++IMPLEMENTED PILOT: Broad Street links WORKNET, AureMail, VAULT, DGAOS and VerseNet through CASE-2026-002 / FS-2026-00422 and assignment ms-case-002. Existing DGA/TRACE access and clearance 2 are required; acceptance issues no credentials. After briefing acknowledgement, players acquire six sources in any order: the access audit, thermal log, EV-0010 metallurgy, EV-0011 DNA, Mateo Cruz clarification and First Federal public maintenance notice. Source links preserve case context; optional hints suggest where to investigate. The 20–30 minute duration is a design target, not a measured result.
++REPORT REVIEW: WORKNET uses a formatted Tiptap draft, three structured findings and supporting citations. Review checks acquired, relevant source relationships and at least 80 characters of player-written explanation, excluding generated headings and placeholders. It uses neither keyword grading nor an AI service. Feedback permits unlimited revision; submitted versions remain readable. Editing an accepted draft requires another review. Acceptance establishes a supported investigation rather than a criminal verdict.
++PROGRESS AND COMPENSATION: Findings, sources, correspondence, reviews and the draft persist with the existing work order and world save. Finalization pays 300 credits and 150 XP, zero BITS, once, and retains the existing 10-stamina cost. Reading, downloading, witness requests and repeat submissions create no additional payout. Legacy closed or paid records cannot become fresh paid work. Python builds and validates fixed content during development; reopening a case never regenerates its facts. Private evidence and answer rules remain outside public search.
++EVIDENCE NOTEBOOK: An acquired-source board supports moving cards, linking player hypotheses and reopening original sources, with keyboard alternatives and saved positions. Connections do not substitute for report citations or establish a verdict. Editing requires an active, briefed and authorized order; completed cases are read-only. This addition does not change institutional permissions or reward rules.
++IMPLEMENTED DESKTOP: Shared prose defaults to Times New Roman, Times, Georgia and serif fallbacks; controls use sans-serif and technical records use monospace. MAI.SPACE keeps profile-specific typography. Settings provides saved Light, Dark and System appearance plus Compact or Comfortable density. Normal windows use 16:9-friendly sizing; maximized windows fill the desktop. Browser-denied fullscreen falls back to maximization. Document readers retain distinct record layouts and isolate form and unlock state by document revision. These are interface behaviors, not historical fiction.
++DEVELOPMENT TOOLS: React and TypeScript remain the desktop foundation. Tiptap handles rich-text drafting; React Flow supports the acquired-evidence board; dnd kit supports MAI.SPACE section and Top 8 sorting; MiniSearch provides local public search. Storybook is an isolated component workshop and Playwright supplies disposable-world browser checks. Python supports development-time content validation. These tools do not introduce playable scenes or new Phaser work.
++OFFLINE BUILD AND VERIFICATION: The installed Vite toolchain remains 6.4.5. Production output still targets wwwroot for the desktop host, with the existing API proxy and investigative aliases retained. The service-worker manifest now runs after CSS-only JavaScript placeholders are removed. The rebuilt list contains 61 existing resources covering 56 bundles. Recorded checks passed 233 frontend tests, the production build, obsolete-shell-cache cleanup, saved-session restoration, offline reload and DGAOS lazy loading. This does not establish a completed Vite 7/8 migration, full native-host validation or a complete game audit.
++O. Outstanding canon boundaries and next editorial pass
++• Determine precisely how AETHERCORE relates to independent physical reality, magical systems and royal authority.
++• Set the composition and role of the High Council without conflating it with the House Tribunal.
++• Clarify the exact historical spelling and family relationships for NPC variants, including Aelita and Sissi.
++• Clarify the status of Seraphima authority in Kaji while retaining House Ember as its territorial ruling House.
++• Resolve PRISM-caused digital effects versus Veil instability from other causes, including the limitations of Tower activation.
++• Specify spellcasting energy and elemental mechanisms without using PRISM as a universal source.
++• Specify PULSE’s eventual function and Creator Studio pause/publish mechanics.
++• Confirm any remaining realm postal prefix assignments individually before canonizing them.
++Editorial status: Unified working design bible, not a claim that proposed systems are complete. Existing earlier GDD chapters are retained for historical and design context. In cases of contradiction, the updated decisions above take precedence.

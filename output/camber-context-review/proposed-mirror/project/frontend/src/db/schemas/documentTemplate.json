@@ -1,0 +1,38 @@
+{
+  "id": "doc_template_id",
+  "filename": "FILENAME.ext",
+  "extension": ".osform",
+  "category": "Civic Document | Medical | Spatial | SpellForge | Audio | Archive | Threat",
+  "meta": {
+    "classification": "UNCLASSIFIED / DGA OVERSIGHT / RESTRICTED",
+    "author": "Department / NPC / System Process",
+    "timestamp": "WINTER 00:14",
+    "fileSize": "4.2 KB",
+    "securityLevel": 1
+  },
+  "security": {
+    "isEncrypted": false,
+    "requiredSkill": "Cryptography",
+    "requiredLevel": 2,
+    "lineageKeyRequired": null
+  },
+  "content": {
+    "title": "DOCUMENT TITLE HERE",
+    "subtitle": "SUBTITLE OR DIRECTIVE ID",
+    "bodyText": "Standard plain text or log entries go here...",
+    "formFields": [
+      {
+        "id": "field_1",
+        "label": "Input Label Name",
+        "type": "text | select | checkbox | textarea",
+        "placeholder": "Enter value...",
+        "options": ["Option A", "Option B"],
+        "required": true
+      }
+    ],
+    "actionButton": {
+      "label": "SUBMIT TO MUNICIPAL BUREAU",
+      "actionTrigger": "SUBMIT_DGA_REGISTRATION"
+    }
+  }
+}

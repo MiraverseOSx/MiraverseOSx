@@ -1,0 +1,116 @@
+{
+  "agent": {
+    "name": "Miraverse Artificial Intelligence",
+    "owner": "mirxclej",
+    "alias": "mai",
+    "id": "ff089884-2462-4fab-9430-1859e784a313",
+    "version": "v3",
+    "verified_via": "authenticated browser UI"
+  },
+  "mcp": "Local endpoint configured; OAuth NOT authenticated. DCR unsupported; CIMD not advertised with token endpoint auth none.",
+  "cli": "Camber 1.0.42 installed under Ubuntu WSL2 account cyberbrat; camber login succeeded as mirxclej and agent list verified @mirxclej.mai.",
+  "existing_knowledge": [
+    {
+      "name": "Game Doc.docx",
+      "status": "Indexed",
+      "content_identity": "not verified against local bible"
+    }
+  ],
+  "existing_skills": [
+    "mai-validation",
+    "test-skills",
+    "validate-missions",
+    "audit-rewards"
+  ],
+  "existing_project_directory": "No project context",
+  "original_zip_sha256": "1dac43b034fd6e33b07fb16d7c7a87bb998f2bdd4d42453b40c3d36344408645",
+  "original_imports": {
+    "audit_rewards.py": [
+      "mai_validation"
+    ],
+    "mai_validation.py": [
+      "argparse",
+      "collections",
+      "json",
+      "pathlib"
+    ],
+    "test_skills.py": [
+      "copy",
+      "json",
+      "mai_validation",
+      "pathlib",
+      "unittest"
+    ],
+    "validate_missions.py": [
+      "mai_validation"
+    ],
+    "validate_npcs.py": [
+      "mai_validation"
+    ]
+  },
+  "local_validation": {
+    "original_unit_tests": {
+      "exit_code": 0,
+      "output": "........\n----------------------------------------------------------------------\nRan 8 tests in 0.001s\n\nOK\n"
+    },
+    "validate-npcs": {
+      "example_exit_code": 0,
+      "stdout": {
+        "valid": true,
+        "checked_records": 1,
+        "errors": [],
+        "scope": "Structural checks only; canon, prose quality, eligibility and runtime behavior require separate review."
+      },
+      "invalid_input_exit_code": 1,
+      "unit_tests": "........\n----------------------------------------------------------------------\nRan 8 tests in 0.001s\n\nOK\n"
+    },
+    "validate-missions": {
+      "example_exit_code": 0,
+      "stdout": {
+        "valid": true,
+        "checked_records": 1,
+        "errors": [],
+        "scope": "Structural checks only; canon, prose quality, eligibility and runtime behavior require separate review."
+      },
+      "invalid_input_exit_code": 1,
+      "unit_tests": "........\n----------------------------------------------------------------------\nRan 8 tests in 0.001s\n\nOK\n"
+    },
+    "audit-rewards": {
+      "example_exit_code": 0,
+      "stdout": {
+        "valid": true,
+        "checked_records": 1,
+        "errors": [],
+        "scope": "Structural checks only; canon, prose quality, eligibility and runtime behavior require separate review."
+      },
+      "invalid_input_exit_code": 1,
+      "unit_tests": "........\n----------------------------------------------------------------------\nRan 8 tests in 0.001s\n\nOK\n"
+    }
+  },
+  "project_file_count": 562,
+  "project_bytes": 7678656,
+  "withheld_signature_matches": [],
+  "knowledge_proposal": {
+    "canon": [
+      "MiraverseOSx_Complete_Game_World_Lore_Bible_Updated_2026-10-24.docx"
+    ],
+    "implementation": [
+      "application-cleanup-phase-one.md",
+      "application-cleanup-phase-two.md",
+      "application-cleanup-phase-three.md",
+      "backend-world.md",
+      "auremail.md",
+      "connected-broad-street.md",
+      "worknet-completion-guide.md",
+      "worknet-visual-spec.md",
+      "mai-space-implementation.md",
+      "universal-design-system-implementation.md",
+      "additional-tools-guide.md",
+      "vite-migration-check.md",
+      "gameplay-decision-register.md"
+    ]
+  },
+  "upload_status": "NOT UPLOADED; exact-file review approval pending",
+  "proposed_upload_files": 600,
+  "remote_backup": "backups/pre-sync-20261024-01/project_mirxclej_mai; pulled agent instructions/integration metadata and 4 skill scripts. No prior mirror exists; indexed Game Doc.docx contents were not included in this pull."
+}

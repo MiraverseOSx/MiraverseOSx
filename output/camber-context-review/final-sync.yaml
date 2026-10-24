@@ -1,0 +1,53 @@
+agent: "ff089884-2462-4fab-9430-1859e784a313"
+owner: "mirxclej"
+alias: "mai"
+exclude:
+  - "**/obj/**"
+  - "**/bin/**"
+  - "**/node_modules/**"
+  - "**/.env*"
+  - "**/*.db"
+  - ".git/**"
+  - ".env*"
+  - ".venv/**"
+  - "__pycache__/**"
+  - "**/__pycache__/**"
+
+instruction:
+  enabled: false
+  path: instruction.md
+
+readme:
+  enabled: false
+  path: README.md
+
+project:
+  enabled: true
+  path: project
+
+knowledge_base:
+  enabled: false
+  path: knowledge-base
+  exclude: []
+
+chat:
+  enabled: false
+  path: chat
+  exclude: []
+
+requirements:
+  enabled: false
+  path: requirements
+
+schema:
+  enabled: false
+  path: schema
+
+skills:
+  enabled: true
+  path: ".claude/skills"
+  managed:
+    - validate-npcs
+    - validate-missions
+    - audit-rewards
+  exclude: []

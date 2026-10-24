@@ -1,5 +1,18 @@
 # Vite migration compatibility check
 
+## Precache correction follow-up
+
+October 24, 2026: the offline plugin now runs its `generateBundle` hook with
+`order: 'post'`, after CSS-only JavaScript placeholders are removed. The
+regression fixture fails before this change and passes afterward. The rebuilt
+Vite 6 production frontend has 61 valid precache entries covering 56 bundles.
+An isolated browser check passed obsolete-cache removal, saved-session
+restoration, offline reload, and DGAOS lazy loading with no runtime errors.
+Frontend tests and the production build passed. No player saves were cleared;
+the installed Vite version remains unchanged. Results are recorded in
+`output/precache-audit-result.json`. The Vite 7/8 results below describe the
+earlier unchanged-plugin audit; those migrations still need their remaining gates.
+
 October 24, 2026. This is an isolated audit, not a toolchain upgrade or DGAOS repair.
 
 ## Result

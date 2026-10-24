@@ -1,0 +1,86 @@
+/* Agency chrome shares the service hub's heather and plum palette. */
+.dga-shell { --dga-sidebar-w: 232px; }
+.dga-shell main { container-type: inline-size; container-name: agency; }
+/* App layout follows its window width, rather than the browser width. */
+@container agency (max-width: 1100px) {
+  .dga-dashboard { display: flex; flex-direction: column; overflow-y: auto; }
+  .dga-dashboard > div:first-child { flex: none; min-height: 0; height: auto; overflow: visible; }
+  .dga-dashboard > div:first-child > div:first-child > div:first-child { flex-wrap: wrap; white-space: normal; }
+  .dga-dashboard > div:first-child > div:nth-child(2) > div:first-child { height: auto; min-height: 34px; flex-wrap: wrap; padding-block: 8px; }
+  .dga-dashboard > div:first-child > .grid { flex: none; min-height: 400px; }
+  .dga-dashboard > div:first-child > div:last-child { height: auto; max-height: none; }
+  .dga-dashboard > div:first-child > div:last-child > .grid { grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); }
+  .dga-dashboard > div:last-child { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); width: 100%; min-width: 0; max-width: none; height: auto; overflow: visible; }
+}
+.dga-shell > header {
+  height: auto;
+  min-height: 56px;
+  max-height: none;
+  padding: 10px 16px;
+  gap: 8px 16px;
+  flex-wrap: wrap;
+  background: #29222f;
+  border-bottom: 1px solid #4a3f4b;
+  scrollbar-width: thin;
+}
+.dga-shell > header > div { flex-shrink: 0; }
+.dga-shell > header .dga-operator-tools { flex-wrap: wrap; max-width: 100%; }
+.dga-shell > header .dga-directory-launch { display: inline-flex; align-items: center; gap: 8px; padding: 6px 10px; color: #fff; white-space: nowrap; }
+.dga-shell > header button,
+.dga-app-rail button,
+.dga-case-navigation button {
+  appearance: none;
+  font-family: inherit;
+  cursor: pointer;
+  border: 0;
+  line-height: 1.4;
+}
+.dga-shell > header button {
+  min-height: 30px;
+  border-radius: 7px;
+  background: transparent;
+  color: #ded2df;
+  font-size: 12px;
+  font-weight: 750;
+  letter-spacing: .025em;
+}
+.dga-shell > header button span { font-weight: inherit; }
+.dga-shell > header button[title*='Phone'],
+.dga-shell > header button[title*='Feed'] { color: #fff; font-size: 13px; padding-inline: 10px; }
+.dga-shell > header button[title*='Phone'] svg,
+.dga-shell > header button[title*='Feed'] svg { width: 16px; height: 16px; }
+.dga-shell > header button:hover { background: #4a3f4b; color: #fff; }
+.dga-shell > header button[aria-pressed='true'] { background: #685069; color: #fff; }
+.dga-shell > header .dga-notebook-launch {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 12px;
+  background: #f0d9e4;
+  color: #443449;
+  white-space: nowrap;
+}
+.dga-shell > header svg { flex-shrink: 0; }
+.dga-app-rail { background: #f6eff4; border-color: #e2d6e0; }
+.dga-app-rail > div:first-child { height: 64px; background: #f6eff4; border-color: #e2d6e0; padding: 0 14px; }
+.dga-app-rail > div:nth-child(2) { padding: 16px 10px; }
+.dga-app-rail > div:last-child { background: #eee4ed; border-color: #e2d6e0; min-height: 80px; }
+.dga-app-rail button { border-radius: 9px; background: transparent; color: #59465e; }
+.dga-app-rail > div:nth-child(2) button { height: 42px; margin-bottom: 3px; padding: 0 10px; }
+.dga-app-rail button:hover { background: #eadde8; }
+.dga-app-rail button[aria-current='page'],
+.dga-app-rail button.border-l-2.bg-white { background: #685069 !important; color: #fff; box-shadow: 0 3px 10px #4a3f4b18; }
+.dga-app-rail button.border-l-2.bg-white :is(span, svg),
+.dga-app-rail button[aria-current='page'] :is(span, svg) { color: inherit; }
+.dga-app-rail button.border-l-2.bg-white span[class*='bg-'] { background: #ffffff20; border-color: transparent; }
+.dga-app-rail button svg { width: 17px; height: 17px; flex-shrink: 0; }
+.dga-app-rail[data-collapsed='true'] { width: 62px; min-width: 62px; }
+.dga-app-rail[data-collapsed='true'] > div:first-child { padding: 0 6px; }
+.dga-case-navigation { display: flex; flex-wrap: wrap; gap: 8px; padding: 12px 20px; background: #f6eff4; border-bottom: 1px solid #e2d6e0; }
+.dga-case-navigation button { padding: 8px 12px; background: #eadde8; border-radius: 8px; color: #443449; font-size: 13px; }
+.dga-shell button:focus-visible,
+.dga-case-navigation button:focus-visible { outline: 2px solid #b58dac; outline-offset: 3px; }
+@media (max-width: 1100px) {
+  .dga-shell { --dga-sidebar-w: 208px; }
+  .dga-shell > header { gap: 8px 12px; padding: 10px; }
+}

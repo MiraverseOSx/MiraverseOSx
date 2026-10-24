@@ -1,0 +1,39 @@
+{
+  "name": "miraverseosx-root",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "concurrently -n \"BACKEND,FRONTEND\" -c \"blue,magenta\" \"dotnet run --project MiraverseOSx.csproj -- --server-only --port 5000\" \"npm run dev --prefix frontend\"",
+    "dev": "concurrently -n \"BACKEND,FRONTEND\" -c \"blue,magenta\" \"dotnet run --project MiraverseOSx.csproj -- --server-only --port 5000\" \"npm run dev --prefix frontend\"",
+    "dev:frontend": "npm run dev --prefix frontend",
+    "dev:backend": "dotnet run --project MiraverseOSx.csproj -- --server-only --port 5000",
+    "desktop": "dotnet run --project MiraverseOSx.csproj",
+    "typecheck": "npm run typecheck --prefix frontend",
+    "test:backend": "node -e \"import { spawnSync, execSync } from 'child_process'; let ps = 'powershell'; try { execSync('pwsh -v', { stdio: 'ignore' }); ps = 'pwsh'; } catch {} process.exit(spawnSync(ps, ['-NoProfile', '-File', 'scripts/test_backend_world.ps1'], { stdio: 'inherit' }).status ?? 1);\"",
+    "test:ai": "node -e \"import { spawnSync, execSync } from 'child_process'; let ps = 'powershell'; try { execSync('pwsh -v', { stdio: 'ignore' }); ps = 'pwsh'; } catch {} process.exit(spawnSync(ps, ['-NoProfile', '-File', 'scripts/test_backend_ai.ps1'], { stdio: 'inherit' }).status ?? 1);\"",
+    "build": "npm run build --prefix frontend && dotnet build",
+    "build:frontend": "npm run build --prefix frontend",
+    "build:backend": "dotnet build",
+    "preview": "npm run preview --prefix frontend",
+    "orchestrator": "npm run dev --prefix multi-role-terminal-orchestrator",
+    "data:build": "python scripts/build_data.py",
+    "data:fiction": "python scripts/generate_fictional_content.py",
+    "test:fiction": "python -m unittest discover -s scripts -p test_fictional_content.py",
+    "data:case": "python scripts/build_broad_street.py",
+    "test:case": "python scripts/build_broad_street.py --check && python -m unittest discover -s scripts -p test_broad_street.py"
+  },
+  "description": "MIRAVERSEOSX - Celestial Operating System Desktop Host",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mirxclej/MiraverseOSx.git"
+  },
+  "license": "ISC",
+  "dependencies": {
+    "@tanstack/react-query": "^5.101.4",
+    "bootstrap": "^5.3.8"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.2"
+  }
+}

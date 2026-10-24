@@ -13,12 +13,16 @@ export default defineConfig({
     name: 'miraverse-offline-shell',
     apply: 'build',
     enforce: 'post',
-    generateBundle(_options, bundle) {
+    generateBundle: {
+      // Run after Vite removes JavaScript placeholders for CSS-only chunks.
+      order: 'post',
+      handler(_options, bundle) {
       const assets = Object.keys(bundle).filter(name => /\.(js|css|woff2?|ttf)$/.test(name)).map(name => `/${name}`);
       const workerSource = readFileSync(path.join(__dirname, 'offline-worker.js'), 'utf8');
       const revision = createHash('sha256').update(assets.join('\n')).update(workerSource).update(readFileSync(path.join(__dirname, 'index.html'))).update(readFileSync(path.join(__dirname, 'public/manifest.json'))).digest('hex').slice(0, 16);
       const precache = ['/index.html', '/manifest.json', '/pwa-icon.svg', '/favicon.ico', '/images/Logo_Icon - 1.png', ...assets];
       this.emitFile({ type: 'asset', fileName: 'sw.js', source: `const CACHE_NAME = ${JSON.stringify(`miraverse-shell-${revision}`)};\nconst PRECACHE = ${JSON.stringify(precache)};\n${workerSource}` });
+      },
     },
   }],
   publicDir: 'public',

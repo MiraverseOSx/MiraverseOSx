@@ -1,0 +1,45 @@
+{
+  "agent": "@mirxclej.mai",
+  "skills": [
+    {
+      "id": "c0e59193-4d8b-49f3-a427-43c7f17c5984",
+      "agent_id": "ff089884-2462-4fab-9430-1859e784a313",
+      "name": "mai-validation",
+      "description": "---\nname: mai-validation\ndescription: A clear description of what this skill does and when to use it\n---\n\n[Add the behavior, inputs, outputs, and constraints that Nova should follow when this skill is selected.]\n\n# Examples\n- Example usage 1\n- Example usage 2\n\n# Guidelines\n- Guideline 1\n- Guideline 2\n",
+      "source_uri": "stash://mirxclej/projects/MAI/Skills/mai_validation.py",
+      "status": "ACTIVE",
+      "created_by": "02bff675-2b2b-4947-98de-15eee6f0d76d",
+      "created_at": "2026-10-24T19:53:31.76147Z"
+    },
+    {
+      "id": "1ee94b7e-b430-4639-948b-4391cd558c99",
+      "agent_id": "ff089884-2462-4fab-9430-1859e784a313",
+      "name": "test-skills",
+      "description": "---\nname: test-skills\ndescription: A clear description of what this skill does and when to use it\n---\n\n[Add the behavior, inputs, outputs, and constraints that Nova should follow when this skill is selected.]\n\n# Examples\n- Example usage 1\n- Example usage 2\n\n# Guidelines\n- Guideline 1\n- Guideline 2\n",
+      "source_uri": "stash://mirxclej/projects/MAI/Skills/test_skills.py",
+      "status": "ACTIVE",
+      "created_by": "02bff675-2b2b-4947-98de-15eee6f0d76d",
+      "created_at": "2026-10-24T19:53:31.76147Z"
+    },
+    {
+      "id": "7dd70d2b-d82d-4827-a502-aa5988c7e7b0",
+      "agent_id": "ff089884-2462-4fab-9430-1859e784a313",
+      "name": "validate-missions",
+      "description": "---\nname: validate-missions\ndescription: A clear description of what this skill does and when to use it\n---\n\n[Add the behavior, inputs, outputs, and constraints that Nova should follow when this skill is selected.]\n\n# Examples\n- Example usage 1\n- Example usage 2\n\n# Guidelines\n- Guideline 1\n- Guideline 2\n",
+      "source_uri": "stash://mirxclej/projects/MAI/Skills/validate_missions.py",
+      "status": "ACTIVE",
+      "created_by": "02bff675-2b2b-4947-98de-15eee6f0d76d",
+      "created_at": "2026-10-24T19:53:31.76147Z"
+    },
+    {
+      "id": "546b32c0-b1b8-4552-8188-f8b9f547cacf",
+      "agent_id": "ff089884-2462-4fab-9430-1859e784a313",
+      "name": "audit-rewards",
+      "description": "---\nname: audit-rewards\ndescription: A clear description of what this skill does and when to use it\n---\n\n[Add the behavior, inputs, outputs, and constraints that Nova should follow when this skill is selected.]\n\n# Examples\n- Example usage 1\n- Example usage 2\n\n# Guidelines\n- Guideline 1\n- Guideline 2\n",
+      "source_uri": "stash://mirxclej/projects/MAI/Skills/audit_rewards.py",
+      "status": "ACTIVE",
+      "created_by": "02bff675-2b2b-4947-98de-15eee6f0d76d",
+      "created_at": "2026-10-24T19:53:31.76147Z"
+    }
+  ]
+}

@@ -1,0 +1,478 @@
+{
+  "meta": {
+    "id": "CASE-2026-003",
+    "caseNumber": "FS-2026-00423",
+    "title": "Staged Overdose at St. Jude Harbor: Cassandra Ward",
+    "incidentDate": "2026-09-15T04:20:00Z",
+    "incidentLocation": "Pier 14 Terminal Overlook, St. Jude Harbor Marina",
+    "category": "Homicide / Staged Suicide & Questioned Documents",
+    "discipline": "Forensic Pathology, Questioned Documents & Vitreous Chemistry",
+    "priority": "Critical",
+    "status": "Active",
+    "leadInvestigator": "Detective Sergeant Marcus Vance",
+    "prosecutor": "ADA Eleanor Vance-Wright, Special Prosecutions",
+    "medicalExaminer": "Dr. Rebecca Lin, MD, FCAP (Chief Medical Examiner)",
+    "summary": "At 05:15 UTC, harbor patrol discovered senior corporate auditor Cassandra Ward deceased in driver's seat of her idling sedan. A printed note and open sedative vial were staged on the passenger seat. Post-mortem examination revealed conjunctival petechiae, hyoid cartilage fracture, and negative gastric drug levels, proving post-mortem relocation and mechanical asphyxiation.",
+    "tags": ["homicide", "staged-suicide", "mechanical-asphyxia", "printer-forensics", "vitreous-k"]
+  },
+  "timeline": [
+    {
+      "time": "23:45 UTC",
+      "title": "Office Keycard Exit & Terminal Logoff",
+      "source": "Corporate Security Log (Apex Financial)",
+      "description": "Victim Cassandra Ward logs off accounting workstation following audit review.",
+      "type": "surveillance",
+      "verified": true
+    },
+    {
+      "time": "00:30 UTC",
+      "title": "Actual Window of Death (Calculated PMI)",
+      "source": "OCME Vitreous Potassium & Body Core Temp",
+      "description": "Algor mortis and vitreous K+ confirm victim died between 00:15 and 01:00 UTC, 4 hours prior to discovery.",
+      "type": "forensic",
+      "verified": true
+    },
+    {
+      "time": "04:12 UTC",
+      "title": "Staged Vehicle Arrival at Marina",
+      "source": "Harbor Gate License Plate Reader (LPR)",
+      "description": "Victim's vehicle enters Pier 14 access road; driver silhouette obscured by tinted visor.",
+      "type": "surveillance",
+      "verified": true
+    },
+    {
+      "time": "05:15 UTC",
+      "title": "Harbor Patrol Welfare Discovery",
+      "source": "Marina Security Patrol 2",
+      "description": "Patrol officer finds vehicle engine idling in park with driver unresponsive.",
+      "type": "dispatch",
+      "verified": true
+    }
+  ],
+  "medical": {
+    "subjects": [
+      {
+        "subjectId": "SUBJ-001",
+        "intake": {
+          "intakeId": "IN-2026-0301",
+          "subjectType": "Decedent",
+          "name": "Cassandra Ward",
+          "age": 38,
+          "dob": "1988-02-14",
+          "gender": "Female",
+          "bloodType": "B-Negative",
+          "heightCm": 168,
+          "weightKg": 61,
+          "intakeTimestamp": "2026-09-15T06:40:00Z",
+          "transportAgency": "Harbor Police Coroner Unit",
+          "transportUnit": "Medic-07",
+          "receivingTechnician": "Tech. David Alvarez, ABMDI",
+          "bodyBagSealNumber": "SEAL-90412",
+          "bodyBagSealCondition": "Intact",
+          "wristbandBarcode": "BC-WARD-3381",
+          "belongingsInventory": [
+            {
+              "item": "Empty Zolpidem (Ambien) 10mg Prescription Bottle",
+              "description": "Plastic amber vial with label intact; staged on passenger seat; interior dry with no pill residue",
+              "custodyLocker": "Evidence Bay A-04",
+              "evidentiaryValue": true
+            },
+            {
+              "item": "Printed Letterhead 'Farewell' Note",
+              "description": "Single-sheet 20lb bond paper bearing laser-printed text without handwritten signature",
+              "custodyLocker": "Document Vault D-02",
+              "evidentiaryValue": true
+            },
+            {
+              "item": "Silver Heart Pendant & Locket",
+              "description": "Sterling silver chain, intact latch, unmarred",
+              "custodyLocker": "Valuables Safe V-01",
+              "evidentiaryValue": false
+            }
+          ],
+          "initialTriageVitals": {
+            "vitalStatus": "Deceased",
+            "bodyTempC": 28.4,
+            "pupils": "Fixed, dilated (6.5 mm bilateral), non-reactive",
+            "lividity": "Fixed posterior lividity with contradictory anterior blanching across chest belt",
+            "rigor": "Full rigor present in jaw, neck, trunk, and upper extremities",
+            "pronouncementTime": "05:30 UTC",
+            "pronouncingPhysician": "Dr. Gregory Vance, MD (Coroner Field Physician)"
+          },
+          "clinicalNotes": "Adult female discovered in driver's seat of vehicle. Rigor mortis is fully established (typically requires 6-8 hours). Deep purple bilateral conjunctival petechial hemorrhages visible in both eyes."
+        },
+        "vaccines": [
+          {
+            "id": "VAC-020",
+            "vaccineName": "Tetanus, Diphtheria, Pertussis (Tdap)",
+            "targetPathogen": "Clostridium tetani",
+            "dateAdministered": "2023-01-11",
+            "facility": "Metro Downtown Health",
+            "administrator": "RN C. Kelly",
+            "manufacturer": "GlaxoSmithKline (Boostrix)",
+            "lotNumber": "TD-8812B",
+            "doseNumber": 1,
+            "route": "Intramuscular",
+            "status": "Verified",
+            "titerResult": "Protective",
+            "evidentiaryRelevance": "Standard routine immunization profile."
+          },
+          {
+            "id": "VAC-021",
+            "vaccineName": "Hepatitis A & B Combined (Twinrix)",
+            "targetPathogen": "Hep A & Hep B Viruses",
+            "dateAdministered": "2022-04-18",
+            "facility": "Travel Medicine Clinic",
+            "administrator": "Dr. P. Hayes, MD",
+            "manufacturer": "GlaxoSmithKline",
+            "lotNumber": "TW-4409",
+            "doseNumber": 3,
+            "route": "Intramuscular",
+            "status": "Verified",
+            "titerResult": "HBsAb > 100 mIU/mL",
+            "evidentiaryRelevance": "International travel immunization record."
+          }
+        ],
+        "diagnosticTests": [
+          {
+            "id": "TEST-TOX-20",
+            "category": "Toxicology",
+            "testName": "Zolpidem & Sedative Quantification",
+            "specimen": "Peripheral Blood",
+            "quantitativeResult": "NEGATIVE (< 5 ng/mL, Sub-Therapeutic / Undetectable)",
+            "referenceRange": "Therapeutic: 80-150 ng/mL | Toxic > 300 ng/mL",
+            "methodology": "High-Res LC-MS/MS Screen",
+            "flag": "NEGATIVE",
+            "clinicalInterpretation": "Complete absence of sedative in decedent blood completely refutes death by oral prescription overdose.",
+            "instrumentId": "WATERS-XEVO-TQ",
+            "verifiedBy": "Dr. Marcus Chen, PhD, DABFT"
+          },
+          {
+            "id": "TEST-TOX-21",
+            "category": "Toxicology",
+            "testName": "Gastric Contents Sedative Residual Screen",
+            "specimen": "Gastric Contents",
+            "quantitativeResult": "NEGATIVE (Zero drug metabolites or excipient binder detected)",
+            "referenceRange": "None Detected",
+            "methodology": "GC-MS Selective Ion Monitoring",
+            "flag": "NEGATIVE",
+            "clinicalInterpretation": "Stomach contents contain only partially digested dinner meal without pill binder, proving pills were never ingested.",
+            "instrumentId": "AGILENT-7890B",
+            "verifiedBy": "Dr. Marcus Chen, PhD, DABFT"
+          },
+          {
+            "id": "TEST-VIT-20",
+            "category": "Vitreous Humor",
+            "testName": "Vitreous Potassium (K+) PMI Calibration",
+            "specimen": "Vitreous Humor",
+            "quantitativeResult": "18.2 mEq/L (Correlates to 5.2 ± 0.6 hours PMI)",
+            "referenceRange": "Antemortem: 3.5-5.0 mEq/L",
+            "methodology": "Ion-Selective Electrode Potentiometry",
+            "flag": "HIGH",
+            "clinicalInterpretation": "Vitreous potassium demonstrates decedent died between 00:00 and 01:00 UTC, long before vehicle was driven to marina at 04:12 UTC.",
+            "instrumentId": "NOVA-BIOMEDICAL-ISE",
+            "verifiedBy": "Dr. Rebecca Lin, MD, FCAP"
+          }
+        ],
+        "traumaPoints": [
+          {
+            "id": "TR-20",
+            "region": "Ocular",
+            "label": "Bilateral Conjunctival Petechiae",
+            "finding": "Dense florid petechial hemorrhages throughout palpebral and bulbar conjunctivae of both eyes.",
+            "evidentiaryValue": "Hallmark indicator of acute cephalic venous hypertension from mechanical compression of neck / smothering.",
+            "status": "Examined"
+          },
+          {
+            "id": "TR-21",
+            "region": "Cervical",
+            "label": "Hyoid Cartilage Microfracture & Laryngeal Contusion",
+            "finding": "Infiltration of hemorrhage into right thyroid cartilage horn with focal undisplaced fracture of greater horn of hyoid.",
+            "evidentiaryValue": "Conclusively establishes manual neck compression / homicidal manual strangulation.",
+            "status": "Examined"
+          }
+        ],
+        "pmiModel": {
+          "bodyCoreTempC": 28.4,
+          "ambientTempC": 14.2,
+          "bodyWeightKg": 61,
+          "clothingFactor": 1.2,
+          "measuredAt": "2026-09-15T05:40:00Z",
+          "vitreousPotassiumMeqL": 18.2,
+          "estimatedPmiMinHours": 4.6,
+          "estimatedPmiMaxHours": 5.8,
+          "calculatedDeathWindow": "00:00 – 01:00 UTC",
+          "corroboratingSource": "Vitreous K+ & full rigor mortis refuting 04:12 marina vehicle entry",
+          "rigorStage": "Fully established (3+ across all muscle groups)",
+          "livorStage": "Dual-plane lividity indicating post-mortem body repositioning"
+        },
+        "deathCertificate": {
+          "formNumber": "ME-99",
+          "decedentName": "Cassandra Ward",
+          "mannerOfDeath": "HOMICIDE",
+          "immediateCausePart1": "Mechanical Asphyxia due to Manual Strangulation",
+          "underlyingCausePart2": "Cervical Compression with Hyoid Fracture",
+          "otherSignificantConditions": "Post-mortem relocation and staging of scene",
+          "certifyingPathologist": "Dr. Rebecca Lin, MD, FCAP",
+          "licenseNumber": "ME-LIC-44810",
+          "certifiedDate": "2026-09-15T09:00:00Z",
+          "signed": true,
+          "courtIndictmentReady": true
+        }
+      },
+      {
+        "subjectId": "SUBJ-002",
+        "intake": {
+          "intakeId": "IN-2026-0302",
+          "subjectType": "Living Suspect",
+          "name": "Gerald Finch",
+          "age": 49,
+          "dob": "1977-09-03",
+          "gender": "Male",
+          "bloodType": "A-Positive",
+          "heightCm": 181,
+          "weightKg": 89,
+          "intakeTimestamp": "2026-09-15T11:20:00Z",
+          "transportAgency": "Metro Police Homicide Division",
+          "transportUnit": "Detective Vehicle 14",
+          "receivingTechnician": "Dr. Alan Mercer, MD",
+          "wristbandBarcode": "BC-FINCH-7719",
+          "belongingsInventory": [
+            {
+              "item": "Laser Printed Document Drafts",
+              "description": "Corporate audit review folders seized from office desk",
+              "custodyLocker": "Document Vault D-03",
+              "evidentiaryValue": true
+            }
+          ],
+          "initialTriageVitals": {
+            "vitalStatus": "Stable",
+            "bodyTempC": 37.0,
+            "heartRateBpm": 88,
+            "bloodPressure": "144/90 mmHg",
+            "pupils": "Symmetric, reactive",
+            "lividity": "Not Applicable",
+            "rigor": "Not Applicable"
+          },
+          "clinicalNotes": "Physical exam reveals faint superficial petechial scratching on dorsal right wrist."
+        },
+        "vaccines": [
+          {
+            "id": "VAC-022",
+            "vaccineName": "Influenza Quadrivalent",
+            "targetPathogen": "Influenza A & B",
+            "dateAdministered": "2025-10-14",
+            "facility": "Executive Health Clinic",
+            "administrator": "RN D. Smith",
+            "manufacturer": "Seqirus",
+            "lotNumber": "FL-9912",
+            "doseNumber": 1,
+            "route": "Intramuscular",
+            "status": "Verified",
+            "titerResult": "Documented",
+            "evidentiaryRelevance": "Standard workplace immunization."
+          }
+        ],
+        "diagnosticTests": [
+          {
+            "id": "TEST-DOC-20",
+            "category": "Questioned Documents",
+            "testName": "Laser Printer Toner Micro-Banding Analysis",
+            "specimen": "Questioned Document / Material",
+            "quantitativeResult": "Banding defect signature matches HP LaserJet Enterprise #FINCH-OFFICE (1 in 500,000)",
+            "referenceRange": "Exemplar match",
+            "methodology": "High-Resolution Electrostatic Imaging & Optical Profilometry",
+            "flag": "POSITIVE",
+            "clinicalInterpretation": "The suicide note found beside decedent was printed on suspect Gerald Finch's personal executive office printer.",
+            "instrumentId": "FOSTER-FREEMAN-VSC8000",
+            "verifiedBy": "Document Examiner David Vance, D-ABFDE"
+          }
+        ]
+      }
+    ]
+  },
+  "crimeScene": {
+    "locationName": "Pier 14 Terminal Overlook, St. Jude Harbor",
+    "blueprintGrid": "HARBOR-PIER-14-SEC-C",
+    "placards": [
+      {
+        "markerNumber": 1,
+        "label": "Decedent Body Position in Vehicle",
+        "category": "biological",
+        "coordinates": { "x": 280, "y": 190, "zone": "Driver's Seat (Sedan)" },
+        "description": "Decedent upright in driver's seat; seatbelt engaged; head tilted right with dual-plane lividity.",
+        "associatedEvidenceId": "EV-0020",
+        "status": "Transferred to Lab"
+      },
+      {
+        "markerNumber": 2,
+        "label": "Staged Prescription Sedative Bottle",
+        "category": "toxicology",
+        "coordinates": { "x": 310, "y": 205, "zone": "Passenger Seat" },
+        "description": "Zolpidem 10mg prescription bottle with cap detached; interior clean and dry.",
+        "associatedEvidenceId": "EV-0021",
+        "status": "Transferred to Lab"
+      },
+      {
+        "markerNumber": 3,
+        "label": "Laser Printed Staged Suicide Note",
+        "category": "physical_trace",
+        "coordinates": { "x": 315, "y": 210, "zone": "Passenger Seat" },
+        "description": "Freshly printed note with printer roller indentations.",
+        "associatedEvidenceId": "EV-0022",
+        "status": "Transferred to Lab"
+      }
+    ]
+  },
+  "evidence": [
+    {
+      "id": "EV-0020",
+      "markerNumber": 1,
+      "title": "Post-Mortem Vitreous Humor Aspirate",
+      "type": "Biological Specimen",
+      "seal": "Intact",
+      "location": "Cold Storage Locker B-03 (-20°C)",
+      "custodian": "Dr. Rebecca Lin",
+      "description": "2.5mL clear vitreous fluid aspirate collected from right globe.",
+      "tags": ["vitreous", "pmi", "chemistry"],
+      "chainOfCustody": [
+        {
+          "timestamp": "2026-09-15T07:15:00Z",
+          "from": "Tech. David Alvarez",
+          "to": "Dr. Rebecca Lin",
+          "location": "Morgue Station 1",
+          "reason": "Electrolyte analysis",
+          "seal": "Intact"
+        }
+      ]
+    },
+    {
+      "id": "EV-0022",
+      "markerNumber": 3,
+      "title": "Questioned Staged Farewell Note",
+      "type": "Questioned Document",
+      "seal": "Intact",
+      "location": "Document Vault D-02",
+      "custodian": "Document Examiner David Vance",
+      "description": "Single-sheet 20lb white paper bearing laser toner defect lines.",
+      "tags": ["document", "toner", "printer-banding"],
+      "chainOfCustody": [
+        {
+          "timestamp": "2026-09-15T06:30:00Z",
+          "from": "CSI Officer Jenkins",
+          "to": "David Vance",
+          "location": "Document Vault D-02",
+          "reason": "Microscopic defect analysis",
+          "seal": "Intact"
+        }
+      ]
+    }
+  ],
+  "citizens": [
+    {
+      "id": "CIT-020",
+      "fullName": "Gerald Finch",
+      "aliases": ["GFinch_Exec"],
+      "role": "Primary Suspect",
+      "dob": "1977-09-03",
+      "ssnMasked": "XXX-XX-1982",
+      "residence": "942 Crestview Terrace, Metro Heights",
+      "occupation": "Chief Financial Officer, Apex Financial",
+      "dmvDriverLicense": "DL-MET-331094",
+      "dmvVehicleRegistration": "SUV (Midnight Blue BMW X5, Lic #5FIN99)",
+      "codisDnaProfileId": "CODIS-SUSP-2026-902",
+      "fingerprintClass": "Plain Whorl Subtype 11A",
+      "phoneNumbers": ["+1-555-018-9901"],
+      "warrantStatus": "Active Felony Warrant",
+      "alibiClaim": "Claims left office at 22:30 and remained home all night.",
+      "alibiVerificationStatus": "Refuted"
+    }
+  ],
+  "interrogations": [
+    {
+      "suspectId": "CIT-020",
+      "suspectName": "Gerald Finch",
+      "baselineHeartRateBpm": 68,
+      "currentStressLevel": 85,
+      "confessionThreshold": 94,
+      "dialogueExchanges": [
+        {
+          "speaker": "Detective",
+          "text": "Mr. Finch, why did your office printer print the note found in Ms. Ward's vehicle?",
+          "timestamp": "12:15 UTC"
+        },
+        {
+          "speaker": "Suspect",
+          "text": "Our printers are networked. Anyone could have sent a document through the print queue.",
+          "timestamp": "12:16 UTC"
+        }
+      ],
+      "confrontationOptions": [
+        {
+          "id": "CONF-20",
+          "clueOrEvidenceId": "EV-0022",
+          "title": "Confront with Laser Printer Micro-Banding Match",
+          "contradictionQuote": "Anyone could have printed that note.",
+          "confrontationScript": "The physical drum defect is unique to your local USB desktop printer in your locked office, printed at 01:14 UTC.",
+          "suspectReaction": "Suspect goes pale, pulse spikes to 132 BPM, requests counsel.",
+          "stressSpikePercent": 35,
+          "confessionYield": "Admission of meeting victim to discuss the audit discrepancies."
+        }
+      ],
+      "affidavitSigned": false
+    }
+  ],
+  "courtroom": {
+    "courtName": "United States District Court · Eastern District",
+    "docketNumber": "CR-2026-0922",
+    "presidingJudge": "Hon. Sarah Jenkins, Presiding U.S. District Judge",
+    "prosecutor": "Eleanor Vance-Wright, Assistant United States Attorney",
+    "defenseAttorney": "Dominic Sterling, Esq.",
+    "defendant": "Gerald Finch",
+    "charges": [
+      "18 U.S.C. § 1111 - Premeditated First-Degree Murder",
+      "18 U.S.C. § 1512 - Tampering with a Witness or Victim",
+      "18 U.S.C. § 1519 - Destruction, Alteration, or Falsification of Records"
+    ],
+    "exhibits": [
+      {
+        "exhibitNumber": "EXHIBIT P-01",
+        "title": "Autopsy Determination: Mechanical Strangulation & Hyoid Fracture",
+        "type": "Autopsy Finding",
+        "description": "OCME autopsy certifying death by manual strangulation, refuting drug overdose.",
+        "chainOfCustodyVerified": true,
+        "admitted": true
+      },
+      {
+        "exhibitNumber": "EXHIBIT P-02",
+        "title": "VSC8000 Questioned Document Report: Printer Drum Defect Match",
+        "type": "Forensic Report",
+        "description": "Micro-banding comparison matching questioned note to defendant's private office printer.",
+        "chainOfCustodyVerified": true,
+        "admitted": true
+      }
+    ],
+    "witnesses": [
+      {
+        "id": "WIT-20",
+        "name": "Dr. Rebecca Lin, MD, FCAP",
+        "role": "Chief Medical Examiner",
+        "directTestimony": [
+          "The decedent died between 00:00 and 01:00 UTC, over four hours before the car arrived at the marina.",
+          "Blood and gastric toxicology were completely negative for Zolpidem or sedatives.",
+          "Fracture of the hyoid horn proves direct manual compression of the neck."
+        ],
+        "crossExaminationQuestions": [
+          {
+            "question": "Could the hyoid bone have fractured from post-mortem handling?",
+            "contradictingEvidenceId": "EXHIBIT P-01",
+            "expectedAnswer": "No. Vivid antemortem tissue extravasation and hemorrhage surrounding the fracture prove active circulation when sustained.",
+            "prosecutionImpactScore": 35
+          }
+        ]
+      }
+    ],
+    "juryGuiltProbability": 97,
+    "verdictReady": true
+  }
+}
