@@ -11,6 +11,8 @@ using Microsoft.Data.Sqlite;
 using Dapper;
 using Photino.NET;
 using DotNetEnv;
+using Sentry;
+using MiraverseOSx.Ai;
 
 namespace MiraverseOSx
 {
@@ -37,6 +39,7 @@ namespace MiraverseOSx
         private static HttpListener? _httpServer;
         private static int _activePort = 5000;
         private static WorldSaveApi? _worldApi;
+        private static AiHttpHandler? _aiHttpHandler;
         private static readonly HttpClient _httpClient = new HttpClient();
         private static readonly string _externalLaunchToken = Guid.NewGuid().ToString("N");
 
@@ -56,6 +59,22 @@ namespace MiraverseOSx
                     Env.Load();
                 }
                 Console.WriteLine("[Environment] Loaded .env configuration.");
+
+            // 1b. Initialize Sentry backend error & performance telemetry
+            string? sentryBackendDsn = Environment.GetEnvironmentVariable("SENTRY_DSN_BACKEND")
+                ?? "https://c6d189e69cb7d5f5f5b8d26b31aad65b@o4512311772905472.ingest.us.sentry.io/4512311829331968";
+            IDisposable? sentrySubscription = null;
+            if (!string.IsNullOrWhiteSpace(sentryBackendDsn))
+            {
+                sentrySubscription = SentrySdk.Init(o =>
+                {
+                    o.Dsn = sentryBackendDsn;
+                    o.Environment = Environment.GetEnvironmentVariable("NODE_ENV") ?? "production";
+                    o.TracesSampleRate = 1.0;
+                });
+                Console.WriteLine("[Sentry] Backend monitoring initialized.");
+            }
+
             }
             catch (Exception ex)
             {
@@ -65,6 +84,12 @@ namespace MiraverseOSx
             string? Argument(string name) { int index = Array.IndexOf(args, name); return index >= 0 && index + 1 < args.Length ? args[index + 1] : null; }
             var dataDirectory = Argument("--data-dir") ?? Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "MiraverseOSx");
             _worldApi = new WorldSaveApi(dataDirectory);
+            var memoryRepo = new NpcMemoryRepository(dataDirectory);
+            var costController = new AiCostController(memoryRepo);
+            var geminiProvider = new GeminiProvider(_httpClient);
+            var openAiProvider = new OpenAiProvider(_httpClient);
+            var routerService = new AiRouterService(memoryRepo, costController, geminiProvider, openAiProvider);
+            _aiHttpHandler = new AiHttpHandler(routerService);
             var serverOnly = Array.Exists(args, value => value == "--server-only");
             int requestedPort = int.TryParse(Argument("--port"), out var parsedPort) && parsedPort is >= 1024 and <= 65535 ? parsedPort : 5000;
             // Native windows use their server's own origin; Vite targets the fixed development port.
@@ -151,6 +176,7 @@ namespace MiraverseOSx
                 string relPath = context.Request.Url?.AbsolutePath.TrimStart('/') ?? "index.html";
 
                 if (_worldApi != null && await _worldApi.Handle(context, relPath)) return;
+                if (_aiHttpHandler != null && await _aiHttpHandler.Handle(context, relPath)) return;
 
                 // --- SQLITE API ROUTE INTERCEPTOR ---
                 if (relPath.Equals("api/documents", StringComparison.OrdinalIgnoreCase))

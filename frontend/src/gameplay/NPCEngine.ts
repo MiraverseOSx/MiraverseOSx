@@ -1,7 +1,8 @@
 /**
  * MIRAVERSE OS x — NPC Dialogue & Persona Engine (TypeScript)
- * Integrates with Groq API and Agent Orchestrator for ultra-fast, real-time
- * dialogue generation with rich persona templates and deterministic offline fallbacks.
+ * Integrates with the C# Backend AI Controller (/api/ai/chat) powered by
+ * Google Gemini + OpenAI with persistent SQLite NPC memories, cost limits,
+ * and deterministic offline fallbacks.
  */
 
 import { useOSStore } from '../store/useOSStore';
@@ -17,10 +18,14 @@ export interface NPCPersona {
 
 export interface NPCDialogueResponse {
   npc: string;
-  source: 'Groq API (miragroq)' | 'mcp-agents-groq' | 'Native Persona Engine';
+  source: 'Google Gemini' | 'OpenAI' | 'Native Persona Engine' | string;
   model: string;
   text: string;
   narrativeContext?: string;
+  tokens?: { prompt: number; completion: number; total: number };
+  estimatedCostUsd?: number;
+  memoriesUsed?: string[];
+  cached?: boolean;
 }
 
 export class NPCEngine {
@@ -35,6 +40,39 @@ export class NPCEngine {
         'PRISM pulse detected nearby. Maintain your elemental shields!'
       ],
       systemContext: 'You are MAI, the celestial OS taskbar companion in MiraverseOSx.'
+    },
+    Jeremie: {
+      name: 'Jeremie',
+      role: 'Hardware & Terminal Architecture Engineer',
+      tone: 'Thoughtful, focused, technical, enthusiastic',
+      greetings: [
+        'Hey! Just reviewing the sub-Aureline signal bus ^_^',
+        'Check out these circuit schematics when you get a chance.',
+        'Logic gates are looking clean today.'
+      ],
+      systemContext: 'You are Jeremie Belpois, a brilliant hardware and software systems engineer.'
+    },
+    Aelita: {
+      name: 'Aelita',
+      role: 'Harmonic Synthesizer & Botanical Analyst',
+      tone: 'Gentle, intuitive, melodic, peaceful',
+      greetings: [
+        'Hello ✿ the garden air feels especially clear today.',
+        'Listening to the subtle resonance in the quiet hours ♡',
+        'Have you noticed the gentle melody along the fountain path?'
+      ],
+      systemContext: 'You are Aelita Schaeffer, an intuitive synthesizer artist and botanist.'
+    },
+    Sissi: {
+      name: 'Sissi',
+      role: 'Aureline Socialite & Trends Editor',
+      tone: 'Chic, confident, trendy, playful',
+      greetings: [
+        'Hey there! Love the look of your profile today ~ xoxo',
+        'Have you checked the latest updates on the social feed?',
+        'We need to coordinate plans for the weekend soon ♡'
+      ],
+      systemContext: 'You are Elisabeth Delmas (Sissi), high-society style curator and trendsetter.'
     },
     Vaelen: {
       name: 'Vaelen',
@@ -72,7 +110,7 @@ export class NPCEngine {
 
   /**
    * Generates NPC response enriched with shared WorldEventEngine narrative memory,
-   * player relationships, active medical conditions, mastered spells, and solved cases.
+   * persistent SQLite NPC memories, and C# controller budgeting.
    */
   public async generateDialogue(
     npcName: string,
@@ -91,30 +129,44 @@ export class NPCEngine {
     const narrative = worldEventEngine.buildNarrativeContextForNPC(npcName, gameplayState);
     const combinedContext = `${persona.systemContext} Tone: ${persona.tone}. Shared World Memory: ${narrative.summaryText} ${extraContext}`.trim();
 
-    // 1. Try MCP Agent Orchestrator on localhost:5050
+    // 1. Query the C# Backend AI Subsystem (/api/ai/chat)
     try {
-      const orchRes = await fetch('http://localhost:5050/api/agent', {
+      const response = await fetch('/api/ai/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          prompt: `[${npcName}] ${prompt}`,
-          context: `Keep responses concise (1-3 sentences). ${combinedContext}`
+          npc: npcName,
+          prompt,
+          activeApp: 'dialogue',
+          context: combinedContext
         })
       });
-      if (orchRes.ok) {
-        const data = await orchRes.json();
-        if (data.response) {
+
+      if (response.ok) {
+        const data = await response.json();
+        if (data.text) {
+          const providerLabel =
+            data.provider === 'google-gemini'
+              ? 'Google Gemini'
+              : data.provider === 'openai'
+              ? 'OpenAI'
+              : 'Native Persona Engine';
+
           return {
             npc: npcName,
-            source: 'mcp-agents-groq',
-            model: 'llama-3.3-70b-versatile',
-            text: data.response,
-            narrativeContext: narrative.summaryText
+            source: providerLabel,
+            model: data.model || 'csharp-controller',
+            text: data.text,
+            narrativeContext: narrative.summaryText,
+            tokens: data.tokens,
+            estimatedCostUsd: data.estimatedCostUsd,
+            memoriesUsed: data.memoriesUsed,
+            cached: data.cached
           };
         }
       }
     } catch {
-      // Clean fallback if orchestrator is offline
+      // Clean fallback if backend is offline or starting
     }
 
     // 2. Context-aware deterministic persona response incorporating world events & player history
@@ -135,4 +187,3 @@ export class NPCEngine {
 }
 
 export const npcEngine = new NPCEngine();
-

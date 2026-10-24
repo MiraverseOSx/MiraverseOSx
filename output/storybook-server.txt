@@ -59,3 +59,9 @@ T  storybook v10.6.3
 |  Vite page reload package.json
 |  Vite page reload vite.config.js
 |  Vite page reload package.json
+|  Vite page reload src/gameplay/NPCEngine.ts
+|  Vite page reload src/store/useWorldStore.ts
+|  Vite page reload src/store/useWorldStore.ts
+|  Vite page reload package.json
+|  Vite page reload src/index.tsx
+|  Vite page reload src/index.tsx

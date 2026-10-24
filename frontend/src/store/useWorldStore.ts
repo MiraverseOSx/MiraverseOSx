@@ -1,8 +1,3 @@
-/**
- * MIRAVERSE OS x — World Store
- * Regions, Factions, NPCs, and Lore will be populated once the DataGrip
- * SQLite pipeline is connected and seeded (npm run data:build).
- */
 import { create } from 'zustand';
 import { REGIONS, FACTIONS, NPCS, LORE_ENTRIES } from '../db/miraverseDb';
 
@@ -41,10 +36,12 @@ export const useWorldStore = create<WorldStoreState>((set) => ({
   factions: FACTIONS,
   npcs: NPCS,
   lore: LORE_ENTRIES,
-  backendStatus: 'awaiting-datagrip-seed',
+  backendStatus: 'ready',
   loading: false,
 
   syncWorldData: async () => {
+    set({ loading: true });
+    // Keep seed data as fallback and indicate local database hydration
     set({
       overview: {
         title: 'MIRAVERSE OSX',
@@ -63,7 +60,36 @@ export const useWorldStore = create<WorldStoreState>((set) => ({
     });
   },
 
-  sendMAIPrompt: async (prompt: string, _context?: any) => {
+  sendMAIPrompt: async (prompt: string, context?: any) => {
+    // 1. Query C# Backend AI Controller
+    try {
+      const res = await fetch('/api/ai/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          npc: 'Mai',
+          prompt,
+          activeApp: context?.active_app || 'desktop',
+          context: 'MAI Celestial Taskbar Companion'
+        })
+      });
+
+      if (res.ok) {
+        const data = await res.json();
+        if (data.text) {
+          const q = (prompt || '').toLowerCase();
+          const action = q.includes('form') ? 'open_form' : (q.includes('quest') || q.includes('mission') ? 'open_worknet' : null);
+          return {
+            thought: `C# AI Controller [${data.provider} / ${data.model}]`,
+            response: data.text,
+            action,
+          };
+        }
+      }
+    } catch {
+      // Fall through to deterministic fallback if offline
+    }
+
     const q = (prompt || '').toLowerCase();
     if (q.includes('form') || q.includes('registration')) {
       return {
