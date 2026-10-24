@@ -20,3 +20,15 @@ export function saveInterfacePreferences(value: InterfacePreferences) {
 export function resolveInterfaceAppearance(appearance: InterfaceAppearance, systemDark: boolean) {
   return appearance === 'system' ? systemDark ? 'dark' : 'light' : appearance;
 }
+
+/** Only device appearance changes cross tabs; never import gameplay or unrelated storage. */
+export function subscribeInterfacePreferences(listener: (preferences: InterfacePreferences) => void, target: Pick<Window, 'addEventListener' | 'removeEventListener'>) {
+  const onStorage = (event: StorageEvent) => {
+    if (event.key !== INTERFACE_STORAGE_KEY && event.key !== null) return;
+    let value: unknown = null;
+    try { value = JSON.parse(event.newValue || 'null'); } catch { /* Reset malformed appearance preferences safely. */ }
+    listener(normalizeInterfacePreferences(value));
+  };
+  target.addEventListener('storage', onStorage as EventListener);
+  return () => target.removeEventListener('storage', onStorage as EventListener);
+}

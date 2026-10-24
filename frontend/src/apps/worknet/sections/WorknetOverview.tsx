@@ -16,13 +16,13 @@ interface Props {
 export default function WorknetOverview({activeStation, onNavigate, onOpenMission, onSwitchWorkplace, onResolveDynamicEvent, onVisitBreakRoom, onClaimBaseStipends, resolvedEventIds}: Props) {
   const game = useOSStore(s => s.gameplay), player = game.player, cycle = game.timeCycleCount ?? 0;
   const theme = INSTITUTIONAL_REGISTRY[activeStation], track = stationTrack(activeStation);
-  const contract = player.employmentContracts?.[track], affiliated = employed(player, activeStation), supervisor = canSupervise(player, activeStation);
+  const contract: any = player.employmentContracts?.[track] || {}, affiliated = employed(player, activeStation), supervisor = canSupervise(player, activeStation);
   const workplace = restoreWorkplace(player.worknetWorkplace, workTick(game));
-  const orders = Object.values(player.worknetOrders || {}).filter(o => WORK_DEFINITIONS[o.definitionId || o.missionId]?.track === track);
+  const orders = (Object.values(player.worknetOrders || {}) as any[]).filter(o => WORK_DEFINITIONS[o.definitionId || o.missionId]?.track === track);
   const active = orders.filter(o => o.status === 'active');
   const crew = theme.coworkers.map(c => ({...c,...workplace.coworkerStats[c.id]}));
   const dockets = workplace.delegatedTasks.filter(d => d.stationId === activeStation && d.status === 'Review Ready');
-  const contracts = Object.values(player.employmentContracts || {}).map(c => ({contract:c, org:Object.values(INSTITUTIONAL_REGISTRY).find(o => stationTrack(o.id) === c.track)})).filter(c => c.org);
+  const contracts = (Object.values(player.employmentContracts || {}) as any[]).map(c => ({contract:c, org:Object.values(INSTITUTIONAL_REGISTRY).find(o => stationTrack(o.id) === c.track)})).filter(c => c.org);
   const payable = contracts.filter(({contract:c,org}) => employed(player,org!.id) && (c.lastStipendClaimedCycle ?? cycle - 1) < cycle);
   const events = CANONICAL_DYNAMIC_EVENTS.filter(e => e.stationId === activeStation);
   const shifts = workplace.scheduleItems.filter(s => s.institutionId === activeStation);

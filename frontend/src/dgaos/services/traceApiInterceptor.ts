@@ -6,7 +6,7 @@
  */
 
 import { traceDurableStore } from './traceDurableStore';
-import { templates, modules, type LabRecord } from '../lib/records';
+import { templates, type LabRecord } from '../lib/records';
 import { PHONE_CONTACTS } from '../lib/phone-data';
 import { INITIAL_CHANNELS, INITIAL_CHANNEL_MESSAGES } from '../lib/comms-channels-data';
 import { seedCommunications } from '../data/seed/communications';

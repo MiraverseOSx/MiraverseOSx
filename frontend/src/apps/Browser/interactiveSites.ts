@@ -44,7 +44,7 @@ export function validateSiteProfile(site: InteractiveSite, input: unknown) {
 export function validateSiteValues(site: InteractiveSite, input: unknown, partial = false) {
   const raw = object(input); const values: SiteValues = {}; const errors: Record<string,string> = {};
   for (const field of site.fields) {
-    const value = typeof raw[field.id] === 'string' ? raw[field.id].trim() : '';
+    const rawVal = raw[field.id]; const value = typeof rawVal === 'string' ? rawVal.trim() : '';
     values[field.id] = value;
     if (!value) { if (field.required && !partial) errors[field.id] = 'This field is required.'; continue; }
     if (field.kind === 'select' && !field.options?.includes(value)) errors[field.id] = 'Choose one of the available options.';

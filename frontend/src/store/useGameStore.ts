@@ -7,11 +7,11 @@ import { npcEngine } from '../gameplay/NPCEngine';
 import { useOSStore } from './useOSStore';
 
 declare global {
+  interface External {
+    sendMessage?: (msg: string) => void;
+    receiveMessage?: (callback: (rawMessage: string) => void) => void;
+  }
   interface Window {
-    external?: {
-      sendMessage?: (msg: string) => void;
-      receiveMessage?: (callback: (rawMessage: string) => void) => void;
-    };
     chrome?: {
       webview?: {
         postMessage?: (msg: string) => void;

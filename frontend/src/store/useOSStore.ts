@@ -70,6 +70,7 @@ export interface OSStoreState extends AssignmentFlowActions, ProgressionActions,
   workspaceRequests: Record<string, WorkspaceRequest>;
   workspaceRequestSequence: number;
   openAppWorkspace: (id: string, section?: string) => void;
+  openWindow: (id: string) => void;
   consumeWorkspaceRequest: (id: string, revision: number) => void;
   linkCitizenHubIdentity: (id: string) => Promise<{ ok: boolean; message: string }>;
   setOrganizationMembership: (id: string, status: 'active' | 'suspended' | 'revoked') => { ok: boolean; message: string };
@@ -360,6 +361,7 @@ export const useOSStore = create<OSStoreState>()(persist((set, get) => ({
     set(s => ({ gameplay: { ...s.gameplay, identity: { ...s.gameplay.identity, canonicalPersonId: person.id } } }));
     return { ok: true, message: `Citizen Hub linked to ${person.name}. AURA records and issued documents are unchanged.` };
   },
+  openWindow: (id) => get().openAppWorkspace(id),
   openAppWorkspace: (id, section) => {
     const destination = resolveAppDestination(id);
     const target = section || destination.section;

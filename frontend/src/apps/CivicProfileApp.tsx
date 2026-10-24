@@ -616,7 +616,7 @@ export default function CivicProfileApp() {
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
-                {Object.entries(player?.skills || {}).map(([skillName, skillData]) => {
+                {Object.entries(player?.skills || {}).map(([skillName, rawSkill]) => { const skillData = rawSkill as { level: number; xp: number };
                   const IconComp = SKILL_ICONS[skillName] || Code;
                   const desc = SKILL_DESCRIPTIONS[skillName] || { unlocks: 'Higher system efficiency', raised: 'System actions' };
                   return (

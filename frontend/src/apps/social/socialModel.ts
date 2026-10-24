@@ -1,8 +1,21 @@
 import { sanitizeMailHtml, mailHtmlToText } from '../mail/richText';
+import { processNpcReactivity, handleDirectGuestbookSign } from './npcReactivity';
 
 export type Audience = 'public' | 'friends' | 'private' | 'group';
-export type ModuleKind = 'about' | 'music' | 'friends' | 'photos' | 'blogs' | 'guestbook' | 'interests' | 'decoration';
-export type Module = { id: string; kind: ModuleKind; x: number; y: number; w: number; h: number; hidden: boolean; text?: string };
+export type WidgetKind = 'badges' | 'marquee' | 'counter' | 'status' | 'quiz';
+export const BADGE_IDS = ['versenet-800x600', 'miraverse-valid', 'powered-by-tea', 'notepad-coder', 'aureline-sound', 'dga-clearance'] as const;
+export type CustomWidgetData = {
+  widgetKind: WidgetKind;
+  badges?: string[];
+  marqueeText?: string;
+  counterStyle?: 'odometer' | 'led' | 'retro-lcd';
+  statusMood?: string;
+  statusIcon?: string;
+  quizTitle?: string;
+  quizItems?: { question: string; answer: string }[];
+};
+export type ModuleKind = 'about' | 'music' | 'friends' | 'photos' | 'blogs' | 'guestbook' | 'interests' | 'decoration' | 'widget';
+export type Module = { id: string; kind: ModuleKind; x: number; y: number; w: number; h: number; hidden: boolean; text?: string; widget?: CustomWidgetData };
 export type Layout = { theme: string; background: string; surface: string; color: string; accent: string; font: string; texture: string; border: number; modules: Module[] };
 export type Post = { id: string; author: string; kind: 'blog' | 'bulletin' | 'memory'; title: string; html: string; audience: Audience; cycle: number; draft: boolean; likes: string[]; media?: string[] };
 export type Album = { id: string; author: string; name: string; audience: Audience; groupId?: string; photos: { id: string; asset: string; caption: string; tags: string[]; tagRequests?: Record<string, number> }[] };
@@ -15,6 +28,7 @@ export type SocialWorld = {
   groups: { id: string; name: string; description: string; private: boolean; owner: string; members: string[]; pending: string[]; created?: number; requested?: number }[];
   events: SocialEvent[]; notifications: { id: string; text: string; destination: string; read: boolean }[];
   memories: string[]; npcLayouts: Record<string, Layout>; assets: { id: string; name: string; type: string; size: number }[];
+  viewCount: number; pinnedCommentIds: string[];
 };
 export const PEOPLE = [
   { id: 'jeremie', name: 'Jeremie Belpois', handle: 'jeremie.builds', phone: 'Jeremie', icon: '⌘', theme: 'blue', bio: 'A notebook for small inventions, patient work, and things worth understanding.', interests: 'Technology · diagrams · ambient music', mood: 'Working on a little idea', reply: 'I like seeing how people organize their ideas. Tell me about something you made.', response: 'Thanks for sharing it. I enjoy hearing the thought behind a project, not just seeing the finished version.' },
@@ -33,7 +47,7 @@ export const THEMES = {
   rose: { name: 'Daydream Rose', background: '#f5deeb', surface: '#fff8fc', color: '#55334d', accent: '#a84377', font: 'Georgia, serif', texture: 'flowers' },
   pine: { name: 'Garden Journal', background: '#dce5db', surface: '#f8faf1', color: '#293e35', accent: '#406d54', font: 'Georgia, serif', texture: 'none' },
 };
-export const KINDS: ModuleKind[] = ['about', 'music', 'friends', 'photos', 'blogs', 'guestbook', 'interests', 'decoration'];
+export const KINDS: ModuleKind[] = ['about', 'music', 'friends', 'photos', 'blogs', 'guestbook', 'interests', 'decoration', 'widget'];
 export const FONT_OPTIONS = ['Georgia, serif', 'Verdana, sans-serif', 'Trebuchet MS, sans-serif', 'Courier New, monospace'];
 export const clone = <T,>(value: T): T => JSON.parse(JSON.stringify(value));
 const limit = (value: any, max = 2000) => typeof value === 'string' ? value.slice(0, max) : '';
@@ -55,7 +69,48 @@ export function makeLayout(theme = 'lavender'): Layout {
 }
 export function normalizeLayout(raw: any): Layout {
   const base = makeLayout(raw?.theme);
-  return { theme: Object.hasOwn(THEMES, raw?.theme) ? raw.theme : 'lavender', background: color(raw?.background, base.background), surface: color(raw?.surface, base.surface), color: color(raw?.color, base.color), accent: color(raw?.accent, base.accent), font: FONT_OPTIONS.includes(raw?.font) ? raw.font : base.font, texture: ['stars', 'grid', 'flowers', 'none'].includes(raw?.texture) ? raw.texture : base.texture, border: bound(raw?.border, 0, 6, 1), modules: (Array.isArray(raw?.modules) ? raw.modules : base.modules).slice(0, 30).filter(m => m && KINDS.includes(m.kind)).map((m, i) => { const w = bound(m.w, 160, 936, 290); return { id: `module-${i}`, kind: m.kind, x: bound(m.x, 0, 960 - w, 24), y: bound(m.y, 0, 2600, i * 150), w, h: bound(m.h, 110, 900, 210), hidden: m.hidden === true, text: limit(m.text, 300) }; }) };
+  return {
+    theme: Object.hasOwn(THEMES, raw?.theme) ? raw.theme : 'lavender',
+    background: color(raw?.background, base.background),
+    surface: color(raw?.surface, base.surface),
+    color: color(raw?.color, base.color),
+    accent: color(raw?.accent, base.accent),
+    font: FONT_OPTIONS.includes(raw?.font) ? raw.font : base.font,
+    texture: ['stars', 'grid', 'flowers', 'none'].includes(raw?.texture) ? raw.texture : base.texture,
+    border: bound(raw?.border, 0, 6, 1),
+    modules: (Array.isArray(raw?.modules) ? raw.modules : base.modules).slice(0, 30).filter(m => m && KINDS.includes(m.kind)).map((m, i) => {
+      const w = bound(m.w, 160, 936, 290);
+      let widget: CustomWidgetData | undefined = undefined;
+      if (m.kind === 'widget' || m.widget) {
+        const wData = m.widget || {};
+        const wk: WidgetKind = ['badges', 'marquee', 'counter', 'status', 'quiz'].includes(wData.widgetKind) ? wData.widgetKind : 'badges';
+        widget = {
+          widgetKind: wk,
+          badges: Array.isArray(wData.badges) ? wData.badges.filter((b: any) => typeof b === 'string' && (BADGE_IDS as readonly string[]).includes(b)).slice(0, 8) : ['versenet-800x600', 'miraverse-valid', 'powered-by-tea'],
+          marqueeText: limit(wData.marqueeText || 'Welcome to my corner of the Versenet! ✦ Leave a note in the guestbook! ♡', 300),
+          counterStyle: ['odometer', 'led', 'retro-lcd'].includes(wData.counterStyle) ? wData.counterStyle : 'odometer',
+          statusMood: limit(wData.statusMood || 'Dreaming & Building', 100),
+          statusIcon: limit(wData.statusIcon || '✦', 10),
+          quizTitle: limit(wData.quizTitle || "Who I'd Like to Meet", 100),
+          quizItems: Array.isArray(wData.quizItems) ? wData.quizItems.slice(0, 5).map((item: any) => ({ question: limit(item?.question, 100), answer: limit(item?.answer, 200) })) : [
+            { question: 'Favorite time to create?', answer: 'Late night when the city is quiet' },
+            { question: 'Current obsession?', answer: 'Ambient synth loops and margin doodles' }
+          ]
+        };
+      }
+      return {
+        id: `module-${i}`,
+        kind: m.kind,
+        x: bound(m.x, 0, 960 - w, 24),
+        y: bound(m.y, 0, 2600, i * 150),
+        w,
+        h: bound(m.h, 110, 900, 210),
+        hidden: m.hidden === true,
+        text: limit(m.text, 300),
+        ...(widget ? { widget } : {})
+      };
+    })
+  };
 }
 export function templateLayout(raw: any): Layout {
   const layout = normalizeLayout(raw);
@@ -70,7 +125,8 @@ export function initialSocial(legacy: any = {}): SocialWorld {
       ...(Array.isArray(legacy.bulletinPosts) ? legacy.bulletinPosts : []).filter(p => p && typeof p.content === 'string').map(p => ({ id: `legacy:${p.id}`, author: PEOPLE.find(n => p.author?.startsWith(n.name.split(' ')[0]))?.id || 'you', kind: 'bulletin' as const, title: 'Earlier bulletin', html: sanitizeMailHtml(`<p>${p.content.replace(/&/g, '&amp;').replace(/</g, '&lt;')}</p>`), audience: 'public' as const, cycle: 0, draft: false, likes: [] })),
     ], albums: PEOPLE.slice(0, 3).map(p => ({ id: `album:${p.id}`, author: p.id, name: p.id === 'jeremie' ? 'Lines and structures' : p.id === 'aelita' ? 'Colors I keep' : 'After dark', audience: 'public', photos: [{ id: `photo:${p.id}`, asset: `builtin:${p.id}`, caption: 'An illustrated mood board for this personal page.', tags: [] }] })), comments: [],
     groups: [{ id: 'photo-club', name: 'Aureline Photo Circle', description: 'A local space for photographs and small observations. Recreational membership grants no institutional access.', private: false, owner: 'aelita', members: ['aelita', 'sissi'], pending: [] }, { id: 'quiet-pages', name: 'Quiet Pages', description: 'An invitation-only journal circle. Get acquainted with Rowan through a thoughtful conversation before requesting entry.', private: true, owner: 'rowan', members: ['rowan'], pending: [] }],
-    events: [], notifications: [{ id: 'welcome', text: 'Your personal corner is ready. Make it yours in Profile Studio.', destination: 'Customize', read: false }], memories: [], npcLayouts: Object.fromEntries(PEOPLE.map(p => [p.id, makeLayout(p.theme)])), assets: [] };
+    events: [], notifications: [{ id: 'welcome', text: 'Your personal corner is ready. Make it yours in Profile Studio.', destination: 'Customize', read: false }], memories: [], npcLayouts: Object.fromEntries(PEOPLE.map(p => [p.id, makeLayout(p.theme)])), assets: [],
+    viewCount: 42, pinnedCommentIds: [] };
 }
 export function restoreSocial(raw: any, legacy: any = {}): SocialWorld {
   const base = initialSocial(legacy);
@@ -97,6 +153,8 @@ export function restoreSocial(raw: any, legacy: any = {}): SocialWorld {
   s.posts = s.posts.map(p => ({ ...p, media: Array.isArray(p.media) ? p.media.filter(id => s.assets.some(a => a.id === id && a.type.startsWith('image/'))).slice(0, 8) : [] }));
   s.reports = s.reports.filter(r => r && typeof r.id === 'string').map(r => ({ id: r.id, target: limit(r.target, 100), reason: limit(r.reason, 500) }));
   s.npcLayouts = Object.fromEntries(PEOPLE.map(p => [p.id, normalizeLayout(raw.npcLayouts?.[p.id] || base.npcLayouts[p.id])]));
+  s.viewCount = Math.max(0, Number.isFinite(raw.viewCount) ? raw.viewCount : 42);
+  s.pinnedCommentIds = Array.isArray(raw.pinnedCommentIds) ? raw.pinnedCommentIds.filter(id => typeof id === 'string') : [];
   if (raw.designVersion !== 2) {
     // Update only the untouched early starter geometry; preserve player designs.
     const starter = (l: any) => l?.theme === 'lavender' && l?.modules?.length === 7 && JSON.stringify(l.modules.map((m: any) => [m.kind, m.x, m.y, m.w, m.h])) === JSON.stringify([['about',24,24,290,250],['music',24,292,290,210],['interests',24,520,290,170],['friends',336,24,600,250],['photos',336,292,600,260],['blogs',336,570,600,230],['guestbook',24,820,912,290]]);
@@ -105,7 +163,7 @@ export function restoreSocial(raw: any, legacy: any = {}): SocialWorld {
     s.npcLayouts = Object.fromEntries(PEOPLE.map(p => [p.id, makeLayout(p.theme)])); s.designVersion = 2;
   }
   s.requestCycles = raw.requestCycles && typeof raw.requestCycles === 'object' ? Object.fromEntries(Object.entries(raw.requestCycles).filter(([id, value]) => PEOPLE.some(p => p.id === id) && Number.isFinite(value))) as Record<string, number> : {};
-  s.requests = raw.requests && typeof raw.requests === 'object' ? Object.fromEntries(Object.entries(raw.requests).filter(([id, v]) => PEOPLE.some(n => n.id === id) && ['incoming', 'pending', 'accepted', 'declined'].includes(v as string))) : base.requests;
+  s.requests = (raw.requests && typeof raw.requests === 'object' ? Object.fromEntries(Object.entries(raw.requests).filter(([id, v]) => PEOPLE.some(n => n.id === id) && ['incoming', 'pending', 'accepted', 'declined'].includes(v as string))) : base.requests) as Record<string, string>;
   return s;
 }
 export function canSee(s: SocialWorld, owner: string, visibility: Audience, viewer = 'you') {
@@ -168,8 +226,27 @@ export function changeSocial(input: SocialWorld, action: SocialAction, cycle: nu
     case 'report': if (!limit(action.reason, 500).trim()) return fail('Describe the concern.'); s.reports.push({ id, target: limit(action.target, 100), reason: limit(action.reason, 500) }); return { state: s, ok: true, message: 'Report saved on this device. No human moderation service is connected.' };
     case 'post': { if (action.audience === 'group') return fail('Choose a personal audience for this post.'); const html = sanitizeMailHtml(action.html); if (mailHtmlToText(html).length < 3) return fail('Write something before saving.'); const previous = s.posts.find(p => p.id === action.id && p.author === 'you'); const post: Post = { id: previous?.id || id, author: 'you', kind: action.kind === 'blog' ? 'blog' : 'bulletin', title: limit(action.title, 180) || 'Untitled', html, audience: audience(action.audience), cycle, draft: action.draft === true, likes: previous?.likes || [], media: Array.isArray(action.media) ? action.media.filter(id => s.assets.some(a => a.id === id && a.type.startsWith('image/'))).slice(0, 8) : [] }; s.posts = [post, ...s.posts.filter(p => p.id !== post.id)]; break; }
     case 'delete-post': s.posts = s.posts.filter(p => p.id !== action.id || p.author !== 'you'); break;
+    case 'record-view': s.viewCount = (s.viewCount || 0) + 1; break;
+    case 'pin-comment': {
+      const cid = String(action.id);
+      s.pinnedCommentIds = Array.isArray(s.pinnedCommentIds) ? s.pinnedCommentIds : [];
+      if (s.pinnedCommentIds.includes(cid)) s.pinnedCommentIds = s.pinnedCommentIds.filter(x => x !== cid);
+      else s.pinnedCommentIds = [cid, ...s.pinnedCommentIds.slice(0, 4)];
+      break;
+    }
     case 'like': { const p = s.posts.find(p => p.id === action.id && !p.draft && canSee(s, p.author, p.audience)); if (!p) return fail('This post is unavailable.'); p.likes = p.likes.includes('you') ? p.likes.filter(x => x !== 'you') : [...p.likes, 'you']; break; }
-    case 'comment': if (!canComment(s, action.target) || !limit(action.text).trim()) return fail('This conversation is unavailable or empty.'); if (action.parent && !s.comments.some(c => c.id === action.parent && c.target === action.target)) return fail('Reply target is unavailable.'); s.comments.push({ id, author: 'you', target: action.target, text: limit(action.text), cycle, parent: action.parent }); break;
+    case 'comment': {
+      if (!canComment(s, action.target) || !limit(action.text).trim()) return fail('This conversation is unavailable or empty.');
+      if (action.parent && !s.comments.some(c => c.id === action.parent && c.target === action.target)) return fail('Reply target is unavailable.');
+      s.comments.push({ id, author: 'you', target: action.target, text: limit(action.text), cycle, parent: action.parent });
+      if (action.target.startsWith('profile:') && action.target !== 'profile:you') {
+        const targetNpcId = action.target.slice(8);
+        if (PEOPLE.some(p => p.id === targetNpcId)) {
+          handleDirectGuestbookSign(s, targetNpcId, action.text, cycle);
+        }
+      }
+      break;
+    }
     case 'delete-comment': s.comments = s.comments.filter(c => c.id !== action.id || (c.author !== 'you' && c.target !== 'profile:you')); break;
     case 'album': if (action.audience === 'group') return fail('Create group albums from the community room.'); if (!limit(action.name, 100).trim()) return fail('Name the album.'); s.albums.push({ id, author: 'you', name: limit(action.name, 100), audience: audience(action.audience), photos: [] }); break;
     case 'album-audience': { const a = s.albums.find(a => a.id === action.id && a.author === 'you'); if (!a || (a.groupId && !s.groups.some(g => g.id === a.groupId && g.members.includes('you')))) return fail('Album unavailable.'); if (action.audience === 'group' && !a.groupId) return fail('This is a personal album.'); a.audience = audience(action.audience); break; }
@@ -221,6 +298,7 @@ export function changeSocial(input: SocialWorld, action: SocialAction, cycle: nu
 
       for (const [key, state] of Object.entries(s.requests)) if (state === 'pending' && cycle > (s.requestCycles[key] ?? cycle) && !s.blocked.includes(key)) { s.requests[key] = 'incoming'; note(`reply-request:${key}`, `${PEOPLE.find(p => p.id === key)?.name} is open to connecting. Accept their returned request in Friends.`, 'Friends'); }
       for (const e of s.events.filter(e => !e.canceled && cycle > e.created)) for (const p of e.invited) if (!e.rsvp[p] && !s.blocked.includes(p) && (!e.groupId || s.groups.some(g => g.id === e.groupId && g.members.includes(p)))) { e.rsvp[p] = p === 'riven' ? 'declined' : 'going'; note(`rsvp:${e.id}:${p}`, `${PEOPLE.find(n => n.id === p)?.name} ${e.rsvp[p] === 'going' ? 'accepted' : 'declined'} your invitation.`, 'Events'); }
+      processNpcReactivity(s, cycle);
       break;
     }
     default: return fail('Unsupported social action.');

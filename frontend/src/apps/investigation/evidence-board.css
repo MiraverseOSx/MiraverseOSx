@@ -1,0 +1,10 @@
+.evidence-board { margin:16px 0;padding:12px;border:1px solid #d5cbd4;border-radius:8px;background:#f8f5f8;color:#302733; }
+.evidence-board-canvas { height:340px;min-width:0;border:1px solid #cfc6d0;border-radius:6px;background:#f1edf2; }
+.evidence-board-node { width:235px;padding:12px;border:1px solid #b6a7b7;border-radius:7px;background:#fffcf9;color:#302733;font:14px/1.4 var(--font-ui);box-shadow:0 2px 5px #3027330c; }
+.evidence-board-node strong,.evidence-board-node small { display:block;margin-bottom:6px;color:inherit; }
+.evidence-board-node button { color:#593d57;background:#efe4ec;border:1px solid #d7c6d3;font-size:12px; }
+.evidence-board-controls { display:flex;flex-wrap:wrap;gap:8px;align-items:end;margin-top:12px; }
+.evidence-board-controls label { display:flex;flex-direction:column;gap:4px;flex:1;min-width:140px; }
+.evidence-board-controls :is(input,select) { min-height:34px;width:100%;background:#fff;color:#302733;border:1px solid #b6a7b7;padding:5px; }
+.evidence-board-links { margin:12px 0;padding-left:20px; }.evidence-board-links li { margin:6px 0; }
+.evidence-board .react-flow__controls button { min-width:28px;min-height:28px;padding:5px;background:#fff;color:#302733; }

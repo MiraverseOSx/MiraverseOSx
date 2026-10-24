@@ -145,7 +145,7 @@ export function SpotTestPlate({ targetLabel = 'Worksheet', onLogReaction }: Spot
 
   // Reaction timer effect
   useEffect(() => {
-    let interval: NodeJS.Timeout;
+    let interval: ReturnType<typeof setInterval>;
     if (activeTimer) {
       interval = setInterval(() => {
         setElapsed((prev) => +(prev + 0.1).toFixed(1));

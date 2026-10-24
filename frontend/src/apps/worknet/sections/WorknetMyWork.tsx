@@ -15,7 +15,7 @@ export default function WorknetMyWork({ onOpenOpportunity, onNavigate }: Worknet
   const player = useOSStore(s => s.gameplay.player);
   const cycle = useOSStore(s => s.gameplay.timeCycleCount);
   const worknetOrders = player.worknetOrders || {};
-  const ordersList = Object.values(worknetOrders);
+  const ordersList = Object.values(worknetOrders) as any[];
 
   const [filter, setFilter] = useState<'all' | 'active' | 'remediation' | 'accepted'>('all');
 

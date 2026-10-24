@@ -1,5 +1,6 @@
 import content from '../data/broad-street-case.json' with { type: 'json' };
 import { authoredReportText } from './reportText';
+import { restoreEvidenceBoard, type EvidenceBoard } from './evidenceBoard';
 export const BROAD_STREET = content;
 export const CASE_MISSION = 'ms-case-002';
 export const CASE_ID = 'CASE-2026-002';
@@ -7,7 +8,7 @@ export const CASE_MAIL = 'CASE-002:MATEO:STATEMENT';
 export interface CaseFinding { choice: string; citations: string[] }
 export interface CaseReportDraft { text: string; html: string; findings: Record<string, CaseFinding> }
 export interface CaseReview { id: string; submittedAt: string; version: string; acquired: string[]; draft: CaseReportDraft; accepted: boolean; feedback: string[] }
-export interface CaseProgress { version: string; acquired: string[]; witnessRequested: boolean; draft: CaseReportDraft; reviews: CaseReview[] }
+export interface CaseProgress { version: string; acquired: string[]; witnessRequested: boolean; draft: CaseReportDraft; reviews: CaseReview[]; board: EvidenceBoard }
 export const CASE_FINDINGS = [
   { id: 'entry', title: 'How was access obtained and the vault breached?', options: [
     { id: 'digital-only', label: 'A badge event alone opened the reinforced vault.' },
@@ -31,7 +32,7 @@ export function restoreCaseProgress(value: unknown): CaseProgress {
     const entry = raw?.findings?.[finding.id];
     findings[finding.id] = { choice: typeof entry?.choice === 'string' ? entry.choice.slice(0, 100) : '', citations: Array.isArray(entry?.citations) ? [...new Set(entry.citations.filter(id => typeof id === 'string'))].slice(0, 20) : [] };
   }
-  return { version: typeof saved?.version === 'string' ? saved.version : BROAD_STREET.version,
+  return { board: restoreEvidenceBoard(saved?.board, Array.isArray(saved?.acquired) ? saved.acquired.filter(id => typeof id === 'string' && caseSource(id)) : []), version: typeof saved?.version === 'string' ? saved.version : BROAD_STREET.version,
     acquired: Array.isArray(saved?.acquired) ? [...new Set(saved.acquired.filter(id => typeof id === 'string' && caseSource(id)))] : [],
     witnessRequested: saved?.witnessRequested === true,
     draft: { text: typeof raw?.text === 'string' ? raw.text.slice(0, 12000) : '', html: typeof raw?.html === 'string' ? raw.html.slice(0, 100000) : '', findings },

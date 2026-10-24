@@ -1,0 +1,61 @@
+npm notice run miraverse-frontend@0.1.0 storybook
+npm notice run storybook dev -p 6006 --no-open --host 127.0.0.1
+
+T  storybook v10.6.3
+|
+•  Starting...
+| [38;2;255;71;133m+[39m[38;2;255;71;133m-[39m[38;2;255;71;133m-[39m[38;2;255;71;133m-[39m[38;2;255;71;133m-[39m[38;2;255;71;133m-[39m[38;2;255;71;133m-[39m[38;2;255;71;133m-[39m[38;2;255;71;133m-[39m[38;2;255;71;133m-[39m[38;2;255;71;133m-[39m[38;2;255;71;133m-[39m[38;2;255;71;133m-[39m[38;2;255;71;133m-[39m[38;2;255;71;133m-[39m[38;2;255;71;133m-[39m[38;2;255;71;133m-[39m[38;2;255;71;133m-[39m[38;2;255;71;133m-[39m[38;2;255;71;133m-[39m[38;2;255;71;133m-[39m[38;2;255;71;133m-[39m[38;2;255;71;133m-[39m[38;2;255;71;133m-[39m[38;2;255;71;133m-[39m[38;2;255;71;133m-[39m[38;2;255;71;133m-[39m[38;2;255;71;133m-[39m[38;2;255;71;133m-[39m[38;2;255;71;133m-[39m[38;2;255;71;133m-[39m[38;2;255;71;133m-[39m[38;2;255;71;133m-[39m[38;2;255;71;133m-[39m[38;2;255;71;133m-[39m[38;2;255;71;133m-[39m[38;2;255;71;133m-[39m[38;2;255;71;133m-[39m[38;2;255;71;133m-[39m[38;2;255;71;133m-[39m[38;2;255;71;133m-[39m[38;2;255;71;133m-[39m[38;2;255;71;133m-[39m[38;2;255;71;133m-[39m[38;2;255;71;133m-[39m[38;2;255;71;133m-[39m[38;2;255;71;133m-[39m[38;2;255;71;133m-[39m[38;2;255;71;133m-[39m[38;2;255;71;133m-[39m[38;2;255;71;133m-[39m[38;2;255;71;133m-[39m[38;2;255;71;133m-[39m[38;2;255;71;133m+[39m
+| [38;2;255;71;133m|[39m   Storybook ready!                                 [38;2;255;71;133m|[39m
+| [38;2;255;71;133m|[39m                                                    [38;2;255;71;133m|[39m
+| [38;2;255;71;133m|[39m   - Local:                http://127.0.0.1:6006/   [38;2;255;71;133m|[39m
+| [38;2;255;71;133m|[39m   - On your network:      http://127.0.0.1:6006/   [38;2;255;71;133m|[39m
+| [38;2;255;71;133m|[39m                                                    [38;2;255;71;133m|[39m
+| [38;2;255;71;133m+[39m[38;2;255;71;133m-[39m[38;2;255;71;133m-[39m[38;2;255;71;133m-[39m[38;2;255;71;133m-[39m[38;2;255;71;133m-[39m[38;2;255;71;133m-[39m[38;2;255;71;133m-[39m[38;2;255;71;133m-[39m[38;2;255;71;133m-[39m[38;2;255;71;133m-[39m[38;2;255;71;133m-[39m[38;2;255;71;133m-[39m[38;2;255;71;133m-[39m[38;2;255;71;133m-[39m[38;2;255;71;133m-[39m[38;2;255;71;133m-[39m[38;2;255;71;133m-[39m[38;2;255;71;133m-[39m[38;2;255;71;133m-[39m[38;2;255;71;133m-[39m[38;2;255;71;133m-[39m[38;2;255;71;133m-[39m[38;2;255;71;133m-[39m[38;2;255;71;133m-[39m[38;2;255;71;133m-[39m[38;2;255;71;133m-[39m[38;2;255;71;133m-[39m[38;2;255;71;133m-[39m[38;2;255;71;133m-[39m[38;2;255;71;133m-[39m[38;2;255;71;133m-[39m[38;2;255;71;133m-[39m[38;2;255;71;133m-[39m[38;2;255;71;133m-[39m[38;2;255;71;133m-[39m[38;2;255;71;133m-[39m[38;2;255;71;133m-[39m[38;2;255;71;133m-[39m[38;2;255;71;133m-[39m[38;2;255;71;133m-[39m[38;2;255;71;133m-[39m[38;2;255;71;133m-[39m[38;2;255;71;133m-[39m[38;2;255;71;133m-[39m[38;2;255;71;133m-[39m[38;2;255;71;133m-[39m[38;2;255;71;133m-[39m[38;2;255;71;133m-[39m[38;2;255;71;133m-[39m[38;2;255;71;133m-[39m[38;2;255;71;133m-[39m[38;2;255;71;133m-[39m[38;2;255;71;133m+[39m
+|
+•  174 ms for manager and 167 ms for preview
+|  Vite page reload storybook-static/iframe.html
+|  Vite changed tsconfig file detected:
+|  C:/Users/mirav/OneDrive/Desktop/MiraverseOSx/frontend/tsconfig.json -
+|  Clearing cache and forcing full-reload to ensure TypeScript is
+|  compiled with updated config values.
+|  Vite changed tsconfig file detected:
+|  C:/Users/mirav/OneDrive/Desktop/MiraverseOSx/frontend/tsconfig.json -
+|  Clearing cache and forcing full-reload to ensure TypeScript is
+|  compiled with updated config values.
+|  Vite changed tsconfig file detected:
+|  C:/Users/mirav/OneDrive/Desktop/MiraverseOSx/frontend/tsconfig.json -
+|  Clearing cache and forcing full-reload to ensure TypeScript is
+|  compiled with updated config values.
+|  Vite changed tsconfig file detected:
+|  C:/Users/mirav/OneDrive/Desktop/MiraverseOSx/frontend/tsconfig.json -
+|  Clearing cache and forcing full-reload to ensure TypeScript is
+|  compiled with updated config values.
+|  Vite hmr update /src/components/ui/button.tsx, /src/index.css
+|  Vite page reload src/utils/soundEngine.ts
+|  Vite page reload src/apps/Browser/interactiveSites.ts
+|  Vite page reload src/apps/CivicProfileApp.tsx
+|  Vite page reload src/apps/Browser/searchCatalog.ts
+|  Vite page reload src/services/documentPacketGenerator.ts
+|  Vite page reload src/apps/FieldOperations/FieldOperationsApp.tsx
+|  Vite page reload src/data/mockDocuments.ts
+|  Vite page reload src/dgaos/data/seed/agent.ts
+|  Vite page reload src/dgaos/components/dga/phone/dga-phone-console.tsx
+|  Vite page reload src/dgaos/components/ui/citizen-registry.tsx
+|  Vite page reload src/dgaos/lib/dga-store.ts
+|  Vite page reload src/dgaos/services/traceApiInterceptor.ts
+|  Vite page reload src/store/useGameStore.ts
+|  Vite page reload src/dgaos/components/ui/spot-test-plate.tsx
+|  Vite page reload src/store/worknetActions.ts
+|  Vite page reload src/store/useGameStore.ts
+|  Vite page reload src/components/widgets/DocumentModal.tsx
+|  Vite page reload src/store/useOSStore.ts
+|  Vite page reload src/apps/WorldJournalPanel.tsx
+|  Vite page reload src/apps/social/socialModel.ts
+|  Vite page reload src/apps/worknet/sections/WorknetMyWork.tsx
+|  Vite page reload src/store/useWorldStore.ts
+|  Vite page reload src/apps/worknet/sections/WorknetOverview.tsx
+|  Vite page reload src/apps/social/socialModel.ts
+|  Vite page reload src/apps/worknet/sections/WorknetOverview.tsx
+|  Vite page reload package.json
+|  Vite page reload vite.config.js
+|  Vite page reload package.json

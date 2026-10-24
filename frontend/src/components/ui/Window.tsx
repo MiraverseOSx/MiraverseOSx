@@ -82,7 +82,7 @@ export default function Window({ win, isFocusMode = false, windowIndex = 0 }: Wi
   }, [windowIndex]);
 
   const startDrag = (e: React.PointerEvent) => {
-    if (win.isMaximized) return;
+    if (win.isMaximized || isFullscreen) return;
     const target = e.target as HTMLElement;
     if (target.closest('button') || target.closest('input') || target.closest('a')) return;
     focusWindow(win.id);
@@ -90,7 +90,7 @@ export default function Window({ win, isFocusMode = false, windowIndex = 0 }: Wi
   };
 
   const handleDragEnd = (_event: any, info: any) => {
-    if (win.isMaximized) return;
+    if (win.isMaximized || isFullscreen) return;
     moveWindow(win.id, boundWindowOffset({ x: safeOffset.x + info.offset.x, y: safeOffset.y + info.offset.y }, normalFrame, windowGeometry.screenW, windowGeometry.screenH));
   };
 
@@ -109,7 +109,7 @@ export default function Window({ win, isFocusMode = false, windowIndex = 0 }: Wi
   return (
     <motion.div
       ref={windowElement}
-      drag={!win.isMaximized}
+      drag={!win.isMaximized && !isFullscreen}
       dragControls={dragControls}
       dragListener={false}
       dragMomentum={false}
@@ -137,10 +137,11 @@ export default function Window({ win, isFocusMode = false, windowIndex = 0 }: Wi
     >
       <div
         className="os-window__titlebar"
-        style={{ cursor: win.isMaximized ? 'default' : 'grab' }}
+        style={{ cursor: win.isMaximized || isFullscreen ? 'default' : 'grab' }}
         onPointerDown={startDrag}
         onDoubleClick={(event) => {
           if ((event.target as HTMLElement).closest('button')) return;
+          if (isFullscreen) return;
           if (soundEnabled) SoundFX.playSnap();
           toggleMaximize(win.id);
         }}

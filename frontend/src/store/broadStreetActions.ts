@@ -4,11 +4,13 @@ import { resolveDGAAuthority } from '../dgaos/lib/dga-permissions';
 import { BROAD_STREET, CASE_ID, CASE_MAIL, CASE_MISSION, caseSource, restoreCaseProgress, reviewBroadStreet, legacyCaseComplete, type CaseProgress, type CaseReportDraft, type CaseReview } from '../gameplay/BroadStreetCase';
 import { sanitizeMailHtml, mailHtmlToText, escapeMailText } from '../apps/mail/richText';
 import type { TaskResult, WorkOrder } from '../gameplay/ActivityEngine';
+import { restoreEvidenceBoard, type EvidenceBoard } from '../gameplay/evidenceBoard';
 type Result = { ok: boolean; message: string };
 export interface BroadStreetActions {
   acquireCaseSource: (id: string, app: string) => Result;
   requestCaseStatement: () => Result;
   saveCaseReport: (draft: CaseReportDraft) => Result;
+  saveCaseBoard: (board: EvidenceBoard) => Result;
   reviewCaseReport: () => Result;
   openCaseSource: (id: string) => void;
   broadStreetEligible: () => boolean;
@@ -49,6 +51,11 @@ export function createBroadStreetActions(set: any, get: () => OSStoreState): Bro
   return {
     broadStreetEligible: eligible,
     broadStreetPreviouslyComplete: previouslyComplete,
+    saveCaseBoard: board => {
+      if (!active()) return denied();
+      update(current => ({ ...current, board: restoreEvidenceBoard(board, current.acquired) }));
+      return { ok: true, message: 'Evidence board saved. Connections are your hypotheses, not reviewed findings.' };
+    },
     acquireCaseSource: (id, app) => {
       if (!active()) return denied();
       const source = caseSource(id);

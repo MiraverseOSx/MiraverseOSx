@@ -12,6 +12,27 @@ const { useCommsStore: mail } = await import('../src/store/useCommsStore.ts');
 const { publicCaseSearch, publication } = await import('../src/apps/investigation/publication.ts');
 const { readWorldEntries, validSnapshot } = await import('../src/backend/worldSync.ts');
 let sequence = 0;
+test('case evidence boards require current authorization, persist with case progress and never pay rewards', async () => {
+  storage(); const os=await freshOS();
+  assert.equal(os.getState().saveCaseBoard({positions:{},connections:[]}).ok,false);
+  os.getState().loginUser({name:'Board Tester',isAdmin:true,clearance:3,credits:500});
+  os.getState().openWorknetOrder(CASE_MISSION);
+  assert.equal(os.getState().saveCaseBoard({positions:{},connections:[]}).ok,false);
+  os.getState().acknowledgeAssignmentBriefing(CASE_MISSION);
+  os.getState().acquireCaseSource('access-audit','files');
+  os.getState().acquireCaseSource('thermal-log','files');
+  const before=structuredClone(os.getState().gameplay.player);
+  const result=os.getState().saveCaseBoard({positions:{'access-audit':{x:75,y:100},dna:{x:9,y:9}},connections:[{id:'ignored',source:'access-audit',target:'thermal-log',label:'Compare records'},{id:'hidden',source:'access-audit',target:'dna',label:'Hidden'}]});
+  assert.equal(result.ok,true);
+  const saved=os.getState().gameplay.player;
+  assert.equal(saved.credits,before.credits);
+  assert.deepEqual(saved.taskResults,before.taskResults);
+  const board=saved.worknetOrders[CASE_MISSION].caseProgress.board;
+  assert.deepEqual(Object.keys(board.positions),['access-audit']);
+  assert.equal(board.connections.length,1);
+  const reloaded=await freshOS();
+  assert.deepEqual(restoreCaseProgress(reloaded.getState().gameplay.player.worknetOrders[CASE_MISSION].caseProgress).board,board);
+});
 function storage() { const values = new Map(); Object.defineProperty(globalThis, 'localStorage', { configurable: true, value: { getItem: key => values.get(key) ?? null, setItem: (key, value) => values.set(key, value), removeItem: key => values.delete(key) } }); globalThis.window = { localStorage: globalThis.localStorage }; mail.persist.setOptions({ storage: createJSONStorage(() => globalThis.localStorage) }); mail.setState({ emails: [], mailRequest: undefined }); return values; }
 async function freshOS() { return (await import(`../src/store/useOSStore.ts?broadstreet=${sequence++}`)).useOSStore; }
 const draft = () => ({ text: 'The records support these selected findings. Each source has limits, and the precise timing and individual roles still need independent corroboration.', html: '<p>The records support these selected findings. Each source has limits, and the precise timing and individual roles still need independent corroboration.</p>', findings: Object.fromEntries(CASE_FINDINGS.map(finding => [finding.id, { choice: finding.expected, citations: [...finding.required] }])) });

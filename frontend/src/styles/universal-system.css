@@ -110,6 +110,16 @@ html .mira-desktop .os-window[data-app] .os-window__controls button { width: 32p
 .document-reader[data-kind=note] .document-reader-body,
 .document-reader[data-kind=letter] .document-reader-body { font-family: var(--font-body); }
 .mira-toolbar { display: flex; align-items: center; flex-wrap: wrap; gap: var(--os-space); min-height: 40px; }
+.worknet-enterprise-shell {
+  --os-surface: var(--wn-panel);
+  --os-text: var(--wn-text);
+  --os-secondary: var(--wn-secondary);
+  --os-border: var(--wn-border);
+  --os-raised: var(--wn-raised);
+  --os-accent: var(--wn-action);
+  --os-accent-text: #fff7ef;
+  --os-focus: var(--wn-accent);
+}
 .worknet-enterprise-shell .worknet-view-scroll { padding: var(--os-panel-padding); gap: var(--os-section-gap); }
 .worknet-enterprise-shell .worknet-card { padding: var(--os-panel-padding); border-radius: var(--os-radius); }
 html .mira-desktop .file-explorer-container .files-toolbar { min-height: 40px; gap: var(--os-space); padding: 6px var(--os-panel-padding); }

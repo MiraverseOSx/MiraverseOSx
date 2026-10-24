@@ -79,3 +79,52 @@
 .mai-space-root { display:flex;flex-direction:column;overflow:hidden; }
 .mai-space-root>header,.mai-space-root>nav,.mai-space-root>.ms-live-status,.mai-space-root>footer { flex:none; }
 .mai-space-root>.ms-main { flex:1;min-height:0;overflow:auto; }
+
+/* Retro Widgets & Badges */
+.ms-badge-rack { padding:6px;text-align:center;background:var(--ms-page-surface);border:1px solid var(--ms-page-accent); }
+.ms-badge-header { font:bold 10px/1.2 Arial,sans-serif;color:var(--ms-page-accent);margin-bottom:6px;letter-spacing:0.05em;text-transform:uppercase; }
+.ms-badge-grid { display:flex;flex-wrap:wrap;justify-content:center;gap:6px;align-items:center; }
+.ms-badge-button svg { display:block;image-rendering:pixelated;image-rendering:crisp-edges;border-radius:2px;box-shadow:0 1px 3px rgba(0,0,0,0.2); }
+.ms-badge-picker { display:flex;flex-wrap:wrap;gap:6px;padding:6px;background:#f3f0f7;border:1px solid #d4cde0;margin-top:4px; }
+.ms-badge-toggle { background:none;border:2px solid transparent;padding:2px;cursor:pointer;border-radius:3px; }
+.ms-badge-toggle.is-active { border-color:#8b5cf6;background:#ede9fe; }
+
+/* Hit Counter */
+.ms-counter-widget { display:inline-flex;flex-direction:column;align-items:center;padding:6px 12px;background:#18181b;border:2px outset #52525b;border-radius:4px;box-shadow:inset 0 2px 4px rgba(0,0,0,0.6);margin:4px auto; }
+.ms-counter-label { font:bold 9px monospace;color:#a1a1aa;letter-spacing:0.1em;margin-bottom:3px; }
+.ms-counter-display { display:flex;gap:2px; }
+.ms-counter-digit { display:inline-block;width:18px;height:24px;line-height:24px;text-align:center;font:bold 15px/24px monospace;background:#09090b;color:#ffffff;border:1px solid #27272a;box-shadow:inset 0 1px 2px rgba(255,255,255,0.15),inset 0 -2px 3px rgba(0,0,0,0.8); }
+.ms-counter-led .ms-counter-digit { background:#052e16;color:#4ade80;font-family:'Courier New',monospace;text-shadow:0 0 4px #22c55e;border-color:#14532d; }
+.ms-counter-retro-lcd .ms-counter-digit { background:#cad5b8;color:#222a1d;border-color:#8a9678; }
+
+/* Marquee & Animations */
+.ms-marquee-container { overflow:hidden;white-space:nowrap;padding:4px 6px;background:var(--ms-page-surface);border:1px solid var(--ms-page-accent);font:bold 12px Arial,sans-serif;color:var(--ms-page-text); }
+.ms-marquee-content { display:inline-block;animation:ms-marquee-scroll 16s linear infinite;padding-left:100%; }
+@keyframes ms-marquee-scroll { 0% { transform:translateX(0); } 100% { transform:translateX(-100%); } }
+
+/* Retro Text Tags */
+.ms-glitter-text { font-weight:bold;background:linear-gradient(90deg,#ff6b81,#feca57,#48dbfb,#ff9ff3,#feca57);background-size:200% auto;-webkit-background-clip:text;-webkit-text-fill-color:transparent;animation:ms-glitter-shimmer 3s linear infinite;text-shadow:0 0 2px rgba(255,255,255,0.5); }
+@keyframes ms-glitter-shimmer { 0% { background-position:0% center; } 100% { background-position:200% center; } }
+.ms-rainbow-text { font-weight:bold;animation:ms-rainbow-cycle 4s linear infinite; }
+@keyframes ms-rainbow-cycle { 0% { color:#ef4444; } 20% { color:#f59e0b; } 40% { color:#10b981; } 60% { color:#3b82f6; } 80% { color:#8b5cf6; } 100% { color:#ef4444; } }
+.ms-blink-text { animation:ms-blink-anim 1s step-end infinite; }
+@keyframes ms-blink-anim { 0%,100% { opacity:1; } 50% { opacity:0; } }
+
+/* Status & Quiz Widgets */
+.ms-status-widget { padding:8px 10px;background:var(--ms-page-surface);border:1px solid var(--ms-page-accent);font-size:12px; }
+.ms-status-header { display:flex;align-items:center;gap:6px;color:var(--ms-page-accent);font-weight:bold; }
+.ms-status-quote { margin:4px 0 0;font-style:italic;color:var(--ms-page-text); }
+.ms-quiz-widget { padding:8px;background:var(--ms-page-surface);border:1px solid var(--ms-page-accent);font-size:12px; }
+.ms-quiz-widget h4 { margin:0 0 6px;text-align:center;font-size:12px;color:var(--ms-page-accent); }
+.ms-quiz-widget dl { margin:0;display:grid;grid-template-columns:auto 1fr;gap:4px 8px; }
+.ms-quiz-widget dt { font-weight:bold;color:var(--ms-page-accent); }
+.ms-quiz-widget dd { margin:0;color:var(--ms-page-text); }
+
+/* Pinned Comments & Moderation */
+.ms-pinned-comment { border-left:3px solid #8b5cf6!important;background:color-mix(in srgb,var(--ms-page-accent) 6%,var(--ms-page-surface)); }
+.ms-pin-indicator { font-size:13px;vertical-align:middle; }
+.ms-comment-header { display:flex;align-items:center;justify-content:space-between;margin-bottom:3px; }
+.ms-reply-target { color:#716584;font-style:italic; }
+.ms-unread-pill { display:inline-block;padding:1px 6px;border-radius:10px;background:#ec4899;color:#ffffff;font:bold 10px Arial,sans-serif;margin-left:4px; }
+.ms-widget-edit-box { padding:8px;background:#f8f6fb;border:1px solid #dcd5e7;margin-top:6px;border-radius:3px; }
+

@@ -1,9 +1,10 @@
 import { useEffect } from 'react';
 import { useSystemStore } from '../../store/useSystemStore';
-import { resolveInterfaceAppearance } from '../../store/interfacePreferences';
+import { resolveInterfaceAppearance, subscribeInterfacePreferences } from '../../store/interfacePreferences';
 
 export function useInterfaceAppearance() {
   const preferences = useSystemStore(state => state.interfacePreferences);
+  useEffect(() => subscribeInterfacePreferences(interfacePreferences => useSystemStore.setState({ interfacePreferences }), window), []);
   useEffect(() => {
     const query = typeof matchMedia === 'function' ? matchMedia('(prefers-color-scheme: dark)') : null;
     const apply = () => {

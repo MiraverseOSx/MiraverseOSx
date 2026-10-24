@@ -457,6 +457,7 @@ export function CitizenRegistry({
   const [pinnedCitizens, setPinnedCitizens] = useState<string[]>(['CIT-90421', 'CIT-88192']);
   const [actionNotice, setActionNotice] = useState<string | null>(null);
   const [canonicalCitizens, setCanonicalCitizens] = useState<CitizenRecord[]>([]);
+  const [registryVersion, setRegistryVersion] = useState(0);
 
   useEffect(() => {
     let mounted = true;
@@ -769,15 +770,15 @@ export function CitizenRegistry({
                 <div className="flex flex-wrap items-center gap-1.5">
                   <button
                     type="button"
-                    onClick={() => {
-                      const updated = syncDgaInvestigativeUpdate(selectedCitizen.id, {
+                    onClick={async () => {
+                      const result = await syncDgaInvestigativeUpdate(selectedCitizen.id, {
                         caseId: 'CASE-2026-0042',
-                        note: `DGAOS/TRACE Citizen Registry cross-check logged (${new Date().toLocaleDateString()}).`,
+                        investigativeNote: `DGAOS/TRACE Citizen Registry cross-check logged (${new Date().toLocaleDateString()}).`,
                       });
                       setRegistryVersion((v) => v + 1);
                       setActionNotice(
-                        updated
-                          ? `Synchronized DGAOS investigative note to canonical MAID record ${updated.maid}.`
+                        result.success && result.person
+                          ? `Synchronized DGAOS investigative note to canonical MAID record ${result.person.maid}.`
                           : `Logged local DGAOS investigative note for ${selectedCitizen.legalName}.`
                       );
                       setTimeout(() => setActionNotice(null), 3500);

@@ -4,6 +4,7 @@ export interface SeedAgentProfile {
   badgeNumber: string;
   title: string;
   division: string;
+  department?: string;
   clearanceLevel: number;
   clearanceCode: string;
   callsign: string;

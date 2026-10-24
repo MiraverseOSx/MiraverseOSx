@@ -4,11 +4,22 @@ import { Paperclip, FileText, Download, ShieldAlert, CheckCircle, ExternalLink }
 import { useOSStore } from '../../store/useOSStore';
 import { normalizeDocument } from './documentModel';
 import DocumentContent from './DocumentContent';
-import { canReadDocument, documentActionDestination } from './documentAccess';
+import { canReadDocument, documentActionDestination, documentReaderSessionKey } from './documentAccess';
 import '../../styles/apps/DocumentReader.css';
 
-export default function DocumentModal({ file: source, onClose, onSubmitForm }) {
+interface DocumentModalProps {
+  file: any;
+  onClose: () => void;
+  onSubmitForm?: (actionTrigger: string, formData: any) => void;
+}
+
+export default function DocumentModal({ file: source, onClose, onSubmitForm }: DocumentModalProps) {
   const file = source ? normalizeDocument(source) : null;
+  if (!file) return null;
+  return <DocumentReader key={documentReaderSessionKey(file)} file={file} onClose={onClose} onSubmitForm={onSubmitForm} />;
+}
+
+function DocumentReader({ file, onClose, onSubmitForm }: DocumentModalProps) {
   const player = useOSStore((s) => s.gameplay.player);
   const openAppWorkspace = useOSStore((s) => s.openAppWorkspace);
   const recordFileInspection = useOSStore((s) => s.recordFileInspection);

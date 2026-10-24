@@ -314,7 +314,7 @@ export function DgaPhoneConsole({
       </header>
       <PhoneTabs
         value={subTab}
-        onChange={setSubTab}
+        onChange={(id) => setSubTab(id as any)}
         label="Agency phone sections"
         items={[
           { id: "contacts", label: "Directory", icon: Users },

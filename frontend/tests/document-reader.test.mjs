@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { registerHooks } from 'node:module';
-import { canReadDocument, documentActionDestination } from '../src/components/widgets/documentAccess.ts';
+import { canReadDocument, documentActionDestination, documentReaderSessionKey } from '../src/components/widgets/documentAccess.ts';
 import { normalizeDocument } from '../src/components/widgets/documentModel.ts';
 import { MOCK_DOCUMENTS } from '../src/data/mockDocuments.ts';
 registerHooks({ resolve(specifier, context, next) { try { return next(specifier, context); } catch (error) { if (error.code !== 'ERR_MODULE_NOT_FOUND' || !specifier.startsWith('.')) throw error; return next(`${specifier}.ts`, context); } } });
@@ -65,6 +65,16 @@ test('encrypted records require decryption or their stated skill level before in
   assert.equal(canReadDocument(document, { skills: { Cryptography: { level: 4 } } }), true);
   assert.equal(canReadDocument(document, {}, true), true);
   assert.equal(canReadDocument(document, {}), false);
+});
+test('reader sessions isolate form drafts and decryption across files and changed revisions', () => {
+  const first=normalizeDocument({id:'first',name:'Report.txt',content:'First report',security:{isEncrypted:true,requiredLevel:4}});
+  assert.equal(documentReaderSessionKey(first),documentReaderSessionKey(structuredClone(first)));
+  for(const changed of [
+    {...first,id:'second'},
+    {...first,name:'Another report.txt'},
+    {...first,content:{...first.content,bodyText:'Revised report'}},
+    {...first,security:{...first.security,requiredLevel:5}},
+  ]) assert.notEqual(documentReaderSessionKey(first),documentReaderSessionKey(changed));
 });
 
 test('legacy document actions route to their owner without issuing credits or agency credentials', () => {

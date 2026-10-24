@@ -25,9 +25,16 @@ const buttonVariants = cva(
   }
 );
 
-export function Button({ className, variant, size, asChild, ...props }) {
+export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  className?: string;
+  variant?: 'solid' | 'soft' | 'outline' | 'ghost' | string;
+  size?: 'sm' | 'md' | 'lg' | string;
+  asChild?: boolean;
+}
+
+export function Button({ className, variant, size, asChild = false, ...props }: ButtonProps) {
   const Comp = asChild ? 'span' : 'button';
-  return <Comp className={twMerge(buttonVariants({ variant, size }), 'mira-control', className)} data-variant={variant || 'soft'} data-size={size || 'md'} {...props} />;
+  return <Comp className={twMerge(buttonVariants({ variant: variant as any, size: size as any }), 'mira-control', className)} data-variant={variant || 'soft'} data-size={size || 'md'} {...(props as any)} />;
 }
 
 export default Button;

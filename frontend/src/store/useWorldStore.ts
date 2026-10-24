@@ -25,7 +25,7 @@ export interface WorldStoreState {
   loading: boolean;
 
   syncWorldData: () => Promise<void>;
-  sendMAIPrompt: (prompt: string) => Promise<{ thought: string; response: string; action: string | null }>;
+  sendMAIPrompt: (prompt: string, context?: any) => Promise<{ thought: string; response: string; action: string | null }>;
 }
 
 export const useWorldStore = create<WorldStoreState>((set) => ({
@@ -63,7 +63,7 @@ export const useWorldStore = create<WorldStoreState>((set) => ({
     });
   },
 
-  sendMAIPrompt: async (prompt: string) => {
+  sendMAIPrompt: async (prompt: string, _context?: any) => {
     const q = (prompt || '').toLowerCase();
     if (q.includes('form') || q.includes('registration')) {
       return {

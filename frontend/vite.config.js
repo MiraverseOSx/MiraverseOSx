@@ -12,6 +12,7 @@ export default defineConfig({
   plugins: [react(), {
     name: 'miraverse-offline-shell',
     apply: 'build',
+    enforce: 'post',
     generateBundle(_options, bundle) {
       const assets = Object.keys(bundle).filter(name => /\.(js|css|woff2?|ttf)$/.test(name)).map(name => `/${name}`);
       const workerSource = readFileSync(path.join(__dirname, 'offline-worker.js'), 'utf8');

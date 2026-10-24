@@ -1,0 +1,66 @@
+npm notice run miraverseosx-root@0.1.0 build:storybook
+npm notice run npm run build:storybook --prefix frontend
+npm notice run miraverse-frontend@0.1.0 build:storybook
+npm notice run storybook build -o storybook-static --disable-telemetry
+
+T  Building storybook v10.6.3
+|
+o  Cleaning outputDir: storybook-static
+|
+o  Loading presets
+|
+o  Building manager..
+|
+•  Building open services..
+|
+•  Building preview..
+|  Vite vite v6.4.5 building for production...
+|  Vite transforming...
+|
+•  Copying static files: public at storybook-static
+|  Vite ✓ 244 modules transformed.
+|  Vite rendering chunks...
+|  Vite computing gzip size...
+|  Vite storybook-static/iframe.html
+|  19.00 kB │ gzip:   5.33 kB
+|  Vite storybook-static/assets/Foundations-0pnSfrjZ.css
+|  0.64 kB │ gzip:   0.35 kB
+|  Vite storybook-static/assets/EvidenceBoard-V3rltzWT.css
+|  17.02 kB │ gzip:   2.99 kB
+|  Vite storybook-static/assets/iframe-CqycoWzY.css
+|  350.15 kB │ gzip:  57.00 kB
+|  Vite storybook-static/assets/index-CnUZ1JN3.js
+|  0.06 kB │ gzip:   0.08 kB
+|  Vite storybook-static/assets/preload-helper-Dp1pzeXC.js
+|  1.27 kB │ gzip:   0.73 kB
+|  Vite storybook-static/assets/index-Dm0bZklI.js
+|  3.89 kB │ gzip:   1.52 kB
+|  Vite storybook-static/vite-inject-mocker-entry.js
+|  28.53 kB │ gzip:   9.94 kB
+|  Vite storybook-static/assets/matchers-JIUQ3HVY-CAdg16Fl.js
+|  29.38 kB │ gzip:  10.06 kB
+|  Vite storybook-static/assets/Foundations.stories-CmP0IcNq.js
+|  80.70 kB │ gzip:  26.38 kB
+|  Vite storybook-static/assets/react-18-Bd7y8Y_O.js
+|  181.75 kB │ gzip:  57.20 kB
+|  Vite storybook-static/assets/EvidenceBoard.stories-DJSYzJON.js
+|  190.96 kB │ gzip:  62.27 kB
+|  Vite storybook-static/assets/axe-COdngLCX.js
+|  676.64 kB │ gzip: 194.15 kB
+|  Vite storybook-static/assets/iframe-Da0zXnwG.js
+|  1,151.21 kB │ gzip: 329.03 kB
+|
+!  Vite
+|  (!) Some chunks are larger than 500 kB after minification. Consider:
+|  - Using dynamic import() to code-split the application
+|  - Use build.rollupOptions.output.manualChunks to improve chunking:
+|  ]8;;https://rollupjs.org/configuration-options/#output-manualchunkshttps://rollupjs.org/configuration-options/#output-manualchunks]8;;
+|  - Adjust chunk size limit for this warning via
+|  build.chunkSizeWarningLimit.
+|  Vite ✓ built in 9.33s
+|
+o  Output directory:
+|  C:/Users/mirav/OneDrive/Desktop/MiraverseOSx/frontend/storybook-static
+|
+—  Storybook build completed successfully
+

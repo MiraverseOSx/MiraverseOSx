@@ -1876,7 +1876,7 @@ export async function submitDGACaseIndictment(
   cachedState.activityFeed.unshift({
     id: `ACT-${Date.now()}`,
     timestamp: new Date().toISOString(),
-    system: c.leadSystem || 'INVESTIGATION',
+    system: c.leadSystem || 'TRACE',
     headline: `DGA Docket ${c.id} Indicted and Closed`,
     details: desc,
     caseId: c.id,

@@ -27,7 +27,7 @@ export function matchingExternalLinks(query: string, links = EXTERNAL_SEARCH_LIN
 export function normalizeSearch(query: unknown): string { return String(query ?? '').normalize('NFKC').trim().replace(/\s+/gu, ' ').toLowerCase().slice(0, 512); }
 export function searchHash(text: string): number { let hash = 2166136261; for (const char of text) { hash ^= char.codePointAt(0)!; hash = Math.imul(hash, 16777619); } return hash >>> 0; }
 function topicFor(query: string) {
-  const words = query.match(/[\p{L}\p{N}]+/gu) || [];
+  const words: string[] = query.match(/[\p{L}\p{N}]+/gu) ?? [];
   return TOPIC_PACKS.find(pack => pack.aliases.includes(query)) || TOPIC_PACKS.find(pack => pack.aliases.some(alias => words.includes(alias)));
 }
 export function searchKey(input: string): string {

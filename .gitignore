@@ -33,3 +33,9 @@ obj/
 # Python bytecode caches
 __pycache__/
 *.py[cod]
+
+# Local component previews and isolated browser test output
+frontend/storybook-static/
+frontend/playwright-report/
+frontend/test-results/
+output/vite-compatibility/

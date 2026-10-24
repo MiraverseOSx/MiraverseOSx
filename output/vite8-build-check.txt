@@ -1,0 +1,90 @@
+npm notice run miraverse-frontend@0.1.0 npx
+npm notice run vite build --outDir ../output/vite-compatibility/v8 --emptyOutDir --manifest
+9:30:06 AM [vite] warning: `esbuild` option was specified by "vite:react-babel" plugin. This option is deprecated, please use `oxc` instead.
+9:30:06 AM [vite] warning: `optimizeDeps.esbuildOptions` option was specified by "vite:react-babel" plugin. This option is deprecated, please use `optimizeDeps.rolldownOptions` instead.
+You or a plugin you are using have set `optimizeDeps.esbuildOptions` but this option is now deprecated. Vite now uses Rolldown to optimize the dependencies. Please use `optimizeDeps.rolldownOptions` instead.
+vite v8.3.5 building client environment for production...
+transforming...
+✓ 2818 modules transformed.
+rendering chunks...
+computing gzip size...
+../output/vite-compatibility/v8/index.html                                                                                      1.22 kB │ gzip:   0.59 kB
+../output/vite-compatibility/v8/sw.js                                                                                           4.13 kB
+../output/vite-compatibility/v8/.vite/manifest.json                                                                            19.97 kB │ gzip:   2.57 kB
+../output/vite-compatibility/v8/assets/logo_icon-CUPqIqiP.png                                                                  39.97 kB
+../output/vite-compatibility/v8/assets/meridion_world-Bx744lBB.jpg                                                          1,013.06 kB
+../output/vite-compatibility/v8/assets/everything_is_great_but_do_not-ibzqC-2F.mp4                                          2,096.88 kB
+../output/vite-compatibility/v8/assets/mixkit-black-ink-splashing-505-hd-ready-5xOo6vN8.mp4                                 3,455.44 kB
+../output/vite-compatibility/v8/assets/mixkit-glitter-stars-and-snowflakes-19007-hd-ready-jJGDjwg1.mp4                      3,693.95 kB
+../output/vite-compatibility/v8/assets/mixkit-a-woman-monitoring-close-circuit-surveillance-23673-hd-ready-DO32EXpQ.mp4     5,627.93 kB
+../output/vite-compatibility/v8/assets/mixkit-flying-over-a-relaxing-creek-full-of-rock-on-the-51585-hd-ready-BCqJ8giU.mp4  8,320.31 kB
+../output/vite-compatibility/v8/assets/FileExplorerApp-DRk1NoSH.css                                                             0.62 kB │ gzip:   0.35 kB
+../output/vite-compatibility/v8/assets/RichTextEditor-1d76fbyJ.css                                                              1.44 kB │ gzip:   0.61 kB
+../output/vite-compatibility/v8/assets/case-workspace-fIh8MF0J.css                                                              2.56 kB │ gzip:   0.94 kB
+../output/vite-compatibility/v8/assets/FieldOperationsApp-DlP_ag_n.css                                                          2.71 kB │ gzip:   0.97 kB
+../output/vite-compatibility/v8/assets/RegistryWorkspaceApp-CuDkQSFY.css                                                        3.72 kB │ gzip:   1.26 kB
+../output/vite-compatibility/v8/assets/attachmentDocument-gMU7U1wg.css                                                          4.10 kB │ gzip:   1.44 kB
+../output/vite-compatibility/v8/assets/MailApp-4izdBVY3.css                                                                     6.36 kB │ gzip:   1.92 kB
+../output/vite-compatibility/v8/assets/DocumentStudioApp-BYKOZgxf.css                                                           6.49 kB │ gzip:   1.79 kB
+../output/vite-compatibility/v8/assets/VitalsApp-ggtMYCG1.css                                                                   8.56 kB │ gzip:   2.43 kB
+../output/vite-compatibility/v8/assets/versenet-browser-CyDuBI1P.css                                                           11.45 kB │ gzip:   2.67 kB
+../output/vite-compatibility/v8/assets/BrowserApp-Cw8Ac0CQ.css                                                                 13.65 kB │ gzip:   3.46 kB
+../output/vite-compatibility/v8/assets/EvidenceBoard-Dcg6SDZm.css                                                              16.56 kB │ gzip:   2.89 kB
+../output/vite-compatibility/v8/assets/MaiSpacePortal-DfbUkaOX.css                                                             27.29 kB │ gzip:   6.42 kB
+../output/vite-compatibility/v8/assets/JobWorkstationApp-CxHCVS5g.css                                                          39.51 kB │ gzip:   7.62 kB
+../output/vite-compatibility/v8/assets/App-DSCddVlj.css                                                                        88.09 kB │ gzip:  17.41 kB
+../output/vite-compatibility/v8/assets/DgaosApp-DgYxDx6B.css                                                                  285.26 kB │ gzip:  35.83 kB
+../output/vite-compatibility/v8/assets/index-hGWS__vP.css                                                                     576.86 kB │ gzip:  88.06 kB
+../output/vite-compatibility/v8/assets/MaiSpaceApp-C_55tKzS.js                                                                  0.21 kB │ gzip:   0.18 kB
+../output/vite-compatibility/v8/assets/RichMailEditor-AZVn8VWW.js                                                               0.49 kB │ gzip:   0.31 kB
+../output/vite-compatibility/v8/assets/evidenceBoard-D8A0NfyA.js                                                                0.63 kB │ gzip:   0.38 kB
+../output/vite-compatibility/v8/assets/PulseApp-CwBZr2Et.js                                                                     0.76 kB │ gzip:   0.44 kB
+../output/vite-compatibility/v8/assets/dist-CjmKpF9T.js                                                                         0.81 kB │ gzip:   0.44 kB
+../output/vite-compatibility/v8/assets/rolldown-runtime-BWaJ3C7D.js                                                             0.91 kB │ gzip:   0.51 kB
+../output/vite-compatibility/v8/assets/richText-5of5LGbm.js                                                                     1.01 kB │ gzip:   0.61 kB
+../output/vite-compatibility/v8/assets/citizenEvents-vZsbY6t6.js                                                                1.09 kB │ gzip:   0.52 kB
+../output/vite-compatibility/v8/assets/FieldOperations-CCPIYNJT.js                                                              1.66 kB │ gzip:   0.86 kB
+../output/vite-compatibility/v8/assets/CampusApp-JJ5zS8V4.js                                                                    1.74 kB │ gzip:   0.83 kB
+../output/vite-compatibility/v8/assets/citizenBridge-D1JsMJft.js                                                                2.66 kB │ gzip:   1.10 kB
+../output/vite-compatibility/v8/assets/communicationsAccess-DdYLNflz.js                                                         3.02 kB │ gzip:   1.30 kB
+../output/vite-compatibility/v8/assets/CommunicationsAccessPanel-lLHym0Uu.js                                                    5.23 kB │ gzip:   1.89 kB
+../output/vite-compatibility/v8/assets/FinanceTerminal-DqRw4aFx.js                                                              5.32 kB │ gzip:   2.06 kB
+../output/vite-compatibility/v8/assets/CommsApp-BmtqD-wO.js                                                                     5.43 kB │ gzip:   2.05 kB
+../output/vite-compatibility/v8/assets/Form-BS_VKvqn.js                                                                         7.14 kB │ gzip:   2.72 kB
+../output/vite-compatibility/v8/assets/FieldOperationsApp-B1-IPD5m.js                                                           7.28 kB │ gzip:   2.94 kB
+../output/vite-compatibility/v8/assets/VitalsApp-CAKbjBW4.js                                                                    8.34 kB │ gzip:   2.64 kB
+../output/vite-compatibility/v8/assets/DocumentStudioApp-DlgkiG9a.js                                                           10.54 kB │ gzip:   4.09 kB
+../output/vite-compatibility/v8/assets/BroadStreetCasePanel-Cqz0bNOZ.js                                                        11.17 kB │ gzip:   3.94 kB
+../output/vite-compatibility/v8/assets/ProcessMonitorApp-BfYkl119.js                                                           11.32 kB │ gzip:   3.53 kB
+../output/vite-compatibility/v8/assets/SpellForgeApp-C7kEyWeL.js                                                               11.50 kB │ gzip:   3.57 kB
+../output/vite-compatibility/v8/assets/versenet-browser-CNms-027.js                                                            12.01 kB │ gzip:   4.19 kB
+../output/vite-compatibility/v8/assets/HousingApp-B9TZkytl.js                                                                  16.33 kB │ gzip:   5.04 kB
+../output/vite-compatibility/v8/assets/FileExplorerApp-BTlO612I.js                                                             19.16 kB │ gzip:   6.36 kB
+../output/vite-compatibility/v8/assets/attachmentDocument-devRjado.js                                                          20.99 kB │ gzip:   8.24 kB
+../output/vite-compatibility/v8/assets/bundle-mjs-C6bL0D2a.js                                                                  27.76 kB │ gzip:   8.92 kB
+../output/vite-compatibility/v8/assets/LoreExplorer-DmOMI2NG.js                                                                30.22 kB │ gzip:   6.84 kB
+../output/vite-compatibility/v8/assets/Portals-DvYrMRNR.js                                                                     31.21 kB │ gzip:   7.59 kB
+../output/vite-compatibility/v8/assets/CivicProfileApp-DfQCiw_x.js                                                             37.00 kB │ gzip:  10.27 kB
+../output/vite-compatibility/v8/assets/lucide-icons-DkBpXVZ0.js                                                                50.87 kB │ gzip:  15.91 kB
+../output/vite-compatibility/v8/assets/PortraitStudioModal-CeJj6QcA.js                                                         55.91 kB │ gzip:  12.73 kB
+../output/vite-compatibility/v8/assets/MailApp-CDRJ4bBO.js                                                                     56.24 kB │ gzip:  14.77 kB
+../output/vite-compatibility/v8/assets/maidIdentityService-3iADdc4W.js                                                         59.31 kB │ gzip:  18.25 kB
+../output/vite-compatibility/v8/assets/RegistryWorkspaceApp-CljHX2J3.js                                                        79.98 kB │ gzip:  15.79 kB
+../output/vite-compatibility/v8/assets/BrowserApp-DOPAP_5r.js                                                                  93.65 kB │ gzip:  27.80 kB
+../output/vite-compatibility/v8/assets/JobWorkstationApp-Bl5i1KJ6.js                                                          100.60 kB │ gzip:  23.45 kB
+../output/vite-compatibility/v8/assets/MaiSpacePortal-DsUav8Xl.js                                                             119.01 kB │ gzip:  35.76 kB
+../output/vite-compatibility/v8/assets/framer-motion-DOfs-OJS.js                                                              133.15 kB │ gzip:  43.55 kB
+../output/vite-compatibility/v8/assets/App-DaCc1Csy.js                                                                        144.86 kB │ gzip:  47.77 kB
+../output/vite-compatibility/v8/assets/EvidenceBoard-BDzg5cDU.js                                                              180.07 kB │ gzip:  58.11 kB
+../output/vite-compatibility/v8/assets/index-4eXzENLs.js                                                                      274.89 kB │ gzip:  85.67 kB
+../output/vite-compatibility/v8/assets/useOSStore-BANb0GPR.js                                                                 363.45 kB │ gzip: 116.57 kB
+../output/vite-compatibility/v8/assets/RichTextEditor-D9tv70pu.js                                                             402.25 kB │ gzip: 127.30 kB
+../output/vite-compatibility/v8/assets/TunnelScene-dxS0ukKF.js                                                              1,370.21 kB │ gzip: 358.38 kB
+../output/vite-compatibility/v8/assets/DgaosApp-D5WmRynj.js                                                                 1,440.00 kB │ gzip: 358.92 kB
+
+[plugin builtin:vite-reporter] 
+(!) Some chunks are larger than 1200 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rolldownOptions.output.codeSplitting to improve chunking: https://rolldown.rs/reference/OutputOptions.codeSplitting
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+✓ built in 2.82s

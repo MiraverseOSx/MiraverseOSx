@@ -41,6 +41,7 @@ export interface CitizenRecord {
   links: string;
   relationships?: string;
   household?: string;
+  timeline?: string;
   portraitData?: string;
   biometricSeed?: string;
   maid?: string | null;

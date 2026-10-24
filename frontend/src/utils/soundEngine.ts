@@ -239,6 +239,7 @@ export const SoundFX = {
   playButtonTap: () => { try { soundEngine.playClick(); } catch (e) { /* safe */ } },
   playSnap: () => { try { soundEngine.playTick(); } catch (e) { /* safe */ } },
   playSuccess: () => { try { soundEngine.playSuccess(); } catch (e) { /* safe */ } },
+  playCoin: () => { try { soundEngine.playSuccess(); } catch (e) { /* safe */ } },
   playChime: () => { try { soundEngine.playChime(); } catch (e) { /* safe */ } },
 };
 

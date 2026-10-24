@@ -13,6 +13,7 @@ export interface MockDocument {
   date?: string;
   isEncrypted?: boolean;
   requiredSkill?: string;
+  attachments?: any[];
   content: {
     sections: {
       title: string;

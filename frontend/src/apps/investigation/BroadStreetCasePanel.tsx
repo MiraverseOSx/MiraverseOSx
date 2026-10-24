@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { lazy, Suspense, useState } from 'react';
 import { useOSStore } from '../../store/useOSStore';
 import { BROAD_STREET, CASE_FINDINGS, CASE_MISSION, caseSource, restoreCaseProgress } from '../../gameplay/BroadStreetCase';
 import ReportEditor from '../../components/editor/ReportEditor';
 import { RichMailBody } from '../mail/RichMailEditor';
 import './case-workspace.css';
+const EvidenceBoard = lazy(() => import('./EvidenceBoard'));
 
 function useCase() {
   const player = useOSStore(s => s.gameplay.player);
@@ -44,6 +45,7 @@ export default function BroadStreetCasePanel({ notebook = false }: { notebook?: 
         <div className="case-progress"><strong>{accepted ? 'Operation accepted · receipt saved' : `${progress.acquired.length} of 6 sources acquired`}</strong><span>{progress.witnessRequested ? 'Witness clarification received' : 'Witness clarification not yet requested'}</span></div>
         <div className="case-actions"><button onClick={() => state().openAssignmentFiles(CASE_MISSION)}>Open case folder in VAULT</button>{notebook ? <button onClick={() => state().openAssignment(CASE_MISSION)}>Open report in WORKNET</button> : <button onClick={() => state().openAppWorkspace('dgaos', 'broadstreet:notebook')}>Open DGAOS evidence notebook</button>}<button onClick={() => setHint(value => !value)}>{hint ? 'Hide hint' : 'Optional hint'}</button></div>
         {hint && <p className="case-hint">Start with the access audit and facilities log in VAULT. Request the guard’s account through AureMail. Use the DGAOS laboratory sources and search VerseNet for “First Federal maintenance”. You can follow these leads in any order.</p>}
+        {notebook && <Suspense fallback={<p role="status">Loading evidence board…</p>}><EvidenceBoard sources={BROAD_STREET.sources.filter(source => progress.acquired.includes(source.id))} board={progress.board} editable={canWork} onSave={board => state().saveCaseBoard(board)} onOpen={id => state().openCaseSource(id)}/></Suspense>}
         <div className="case-source-grid">{BROAD_STREET.sources.map(source => <article key={source.id}><span className="case-kicker">{source.app === 'files' ? 'VAULT' : source.app === 'mail' ? 'AUREMAIL' : source.app === 'browser' ? 'VERSENET' : 'DGAOS'}</span><h3>{source.title}</h3><p>{source.publisher}</p><button onClick={() => state().openCaseSource(source.id)}>{progress.acquired.includes(source.id) ? 'Reopen source' : source.id === 'guard-statement' && !progress.witnessRequested ? 'Request witness clarification' : 'Open original source'}</button><span className="case-source-status">{progress.acquired.includes(source.id) ? '✓ Acquired' : 'Not acquired'}</span></article>)}</div>
         {!notebook && !accepted && <form className="case-report" onSubmit={event => { event.preventDefault(); setNotice(state().reviewCaseReport().message); }}>
           <h3>Investigation findings</h3><p>Choose the finding supported by your sources, then cite the records that establish it. An association is different from a verdict.</p>

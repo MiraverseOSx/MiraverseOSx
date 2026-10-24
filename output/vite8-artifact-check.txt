@@ -1,0 +1,14 @@
+node:internal/fs/promises:1743
+  const result = await PromisePrototypeThen(
+                 ^
+
+Error: ENOENT: no such file or directory, stat 'C:\Users\mirav\OneDrive\Desktop\MiraverseOSx\output\vite-compatibility\v8\assets\case-workspace-C1Vy18Eo.js'
+    at async stat (node:internal/fs/promises:1743:18)
+    at async file:///C:/Users/mirav/OneDrive/Desktop/MiraverseOSx/scripts/check_vite_artifacts.mjs:16:14 {
+  errno: -4058,
+  code: 'ENOENT',
+  syscall: 'stat',
+  path: 'C:\\Users\\mirav\\OneDrive\\Desktop\\MiraverseOSx\\output\\vite-compatibility\\v8\\assets\\case-workspace-C1Vy18Eo.js'
+}
+
+Node.js v24.21.0
