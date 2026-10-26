@@ -1,0 +1,19 @@
+{
+  "id": "char-gregory-bell",
+  "name": "Gregory Bell",
+  "kind": "person",
+  "aliases": [],
+  "status": "existing",
+  "notes": [],
+  "legacyIds": [],
+  "references": [
+    {
+      "collection": "INSTITUTIONAL_REGISTRY",
+      "key": "cw-dip-1",
+      "file": "people/gregory-bell/workplace.json"
+    }
+  ],
+  "maid": null,
+  "legacyMaids": [],
+  "folder": "gregory-bell"
+}

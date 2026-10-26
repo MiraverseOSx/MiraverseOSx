@@ -1,0 +1,34 @@
+[
+  {
+    "collection": "PEOPLE",
+    "key": "jeremie",
+    "origin": "frontend/src/game-content/characters/socialProfiles.json:2",
+    "context": "PEOPLE",
+    "data": {
+      "id": "jeremie",
+      "name": "Jeremie Belpois",
+      "handle": "jeremie.builds",
+      "phone": "Jeremie",
+      "icon": "⌘",
+      "theme": "blue",
+      "bio": "A notebook for small inventions, patient work, and things worth understanding.",
+      "interests": "Technology · diagrams · ambient music",
+      "mood": "Working on a little idea",
+      "reply": "I like seeing how people organize their ideas. Tell me about something you made.",
+      "response": "Thanks for sharing it. I enjoy hearing the thought behind a project, not just seeing the finished version."
+    },
+    "original": {
+      "id": "jeremie",
+      "name": "Jeremie Belpois",
+      "handle": "jeremie.builds",
+      "phone": "Jeremie",
+      "icon": "⌘",
+      "theme": "blue",
+      "bio": "A notebook for small inventions, patient work, and things worth understanding.",
+      "interests": "Technology · diagrams · ambient music",
+      "mood": "Working on a little idea",
+      "reply": "I like seeing how people organize their ideas. Tell me about something you made.",
+      "response": "Thanks for sharing it. I enjoy hearing the thought behind a project, not just seeing the finished version."
+    }
+  }
+]

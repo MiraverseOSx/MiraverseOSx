@@ -1,0 +1,22 @@
+[
+  {
+    "collection": "story-bible",
+    "key": "Jeremie Belpois",
+    "origin": "docs/data/story-bible-characters.json:56",
+    "context": "story-bible",
+    "data": {
+      "key": "Jeremie Belpois",
+      "name": "Jeremie Belpois",
+      "role": "Research and technical problem-solving",
+      "line": 331,
+      "characterId": "char-jeremie-belpois"
+    },
+    "original": {
+      "key": "Jeremie Belpois",
+      "name": "Jeremie Belpois",
+      "role": "Research and technical problem-solving",
+      "line": 331,
+      "characterId": "char-jeremie-belpois"
+    }
+  }
+]

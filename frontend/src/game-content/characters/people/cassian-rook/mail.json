@@ -1,0 +1,38 @@
+[
+  {
+    "collection": "AUREMAIL_DIRECTORY",
+    "key": "dir-dean-rook",
+    "origin": "frontend/src/data/commsData.ts:278",
+    "context": "AUREMAIL_DIRECTORY",
+    "data": {
+      "id": "dir-dean-rook",
+      "name": "Dean Cassian Rook",
+      "address": "c.rook@cyacademy.edu",
+      "category": "npc",
+      "accountType": "academic",
+      "role": "Dean of Students",
+      "institution": "Cyacademy University",
+      "faction": "Cyacademy Faculty",
+      "maid": "MAID-OR-00010201",
+      "npcKey": "rook",
+      "requiredClearance": 1,
+      "verified": true,
+      "description": "Oversees student conduct, orientation schedules, and campus safety directives."
+    },
+    "original": {
+      "id": "dir-dean-rook",
+      "name": "Dean Cassian Rook",
+      "address": "c.rook@cyacademy.edu",
+      "category": "npc",
+      "accountType": "academic",
+      "role": "Dean of Students",
+      "institution": "Cyacademy University",
+      "faction": "Cyacademy Faculty",
+      "maid": "MAID-OR-00010201",
+      "npcKey": "rook",
+      "requiredClearance": 1,
+      "verified": true,
+      "description": "Oversees student conduct, orientation schedules, and campus safety directives."
+    }
+  }
+]

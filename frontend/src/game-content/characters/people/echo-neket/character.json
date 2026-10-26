@@ -1,0 +1,19 @@
+{
+  "id": "char-echo-neket",
+  "name": "Echo Neket",
+  "kind": "person",
+  "aliases": [],
+  "status": "document-only",
+  "notes": [],
+  "legacyIds": [],
+  "references": [
+    {
+      "collection": "story-bible",
+      "key": "Echo Neket",
+      "file": "people/echo-neket/story.json"
+    }
+  ],
+  "maid": null,
+  "legacyMaids": [],
+  "folder": "echo-neket"
+}

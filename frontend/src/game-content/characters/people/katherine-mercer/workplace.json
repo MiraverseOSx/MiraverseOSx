@@ -1,0 +1,38 @@
+[
+  {
+    "collection": "INSTITUTIONAL_REGISTRY",
+    "key": "cw-fm-1",
+    "origin": "frontend/src/apps/worknet/worknetData.ts:198",
+    "context": "INSTITUTIONAL_REGISTRY",
+    "data": {
+      "id": "cw-fm-1",
+      "name": "Katherine Mercer",
+      "title": "Resident Bio-Aura Clinician",
+      "division": "Veil Exposure Laboratory",
+      "avatar": "KM",
+      "status": "Desk",
+      "specialty": "High-load synthesis stabilization and thermal compress calibration",
+      "quote": "Veilwilt desync is terrifying, but standard warm compress and rest resolve 90% of acute spikes.",
+      "trust": 90,
+      "competence": 95,
+      "familiarity": 82,
+      "cooperation": 92,
+      "conflictHistory": 2
+    },
+    "original": {
+      "id": "cw-fm-1",
+      "name": "Katherine Mercer",
+      "title": "Resident Bio-Aura Clinician",
+      "division": "Veil Exposure Laboratory",
+      "avatar": "KM",
+      "status": "Desk",
+      "specialty": "High-load synthesis stabilization and thermal compress calibration",
+      "quote": "Veilwilt desync is terrifying, but standard warm compress and rest resolve 90% of acute spikes.",
+      "trust": 90,
+      "competence": 95,
+      "familiarity": 82,
+      "cooperation": 92,
+      "conflictHistory": 2
+    }
+  }
+]

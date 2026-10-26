@@ -1,0 +1,127 @@
+{
+  "document": "Game Doc.docx (user attachment)",
+  "sha256": "d2b3ec5e19966ece362e3fb9f81f523f2343f8883102e7b25d006f5cd00433fd",
+  "section": "XI. Figures, Relationships, and Hidden Histories",
+  "lineReference": "Paragraph-per-line extraction; blank paragraphs retained",
+  "records": [
+    {
+      "key": "Queen Maeryn Seraphima",
+      "name": "Queen Maeryn Seraphima",
+      "role": "Founder of Meridion",
+      "line": 301,
+      "characterId": "char-maeryn-seraphima"
+    },
+    {
+      "key": "Headmistress Vael",
+      "name": "Headmistress Vael",
+      "role": "Cyacademy leadership",
+      "line": 308,
+      "characterId": "char-vael"
+    },
+    {
+      "key": "Professor Idris",
+      "name": "Professor Idris",
+      "role": "Systems and Anomaly Studies",
+      "line": 317,
+      "characterId": "char-idris"
+    },
+    {
+      "key": "Coach Rhen",
+      "name": "Coach Rhen",
+      "role": "Combat Arts",
+      "line": 320,
+      "characterId": "char-rhen"
+    },
+    {
+      "key": "Instructor Lyse",
+      "name": "Instructor Lyse",
+      "role": "Social Dynamics and student council",
+      "line": 323,
+      "characterId": "char-lyse"
+    },
+    {
+      "key": "Professor Oryn",
+      "name": "Professor Oryn",
+      "role": "Systems Engineering",
+      "line": 326,
+      "characterId": "char-oryn"
+    },
+    {
+      "key": "Aelita Hopper",
+      "name": "Aelita Hopper",
+      "role": "Cyacademy social circle",
+      "line": 331,
+      "characterId": "char-aelita-hopper"
+    },
+    {
+      "key": "Jeremie Belpois",
+      "name": "Jeremie Belpois",
+      "role": "Research and technical problem-solving",
+      "line": 331,
+      "characterId": "char-jeremie-belpois"
+    },
+    {
+      "key": "Odd Della Robia",
+      "name": "Odd Della Robia",
+      "role": "Cyacademy social circle",
+      "line": 333,
+      "characterId": "char-odd-della-robia"
+    },
+    {
+      "key": "Yumi Ishiyuma",
+      "name": "Yumi Ishiyuma",
+      "role": "Cyacademy social circle",
+      "line": 333,
+      "characterId": "char-yumi-ishiyuma"
+    },
+    {
+      "key": "Ulrich Stern",
+      "name": "Ulrich Stern",
+      "role": "Cyacademy social circle",
+      "line": 333,
+      "characterId": "char-ulrich-stern"
+    },
+    {
+      "key": "Sissi Delmas",
+      "name": "Sissi Delmas",
+      "role": "Cyacademy social circle",
+      "line": 335,
+      "characterId": "char-sissi-delmas"
+    },
+    {
+      "key": "Franz Hopper",
+      "name": "Franz Hopper",
+      "role": "Elder researcher",
+      "line": 335,
+      "characterId": "char-franz-hopper"
+    },
+    {
+      "key": "Echo Neket",
+      "name": "Echo Neket",
+      "role": "Hidden data routes",
+      "line": 337,
+      "characterId": "char-echo-neket"
+    },
+    {
+      "key": "Solis Agni",
+      "name": "Solis Agni",
+      "role": "Faith Medical healer",
+      "line": 339,
+      "characterId": "char-solis-agni"
+    },
+    {
+      "key": "Riven Kalbera",
+      "name": "Riven Kalbera",
+      "role": "Social circle",
+      "line": 341,
+      "characterId": "char-riven-kalbera"
+    },
+    {
+      "key": "Lyric Enya",
+      "name": "Lyric Enya",
+      "role": "House Aurelith and The Velvet",
+      "line": 341,
+      "characterId": "char-lyric-enya"
+    }
+  ]
+}

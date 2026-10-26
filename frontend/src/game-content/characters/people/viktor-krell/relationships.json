@@ -1,0 +1,26 @@
+[
+  {
+    "collection": "seedRelationships",
+    "key": "REL-004",
+    "origin": "frontend/src/dgaos/data/seed/relationships.ts:49",
+    "context": "seedRelationships",
+    "data": {
+      "id": "REL-004",
+      "sourceId": "P-103",
+      "sourceName": "Viktor Krell",
+      "targetId": "ORG-04",
+      "targetName": "Phoenix Biotech Ltd.",
+      "type": "suspected_of",
+      "notes": "Suspected illicit synthesis broker funneling organophosphates through Phoenix Bio shell companies."
+    },
+    "original": {
+      "id": "REL-004",
+      "sourceId": "P-103",
+      "sourceName": "Viktor Krell",
+      "targetId": "ORG-04",
+      "targetName": "Phoenix Biotech Ltd.",
+      "type": "suspected_of",
+      "notes": "Suspected illicit synthesis broker funneling organophosphates through Phoenix Bio shell companies."
+    }
+  }
+]

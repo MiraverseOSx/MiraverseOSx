@@ -1,0 +1,28 @@
+[
+  {
+    "collection": "INSTITUTIONAL_REGISTRY",
+    "key": "sup-dga",
+    "origin": "frontend/src/apps/worknet/worknetData.ts:97",
+    "context": "INSTITUTIONAL_REGISTRY",
+    "data": {
+      "id": "sup-dga",
+      "name": "Director Ronald Sterling",
+      "title": "Deputy Director of Operational Intelligence",
+      "department": "Department of Global Affairs // Directorate",
+      "avatar": "RS",
+      "personality": "Methodical, exacting, values verifiable primary evidence and strict protocol over hunches.",
+      "expectations": "Primary evidence citations must match filed dockets. Zero tolerance for unverified allegations.",
+      "approvalRate": 88
+    },
+    "original": {
+      "id": "sup-dga",
+      "name": "Director Ronald Sterling",
+      "title": "Deputy Director of Operational Intelligence",
+      "department": "Department of Global Affairs // Directorate",
+      "avatar": "RS",
+      "personality": "Methodical, exacting, values verifiable primary evidence and strict protocol over hunches.",
+      "expectations": "Primary evidence citations must match filed dockets. Zero tolerance for unverified allegations.",
+      "approvalRate": 88
+    }
+  }
+]

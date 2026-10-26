@@ -1,0 +1,26 @@
+[
+  {
+    "collection": "NPCS",
+    "key": "npc-keket",
+    "origin": "frontend/src/game-content/characters/worldNpcs.json:56",
+    "context": "NPCS",
+    "data": {
+      "id": "npc-keket",
+      "name": "Seer Keket",
+      "title": "Keeper of Ancestral Twilight",
+      "role": "Seer",
+      "dialogueTone": "Whispering, deep, and contemplative",
+      "affiliation": "House Keket",
+      "realm": "Nephele"
+    },
+    "original": {
+      "id": "npc-keket",
+      "name": "Seer Keket",
+      "title": "Keeper of Ancestral Twilight",
+      "role": "Seer",
+      "dialogueTone": "Whispering, deep, and contemplative",
+      "affiliation": "House Keket",
+      "realm": "Nephele"
+    }
+  }
+]

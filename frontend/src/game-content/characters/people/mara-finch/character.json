@@ -1,0 +1,19 @@
+{
+  "id": "char-mara-finch",
+  "name": "Mara Finch",
+  "kind": "person",
+  "aliases": [],
+  "status": "existing",
+  "notes": [],
+  "legacyIds": [],
+  "references": [
+    {
+      "collection": "INSTITUTIONAL_REGISTRY",
+      "key": "cw-war-1",
+      "file": "people/mara-finch/workplace.json"
+    }
+  ],
+  "maid": null,
+  "legacyMaids": [],
+  "folder": "mara-finch"
+}

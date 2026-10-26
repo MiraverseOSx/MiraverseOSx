@@ -7,6 +7,7 @@ const LEGACY_DESTINATIONS: Record<string, AppDestination> = {
   civinet: { appId: 'passport', section: 'services' },
   citizenHub: { appId: 'passport', section: 'record' },
   traceForensics: { appId: 'dgaos', section: 'trace' },
+  worknet: { appId: 'jobs' },
   board: { appId: 'jobs', section: 'notices' },
   chronicle: { appId: 'jobs', section: 'notices' },
   questnotice: { appId: 'jobs', section: 'civic-jobs' },

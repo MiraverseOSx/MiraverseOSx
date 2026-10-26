@@ -1,0 +1,22 @@
+[
+  {
+    "collection": "story-bible",
+    "key": "Riven Kalbera",
+    "origin": "docs/data/story-bible-characters.json:112",
+    "context": "story-bible",
+    "data": {
+      "key": "Riven Kalbera",
+      "name": "Riven Kalbera",
+      "role": "Social circle",
+      "line": 341,
+      "characterId": "char-riven-kalbera"
+    },
+    "original": {
+      "key": "Riven Kalbera",
+      "name": "Riven Kalbera",
+      "role": "Social circle",
+      "line": 341,
+      "characterId": "char-riven-kalbera"
+    }
+  }
+]

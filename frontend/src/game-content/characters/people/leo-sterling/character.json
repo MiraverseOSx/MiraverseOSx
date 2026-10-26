@@ -1,0 +1,19 @@
+{
+  "id": "char-leo-sterling",
+  "name": "Leo Sterling",
+  "kind": "person",
+  "aliases": [],
+  "status": "existing",
+  "notes": [],
+  "legacyIds": [],
+  "references": [
+    {
+      "collection": "INSTITUTIONAL_REGISTRY",
+      "key": "cw-art-1",
+      "file": "people/leo-sterling/workplace.json"
+    }
+  ],
+  "maid": null,
+  "legacyMaids": [],
+  "folder": "leo-sterling"
+}

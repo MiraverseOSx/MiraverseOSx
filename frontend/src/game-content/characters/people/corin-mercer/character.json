@@ -1,0 +1,19 @@
+{
+  "id": "char-corin-mercer",
+  "name": "Corin Mercer",
+  "kind": "person",
+  "aliases": [],
+  "status": "existing",
+  "notes": [],
+  "legacyIds": [],
+  "references": [
+    {
+      "collection": "INSTITUTIONAL_REGISTRY",
+      "key": "sup-warden",
+      "file": "people/corin-mercer/workplace.json"
+    }
+  ],
+  "maid": null,
+  "legacyMaids": [],
+  "folder": "corin-mercer"
+}

@@ -1,0 +1,19 @@
+{
+  "id": "char-derek-brody",
+  "name": "Sergeant Derek Brody",
+  "kind": "person",
+  "aliases": [],
+  "status": "existing",
+  "notes": [],
+  "legacyIds": [],
+  "references": [
+    {
+      "collection": "INSTITUTIONAL_REGISTRY",
+      "key": "cw-dga-3",
+      "file": "people/derek-brody/workplace.json"
+    }
+  ],
+  "maid": null,
+  "legacyMaids": [],
+  "folder": "derek-brody"
+}

@@ -1,0 +1,38 @@
+{
+  "id": "char-odd-della-robia",
+  "name": "Odd Della Robia",
+  "kind": "person",
+  "aliases": [
+    "Odd Della Robbia"
+  ],
+  "status": "existing",
+  "notes": [],
+  "legacyIds": [
+    "char-odd-della-robbia"
+  ],
+  "references": [
+    {
+      "collection": "PEOPLE",
+      "key": "odd",
+      "file": "people/odd-della-robia/social.json"
+    },
+    {
+      "collection": "AUREMAIL_DIRECTORY",
+      "key": "dir-odd",
+      "file": "people/odd-della-robia/mail.json"
+    },
+    {
+      "collection": "phone-contact",
+      "key": "Odd",
+      "file": "people/odd-della-robia/phone.json"
+    },
+    {
+      "collection": "story-bible",
+      "key": "Odd Della Robia",
+      "file": "people/odd-della-robia/story.json"
+    }
+  ],
+  "maid": null,
+  "legacyMaids": [],
+  "folder": "odd-della-robia"
+}

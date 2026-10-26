@@ -1,0 +1,28 @@
+[
+  {
+    "collection": "INSTITUTIONAL_REGISTRY",
+    "key": "sup-archives",
+    "origin": "frontend/src/apps/worknet/worknetData.ts:334",
+    "context": "INSTITUTIONAL_REGISTRY",
+    "data": {
+      "id": "sup-archives",
+      "name": "Julian Thorne",
+      "title": "Grand Archivist & Custodian of Sealed Codices",
+      "department": "Royal Society // Archival Division",
+      "avatar": "JT",
+      "personality": "Scholarly, patient, protective of antique knowledge. Insists on non-invasive examination methods.",
+      "expectations": "Never apply harsh solvents to magnetic foil. Handle all lineage seals under harmonic resonance.",
+      "approvalRate": 91
+    },
+    "original": {
+      "id": "sup-archives",
+      "name": "Julian Thorne",
+      "title": "Grand Archivist & Custodian of Sealed Codices",
+      "department": "Royal Society // Archival Division",
+      "avatar": "JT",
+      "personality": "Scholarly, patient, protective of antique knowledge. Insists on non-invasive examination methods.",
+      "expectations": "Never apply harsh solvents to magnetic foil. Handle all lineage seals under harmonic resonance.",
+      "approvalRate": 91
+    }
+  }
+]

@@ -1,0 +1,19 @@
+{
+  "id": "char-franz-hopper",
+  "name": "Franz Hopper",
+  "kind": "person",
+  "aliases": [],
+  "status": "document-only",
+  "notes": [],
+  "legacyIds": [],
+  "references": [
+    {
+      "collection": "story-bible",
+      "key": "Franz Hopper",
+      "file": "people/franz-hopper/story.json"
+    }
+  ],
+  "maid": null,
+  "legacyMaids": [],
+  "folder": "franz-hopper"
+}

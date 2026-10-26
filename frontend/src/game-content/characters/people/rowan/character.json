@@ -1,0 +1,19 @@
+{
+  "id": "char-rowan",
+  "name": "Archivist Rowan",
+  "kind": "person",
+  "aliases": [],
+  "status": "existing",
+  "notes": [],
+  "legacyIds": [],
+  "references": [
+    {
+      "collection": "PEOPLE",
+      "key": "rowan",
+      "file": "people/rowan/social.json"
+    }
+  ],
+  "maid": null,
+  "legacyMaids": [],
+  "folder": "rowan"
+}

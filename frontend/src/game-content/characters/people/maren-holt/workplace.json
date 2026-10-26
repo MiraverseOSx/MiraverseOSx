@@ -1,0 +1,38 @@
+[
+  {
+    "collection": "INSTITUTIONAL_REGISTRY",
+    "key": "cw-arc-1",
+    "origin": "frontend/src/apps/worknet/worknetData.ts:345",
+    "context": "INSTITUTIONAL_REGISTRY",
+    "data": {
+      "id": "cw-arc-1",
+      "name": "Maren Holt",
+      "title": "Master Conservator",
+      "division": "Physical Restoration Lab",
+      "avatar": "MH",
+      "status": "Desk",
+      "specialty": "Low-field foil recovery & harmonic de-crystallization",
+      "quote": "A degraded micro-card is still talking to you if you calibrate the sensor correctly.",
+      "trust": 88,
+      "competence": 96,
+      "familiarity": 76,
+      "cooperation": 90,
+      "conflictHistory": 3
+    },
+    "original": {
+      "id": "cw-arc-1",
+      "name": "Maren Holt",
+      "title": "Master Conservator",
+      "division": "Physical Restoration Lab",
+      "avatar": "MH",
+      "status": "Desk",
+      "specialty": "Low-field foil recovery & harmonic de-crystallization",
+      "quote": "A degraded micro-card is still talking to you if you calibrate the sensor correctly.",
+      "trust": 88,
+      "competence": 96,
+      "familiarity": 76,
+      "cooperation": 90,
+      "conflictHistory": 3
+    }
+  }
+]

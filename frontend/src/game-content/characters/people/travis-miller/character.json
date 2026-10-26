@@ -1,0 +1,19 @@
+{
+  "id": "char-travis-miller",
+  "name": "Trooper Travis Miller",
+  "kind": "person",
+  "aliases": [],
+  "status": "existing",
+  "notes": [],
+  "legacyIds": [],
+  "references": [
+    {
+      "collection": "INV_26_402_STARTING_PAYLOAD",
+      "key": "P-405",
+      "file": "people/travis-miller/investigations.json"
+    }
+  ],
+  "maid": null,
+  "legacyMaids": [],
+  "folder": "travis-miller"
+}

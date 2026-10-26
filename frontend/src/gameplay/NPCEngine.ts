@@ -1,3 +1,4 @@
+import { getProfile as personasProfile } from '../game-content/characters/collections/personas';
 /**
  * MIRAVERSE OS x — NPC Dialogue & Persona Engine (TypeScript)
  * Integrates with the C# Backend AI Controller (/api/ai/chat) powered by
@@ -7,6 +8,7 @@
 
 import { useOSStore } from '../store/useOSStore';
 import { worldEventEngine } from './WorldEventEngine';
+import { findCharactersByName, resolveCharacterReference } from '../game-content/characters/registry';
 
 export interface NPCPersona {
   name: string;
@@ -30,83 +32,21 @@ export interface NPCDialogueResponse {
 
 export class NPCEngine {
   private readonly personas: Record<string, NPCPersona> = {
-    Mai: {
-      name: 'Mai',
-      role: 'Celestial Taskbar Companion & PRISM Integrity Monitor',
-      tone: 'Warm, encouraging, observant, slightly analytical',
-      greetings: [
-        "Greetings Netrunner! I've been monitoring your biometric resonance.",
-        'System integrity at nominal levels. What matrix segment are we analyzing today?',
-        'PRISM pulse detected nearby. Maintain your elemental shields!'
-      ],
-      systemContext: 'You are MAI, the celestial OS taskbar companion in MiraverseOSx.'
-    },
-    Jeremie: {
-      name: 'Jeremie',
-      role: 'Hardware & Terminal Architecture Engineer',
-      tone: 'Thoughtful, focused, technical, enthusiastic',
-      greetings: [
-        'Hey! Just reviewing the sub-Aureline signal bus ^_^',
-        'Check out these circuit schematics when you get a chance.',
-        'Logic gates are looking clean today.'
-      ],
-      systemContext: 'You are Jeremie Belpois, a brilliant hardware and software systems engineer.'
-    },
-    Aelita: {
-      name: 'Aelita',
-      role: 'Harmonic Synthesizer & Botanical Analyst',
-      tone: 'Gentle, intuitive, melodic, peaceful',
-      greetings: [
-        'Hello ✿ the garden air feels especially clear today.',
-        'Listening to the subtle resonance in the quiet hours ♡',
-        'Have you noticed the gentle melody along the fountain path?'
-      ],
-      systemContext: 'You are Aelita Schaeffer, an intuitive synthesizer artist and botanist.'
-    },
-    Sissi: {
-      name: 'Sissi',
-      role: 'Aureline Socialite & Trends Editor',
-      tone: 'Chic, confident, trendy, playful',
-      greetings: [
-        'Hey there! Love the look of your profile today ~ xoxo',
-        'Have you checked the latest updates on the social feed?',
-        'We need to coordinate plans for the weekend soon ♡'
-      ],
-      systemContext: 'You are Elisabeth Delmas (Sissi), high-society style curator and trendsetter.'
-    },
-    Vaelen: {
-      name: 'Vaelen',
-      role: 'Orynvell SpellForge Scholar & Rune Master',
-      tone: 'Stoic, precise, mystical',
-      greetings: [
-        'The arcana demands disciplined focus. Have you brought element core samples?',
-        'Channeling aether without proper glyph grounding will scorch your terminal.',
-        'Observe the elemental matrix—the runes speak to those who listen.'
-      ],
-      systemContext: 'You are Vaelen, a stoic SpellForge scholar and master of regional arcana in Aureline.'
-    },
-    Kaelen: {
-      name: 'Kaelen',
-      role: 'Versenet Shadow Broker',
-      tone: 'Cynical, sharp, cautious',
-      greetings: [
-        'Keep your voice low. The DGA monitors every quantum packet.',
-        'Got data to trade or are you just taking up bandwidth?',
-        'Shadow grid nodes are twitchy today. Watch your back access protocols.'
-      ],
-      systemContext: 'You are Kaelen, a cynical shadow broker in the Versenet underground.'
-    },
-    'Dean Cassian Rook': {
-      name: 'Dean Cassian Rook',
-      role: 'Cyacademy Dean of Operatives',
-      tone: 'Authoritative, disciplined, formal',
-      greetings: [
-        'Operative. Your orientation dossier requires immediate verification.',
-        'Cyacademy standards are absolute. Uphold the municipal decrees.'
-      ],
-      systemContext: 'You are Dean Cassian Rook, head administrator of Cyacademy.'
-    }
+    Mai: personasProfile("Mai"),
+    Jeremie: personasProfile("Jeremie"),
+    Aelita: personasProfile("Aelita"),
+    Sissi: personasProfile("Sissi"),
+    Vaelen: personasProfile("Vaelen"),
+    Kaelen: personasProfile("Kaelen"),
+    'Dean Cassian Rook': personasProfile("Dean Cassian Rook")
   };
+
+  private personaKey(name: string): string {
+    if (Object.hasOwn(this.personas, name)) return name;
+    const matches = findCharactersByName(name);
+    if (matches.length !== 1) return name;
+    return Object.keys(this.personas).find(key => resolveCharacterReference('personas', key)?.id === matches[0].id) || name;
+  }
 
   /**
    * Generates NPC response enriched with shared WorldEventEngine narrative memory,
@@ -117,7 +57,8 @@ export class NPCEngine {
     prompt: string,
     extraContext = ''
   ): Promise<NPCDialogueResponse> {
-    const persona = this.personas[npcName] || {
+    const stableNpcKey = this.personaKey(npcName);
+    const persona = Object.hasOwn(this.personas, stableNpcKey) ? this.personas[stableNpcKey] : {
       name: npcName,
       role: 'Citizen of Aureline',
       tone: 'Neutral',
@@ -126,7 +67,7 @@ export class NPCEngine {
     };
 
     const gameplayState = useOSStore.getState()?.gameplay;
-    const narrative = worldEventEngine.buildNarrativeContextForNPC(npcName, gameplayState);
+    const narrative = worldEventEngine.buildNarrativeContextForNPC(stableNpcKey, gameplayState);
     const combinedContext = `${persona.systemContext} Tone: ${persona.tone}. Shared World Memory: ${narrative.summaryText} ${extraContext}`.trim();
 
     // 1. Query the C# Backend AI Subsystem (/api/ai/chat)
@@ -135,7 +76,7 @@ export class NPCEngine {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          npc: npcName,
+          npc: stableNpcKey,
           prompt,
           activeApp: 'dialogue',
           context: combinedContext
@@ -182,7 +123,8 @@ export class NPCEngine {
   }
 
   public getPersona(name: string): NPCPersona | undefined {
-    return this.personas[name];
+    const key = this.personaKey(name);
+    return Object.hasOwn(this.personas, key) ? this.personas[key] : undefined;
   }
 }
 

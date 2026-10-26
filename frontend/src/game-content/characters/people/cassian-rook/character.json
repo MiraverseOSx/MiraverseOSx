@@ -1,0 +1,24 @@
+{
+  "id": "char-cassian-rook",
+  "name": "Dean Cassian Rook",
+  "kind": "person",
+  "aliases": [],
+  "status": "existing",
+  "notes": [],
+  "legacyIds": [],
+  "references": [
+    {
+      "collection": "AUREMAIL_DIRECTORY",
+      "key": "dir-dean-rook",
+      "file": "people/cassian-rook/mail.json"
+    },
+    {
+      "collection": "personas",
+      "key": "Dean Cassian Rook",
+      "file": "people/cassian-rook/dialogue.json"
+    }
+  ],
+  "maid": null,
+  "legacyMaids": [],
+  "folder": "cassian-rook"
+}

@@ -1,0 +1,37 @@
+[
+  {
+    "collection": "AUREMAIL_DIRECTORY",
+    "key": "dir-julian-vance",
+    "origin": "frontend/src/data/commsData.ts:403",
+    "context": "AUREMAIL_DIRECTORY",
+    "data": {
+      "id": "dir-julian-vance",
+      "name": "Dr. Julian Paul Vance",
+      "address": "j.vance@dga.gov",
+      "category": "citizen",
+      "accountType": "institutional",
+      "role": "Lead Forensic Investigator",
+      "institution": "DGA / TRACE",
+      "faction": "DGA",
+      "maid": "MAID-OR-00481928",
+      "requiredClearance": 1,
+      "verified": true,
+      "description": "Canonical Citizen #3 · Directs TRACE forensic case reviews and DGA evidence verification.",
+      "legacyMaid": "MAID-OR-00000003"
+    },
+    "original": {
+      "id": "dir-julian-vance",
+      "name": "Dr. Julian Paul Vance",
+      "address": "j.vance@dga.gov",
+      "category": "citizen",
+      "accountType": "institutional",
+      "role": "Lead Forensic Investigator",
+      "institution": "DGA / TRACE",
+      "faction": "DGA",
+      "maid": "MAID-OR-00000003",
+      "requiredClearance": 1,
+      "verified": true,
+      "description": "Canonical Citizen #3 · Directs TRACE forensic case reviews and DGA evidence verification."
+    }
+  }
+]

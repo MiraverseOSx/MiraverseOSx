@@ -1,0 +1,28 @@
+[
+  {
+    "collection": "INSTITUTIONAL_REGISTRY",
+    "key": "sup-faithmed",
+    "origin": "frontend/src/apps/worknet/worknetData.ts:187",
+    "context": "INSTITUTIONAL_REGISTRY",
+    "data": {
+      "id": "sup-faithmed",
+      "name": "Dr. Aris Thorne",
+      "title": "Chief Medical Officer",
+      "department": "Faith Medical // Central Clinical Directorate",
+      "avatar": "AT",
+      "personality": "Compassionate yet rigorously clinical. Prioritizes patient stabilization and clean documentation.",
+      "expectations": "All diagnostic entries must cross-reference VITALS-Sync telemetry. Patient comfort comes first.",
+      "approvalRate": 94
+    },
+    "original": {
+      "id": "sup-faithmed",
+      "name": "Dr. Aris Thorne",
+      "title": "Chief Medical Officer",
+      "department": "Faith Medical // Central Clinical Directorate",
+      "avatar": "AT",
+      "personality": "Compassionate yet rigorously clinical. Prioritizes patient stabilization and clean documentation.",
+      "expectations": "All diagnostic entries must cross-reference VITALS-Sync telemetry. Patient comfort comes first.",
+      "approvalRate": 94
+    }
+  }
+]

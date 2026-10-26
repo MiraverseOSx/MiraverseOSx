@@ -1,0 +1,35 @@
+[
+  {
+    "collection": "PEOPLE",
+    "key": "sissi",
+    "origin": "frontend/src/game-content/characters/socialProfiles.json:28",
+    "context": "PEOPLE",
+    "data": {
+      "id": "sissi",
+      "name": "Sissi Delmas",
+      "handle": "elisabeth.afterdark",
+      "phone": "Sissi",
+      "icon": "♡",
+      "theme": "glitter",
+      "bio": "A page for favorite looks, good company, and making an ordinary evening feel special.",
+      "interests": "Style · photographs · gatherings",
+      "mood": "Making plans",
+      "reply": "What would make a small gathering feel special to you?",
+      "response": "That sounds thoughtful. It is nicer when someone notices the little details.",
+      "legacyName": "Elisabeth Delmas"
+    },
+    "original": {
+      "id": "sissi",
+      "name": "Elisabeth Delmas",
+      "handle": "elisabeth.afterdark",
+      "phone": "Sissi",
+      "icon": "♡",
+      "theme": "glitter",
+      "bio": "A page for favorite looks, good company, and making an ordinary evening feel special.",
+      "interests": "Style · photographs · gatherings",
+      "mood": "Making plans",
+      "reply": "What would make a small gathering feel special to you?",
+      "response": "That sounds thoughtful. It is nicer when someone notices the little details."
+    }
+  }
+]

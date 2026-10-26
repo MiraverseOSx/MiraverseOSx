@@ -1,0 +1,24 @@
+[
+  {
+    "collection": "phone-contact",
+    "key": "Null Cantor",
+    "origin": "frontend/src/data/phoneData.ts:52",
+    "context": "phone-contact",
+    "data": [
+      {
+        "id": 9,
+        "sender": "Null Cantor",
+        "text": "[CORRUPTED SIGNAL]: The Purge was not the end. The Veil is waiting.",
+        "time": "03:14"
+      }
+    ],
+    "original": [
+      {
+        "id": 9,
+        "sender": "Null Cantor",
+        "text": "[CORRUPTED SIGNAL]: The Purge was not the end. The Veil is waiting.",
+        "time": "03:14"
+      }
+    ]
+  }
+]

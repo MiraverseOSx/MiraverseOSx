@@ -1,0 +1,24 @@
+[
+  {
+    "collection": "DGA_26_194_STARTING_PAYLOAD",
+    "key": "P-102",
+    "origin": "frontend/src/dgaos/data/seed/cases.ts:529",
+    "context": "DGA_26_194_STARTING_PAYLOAD",
+    "data": {
+      "personId": "P-102",
+      "name": "Dr. Gregory Thorne",
+      "role": "Attending Toxicologist",
+      "affiliation": "St. Jude Metropolitan Hospital",
+      "threatLevel": "Low",
+      "status": "Cooperating Medical Staff"
+    },
+    "original": {
+      "personId": "P-102",
+      "name": "Dr. Gregory Thorne",
+      "role": "Attending Toxicologist",
+      "affiliation": "St. Jude Metropolitan Hospital",
+      "threatLevel": "Low",
+      "status": "Cooperating Medical Staff"
+    }
+  }
+]

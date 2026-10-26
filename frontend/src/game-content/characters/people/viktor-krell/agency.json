@@ -1,0 +1,89 @@
+[
+  {
+    "collection": "seedPeople",
+    "key": "P-103",
+    "origin": "frontend/src/dgaos/data/seed/people.ts:35",
+    "context": "seedPeople",
+    "data": {
+      "id": "P-103",
+      "name": "Viktor Krell",
+      "aliases": [
+        "The Glassmaker",
+        "V. Krellov",
+        "Contractor K"
+      ],
+      "role": "Freelance Chemical Synthesis Broker & Smuggler",
+      "affiliation": "Black Market / Red Dawn Syndicate",
+      "status": "Surveillance",
+      "threatLevel": "Severe",
+      "bio": "Ex-bloc chemical weapons researcher suspected of brokering organophosphate and fentanyl analogues to non-state actors."
+    },
+    "original": {
+      "id": "P-103",
+      "name": "Viktor Krell",
+      "aliases": [
+        "The Glassmaker",
+        "V. Krellov",
+        "Contractor K"
+      ],
+      "role": "Freelance Chemical Synthesis Broker & Smuggler",
+      "affiliation": "Black Market / Red Dawn Syndicate",
+      "status": "Surveillance",
+      "threatLevel": "Severe",
+      "bio": "Ex-bloc chemical weapons researcher suspected of brokering organophosphate and fentanyl analogues to non-state actors."
+    }
+  },
+  {
+    "collection": "seedNPCs",
+    "key": "NPC-KRELL",
+    "origin": "frontend/src/dgaos/data/seed/npcs.ts:103",
+    "context": "seedNPCs",
+    "data": {
+      "id": "NPC-KRELL",
+      "name": "Viktor Krell",
+      "occupation": "Illicit Chemical Synthesis Broker",
+      "organization": "Red Dawn Syndicate / Phoenix Bio Shadow Contact",
+      "relationship": {
+        "trust": 10,
+        "familiarity": 25,
+        "respect": 40,
+        "tension": 95
+      },
+      "knowledge": [
+        "Exact synthesis batch recipe and courier handoff rendezvous.",
+        "Identity of the foreign embassy inside source."
+      ],
+      "secrets": [
+        "Possesses secondary precursor canister stored at Harbor Warehouse 18."
+      ],
+      "currentConcerns": [
+        "DGA border net closing before freighter departure."
+      ],
+      "communicationStyle": "covert_guarded",
+      "legacyName": "Viktor Krell (\"The Glassmaker\")"
+    },
+    "original": {
+      "id": "NPC-KRELL",
+      "name": "Viktor Krell (\"The Glassmaker\")",
+      "occupation": "Illicit Chemical Synthesis Broker",
+      "organization": "Red Dawn Syndicate / Phoenix Bio Shadow Contact",
+      "relationship": {
+        "trust": 10,
+        "familiarity": 25,
+        "respect": 40,
+        "tension": 95
+      },
+      "knowledge": [
+        "Exact synthesis batch recipe and courier handoff rendezvous.",
+        "Identity of the foreign embassy inside source."
+      ],
+      "secrets": [
+        "Possesses secondary precursor canister stored at Harbor Warehouse 18."
+      ],
+      "currentConcerns": [
+        "DGA border net closing before freighter departure."
+      ],
+      "communicationStyle": "covert_guarded"
+    }
+  }
+]

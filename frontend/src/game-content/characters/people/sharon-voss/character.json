@@ -1,0 +1,29 @@
+{
+  "id": "char-sharon-voss",
+  "name": "Dr. Sharon Voss",
+  "kind": "person",
+  "aliases": [],
+  "status": "existing",
+  "notes": [],
+  "legacyIds": [],
+  "references": [
+    {
+      "collection": "PEOPLE",
+      "key": "voss",
+      "file": "people/sharon-voss/social.json"
+    },
+    {
+      "collection": "AUREMAIL_DIRECTORY",
+      "key": "dir-dr-voss",
+      "file": "people/sharon-voss/mail.json"
+    },
+    {
+      "collection": "phone-contact",
+      "key": "Dr. Voss",
+      "file": "people/sharon-voss/phone.json"
+    }
+  ],
+  "maid": null,
+  "legacyMaids": [],
+  "folder": "sharon-voss"
+}

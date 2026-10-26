@@ -1,0 +1,28 @@
+{
+  "id": "char-marcus-vance",
+  "name": "Courier Marcus Vance (No Relation)",
+  "kind": "person",
+  "aliases": [
+    "Courier 9",
+    "Runner M"
+  ],
+  "status": "existing",
+  "notes": [],
+  "legacyIds": [],
+  "references": [
+    {
+      "collection": "seedPeople",
+      "key": "P-104",
+      "file": "people/marcus-vance-courier/agency.json"
+    },
+    {
+      "collection": "seedRelationships",
+      "key": "REL-005",
+      "file": "people/marcus-vance-courier/relationships.json"
+    }
+  ],
+  "maid": null,
+  "legacyMaids": [],
+  "folder": "marcus-vance-courier",
+  "disambiguation": "Diplomatic courier"
+}

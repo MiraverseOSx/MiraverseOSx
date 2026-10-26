@@ -1,0 +1,19 @@
+{
+  "id": "char-felix-ward",
+  "name": "Felix Ward",
+  "kind": "person",
+  "aliases": [],
+  "status": "existing",
+  "notes": [],
+  "legacyIds": [],
+  "references": [
+    {
+      "collection": "INSTITUTIONAL_REGISTRY",
+      "key": "cw-qn-1",
+      "file": "people/felix-ward/workplace.json"
+    }
+  ],
+  "maid": null,
+  "legacyMaids": [],
+  "folder": "felix-ward"
+}

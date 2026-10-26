@@ -1,0 +1,41 @@
+[
+  {
+    "collection": "AUREMAIL_DIRECTORY",
+    "key": "dir-riven",
+    "origin": "frontend/src/data/commsData.ts:356",
+    "context": "AUREMAIL_DIRECTORY",
+    "data": {
+      "id": "dir-riven",
+      "name": "Riven Kalbera",
+      "address": "riven@worknet.aure",
+      "category": "npc",
+      "accountType": "work",
+      "role": "Netrunner Specialist",
+      "institution": "Independent / Vector",
+      "faction": "Vector",
+      "maid": "MAID-OR-00010206",
+      "npcKey": "riven",
+      "requiredClearance": 1,
+      "requiredTrust": 45,
+      "verified": true,
+      "description": "Handles conduit routing, dead-drop analysis, and Old Factory Ward reconnaissance.",
+      "legacyName": "Riven Asterwind"
+    },
+    "original": {
+      "id": "dir-riven",
+      "name": "Riven Asterwind",
+      "address": "riven@worknet.aure",
+      "category": "npc",
+      "accountType": "work",
+      "role": "Netrunner Specialist",
+      "institution": "Independent / Vector",
+      "faction": "Vector",
+      "maid": "MAID-OR-00010206",
+      "npcKey": "riven",
+      "requiredClearance": 1,
+      "requiredTrust": 45,
+      "verified": true,
+      "description": "Handles conduit routing, dead-drop analysis, and Old Factory Ward reconnaissance."
+    }
+  }
+]

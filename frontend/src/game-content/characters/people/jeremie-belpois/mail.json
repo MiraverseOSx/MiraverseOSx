@@ -1,0 +1,40 @@
+[
+  {
+    "collection": "AUREMAIL_DIRECTORY",
+    "key": "dir-jeremie",
+    "origin": "frontend/src/data/commsData.ts:325",
+    "context": "AUREMAIL_DIRECTORY",
+    "data": {
+      "id": "dir-jeremie",
+      "name": "Jeremie Belpois",
+      "address": "j.belpois@cyacademy.edu",
+      "category": "npc",
+      "accountType": "academic",
+      "role": "Lead Systems Engineer",
+      "institution": "Cyacademy Lab 4",
+      "faction": "Cyacademy Admin",
+      "maid": "MAID-OR-00010204",
+      "npcKey": "jeremie",
+      "requiredClearance": 1,
+      "requiredTrust": 30,
+      "verified": true,
+      "description": "Maintains Sub-Conduit diagnostic relays, firewall modules, and SpellForge compilers."
+    },
+    "original": {
+      "id": "dir-jeremie",
+      "name": "Jeremie Belpois",
+      "address": "j.belpois@cyacademy.edu",
+      "category": "npc",
+      "accountType": "academic",
+      "role": "Lead Systems Engineer",
+      "institution": "Cyacademy Lab 4",
+      "faction": "Cyacademy Admin",
+      "maid": "MAID-OR-00010204",
+      "npcKey": "jeremie",
+      "requiredClearance": 1,
+      "requiredTrust": 30,
+      "verified": true,
+      "description": "Maintains Sub-Conduit diagnostic relays, firewall modules, and SpellForge compilers."
+    }
+  }
+]

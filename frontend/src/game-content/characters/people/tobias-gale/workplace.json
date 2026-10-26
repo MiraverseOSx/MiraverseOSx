@@ -1,0 +1,38 @@
+[
+  {
+    "collection": "INSTITUTIONAL_REGISTRY",
+    "key": "cw-fin-2",
+    "origin": "frontend/src/apps/worknet/worknetData.ts:287",
+    "context": "INSTITUTIONAL_REGISTRY",
+    "data": {
+      "id": "cw-fin-2",
+      "name": "Tobias Gale",
+      "title": "Disbursement Officer",
+      "division": "Federal Payroll Bureau",
+      "avatar": "TG",
+      "status": "In Meeting",
+      "specialty": "Credit transfer queue batching and verified recipient authorization",
+      "quote": "Pay people on cycle. Everything else in government can wait, but payroll cannot.",
+      "trust": 78,
+      "competence": 83,
+      "familiarity": 62,
+      "cooperation": 80,
+      "conflictHistory": 8
+    },
+    "original": {
+      "id": "cw-fin-2",
+      "name": "Tobias Gale",
+      "title": "Disbursement Officer",
+      "division": "Federal Payroll Bureau",
+      "avatar": "TG",
+      "status": "In Meeting",
+      "specialty": "Credit transfer queue batching and verified recipient authorization",
+      "quote": "Pay people on cycle. Everything else in government can wait, but payroll cannot.",
+      "trust": 78,
+      "competence": 83,
+      "familiarity": 62,
+      "cooperation": 80,
+      "conflictHistory": 8
+    }
+  }
+]

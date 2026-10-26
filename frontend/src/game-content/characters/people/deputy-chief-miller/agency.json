@@ -1,0 +1,56 @@
+[
+  {
+    "collection": "seedNPCs",
+    "key": "NPC-MILLER",
+    "origin": "frontend/src/dgaos/data/seed/npcs.ts:55",
+    "context": "seedNPCs",
+    "data": {
+      "id": "NPC-MILLER",
+      "name": "Deputy Chief Miller",
+      "occupation": "Station Chief / Liaison Lead",
+      "organization": "Station Geneva",
+      "relationship": {
+        "trust": 70,
+        "familiarity": 60,
+        "respect": 75,
+        "tension": 30
+      },
+      "knowledge": [
+        "Zurich wire transfers match Viktor Krell biometric indicators.",
+        "Phoenix Biotech dual-use shipments transited via maritime cargo."
+      ],
+      "secrets": [
+        "Swiss Federal Police running parallel surveillance without DGA disclosure."
+      ],
+      "currentConcerns": [
+        "Krell escaping into non-extradition jurisdiction within 72 hours."
+      ],
+      "communicationStyle": "formal_diplomatic",
+      "lastInteraction": "2026-09-29T05:40:00Z"
+    },
+    "original": {
+      "id": "NPC-MILLER",
+      "name": "Deputy Chief Miller",
+      "occupation": "Station Chief / Liaison Lead",
+      "organization": "Station Geneva",
+      "relationship": {
+        "trust": 70,
+        "familiarity": 60,
+        "respect": 75,
+        "tension": 30
+      },
+      "knowledge": [
+        "Zurich wire transfers match Viktor Krell biometric indicators.",
+        "Phoenix Biotech dual-use shipments transited via maritime cargo."
+      ],
+      "secrets": [
+        "Swiss Federal Police running parallel surveillance without DGA disclosure."
+      ],
+      "currentConcerns": [
+        "Krell escaping into non-extradition jurisdiction within 72 hours."
+      ],
+      "communicationStyle": "formal_diplomatic",
+      "lastInteraction": "2026-09-29T05:40:00Z"
+    }
+  }
+]

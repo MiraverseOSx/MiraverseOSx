@@ -1,0 +1,19 @@
+{
+  "id": "char-thalia-vane",
+  "name": "Thalia Vane",
+  "kind": "person",
+  "aliases": [],
+  "status": "existing",
+  "notes": [],
+  "legacyIds": [],
+  "references": [
+    {
+      "collection": "INSTITUTIONAL_REGISTRY",
+      "key": "sup-diplomat",
+      "file": "people/thalia-vane/workplace.json"
+    }
+  ],
+  "maid": null,
+  "legacyMaids": [],
+  "folder": "thalia-vane"
+}

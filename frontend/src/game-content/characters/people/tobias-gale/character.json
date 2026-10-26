@@ -1,0 +1,19 @@
+{
+  "id": "char-tobias-gale",
+  "name": "Tobias Gale",
+  "kind": "person",
+  "aliases": [],
+  "status": "existing",
+  "notes": [],
+  "legacyIds": [],
+  "references": [
+    {
+      "collection": "INSTITUTIONAL_REGISTRY",
+      "key": "cw-fin-2",
+      "file": "people/tobias-gale/workplace.json"
+    }
+  ],
+  "maid": null,
+  "legacyMaids": [],
+  "folder": "tobias-gale"
+}

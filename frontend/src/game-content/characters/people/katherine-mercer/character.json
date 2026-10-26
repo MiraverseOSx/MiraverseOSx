@@ -1,0 +1,19 @@
+{
+  "id": "char-katherine-mercer",
+  "name": "Katherine Mercer",
+  "kind": "person",
+  "aliases": [],
+  "status": "existing",
+  "notes": [],
+  "legacyIds": [],
+  "references": [
+    {
+      "collection": "INSTITUTIONAL_REGISTRY",
+      "key": "cw-fm-1",
+      "file": "people/katherine-mercer/workplace.json"
+    }
+  ],
+  "maid": null,
+  "legacyMaids": [],
+  "folder": "katherine-mercer"
+}

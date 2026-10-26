@@ -1,0 +1,22 @@
+[
+  {
+    "collection": "story-bible",
+    "key": "Coach Rhen",
+    "origin": "docs/data/story-bible-characters.json:28",
+    "context": "story-bible",
+    "data": {
+      "key": "Coach Rhen",
+      "name": "Coach Rhen",
+      "role": "Combat Arts",
+      "line": 320,
+      "characterId": "char-rhen"
+    },
+    "original": {
+      "key": "Coach Rhen",
+      "name": "Coach Rhen",
+      "role": "Combat Arts",
+      "line": 320,
+      "characterId": "char-rhen"
+    }
+  }
+]

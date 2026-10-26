@@ -1,0 +1,24 @@
+[
+  {
+    "collection": "phone-contact",
+    "key": "Nerya",
+    "origin": "frontend/src/data/phoneData.ts:49",
+    "context": "phone-contact",
+    "data": [
+      {
+        "id": 8,
+        "sender": "Nerya",
+        "text": "Your aura frequency bears a distinct celestial mark... we should speak.",
+        "time": "08:30"
+      }
+    ],
+    "original": [
+      {
+        "id": 8,
+        "sender": "Nerya",
+        "text": "Your aura frequency bears a distinct celestial mark... we should speak.",
+        "time": "08:30"
+      }
+    ]
+  }
+]

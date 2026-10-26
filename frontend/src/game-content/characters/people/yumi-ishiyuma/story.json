@@ -1,0 +1,22 @@
+[
+  {
+    "collection": "story-bible",
+    "key": "Yumi Ishiyuma",
+    "origin": "docs/data/story-bible-characters.json:70",
+    "context": "story-bible",
+    "data": {
+      "key": "Yumi Ishiyuma",
+      "name": "Yumi Ishiyuma",
+      "role": "Cyacademy social circle",
+      "line": 333,
+      "characterId": "char-yumi-ishiyuma"
+    },
+    "original": {
+      "key": "Yumi Ishiyuma",
+      "name": "Yumi Ishiyuma",
+      "role": "Cyacademy social circle",
+      "line": 333,
+      "characterId": "char-yumi-ishiyuma"
+    }
+  }
+]

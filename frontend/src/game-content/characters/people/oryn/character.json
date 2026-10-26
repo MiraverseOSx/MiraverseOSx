@@ -1,0 +1,19 @@
+{
+  "id": "char-oryn",
+  "name": "Professor Oryn",
+  "kind": "person",
+  "aliases": [],
+  "status": "document-only",
+  "notes": [],
+  "legacyIds": [],
+  "references": [
+    {
+      "collection": "story-bible",
+      "key": "Professor Oryn",
+      "file": "people/oryn/story.json"
+    }
+  ],
+  "maid": null,
+  "legacyMaids": [],
+  "folder": "oryn"
+}

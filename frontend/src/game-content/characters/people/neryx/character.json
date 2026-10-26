@@ -1,0 +1,19 @@
+{
+  "id": "char-neryx",
+  "name": "Lord Neryx",
+  "kind": "person",
+  "aliases": [],
+  "status": "existing",
+  "notes": [],
+  "legacyIds": [],
+  "references": [
+    {
+      "collection": "NPCS",
+      "key": "npc-neryx",
+      "file": "people/neryx/world.json"
+    }
+  ],
+  "maid": null,
+  "legacyMaids": [],
+  "folder": "neryx"
+}

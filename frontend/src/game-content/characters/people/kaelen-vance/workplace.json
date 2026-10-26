@@ -1,0 +1,28 @@
+[
+  {
+    "collection": "INSTITUTIONAL_REGISTRY",
+    "key": "sup-engineer",
+    "origin": "frontend/src/apps/worknet/worknetData.ts:390",
+    "context": "INSTITUTIONAL_REGISTRY",
+    "data": {
+      "id": "sup-engineer",
+      "name": "Kaelen Vance",
+      "title": "Chief Systems Architect",
+      "department": "Infrastructure Directorate // Systems Engineering",
+      "avatar": "KV",
+      "personality": "Pragmatic, direct, safety-obsessed. Will test a relay three times before clearing transit power.",
+      "expectations": "Isolate power BEFORE touching the board. Lock out transit mains or face immediate disciplinary review.",
+      "approvalRate": 86
+    },
+    "original": {
+      "id": "sup-engineer",
+      "name": "Kaelen Vance",
+      "title": "Chief Systems Architect",
+      "department": "Infrastructure Directorate // Systems Engineering",
+      "avatar": "KV",
+      "personality": "Pragmatic, direct, safety-obsessed. Will test a relay three times before clearing transit power.",
+      "expectations": "Isolate power BEFORE touching the board. Lock out transit mains or face immediate disciplinary review.",
+      "approvalRate": 86
+    }
+  }
+]

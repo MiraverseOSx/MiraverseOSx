@@ -1,0 +1,19 @@
+{
+  "id": "char-keket",
+  "name": "Seer Keket",
+  "kind": "person",
+  "aliases": [],
+  "status": "existing",
+  "notes": [],
+  "legacyIds": [],
+  "references": [
+    {
+      "collection": "NPCS",
+      "key": "npc-keket",
+      "file": "people/keket/world.json"
+    }
+  ],
+  "maid": null,
+  "legacyMaids": [],
+  "folder": "keket"
+}

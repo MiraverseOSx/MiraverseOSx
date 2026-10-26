@@ -1,0 +1,19 @@
+{
+  "id": "char-aris-thorne",
+  "name": "Dr. Aris Thorne",
+  "kind": "person",
+  "aliases": [],
+  "status": "existing",
+  "notes": [],
+  "legacyIds": [],
+  "references": [
+    {
+      "collection": "INSTITUTIONAL_REGISTRY",
+      "key": "sup-faithmed",
+      "file": "people/aris-thorne/workplace.json"
+    }
+  ],
+  "maid": null,
+  "legacyMaids": [],
+  "folder": "aris-thorne"
+}

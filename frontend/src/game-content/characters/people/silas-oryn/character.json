@@ -1,0 +1,19 @@
+{
+  "id": "char-silas-oryn",
+  "name": "Silas Oryn",
+  "kind": "person",
+  "aliases": [],
+  "status": "existing",
+  "notes": [],
+  "legacyIds": [],
+  "references": [
+    {
+      "collection": "INSTITUTIONAL_REGISTRY",
+      "key": "sup-finance",
+      "file": "people/silas-oryn/workplace.json"
+    }
+  ],
+  "maid": null,
+  "legacyMaids": [],
+  "folder": "silas-oryn"
+}

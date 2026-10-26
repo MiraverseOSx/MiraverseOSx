@@ -1,0 +1,19 @@
+{
+  "id": "char-unidentified-patient-pat95881",
+  "name": "Jane Doe (Unidentified Subject)",
+  "kind": "person",
+  "aliases": [],
+  "status": "existing",
+  "notes": [],
+  "legacyIds": [],
+  "references": [
+    {
+      "collection": "OVERDOSE_TOXICOLOGY_MEDICAL_CHART",
+      "key": "PAT-95881",
+      "file": "people/unidentified-patient-pat95881/investigations.json"
+    }
+  ],
+  "maid": null,
+  "legacyMaids": [],
+  "folder": "unidentified-patient-pat95881"
+}

@@ -1,0 +1,20 @@
+{
+  "id": "char-marcus-vance-technician",
+  "name": "Marcus Vance",
+  "kind": "person",
+  "aliases": [],
+  "status": "existing",
+  "notes": [],
+  "legacyIds": [],
+  "references": [
+    {
+      "collection": "INV_26_402_STARTING_PAYLOAD",
+      "key": "P-402",
+      "file": "people/marcus-vance-technician/investigations.json"
+    }
+  ],
+  "maid": null,
+  "legacyMaids": [],
+  "folder": "marcus-vance-technician",
+  "disambiguation": "Motorcycle technician"
+}

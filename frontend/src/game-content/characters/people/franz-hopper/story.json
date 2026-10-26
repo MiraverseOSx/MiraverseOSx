@@ -1,0 +1,22 @@
+[
+  {
+    "collection": "story-bible",
+    "key": "Franz Hopper",
+    "origin": "docs/data/story-bible-characters.json:91",
+    "context": "story-bible",
+    "data": {
+      "key": "Franz Hopper",
+      "name": "Franz Hopper",
+      "role": "Elder researcher",
+      "line": 335,
+      "characterId": "char-franz-hopper"
+    },
+    "original": {
+      "key": "Franz Hopper",
+      "name": "Franz Hopper",
+      "role": "Elder researcher",
+      "line": 335,
+      "characterId": "char-franz-hopper"
+    }
+  }
+]

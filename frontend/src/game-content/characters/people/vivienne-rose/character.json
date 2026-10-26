@@ -1,0 +1,19 @@
+{
+  "id": "char-vivienne-rose",
+  "name": "Vivienne Rose",
+  "kind": "person",
+  "aliases": [],
+  "status": "existing",
+  "notes": [],
+  "legacyIds": [],
+  "references": [
+    {
+      "collection": "INSTITUTIONAL_REGISTRY",
+      "key": "sup-artist",
+      "file": "people/vivienne-rose/workplace.json"
+    }
+  ],
+  "maid": null,
+  "legacyMaids": [],
+  "folder": "vivienne-rose"
+}

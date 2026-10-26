@@ -1,0 +1,41 @@
+[
+  {
+    "collection": "AUREMAIL_DIRECTORY",
+    "key": "dir-aelita",
+    "origin": "frontend/src/data/commsData.ts:309",
+    "context": "AUREMAIL_DIRECTORY",
+    "data": {
+      "id": "dir-aelita",
+      "name": "Aelita Hopper",
+      "address": "aelita.s@cyacademy.edu",
+      "category": "npc",
+      "accountType": "academic",
+      "role": "Core Resonance Specialist",
+      "institution": "Cyacademy University",
+      "faction": "Cyacademy Admin",
+      "maid": "MAID-OR-00010203",
+      "npcKey": "aelita",
+      "requiredClearance": 1,
+      "requiredTrust": 30,
+      "verified": true,
+      "description": "Researches Veil tower harmonics, AETHERCORE echoes, and archive memory traces.",
+      "legacyName": "Aelita Schaeffer"
+    },
+    "original": {
+      "id": "dir-aelita",
+      "name": "Aelita Schaeffer",
+      "address": "aelita.s@cyacademy.edu",
+      "category": "npc",
+      "accountType": "academic",
+      "role": "Core Resonance Specialist",
+      "institution": "Cyacademy University",
+      "faction": "Cyacademy Admin",
+      "maid": "MAID-OR-00010203",
+      "npcKey": "aelita",
+      "requiredClearance": 1,
+      "requiredTrust": 30,
+      "verified": true,
+      "description": "Researches Veil tower harmonics, AETHERCORE echoes, and archive memory traces."
+    }
+  }
+]

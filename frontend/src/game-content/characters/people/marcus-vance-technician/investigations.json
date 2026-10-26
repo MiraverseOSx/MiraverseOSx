@@ -1,0 +1,24 @@
+[
+  {
+    "collection": "INV_26_402_STARTING_PAYLOAD",
+    "key": "P-402",
+    "origin": "frontend/src/dgaos/data/seed/cases.ts:743",
+    "context": "INV_26_402_STARTING_PAYLOAD",
+    "data": {
+      "personId": "P-402",
+      "name": "Marcus Vance",
+      "role": "Race Tuner & Motorcycle Master Technician",
+      "affiliation": "Vance Precision Performance",
+      "threatLevel": "Moderate",
+      "status": "Person of Interest / Last Serviced Vehicle"
+    },
+    "original": {
+      "personId": "P-402",
+      "name": "Marcus Vance",
+      "role": "Race Tuner & Motorcycle Master Technician",
+      "affiliation": "Vance Precision Performance",
+      "threatLevel": "Moderate",
+      "status": "Person of Interest / Last Serviced Vehicle"
+    }
+  }
+]

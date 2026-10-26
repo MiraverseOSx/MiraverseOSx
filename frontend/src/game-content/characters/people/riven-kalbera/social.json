@@ -1,0 +1,35 @@
+[
+  {
+    "collection": "PEOPLE",
+    "key": "riven",
+    "origin": "frontend/src/game-content/characters/socialProfiles.json:67",
+    "context": "PEOPLE",
+    "data": {
+      "id": "riven",
+      "name": "Riven Kalbera",
+      "handle": "riven.outside",
+      "phone": "Riven",
+      "icon": "◇",
+      "theme": "blue",
+      "bio": "A few observations from around the city.",
+      "interests": "Walking · city views",
+      "mood": "Away for a while",
+      "reply": "What have you noticed around the city lately?",
+      "response": "I will look more closely next time. Thanks for pointing it out.",
+      "legacyName": "Riven Asterwind"
+    },
+    "original": {
+      "id": "riven",
+      "name": "Riven Asterwind",
+      "handle": "riven.outside",
+      "phone": "Riven",
+      "icon": "◇",
+      "theme": "blue",
+      "bio": "A few observations from around the city.",
+      "interests": "Walking · city views",
+      "mood": "Away for a while",
+      "reply": "What have you noticed around the city lately?",
+      "response": "I will look more closely next time. Thanks for pointing it out."
+    }
+  }
+]

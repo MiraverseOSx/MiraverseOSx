@@ -1,0 +1,22 @@
+[
+  {
+    "collection": "story-bible",
+    "key": "Professor Idris",
+    "origin": "docs/data/story-bible-characters.json:21",
+    "context": "story-bible",
+    "data": {
+      "key": "Professor Idris",
+      "name": "Professor Idris",
+      "role": "Systems and Anomaly Studies",
+      "line": 317,
+      "characterId": "char-idris"
+    },
+    "original": {
+      "key": "Professor Idris",
+      "name": "Professor Idris",
+      "role": "Systems and Anomaly Studies",
+      "line": 317,
+      "characterId": "char-idris"
+    }
+  }
+]

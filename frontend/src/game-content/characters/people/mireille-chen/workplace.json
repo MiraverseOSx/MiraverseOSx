@@ -1,0 +1,38 @@
+[
+  {
+    "collection": "INSTITUTIONAL_REGISTRY",
+    "key": "cw-dga-2",
+    "origin": "frontend/src/apps/worknet/worknetData.ts:123",
+    "context": "INSTITUTIONAL_REGISTRY",
+    "data": {
+      "id": "cw-dga-2",
+      "name": "Mireille Chen",
+      "title": "Investigative Case Officer",
+      "division": "Eyes Intelligence Bureau",
+      "avatar": "MC",
+      "status": "In Meeting",
+      "specialty": "Witness correspondence & cross-registry financial correlation",
+      "quote": "Paper trails don’t glitch out. People just stop reading footnote disclosures.",
+      "trust": 84,
+      "competence": 88,
+      "familiarity": 72,
+      "cooperation": 86,
+      "conflictHistory": 4
+    },
+    "original": {
+      "id": "cw-dga-2",
+      "name": "Mireille Chen",
+      "title": "Investigative Case Officer",
+      "division": "Eyes Intelligence Bureau",
+      "avatar": "MC",
+      "status": "In Meeting",
+      "specialty": "Witness correspondence & cross-registry financial correlation",
+      "quote": "Paper trails don’t glitch out. People just stop reading footnote disclosures.",
+      "trust": 84,
+      "competence": 88,
+      "familiarity": 72,
+      "cooperation": 86,
+      "conflictHistory": 4
+    }
+  }
+]

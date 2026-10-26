@@ -1,0 +1,35 @@
+[
+  {
+    "collection": "PEOPLE",
+    "key": "odd",
+    "origin": "frontend/src/game-content/characters/socialProfiles.json:41",
+    "context": "PEOPLE",
+    "data": {
+      "id": "odd",
+      "name": "Odd Della Robia",
+      "handle": "odd.one.out",
+      "phone": "Odd",
+      "icon": "★",
+      "theme": "lavender",
+      "bio": "Sketches, discoveries, and a few things that made me laugh.",
+      "interests": "Art · music · friends",
+      "mood": "Curious",
+      "reply": "What made you smile today?",
+      "response": "That was worth sharing. I needed a small bright spot today.",
+      "legacyName": "Odd Della Robbia"
+    },
+    "original": {
+      "id": "odd",
+      "name": "Odd Della Robbia",
+      "handle": "odd.one.out",
+      "phone": "Odd",
+      "icon": "★",
+      "theme": "lavender",
+      "bio": "Sketches, discoveries, and a few things that made me laugh.",
+      "interests": "Art · music · friends",
+      "mood": "Curious",
+      "reply": "What made you smile today?",
+      "response": "That was worth sharing. I needed a small bright spot today."
+    }
+  }
+]

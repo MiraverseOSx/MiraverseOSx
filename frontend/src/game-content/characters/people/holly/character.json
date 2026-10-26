@@ -1,0 +1,19 @@
+{
+  "id": "char-holly",
+  "name": "High Warden Holly",
+  "kind": "person",
+  "aliases": [],
+  "status": "existing",
+  "notes": [],
+  "legacyIds": [],
+  "references": [
+    {
+      "collection": "NPCS",
+      "key": "npc-holly",
+      "file": "people/holly/world.json"
+    }
+  ],
+  "maid": null,
+  "legacyMaids": [],
+  "folder": "holly"
+}

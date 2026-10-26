@@ -1,0 +1,38 @@
+[
+  {
+    "collection": "INSTITUTIONAL_REGISTRY",
+    "key": "cw-fin-1",
+    "origin": "frontend/src/apps/worknet/worknetData.ts:272",
+    "context": "INSTITUTIONAL_REGISTRY",
+    "data": {
+      "id": "cw-fin-1",
+      "name": "Elise Vance",
+      "title": "Senior Ledger Analyst",
+      "division": "Public Audit & Compliance",
+      "avatar": "EV",
+      "status": "Desk",
+      "specialty": "Inter-regional routing variances and municipal grant reconciliations",
+      "quote": "When the municipal debit doesn’t balance, always check the scholarship roll first.",
+      "trust": 85,
+      "competence": 94,
+      "familiarity": 70,
+      "cooperation": 86,
+      "conflictHistory": 4
+    },
+    "original": {
+      "id": "cw-fin-1",
+      "name": "Elise Vance",
+      "title": "Senior Ledger Analyst",
+      "division": "Public Audit & Compliance",
+      "avatar": "EV",
+      "status": "Desk",
+      "specialty": "Inter-regional routing variances and municipal grant reconciliations",
+      "quote": "When the municipal debit doesn’t balance, always check the scholarship roll first.",
+      "trust": 85,
+      "competence": 94,
+      "familiarity": 70,
+      "cooperation": 86,
+      "conflictHistory": 4
+    }
+  }
+]

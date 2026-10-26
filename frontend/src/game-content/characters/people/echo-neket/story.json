@@ -1,0 +1,22 @@
+[
+  {
+    "collection": "story-bible",
+    "key": "Echo Neket",
+    "origin": "docs/data/story-bible-characters.json:98",
+    "context": "story-bible",
+    "data": {
+      "key": "Echo Neket",
+      "name": "Echo Neket",
+      "role": "Hidden data routes",
+      "line": 337,
+      "characterId": "char-echo-neket"
+    },
+    "original": {
+      "key": "Echo Neket",
+      "name": "Echo Neket",
+      "role": "Hidden data routes",
+      "line": 337,
+      "characterId": "char-echo-neket"
+    }
+  }
+]

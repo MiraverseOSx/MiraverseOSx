@@ -1,0 +1,22 @@
+[
+  {
+    "collection": "story-bible",
+    "key": "Solis Agni",
+    "origin": "docs/data/story-bible-characters.json:105",
+    "context": "story-bible",
+    "data": {
+      "key": "Solis Agni",
+      "name": "Solis Agni",
+      "role": "Faith Medical healer",
+      "line": 339,
+      "characterId": "char-solis-agni"
+    },
+    "original": {
+      "key": "Solis Agni",
+      "name": "Solis Agni",
+      "role": "Faith Medical healer",
+      "line": 339,
+      "characterId": "char-solis-agni"
+    }
+  }
+]

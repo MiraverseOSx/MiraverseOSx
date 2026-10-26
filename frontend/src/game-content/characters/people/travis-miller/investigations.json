@@ -1,0 +1,24 @@
+[
+  {
+    "collection": "INV_26_402_STARTING_PAYLOAD",
+    "key": "P-405",
+    "origin": "frontend/src/dgaos/data/seed/cases.ts:767",
+    "context": "INV_26_402_STARTING_PAYLOAD",
+    "data": {
+      "personId": "P-405",
+      "name": "Trooper Travis Miller",
+      "role": "First Responding Crash Reconstructionist",
+      "affiliation": "State Highway Patrol (Troop B)",
+      "threatLevel": "Low",
+      "status": "Cooperating Law Enforcement"
+    },
+    "original": {
+      "personId": "P-405",
+      "name": "Trooper Travis Miller",
+      "role": "First Responding Crash Reconstructionist",
+      "affiliation": "State Highway Patrol (Troop B)",
+      "threatLevel": "Low",
+      "status": "Cooperating Law Enforcement"
+    }
+  }
+]

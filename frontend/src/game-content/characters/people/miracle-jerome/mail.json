@@ -1,0 +1,39 @@
+[
+  {
+    "collection": "AUREMAIL_DIRECTORY",
+    "key": "dir-miracle-jerome",
+    "origin": "frontend/src/data/commsData.ts:388",
+    "context": "AUREMAIL_DIRECTORY",
+    "data": {
+      "id": "dir-miracle-jerome",
+      "name": "Dr. Miracle Jerome",
+      "address": "m.jerome@faithmed.aure",
+      "category": "citizen",
+      "accountType": "institutional",
+      "role": "Chief Aura Diagnostician",
+      "institution": "Faith Medical Group",
+      "faction": "Faith Medical",
+      "maid": "MAID-OR-00481927",
+      "requiredClearance": 1,
+      "verified": true,
+      "description": "Canonical Citizen #2 · Attending physician overseeing Veilwilt & Aura calibration.",
+      "legacyMaid": "MAID-OR-00000002",
+      "legacyNpcKey": "ilyra"
+    },
+    "original": {
+      "id": "dir-miracle-jerome",
+      "name": "Dr. Miracle Jerome",
+      "address": "m.jerome@faithmed.aure",
+      "category": "citizen",
+      "accountType": "institutional",
+      "role": "Chief Aura Diagnostician",
+      "institution": "Faith Medical Group",
+      "faction": "Faith Medical",
+      "maid": "MAID-OR-00000002",
+      "npcKey": "ilyra",
+      "requiredClearance": 1,
+      "verified": true,
+      "description": "Canonical Citizen #2 · Attending physician overseeing Veilwilt & Aura calibration."
+    }
+  }
+]

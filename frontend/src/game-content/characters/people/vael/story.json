@@ -1,0 +1,22 @@
+[
+  {
+    "collection": "story-bible",
+    "key": "Headmistress Vael",
+    "origin": "docs/data/story-bible-characters.json:14",
+    "context": "story-bible",
+    "data": {
+      "key": "Headmistress Vael",
+      "name": "Headmistress Vael",
+      "role": "Cyacademy leadership",
+      "line": 308,
+      "characterId": "char-vael"
+    },
+    "original": {
+      "key": "Headmistress Vael",
+      "name": "Headmistress Vael",
+      "role": "Cyacademy leadership",
+      "line": 308,
+      "characterId": "char-vael"
+    }
+  }
+]

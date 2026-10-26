@@ -1,0 +1,39 @@
+{
+  "id": "char-viktor-krell",
+  "name": "Viktor Krell",
+  "kind": "person",
+  "aliases": [
+    "The Glassmaker",
+    "V. Krellov",
+    "Contractor K",
+    "Viktor Krell (\"The Glassmaker\")"
+  ],
+  "status": "existing",
+  "notes": [],
+  "legacyIds": [],
+  "references": [
+    {
+      "collection": "seedPeople",
+      "key": "P-103",
+      "file": "people/viktor-krell/agency.json"
+    },
+    {
+      "collection": "seedNPCs",
+      "key": "NPC-KRELL",
+      "file": "people/viktor-krell/agency.json"
+    },
+    {
+      "collection": "DGA_26_194_STARTING_PAYLOAD",
+      "key": "P-103",
+      "file": "people/viktor-krell/investigations.json"
+    },
+    {
+      "collection": "seedRelationships",
+      "key": "REL-004",
+      "file": "people/viktor-krell/relationships.json"
+    }
+  ],
+  "maid": null,
+  "legacyMaids": [],
+  "folder": "viktor-krell"
+}

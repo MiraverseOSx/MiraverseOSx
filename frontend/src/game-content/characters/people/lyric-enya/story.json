@@ -1,0 +1,22 @@
+[
+  {
+    "collection": "story-bible",
+    "key": "Lyric Enya",
+    "origin": "docs/data/story-bible-characters.json:119",
+    "context": "story-bible",
+    "data": {
+      "key": "Lyric Enya",
+      "name": "Lyric Enya",
+      "role": "House Aurelith and The Velvet",
+      "line": 341,
+      "characterId": "char-lyric-enya"
+    },
+    "original": {
+      "key": "Lyric Enya",
+      "name": "Lyric Enya",
+      "role": "House Aurelith and The Velvet",
+      "line": 341,
+      "characterId": "char-lyric-enya"
+    }
+  }
+]

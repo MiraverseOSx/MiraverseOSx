@@ -1,0 +1,22 @@
+[
+  {
+    "collection": "story-bible",
+    "key": "Professor Oryn",
+    "origin": "docs/data/story-bible-characters.json:42",
+    "context": "story-bible",
+    "data": {
+      "key": "Professor Oryn",
+      "name": "Professor Oryn",
+      "role": "Systems Engineering",
+      "line": 326,
+      "characterId": "char-oryn"
+    },
+    "original": {
+      "key": "Professor Oryn",
+      "name": "Professor Oryn",
+      "role": "Systems Engineering",
+      "line": 326,
+      "characterId": "char-oryn"
+    }
+  }
+]

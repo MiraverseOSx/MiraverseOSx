@@ -1,0 +1,38 @@
+[
+  {
+    "collection": "INSTITUTIONAL_REGISTRY",
+    "key": "cw-dip-1",
+    "origin": "frontend/src/apps/worknet/worknetData.ts:457",
+    "context": "INSTITUTIONAL_REGISTRY",
+    "data": {
+      "id": "cw-dip-1",
+      "name": "Gregory Bell",
+      "title": "Consensus Arbitrator",
+      "division": "Treaty Bureau",
+      "avatar": "GB",
+      "status": "Desk",
+      "specialty": "Solar-core and cryo-coolant reciprocal parity frameworks",
+      "quote": "Never push for a signature until both sides have confirmed their resource guarantees.",
+      "trust": 80,
+      "competence": 88,
+      "familiarity": 65,
+      "cooperation": 82,
+      "conflictHistory": 6
+    },
+    "original": {
+      "id": "cw-dip-1",
+      "name": "Gregory Bell",
+      "title": "Consensus Arbitrator",
+      "division": "Treaty Bureau",
+      "avatar": "GB",
+      "status": "Desk",
+      "specialty": "Solar-core and cryo-coolant reciprocal parity frameworks",
+      "quote": "Never push for a signature until both sides have confirmed their resource guarantees.",
+      "trust": 80,
+      "competence": 88,
+      "familiarity": 65,
+      "cooperation": 82,
+      "conflictHistory": 6
+    }
+  }
+]

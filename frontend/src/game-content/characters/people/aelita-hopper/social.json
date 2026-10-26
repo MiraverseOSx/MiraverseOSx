@@ -1,0 +1,35 @@
+[
+  {
+    "collection": "PEOPLE",
+    "key": "aelita",
+    "origin": "frontend/src/game-content/characters/socialProfiles.json:15",
+    "context": "PEOPLE",
+    "data": {
+      "id": "aelita",
+      "name": "Aelita Hopper",
+      "handle": "aelita.daydreams",
+      "phone": "Aelita",
+      "icon": "✿",
+      "theme": "rose",
+      "bio": "Little melodies, soft colors, and a place to keep the moments I want to remember.",
+      "interests": "Music · art · quiet places",
+      "mood": "Listening",
+      "reply": "Is there a small moment you would like to remember from today?",
+      "response": "I’m glad you told me. Sometimes the smallest memories are the ones that stay with us.",
+      "legacyName": "Aelita Schaeffer"
+    },
+    "original": {
+      "id": "aelita",
+      "name": "Aelita Schaeffer",
+      "handle": "aelita.daydreams",
+      "phone": "Aelita",
+      "icon": "✿",
+      "theme": "rose",
+      "bio": "Little melodies, soft colors, and a place to keep the moments I want to remember.",
+      "interests": "Music · art · quiet places",
+      "mood": "Listening",
+      "reply": "Is there a small moment you would like to remember from today?",
+      "response": "I’m glad you told me. Sometimes the smallest memories are the ones that stay with us."
+    }
+  }
+]

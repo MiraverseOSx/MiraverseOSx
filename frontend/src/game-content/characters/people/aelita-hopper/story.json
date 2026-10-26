@@ -1,0 +1,22 @@
+[
+  {
+    "collection": "story-bible",
+    "key": "Aelita Hopper",
+    "origin": "docs/data/story-bible-characters.json:49",
+    "context": "story-bible",
+    "data": {
+      "key": "Aelita Hopper",
+      "name": "Aelita Hopper",
+      "role": "Cyacademy social circle",
+      "line": 331,
+      "characterId": "char-aelita-hopper"
+    },
+    "original": {
+      "key": "Aelita Hopper",
+      "name": "Aelita Hopper",
+      "role": "Cyacademy social circle",
+      "line": 331,
+      "characterId": "char-aelita-hopper"
+    }
+  }
+]

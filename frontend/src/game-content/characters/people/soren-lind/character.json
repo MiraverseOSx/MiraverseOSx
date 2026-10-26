@@ -1,0 +1,19 @@
+{
+  "id": "char-soren-lind",
+  "name": "Soren Lind",
+  "kind": "person",
+  "aliases": [],
+  "status": "existing",
+  "notes": [],
+  "legacyIds": [],
+  "references": [
+    {
+      "collection": "INSTITUTIONAL_REGISTRY",
+      "key": "cw-fm-2",
+      "file": "people/soren-lind/workplace.json"
+    }
+  ],
+  "maid": null,
+  "legacyMaids": [],
+  "folder": "soren-lind"
+}

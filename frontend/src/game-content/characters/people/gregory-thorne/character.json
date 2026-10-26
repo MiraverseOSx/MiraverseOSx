@@ -1,0 +1,37 @@
+{
+  "id": "char-gregory-thorne",
+  "name": "Dr. Gregory Thorne",
+  "kind": "person",
+  "aliases": [
+    "Chief Toxicology",
+    "Dr. Thorne"
+  ],
+  "status": "existing",
+  "notes": [],
+  "legacyIds": [],
+  "references": [
+    {
+      "collection": "seedPeople",
+      "key": "P-102",
+      "file": "people/gregory-thorne/agency.json"
+    },
+    {
+      "collection": "seedNPCs",
+      "key": "NPC-THORNE",
+      "file": "people/gregory-thorne/agency.json"
+    },
+    {
+      "collection": "DGA_26_194_STARTING_PAYLOAD",
+      "key": "P-102",
+      "file": "people/gregory-thorne/investigations.json"
+    },
+    {
+      "collection": "seedRelationships",
+      "key": "REL-003",
+      "file": "people/gregory-thorne/relationships.json"
+    }
+  ],
+  "maid": null,
+  "legacyMaids": [],
+  "folder": "gregory-thorne"
+}

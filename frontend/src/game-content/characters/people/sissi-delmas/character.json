@@ -1,0 +1,39 @@
+{
+  "id": "char-sissi-delmas",
+  "name": "Sissi Delmas",
+  "kind": "person",
+  "aliases": [
+    "Elisabeth Delmas",
+    "Sissi"
+  ],
+  "status": "existing",
+  "notes": [],
+  "legacyIds": [
+    "char-elisabeth-delmas"
+  ],
+  "references": [
+    {
+      "collection": "PEOPLE",
+      "key": "sissi",
+      "file": "people/sissi-delmas/social.json"
+    },
+    {
+      "collection": "personas",
+      "key": "Sissi",
+      "file": "people/sissi-delmas/dialogue.json"
+    },
+    {
+      "collection": "phone-contact",
+      "key": "Sissi",
+      "file": "people/sissi-delmas/phone.json"
+    },
+    {
+      "collection": "story-bible",
+      "key": "Sissi Delmas",
+      "file": "people/sissi-delmas/story.json"
+    }
+  ],
+  "maid": null,
+  "legacyMaids": [],
+  "folder": "sissi-delmas"
+}

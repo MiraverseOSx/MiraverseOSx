@@ -1,0 +1,38 @@
+[
+  {
+    "collection": "INSTITUTIONAL_REGISTRY",
+    "key": "cw-qn-1",
+    "origin": "frontend/src/apps/worknet/worknetData.ts:626",
+    "context": "INSTITUTIONAL_REGISTRY",
+    "data": {
+      "id": "cw-qn-1",
+      "name": "Felix Ward",
+      "title": "Dispatch Assistant",
+      "division": "Neighborhood Dispatch Desk",
+      "avatar": "FW",
+      "status": "Desk",
+      "specialty": "District routing and courier package verification",
+      "quote": "Taking care of the little things keeps the city running just as much as the High Council.",
+      "trust": 85,
+      "competence": 86,
+      "familiarity": 78,
+      "cooperation": 90,
+      "conflictHistory": 2
+    },
+    "original": {
+      "id": "cw-qn-1",
+      "name": "Felix Ward",
+      "title": "Dispatch Assistant",
+      "division": "Neighborhood Dispatch Desk",
+      "avatar": "FW",
+      "status": "Desk",
+      "specialty": "District routing and courier package verification",
+      "quote": "Taking care of the little things keeps the city running just as much as the High Council.",
+      "trust": 85,
+      "competence": 86,
+      "familiarity": 78,
+      "cooperation": 90,
+      "conflictHistory": 2
+    }
+  }
+]

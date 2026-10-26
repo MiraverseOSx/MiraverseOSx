@@ -1,0 +1,24 @@
+[
+  {
+    "collection": "phone-contact",
+    "key": "Dr. Voss",
+    "origin": "frontend/src/data/phoneData.ts:34",
+    "context": "phone-contact",
+    "data": [
+      {
+        "id": 3,
+        "sender": "Dr. Voss",
+        "text": "Student, verify your Aethercore frequency before Lab 4.",
+        "time": "09:12"
+      }
+    ],
+    "original": [
+      {
+        "id": 3,
+        "sender": "Dr. Voss",
+        "text": "Student, verify your Aethercore frequency before Lab 4.",
+        "time": "09:12"
+      }
+    ]
+  }
+]

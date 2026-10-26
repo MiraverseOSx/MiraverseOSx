@@ -1,0 +1,19 @@
+{
+  "id": "char-mai",
+  "name": "Mai",
+  "kind": "companion",
+  "aliases": [],
+  "status": "existing",
+  "notes": [],
+  "legacyIds": [],
+  "references": [
+    {
+      "collection": "personas",
+      "key": "Mai",
+      "file": "people/mai/dialogue.json"
+    }
+  ],
+  "maid": null,
+  "legacyMaids": [],
+  "folder": "mai"
+}

@@ -1,0 +1,19 @@
+{
+  "id": "char-robert-mercer",
+  "name": "Dr. Robert Mercer",
+  "kind": "person",
+  "aliases": [],
+  "status": "existing",
+  "notes": [],
+  "legacyIds": [],
+  "references": [
+    {
+      "collection": "NPCS",
+      "key": "npc-mercer",
+      "file": "people/robert-mercer/world.json"
+    }
+  ],
+  "maid": null,
+  "legacyMaids": [],
+  "folder": "robert-mercer"
+}

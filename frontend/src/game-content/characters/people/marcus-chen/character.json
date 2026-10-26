@@ -1,0 +1,19 @@
+{
+  "id": "char-marcus-chen",
+  "name": "Specialist Marcus Chen",
+  "kind": "person",
+  "aliases": [],
+  "status": "existing",
+  "notes": [],
+  "legacyIds": [],
+  "references": [
+    {
+      "collection": "seedNPCs",
+      "key": "NPC-CHEN",
+      "file": "people/marcus-chen/agency.json"
+    }
+  ],
+  "maid": null,
+  "legacyMaids": [],
+  "folder": "marcus-chen"
+}

@@ -1,0 +1,602 @@
+[
+  {
+    "collection": "NPCS",
+    "key": "npc-maeryn",
+    "characterId": "char-maeryn-seraphima"
+  },
+  {
+    "collection": "story-bible",
+    "key": "Queen Maeryn Seraphima",
+    "characterId": "char-maeryn-seraphima"
+  },
+  {
+    "collection": "NPCS",
+    "key": "npc-holly",
+    "characterId": "char-holly"
+  },
+  {
+    "collection": "NPCS",
+    "key": "npc-lucia",
+    "characterId": "char-lucia"
+  },
+  {
+    "collection": "NPCS",
+    "key": "npc-neryx",
+    "characterId": "char-neryx"
+  },
+  {
+    "collection": "NPCS",
+    "key": "npc-yoko",
+    "characterId": "char-yoko"
+  },
+  {
+    "collection": "NPCS",
+    "key": "npc-ember",
+    "characterId": "char-ember"
+  },
+  {
+    "collection": "NPCS",
+    "key": "npc-keket",
+    "characterId": "char-keket"
+  },
+  {
+    "collection": "NPCS",
+    "key": "npc-vesper",
+    "characterId": "char-kieran-vesper"
+  },
+  {
+    "collection": "defaultInputs",
+    "key": "MAID-OR-00481929",
+    "characterId": "char-kieran-vesper"
+  },
+  {
+    "collection": "NPCS",
+    "key": "npc-mercer",
+    "characterId": "char-robert-mercer"
+  },
+  {
+    "collection": "seedPeople",
+    "key": "P-101",
+    "characterId": "char-christian-vance"
+  },
+  {
+    "collection": "DGA_26_194_STARTING_PAYLOAD",
+    "key": "P-101",
+    "characterId": "char-christian-vance"
+  },
+  {
+    "collection": "INITIAL_MEDICAL_CHART",
+    "key": "PAT-88194",
+    "characterId": "char-christian-vance"
+  },
+  {
+    "collection": "seedRelationships",
+    "key": "REL-002",
+    "characterId": "char-christian-vance"
+  },
+  {
+    "collection": "seedPeople",
+    "key": "P-102",
+    "characterId": "char-gregory-thorne"
+  },
+  {
+    "collection": "seedNPCs",
+    "key": "NPC-THORNE",
+    "characterId": "char-gregory-thorne"
+  },
+  {
+    "collection": "DGA_26_194_STARTING_PAYLOAD",
+    "key": "P-102",
+    "characterId": "char-gregory-thorne"
+  },
+  {
+    "collection": "seedRelationships",
+    "key": "REL-003",
+    "characterId": "char-gregory-thorne"
+  },
+  {
+    "collection": "seedPeople",
+    "key": "P-103",
+    "characterId": "char-viktor-krell"
+  },
+  {
+    "collection": "seedNPCs",
+    "key": "NPC-KRELL",
+    "characterId": "char-viktor-krell"
+  },
+  {
+    "collection": "DGA_26_194_STARTING_PAYLOAD",
+    "key": "P-103",
+    "characterId": "char-viktor-krell"
+  },
+  {
+    "collection": "seedRelationships",
+    "key": "REL-004",
+    "characterId": "char-viktor-krell"
+  },
+  {
+    "collection": "seedPeople",
+    "key": "P-104",
+    "characterId": "char-marcus-vance"
+  },
+  {
+    "collection": "seedRelationships",
+    "key": "REL-005",
+    "characterId": "char-marcus-vance"
+  },
+  {
+    "collection": "seedPeople",
+    "key": "P-105",
+    "characterId": "char-elena-rostova"
+  },
+  {
+    "collection": "defaultInputs",
+    "key": "MAID-OR-00481931",
+    "characterId": "char-elena-rostova"
+  },
+  {
+    "collection": "INV_26_402_STARTING_PAYLOAD",
+    "key": "P-401",
+    "characterId": "char-elena-rostova"
+  },
+  {
+    "collection": "seedRelationships",
+    "key": "REL-006",
+    "characterId": "char-elena-rostova"
+  },
+  {
+    "collection": "seedNPCs",
+    "key": "NPC-CROSS",
+    "characterId": "char-evelyn-cross"
+  },
+  {
+    "collection": "seedNPCs",
+    "key": "NPC-MILLER",
+    "characterId": "char-deputy-chief-miller"
+  },
+  {
+    "collection": "seedNPCs",
+    "key": "NPC-CHEN",
+    "characterId": "char-marcus-chen"
+  },
+  {
+    "collection": "primarySeedAgent",
+    "key": "DGA-SA-8804",
+    "characterId": "char-miracle-jerome"
+  },
+  {
+    "collection": "AUREMAIL_DIRECTORY",
+    "key": "dir-miracle-jerome",
+    "characterId": "char-miracle-jerome"
+  },
+  {
+    "collection": "defaultInputs",
+    "key": "MAID-OR-00481927",
+    "characterId": "char-miracle-jerome"
+  },
+  {
+    "collection": "seedRelationships",
+    "key": "REL-001",
+    "characterId": "char-miracle-jerome"
+  },
+  {
+    "collection": "seedRelationships",
+    "key": "REL-007",
+    "characterId": "char-miracle-jerome"
+  },
+  {
+    "collection": "PEOPLE",
+    "key": "jeremie",
+    "characterId": "char-jeremie-belpois"
+  },
+  {
+    "collection": "AUREMAIL_DIRECTORY",
+    "key": "dir-jeremie",
+    "characterId": "char-jeremie-belpois"
+  },
+  {
+    "collection": "personas",
+    "key": "Jeremie",
+    "characterId": "char-jeremie-belpois"
+  },
+  {
+    "collection": "phone-contact",
+    "key": "Jeremie",
+    "characterId": "char-jeremie-belpois"
+  },
+  {
+    "collection": "story-bible",
+    "key": "Jeremie Belpois",
+    "characterId": "char-jeremie-belpois"
+  },
+  {
+    "collection": "PEOPLE",
+    "key": "aelita",
+    "characterId": "char-aelita-hopper"
+  },
+  {
+    "collection": "AUREMAIL_DIRECTORY",
+    "key": "dir-aelita",
+    "characterId": "char-aelita-hopper"
+  },
+  {
+    "collection": "personas",
+    "key": "Aelita",
+    "characterId": "char-aelita-hopper"
+  },
+  {
+    "collection": "phone-contact",
+    "key": "Aelita",
+    "characterId": "char-aelita-hopper"
+  },
+  {
+    "collection": "story-bible",
+    "key": "Aelita Hopper",
+    "characterId": "char-aelita-hopper"
+  },
+  {
+    "collection": "PEOPLE",
+    "key": "sissi",
+    "characterId": "char-sissi-delmas"
+  },
+  {
+    "collection": "personas",
+    "key": "Sissi",
+    "characterId": "char-sissi-delmas"
+  },
+  {
+    "collection": "phone-contact",
+    "key": "Sissi",
+    "characterId": "char-sissi-delmas"
+  },
+  {
+    "collection": "story-bible",
+    "key": "Sissi Delmas",
+    "characterId": "char-sissi-delmas"
+  },
+  {
+    "collection": "PEOPLE",
+    "key": "odd",
+    "characterId": "char-odd-della-robia"
+  },
+  {
+    "collection": "AUREMAIL_DIRECTORY",
+    "key": "dir-odd",
+    "characterId": "char-odd-della-robia"
+  },
+  {
+    "collection": "phone-contact",
+    "key": "Odd",
+    "characterId": "char-odd-della-robia"
+  },
+  {
+    "collection": "story-bible",
+    "key": "Odd Della Robia",
+    "characterId": "char-odd-della-robia"
+  },
+  {
+    "collection": "PEOPLE",
+    "key": "voss",
+    "characterId": "char-sharon-voss"
+  },
+  {
+    "collection": "AUREMAIL_DIRECTORY",
+    "key": "dir-dr-voss",
+    "characterId": "char-sharon-voss"
+  },
+  {
+    "collection": "phone-contact",
+    "key": "Dr. Voss",
+    "characterId": "char-sharon-voss"
+  },
+  {
+    "collection": "PEOPLE",
+    "key": "riven",
+    "characterId": "char-riven-kalbera"
+  },
+  {
+    "collection": "AUREMAIL_DIRECTORY",
+    "key": "dir-riven",
+    "characterId": "char-riven-kalbera"
+  },
+  {
+    "collection": "story-bible",
+    "key": "Riven Kalbera",
+    "characterId": "char-riven-kalbera"
+  },
+  {
+    "collection": "PEOPLE",
+    "key": "mara",
+    "characterId": "char-mara-thorne"
+  },
+  {
+    "collection": "PEOPLE",
+    "key": "rowan",
+    "characterId": "char-rowan"
+  },
+  {
+    "collection": "INSTITUTIONAL_REGISTRY",
+    "key": "sup-dga",
+    "characterId": "char-ronald-sterling"
+  },
+  {
+    "collection": "INSTITUTIONAL_REGISTRY",
+    "key": "cw-dga-1",
+    "characterId": "char-vance-lowe"
+  },
+  {
+    "collection": "INSTITUTIONAL_REGISTRY",
+    "key": "cw-dga-2",
+    "characterId": "char-mireille-chen"
+  },
+  {
+    "collection": "INSTITUTIONAL_REGISTRY",
+    "key": "cw-dga-3",
+    "characterId": "char-derek-brody"
+  },
+  {
+    "collection": "INSTITUTIONAL_REGISTRY",
+    "key": "sup-faithmed",
+    "characterId": "char-aris-thorne"
+  },
+  {
+    "collection": "INSTITUTIONAL_REGISTRY",
+    "key": "cw-fm-1",
+    "characterId": "char-katherine-mercer"
+  },
+  {
+    "collection": "INSTITUTIONAL_REGISTRY",
+    "key": "cw-fm-2",
+    "characterId": "char-soren-lind"
+  },
+  {
+    "collection": "INSTITUTIONAL_REGISTRY",
+    "key": "sup-finance",
+    "characterId": "char-silas-oryn"
+  },
+  {
+    "collection": "INSTITUTIONAL_REGISTRY",
+    "key": "cw-fin-1",
+    "characterId": "char-elise-vance"
+  },
+  {
+    "collection": "INSTITUTIONAL_REGISTRY",
+    "key": "cw-fin-2",
+    "characterId": "char-tobias-gale"
+  },
+  {
+    "collection": "INSTITUTIONAL_REGISTRY",
+    "key": "sup-archives",
+    "characterId": "char-julian-thorne"
+  },
+  {
+    "collection": "INSTITUTIONAL_REGISTRY",
+    "key": "cw-arc-1",
+    "characterId": "char-maren-holt"
+  },
+  {
+    "collection": "INSTITUTIONAL_REGISTRY",
+    "key": "sup-engineer",
+    "characterId": "char-kaelen-vance"
+  },
+  {
+    "collection": "INSTITUTIONAL_REGISTRY",
+    "key": "cw-eng-1",
+    "characterId": "char-nadia-cruz"
+  },
+  {
+    "collection": "INSTITUTIONAL_REGISTRY",
+    "key": "sup-diplomat",
+    "characterId": "char-thalia-vane"
+  },
+  {
+    "collection": "INSTITUTIONAL_REGISTRY",
+    "key": "cw-dip-1",
+    "characterId": "char-gregory-bell"
+  },
+  {
+    "collection": "INSTITUTIONAL_REGISTRY",
+    "key": "sup-warden",
+    "characterId": "char-corin-mercer"
+  },
+  {
+    "collection": "INSTITUTIONAL_REGISTRY",
+    "key": "cw-war-1",
+    "characterId": "char-mara-finch"
+  },
+  {
+    "collection": "INSTITUTIONAL_REGISTRY",
+    "key": "sup-artist",
+    "characterId": "char-vivienne-rose"
+  },
+  {
+    "collection": "INSTITUTIONAL_REGISTRY",
+    "key": "cw-art-1",
+    "characterId": "char-leo-sterling"
+  },
+  {
+    "collection": "INSTITUTIONAL_REGISTRY",
+    "key": "sup-questnotice",
+    "characterId": "char-talia-moss"
+  },
+  {
+    "collection": "INSTITUTIONAL_REGISTRY",
+    "key": "cw-qn-1",
+    "characterId": "char-felix-ward"
+  },
+  {
+    "collection": "AUREMAIL_DIRECTORY",
+    "key": "dir-dean-rook",
+    "characterId": "char-cassian-rook"
+  },
+  {
+    "collection": "personas",
+    "key": "Dean Cassian Rook",
+    "characterId": "char-cassian-rook"
+  },
+  {
+    "collection": "AUREMAIL_DIRECTORY",
+    "key": "dir-elara-vale",
+    "characterId": "char-elara-vale"
+  },
+  {
+    "collection": "defaultInputs",
+    "key": "MAID-OR-00481926",
+    "characterId": "char-elara-vale"
+  },
+  {
+    "collection": "FORMAL_INVESTIGATION_CASES",
+    "key": "CASE-FM-401",
+    "characterId": "char-elara-vale"
+  },
+  {
+    "collection": "PATIENT_CARE_ASSIGNMENTS",
+    "key": "pc-vale",
+    "characterId": "char-elara-vale"
+  },
+  {
+    "collection": "AUREMAIL_DIRECTORY",
+    "key": "dir-julian-vance",
+    "characterId": "char-julian-paul-vance"
+  },
+  {
+    "collection": "defaultInputs",
+    "key": "MAID-OR-00481928",
+    "characterId": "char-julian-paul-vance"
+  },
+  {
+    "collection": "defaultInputs",
+    "key": "MAID-OR-00481930",
+    "characterId": "char-sora-takahashi"
+  },
+  {
+    "collection": "personas",
+    "key": "Mai",
+    "characterId": "char-mai"
+  },
+  {
+    "collection": "personas",
+    "key": "Vaelen",
+    "characterId": "char-vaelen"
+  },
+  {
+    "collection": "personas",
+    "key": "Kaelen",
+    "characterId": "char-kaelen"
+  },
+  {
+    "collection": "story-bible",
+    "key": "Headmistress Vael",
+    "characterId": "char-vael"
+  },
+  {
+    "collection": "story-bible",
+    "key": "Professor Idris",
+    "characterId": "char-idris"
+  },
+  {
+    "collection": "story-bible",
+    "key": "Coach Rhen",
+    "characterId": "char-rhen"
+  },
+  {
+    "collection": "story-bible",
+    "key": "Instructor Lyse",
+    "characterId": "char-lyse"
+  },
+  {
+    "collection": "story-bible",
+    "key": "Professor Oryn",
+    "characterId": "char-oryn"
+  },
+  {
+    "collection": "phone-contact",
+    "key": "Yumi",
+    "characterId": "char-yumi-ishiyuma"
+  },
+  {
+    "collection": "story-bible",
+    "key": "Yumi Ishiyuma",
+    "characterId": "char-yumi-ishiyuma"
+  },
+  {
+    "collection": "phone-contact",
+    "key": "Ulrich",
+    "characterId": "char-ulrich-stern"
+  },
+  {
+    "collection": "story-bible",
+    "key": "Ulrich Stern",
+    "characterId": "char-ulrich-stern"
+  },
+  {
+    "collection": "story-bible",
+    "key": "Franz Hopper",
+    "characterId": "char-franz-hopper"
+  },
+  {
+    "collection": "story-bible",
+    "key": "Echo Neket",
+    "characterId": "char-echo-neket"
+  },
+  {
+    "collection": "story-bible",
+    "key": "Solis Agni",
+    "characterId": "char-solis-agni"
+  },
+  {
+    "collection": "story-bible",
+    "key": "Lyric Enya",
+    "characterId": "char-lyric-enya"
+  },
+  {
+    "collection": "phone-contact",
+    "key": "Nerya",
+    "characterId": "char-nerya"
+  },
+  {
+    "collection": "phone-contact",
+    "key": "Null Cantor",
+    "characterId": "char-null-cantor"
+  },
+  {
+    "collection": "INV_26_402_STARTING_PAYLOAD",
+    "key": "P-402",
+    "characterId": "char-marcus-vance-technician"
+  },
+  {
+    "collection": "INV_26_402_STARTING_PAYLOAD",
+    "key": "P-403",
+    "characterId": "char-dominic-sterling"
+  },
+  {
+    "collection": "INV_26_402_STARTING_PAYLOAD",
+    "key": "P-404",
+    "characterId": "char-unidentified-driver-p404"
+  },
+  {
+    "collection": "INV_26_402_STARTING_PAYLOAD",
+    "key": "P-405",
+    "characterId": "char-travis-miller"
+  },
+  {
+    "collection": "MOTORCYCLE_CRASH_MEDICAL_CHART",
+    "key": "PAT-94102",
+    "characterId": "char-tyler-ross"
+  },
+  {
+    "collection": "OVERDOSE_TOXICOLOGY_MEDICAL_CHART",
+    "key": "PAT-95881",
+    "characterId": "char-unidentified-patient-pat95881"
+  },
+  {
+    "collection": "FORMAL_INVESTIGATION_CASES",
+    "key": "CASE-DGA-402",
+    "characterId": "char-kaelen-voss"
+  },
+  {
+    "collection": "PATIENT_CARE_ASSIGNMENTS",
+    "key": "pc-mercer",
+    "characterId": "char-s-mercer"
+  }
+]

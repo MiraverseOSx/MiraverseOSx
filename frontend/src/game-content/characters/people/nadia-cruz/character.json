@@ -1,0 +1,19 @@
+{
+  "id": "char-nadia-cruz",
+  "name": "Nadia Cruz",
+  "kind": "person",
+  "aliases": [],
+  "status": "existing",
+  "notes": [],
+  "legacyIds": [],
+  "references": [
+    {
+      "collection": "INSTITUTIONAL_REGISTRY",
+      "key": "cw-eng-1",
+      "file": "people/nadia-cruz/workplace.json"
+    }
+  ],
+  "maid": null,
+  "legacyMaids": [],
+  "folder": "nadia-cruz"
+}

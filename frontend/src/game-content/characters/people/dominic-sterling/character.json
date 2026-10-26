@@ -1,0 +1,19 @@
+{
+  "id": "char-dominic-sterling",
+  "name": "Dominic Sterling",
+  "kind": "person",
+  "aliases": [],
+  "status": "existing",
+  "notes": [],
+  "legacyIds": [],
+  "references": [
+    {
+      "collection": "INV_26_402_STARTING_PAYLOAD",
+      "key": "P-403",
+      "file": "people/dominic-sterling/investigations.json"
+    }
+  ],
+  "maid": null,
+  "legacyMaids": [],
+  "folder": "dominic-sterling"
+}

@@ -1,0 +1,33 @@
+{
+  "id": "char-riven-kalbera",
+  "name": "Riven Kalbera",
+  "kind": "person",
+  "aliases": [
+    "Riven Asterwind"
+  ],
+  "status": "existing",
+  "notes": [],
+  "legacyIds": [
+    "char-riven-asterwind"
+  ],
+  "references": [
+    {
+      "collection": "PEOPLE",
+      "key": "riven",
+      "file": "people/riven-kalbera/social.json"
+    },
+    {
+      "collection": "AUREMAIL_DIRECTORY",
+      "key": "dir-riven",
+      "file": "people/riven-kalbera/mail.json"
+    },
+    {
+      "collection": "story-bible",
+      "key": "Riven Kalbera",
+      "file": "people/riven-kalbera/story.json"
+    }
+  ],
+  "maid": null,
+  "legacyMaids": [],
+  "folder": "riven-kalbera"
+}

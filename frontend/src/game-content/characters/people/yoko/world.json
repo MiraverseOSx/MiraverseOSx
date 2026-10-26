@@ -1,0 +1,26 @@
+[
+  {
+    "collection": "NPCS",
+    "key": "npc-yoko",
+    "origin": "frontend/src/game-content/characters/worldNpcs.json:38",
+    "context": "NPCS",
+    "data": {
+      "id": "npc-yoko",
+      "name": "Grand Dispatcher Yoko",
+      "title": "Overseer of the Autumn Winds",
+      "role": "Consul",
+      "dialogueTone": "Brisk, pragmatic, and witty",
+      "affiliation": "House Yoko",
+      "realm": "Brisland"
+    },
+    "original": {
+      "id": "npc-yoko",
+      "name": "Grand Dispatcher Yoko",
+      "title": "Overseer of the Autumn Winds",
+      "role": "Consul",
+      "dialogueTone": "Brisk, pragmatic, and witty",
+      "affiliation": "House Yoko",
+      "realm": "Brisland"
+    }
+  }
+]

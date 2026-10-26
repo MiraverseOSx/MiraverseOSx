@@ -1,0 +1,19 @@
+{
+  "id": "char-tyler-ross",
+  "name": "Officer Tyler Ross",
+  "kind": "person",
+  "aliases": [],
+  "status": "existing",
+  "notes": [],
+  "legacyIds": [],
+  "references": [
+    {
+      "collection": "MOTORCYCLE_CRASH_MEDICAL_CHART",
+      "key": "PAT-94102",
+      "file": "people/tyler-ross/investigations.json"
+    }
+  ],
+  "maid": null,
+  "legacyMaids": [],
+  "folder": "tyler-ross"
+}

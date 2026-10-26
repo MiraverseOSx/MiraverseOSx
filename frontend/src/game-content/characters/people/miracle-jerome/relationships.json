@@ -1,0 +1,50 @@
+[
+  {
+    "collection": "seedRelationships",
+    "key": "REL-001",
+    "origin": "frontend/src/dgaos/data/seed/relationships.ts:22",
+    "context": "seedRelationships",
+    "data": {
+      "id": "REL-001",
+      "sourceId": "DGA-SA-8804",
+      "sourceName": "Special Agent Miracle Jerome",
+      "targetId": "DGA-26-194",
+      "targetName": "Operation Velvet Cord",
+      "type": "assigned_to",
+      "notes": "Primary case director for the diplomatic poisoning investigation."
+    },
+    "original": {
+      "id": "REL-001",
+      "sourceId": "DGA-SA-8804",
+      "sourceName": "Special Agent Miracle Jerome",
+      "targetId": "DGA-26-194",
+      "targetName": "Operation Velvet Cord",
+      "type": "assigned_to",
+      "notes": "Primary case director for the diplomatic poisoning investigation."
+    }
+  },
+  {
+    "collection": "seedRelationships",
+    "key": "REL-007",
+    "origin": "frontend/src/dgaos/data/seed/relationships.ts:76",
+    "context": "seedRelationships",
+    "data": {
+      "id": "REL-007",
+      "sourceId": "DGA-SA-8804",
+      "sourceName": "Special Agent Miracle Jerome",
+      "targetId": "ORG-05",
+      "targetName": "TRACE Central Forensic Facility",
+      "type": "investigating",
+      "notes": "Has active forensic transfer pipeline with TRACE toxicologists for rapid substance characterization."
+    },
+    "original": {
+      "id": "REL-007",
+      "sourceId": "DGA-SA-8804",
+      "sourceName": "Special Agent Miracle Jerome",
+      "targetId": "ORG-05",
+      "targetName": "TRACE Central Forensic Facility",
+      "type": "investigating",
+      "notes": "Has active forensic transfer pipeline with TRACE toxicologists for rapid substance characterization."
+    }
+  }
+]

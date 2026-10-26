@@ -1,0 +1,22 @@
+[
+  {
+    "collection": "story-bible",
+    "key": "Odd Della Robia",
+    "origin": "docs/data/story-bible-characters.json:63",
+    "context": "story-bible",
+    "data": {
+      "key": "Odd Della Robia",
+      "name": "Odd Della Robia",
+      "role": "Cyacademy social circle",
+      "line": 333,
+      "characterId": "char-odd-della-robia"
+    },
+    "original": {
+      "key": "Odd Della Robia",
+      "name": "Odd Della Robia",
+      "role": "Cyacademy social circle",
+      "line": 333,
+      "characterId": "char-odd-della-robia"
+    }
+  }
+]

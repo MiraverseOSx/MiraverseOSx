@@ -1,0 +1,19 @@
+{
+  "id": "char-vance-lowe",
+  "name": "Vance Lowe",
+  "kind": "person",
+  "aliases": [],
+  "status": "existing",
+  "notes": [],
+  "legacyIds": [],
+  "references": [
+    {
+      "collection": "INSTITUTIONAL_REGISTRY",
+      "key": "cw-dga-1",
+      "file": "people/vance-lowe/workplace.json"
+    }
+  ],
+  "maid": null,
+  "legacyMaids": [],
+  "folder": "vance-lowe"
+}

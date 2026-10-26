@@ -1,0 +1,24 @@
+[
+  {
+    "collection": "DGA_26_194_STARTING_PAYLOAD",
+    "key": "P-103",
+    "origin": "frontend/src/dgaos/data/seed/cases.ts:537",
+    "context": "DGA_26_194_STARTING_PAYLOAD",
+    "data": {
+      "personId": "P-103",
+      "name": "Viktor Krell",
+      "role": "Primary Suspect / Synthesis Broker",
+      "affiliation": "Red Dawn Syndicate / Phoenix Bio Shadow Contact",
+      "threatLevel": "Severe",
+      "status": "Under Active Surveillance"
+    },
+    "original": {
+      "personId": "P-103",
+      "name": "Viktor Krell",
+      "role": "Primary Suspect / Synthesis Broker",
+      "affiliation": "Red Dawn Syndicate / Phoenix Bio Shadow Contact",
+      "threatLevel": "Severe",
+      "status": "Under Active Surveillance"
+    }
+  }
+]

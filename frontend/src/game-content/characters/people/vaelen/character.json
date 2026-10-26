@@ -1,0 +1,19 @@
+{
+  "id": "char-vaelen",
+  "name": "Vaelen",
+  "kind": "person",
+  "aliases": [],
+  "status": "existing",
+  "notes": [],
+  "legacyIds": [],
+  "references": [
+    {
+      "collection": "personas",
+      "key": "Vaelen",
+      "file": "people/vaelen/dialogue.json"
+    }
+  ],
+  "maid": null,
+  "legacyMaids": [],
+  "folder": "vaelen"
+}

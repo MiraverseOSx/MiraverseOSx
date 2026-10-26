@@ -1,0 +1,26 @@
+{
+  "id": "char-julian-paul-vance",
+  "name": "Dr. Julian Paul Vance",
+  "kind": "person",
+  "aliases": [],
+  "status": "existing",
+  "notes": [],
+  "legacyIds": [],
+  "references": [
+    {
+      "collection": "AUREMAIL_DIRECTORY",
+      "key": "dir-julian-vance",
+      "file": "people/julian-paul-vance/mail.json"
+    },
+    {
+      "collection": "defaultInputs",
+      "key": "MAID-OR-00481928",
+      "file": "people/julian-paul-vance/registry.json"
+    }
+  ],
+  "maid": "MAID-OR-00481928",
+  "legacyMaids": [
+    "MAID-OR-00000003"
+  ],
+  "folder": "julian-paul-vance"
+}

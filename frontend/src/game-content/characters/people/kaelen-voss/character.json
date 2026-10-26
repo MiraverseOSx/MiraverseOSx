@@ -1,0 +1,19 @@
+{
+  "id": "char-kaelen-voss",
+  "name": "Kaelen Voss",
+  "kind": "person",
+  "aliases": [],
+  "status": "existing",
+  "notes": [],
+  "legacyIds": [],
+  "references": [
+    {
+      "collection": "FORMAL_INVESTIGATION_CASES",
+      "key": "CASE-DGA-402",
+      "file": "people/kaelen-voss/investigations.json"
+    }
+  ],
+  "maid": null,
+  "legacyMaids": [],
+  "folder": "kaelen-voss"
+}

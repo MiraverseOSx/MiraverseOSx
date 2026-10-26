@@ -1,0 +1,28 @@
+[
+  {
+    "collection": "INSTITUTIONAL_REGISTRY",
+    "key": "sup-warden",
+    "origin": "frontend/src/apps/worknet/worknetData.ts:503",
+    "context": "INSTITUTIONAL_REGISTRY",
+    "data": {
+      "id": "sup-warden",
+      "name": "Corin Mercer",
+      "title": "Chief Warden of Arcadia Reserve",
+      "department": "Arcadia Biosphere // Central Ward",
+      "avatar": "CM",
+      "personality": "Rugged, observant, attuned to minute shifts in environmental resonance.",
+      "expectations": "Sample containers must be sealed and labeled immediately upon collection. Never mix test tubes.",
+      "approvalRate": 92
+    },
+    "original": {
+      "id": "sup-warden",
+      "name": "Corin Mercer",
+      "title": "Chief Warden of Arcadia Reserve",
+      "department": "Arcadia Biosphere // Central Ward",
+      "avatar": "CM",
+      "personality": "Rugged, observant, attuned to minute shifts in environmental resonance.",
+      "expectations": "Sample containers must be sealed and labeled immediately upon collection. Never mix test tubes.",
+      "approvalRate": 92
+    }
+  }
+]

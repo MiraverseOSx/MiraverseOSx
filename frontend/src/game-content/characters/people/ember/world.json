@@ -1,0 +1,26 @@
+[
+  {
+    "collection": "NPCS",
+    "key": "npc-ember",
+    "origin": "frontend/src/game-content/characters/worldNpcs.json:47",
+    "context": "NPCS",
+    "data": {
+      "id": "npc-ember",
+      "name": "High Forge-Master Ember",
+      "title": "Lord of the Pyre Foundries",
+      "role": "Artificer",
+      "dialogueTone": "Intense, passionate, and exacting",
+      "affiliation": "House Ember",
+      "realm": "Kaji"
+    },
+    "original": {
+      "id": "npc-ember",
+      "name": "High Forge-Master Ember",
+      "title": "Lord of the Pyre Foundries",
+      "role": "Artificer",
+      "dialogueTone": "Intense, passionate, and exacting",
+      "affiliation": "House Ember",
+      "realm": "Kaji"
+    }
+  }
+]

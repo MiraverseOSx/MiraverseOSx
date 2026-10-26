@@ -1,0 +1,126 @@
+[
+  {
+    "collection": "defaultInputs",
+    "key": "MAID-OR-00481926",
+    "origin": "frontend/src/services/maidIdentityService.ts:1245",
+    "context": "defaultInputs",
+    "data": {
+      "fixedMaid": "MAID-OR-00481926",
+      "fixedLegacy": "MRD-8492-319",
+      "name": "Elara Vale",
+      "registrationRegion": "Orynvell",
+      "dob": "2001-04-18",
+      "place": "Northwake, Fross",
+      "home": "Aureline, Orynvell",
+      "address": "142 Moonwell Way, Glassline District, Aureline Central",
+      "phone": "+1 (202) 555-0142",
+      "email": "elara.vale@cyacademy.edu",
+      "district": "Glassline District, Aureline Central",
+      "passport": "AUR-782194",
+      "alias": "Frostweaver / Silverglass",
+      "height": "174 cm",
+      "eyes": "Luminous Violet-Gray",
+      "hair": "Silver-Black / Stardust Shimmer",
+      "build": "Slender / Resilient Cryo-Adaptation",
+      "blood": "A+ (Aura Calibrated)",
+      "mark": "Faint crystalline frost markings along left wrist",
+      "species": "Frostborn",
+      "ancestry": "Lightborn · Ellawen Lineage",
+      "abilities": "Cryo-constructs, frost veil stabilization, starlight resonance",
+      "powerSource": "PRISM resonance & Aether",
+      "affinity": "Violet · knowledge / illusion / memory",
+      "faction": "Aureline Civic & Academic Network",
+      "lore": "Descendant of ancient Northwake cryo-weavers; enrolled in Cyacademy advanced resonance curriculum.",
+      "category": "Student / academy",
+      "affiliation": "Cyacademy Central Campus",
+      "occupation": "Research Apprentice / Resonance Analyst",
+      "clearance": "General Civic Access · Academic Clearance II",
+      "aura": "Calibrated Harmonic Tier III",
+      "medical": "Faith Medical Group · intake verified · Dr. Miracle Jerome attending",
+      "residency": "Cyacademy Vector Housing 4B · Verified Residence",
+      "history": "Routine civil registration completed at intake; transferred from Northwake regional enclave.",
+      "status": "ACTIVE / VERIFIED",
+      "links": "Coordinates academic study group at Aureline Library; holds valid regional transit pass.",
+      "relationships": "Patient of Dr. Miracle Jerome (MAID-OR-00481927) · Mentored by Dr. Julian Paul Vance (MAID-OR-00481928) · Research Partner of Kieran Vesper (MAID-OR-00481929)",
+      "relationshipIds": [
+        {
+          "id": "MAID-OR-00481927",
+          "type": "Attending Physician",
+          "notes": "Faith Medical Aura Calibration"
+        },
+        {
+          "id": "MAID-OR-00481928",
+          "type": "Academic & Forensic Mentor",
+          "notes": "TRACE / Cyacademy Liaison"
+        },
+        {
+          "id": "MAID-OR-00481929",
+          "type": "Research Partner",
+          "notes": "Orynvell Lineage Archives"
+        }
+      ],
+      "household": "Cyacademy Vector Housing Suite 4B",
+      "timeline": "Origin: Northwake, Fross; residing in Aureline, Orynvell since Year 24",
+      "storyMode": "Cyacademy Scholar"
+    },
+    "original": {
+      "fixedMaid": "MAID-OR-00481926",
+      "fixedLegacy": "MRD-8492-319",
+      "name": "Elara Vale",
+      "registrationRegion": "Orynvell",
+      "dob": "2001-04-18",
+      "place": "Northwake, Fross",
+      "home": "Aureline, Orynvell",
+      "address": "142 Moonwell Way, Glassline District, Aureline Central",
+      "phone": "+1 (202) 555-0142",
+      "email": "elara.vale@cyacademy.edu",
+      "district": "Glassline District, Aureline Central",
+      "passport": "AUR-782194",
+      "alias": "Frostweaver / Silverglass",
+      "height": "174 cm",
+      "eyes": "Luminous Violet-Gray",
+      "hair": "Silver-Black / Stardust Shimmer",
+      "build": "Slender / Resilient Cryo-Adaptation",
+      "blood": "A+ (Aura Calibrated)",
+      "mark": "Faint crystalline frost markings along left wrist",
+      "species": "Frostborn",
+      "ancestry": "Lightborn · Ellawen Lineage",
+      "abilities": "Cryo-constructs, frost veil stabilization, starlight resonance",
+      "powerSource": "PRISM resonance & Aether",
+      "affinity": "Violet · knowledge / illusion / memory",
+      "faction": "Aureline Civic & Academic Network",
+      "lore": "Descendant of ancient Northwake cryo-weavers; enrolled in Cyacademy advanced resonance curriculum.",
+      "category": "Student / academy",
+      "affiliation": "Cyacademy Central Campus",
+      "occupation": "Research Apprentice / Resonance Analyst",
+      "clearance": "General Civic Access · Academic Clearance II",
+      "aura": "Calibrated Harmonic Tier III",
+      "medical": "Faith Medical Group · intake verified · Dr. Miracle Jerome attending",
+      "residency": "Cyacademy Vector Housing 4B · Verified Residence",
+      "history": "Routine civil registration completed at intake; transferred from Northwake regional enclave.",
+      "status": "ACTIVE / VERIFIED",
+      "links": "Coordinates academic study group at Aureline Library; holds valid regional transit pass.",
+      "relationships": "Patient of Dr. Miracle Jerome (MAID-OR-00481927) · Mentored by Dr. Julian Paul Vance (MAID-OR-00481928) · Research Partner of Kieran Vesper (MAID-OR-00481929)",
+      "relationshipIds": [
+        {
+          "id": "MAID-OR-00481927",
+          "type": "Attending Physician",
+          "notes": "Faith Medical Aura Calibration"
+        },
+        {
+          "id": "MAID-OR-00481928",
+          "type": "Academic & Forensic Mentor",
+          "notes": "TRACE / Cyacademy Liaison"
+        },
+        {
+          "id": "MAID-OR-00481929",
+          "type": "Research Partner",
+          "notes": "Orynvell Lineage Archives"
+        }
+      ],
+      "household": "Cyacademy Vector Housing Suite 4B",
+      "timeline": "Origin: Northwake, Fross; residing in Aureline, Orynvell since Year 24",
+      "storyMode": "Cyacademy Scholar"
+    }
+  }
+]

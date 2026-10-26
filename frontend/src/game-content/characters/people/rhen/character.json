@@ -1,0 +1,19 @@
+{
+  "id": "char-rhen",
+  "name": "Coach Rhen",
+  "kind": "person",
+  "aliases": [],
+  "status": "document-only",
+  "notes": [],
+  "legacyIds": [],
+  "references": [
+    {
+      "collection": "story-bible",
+      "key": "Coach Rhen",
+      "file": "people/rhen/story.json"
+    }
+  ],
+  "maid": null,
+  "legacyMaids": [],
+  "folder": "rhen"
+}

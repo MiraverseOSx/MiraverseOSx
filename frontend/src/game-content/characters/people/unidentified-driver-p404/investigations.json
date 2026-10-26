@@ -1,0 +1,24 @@
+[
+  {
+    "collection": "INV_26_402_STARTING_PAYLOAD",
+    "key": "P-404",
+    "origin": "frontend/src/dgaos/data/seed/cases.ts:759",
+    "context": "INV_26_402_STARTING_PAYLOAD",
+    "data": {
+      "personId": "P-404",
+      "name": "Driver of Navy Fleet SUV (Unidentified)",
+      "role": "Suspected Pursuit Vehicle Operator",
+      "affiliation": "Private Security Contractor",
+      "threatLevel": "Severe",
+      "status": "Fugitive / Active Search"
+    },
+    "original": {
+      "personId": "P-404",
+      "name": "Driver of Navy Fleet SUV (Unidentified)",
+      "role": "Suspected Pursuit Vehicle Operator",
+      "affiliation": "Private Security Contractor",
+      "threatLevel": "Severe",
+      "status": "Fugitive / Active Search"
+    }
+  }
+]

@@ -1,0 +1,24 @@
+[
+  {
+    "collection": "phone-contact",
+    "key": "Yumi",
+    "origin": "frontend/src/data/phoneData.ts:40",
+    "context": "phone-contact",
+    "data": [
+      {
+        "id": 5,
+        "sender": "Yumi",
+        "text": "Sector 7 looks clear, but stay alert. The DGA is monitoring the perimeter.",
+        "time": "08:55"
+      }
+    ],
+    "original": [
+      {
+        "id": 5,
+        "sender": "Yumi",
+        "text": "Sector 7 looks clear, but stay alert. The DGA is monitoring the perimeter.",
+        "time": "08:55"
+      }
+    ]
+  }
+]

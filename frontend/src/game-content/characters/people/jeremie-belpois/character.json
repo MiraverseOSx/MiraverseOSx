@@ -1,0 +1,41 @@
+{
+  "id": "char-jeremie-belpois",
+  "name": "Jeremie Belpois",
+  "kind": "person",
+  "aliases": [
+    "Jeremie"
+  ],
+  "status": "existing",
+  "notes": [],
+  "legacyIds": [],
+  "references": [
+    {
+      "collection": "PEOPLE",
+      "key": "jeremie",
+      "file": "people/jeremie-belpois/social.json"
+    },
+    {
+      "collection": "AUREMAIL_DIRECTORY",
+      "key": "dir-jeremie",
+      "file": "people/jeremie-belpois/mail.json"
+    },
+    {
+      "collection": "personas",
+      "key": "Jeremie",
+      "file": "people/jeremie-belpois/dialogue.json"
+    },
+    {
+      "collection": "phone-contact",
+      "key": "Jeremie",
+      "file": "people/jeremie-belpois/phone.json"
+    },
+    {
+      "collection": "story-bible",
+      "key": "Jeremie Belpois",
+      "file": "people/jeremie-belpois/story.json"
+    }
+  ],
+  "maid": null,
+  "legacyMaids": [],
+  "folder": "jeremie-belpois"
+}

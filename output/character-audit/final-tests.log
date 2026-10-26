@@ -1,0 +1,792 @@
+npm notice run miraverse-frontend@0.1.0 test
+npm notice run node --test tests/*.test.mjs
+✔ a driver reference and unrelated archive career XP do not reveal the protected lineage story (5999.7355ms)
+✔ legacy destinations resolve without treating inherited object keys as aliases (1.1132ms)
+✔ every old launcher route opens only its owning workspace and delivers the section (848.1759ms)
+✔ string aliases and custom window IDs cannot recreate retired app content (75.4722ms)
+✔ repeated section requests survive stale consumption and refocus a minimized owner (27.8833ms)
+✔ old shortcuts migrate in order, merge duplicate owners and preserve appearance (0.1649ms)
+✔ consolidated navigation preserves saved progress and external records, with no runtime requests persisted (79.2358ms)
+✔ older and malformed mail preferences gain safe independent defaults (2.5307ms)
+✔ contacts and group membership support edit, deletion and reload (134.6651ms)
+✔ labels, folders, spam and snooze persist without editing attachment rewards (101.771ms)
+✔ rules process new incoming mail once and can be applied explicitly to existing mail (41.395ms)
+✔ conversation list groups by explicit thread while preserving message order (0.3951ms)
+✔ rich text retains formatting and strips executable markup and attributes (7.43ms)
+✔ rich drafts and sent mail keep formatting and custom signatures after hydration (99.3742ms)
+✔ conversation actions expand selected threads, preserve unrelated mail and survive reload (50.9523ms)
+✔ label drops are idempotent while the toggle control removes a label deliberately (18.3577ms)
+✔ saved names resolve to their address and canonical directory metadata enforces clearance (29.1051ms)
+✔ saved attachments appear once in File Explorer with source links and no objective or reward fields (92.474ms)
+✔ malformed mailbox entries and collections recover without crashing the reader (15.0432ms)
+✔ restoring imported folder states really restores mail and held attachments cannot become rewards (34.6471ms)
+✔ rapid drafts and transmissions receive distinct stable IDs (23.6153ms)
+✔ case evidence boards require current authorization, persist with case progress and never pay rewards (5940.0692ms)
+✔ editing then undoing an accepted report restores its receipt without duplicate reviews or rewards (240.4624ms)
+✔ malformed legacy docket collections do not interrupt dispatch and valid closed records stay closed (57.1045ms)
+✔ report outlines and headings do not replace a player explanation, including cached old acceptances (63.0271ms)
+✔ source actions require current credentials and briefing, and do not issue credentials (61.5743ms)
+✖ five-app workflow supports different source orders, reload, revisions, immutable reports and one-time rewards (85.605ms)
+✔ review rejects missing, foreign, unacquired and unrelated evidence without judging prose keywords (0.679ms)
+✔ public index exposes only the fixed publication; older completed cases cannot become new paid work (111.8178ms)
+✔ addresses normalize and unsupported schemes become inert network searches (1.4582ms)
+✔ tabs are independent, have one shared limit, and clean up when closed (5938.7185ms)
+✖ back/forward restore titles and a new route drops only the forward branch (89.5438ms)
+✖ bookmarks, tabs and history survive hydration without resetting gameplay (145.5249ms)
+✖ clearing history removes visit records and tab stacks while preserving bookmarks (226.9483ms)
+✖ old and partially malformed saves recover to usable navigation (0.4917ms)
+✔ every old character ID survives and every complete source record is preserved (7.5421ms)
+✔ name variants merge under document names without merging distinct characters (0.8344ms)
+✔ all app projections read person-owned profiles and keep stable app IDs (33.998ms)
+✔ mail uses existing registry identities and wrong patient and NPC associations are removed (55.4145ms)
+✔ case contexts, clinical fields, dialogue keys and immutable identities survive consolidation (53.4386ms)
+✔ personal identity resolves stable IDs and legacy aliases, never names or the first citizen (4.9907ms)
+✔ personal issuance history excludes other citizens and agency records without rewriting issued facts (2.7119ms)
+✔ reading personal records never seeds, migrates, or changes registry and issuance data (0.6247ms)
+✔ linking is an existing-administrator action, persists one reference and leaves source records intact (6108.1088ms)
+✔ a player switch during an asynchronous link cannot attach the previous administrator selection (87.2658ms)
+✔ identity calibration preserves pre-existing IDs and cannot repeat payouts or change a linked identity (137.8457ms)
+✔ CIVINET claim history and old shortcuts survive the Citizen Hub consolidation (130.0548ms)
+✔ issuance reads support both stored identity keys and do not reissue documents (0.54ms)
+✔ new saves start with one personal mailbox and initial mail stays addressed to it after reload (86.7936ms)
+✔ membership requires a real issued relationship or accepted contract, never rank, reputation, or affiliation text (0.574ms)
+✔ membership administration checks the current signed-in administrator and does not create mailboxes or rewards (5999.6525ms)
+✔ accepted WORKNET employment grants workplace channel membership without issuing an email account (125.5316ms)
+✔ institutional issuance validates membership and domain, preserves account identity, and can suspend without deleting history (90.9692ms)
+✔ revoking membership blocks stale channel and sender actions immediately while keeping work and conversations (86.5729ms)
+✔ old accounts, drafts, claim IDs, and messages survive migration without silently authorizing institutional sends (141.0728ms)
+✔ personal Comms history migrates to phone once, preserves the source, and phone texts and drafts persist (29.5799ms)
+✔ malformed saved access data fails closed and a diagnostic cannot be awarded twice (15.9028ms)
+✔ old saves receive independent defaults while empty shortcut choices remain empty (2.1683ms)
+✔ saved shortcut IDs discard invalid values and duplicates, retain order and cap at eight (2.0363ms)
+✔ adding, removing, ordering and clearing shortcuts survive a reload (6314.1808ms)
+✖ older progress preserves gameplay, browser bookmarks and custom wallpaper when gaining desktop defaults (219.3699ms)
+✔ appearance themes persist independently from shortcuts and gameplay (96.8069ms)
+✔ all built-in VAULT files resolve to authored content with distinct reader types (1.6408ms)
+✔ legacy section documents retain their text, form fields, map data and archive lock (0.5655ms)
+✔ mail and saved assignment formats retain metadata and plain text without mutating records (1.2684ms)
+✔ unrelated mail attachments keep their own content and remain identical in VAULT (0.5943ms)
+✔ encrypted records require decryption or their stated skill level before inspection (0.2558ms)
+✔ reader sessions isolate form drafts and decryption across files and changed revisions (0.2912ms)
+✔ legacy document actions route to their owner without issuing credits or agency credentials (0.1989ms)
+✔ board migration preserves acquired nodes while rejecting hidden, malformed and duplicate links (2.1888ms)
+✔ board input is bounded and connections disappear when access to an acquired source is removed (0.3797ms)
+✔ external destinations preserve fictional aliases and reject executable schemes or credentials (10.1743ms)
+✔ local destinations are restricted to explicit local HTML files (0.4992ms)
+✔ directory has the supplied 11 applications and safely restores edited links (1.3565ms)
+✔ local HTML is escaped into a restricted child frame rather than the app origin (0.3203ms)
+✔ native launcher removes its capability from the URL and handles acknowledged failures (17.6826ms)
+✔ field sessions recover bounded positions and known evidence from older or malformed saves (1.9847ms)
+✔ field actions require an active briefed order; close/reload preserves findings and pays an operation once (6216.9957ms)
+✔ all three sites require their own profile and validate registration (6027.953ms)
+✔ profiles update through a whitelist and keep their original join date (113.4595ms)
+✔ each site accepts its own form, rejects malformed values, and deduplicates repeat submissions (69.0272ms)
+✔ partial drafts survive reload and are cleared only for the submitted form (121.1124ms)
+✔ revisions keep references, original submission dates, and accurate revision counts (114.6106ms)
+✔ withdrawal preserves records, blocks editing, and can be reversed (66.6687ms)
+✔ another character cannot change site records or reuse a registered site handle (46.6121ms)
+✔ site profiles and received records persist without granting rewards or editing world state (77.9036ms)
+✔ civic verification does not detach the same character from local site profiles (0.2117ms)
+✔ unknown IDs and malformed saves stay playable with old-save defaults (51.4692ms)
+✔ interface defaults are compact and system; invalid or older records are safely normalized (2.2106ms)
+✔ appearance and density survive storage reload without touching gameplay records (1.0191ms)
+✔ explicit appearance overrides the device while system follows it (0.1704ms)
+✔ open tabs synchronize appearance only, handle resets and unsubscribe cleanly (0.4085ms)
+✔ universal light colors keep labels, metadata and primary actions readable (0.8035ms)
+✔ universal dark colors keep labels, metadata and primary actions readable (0.2264ms)
+✔ local full access persists credentials without resetting the character or issuing rewards (110.5835ms)
+✔ the explicit local credential grant is unavailable on remote hosts and when signed out (1.2323ms)
+✔ MAI-SPACE-001: Custom widgets schema & layout normalization (2.8226ms)
+✔ MAI-SPACE-002: View count increment and comment pinning (4.7246ms)
+✔ MAI-SPACE-003: NPC Reactivity topic matching & dialogue generation (0.5488ms)
+✔ MAI-SPACE-004: Cycle tick reactivity dispatches NPC comments & notifications (0.6734ms)
+✔ MAI-SPACE-005: Direct guestbook signing generates immediate NPC response (0.5572ms)
+✔ legacy profiles migrate without inventing featured friends, losing posts, or importing world logs (4.2666ms)
+✔ layout normalization clamps freeform geometry and excludes executable styles and template content (1.2315ms)
+✔ publishing and restoring layout versions never rolls back profile content or privacy (5.915ms)
+✔ friend requests require a later world cycle and Top 8 accepts only connected citizens (3.1004ms)
+✔ blocking removes featured connections and rejects stale comments and private access (1.2541ms)
+✔ rich posts sanitize content, preserve drafts, and cannot comment on another target reply (1.4811ms)
+✔ albums preserve captions and order while audience changes revoke direct source access (4.2972ms)
+✔ groups enforce membership for discussions and require approval for private circles (1.3716ms)
+✔ events separate invitations RSVP and actual attendance with once-only private memories (11.7543ms)
+✔ meaningful conversation is scoped once and does not generate arbitrary repeated reactions (0.8594ms)
+✔ malformed saved collections and unknown layouts restore to usable records (0.7139ms)
+✔ playlist order and consented tags persist without creating attendance or relationship points (1.8937ms)
+✔ original profile music is a real PCM WAV asset (44.9571ms)
+✔ MAI.SPACE and phone share drafts read state and block enforcement (122.0583ms)
+✖ social progress survives OS hydration and welcome money cannot repeat after unfriend (5912.5591ms)
+✔ shared albums and calendars recheck membership and exclude nonmember invitations (2.254ms)
+✔ blog attachments preserve only known image references across save hydration (1.0681ms)
+✔ offline worker precaches the shell and removes only its own obsolete caches (42.0543ms)
+✔ offline module and CSS requests match public precache entries despite Vary: Origin (6.6001ms)
+✔ offline navigation falls back to the shell while APIs and foreign requests are untouched (3.2995ms)
+✔ MEDSTAT renders its chart while the asynchronous citizen registry is still loading (201.3996ms)
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+✔ unknown and reserved assignment IDs are rejected without changing progress (6038.4987ms)
+✔ malformed work-stage values return validation feedback instead of throwing (0.781ms)
+✔ gameplay and wallpaper survive a fresh store while runtime windows are excluded (137.6162ms)
+✔ signing back in resumes earned credits, level, and onboarding (129.1237ms)
+✔ notice completion requires verified world objective and pays exactly once, including after reload (100.9207ms)
+✔ WORKNET-002: WorkNet missions require actual domain work (not generic buttons) and persist completion (131.5029ms)
+✔ HOMECRAFT-001 & SpellForge: Housing purchases grant +40 XP & +10 roomComfort permanently, and SpellForge prevents infinite farming (54.5708ms)
+✔ FAITH-003, MAI.SPACE-004, and Formal Case Reasoning enforce canonical progression rules (66.8316ms)
+✔ partial saves gain new defaults without restoring cleared conditions (51.394ms)
+✔ corrupt or unavailable storage leaves a playable session (46.3881ms)
+✔ AureMail Decisions 006-011 enforce multi-account MAID links, persisted mailbox state, hybrid replies, clearance gates, and separated file vs. reward attachments (43.7637ms)
+✔ GAMEPLAY-012 & GAMEPLAY-013: Rest restores stamina/health conditionally without repeatable XP, and career promotions require profession qualifications beyond raw XP (22.7093ms)
+✔ opportunity availability reflects clearance, paid shifts, new cycles and permanent completions (0.576ms)
+✔ assignment dispatches arrive once by email and phone, with persistent call history (67.2192ms)
+✔ choosing a quest saves its briefing, requires review, and produces one accepted completion receipt (50.9454ms)
+✔ adventure unlocks require started activities and accepted work, persist, and do not repay shared tasks (57.4614ms)
+✔ GAMEPLAY-018: unrelated activity, legacy completion flags and procedure plans cannot verify any assignment (40.602ms)
+✔ GAMEPLAY-018: engineering requires all six stages; drafts, outputs and pay survive reload (78.5619ms)
+✔ GAMEPLAY-019: minor errors are correctable; unsafe repair loses supplies and requires remediation (66.2069ms)
+✔ GAMEPLAY-018: the same diagnostic receipt feeds separate quest, journey and adventure requirements (58.1024ms)
+✔ work-order scope: copied receipts and wrong tracks cannot verify a different assignment (32.0296ms)
+✔ repeat shifts use new cycle identities and require fresh work without reopening one-time rewards (69.6467ms)
+✔ clinical receipt: correct patient care supplies one task, requires a chart, and pays only once across apps (23.2812ms)
+✔ clinical work completed before opening WorkNet links the same saved receipt (38.9595ms)
+✔ environmental work requires three separately labeled specimens, analysis and a report (29.6764ms)
+✔ accreditation requires its practical and thesis; civic quests remain available without employment (22.3343ms)
+▶ remaining profession workflows accept their own deliverables and clear exactly once
+  ✔ ms-shift-02 (22.4717ms)
+  ✔ ms-shift-03 (24.0179ms)
+  ✔ ms-spec-02 (22.4342ms)
+  ✔ ms-spec-03 (22.2796ms)
+  ✔ ms-dev-02 (24.3666ms)
+  ✔ ms-field-02 (24.3901ms)
+  ✔ qn-01 (32.6121ms)
+  ✔ qn-03 (24.3425ms)
+✔ remaining profession workflows accept their own deliverables and clear exactly once (197.8993ms)
+✔ old paid patient charts can be reviewed for evidence without another clinical reward (44.0874ms)
+✔ WorkNet clinical stages share the Faith Medical receipt and cannot claim duplicate pay (94.5982ms)
+✔ professional clearance and stamina gates preserve saved work while ordinary quests stay open (23.3209ms)
+✔ AureMail enforces one active starter personal account and supports revoking institutional accounts without losing history (5938.7276ms)
+✔ Comms supports organization invitations, acceptance, declining, leaving, and removal across all 9 organizations without auto-issuing email or rewards (81.8569ms)
+✔ AURA Registry enforces role-based access, record permissions, and document issuance authorization (67.9369ms)
+✔ DGAOS enforces agency permissions, role-specific workspaces, case clearance filtering, and authorized TRACE access (1.6888ms)
+✔ Creator Studio state foundations support world pause/resume, draft staging, controlled publishing, and checkpoint restoration with historical preservation (72.6743ms)
+✔ twilight: phone text and action labels meet WCAG AA contrast (2.6209ms)
+✔ aureline: phone text and action labels meet WCAG AA contrast (0.395ms)
+✔ agency: phone text and action labels meet WCAG AA contrast (0.2341ms)
+✔ offline manifest contains final emitted assets after CSS-only JavaScript chunks are removed (335.94ms)
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+✔ hierarchy expresses scope and Tasks exist only as assigned objectives (5916.0867ms)
+✔ mysteries and hidden places cannot be listed or opened before contextual knowledge (86.5197ms)
+✔ hybrid discovery uses clues, journal entries, optional Quests, Adventure invitations and exploration rewards (127.8847ms)
+✔ an established relationship can reveal directions without assigning a Task (50.0118ms)
+✔ daily routines remain manual, adapt to familiarity, and do not generate formal progress or XP (91.184ms)
+✔ everyday time advances the simulation without creating reward loops (23.8084ms)
+✔ Journey chapters complete independently while the Journey remains ongoing (79.3049ms)
+✔ incidents plus exploration can develop an emergent Adventure with a persistent branch consequence (70.0685ms)
+✔ Quest approaches produce different interactions and one shared completion reward (30.3726ms)
+✔ high skill and Career XP still require actual relevant professional experience (49.3972ms)
+✔ old saves retain earned unlocks and receive empty new systems without canonizing proposed concepts (24.2022ms)
+✔ cinematic scenes are optional story records with no repeatable rewards (20.2927ms)
+✔ public search handles prefixes, swapped query order and minor typos offline (22.6957ms)
+✔ case public index exposes its fixed publication without private evidence or solution material (1.2214ms)
+✔ public news follows world exposure without copying private records or modifying progress (3.6923ms)
+✔ sections, article-body search, saved filtering and empty results combine (2.1842ms)
+✔ reading preferences restore safely from old and malformed saves (0.584ms)
+✔ report formatting is sanitized, survives reload, and preserves plain-text validation and accepted receipts (6112.4302ms)
+✔ all topic packs and unfamiliar searches provide sites, images, files, folders and maps (18.0868ms)
+✖ dog aliases share stable addresses and authored content with both photography and illustration (11.7135ms)
+✔ unknown queries create repeatable and varied research records rather than invented literal photographs (1.2602ms)
+✔ folder children and all map listings resolve to real records (1.1151ms)
+✔ searching and saving do not modify gameplay or assignment receipts and duplicate downloads are prevented (5902.5071ms)
+✔ download a document then the entire folder without duplicated files or missing siblings (142.0814ms)
+✖ saved content, versions, bookmarks and downloads survive reload without regenerated text (100.0438ms)
+✖ old saves gain empty content and malformed or assignment-like downloads cannot enter the web library (0.4987ms)
+✔ public search gates sealed records, private audits and undiscovered investigation details (0.2396ms)
+✔ external registry starts empty and only explicit matching http(s) links are eligible (0.4139ms)
+✔ long queries retain distinct readable download filenames with document extensions (0.6591ms)
+✔ malformed saved map and image metadata are rejected before rendering (0.5873ms)
+✔ incomplete saved collections cannot crash download recovery or leave broken links (0.8069ms)
+✔ normal windows keep 16:9 and fit between the menu and dock (1.2219ms)
+✔ fullscreen fills the entire desktop and restore returns the original normal geometry (1.1549ms)
+✔ dragged or previously saved offsets cannot hide window controls off screen (0.2991ms)
+✔ WORKNET light appearance maintains readable body, metadata, actions and focus colors (1.775ms)
+✔ WORKNET dark appearance maintains readable body, metadata, actions and focus colors (0.4492ms)
+✔ delegation checks current pathway, contract, clearance, division, availability and competence (4.3654ms)
+✔ work advances across closing and hydration, not wall-clock waits or repeated clicks (1.7695ms)
+✔ returned dockets resume after another game segment and require reading the revision (12.9193ms)
+✔ budget allocations affect verification, training eligibility and leave coverage without minting money (2.0014ms)
+✔ subordinate leave is decided once, requires coverage, and changes availability for the approved segment (0.8823ms)
+✔ legacy completed dockets remain archived, old unrestricted budgets are bounded, schedules remain flexible (0.7455ms)
+✔ coworker routine follows world time; ordinary social clicks cannot repeatedly raise stats (0.3932ms)
+✔ store salary is 150 per current cycle, honors clearance, rejects unknown contracts, and does not backpay skipped cycles (3.828ms)
+✔ runtime pathway validation and shared world-save hydration retain oversight and prevent repeat department payout (61.8795ms)
+✔ malformed optional saves recover and duplicate legacy duties share one department receipt (0.8497ms)
+✔ assignment links issue an explicit runtime entry request while saved journal history does not (55.5841ms)
+Miraverse progress could not be saved on this device.
+Miraverse progress could not be saved on this device.
+Miraverse progress could not be saved on this device.
+Miraverse progress could not be saved on this device.
+Miraverse progress could not be saved on this device.
+✔ WORKNET-001 & WORKNET-002: Institutional branding and modern visual identity registry (1.8463ms)
+✔ WORKNET-004 & WORKNET-005: Workplace Switcher and multi-employer affiliations (0.6123ms)
+✔ WORKNET-006 & WORKNET-011: Option C Full Workplace Life & 5 NPC relationship dimensions (0.3725ms)
+✔ WORKNET-007: Option C Hybrid Work (routine, dynamic, and authored) (0.2815ms)
+✔ WORKNET-009 & WORKNET-010: Career promotion requires verified qualifications and avoids duplicate rewards (0.9291ms)
+✔ WORKNET-011 & WORKNET-012: Dual-Track progression and active supervisory delegation (2.2879ms)
+✔ WORKNET-015: Hybrid Base Stipend dispatches per cycle and avoids duplicate disbursement (4.1192ms)
+✔ WORKNET-016 & WORKNET-017: Flexible open shifts and scaled institutional complexity tiers (0.2386ms)
+✔ citizen refresh ignores unrelated saves and preserves explicit focus changes (3.2274ms)
+✔ citizen messages require the current window and origin (0.8062ms)
+✔ Treasury accepts numeric strings and safely formats network readings (17.8695ms)
+✔ Treasury rejects error envelopes and invalid values instead of rendering them (0.2796ms)
+✔ first connection imports existing progress and mail together without resetting local state (43.9114ms)
+✔ a fresh browser restores the database world before stores initialize (1.6092ms)
+✔ offline changes remain local and upload safely after reconnection (2.4697ms)
+✔ unchanged local progress adopts a newer database revision on next boot (2.9161ms)
+✔ independent changed copies cannot silently overwrite one another (2.4689ms)
+✔ a stale write receives conflict instead of clobbering a concurrent commit (2.819ms)
+✔ explicitly keeping the device copy preserves the displaced database snapshot (1.9861ms)
+✔ explicitly loading the database restores the whole snapshot and requests a fresh app hydration (2.8546ms)
+✔ changes made during an in-flight save are committed on the following sync (1.5036ms)
+✔ unsupported endpoints and malformed snapshots keep device progress usable (1.1184ms)
+✔ unrelated local storage and credentials never enter the world snapshot (0.3594ms)
+✔ unavailable save servers back off, cap retries, and permit explicit reconnection (3.341ms)
+✔ WorkNet acceptance, mail, briefing files, completion receipts and career progress restore as one world (5906.342ms)
+ℹ tests 241
+ℹ suites 0
+ℹ pass 231
+ℹ fail 10
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 8354.2787
+
+✖ failing tests:
+
+test at tests\broad-street.test.mjs:122:1
+✖ five-app workflow supports different source orders, reload, revisions, immutable reports and one-time rewards (85.605ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + 'https://versenet.aure'
+  - 'https://firstfederal.aure/maintenance'
+             ^
+  
+      at TestContext.<anonymous> (file:///C:/Users/mirav/OneDrive/Desktop/MiraverseOSx/frontend/tests/broad-street.test.mjs:138:44)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'https://versenet.aure',
+    expected: 'https://firstfederal.aure/maintenance',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at tests\browser-foundation.test.mjs:36:1
+✖ back/forward restore titles and a new route drops only the forward branch (89.5438ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + 'worknet.aure'
+  - 'WorkNet'
+  
+      at TestContext.<anonymous> (file:///C:/Users/mirav/OneDrive/Desktop/MiraverseOSx/frontend/tests/browser-foundation.test.mjs:39:10)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'worknet.aure',
+    expected: 'WorkNet',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at tests\browser-foundation.test.mjs:47:1
+✖ bookmarks, tabs and history survive hydration without resetting gameplay (145.5249ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + 'https://auresuite.aure'
+  - 'https://cyacademy.edu'
+             ^
+  
+      at TestContext.<anonymous> (file:///C:/Users/mirav/OneDrive/Desktop/MiraverseOSx/frontend/tests/browser-foundation.test.mjs:53:10)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'https://auresuite.aure',
+    expected: 'https://cyacademy.edu',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at tests\browser-foundation.test.mjs:60:1
+✖ clearing history removes visit records and tab stacks while preserving bookmarks (226.9483ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  12 !== 1
+  
+      at TestContext.<anonymous> (file:///C:/Users/mirav/OneDrive/Desktop/MiraverseOSx/frontend/tests/browser-foundation.test.mjs:66:10)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 12,
+    expected: 1,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at tests\browser-foundation.test.mjs:70:1
+✖ old and partially malformed saves recover to usable navigation (0.4917ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  1 !== 7
+  
+      at TestContext.<anonymous> (file:///C:/Users/mirav/OneDrive/Desktop/MiraverseOSx/frontend/tests/browser-foundation.test.mjs:73:50)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1402:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:974:18)
+      at Test.postRun (node:internal/test_runner/test:1542:19)
+      at Test.run (node:internal/test_runner/test:1467:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 1,
+    expected: 7,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at tests\desktop-preferences.test.mjs:33:1
+✖ older progress preserves gameplay, browser bookmarks and custom wallpaper when gaining desktop defaults (219.3699ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + 'https://auresuite.aure'
+  - 'https://worknet.aure'
+             ^
+  
+      at TestContext.<anonymous> (file:///C:/Users/mirav/OneDrive/Desktop/MiraverseOSx/frontend/tests/desktop-preferences.test.mjs:44:10)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'https://auresuite.aure',
+    expected: 'https://worknet.aure',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at tests\mai-space.test.mjs:168:1
+✖ social progress survives OS hydration and welcome money cannot repeat after unfriend (5912.5591ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  5 !== 4
+  
+      at TestContext.<anonymous> (file:///C:/Users/mirav/OneDrive/Desktop/MiraverseOSx/frontend/tests/mai-space.test.mjs:183:10)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 5,
+    expected: 4,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at tests\versenet-content.test.mjs:21:1
+✖ dog aliases share stable addresses and authored content with both photography and illustration (11.7135ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  ... Skipped lines
+  
+    {
+  +   key: 'query-1rxhqfd-k09kal',
+  +   label: 'dog',
+  +   query: 'dog',
+  -   key: 'query-dkacr2-15doaws',
+  -   label: 'dogs',
+  -   query: 'dogs',
+      records: [
+        {
+  +       id: 'query-1rxhqfd-k09kal:overview',
+  -       id: 'query-dkacr2-15doaws:overview',
+          paragraphs: [
+  +         'This reading-room collection keeps the search phrase “dog” as a research heading. It is a place to organize a question, not a claim that the phrase names an established person, place, or event in Aureline.',
+  +         'Build understanding by comparing explanations rather than guessing. The collection supplies a working method, a source sheet, and public places to continue looking. Its artwork is an abstract study from the visual archive; it is not a photograph of “dog”.',
+  +         'Use the notebook to preserve what you find about “dog”. The public library and civic information desk offer starting points without exposing sealed records or private systems.'
+  -         'This reading-room collection keeps the search phrase “dogs” as a research heading. It is a place to organize a question, not a claim that the phrase names an established person, place, or event in Aureline.',
+  -         'Build understanding by comparing explanations rather than guessing. The collection supplies a working method, a source sheet, and public places to continue looking. Its artwork is an abstract study from the visual archive; it is not a photograph of “dogs”.',
+  -         'Use the notebook to preserve what you find about “dogs”. The public library and civic information desk offer starting points without exposing sealed records or private systems.'
+          ],
+          publisher: 'Aureline Open Reading Room',
+          summary: 'Build understanding by comparing explanations rather than guessing.',
+  +       title: 'dog — a comparison folio',
+  -       title: 'dogs — a comparison folio',
+          type: 'site',
+  +       url: 'https://fieldnotes.aure/query-1rxhqfd-k09kal/overview?title=dog+%E2%80%94+a+comparison+folio'
+  -       url: 'https://fieldnotes.aure/query-dkacr2-15doaws/overview?title=dogs+%E2%80%94+a+comparison+folio'
+        },
+        {
+  +       id: 'query-1rxhqfd-k09kal:field-guide',
+  -       id: 'query-dkacr2-15doaws:field-guide',
+          paragraphs: [
+  +         'Build understanding by comparing explanations rather than guessing. This practical notebook accompanies the dog collection.',
+  -         'Build understanding by comparing explanations rather than guessing. This practical notebook accompanies the dogs collection.',
+            '1. Write a focused comparison question.',
+            '2. Choose two accounts with named sources.',
+            '3. Note their agreements and differences.',
+            '4. Record which evidence would resolve the difference.'
+          ],
+          publisher: 'Aureline Open Reading Room',
+          summary: 'Write a focused comparison question.',
+  +       title: 'dog — working source sheet',
+  -       title: 'dogs — working source sheet',
+          type: 'site',
+  +       url: 'https://fieldnotes.aure/query-1rxhqfd-k09kal/field-guide?title=dog+%E2%80%94+working+source+sheet'
+  -       url: 'https://fieldnotes.aure/query-dkacr2-15doaws/field-guide?title=dogs+%E2%80%94+working+source+sheet'
+        },
+        {
+  +       id: 'query-1rxhqfd-k09kal:notebook',
+  -       id: 'query-dkacr2-15doaws:notebook',
+          paragraphs: [
+  +         'Collection: dog',
+  -         'Collection: dogs',
+            'Purpose: Build understanding by comparing explanations rather than guessing.',
+            '□ Write a focused comparison question.',
+            '□ Choose two accounts with named sources.',
+            '□ Note their agreements and differences.',
+            '□ Record which evidence would resolve the difference.',
+  ...
+          summary: 'A printable observation and planning sheet.',
+  +       title: 'dog — notebook.txt',
+  -       title: 'dogs — notebook.txt',
+          type: 'document',
+  +       url: 'https://fieldnotes.aure/query-1rxhqfd-k09kal/notebook?title=dog+%E2%80%94+notebook.txt'
+  -       url: 'https://fieldnotes.aure/query-dkacr2-15doaws/notebook?title=dogs+%E2%80%94+notebook.txt'
+        },
+        {
+  +       id: 'query-1rxhqfd-k09kal:sources',
+  -       id: 'query-dkacr2-15doaws:sources',
+          paragraphs: [
+  +         'Research heading: dog',
+  -         'Research heading: dogs',
+            'Source title: ____________________',
+            'Author or organization: ____________________',
+            'Public address: ____________________',
+            'What the source says: ____________________',
+            'What remains uncertain: ____________________'
+  ...
+          summary: 'A source card for comparing public references.',
+  +       title: 'dog — sources.txt',
+  -       title: 'dogs — sources.txt',
+          type: 'document',
+  +       url: 'https://fieldnotes.aure/query-1rxhqfd-k09kal/sources?title=dog+%E2%80%94+sources.txt'
+  -       url: 'https://fieldnotes.aure/query-dkacr2-15doaws/sources?title=dogs+%E2%80%94+sources.txt'
+        },
+        {
+          children: [
+  +         'query-1rxhqfd-k09kal:notebook',
+  +         'query-1rxhqfd-k09kal:sources'
+  -         'query-dkacr2-15doaws:notebook',
+  -         'query-dkacr2-15doaws:sources'
+          ],
+  +       id: 'query-1rxhqfd-k09kal:collection',
+  -       id: 'query-dkacr2-15doaws:collection',
+          paragraphs: [
+            'This collection contains a working notebook and a source-comparison sheet. Save the folder to keep both documents in File Explorer.'
+          ],
+          publisher: 'Aureline Open Reading Room',
+          summary: 'Two documents, their source pages, and a place to keep notes.',
+  +       title: 'dog — reading folder',
+  -       title: 'dogs — reading folder',
+          type: 'folder',
+  +       url: 'https://fieldnotes.aure/query-1rxhqfd-k09kal/collection?title=dog+%E2%80%94+reading+folder'
+  -       url: 'https://fieldnotes.aure/query-dkacr2-15doaws/collection?title=dogs+%E2%80%94+reading+folder'
+        },
+        {
+          art: 'research',
+          credit: 'Miraverse visual collection · Original SVG illustration',
+  +       id: 'query-1rxhqfd-k09kal:study',
+  -       id: 'query-dkacr2-15doaws:study',
+          paragraphs: [],
+          publisher: 'Aureline Open Reading Room',
+  +       seed: 2511800591,
+  -       seed: 1403851706,
+          summary: 'Abstract artwork accompanying this research heading, not a literal depiction.',
+  +       title: 'dog — abstract study',
+  -       title: 'dogs — abstract study',
+          type: 'image',
+  +       url: 'https://fieldnotes.aure/query-1rxhqfd-k09kal/study?title=dog+%E2%80%94+abstract+study'
+  -       url: 'https://fieldnotes.aure/query-dkacr2-15doaws/study?title=dogs+%E2%80%94+abstract+study'
+        },
+        {
+          art: 'research',
+          credit: 'Miraverse visual collection · Original SVG illustration',
+  +       id: 'query-1rxhqfd-k09kal:diagram',
+  -       id: 'query-dkacr2-15doaws:diagram',
+          paragraphs: [],
+          publisher: 'Aureline Open Reading Room',
+  +       seed: 2511800592,
+  -       seed: 1403851707,
+          summary: 'A second illustration from the visual notebook.',
+  +       title: 'dog — visual connections',
+  -       title: 'dogs — visual connections',
+          type: 'image',
+  +       url: 'https://fieldnotes.aure/query-1rxhqfd-k09kal/diagram?title=dog+%E2%80%94+visual+connections'
+  -       url: 'https://fieldnotes.aure/query-dkacr2-15doaws/diagram?title=dogs+%E2%80%94+visual+connections'
+        },
+        {
+  +       id: 'query-1rxhqfd-k09kal:place-0',
+  -       id: 'query-dkacr2-15doaws:place-0',
+          paragraphs: [
+  +         'Public reading room and source-comparison historical resources.',
+  +         'This public listing accompanies the dog reading collection. The schematic map provides orientation rather than a measured route. Consult the location’s posted guidance when visiting.',
+  -         'Public information and municipal access desk.',
+  -         'This public listing accompanies the dogs reading collection. The schematic map provides orientation rather than a measured route. Consult the location’s posted guidance when visiting.',
+            'Only public areas are described here. Browsing this listing does not visit the location, start an assignment, or change your world progress.'
+          ],
+          publisher: 'Aureline Open Reading Room',
+  +       summary: 'Public reading room and source-comparison historical resources.',
+  +       title: 'Aureline City Library',
+  -       summary: 'Public information and municipal access desk.',
+  -       title: 'CIVINET public desk',
+          type: 'site',
+  +       url: 'https://fieldnotes.aure/query-1rxhqfd-k09kal/place-0?title=Aureline+City+Library'
+  -       url: 'https://fieldnotes.aure/query-dkacr2-15doaws/place-0?title=CIVINET+public+desk'
+        },
+        {
+  +       id: 'query-1rxhqfd-k09kal:place-1',
+  -       id: 'query-dkacr2-15doaws:place-1',
+          paragraphs: [
+            'Public information and municipal access desk.',
+  +         'This public listing accompanies the dog reading collection. The schematic map provides orientation rather than a measured route. Consult the location’s posted guidance when visiting.',
+  -         'This public listing accompanies the dogs reading collection. The schematic map provides orientation rather than a measured route. Consult the location’s posted guidance when visiting.',
+            'Only public areas are described here. Browsing this listing does not visit the location, start an assignment, or change your world progress.'
+          ],
+          publisher: 'Aureline Open Reading Room',
+          summary: 'Public information and municipal access desk.',
+  +       title: 'CIVINET public desk',
+  -       title: 'Glassline transit platform',
+          type: 'site',
+  +       url: 'https://fieldnotes.aure/query-1rxhqfd-k09kal/place-1?title=CIVINET+public+desk'
+  -       url: 'https://fieldnotes.aure/query-dkacr2-15doaws/place-1?title=Glassline+transit+platform'
+        },
+        {
+  +       id: 'query-1rxhqfd-k09kal:place-2',
+  -       id: 'query-dkacr2-15doaws:place-2',
+          paragraphs: [
+  +         'Public paths for botanical observation, bio-aura restoration, and quiet study.',
+  +         'This public listing accompanies the dog reading collection. The schematic map provides orientation rather than a measured route. Consult the location’s posted guidance when visiting.',
+  -         'Public reading room and source-comparison historical resources.',
+  -         'This public listing accompanies the dogs reading collection. The schematic map provides orientation rather than a measured route. Consult the location’s posted guidance when visiting.',
+            'Only public areas are described here. Browsing this listing does not visit the location, start an assignment, or change your world progress.'
+          ],
+          publisher: 'Aureline Open Reading Room',
+  +       summary: 'Public paths for botanical observation, bio-aura restoration, and quiet study.',
+  +       title: 'Glassline Botanical Garden',
+  -       summary: 'Public reading room and source-comparison historical resources.',
+  -       title: 'Aureline City Library',
+          type: 'site',
+  +       url: 'https://fieldnotes.aure/query-1rxhqfd-k09kal/place-2?title=Glassline+Botanical+Garden'
+  -       url: 'https://fieldnotes.aure/query-dkacr2-15doaws/place-2?title=Aureline+City+Library'
+        },
+        {
+  +       id: 'query-1rxhqfd-k09kal:map',
+  -       id: 'query-dkacr2-15doaws:map',
+          paragraphs: [
+            'Schematic city map. Positions and distances are illustrative; no hidden places or restricted interiors are shown.'
+          ],
+          places: [
+            {
+  +           description: 'Public reading room and source-comparison historical resources.',
+  +           name: 'Aureline City Library',
+  +           url: 'https://fieldnotes.aure/query-1rxhqfd-k09kal/place-0?title=Aureline+City+Library',
+  -           description: 'Public information and municipal access desk.',
+  -           name: 'CIVINET public desk',
+  -           url: 'https://fieldnotes.aure/query-dkacr2-15doaws/place-0?title=CIVINET+public+desk',
+              x: 24,
+              y: 32
+            },
+            {
+              description: 'Public information and municipal access desk.',
+  +           name: 'CIVINET public desk',
+  +           url: 'https://fieldnotes.aure/query-1rxhqfd-k09kal/place-1?title=CIVINET+public+desk',
+  -           name: 'Glassline transit platform',
+  -           url: 'https://fieldnotes.aure/query-dkacr2-15doaws/place-1?title=Glassline+transit+platform',
+              x: 66,
+              y: 49
+            },
+            {
+  +           description: 'Public paths for botanical observation, bio-aura restoration, and quiet study.',
+  +           name: 'Glassline Botanical Garden',
+  +           url: 'https://fieldnotes.aure/query-1rxhqfd-k09kal/place-2?title=Glassline+Botanical+Garden',
+  -           description: 'Public reading room and source-comparison historical resources.',
+  -           name: 'Aureline City Library',
+  -           url: 'https://fieldnotes.aure/query-dkacr2-15doaws/place-2?title=Aureline+City+Library',
+              x: 49,
+              y: 77
+            }
+          ],
+          publisher: 'Aureline Open Reading Room',
+          summary: 'Public starting points for research, not exact matches for this phrase.',
+  +       title: 'dog — public research map',
+  -       title: 'dogs — public research map',
+          type: 'map',
+  +       url: 'https://fieldnotes.aure/query-1rxhqfd-k09kal/map?title=dog+%E2%80%94+public+research+map'
+  -       url: 'https://fieldnotes.aure/query-dkacr2-15doaws/map?title=dogs+%E2%80%94+public+research+map'
+        },
+        {
+  +       id: 'query-1rxhqfd-k09kal:related',
+  -       id: 'query-dkacr2-15doaws:related',
+          paragraphs: [
+  +         'The dog collection can be read alongside the technology notebook. Compare the methods, places, and observations rather than assuming a shared label proves a connection.',
+  -         'The dogs collection can be read alongside the technology notebook. Compare the methods, places, and observations rather than assuming a shared label proves a connection.',
+            'The documents in the reading folder keep a record of your own comparisons. All public browsing here is separate from assignments and formal progression.'
+          ],
+          publisher: 'Aureline Open Reading Room',
+          summary: 'Follow the collection into related public reading.',
+  +       title: 'Continue reading: dog',
+  -       title: 'Continue reading: dogs',
+          type: 'site',
+  +       url: 'https://fieldnotes.aure/query-1rxhqfd-k09kal/related?title=Continue+reading%3A+dog'
+  -       url: 'https://fieldnotes.aure/query-dkacr2-15doaws/related?title=Continue+reading%3A+dogs'
+        }
+      ],
+      topic: 'research',
+      version: 1
+    }
+  
+      at TestContext.<anonymous> (file:///C:/Users/mirav/OneDrive/Desktop/MiraverseOSx/frontend/tests/versenet-content.test.mjs:22:10)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1402:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:974:18)
+      at Test.postRun (node:internal/test_runner/test:1542:19)
+      at Test.run (node:internal/test_runner/test:1467:12)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: {
+      key: 'query-1rxhqfd-k09kal',
+      query: 'dog',
+      topic: 'research',
+      label: 'dog',
+      version: 1,
+      records: [
+        [Object], [Object],
+        [Object], [Object],
+        [Object], [Object],
+        [Object], [Object],
+        [Object], [Object],
+        [Object], [Object]
+      ]
+    },
+    expected: {
+      key: 'query-dkacr2-15doaws',
+      query: 'dogs',
+      topic: 'research',
+      label: 'dogs',
+      version: 1,
+      records: [
+        [Object], [Object],
+        [Object], [Object],
+        [Object], [Object],
+        [Object], [Object],
+        [Object], [Object],
+        [Object], [Object]
+      ]
+    },
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at tests\versenet-content.test.mjs:70:1
+✖ saved content, versions, bookmarks and downloads survive reload without regenerated text (100.0438ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  1 !== 0
+  
+      at TestContext.<anonymous> (file:///C:/Users/mirav/OneDrive/Desktop/MiraverseOSx/frontend/tests/versenet-content.test.mjs:76:10)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 1,
+    expected: 0,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at tests\versenet-content.test.mjs:80:1
+✖ old saves gain empty content and malformed or assignment-like downloads cannot enter the web library (0.4987ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  0 !== 1
+  
+      at TestContext.<anonymous> (file:///C:/Users/mirav/OneDrive/Desktop/MiraverseOSx/frontend/tests/versenet-content.test.mjs:83:10)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1402:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:974:18)
+      at Test.postRun (node:internal/test_runner/test:1542:19)
+      at Test.run (node:internal/test_runner/test:1467:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 0,
+    expected: 1,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

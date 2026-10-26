@@ -1,0 +1,56 @@
+[
+  {
+    "collection": "seedNPCs",
+    "key": "NPC-CHEN",
+    "origin": "frontend/src/dgaos/data/seed/npcs.ts:79",
+    "context": "seedNPCs",
+    "data": {
+      "id": "NPC-CHEN",
+      "name": "Specialist Marcus Chen",
+      "occupation": "Senior Cyber Defense Analyst",
+      "organization": "Cygnus Defense / DGA Cyber Cell",
+      "relationship": {
+        "trust": 82,
+        "familiarity": 80,
+        "respect": 80,
+        "tension": 10
+      },
+      "knowledge": [
+        "Siemens S7 PLC controllers targeted with custom zero-day payload.",
+        "C2 telemetry beacon routed through overseas compromised relay."
+      ],
+      "secrets": [
+        "Found credential re-use originating from an internal contractor workstation."
+      ],
+      "currentConcerns": [
+        "Secondary payload trigger scheduled for grid evening peak hours."
+      ],
+      "communicationStyle": "blunt_tactical",
+      "lastInteraction": "2026-09-29T04:45:00Z"
+    },
+    "original": {
+      "id": "NPC-CHEN",
+      "name": "Specialist Marcus Chen",
+      "occupation": "Senior Cyber Defense Analyst",
+      "organization": "Cygnus Defense / DGA Cyber Cell",
+      "relationship": {
+        "trust": 82,
+        "familiarity": 80,
+        "respect": 80,
+        "tension": 10
+      },
+      "knowledge": [
+        "Siemens S7 PLC controllers targeted with custom zero-day payload.",
+        "C2 telemetry beacon routed through overseas compromised relay."
+      ],
+      "secrets": [
+        "Found credential re-use originating from an internal contractor workstation."
+      ],
+      "currentConcerns": [
+        "Secondary payload trigger scheduled for grid evening peak hours."
+      ],
+      "communicationStyle": "blunt_tactical",
+      "lastInteraction": "2026-09-29T04:45:00Z"
+    }
+  }
+]

@@ -1,0 +1,38 @@
+[
+  {
+    "collection": "INSTITUTIONAL_REGISTRY",
+    "key": "cw-dga-1",
+    "origin": "frontend/src/apps/worknet/worknetData.ts:108",
+    "context": "INSTITUTIONAL_REGISTRY",
+    "data": {
+      "id": "cw-dga-1",
+      "name": "Vance Lowe",
+      "title": "Senior Field Analyst",
+      "division": "Blackout Containment",
+      "avatar": "VL",
+      "status": "Desk",
+      "specialty": "Root-layer anomaly triangulation & signal decryption",
+      "quote": "If the carrier frequency is drifting even half a megahertz, don’t sign off yet.",
+      "trust": 76,
+      "competence": 92,
+      "familiarity": 68,
+      "cooperation": 80,
+      "conflictHistory": 10
+    },
+    "original": {
+      "id": "cw-dga-1",
+      "name": "Vance Lowe",
+      "title": "Senior Field Analyst",
+      "division": "Blackout Containment",
+      "avatar": "VL",
+      "status": "Desk",
+      "specialty": "Root-layer anomaly triangulation & signal decryption",
+      "quote": "If the carrier frequency is drifting even half a megahertz, don’t sign off yet.",
+      "trust": 76,
+      "competence": 92,
+      "familiarity": 68,
+      "cooperation": 80,
+      "conflictHistory": 10
+    }
+  }
+]

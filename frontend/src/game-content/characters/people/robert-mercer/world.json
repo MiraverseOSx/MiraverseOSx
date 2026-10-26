@@ -1,0 +1,26 @@
+[
+  {
+    "collection": "NPCS",
+    "key": "npc-mercer",
+    "origin": "frontend/src/game-content/characters/worldNpcs.json:74",
+    "context": "NPCS",
+    "data": {
+      "id": "npc-mercer",
+      "name": "Dr. Robert Mercer",
+      "title": "Chief Clinical Examiner",
+      "role": "Physician",
+      "dialogueTone": "Clinical, empathetic, and diagnostic",
+      "affiliation": "Faith Medical Group",
+      "realm": "Orynvell"
+    },
+    "original": {
+      "id": "npc-mercer",
+      "name": "Dr. Robert Mercer",
+      "title": "Chief Clinical Examiner",
+      "role": "Physician",
+      "dialogueTone": "Clinical, empathetic, and diagnostic",
+      "affiliation": "Faith Medical Group",
+      "realm": "Orynvell"
+    }
+  }
+]

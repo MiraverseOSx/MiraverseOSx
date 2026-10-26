@@ -4,6 +4,7 @@
  */
 
 import careersData from '../data/careers.json';
+import { getProfiles } from '../game-content/characters/collections/NPCS';
 import missionsData from '../data/missions.json';
 import caseAssignment from '../data/broad-street-assignment.json';
 import { CareerTrackInfo, WorknetMission } from '../types';
@@ -410,89 +411,7 @@ export const FACTIONS: any[] = [
     seat: 'Command Sector, Aureline'
   }
 ];
-export const NPCS: any[] = [
-  {
-    id: 'npc-maeryn',
-    name: 'Queen Maeryn Seraphima',
-    title: 'Sovereign Monarch of Meridion',
-    role: 'Monarch',
-    dialogueTone: 'Regal, measured, and harmonically resonant',
-    affiliation: 'House Seraphima',
-    realm: 'Orynvell'
-  },
-  {
-    id: 'npc-holly',
-    name: 'High Warden Holly',
-    title: 'Warden of the Northern Ice',
-    role: 'Warden',
-    dialogueTone: 'Direct, stoic, and watchful',
-    affiliation: 'House Holly',
-    realm: 'Fross'
-  },
-  {
-    id: 'npc-lucia',
-    name: 'Chancellor Lucia',
-    title: 'High Speaker of the Sol-Forum',
-    role: 'Councilor',
-    dialogueTone: 'Eloquent, scholarly, and radiant',
-    affiliation: 'House Lucia',
-    realm: 'Lumia'
-  },
-  {
-    id: 'npc-neryx',
-    name: 'Lord Neryx',
-    title: 'Sovereign of the Vernal Estuaries',
-    role: 'Diplomat',
-    dialogueTone: 'Calm, soothing, and observant',
-    affiliation: 'House Neryx',
-    realm: 'Marlowe'
-  },
-  {
-    id: 'npc-yoko',
-    name: 'Grand Dispatcher Yoko',
-    title: 'Overseer of the Autumn Winds',
-    role: 'Consul',
-    dialogueTone: 'Brisk, pragmatic, and witty',
-    affiliation: 'House Yoko',
-    realm: 'Brisland'
-  },
-  {
-    id: 'npc-ember',
-    name: 'High Forge-Master Ember',
-    title: 'Lord of the Pyre Foundries',
-    role: 'Artificer',
-    dialogueTone: 'Intense, passionate, and exacting',
-    affiliation: 'House Ember',
-    realm: 'Kaji'
-  },
-  {
-    id: 'npc-keket',
-    name: 'Seer Keket',
-    title: 'Keeper of Ancestral Twilight',
-    role: 'Seer',
-    dialogueTone: 'Whispering, deep, and contemplative',
-    affiliation: 'House Keket',
-    realm: 'Nephele'
-  },
-  {
-    id: 'npc-vesper',
-    name: 'Senior Archivist K. Vesper',
-    title: 'Crown Registrar & Royal Archivist',
-    role: 'Archivist',
-    dialogueTone: 'Precise, encyclopedic, and courteous',
-    affiliation: 'Royal Historic Society',
-    realm: 'Orynvell'
-  },
-  {
-    id: 'npc-mercer',
-    name: 'Dr. Robert Mercer',
-    title: 'Chief Clinical Examiner',
-    role: 'Physician',
-    dialogueTone: 'Clinical, empathetic, and diagnostic',
-    affiliation: 'Faith Medical Group',
-    realm: 'Orynvell'
-  }
-];
+export const NPCS: any[] = getProfiles();
 export const CAREERS: CareerTrackInfo[] = careersData as CareerTrackInfo[];
 export const MISSIONS: WorknetMission[] = [...(missionsData as WorknetMission[]).filter(mission => mission.id !== caseAssignment.id), caseAssignment as WorknetMission];
 export const LORE_ENTRIES: any[] = [

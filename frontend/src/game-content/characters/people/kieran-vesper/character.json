@@ -1,0 +1,30 @@
+{
+  "id": "char-kieran-vesper",
+  "name": "Kieran Vesper",
+  "kind": "person",
+  "aliases": [
+    "Senior Archivist K. Vesper"
+  ],
+  "status": "existing",
+  "notes": [
+    "Senior Archivist K. Vesper is the abbreviated professional form of Kieran Vesper."
+  ],
+  "legacyIds": [
+    "char-k-vesper"
+  ],
+  "references": [
+    {
+      "collection": "NPCS",
+      "key": "npc-vesper",
+      "file": "people/kieran-vesper/world.json"
+    },
+    {
+      "collection": "defaultInputs",
+      "key": "MAID-OR-00481929",
+      "file": "people/kieran-vesper/registry.json"
+    }
+  ],
+  "maid": "MAID-OR-00481929",
+  "legacyMaids": [],
+  "folder": "kieran-vesper"
+}

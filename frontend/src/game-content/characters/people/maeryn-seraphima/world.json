@@ -1,0 +1,26 @@
+[
+  {
+    "collection": "NPCS",
+    "key": "npc-maeryn",
+    "origin": "frontend/src/game-content/characters/worldNpcs.json:2",
+    "context": "NPCS",
+    "data": {
+      "id": "npc-maeryn",
+      "name": "Queen Maeryn Seraphima",
+      "title": "Sovereign Monarch of Meridion",
+      "role": "Monarch",
+      "dialogueTone": "Regal, measured, and harmonically resonant",
+      "affiliation": "House Seraphima",
+      "realm": "Orynvell"
+    },
+    "original": {
+      "id": "npc-maeryn",
+      "name": "Queen Maeryn Seraphima",
+      "title": "Sovereign Monarch of Meridion",
+      "role": "Monarch",
+      "dialogueTone": "Regal, measured, and harmonically resonant",
+      "affiliation": "House Seraphima",
+      "realm": "Orynvell"
+    }
+  }
+]

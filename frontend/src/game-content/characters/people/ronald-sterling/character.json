@@ -1,0 +1,19 @@
+{
+  "id": "char-ronald-sterling",
+  "name": "Director Ronald Sterling",
+  "kind": "person",
+  "aliases": [],
+  "status": "existing",
+  "notes": [],
+  "legacyIds": [],
+  "references": [
+    {
+      "collection": "INSTITUTIONAL_REGISTRY",
+      "key": "sup-dga",
+      "file": "people/ronald-sterling/workplace.json"
+    }
+  ],
+  "maid": null,
+  "legacyMaids": [],
+  "folder": "ronald-sterling"
+}

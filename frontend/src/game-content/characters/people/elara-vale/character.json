@@ -1,0 +1,36 @@
+{
+  "id": "char-elara-vale",
+  "name": "Elara Vale",
+  "kind": "person",
+  "aliases": [],
+  "status": "existing",
+  "notes": [],
+  "legacyIds": [],
+  "references": [
+    {
+      "collection": "AUREMAIL_DIRECTORY",
+      "key": "dir-elara-vale",
+      "file": "people/elara-vale/mail.json"
+    },
+    {
+      "collection": "defaultInputs",
+      "key": "MAID-OR-00481926",
+      "file": "people/elara-vale/registry.json"
+    },
+    {
+      "collection": "FORMAL_INVESTIGATION_CASES",
+      "key": "CASE-FM-401",
+      "file": "people/elara-vale/investigations.json"
+    },
+    {
+      "collection": "PATIENT_CARE_ASSIGNMENTS",
+      "key": "pc-vale",
+      "file": "people/elara-vale/investigations.json"
+    }
+  ],
+  "maid": "MAID-OR-00481926",
+  "legacyMaids": [
+    "MAID-OR-00000001"
+  ],
+  "folder": "elara-vale"
+}

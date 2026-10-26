@@ -365,6 +365,9 @@ export const useOSStore = create<OSStoreState>()(persist((set, get) => ({
   openAppWorkspace: (id, section) => {
     const destination = resolveAppDestination(id);
     const target = section || destination.section;
+    if (destination.appId === 'browser' && !target) {
+      get().navigateBrowserTab('https://versenet.aure', 'Versenet');
+    }
     if (target) set(s => ({
       workspaceRequestSequence: s.workspaceRequestSequence + 1,
       workspaceRequests: {

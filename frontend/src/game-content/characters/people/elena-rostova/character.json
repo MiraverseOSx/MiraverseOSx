@@ -1,0 +1,41 @@
+{
+  "id": "char-elena-rostova",
+  "name": "Elena Rostova",
+  "kind": "person",
+  "aliases": [
+    "Specter 4",
+    "E. Rostova"
+  ],
+  "status": "existing",
+  "notes": [
+    "Life status is scoped to each case or registry profile. Case P-401 records death; earlier agency/civic records are retained as source-specific records, not a global alive/dead flag."
+  ],
+  "legacyIds": [
+    "char-elena-rostova-crash"
+  ],
+  "references": [
+    {
+      "collection": "seedPeople",
+      "key": "P-105",
+      "file": "people/elena-rostova/agency.json"
+    },
+    {
+      "collection": "defaultInputs",
+      "key": "MAID-OR-00481931",
+      "file": "people/elena-rostova/registry.json"
+    },
+    {
+      "collection": "INV_26_402_STARTING_PAYLOAD",
+      "key": "P-401",
+      "file": "people/elena-rostova/investigations.json"
+    },
+    {
+      "collection": "seedRelationships",
+      "key": "REL-006",
+      "file": "people/elena-rostova/relationships.json"
+    }
+  ],
+  "maid": "MAID-OR-00481931",
+  "legacyMaids": [],
+  "folder": "elena-rostova"
+}

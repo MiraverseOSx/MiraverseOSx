@@ -1,0 +1,24 @@
+[
+  {
+    "collection": "phone-contact",
+    "key": "Ulrich",
+    "origin": "frontend/src/data/phoneData.ts:43",
+    "context": "phone-contact",
+    "data": [
+      {
+        "id": 6,
+        "sender": "Ulrich",
+        "text": "Training grounds are open if you want to spar before class.",
+        "time": "08:40"
+      }
+    ],
+    "original": [
+      {
+        "id": 6,
+        "sender": "Ulrich",
+        "text": "Training grounds are open if you want to spar before class.",
+        "time": "08:40"
+      }
+    ]
+  }
+]

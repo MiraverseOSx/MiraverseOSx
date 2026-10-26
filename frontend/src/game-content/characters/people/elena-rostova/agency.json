@@ -1,0 +1,34 @@
+[
+  {
+    "collection": "seedPeople",
+    "key": "P-105",
+    "origin": "frontend/src/dgaos/data/seed/people.ts:55",
+    "context": "seedPeople",
+    "data": {
+      "id": "P-105",
+      "name": "Elena Rostova",
+      "aliases": [
+        "Specter 4",
+        "E. Rostova"
+      ],
+      "role": "Senior Cygnus Dynamics SCADA Engineer",
+      "affiliation": "Cygnus Dynamics",
+      "status": "Active",
+      "threatLevel": "Moderate",
+      "bio": "Lead architect of power grid industrial controller firmware. Flagged unusual outbound VPN tunnels connecting to foreign IP blocks."
+    },
+    "original": {
+      "id": "P-105",
+      "name": "Elena Rostova",
+      "aliases": [
+        "Specter 4",
+        "E. Rostova"
+      ],
+      "role": "Senior Cygnus Dynamics SCADA Engineer",
+      "affiliation": "Cygnus Dynamics",
+      "status": "Active",
+      "threatLevel": "Moderate",
+      "bio": "Lead architect of power grid industrial controller firmware. Flagged unusual outbound VPN tunnels connecting to foreign IP blocks."
+    }
+  }
+]

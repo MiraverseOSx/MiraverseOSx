@@ -37,6 +37,28 @@ test('desktop apps open, maximize and retain appearance after reload', async ({ 
   await expect(page.getByText('This app could not display its workspace.')).toHaveCount(0);
   expect(failures).toEqual([]);
 });
+test('PULSE reads, filters and saves public news across reload without awarding progress', async ({ page }) => {
+  await login(page); await openApp(page, 'PULSE');
+  const news = page.getByRole('region', { name: 'PULSE news', exact: true });
+  await expect(news.getByRole('heading', { name: 'The front page', exact: true })).toBeVisible();
+  await news.getByRole('button', { name: 'Economy', exact: true }).click();
+  await news.getByRole('searchbox', { name: 'Search news', exact: true }).fill('contract compensation');
+  await expect(news.getByRole('status')).toHaveText('1 story in this edition');
+  await news.getByRole('button', { name: 'Before your next shift, read the terms', exact: true }).click();
+  await expect(news.getByRole('article', { name: 'Before your next shift, read the terms', exact: true })).toBeVisible();
+  await news.getByRole('button', { name: 'Save story', exact: true }).click();
+  await news.getByRole('button', { name: 'Back to edition', exact: true }).click();
+  await expect(news.getByText('Read', { exact: true })).toBeVisible();
+  await page.reload(); await openApp(page, 'PULSE');
+  await news.getByRole('button', { name: 'Saved stories', exact: true }).click();
+  await expect(news.getByRole('button', { name: 'Before your next shift, read the terms', exact: true })).toBeVisible();
+  await news.getByRole('button', { name: 'Unsave Before your next shift, read the terms', exact: true }).click();
+  await expect(news.getByRole('heading', { name: 'Your shelf is quiet.', exact: true })).toBeVisible();
+  await news.getByRole('button', { name: 'Show all news', exact: true }).click();
+  await news.getByRole('searchbox', { name: 'Search news', exact: true }).fill('unfindable');
+  await expect(news.getByRole('heading', { name: 'No stories found.', exact: true })).toBeVisible();
+});
+
 test('MAI.SPACE layer sorting is keyboard accessible and draft order survives reopening', async ({ page }) => {
   await login(page); await openApp(page, 'mai.space');
   await page.getByRole('button', { name: '✧ Customize', exact: true }).click();

@@ -1,0 +1,142 @@
+[
+  {
+    "id": "aelita-name",
+    "status": "resolved",
+    "characterIds": [
+      "char-aelita-hopper"
+    ],
+    "description": "The Game Doc names Aelita Hopper; social, mail and dialogue sources use Aelita Schaeffer. Kept separate pending confirmation; existing screens retain Schaeffer.",
+    "resolution": "Merged under Aelita Hopper from the Game Doc. Schaeffer remains a name alias and its former shared ID redirects to Hopper."
+  },
+  {
+    "id": "odd-spelling",
+    "status": "resolved",
+    "characterIds": [
+      "char-odd-della-robia"
+    ],
+    "description": "The document spells the surname Robia; code uses Robbia. Do not infer a rename from spelling similarity.",
+    "resolution": "Merged under the Game Doc spelling Odd Della Robia. Robbia remains a spelling alias; profile and phone IDs are unchanged."
+  },
+  {
+    "id": "sissi-name",
+    "status": "resolved",
+    "characterIds": [
+      "char-sissi-delmas"
+    ],
+    "description": "The document names Sissi Delmas; social uses Elisabeth Delmas and dialogue identifies Sissi as Elisabeth. Document correspondence remains pending.",
+    "resolution": "Merged under Sissi Delmas. Elisabeth Delmas remains an alias, preserving the established Sissi dialogue and social keys."
+  },
+  {
+    "id": "riven-name",
+    "status": "resolved",
+    "characterIds": [
+      "char-riven-kalbera"
+    ],
+    "description": "The code uses Riven Asterwind; the document uses Riven Kalbera. No surname merge.",
+    "resolution": "Merged under Riven Kalbera from the Game Doc; Asterwind is retained as an alias."
+  },
+  {
+    "id": "vesper-identity",
+    "status": "resolved",
+    "characterIds": [
+      "char-kieran-vesper"
+    ],
+    "description": "World NPC K. Vesper and registry Kieran Vesper have similar roles; an initial is insufficient to establish identity.",
+    "resolution": "Merged under Kieran Vesper. K. Vesper is the abbreviated professional name; the world NPC ID remains npc-vesper."
+  },
+  {
+    "id": "miracle-agent",
+    "status": "resolved",
+    "characterIds": [
+      "char-miracle-jerome"
+    ],
+    "description": "The primary DGA agent and medical citizen share a name but different identifiers and roles. They remain separate.",
+    "resolution": "Merged under Dr. Miracle Jerome with separate medical and agency professional profiles. Both role histories and the agency badge remain intact."
+  },
+  {
+    "id": "elena-roles",
+    "status": "resolved",
+    "characterIds": [
+      "char-elena-rostova"
+    ],
+    "description": "Elena Rostova occurs as an agency SCADA engineer and a registry citizen with a separate investigative profile. Name-linked for reference only; roles and saves remain source-owned.",
+    "resolution": "Consolidated under Elena Rostova with separate agency, civic and case-context profiles; professional and investigative details are preserved."
+  },
+  {
+    "id": "elara-maid",
+    "status": "resolved",
+    "characterIds": [
+      "char-elara-vale"
+    ],
+    "description": "Mail declares MAID-OR-00000001; registry seed declares MAID-OR-00481926. No MAID is reassigned. Mail npcKey rowan also conflicts with the independent Archivist Rowan social profile.",
+    "resolution": "Mail now references the existing issued seed MAID-OR-00481926. The old mail MAID is source history only; the unrelated Rowan NPC key is removed. Archivist Rowan remains a separate character."
+  },
+  {
+    "id": "miracle-maid",
+    "status": "resolved",
+    "characterIds": [
+      "char-miracle-jerome"
+    ],
+    "description": "Mail declares MAID-OR-00000002; registry seed declares MAID-OR-00481927. Mail npcKey ilyra is not a proven character alias.",
+    "resolution": "Mail now references MAID-OR-00481927. The previous mail MAID and borrowed ilyra key remain provenance only. Medical reply routing uses the actual contact ID."
+  },
+  {
+    "id": "julian-maid",
+    "status": "resolved",
+    "characterIds": [
+      "char-julian-paul-vance"
+    ],
+    "description": "Mail declares MAID-OR-00000003; registry seed declares MAID-OR-00481928. Both existing records are preserved.",
+    "resolution": "Mail now references MAID-OR-00481928; its previous MAID is retained in source history, not used as an automatic identity alias."
+  },
+  {
+    "id": "faculty-coverage",
+    "status": "resolved",
+    "characterIds": [
+      "char-vael",
+      "char-vaelen",
+      "char-cassian-rook"
+    ],
+    "description": "The document Headmistress Vael, dialogue scholar Vaelen and code Dean Cassian Rook are separate entries. Similar names and institutional overlap do not prove identity.",
+    "resolution": "Resolved as distinct characters with separate folders: Headmistress Vael, scholar Vaelen and Dean Cassian Rook. No faculty member was removed."
+  },
+  {
+    "id": "kaelen-identity",
+    "status": "resolved",
+    "characterIds": [
+      "char-kaelen",
+      "char-kaelen-vance"
+    ],
+    "description": "The shadow broker Kaelen and workplace supervisor Kaelen Vance remain separate. No surname is inferred from a short dialogue label.",
+    "resolution": "Resolved as distinct characters: broker Kaelen, supervisor Kaelen Vance and investigative subject Kaelen Voss. Each retains a separate folder and ID."
+  },
+  {
+    "id": "elena-case-identity",
+    "status": "resolved",
+    "characterIds": [
+      "char-elena-rostova"
+    ],
+    "description": "Agency person P-105 is an active SCADA engineer. Case person P-401 is a deceased crash victim with a separate person ID. Kept separate despite the same full name; resolve timeline or identity before merging.",
+    "resolution": "Merged identity, scoped records: active agency/civic records and the deceased P-401 case profile remain separate contexts. No global life status is inferred and no case outcome is overwritten."
+  },
+  {
+    "id": "marcus-vance-identity",
+    "status": "resolved",
+    "characterIds": [
+      "char-marcus-vance",
+      "char-marcus-vance-technician"
+    ],
+    "description": "Courier P-104 and motorcycle technician P-402 use different person IDs and roles. They remain separate; a shared name does not establish identity.",
+    "resolution": "Resolved as distinct people: Marcus Vance the diplomatic courier and Marcus Vance the motorcycle technician. Separate role-labelled folders preserve both."
+  },
+  {
+    "id": "student-mercer-maid",
+    "status": "resolved",
+    "characterIds": [
+      "char-s-mercer",
+      "char-elara-vale"
+    ],
+    "description": "Student S. Mercer’s care assignment incorrectly reused Elara Vale’s MAID.",
+    "resolution": "Removed the wrong association. Student S. Mercer is retained with no issued MAID; Elara’s existing registry identity is untouched. The original value remains provenance only."
+  }
+]

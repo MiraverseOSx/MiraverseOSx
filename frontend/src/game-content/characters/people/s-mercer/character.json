@@ -1,0 +1,21 @@
+{
+  "id": "char-s-mercer",
+  "name": "Student S. Mercer (Vertex House)",
+  "kind": "person",
+  "aliases": [],
+  "status": "existing",
+  "notes": [
+    "No issued MAID is recorded. The previous care assignment incorrectly borrowed Elara Vale’s identifier and is retained only in source history."
+  ],
+  "legacyIds": [],
+  "references": [
+    {
+      "collection": "PATIENT_CARE_ASSIGNMENTS",
+      "key": "pc-mercer",
+      "file": "people/s-mercer/investigations.json"
+    }
+  ],
+  "maid": null,
+  "legacyMaids": [],
+  "folder": "s-mercer"
+}

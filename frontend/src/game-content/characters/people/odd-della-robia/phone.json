@@ -1,0 +1,24 @@
+[
+  {
+    "collection": "phone-contact",
+    "key": "Odd",
+    "origin": "frontend/src/data/phoneData.ts:37",
+    "context": "phone-contact",
+    "data": [
+      {
+        "id": 4,
+        "sender": "Odd",
+        "text": "Got the laser arrow rig reloaded for the twilight drill!",
+        "time": "09:10"
+      }
+    ],
+    "original": [
+      {
+        "id": 4,
+        "sender": "Odd",
+        "text": "Got the laser arrow rig reloaded for the twilight drill!",
+        "time": "09:10"
+      }
+    ]
+  }
+]

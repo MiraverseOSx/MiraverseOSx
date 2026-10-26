@@ -1,0 +1,19 @@
+{
+  "id": "char-nerya",
+  "name": "Nerya",
+  "kind": "person",
+  "aliases": [],
+  "status": "existing",
+  "notes": [],
+  "legacyIds": [],
+  "references": [
+    {
+      "collection": "phone-contact",
+      "key": "Nerya",
+      "file": "people/nerya/phone.json"
+    }
+  ],
+  "maid": null,
+  "legacyMaids": [],
+  "folder": "nerya"
+}

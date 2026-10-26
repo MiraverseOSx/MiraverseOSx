@@ -1,0 +1,22 @@
+[
+  {
+    "collection": "story-bible",
+    "key": "Sissi Delmas",
+    "origin": "docs/data/story-bible-characters.json:84",
+    "context": "story-bible",
+    "data": {
+      "key": "Sissi Delmas",
+      "name": "Sissi Delmas",
+      "role": "Cyacademy social circle",
+      "line": 335,
+      "characterId": "char-sissi-delmas"
+    },
+    "original": {
+      "key": "Sissi Delmas",
+      "name": "Sissi Delmas",
+      "role": "Cyacademy social circle",
+      "line": 335,
+      "characterId": "char-sissi-delmas"
+    }
+  }
+]

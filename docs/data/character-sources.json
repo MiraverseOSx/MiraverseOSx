@@ -1,0 +1,1593 @@
+{
+  "version": 2,
+  "scope": [
+    "NPCS",
+    "story-bible",
+    "defaultInputs",
+    "seedPeople",
+    "DGA_26_194_STARTING_PAYLOAD",
+    "INITIAL_MEDICAL_CHART",
+    "seedRelationships",
+    "seedNPCs",
+    "INV_26_402_STARTING_PAYLOAD",
+    "primarySeedAgent",
+    "AUREMAIL_DIRECTORY",
+    "PEOPLE",
+    "personas",
+    "phone-contact",
+    "INSTITUTIONAL_REGISTRY",
+    "FORMAL_INVESTIGATION_CASES",
+    "PATIENT_CARE_ASSIGNMENTS",
+    "MOTORCYCLE_CRASH_MEDICAL_CHART",
+    "OVERDOSE_TOXICOLOGY_MEDICAL_CHART"
+  ],
+  "records": [
+    {
+      "source": "frontend/src/game-content/characters/people/maeryn-seraphima/world.json",
+      "collection": "NPCS",
+      "key": "npc-maeryn",
+      "characterId": "char-maeryn-seraphima",
+      "name": "Queen Maeryn Seraphima",
+      "role": "Monarch",
+      "institution": "House Seraphima",
+      "maid": null,
+      "aliases": [],
+      "originalSource": "frontend/src/game-content/characters/worldNpcs.json:2"
+    },
+    {
+      "source": "frontend/src/game-content/characters/people/maeryn-seraphima/story.json",
+      "collection": "story-bible",
+      "key": "Queen Maeryn Seraphima",
+      "characterId": "char-maeryn-seraphima",
+      "name": "Queen Maeryn Seraphima",
+      "role": "Founder of Meridion",
+      "institution": "",
+      "maid": null,
+      "aliases": [],
+      "originalSource": "docs/data/story-bible-characters.json:7"
+    },
+    {
+      "source": "frontend/src/game-content/characters/people/holly/world.json",
+      "collection": "NPCS",
+      "key": "npc-holly",
+      "characterId": "char-holly",
+      "name": "High Warden Holly",
+      "role": "Warden",
+      "institution": "House Holly",
+      "maid": null,
+      "aliases": [],
+      "originalSource": "frontend/src/game-content/characters/worldNpcs.json:11"
+    },
+    {
+      "source": "frontend/src/game-content/characters/people/lucia/world.json",
+      "collection": "NPCS",
+      "key": "npc-lucia",
+      "characterId": "char-lucia",
+      "name": "Chancellor Lucia",
+      "role": "Councilor",
+      "institution": "House Lucia",
+      "maid": null,
+      "aliases": [],
+      "originalSource": "frontend/src/game-content/characters/worldNpcs.json:20"
+    },
+    {
+      "source": "frontend/src/game-content/characters/people/neryx/world.json",
+      "collection": "NPCS",
+      "key": "npc-neryx",
+      "characterId": "char-neryx",
+      "name": "Lord Neryx",
+      "role": "Diplomat",
+      "institution": "House Neryx",
+      "maid": null,
+      "aliases": [],
+      "originalSource": "frontend/src/game-content/characters/worldNpcs.json:29"
+    },
+    {
+      "source": "frontend/src/game-content/characters/people/yoko/world.json",
+      "collection": "NPCS",
+      "key": "npc-yoko",
+      "characterId": "char-yoko",
+      "name": "Grand Dispatcher Yoko",
+      "role": "Consul",
+      "institution": "House Yoko",
+      "maid": null,
+      "aliases": [],
+      "originalSource": "frontend/src/game-content/characters/worldNpcs.json:38"
+    },
+    {
+      "source": "frontend/src/game-content/characters/people/ember/world.json",
+      "collection": "NPCS",
+      "key": "npc-ember",
+      "characterId": "char-ember",
+      "name": "High Forge-Master Ember",
+      "role": "Artificer",
+      "institution": "House Ember",
+      "maid": null,
+      "aliases": [],
+      "originalSource": "frontend/src/game-content/characters/worldNpcs.json:47"
+    },
+    {
+      "source": "frontend/src/game-content/characters/people/keket/world.json",
+      "collection": "NPCS",
+      "key": "npc-keket",
+      "characterId": "char-keket",
+      "name": "Seer Keket",
+      "role": "Seer",
+      "institution": "House Keket",
+      "maid": null,
+      "aliases": [],
+      "originalSource": "frontend/src/game-content/characters/worldNpcs.json:56"
+    },
+    {
+      "source": "frontend/src/game-content/characters/people/kieran-vesper/world.json",
+      "collection": "NPCS",
+      "key": "npc-vesper",
+      "characterId": "char-kieran-vesper",
+      "name": "Kieran Vesper",
+      "role": "Archivist",
+      "institution": "Royal Historic Society",
+      "maid": null,
+      "aliases": [
+        "Senior Archivist K. Vesper"
+      ],
+      "originalSource": "frontend/src/game-content/characters/worldNpcs.json:65"
+    },
+    {
+      "source": "frontend/src/game-content/characters/people/kieran-vesper/registry.json",
+      "collection": "defaultInputs",
+      "key": "MAID-OR-00481929",
+      "characterId": "char-kieran-vesper",
+      "name": "Kieran Vesper",
+      "role": "Senior Crown Archivist & Registry Verifier",
+      "institution": "Orynvell Sovereign Registry & Royal Archives",
+      "maid": "MAID-OR-00481929",
+      "aliases": [
+        "Senior Archivist K. Vesper"
+      ],
+      "originalSource": "frontend/src/services/maidIdentityService.ts:1385"
+    },
+    {
+      "source": "frontend/src/game-content/characters/people/robert-mercer/world.json",
+      "collection": "NPCS",
+      "key": "npc-mercer",
+      "characterId": "char-robert-mercer",
+      "name": "Dr. Robert Mercer",
+      "role": "Physician",
+      "institution": "Faith Medical Group",
+      "maid": null,
+      "aliases": [],
+      "originalSource": "frontend/src/game-content/characters/worldNpcs.json:74"
+    },
+    {
+      "source": "frontend/src/game-content/characters/people/christian-vance/agency.json",
+      "collection": "seedPeople",
+      "key": "P-101",
+      "characterId": "char-christian-vance",
+      "name": "Ambassador Christian Vance",
+      "role": "Principal Diplomatic Envoy to Central Eurasia",
+      "institution": "State Department / Foreign Service",
+      "maid": null,
+      "aliases": [
+        "Envoy Vance",
+        "Subject Raven-1"
+      ],
+      "originalSource": "frontend/src/dgaos/data/seed/people.ts:14"
+    },
+    {
+      "source": "frontend/src/game-content/characters/people/christian-vance/investigations.json",
+      "collection": "DGA_26_194_STARTING_PAYLOAD",
+      "key": "P-101",
+      "characterId": "char-christian-vance",
+      "name": "Ambassador Christian Vance",
+      "role": "Victim / Diplomatic Envoy",
+      "institution": "State Department",
+      "maid": null,
+      "aliases": [
+        "Envoy Vance",
+        "Subject Raven-1"
+      ],
+      "originalSource": "frontend/src/dgaos/data/seed/cases.ts:521"
+    },
+    {
+      "source": "frontend/src/game-content/characters/people/christian-vance/investigations.json",
+      "collection": "INITIAL_MEDICAL_CHART",
+      "key": "PAT-88194",
+      "characterId": "char-christian-vance",
+      "name": "Ambassador Christian Vance",
+      "role": "",
+      "institution": "",
+      "maid": null,
+      "aliases": [
+        "Envoy Vance",
+        "Subject Raven-1"
+      ],
+      "originalSource": "frontend/src/dgaos/lib/medical-data.ts:135"
+    },
+    {
+      "source": "frontend/src/game-content/characters/people/christian-vance/relationships.json",
+      "collection": "seedRelationships",
+      "key": "REL-002",
+      "characterId": "char-christian-vance",
+      "name": "Ambassador Christian Vance",
+      "role": "",
+      "institution": "",
+      "maid": null,
+      "aliases": [
+        "Envoy Vance",
+        "Subject Raven-1"
+      ],
+      "originalSource": "frontend/src/dgaos/data/seed/relationships.ts:31"
+    },
+    {
+      "source": "frontend/src/game-content/characters/people/gregory-thorne/agency.json",
+      "collection": "seedPeople",
+      "key": "P-102",
+      "characterId": "char-gregory-thorne",
+      "name": "Dr. Gregory Thorne",
+      "role": "Chief of Critical Toxicology & Emergency Medicine",
+      "institution": "St. Jude Metropolitan Hospital",
+      "maid": null,
+      "aliases": [
+        "Chief Toxicology",
+        "Dr. Thorne"
+      ],
+      "originalSource": "frontend/src/dgaos/data/seed/people.ts:25"
+    },
+    {
+      "source": "frontend/src/game-content/characters/people/gregory-thorne/agency.json",
+      "collection": "seedNPCs",
+      "key": "NPC-THORNE",
+      "characterId": "char-gregory-thorne",
+      "name": "Dr. Gregory Thorne",
+      "role": "Chief of Critical Toxicology & Emergency Medicine",
+      "institution": "St. Jude Metropolitan Hospital",
+      "maid": null,
+      "aliases": [
+        "Chief Toxicology",
+        "Dr. Thorne"
+      ],
+      "originalSource": "frontend/src/dgaos/data/seed/npcs.ts:4"
+    },
+    {
+      "source": "frontend/src/game-content/characters/people/gregory-thorne/investigations.json",
+      "collection": "DGA_26_194_STARTING_PAYLOAD",
+      "key": "P-102",
+      "characterId": "char-gregory-thorne",
+      "name": "Dr. Gregory Thorne",
+      "role": "Attending Toxicologist",
+      "institution": "St. Jude Metropolitan Hospital",
+      "maid": null,
+      "aliases": [
+        "Chief Toxicology",
+        "Dr. Thorne"
+      ],
+      "originalSource": "frontend/src/dgaos/data/seed/cases.ts:529"
+    },
+    {
+      "source": "frontend/src/game-content/characters/people/gregory-thorne/relationships.json",
+      "collection": "seedRelationships",
+      "key": "REL-003",
+      "characterId": "char-gregory-thorne",
+      "name": "Dr. Gregory Thorne",
+      "role": "",
+      "institution": "",
+      "maid": null,
+      "aliases": [
+        "Chief Toxicology",
+        "Dr. Thorne"
+      ],
+      "originalSource": "frontend/src/dgaos/data/seed/relationships.ts:40"
+    },
+    {
+      "source": "frontend/src/game-content/characters/people/viktor-krell/agency.json",
+      "collection": "seedPeople",
+      "key": "P-103",
+      "characterId": "char-viktor-krell",
+      "name": "Viktor Krell",
+      "role": "Freelance Chemical Synthesis Broker & Smuggler",
+      "institution": "Black Market / Red Dawn Syndicate",
+      "maid": null,
+      "aliases": [
+        "The Glassmaker",
+        "V. Krellov",
+        "Contractor K",
+        "Viktor Krell (\"The Glassmaker\")"
+      ],
+      "originalSource": "frontend/src/dgaos/data/seed/people.ts:35"
+    },
+    {
+      "source": "frontend/src/game-content/characters/people/viktor-krell/agency.json",
+      "collection": "seedNPCs",
+      "key": "NPC-KRELL",
+      "characterId": "char-viktor-krell",
+      "name": "Viktor Krell",
+      "role": "Illicit Chemical Synthesis Broker",
+      "institution": "Red Dawn Syndicate / Phoenix Bio Shadow Contact",
+      "maid": null,
+      "aliases": [
+        "The Glassmaker",
+        "V. Krellov",
+        "Contractor K",
+        "Viktor Krell (\"The Glassmaker\")"
+      ],
+      "originalSource": "frontend/src/dgaos/data/seed/npcs.ts:103"
+    },
+    {
+      "source": "frontend/src/game-content/characters/people/viktor-krell/investigations.json",
+      "collection": "DGA_26_194_STARTING_PAYLOAD",
+      "key": "P-103",
+      "characterId": "char-viktor-krell",
+      "name": "Viktor Krell",
+      "role": "Primary Suspect / Synthesis Broker",
+      "institution": "Red Dawn Syndicate / Phoenix Bio Shadow Contact",
+      "maid": null,
+      "aliases": [
+        "The Glassmaker",
+        "V. Krellov",
+        "Contractor K",
+        "Viktor Krell (\"The Glassmaker\")"
+      ],
+      "originalSource": "frontend/src/dgaos/data/seed/cases.ts:537"
+    },
+    {
+      "source": "frontend/src/game-content/characters/people/viktor-krell/relationships.json",
+      "collection": "seedRelationships",
+      "key": "REL-004",
+      "characterId": "char-viktor-krell",
+      "name": "Viktor Krell",
+      "role": "",
+      "institution": "",
+      "maid": null,
+      "aliases": [
+        "The Glassmaker",
+        "V. Krellov",
+        "Contractor K",
+        "Viktor Krell (\"The Glassmaker\")"
+      ],
+      "originalSource": "frontend/src/dgaos/data/seed/relationships.ts:49"
+    },
+    {
+      "source": "frontend/src/game-content/characters/people/marcus-vance-courier/agency.json",
+      "collection": "seedPeople",
+      "key": "P-104",
+      "characterId": "char-marcus-vance",
+      "name": "Courier Marcus Vance (No Relation)",
+      "role": "Diplomatic Pouch Custodian",
+      "institution": "State Department Diplomatic Security Service",
+      "maid": null,
+      "aliases": [
+        "Courier 9",
+        "Runner M"
+      ],
+      "originalSource": "frontend/src/dgaos/data/seed/people.ts:45"
+    },
+    {
+      "source": "frontend/src/game-content/characters/people/marcus-vance-courier/relationships.json",
+      "collection": "seedRelationships",
+      "key": "REL-005",
+      "characterId": "char-marcus-vance",
+      "name": "Courier Marcus Vance (No Relation)",
+      "role": "",
+      "institution": "",
+      "maid": null,
+      "aliases": [
+        "Courier 9",
+        "Runner M"
+      ],
+      "originalSource": "frontend/src/dgaos/data/seed/relationships.ts:58"
+    },
+    {
+      "source": "frontend/src/game-content/characters/people/elena-rostova/agency.json",
+      "collection": "seedPeople",
+      "key": "P-105",
+      "characterId": "char-elena-rostova",
+      "name": "Elena Rostova",
+      "role": "Senior Cygnus Dynamics SCADA Engineer",
+      "institution": "Cygnus Dynamics",
+      "maid": null,
+      "aliases": [
+        "Specter 4",
+        "E. Rostova"
+      ],
+      "originalSource": "frontend/src/dgaos/data/seed/people.ts:55"
+    },
+    {
+      "source": "frontend/src/game-content/characters/people/elena-rostova/registry.json",
+      "collection": "defaultInputs",
+      "key": "MAID-OR-00481931",
+      "characterId": "char-elena-rostova",
+      "name": "Elena Rostova",
+      "role": "Licensed Aether-Courier & Signal Salvager",
+      "institution": "DGAOS EYES Subject of Interest · Old Factory Ward",
+      "maid": "MAID-OR-00481931",
+      "aliases": [
+        "Specter 4",
+        "E. Rostova"
+      ],
+      "originalSource": "frontend/src/services/maidIdentityService.ts:1477"
+    },
+    {
+      "source": "frontend/src/game-content/characters/people/elena-rostova/investigations.json",
+      "collection": "INV_26_402_STARTING_PAYLOAD",
+      "key": "P-401",
+      "characterId": "char-elena-rostova",
+      "name": "Elena Rostova",
+      "role": "Victim / Lead Propulsion Software Architect",
+      "institution": "Apex Dynamics Autonomous Mobility",
+      "maid": null,
+      "aliases": [
+        "Specter 4",
+        "E. Rostova"
+      ],
+      "originalSource": "frontend/src/dgaos/data/seed/cases.ts:735"
+    },
+    {
+      "source": "frontend/src/game-content/characters/people/elena-rostova/relationships.json",
+      "collection": "seedRelationships",
+      "key": "REL-006",
+      "characterId": "char-elena-rostova",
+      "name": "Elena Rostova",
+      "role": "",
+      "institution": "",
+      "maid": null,
+      "aliases": [
+        "Specter 4",
+        "E. Rostova"
+      ],
+      "originalSource": "frontend/src/dgaos/data/seed/relationships.ts:67"
+    },
+    {
+      "source": "frontend/src/game-content/characters/people/evelyn-cross/agency.json",
+      "collection": "seedNPCs",
+      "key": "NPC-CROSS",
+      "characterId": "char-evelyn-cross",
+      "name": "Director Evelyn Cross",
+      "role": "Executive Director",
+      "institution": "Department of Global Affairs",
+      "maid": null,
+      "aliases": [],
+      "originalSource": "frontend/src/dgaos/data/seed/npcs.ts:30"
+    },
+    {
+      "source": "frontend/src/game-content/characters/people/deputy-chief-miller/agency.json",
+      "collection": "seedNPCs",
+      "key": "NPC-MILLER",
+      "characterId": "char-deputy-chief-miller",
+      "name": "Deputy Chief Miller",
+      "role": "Station Chief / Liaison Lead",
+      "institution": "Station Geneva",
+      "maid": null,
+      "aliases": [],
+      "originalSource": "frontend/src/dgaos/data/seed/npcs.ts:55"
+    },
+    {
+      "source": "frontend/src/game-content/characters/people/marcus-chen/agency.json",
+      "collection": "seedNPCs",
+      "key": "NPC-CHEN",
+      "characterId": "char-marcus-chen",
+      "name": "Specialist Marcus Chen",
+      "role": "Senior Cyber Defense Analyst",
+      "institution": "Cygnus Defense / DGA Cyber Cell",
+      "maid": null,
+      "aliases": [],
+      "originalSource": "frontend/src/dgaos/data/seed/npcs.ts:79"
+    },
+    {
+      "source": "frontend/src/game-content/characters/people/miracle-jerome/agency.json",
+      "collection": "primarySeedAgent",
+      "key": "DGA-SA-8804",
+      "characterId": "char-miracle-jerome",
+      "name": "Dr. Miracle Jerome",
+      "role": "Senior Special Agent / Case Director",
+      "institution": "",
+      "maid": null,
+      "aliases": [
+        "Miracle Jerome"
+      ],
+      "originalSource": "frontend/src/dgaos/data/seed/agent.ts:17"
+    },
+    {
+      "source": "frontend/src/game-content/characters/people/miracle-jerome/mail.json",
+      "collection": "AUREMAIL_DIRECTORY",
+      "key": "dir-miracle-jerome",
+      "characterId": "char-miracle-jerome",
+      "name": "Dr. Miracle Jerome",
+      "role": "Chief Aura Diagnostician",
+      "institution": "Faith Medical Group",
+      "maid": "MAID-OR-00481927",
+      "aliases": [
+        "Miracle Jerome"
+      ],
+      "originalSource": "frontend/src/data/commsData.ts:388"
+    },
+    {
+      "source": "frontend/src/game-content/characters/people/miracle-jerome/registry.json",
+      "collection": "defaultInputs",
+      "key": "MAID-OR-00481927",
+      "characterId": "char-miracle-jerome",
+      "name": "Dr. Miracle Jerome",
+      "role": "Chief Attending Physician & Bio-Aura Specialist",
+      "institution": "Faith Medical Group · MEDSTAT Division",
+      "maid": "MAID-OR-00481927",
+      "aliases": [
+        "Miracle Jerome"
+      ],
+      "originalSource": "frontend/src/services/maidIdentityService.ts:1292"
+    },
+    {
+      "source": "frontend/src/game-content/characters/people/miracle-jerome/relationships.json",
+      "collection": "seedRelationships",
+      "key": "REL-001",
+      "characterId": "char-miracle-jerome",
+      "name": "Dr. Miracle Jerome",
+      "role": "",
+      "institution": "",
+      "maid": null,
+      "aliases": [
+        "Miracle Jerome"
+      ],
+      "originalSource": "frontend/src/dgaos/data/seed/relationships.ts:22"
+    },
+    {
+      "source": "frontend/src/game-content/characters/people/miracle-jerome/relationships.json",
+      "collection": "seedRelationships",
+      "key": "REL-007",
+      "characterId": "char-miracle-jerome",
+      "name": "Dr. Miracle Jerome",
+      "role": "",
+      "institution": "",
+      "maid": null,
+      "aliases": [
+        "Miracle Jerome"
+      ],
+      "originalSource": "frontend/src/dgaos/data/seed/relationships.ts:76"
+    },
+    {
+      "source": "frontend/src/game-content/characters/people/jeremie-belpois/social.json",
+      "collection": "PEOPLE",
+      "key": "jeremie",
+      "characterId": "char-jeremie-belpois",
+      "name": "Jeremie Belpois",
+      "role": "",
+      "institution": "",
+      "maid": null,
+      "aliases": [
+        "Jeremie"
+      ],
+      "originalSource": "frontend/src/game-content/characters/socialProfiles.json:2"
+    },
+    {
+      "source": "frontend/src/game-content/characters/people/jeremie-belpois/mail.json",
+      "collection": "AUREMAIL_DIRECTORY",
+      "key": "dir-jeremie",
+      "characterId": "char-jeremie-belpois",
+      "name": "Jeremie Belpois",
+      "role": "Lead Systems Engineer",
+      "institution": "Cyacademy Lab 4",
+      "maid": "MAID-OR-00010204",
+      "aliases": [
+        "Jeremie"
+      ],
+      "originalSource": "frontend/src/data/commsData.ts:325"
+    },
+    {
+      "source": "frontend/src/game-content/characters/people/jeremie-belpois/dialogue.json",
+      "collection": "personas",
+      "key": "Jeremie",
+      "characterId": "char-jeremie-belpois",
+      "name": "Jeremie Belpois",
+      "role": "Hardware & Terminal Architecture Engineer",
+      "institution": "",
+      "maid": null,
+      "aliases": [
+        "Jeremie"
+      ],
+      "originalSource": "frontend/src/gameplay/NPCEngine.ts:44"
+    },
+    {
+      "source": "frontend/src/game-content/characters/people/jeremie-belpois/phone.json",
+      "collection": "phone-contact",
+      "key": "Jeremie",
+      "characterId": "char-jeremie-belpois",
+      "name": "Jeremie Belpois",
+      "role": "",
+      "institution": "",
+      "maid": null,
+      "aliases": [
+        "Jeremie"
+      ],
+      "originalSource": "frontend/src/data/phoneData.ts:31"
+    },
+    {
+      "source": "frontend/src/game-content/characters/people/jeremie-belpois/story.json",
+      "collection": "story-bible",
+      "key": "Jeremie Belpois",
+      "characterId": "char-jeremie-belpois",
+      "name": "Jeremie Belpois",
+      "role": "Research and technical problem-solving",
+      "institution": "",
+      "maid": null,
+      "aliases": [
+        "Jeremie"
+      ],
+      "originalSource": "docs/data/story-bible-characters.json:56"
+    },
+    {
+      "source": "frontend/src/game-content/characters/people/aelita-hopper/social.json",
+      "collection": "PEOPLE",
+      "key": "aelita",
+      "characterId": "char-aelita-hopper",
+      "name": "Aelita Hopper",
+      "role": "",
+      "institution": "",
+      "maid": null,
+      "aliases": [
+        "Aelita Schaeffer",
+        "Aelita"
+      ],
+      "originalSource": "frontend/src/game-content/characters/socialProfiles.json:15"
+    },
+    {
+      "source": "frontend/src/game-content/characters/people/aelita-hopper/mail.json",
+      "collection": "AUREMAIL_DIRECTORY",
+      "key": "dir-aelita",
+      "characterId": "char-aelita-hopper",
+      "name": "Aelita Hopper",
+      "role": "Core Resonance Specialist",
+      "institution": "Cyacademy University",
+      "maid": "MAID-OR-00010203",
+      "aliases": [
+        "Aelita Schaeffer",
+        "Aelita"
+      ],
+      "originalSource": "frontend/src/data/commsData.ts:309"
+    },
+    {
+      "source": "frontend/src/game-content/characters/people/aelita-hopper/dialogue.json",
+      "collection": "personas",
+      "key": "Aelita",
+      "characterId": "char-aelita-hopper",
+      "name": "Aelita Hopper",
+      "role": "Harmonic Synthesizer & Botanical Analyst",
+      "institution": "",
+      "maid": null,
+      "aliases": [
+        "Aelita Schaeffer",
+        "Aelita"
+      ],
+      "originalSource": "frontend/src/gameplay/NPCEngine.ts:55"
+    },
+    {
+      "source": "frontend/src/game-content/characters/people/aelita-hopper/phone.json",
+      "collection": "phone-contact",
+      "key": "Aelita",
+      "characterId": "char-aelita-hopper",
+      "name": "Aelita Hopper",
+      "role": "",
+      "institution": "",
+      "maid": null,
+      "aliases": [
+        "Aelita Schaeffer",
+        "Aelita"
+      ],
+      "originalSource": "frontend/src/data/phoneData.ts:28"
+    },
+    {
+      "source": "frontend/src/game-content/characters/people/aelita-hopper/story.json",
+      "collection": "story-bible",
+      "key": "Aelita Hopper",
+      "characterId": "char-aelita-hopper",
+      "name": "Aelita Hopper",
+      "role": "Cyacademy social circle",
+      "institution": "",
+      "maid": null,
+      "aliases": [
+        "Aelita Schaeffer",
+        "Aelita"
+      ],
+      "originalSource": "docs/data/story-bible-characters.json:49"
+    },
+    {
+      "source": "frontend/src/game-content/characters/people/sissi-delmas/social.json",
+      "collection": "PEOPLE",
+      "key": "sissi",
+      "characterId": "char-sissi-delmas",
+      "name": "Sissi Delmas",
+      "role": "",
+      "institution": "",
+      "maid": null,
+      "aliases": [
+        "Elisabeth Delmas",
+        "Sissi"
+      ],
+      "originalSource": "frontend/src/game-content/characters/socialProfiles.json:28"
+    },
+    {
+      "source": "frontend/src/game-content/characters/people/sissi-delmas/dialogue.json",
+      "collection": "personas",
+      "key": "Sissi",
+      "characterId": "char-sissi-delmas",
+      "name": "Sissi Delmas",
+      "role": "Aureline Socialite & Trends Editor",
+      "institution": "",
+      "maid": null,
+      "aliases": [
+        "Elisabeth Delmas",
+        "Sissi"
+      ],
+      "originalSource": "frontend/src/gameplay/NPCEngine.ts:66"
+    },
+    {
+      "source": "frontend/src/game-content/characters/people/sissi-delmas/phone.json",
+      "collection": "phone-contact",
+      "key": "Sissi",
+      "characterId": "char-sissi-delmas",
+      "name": "Sissi Delmas",
+      "role": "",
+      "institution": "",
+      "maid": null,
+      "aliases": [
+        "Elisabeth Delmas",
+        "Sissi"
+      ],
+      "originalSource": "frontend/src/data/phoneData.ts:46"
+    },
+    {
+      "source": "frontend/src/game-content/characters/people/sissi-delmas/story.json",
+      "collection": "story-bible",
+      "key": "Sissi Delmas",
+      "characterId": "char-sissi-delmas",
+      "name": "Sissi Delmas",
+      "role": "Cyacademy social circle",
+      "institution": "",
+      "maid": null,
+      "aliases": [
+        "Elisabeth Delmas",
+        "Sissi"
+      ],
+      "originalSource": "docs/data/story-bible-characters.json:84"
+    },
+    {
+      "source": "frontend/src/game-content/characters/people/odd-della-robia/social.json",
+      "collection": "PEOPLE",
+      "key": "odd",
+      "characterId": "char-odd-della-robia",
+      "name": "Odd Della Robia",
+      "role": "",
+      "institution": "",
+      "maid": null,
+      "aliases": [
+        "Odd Della Robbia"
+      ],
+      "originalSource": "frontend/src/game-content/characters/socialProfiles.json:41"
+    },
+    {
+      "source": "frontend/src/game-content/characters/people/odd-della-robia/mail.json",
+      "collection": "AUREMAIL_DIRECTORY",
+      "key": "dir-odd",
+      "characterId": "char-odd-della-robia",
+      "name": "Odd Della Robia",
+      "role": "Student Tactician & Scout",
+      "institution": "Cyacademy University",
+      "maid": "MAID-OR-00010205",
+      "aliases": [
+        "Odd Della Robbia"
+      ],
+      "originalSource": "frontend/src/data/commsData.ts:341"
+    },
+    {
+      "source": "frontend/src/game-content/characters/people/odd-della-robia/phone.json",
+      "collection": "phone-contact",
+      "key": "Odd",
+      "characterId": "char-odd-della-robia",
+      "name": "Odd Della Robia",
+      "role": "",
+      "institution": "",
+      "maid": null,
+      "aliases": [
+        "Odd Della Robbia"
+      ],
+      "originalSource": "frontend/src/data/phoneData.ts:37"
+    },
+    {
+      "source": "frontend/src/game-content/characters/people/odd-della-robia/story.json",
+      "collection": "story-bible",
+      "key": "Odd Della Robia",
+      "characterId": "char-odd-della-robia",
+      "name": "Odd Della Robia",
+      "role": "Cyacademy social circle",
+      "institution": "",
+      "maid": null,
+      "aliases": [
+        "Odd Della Robbia"
+      ],
+      "originalSource": "docs/data/story-bible-characters.json:63"
+    },
+    {
+      "source": "frontend/src/game-content/characters/people/sharon-voss/social.json",
+      "collection": "PEOPLE",
+      "key": "voss",
+      "characterId": "char-sharon-voss",
+      "name": "Dr. Sharon Voss",
+      "role": "",
+      "institution": "",
+      "maid": null,
+      "aliases": [],
+      "originalSource": "frontend/src/game-content/characters/socialProfiles.json:54"
+    },
+    {
+      "source": "frontend/src/game-content/characters/people/sharon-voss/mail.json",
+      "collection": "AUREMAIL_DIRECTORY",
+      "key": "dir-dr-voss",
+      "characterId": "char-sharon-voss",
+      "name": "Dr. Sharon Voss",
+      "role": "Senior Aura & Systems Researcher",
+      "institution": "Cyacademy Research Division",
+      "maid": "MAID-OR-00010202",
+      "aliases": [],
+      "originalSource": "frontend/src/data/commsData.ts:293"
+    },
+    {
+      "source": "frontend/src/game-content/characters/people/sharon-voss/phone.json",
+      "collection": "phone-contact",
+      "key": "Dr. Voss",
+      "characterId": "char-sharon-voss",
+      "name": "Dr. Sharon Voss",
+      "role": "",
+      "institution": "",
+      "maid": null,
+      "aliases": [],
+      "originalSource": "frontend/src/data/phoneData.ts:34"
+    },
+    {
+      "source": "frontend/src/game-content/characters/people/riven-kalbera/social.json",
+      "collection": "PEOPLE",
+      "key": "riven",
+      "characterId": "char-riven-kalbera",
+      "name": "Riven Kalbera",
+      "role": "",
+      "institution": "",
+      "maid": null,
+      "aliases": [
+        "Riven Asterwind"
+      ],
+      "originalSource": "frontend/src/game-content/characters/socialProfiles.json:67"
+    },
+    {
+      "source": "frontend/src/game-content/characters/people/riven-kalbera/mail.json",
+      "collection": "AUREMAIL_DIRECTORY",
+      "key": "dir-riven",
+      "characterId": "char-riven-kalbera",
+      "name": "Riven Kalbera",
+      "role": "Netrunner Specialist",
+      "institution": "Independent / Vector",
+      "maid": "MAID-OR-00010206",
+      "aliases": [
+        "Riven Asterwind"
+      ],
+      "originalSource": "frontend/src/data/commsData.ts:356"
+    },
+    {
+      "source": "frontend/src/game-content/characters/people/riven-kalbera/story.json",
+      "collection": "story-bible",
+      "key": "Riven Kalbera",
+      "characterId": "char-riven-kalbera",
+      "name": "Riven Kalbera",
+      "role": "Social circle",
+      "institution": "",
+      "maid": null,
+      "aliases": [
+        "Riven Asterwind"
+      ],
+      "originalSource": "docs/data/story-bible-characters.json:112"
+    },
+    {
+      "source": "frontend/src/game-content/characters/people/mara-thorne/social.json",
+      "collection": "PEOPLE",
+      "key": "mara",
+      "characterId": "char-mara-thorne",
+      "name": "Mara Thorne",
+      "role": "",
+      "institution": "",
+      "maid": null,
+      "aliases": [],
+      "originalSource": "frontend/src/game-content/characters/socialProfiles.json:80"
+    },
+    {
+      "source": "frontend/src/game-content/characters/people/rowan/social.json",
+      "collection": "PEOPLE",
+      "key": "rowan",
+      "characterId": "char-rowan",
+      "name": "Archivist Rowan",
+      "role": "",
+      "institution": "",
+      "maid": null,
+      "aliases": [],
+      "originalSource": "frontend/src/game-content/characters/socialProfiles.json:93"
+    },
+    {
+      "source": "frontend/src/game-content/characters/people/ronald-sterling/workplace.json",
+      "collection": "INSTITUTIONAL_REGISTRY",
+      "key": "sup-dga",
+      "characterId": "char-ronald-sterling",
+      "name": "Director Ronald Sterling",
+      "role": "Deputy Director of Operational Intelligence",
+      "institution": "Department of Global Affairs // Directorate",
+      "maid": null,
+      "aliases": [],
+      "originalSource": "frontend/src/apps/worknet/worknetData.ts:97"
+    },
+    {
+      "source": "frontend/src/game-content/characters/people/vance-lowe/workplace.json",
+      "collection": "INSTITUTIONAL_REGISTRY",
+      "key": "cw-dga-1",
+      "characterId": "char-vance-lowe",
+      "name": "Vance Lowe",
+      "role": "Senior Field Analyst",
+      "institution": "",
+      "maid": null,
+      "aliases": [],
+      "originalSource": "frontend/src/apps/worknet/worknetData.ts:108"
+    },
+    {
+      "source": "frontend/src/game-content/characters/people/mireille-chen/workplace.json",
+      "collection": "INSTITUTIONAL_REGISTRY",
+      "key": "cw-dga-2",
+      "characterId": "char-mireille-chen",
+      "name": "Mireille Chen",
+      "role": "Investigative Case Officer",
+      "institution": "",
+      "maid": null,
+      "aliases": [],
+      "originalSource": "frontend/src/apps/worknet/worknetData.ts:123"
+    },
+    {
+      "source": "frontend/src/game-content/characters/people/derek-brody/workplace.json",
+      "collection": "INSTITUTIONAL_REGISTRY",
+      "key": "cw-dga-3",
+      "characterId": "char-derek-brody",
+      "name": "Sergeant Derek Brody",
+      "role": "Tactical Dispatch Coordinator",
+      "institution": "",
+      "maid": null,
+      "aliases": [],
+      "originalSource": "frontend/src/apps/worknet/worknetData.ts:138"
+    },
+    {
+      "source": "frontend/src/game-content/characters/people/aris-thorne/workplace.json",
+      "collection": "INSTITUTIONAL_REGISTRY",
+      "key": "sup-faithmed",
+      "characterId": "char-aris-thorne",
+      "name": "Dr. Aris Thorne",
+      "role": "Chief Medical Officer",
+      "institution": "Faith Medical // Central Clinical Directorate",
+      "maid": null,
+      "aliases": [],
+      "originalSource": "frontend/src/apps/worknet/worknetData.ts:187"
+    },
+    {
+      "source": "frontend/src/game-content/characters/people/katherine-mercer/workplace.json",
+      "collection": "INSTITUTIONAL_REGISTRY",
+      "key": "cw-fm-1",
+      "characterId": "char-katherine-mercer",
+      "name": "Katherine Mercer",
+      "role": "Resident Bio-Aura Clinician",
+      "institution": "",
+      "maid": null,
+      "aliases": [],
+      "originalSource": "frontend/src/apps/worknet/worknetData.ts:198"
+    },
+    {
+      "source": "frontend/src/game-content/characters/people/soren-lind/workplace.json",
+      "collection": "INSTITUTIONAL_REGISTRY",
+      "key": "cw-fm-2",
+      "characterId": "char-soren-lind",
+      "name": "Soren Lind",
+      "role": "Clinical Intake Specialist",
+      "institution": "",
+      "maid": null,
+      "aliases": [],
+      "originalSource": "frontend/src/apps/worknet/worknetData.ts:213"
+    },
+    {
+      "source": "frontend/src/game-content/characters/people/silas-oryn/workplace.json",
+      "collection": "INSTITUTIONAL_REGISTRY",
+      "key": "sup-finance",
+      "characterId": "char-silas-oryn",
+      "name": "Silas Oryn",
+      "role": "Chief Auditor of the Treasury",
+      "institution": "Oryn Department of Finance // Audit Directorate",
+      "maid": null,
+      "aliases": [],
+      "originalSource": "frontend/src/apps/worknet/worknetData.ts:261"
+    },
+    {
+      "source": "frontend/src/game-content/characters/people/elise-vance/workplace.json",
+      "collection": "INSTITUTIONAL_REGISTRY",
+      "key": "cw-fin-1",
+      "characterId": "char-elise-vance",
+      "name": "Elise Vance",
+      "role": "Senior Ledger Analyst",
+      "institution": "",
+      "maid": null,
+      "aliases": [],
+      "originalSource": "frontend/src/apps/worknet/worknetData.ts:272"
+    },
+    {
+      "source": "frontend/src/game-content/characters/people/tobias-gale/workplace.json",
+      "collection": "INSTITUTIONAL_REGISTRY",
+      "key": "cw-fin-2",
+      "characterId": "char-tobias-gale",
+      "name": "Tobias Gale",
+      "role": "Disbursement Officer",
+      "institution": "",
+      "maid": null,
+      "aliases": [],
+      "originalSource": "frontend/src/apps/worknet/worknetData.ts:287"
+    },
+    {
+      "source": "frontend/src/game-content/characters/people/julian-thorne/workplace.json",
+      "collection": "INSTITUTIONAL_REGISTRY",
+      "key": "sup-archives",
+      "characterId": "char-julian-thorne",
+      "name": "Julian Thorne",
+      "role": "Grand Archivist & Custodian of Sealed Codices",
+      "institution": "Royal Society // Archival Division",
+      "maid": null,
+      "aliases": [],
+      "originalSource": "frontend/src/apps/worknet/worknetData.ts:334"
+    },
+    {
+      "source": "frontend/src/game-content/characters/people/maren-holt/workplace.json",
+      "collection": "INSTITUTIONAL_REGISTRY",
+      "key": "cw-arc-1",
+      "characterId": "char-maren-holt",
+      "name": "Maren Holt",
+      "role": "Master Conservator",
+      "institution": "",
+      "maid": null,
+      "aliases": [],
+      "originalSource": "frontend/src/apps/worknet/worknetData.ts:345"
+    },
+    {
+      "source": "frontend/src/game-content/characters/people/kaelen-vance/workplace.json",
+      "collection": "INSTITUTIONAL_REGISTRY",
+      "key": "sup-engineer",
+      "characterId": "char-kaelen-vance",
+      "name": "Kaelen Vance",
+      "role": "Chief Systems Architect",
+      "institution": "Infrastructure Directorate // Systems Engineering",
+      "maid": null,
+      "aliases": [],
+      "originalSource": "frontend/src/apps/worknet/worknetData.ts:390"
+    },
+    {
+      "source": "frontend/src/game-content/characters/people/nadia-cruz/workplace.json",
+      "collection": "INSTITUTIONAL_REGISTRY",
+      "key": "cw-eng-1",
+      "characterId": "char-nadia-cruz",
+      "name": "Nadia Cruz",
+      "role": "Lead Relay Diagnostics Specialist",
+      "institution": "",
+      "maid": null,
+      "aliases": [],
+      "originalSource": "frontend/src/apps/worknet/worknetData.ts:401"
+    },
+    {
+      "source": "frontend/src/game-content/characters/people/thalia-vane/workplace.json",
+      "collection": "INSTITUTIONAL_REGISTRY",
+      "key": "sup-diplomat",
+      "characterId": "char-thalia-vane",
+      "name": "Thalia Vane",
+      "role": "Senior Envoy of the Aureline Assembly",
+      "institution": "Civic Administration // Diplomatic Chancery",
+      "maid": null,
+      "aliases": [],
+      "originalSource": "frontend/src/apps/worknet/worknetData.ts:446"
+    },
+    {
+      "source": "frontend/src/game-content/characters/people/gregory-bell/workplace.json",
+      "collection": "INSTITUTIONAL_REGISTRY",
+      "key": "cw-dip-1",
+      "characterId": "char-gregory-bell",
+      "name": "Gregory Bell",
+      "role": "Consensus Arbitrator",
+      "institution": "",
+      "maid": null,
+      "aliases": [],
+      "originalSource": "frontend/src/apps/worknet/worknetData.ts:457"
+    },
+    {
+      "source": "frontend/src/game-content/characters/people/corin-mercer/workplace.json",
+      "collection": "INSTITUTIONAL_REGISTRY",
+      "key": "sup-warden",
+      "characterId": "char-corin-mercer",
+      "name": "Corin Mercer",
+      "role": "Chief Warden of Arcadia Reserve",
+      "institution": "Arcadia Biosphere // Central Ward",
+      "maid": null,
+      "aliases": [],
+      "originalSource": "frontend/src/apps/worknet/worknetData.ts:503"
+    },
+    {
+      "source": "frontend/src/game-content/characters/people/mara-finch/workplace.json",
+      "collection": "INSTITUTIONAL_REGISTRY",
+      "key": "cw-war-1",
+      "characterId": "char-mara-finch",
+      "name": "Mara Finch",
+      "role": "Field Ecologist",
+      "institution": "",
+      "maid": null,
+      "aliases": [],
+      "originalSource": "frontend/src/apps/worknet/worknetData.ts:514"
+    },
+    {
+      "source": "frontend/src/game-content/characters/people/vivienne-rose/workplace.json",
+      "collection": "INSTITUTIONAL_REGISTRY",
+      "key": "sup-artist",
+      "characterId": "char-vivienne-rose",
+      "name": "Vivienne Rose",
+      "role": "Artistic Director",
+      "institution": "Velvet Cultural Studio // Executive Board",
+      "maid": null,
+      "aliases": [],
+      "originalSource": "frontend/src/apps/worknet/worknetData.ts:559"
+    },
+    {
+      "source": "frontend/src/game-content/characters/people/leo-sterling/workplace.json",
+      "collection": "INSTITUTIONAL_REGISTRY",
+      "key": "cw-art-1",
+      "characterId": "char-leo-sterling",
+      "name": "Leo Sterling",
+      "role": "Resident Sound Designer",
+      "institution": "",
+      "maid": null,
+      "aliases": [],
+      "originalSource": "frontend/src/apps/worknet/worknetData.ts:570"
+    },
+    {
+      "source": "frontend/src/game-content/characters/people/talia-moss/workplace.json",
+      "collection": "INSTITUTIONAL_REGISTRY",
+      "key": "sup-questnotice",
+      "characterId": "char-talia-moss",
+      "name": "Talia Moss",
+      "role": "Civic Dispatch Coordinator",
+      "institution": "QUESTNOTICE // District Center",
+      "maid": null,
+      "aliases": [],
+      "originalSource": "frontend/src/apps/worknet/worknetData.ts:615"
+    },
+    {
+      "source": "frontend/src/game-content/characters/people/felix-ward/workplace.json",
+      "collection": "INSTITUTIONAL_REGISTRY",
+      "key": "cw-qn-1",
+      "characterId": "char-felix-ward",
+      "name": "Felix Ward",
+      "role": "Dispatch Assistant",
+      "institution": "",
+      "maid": null,
+      "aliases": [],
+      "originalSource": "frontend/src/apps/worknet/worknetData.ts:626"
+    },
+    {
+      "source": "frontend/src/game-content/characters/people/cassian-rook/mail.json",
+      "collection": "AUREMAIL_DIRECTORY",
+      "key": "dir-dean-rook",
+      "characterId": "char-cassian-rook",
+      "name": "Dean Cassian Rook",
+      "role": "Dean of Students",
+      "institution": "Cyacademy University",
+      "maid": "MAID-OR-00010201",
+      "aliases": [],
+      "originalSource": "frontend/src/data/commsData.ts:278"
+    },
+    {
+      "source": "frontend/src/game-content/characters/people/cassian-rook/dialogue.json",
+      "collection": "personas",
+      "key": "Dean Cassian Rook",
+      "characterId": "char-cassian-rook",
+      "name": "Dean Cassian Rook",
+      "role": "Cyacademy Dean of Operatives",
+      "institution": "",
+      "maid": null,
+      "aliases": [],
+      "originalSource": "frontend/src/gameplay/NPCEngine.ts:99"
+    },
+    {
+      "source": "frontend/src/game-content/characters/people/elara-vale/mail.json",
+      "collection": "AUREMAIL_DIRECTORY",
+      "key": "dir-elara-vale",
+      "characterId": "char-elara-vale",
+      "name": "Elara Vale",
+      "role": "Senior Resonance Archivist",
+      "institution": "Cyacademy Archive",
+      "maid": "MAID-OR-00481926",
+      "aliases": [],
+      "originalSource": "frontend/src/data/commsData.ts:373"
+    },
+    {
+      "source": "frontend/src/game-content/characters/people/elara-vale/registry.json",
+      "collection": "defaultInputs",
+      "key": "MAID-OR-00481926",
+      "characterId": "char-elara-vale",
+      "name": "Elara Vale",
+      "role": "Research Apprentice / Resonance Analyst",
+      "institution": "Cyacademy Central Campus",
+      "maid": "MAID-OR-00481926",
+      "aliases": [],
+      "originalSource": "frontend/src/services/maidIdentityService.ts:1245"
+    },
+    {
+      "source": "frontend/src/game-content/characters/people/elara-vale/investigations.json",
+      "collection": "FORMAL_INVESTIGATION_CASES",
+      "key": "CASE-FM-401",
+      "characterId": "char-elara-vale",
+      "name": "Elara Vale",
+      "role": "Sub-Conduit Veilwilt Cluster & Bio-Aura Desync",
+      "institution": "Faith Medical & TRACE",
+      "maid": null,
+      "aliases": [],
+      "originalSource": "frontend/src/gameplay/WorldEventEngine.ts:71"
+    },
+    {
+      "source": "frontend/src/game-content/characters/people/elara-vale/investigations.json",
+      "collection": "PATIENT_CARE_ASSIGNMENTS",
+      "key": "pc-vale",
+      "characterId": "char-elara-vale",
+      "name": "Elara Vale",
+      "role": "",
+      "institution": "",
+      "maid": "MAID-OR-00481926",
+      "aliases": [],
+      "originalSource": "frontend/src/gameplay/WorldEventEngine.ts:344"
+    },
+    {
+      "source": "frontend/src/game-content/characters/people/julian-paul-vance/mail.json",
+      "collection": "AUREMAIL_DIRECTORY",
+      "key": "dir-julian-vance",
+      "characterId": "char-julian-paul-vance",
+      "name": "Dr. Julian Paul Vance",
+      "role": "Lead Forensic Investigator",
+      "institution": "DGA / TRACE",
+      "maid": "MAID-OR-00481928",
+      "aliases": [],
+      "originalSource": "frontend/src/data/commsData.ts:403"
+    },
+    {
+      "source": "frontend/src/game-content/characters/people/julian-paul-vance/registry.json",
+      "collection": "defaultInputs",
+      "key": "MAID-OR-00481928",
+      "characterId": "char-julian-paul-vance",
+      "name": "Dr. Julian Paul Vance",
+      "role": "Lead Forensic Criminalist & EYES Investigator",
+      "institution": "Department of Global Affairs (DGAOS // EYES & TRACE)",
+      "maid": "MAID-OR-00481928",
+      "aliases": [],
+      "originalSource": "frontend/src/services/maidIdentityService.ts:1338"
+    },
+    {
+      "source": "frontend/src/game-content/characters/people/sora-takahashi/registry.json",
+      "collection": "defaultInputs",
+      "key": "MAID-OR-00481930",
+      "characterId": "char-sora-takahashi",
+      "name": "Sora Takahashi",
+      "role": "Systems Engineer & SpellForge Developer",
+      "institution": "Cyacademy Central Campus & WORKNET Tech Labs",
+      "maid": "MAID-OR-00481930",
+      "aliases": [],
+      "originalSource": "frontend/src/services/maidIdentityService.ts:1431"
+    },
+    {
+      "source": "frontend/src/game-content/characters/people/mai/dialogue.json",
+      "collection": "personas",
+      "key": "Mai",
+      "characterId": "char-mai",
+      "name": "Mai",
+      "role": "Celestial Taskbar Companion & PRISM Integrity Monitor",
+      "institution": "",
+      "maid": null,
+      "aliases": [],
+      "originalSource": "frontend/src/gameplay/NPCEngine.ts:33"
+    },
+    {
+      "source": "frontend/src/game-content/characters/people/vaelen/dialogue.json",
+      "collection": "personas",
+      "key": "Vaelen",
+      "characterId": "char-vaelen",
+      "name": "Vaelen",
+      "role": "Orynvell SpellForge Scholar & Rune Master",
+      "institution": "",
+      "maid": null,
+      "aliases": [],
+      "originalSource": "frontend/src/gameplay/NPCEngine.ts:77"
+    },
+    {
+      "source": "frontend/src/game-content/characters/people/kaelen/dialogue.json",
+      "collection": "personas",
+      "key": "Kaelen",
+      "characterId": "char-kaelen",
+      "name": "Kaelen",
+      "role": "Versenet Shadow Broker",
+      "institution": "",
+      "maid": null,
+      "aliases": [],
+      "originalSource": "frontend/src/gameplay/NPCEngine.ts:88"
+    },
+    {
+      "source": "frontend/src/game-content/characters/people/vael/story.json",
+      "collection": "story-bible",
+      "key": "Headmistress Vael",
+      "characterId": "char-vael",
+      "name": "Headmistress Vael",
+      "role": "Cyacademy leadership",
+      "institution": "",
+      "maid": null,
+      "aliases": [],
+      "originalSource": "docs/data/story-bible-characters.json:14"
+    },
+    {
+      "source": "frontend/src/game-content/characters/people/idris/story.json",
+      "collection": "story-bible",
+      "key": "Professor Idris",
+      "characterId": "char-idris",
+      "name": "Professor Idris",
+      "role": "Systems and Anomaly Studies",
+      "institution": "",
+      "maid": null,
+      "aliases": [],
+      "originalSource": "docs/data/story-bible-characters.json:21"
+    },
+    {
+      "source": "frontend/src/game-content/characters/people/rhen/story.json",
+      "collection": "story-bible",
+      "key": "Coach Rhen",
+      "characterId": "char-rhen",
+      "name": "Coach Rhen",
+      "role": "Combat Arts",
+      "institution": "",
+      "maid": null,
+      "aliases": [],
+      "originalSource": "docs/data/story-bible-characters.json:28"
+    },
+    {
+      "source": "frontend/src/game-content/characters/people/lyse/story.json",
+      "collection": "story-bible",
+      "key": "Instructor Lyse",
+      "characterId": "char-lyse",
+      "name": "Instructor Lyse",
+      "role": "Social Dynamics and student council",
+      "institution": "",
+      "maid": null,
+      "aliases": [],
+      "originalSource": "docs/data/story-bible-characters.json:35"
+    },
+    {
+      "source": "frontend/src/game-content/characters/people/oryn/story.json",
+      "collection": "story-bible",
+      "key": "Professor Oryn",
+      "characterId": "char-oryn",
+      "name": "Professor Oryn",
+      "role": "Systems Engineering",
+      "institution": "",
+      "maid": null,
+      "aliases": [],
+      "originalSource": "docs/data/story-bible-characters.json:42"
+    },
+    {
+      "source": "frontend/src/game-content/characters/people/yumi-ishiyuma/phone.json",
+      "collection": "phone-contact",
+      "key": "Yumi",
+      "characterId": "char-yumi-ishiyuma",
+      "name": "Yumi Ishiyuma",
+      "role": "",
+      "institution": "",
+      "maid": null,
+      "aliases": [],
+      "originalSource": "frontend/src/data/phoneData.ts:40"
+    },
+    {
+      "source": "frontend/src/game-content/characters/people/yumi-ishiyuma/story.json",
+      "collection": "story-bible",
+      "key": "Yumi Ishiyuma",
+      "characterId": "char-yumi-ishiyuma",
+      "name": "Yumi Ishiyuma",
+      "role": "Cyacademy social circle",
+      "institution": "",
+      "maid": null,
+      "aliases": [],
+      "originalSource": "docs/data/story-bible-characters.json:70"
+    },
+    {
+      "source": "frontend/src/game-content/characters/people/ulrich-stern/phone.json",
+      "collection": "phone-contact",
+      "key": "Ulrich",
+      "characterId": "char-ulrich-stern",
+      "name": "Ulrich Stern",
+      "role": "",
+      "institution": "",
+      "maid": null,
+      "aliases": [],
+      "originalSource": "frontend/src/data/phoneData.ts:43"
+    },
+    {
+      "source": "frontend/src/game-content/characters/people/ulrich-stern/story.json",
+      "collection": "story-bible",
+      "key": "Ulrich Stern",
+      "characterId": "char-ulrich-stern",
+      "name": "Ulrich Stern",
+      "role": "Cyacademy social circle",
+      "institution": "",
+      "maid": null,
+      "aliases": [],
+      "originalSource": "docs/data/story-bible-characters.json:77"
+    },
+    {
+      "source": "frontend/src/game-content/characters/people/franz-hopper/story.json",
+      "collection": "story-bible",
+      "key": "Franz Hopper",
+      "characterId": "char-franz-hopper",
+      "name": "Franz Hopper",
+      "role": "Elder researcher",
+      "institution": "",
+      "maid": null,
+      "aliases": [],
+      "originalSource": "docs/data/story-bible-characters.json:91"
+    },
+    {
+      "source": "frontend/src/game-content/characters/people/echo-neket/story.json",
+      "collection": "story-bible",
+      "key": "Echo Neket",
+      "characterId": "char-echo-neket",
+      "name": "Echo Neket",
+      "role": "Hidden data routes",
+      "institution": "",
+      "maid": null,
+      "aliases": [],
+      "originalSource": "docs/data/story-bible-characters.json:98"
+    },
+    {
+      "source": "frontend/src/game-content/characters/people/solis-agni/story.json",
+      "collection": "story-bible",
+      "key": "Solis Agni",
+      "characterId": "char-solis-agni",
+      "name": "Solis Agni",
+      "role": "Faith Medical healer",
+      "institution": "",
+      "maid": null,
+      "aliases": [],
+      "originalSource": "docs/data/story-bible-characters.json:105"
+    },
+    {
+      "source": "frontend/src/game-content/characters/people/lyric-enya/story.json",
+      "collection": "story-bible",
+      "key": "Lyric Enya",
+      "characterId": "char-lyric-enya",
+      "name": "Lyric Enya",
+      "role": "House Aurelith and The Velvet",
+      "institution": "",
+      "maid": null,
+      "aliases": [],
+      "originalSource": "docs/data/story-bible-characters.json:119"
+    },
+    {
+      "source": "frontend/src/game-content/characters/people/nerya/phone.json",
+      "collection": "phone-contact",
+      "key": "Nerya",
+      "characterId": "char-nerya",
+      "name": "Nerya",
+      "role": "",
+      "institution": "",
+      "maid": null,
+      "aliases": [],
+      "originalSource": "frontend/src/data/phoneData.ts:49"
+    },
+    {
+      "source": "frontend/src/game-content/characters/people/null-cantor/phone.json",
+      "collection": "phone-contact",
+      "key": "Null Cantor",
+      "characterId": "char-null-cantor",
+      "name": "Null Cantor",
+      "role": "",
+      "institution": "",
+      "maid": null,
+      "aliases": [],
+      "originalSource": "frontend/src/data/phoneData.ts:52"
+    },
+    {
+      "source": "frontend/src/game-content/characters/people/marcus-vance-technician/investigations.json",
+      "collection": "INV_26_402_STARTING_PAYLOAD",
+      "key": "P-402",
+      "characterId": "char-marcus-vance-technician",
+      "name": "Marcus Vance",
+      "role": "Race Tuner & Motorcycle Master Technician",
+      "institution": "Vance Precision Performance",
+      "maid": null,
+      "aliases": [],
+      "originalSource": "frontend/src/dgaos/data/seed/cases.ts:743"
+    },
+    {
+      "source": "frontend/src/game-content/characters/people/dominic-sterling/investigations.json",
+      "collection": "INV_26_402_STARTING_PAYLOAD",
+      "key": "P-403",
+      "characterId": "char-dominic-sterling",
+      "name": "Dominic Sterling",
+      "role": "VP of Proprietary Drive Architecture",
+      "institution": "Apex Dynamics",
+      "maid": null,
+      "aliases": [],
+      "originalSource": "frontend/src/dgaos/data/seed/cases.ts:751"
+    },
+    {
+      "source": "frontend/src/game-content/characters/people/unidentified-driver-p404/investigations.json",
+      "collection": "INV_26_402_STARTING_PAYLOAD",
+      "key": "P-404",
+      "characterId": "char-unidentified-driver-p404",
+      "name": "Driver of Navy Fleet SUV (Unidentified)",
+      "role": "Suspected Pursuit Vehicle Operator",
+      "institution": "Private Security Contractor",
+      "maid": null,
+      "aliases": [],
+      "originalSource": "frontend/src/dgaos/data/seed/cases.ts:759"
+    },
+    {
+      "source": "frontend/src/game-content/characters/people/travis-miller/investigations.json",
+      "collection": "INV_26_402_STARTING_PAYLOAD",
+      "key": "P-405",
+      "characterId": "char-travis-miller",
+      "name": "Trooper Travis Miller",
+      "role": "First Responding Crash Reconstructionist",
+      "institution": "State Highway Patrol (Troop B)",
+      "maid": null,
+      "aliases": [],
+      "originalSource": "frontend/src/dgaos/data/seed/cases.ts:767"
+    },
+    {
+      "source": "frontend/src/game-content/characters/people/tyler-ross/investigations.json",
+      "collection": "MOTORCYCLE_CRASH_MEDICAL_CHART",
+      "key": "PAT-94102",
+      "characterId": "char-tyler-ross",
+      "name": "Officer Tyler Ross",
+      "role": "",
+      "institution": "",
+      "maid": null,
+      "aliases": [],
+      "originalSource": "frontend/src/dgaos/lib/medical-data.ts:443"
+    },
+    {
+      "source": "frontend/src/game-content/characters/people/unidentified-patient-pat95881/investigations.json",
+      "collection": "OVERDOSE_TOXICOLOGY_MEDICAL_CHART",
+      "key": "PAT-95881",
+      "characterId": "char-unidentified-patient-pat95881",
+      "name": "Jane Doe (Unidentified Subject)",
+      "role": "",
+      "institution": "",
+      "maid": null,
+      "aliases": [],
+      "originalSource": "frontend/src/dgaos/lib/medical-data.ts:706"
+    },
+    {
+      "source": "frontend/src/game-content/characters/people/kaelen-voss/investigations.json",
+      "collection": "FORMAL_INVESTIGATION_CASES",
+      "key": "CASE-DGA-402",
+      "characterId": "char-kaelen-voss",
+      "name": "Kaelen Voss",
+      "role": "AETHERCORE Pre-Collapse Registry Tampering",
+      "institution": "DGAOS & WorkNet",
+      "maid": null,
+      "aliases": [],
+      "originalSource": "frontend/src/gameplay/WorldEventEngine.ts:109"
+    },
+    {
+      "source": "frontend/src/game-content/characters/people/s-mercer/investigations.json",
+      "collection": "PATIENT_CARE_ASSIGNMENTS",
+      "key": "pc-mercer",
+      "characterId": "char-s-mercer",
+      "name": "Student S. Mercer (Vertex House)",
+      "role": "",
+      "institution": "",
+      "maid": null,
+      "aliases": [],
+      "originalSource": "frontend/src/gameplay/WorldEventEngine.ts:323"
+    }
+  ]
+}

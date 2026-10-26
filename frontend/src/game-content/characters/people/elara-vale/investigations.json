@@ -1,0 +1,214 @@
+[
+  {
+    "collection": "FORMAL_INVESTIGATION_CASES",
+    "key": "CASE-FM-401",
+    "origin": "frontend/src/gameplay/WorldEventEngine.ts:71",
+    "context": "FORMAL_INVESTIGATION_CASES",
+    "data": {
+      "id": "CASE-FM-401",
+      "title": "Sub-Conduit Veilwilt Cluster & Bio-Aura Desync",
+      "subjectMaid": "MAID-OR-00481926",
+      "subjectName": "Elara Vale",
+      "institution": "Faith Medical & TRACE",
+      "symptomOrAnomaly": "Patient exhibits acute Veilwilt resonance drop (62% Harmonic) following Old Factory Ward transit.",
+      "availableEvidence": [
+        {
+          "id": "ev-aura-scan",
+          "label": "Faith Medical Bio-Aura Scan (#FM-88392)",
+          "sourceApp": "Faith Medical / VITALS",
+          "detail": "Confirms 88.2 MHz harmonic phase inversion in dermal nodes."
+        },
+        {
+          "id": "ev-prism-pid512",
+          "label": "Process Monitor PID 512 Telemetry",
+          "sourceApp": "Process Monitor",
+          "detail": "Shows unregistered PRISM memory bleed leaking into Sub-Conduit relay."
+        },
+        {
+          "id": "ev-cafeteria-log",
+          "label": "Cafeteria Synth-Juice Supply Manifest",
+          "sourceApp": "Mai.space Bulletin",
+          "detail": "Benign coolant swap prank; unrelated to neural aura phase inversion."
+        }
+      ],
+      "requiredEvidenceIds": [
+        "ev-aura-scan",
+        "ev-prism-pid512"
+      ],
+      "hypotheses": [
+        {
+          "id": "hyp-coolant",
+          "title": "Dietary Cryo-Coolant Contamination",
+          "explanation": "Symptoms caused by contaminated cafeteria beverages in Cyacademy.",
+          "isValidated": false
+        },
+        {
+          "id": "hyp-prism-bleed",
+          "title": "Sub-Conduit PRISM Frequency Bleed (PID 512)",
+          "explanation": "Unshielded 88.2 MHz PRISM sub-conduit memory hook is inducing Veilwilt phase inversion in nearby citizens.",
+          "isValidated": true
+        },
+        {
+          "id": "hyp-dorm-fatigue",
+          "title": "Standard Academic Sleep Deprivation",
+          "explanation": "Routine exhaustion from Syntax coursework with no external vector.",
+          "isValidated": false
+        }
+      ],
+      "rewardCredits": 350,
+      "rewardBits": 5,
+      "rewardXP": 200,
+      "reputationTrack": "faith"
+    },
+    "original": {
+      "id": "CASE-FM-401",
+      "title": "Sub-Conduit Veilwilt Cluster & Bio-Aura Desync",
+      "subjectMaid": "MAID-OR-00481926",
+      "subjectName": "Elara Vale",
+      "institution": "Faith Medical & TRACE",
+      "symptomOrAnomaly": "Patient exhibits acute Veilwilt resonance drop (62% Harmonic) following Old Factory Ward transit.",
+      "availableEvidence": [
+        {
+          "id": "ev-aura-scan",
+          "label": "Faith Medical Bio-Aura Scan (#FM-88392)",
+          "sourceApp": "Faith Medical / VITALS",
+          "detail": "Confirms 88.2 MHz harmonic phase inversion in dermal nodes."
+        },
+        {
+          "id": "ev-prism-pid512",
+          "label": "Process Monitor PID 512 Telemetry",
+          "sourceApp": "Process Monitor",
+          "detail": "Shows unregistered PRISM memory bleed leaking into Sub-Conduit relay."
+        },
+        {
+          "id": "ev-cafeteria-log",
+          "label": "Cafeteria Synth-Juice Supply Manifest",
+          "sourceApp": "Mai.space Bulletin",
+          "detail": "Benign coolant swap prank; unrelated to neural aura phase inversion."
+        }
+      ],
+      "requiredEvidenceIds": [
+        "ev-aura-scan",
+        "ev-prism-pid512"
+      ],
+      "hypotheses": [
+        {
+          "id": "hyp-coolant",
+          "title": "Dietary Cryo-Coolant Contamination",
+          "explanation": "Symptoms caused by contaminated cafeteria beverages in Cyacademy.",
+          "isValidated": false
+        },
+        {
+          "id": "hyp-prism-bleed",
+          "title": "Sub-Conduit PRISM Frequency Bleed (PID 512)",
+          "explanation": "Unshielded 88.2 MHz PRISM sub-conduit memory hook is inducing Veilwilt phase inversion in nearby citizens.",
+          "isValidated": true
+        },
+        {
+          "id": "hyp-dorm-fatigue",
+          "title": "Standard Academic Sleep Deprivation",
+          "explanation": "Routine exhaustion from Syntax coursework with no external vector.",
+          "isValidated": false
+        }
+      ],
+      "rewardCredits": 350,
+      "rewardBits": 5,
+      "rewardXP": 200,
+      "reputationTrack": "faith"
+    }
+  },
+  {
+    "collection": "PATIENT_CARE_ASSIGNMENTS",
+    "key": "pc-vale",
+    "origin": "frontend/src/gameplay/WorldEventEngine.ts:344",
+    "context": "PATIENT_CARE_ASSIGNMENTS",
+    "data": {
+      "id": "pc-vale",
+      "patientName": "Elara Vale (Sub-Conduit Transit)",
+      "patientMaid": "MAID-OR-00481926",
+      "ward": "Faith Medical - Cryo-Recovery Unit",
+      "presentingVitals": "Core Temp 34.8°C, Crystalline Bronchial Rales, 88.2 MHz Sub-Conduit Exposure.",
+      "diagnoses": [
+        {
+          "id": "diag-frostlung-exposure",
+          "label": "Frostlung Syndrome & Sub-Conduit Harmonic Exposure",
+          "isCorrect": true
+        },
+        {
+          "id": "diag-sunspire-burn",
+          "label": "Sunspire Solar Flare Hyperthermia",
+          "isCorrect": false
+        },
+        {
+          "id": "diag-cafeteria-coolant",
+          "label": "Dietary Synth-Juice Indigestion",
+          "isCorrect": false
+        }
+      ],
+      "treatments": [
+        {
+          "id": "tx-thermal-thaw-seal",
+          "label": "Administer Warm-Essence Thermal Thaw & Dermal Frequency Seal",
+          "isCorrect": true
+        },
+        {
+          "id": "tx-sedative-only",
+          "label": "Mild Analgesic Without Thermal Thaw",
+          "isCorrect": false
+        },
+        {
+          "id": "tx-cooling-pack",
+          "label": "Apply Endothermic Cooling Pack",
+          "isCorrect": false
+        }
+      ],
+      "rewardCredits": 180,
+      "rewardCareerXP": 120,
+      "rewardXP": 120
+    },
+    "original": {
+      "id": "pc-vale",
+      "patientName": "Elara Vale (Sub-Conduit Transit)",
+      "patientMaid": "MAID-OR-00481926",
+      "ward": "Faith Medical - Cryo-Recovery Unit",
+      "presentingVitals": "Core Temp 34.8°C, Crystalline Bronchial Rales, 88.2 MHz Sub-Conduit Exposure.",
+      "diagnoses": [
+        {
+          "id": "diag-frostlung-exposure",
+          "label": "Frostlung Syndrome & Sub-Conduit Harmonic Exposure",
+          "isCorrect": true
+        },
+        {
+          "id": "diag-sunspire-burn",
+          "label": "Sunspire Solar Flare Hyperthermia",
+          "isCorrect": false
+        },
+        {
+          "id": "diag-cafeteria-coolant",
+          "label": "Dietary Synth-Juice Indigestion",
+          "isCorrect": false
+        }
+      ],
+      "treatments": [
+        {
+          "id": "tx-thermal-thaw-seal",
+          "label": "Administer Warm-Essence Thermal Thaw & Dermal Frequency Seal",
+          "isCorrect": true
+        },
+        {
+          "id": "tx-sedative-only",
+          "label": "Mild Analgesic Without Thermal Thaw",
+          "isCorrect": false
+        },
+        {
+          "id": "tx-cooling-pack",
+          "label": "Apply Endothermic Cooling Pack",
+          "isCorrect": false
+        }
+      ],
+      "rewardCredits": 180,
+      "rewardCareerXP": 120,
+      "rewardXP": 120
+    }
+  }
+]

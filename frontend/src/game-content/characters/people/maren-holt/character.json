@@ -1,0 +1,19 @@
+{
+  "id": "char-maren-holt",
+  "name": "Maren Holt",
+  "kind": "person",
+  "aliases": [],
+  "status": "existing",
+  "notes": [],
+  "legacyIds": [],
+  "references": [
+    {
+      "collection": "INSTITUTIONAL_REGISTRY",
+      "key": "cw-arc-1",
+      "file": "people/maren-holt/workplace.json"
+    }
+  ],
+  "maid": null,
+  "legacyMaids": [],
+  "folder": "maren-holt"
+}

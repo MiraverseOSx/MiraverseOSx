@@ -1,0 +1,19 @@
+{
+  "id": "char-elise-vance",
+  "name": "Elise Vance",
+  "kind": "person",
+  "aliases": [],
+  "status": "existing",
+  "notes": [],
+  "legacyIds": [],
+  "references": [
+    {
+      "collection": "INSTITUTIONAL_REGISTRY",
+      "key": "cw-fin-1",
+      "file": "people/elise-vance/workplace.json"
+    }
+  ],
+  "maid": null,
+  "legacyMaids": [],
+  "folder": "elise-vance"
+}

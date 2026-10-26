@@ -165,12 +165,12 @@ export const PROTOCOLS: ProtocolItem[] = [
   {
     id: 'pulse',
     code: 'PULSE',
-    name: 'PULSE // Pulse',
+    name: 'PULSE // Meridion News',
     sector: 'Aureline Broadcast Array',
     clearance: 'Observer Clearance',
     aetherTrace: 'AT-0x0732',
     flux: '22.0 MHz',
-    desc: 'Retained workspace awaiting a separate scope decision. Social profiles and posts belong to mai.space.',
+    desc: 'Meridion’s news network: public reporting, world advisories, civic affairs, economy, health, and culture.',
     color: 'text-purple-800',
     bg: 'bg-purple-50',
     border: 'border-purple-300'
@@ -233,7 +233,7 @@ const GROUPS: Record<string, string> = {
   dgaos: 'Agency', jobs: 'Agency',
   meridionRegistry: 'Civic', documentStudio: 'Civic', campus: 'Civic',
   passport: 'Personal', housing: 'Personal', finance: 'Personal', vitals: 'Personal',
-  browser: 'Connect', comms: 'Connect', mail: 'Connect', maispace: 'Connect', pulse: 'Tools',
+  browser: 'Connect', comms: 'Connect', mail: 'Connect', maispace: 'Connect', pulse: 'Connect',
   files: 'Tools', process: 'Tools', lore: 'Tools', terminal: 'Tools', settings: 'Tools',
 };
 

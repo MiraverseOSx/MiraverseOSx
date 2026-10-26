@@ -1,0 +1,26 @@
+[
+  {
+    "collection": "seedRelationships",
+    "key": "REL-005",
+    "origin": "frontend/src/dgaos/data/seed/relationships.ts:58",
+    "context": "seedRelationships",
+    "data": {
+      "id": "REL-005",
+      "sourceId": "P-104",
+      "sourceName": "Courier Marcus Vance",
+      "targetId": "LOC-04",
+      "targetName": "Harbor Free-Trade Zone Warehouse 18",
+      "type": "suspected_of",
+      "notes": "Last GPS ping and diplomatic pouch transponder recorded at this industrial warehouse."
+    },
+    "original": {
+      "id": "REL-005",
+      "sourceId": "P-104",
+      "sourceName": "Courier Marcus Vance",
+      "targetId": "LOC-04",
+      "targetName": "Harbor Free-Trade Zone Warehouse 18",
+      "type": "suspected_of",
+      "notes": "Last GPS ping and diplomatic pouch transponder recorded at this industrial warehouse."
+    }
+  }
+]

@@ -1,0 +1,484 @@
+[
+  {
+    "collection": "OVERDOSE_TOXICOLOGY_MEDICAL_CHART",
+    "key": "PAT-95881",
+    "origin": "frontend/src/dgaos/lib/medical-data.ts:706",
+    "context": "OVERDOSE_TOXICOLOGY_MEDICAL_CHART",
+    "data": {
+      "caseId": "MED-2026-0219",
+      "patientId": "PAT-95881",
+      "mrn": "MRN-88421-TOX",
+      "patientName": "Jane Doe (Unidentified Subject)",
+      "age": 26,
+      "gender": "Female",
+      "bloodType": "B Positive",
+      "roomBay": "Medical ICU - Bed 8",
+      "attendingPhysician": "Dr. Marcus Vance, MD (Medical Toxicology / Critical Care)",
+      "admitTime": "2026-10-09T22:40:00Z",
+      "codeStatus": "Full Code",
+      "clinicalStatus": "Stabilized",
+      "allergies": [
+        "No Known Drug Allergies (NKDA)"
+      ],
+      "symptoms": [
+        "Profound obtundation / Coma (GCS 3 on field arrival)",
+        "Severe respiratory depression (RR 4 breaths/min agonal)",
+        "Hypothermia (Core temp 33.8°C)",
+        "Pinpoint pupils (0.5mm fixed bilaterally)",
+        "Track marks noted along bilateral antecubital fossae and dorsal hands",
+        "Pulmonary edema with pink frothy sputum post-resuscitation"
+      ],
+      "historyOfPresentIllness": "Patient is an unidentified female in her mid-20s discovered unresponsive in an abandoned storage facility on Wharf Street. Bystanders reported suspect left the scene in a dark sedan 15 minutes prior. EMS found patient cyanotic with agonal gasping, SpO2 62%, and profound pinpoint pupils. Immediate administration of Narcan (Naloxone) 2mg IN produced minimal response, requiring additional 4mg IV push with return of spontaneous respirations (RR 16) and acute opioid withdrawal precipitation (vomiting, agitation, diaphoresis). Transferred to MICU for continuous Naloxone infusion given suspected ultra-potent synthetic carfentanil contamination.",
+      "vitalsHistory": [
+        {
+          "heartRate": 48,
+          "bloodPressureSystolic": 82,
+          "bloodPressureDiastolic": 46,
+          "oxygenSaturation": 68,
+          "respiratoryRate": 4,
+          "temperatureCelsius": 33.8,
+          "glasgowComaScale": 3,
+          "pupils": "0.5mm pinpoint non-reactive",
+          "cardiacRhythm": "Sinus Bradycardia / Prolonged QTc (520ms)",
+          "timestamp": "22:45 UTC"
+        },
+        {
+          "heartRate": 118,
+          "bloodPressureSystolic": 138,
+          "bloodPressureDiastolic": 88,
+          "oxygenSaturation": 96,
+          "respiratoryRate": 24,
+          "temperatureCelsius": 35.1,
+          "glasgowComaScale": 11,
+          "pupils": "3.5mm reactive bilaterally",
+          "cardiacRhythm": "Sinus Tachycardia post-Narcan",
+          "timestamp": "23:15 UTC"
+        },
+        {
+          "heartRate": 88,
+          "bloodPressureSystolic": 118,
+          "bloodPressureDiastolic": 74,
+          "oxygenSaturation": 99,
+          "respiratoryRate": 16,
+          "temperatureCelsius": 36.4,
+          "glasgowComaScale": 14,
+          "pupils": "3mm reactive",
+          "cardiacRhythm": "Normal Sinus Rhythm",
+          "timestamp": "01:00 UTC"
+        }
+      ],
+      "labPanels": [
+        {
+          "id": "LAB-TOX-02",
+          "category": "Toxicology & Enzyme Kinetics",
+          "orderTime": "22:50 UTC",
+          "resultTime": "23:45 UTC",
+          "specimenType": "Urine & Serum Liquid Chromatography-MS/MS",
+          "technician": "Forensic Tox Specialist Dr. Chen",
+          "items": [
+            {
+              "id": "TOX-FENT",
+              "name": "Fentanyl Quantitative",
+              "value": "48.2",
+              "referenceRange": "< 0.5",
+              "unit": "ng/mL",
+              "status": "critical",
+              "notes": "Lethal concentration without prior tolerance."
+            },
+            {
+              "id": "TOX-CARF",
+              "name": "Carfentanil Analog Screen",
+              "value": "POSITIVE (High Peak)",
+              "referenceRange": "Not Detected",
+              "unit": "ng/mL",
+              "status": "critical",
+              "notes": "Synthetic analog 10,000x potency of morphine."
+            },
+            {
+              "id": "TOX-XYLAZINE",
+              "name": "Xylazine (Tranq) Adulterant",
+              "value": "240",
+              "referenceRange": "Not Detected",
+              "unit": "ng/mL",
+              "status": "critical",
+              "notes": "Alpha-2 agonist veterinary sedative causing refractory hypotension & necrotic tissue ulcers."
+            },
+            {
+              "id": "TOX-NALOXONE",
+              "name": "Serum Naloxone",
+              "value": "18.4",
+              "referenceRange": "N/A",
+              "unit": "ng/mL",
+              "status": "normal",
+              "notes": "Therapeutic antidote levels maintained on drip."
+            }
+          ]
+        }
+      ],
+      "imaging": [
+        {
+          "id": "IMG-CXR-01",
+          "modality": "Chest X-Ray (AP Portable)",
+          "bodyRegion": "Chest AP Supine",
+          "timestamp": "23:20 UTC",
+          "radiologist": "Dr. Sterling, MD",
+          "impression": "Bilateral fluffy perihilar infiltrates typical of naloxone-induced or hypoxic non-cardiogenic pulmonary edema. Heart size normal.",
+          "findings": [
+            "Lungs: Diffuse bat-wing alveolar opacities sparing the lung peripheries.",
+            "Pleura: No pneumothorax or effusion."
+          ],
+          "keyMarkers": [
+            {
+              "label": "Non-Cardiogenic Edema",
+              "x": 50,
+              "y": 40,
+              "description": "Opioid-induced pulmonary capillary leak edema."
+            }
+          ],
+          "status": "Final Signed"
+        }
+      ],
+      "medications": [
+        {
+          "id": "MED-TOX-01",
+          "drug": "Naloxone Hydrochloride (Narcan)",
+          "dose": "0.4 mg/hr Continuous Infusion",
+          "route": "Intravenous",
+          "frequency": "Titrated to spontaneous RR > 12",
+          "indication": "Synthetic opioid overdose with long-acting lipophilic analogs",
+          "startedAt": "23:05 UTC",
+          "status": "Active Infusion"
+        },
+        {
+          "id": "MED-TOX-02",
+          "drug": "Albuterol Nebulizer",
+          "dose": "2.5 mg",
+          "route": "Inhalation via Mask",
+          "frequency": "Q4H PRN",
+          "indication": "Pulmonary edema bronchospasm",
+          "startedAt": "23:30 UTC",
+          "status": "Active Infusion"
+        }
+      ],
+      "progressNotes": [
+        {
+          "id": "NOTE-TOX-01",
+          "author": "Dr. Marcus Vance, MD",
+          "role": "Attending Medical Toxicologist",
+          "timestamp": "00:15 UTC",
+          "title": "Toxicology Consult & Forensic Specimen Hold",
+          "soap": {
+            "subjective": "Young unidentified female found near overdose cluster on Wharf Street. Rapid antidote reversal achieved.",
+            "objective": "Tox panel confirms massive fentanyl + carfentanil + xylazine (\"Tranq\") cocktail. SpO2 99% on 2L nasal cannula. GCS improved from 3 to 14.",
+            "assessment": "Severe polydrug synthetic opioid overdose successfully reversed. High re-sedation risk due to carfentanil depot storage in adipose tissue.",
+            "plan": "1. Maintain Naloxone infusion for minimum 18 hours. 2. Chain of custody on remaining field glassine baggies transferred to DGA Evidence Locker. 3. Fingerprints sent to CIVITAS registry for subject identification."
+          }
+        }
+      ],
+      "emsReport": {
+        "medicUnit": "Downtown Medic-2",
+        "dispatchTime": "22:20 UTC",
+        "onSceneTime": "22:28 UTC",
+        "hospitalArrivalTime": "22:40 UTC",
+        "initialGcs": 3,
+        "initialVitals": {
+          "hr": 44,
+          "bp": "78/42",
+          "spo2": 62
+        },
+        "fieldNarrative": "Dispatched to Wharf Street for female down not breathing. Patient apneic, cyanotic, pinpoint pupils. Bagged with high-flow O2. 2mg Narcan IN followed by 4mg IV. Patient gasped, vomited, and regained consciousness.",
+        "fieldInterventions": [
+          "Bag-Valve-Mask Resuscitation",
+          "Naloxone 2mg IN + 4mg IV Push",
+          "Airway Suctioning",
+          "IV Access 20G Left Forearm"
+        ],
+        "transportDestination": "St. Jude Metropolitan Hospital"
+      },
+      "differentialDiagnosis": [
+        {
+          "id": "DIFF-TX-01",
+          "condition": "Fentanyl / Carfentanil / Xylazine Overdose",
+          "probability": 99,
+          "supportingFindings": [
+            "Instant response to Naloxone",
+            "High-peak LC-MS tox results",
+            "Pinpoint pupils and apnea"
+          ],
+          "refutingFindings": [],
+          "status": "Leading Suspect"
+        },
+        {
+          "id": "DIFF-TX-02",
+          "condition": "Hypoglycemic Coma",
+          "probability": 5,
+          "supportingFindings": [
+            "Unresponsive presentation"
+          ],
+          "refutingFindings": [
+            "Fingerstick blood glucose 108 mg/dL normal on arrival"
+          ],
+          "status": "Ruled Out"
+        }
+      ],
+      "treatmentLog": [
+        {
+          "id": "TR-TX-01",
+          "time": "22:30 UTC",
+          "action": "Field Naloxone 4mg IV Push",
+          "operator": "Paramedic Hayes",
+          "response": "Respirations resumed at 16 breaths/min. Patient aroused."
+        },
+        {
+          "id": "TR-TX-02",
+          "time": "23:05 UTC",
+          "action": "Naloxone Continuous Drip Initiated (0.4 mg/hr)",
+          "operator": "Dr. Marcus Vance, MD",
+          "response": "Prevents re-narcotization from high-affinity lipophilic carfentanil."
+        }
+      ],
+      "isEscalatedToInvestigation": false,
+      "linkedInvestigationCaseId": {
+        "$characterUndefined": true
+      }
+    },
+    "original": {
+      "caseId": "MED-2026-0219",
+      "patientId": "PAT-95881",
+      "mrn": "MRN-88421-TOX",
+      "patientName": "Jane Doe (Unidentified Subject)",
+      "age": 26,
+      "gender": "Female",
+      "bloodType": "B Positive",
+      "roomBay": "Medical ICU - Bed 8",
+      "attendingPhysician": "Dr. Marcus Vance, MD (Medical Toxicology / Critical Care)",
+      "admitTime": "2026-10-09T22:40:00Z",
+      "codeStatus": "Full Code",
+      "clinicalStatus": "Stabilized",
+      "allergies": [
+        "No Known Drug Allergies (NKDA)"
+      ],
+      "symptoms": [
+        "Profound obtundation / Coma (GCS 3 on field arrival)",
+        "Severe respiratory depression (RR 4 breaths/min agonal)",
+        "Hypothermia (Core temp 33.8°C)",
+        "Pinpoint pupils (0.5mm fixed bilaterally)",
+        "Track marks noted along bilateral antecubital fossae and dorsal hands",
+        "Pulmonary edema with pink frothy sputum post-resuscitation"
+      ],
+      "historyOfPresentIllness": "Patient is an unidentified female in her mid-20s discovered unresponsive in an abandoned storage facility on Wharf Street. Bystanders reported suspect left the scene in a dark sedan 15 minutes prior. EMS found patient cyanotic with agonal gasping, SpO2 62%, and profound pinpoint pupils. Immediate administration of Narcan (Naloxone) 2mg IN produced minimal response, requiring additional 4mg IV push with return of spontaneous respirations (RR 16) and acute opioid withdrawal precipitation (vomiting, agitation, diaphoresis). Transferred to MICU for continuous Naloxone infusion given suspected ultra-potent synthetic carfentanil contamination.",
+      "vitalsHistory": [
+        {
+          "heartRate": 48,
+          "bloodPressureSystolic": 82,
+          "bloodPressureDiastolic": 46,
+          "oxygenSaturation": 68,
+          "respiratoryRate": 4,
+          "temperatureCelsius": 33.8,
+          "glasgowComaScale": 3,
+          "pupils": "0.5mm pinpoint non-reactive",
+          "cardiacRhythm": "Sinus Bradycardia / Prolonged QTc (520ms)",
+          "timestamp": "22:45 UTC"
+        },
+        {
+          "heartRate": 118,
+          "bloodPressureSystolic": 138,
+          "bloodPressureDiastolic": 88,
+          "oxygenSaturation": 96,
+          "respiratoryRate": 24,
+          "temperatureCelsius": 35.1,
+          "glasgowComaScale": 11,
+          "pupils": "3.5mm reactive bilaterally",
+          "cardiacRhythm": "Sinus Tachycardia post-Narcan",
+          "timestamp": "23:15 UTC"
+        },
+        {
+          "heartRate": 88,
+          "bloodPressureSystolic": 118,
+          "bloodPressureDiastolic": 74,
+          "oxygenSaturation": 99,
+          "respiratoryRate": 16,
+          "temperatureCelsius": 36.4,
+          "glasgowComaScale": 14,
+          "pupils": "3mm reactive",
+          "cardiacRhythm": "Normal Sinus Rhythm",
+          "timestamp": "01:00 UTC"
+        }
+      ],
+      "labPanels": [
+        {
+          "id": "LAB-TOX-02",
+          "category": "Toxicology & Enzyme Kinetics",
+          "orderTime": "22:50 UTC",
+          "resultTime": "23:45 UTC",
+          "specimenType": "Urine & Serum Liquid Chromatography-MS/MS",
+          "technician": "Forensic Tox Specialist Dr. Chen",
+          "items": [
+            {
+              "id": "TOX-FENT",
+              "name": "Fentanyl Quantitative",
+              "value": "48.2",
+              "referenceRange": "< 0.5",
+              "unit": "ng/mL",
+              "status": "critical",
+              "notes": "Lethal concentration without prior tolerance."
+            },
+            {
+              "id": "TOX-CARF",
+              "name": "Carfentanil Analog Screen",
+              "value": "POSITIVE (High Peak)",
+              "referenceRange": "Not Detected",
+              "unit": "ng/mL",
+              "status": "critical",
+              "notes": "Synthetic analog 10,000x potency of morphine."
+            },
+            {
+              "id": "TOX-XYLAZINE",
+              "name": "Xylazine (Tranq) Adulterant",
+              "value": "240",
+              "referenceRange": "Not Detected",
+              "unit": "ng/mL",
+              "status": "critical",
+              "notes": "Alpha-2 agonist veterinary sedative causing refractory hypotension & necrotic tissue ulcers."
+            },
+            {
+              "id": "TOX-NALOXONE",
+              "name": "Serum Naloxone",
+              "value": "18.4",
+              "referenceRange": "N/A",
+              "unit": "ng/mL",
+              "status": "normal",
+              "notes": "Therapeutic antidote levels maintained on drip."
+            }
+          ]
+        }
+      ],
+      "imaging": [
+        {
+          "id": "IMG-CXR-01",
+          "modality": "Chest X-Ray (AP Portable)",
+          "bodyRegion": "Chest AP Supine",
+          "timestamp": "23:20 UTC",
+          "radiologist": "Dr. Sterling, MD",
+          "impression": "Bilateral fluffy perihilar infiltrates typical of naloxone-induced or hypoxic non-cardiogenic pulmonary edema. Heart size normal.",
+          "findings": [
+            "Lungs: Diffuse bat-wing alveolar opacities sparing the lung peripheries.",
+            "Pleura: No pneumothorax or effusion."
+          ],
+          "keyMarkers": [
+            {
+              "label": "Non-Cardiogenic Edema",
+              "x": 50,
+              "y": 40,
+              "description": "Opioid-induced pulmonary capillary leak edema."
+            }
+          ],
+          "status": "Final Signed"
+        }
+      ],
+      "medications": [
+        {
+          "id": "MED-TOX-01",
+          "drug": "Naloxone Hydrochloride (Narcan)",
+          "dose": "0.4 mg/hr Continuous Infusion",
+          "route": "Intravenous",
+          "frequency": "Titrated to spontaneous RR > 12",
+          "indication": "Synthetic opioid overdose with long-acting lipophilic analogs",
+          "startedAt": "23:05 UTC",
+          "status": "Active Infusion"
+        },
+        {
+          "id": "MED-TOX-02",
+          "drug": "Albuterol Nebulizer",
+          "dose": "2.5 mg",
+          "route": "Inhalation via Mask",
+          "frequency": "Q4H PRN",
+          "indication": "Pulmonary edema bronchospasm",
+          "startedAt": "23:30 UTC",
+          "status": "Active Infusion"
+        }
+      ],
+      "progressNotes": [
+        {
+          "id": "NOTE-TOX-01",
+          "author": "Dr. Marcus Vance, MD",
+          "role": "Attending Medical Toxicologist",
+          "timestamp": "00:15 UTC",
+          "title": "Toxicology Consult & Forensic Specimen Hold",
+          "soap": {
+            "subjective": "Young unidentified female found near overdose cluster on Wharf Street. Rapid antidote reversal achieved.",
+            "objective": "Tox panel confirms massive fentanyl + carfentanil + xylazine (\"Tranq\") cocktail. SpO2 99% on 2L nasal cannula. GCS improved from 3 to 14.",
+            "assessment": "Severe polydrug synthetic opioid overdose successfully reversed. High re-sedation risk due to carfentanil depot storage in adipose tissue.",
+            "plan": "1. Maintain Naloxone infusion for minimum 18 hours. 2. Chain of custody on remaining field glassine baggies transferred to DGA Evidence Locker. 3. Fingerprints sent to CIVITAS registry for subject identification."
+          }
+        }
+      ],
+      "emsReport": {
+        "medicUnit": "Downtown Medic-2",
+        "dispatchTime": "22:20 UTC",
+        "onSceneTime": "22:28 UTC",
+        "hospitalArrivalTime": "22:40 UTC",
+        "initialGcs": 3,
+        "initialVitals": {
+          "hr": 44,
+          "bp": "78/42",
+          "spo2": 62
+        },
+        "fieldNarrative": "Dispatched to Wharf Street for female down not breathing. Patient apneic, cyanotic, pinpoint pupils. Bagged with high-flow O2. 2mg Narcan IN followed by 4mg IV. Patient gasped, vomited, and regained consciousness.",
+        "fieldInterventions": [
+          "Bag-Valve-Mask Resuscitation",
+          "Naloxone 2mg IN + 4mg IV Push",
+          "Airway Suctioning",
+          "IV Access 20G Left Forearm"
+        ],
+        "transportDestination": "St. Jude Metropolitan Hospital"
+      },
+      "differentialDiagnosis": [
+        {
+          "id": "DIFF-TX-01",
+          "condition": "Fentanyl / Carfentanil / Xylazine Overdose",
+          "probability": 99,
+          "supportingFindings": [
+            "Instant response to Naloxone",
+            "High-peak LC-MS tox results",
+            "Pinpoint pupils and apnea"
+          ],
+          "refutingFindings": [],
+          "status": "Leading Suspect"
+        },
+        {
+          "id": "DIFF-TX-02",
+          "condition": "Hypoglycemic Coma",
+          "probability": 5,
+          "supportingFindings": [
+            "Unresponsive presentation"
+          ],
+          "refutingFindings": [
+            "Fingerstick blood glucose 108 mg/dL normal on arrival"
+          ],
+          "status": "Ruled Out"
+        }
+      ],
+      "treatmentLog": [
+        {
+          "id": "TR-TX-01",
+          "time": "22:30 UTC",
+          "action": "Field Naloxone 4mg IV Push",
+          "operator": "Paramedic Hayes",
+          "response": "Respirations resumed at 16 breaths/min. Patient aroused."
+        },
+        {
+          "id": "TR-TX-02",
+          "time": "23:05 UTC",
+          "action": "Naloxone Continuous Drip Initiated (0.4 mg/hr)",
+          "operator": "Dr. Marcus Vance, MD",
+          "response": "Prevents re-narcotization from high-affinity lipophilic carfentanil."
+        }
+      ],
+      "isEscalatedToInvestigation": false,
+      "linkedInvestigationCaseId": {
+        "$characterUndefined": true
+      }
+    }
+  }
+]

@@ -4,8 +4,10 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "start": "concurrently -n \"BACKEND,FRONTEND\" -c \"blue,magenta\" \"dotnet run --project MiraverseOSx.csproj -- --server-only --port 5000\" \"npm run dev --prefix frontend\"",
-    "dev": "concurrently -n \"BACKEND,FRONTEND\" -c \"blue,magenta\" \"dotnet run --project MiraverseOSx.csproj -- --server-only --port 5000\" \"npm run dev --prefix frontend\"",
+    "prestart": "npm run build:backend",
+    "predev": "npm run build:backend",
+    "start": "concurrently -n \"BACKEND,FRONTEND\" -c \"blue,magenta\" \"dotnet bin/Debug/net8.0/MiraverseOSx.dll --server-only --port 5000\" \"npm run dev --prefix frontend\"",
+    "dev": "concurrently -n \"BACKEND,FRONTEND\" -c \"blue,magenta\" \"dotnet bin/Debug/net8.0/MiraverseOSx.dll --server-only --port 5000\" \"npm run dev --prefix frontend\"",
     "dev:frontend": "npm run dev --prefix frontend",
     "dev:backend": "dotnet run --project MiraverseOSx.csproj -- --server-only --port 5000",
     "desktop": "dotnet run --project MiraverseOSx.csproj",

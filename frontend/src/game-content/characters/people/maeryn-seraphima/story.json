@@ -1,0 +1,22 @@
+[
+  {
+    "collection": "story-bible",
+    "key": "Queen Maeryn Seraphima",
+    "origin": "docs/data/story-bible-characters.json:7",
+    "context": "story-bible",
+    "data": {
+      "key": "Queen Maeryn Seraphima",
+      "name": "Queen Maeryn Seraphima",
+      "role": "Founder of Meridion",
+      "line": 301,
+      "characterId": "char-maeryn-seraphima"
+    },
+    "original": {
+      "key": "Queen Maeryn Seraphima",
+      "name": "Queen Maeryn Seraphima",
+      "role": "Founder of Meridion",
+      "line": 301,
+      "characterId": "char-maeryn-seraphima"
+    }
+  }
+]

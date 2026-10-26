@@ -1,0 +1,733 @@
+[
+  {
+    "id": "char-maeryn-seraphima",
+    "name": "Queen Maeryn Seraphima",
+    "kind": "person",
+    "aliases": [],
+    "status": "existing",
+    "notes": [],
+    "legacyIds": []
+  },
+  {
+    "id": "char-holly",
+    "name": "High Warden Holly",
+    "kind": "person",
+    "aliases": [],
+    "status": "existing",
+    "notes": [],
+    "legacyIds": []
+  },
+  {
+    "id": "char-lucia",
+    "name": "Chancellor Lucia",
+    "kind": "person",
+    "aliases": [],
+    "status": "existing",
+    "notes": [],
+    "legacyIds": []
+  },
+  {
+    "id": "char-neryx",
+    "name": "Lord Neryx",
+    "kind": "person",
+    "aliases": [],
+    "status": "existing",
+    "notes": [],
+    "legacyIds": []
+  },
+  {
+    "id": "char-yoko",
+    "name": "Grand Dispatcher Yoko",
+    "kind": "person",
+    "aliases": [],
+    "status": "existing",
+    "notes": [],
+    "legacyIds": []
+  },
+  {
+    "id": "char-ember",
+    "name": "High Forge-Master Ember",
+    "kind": "person",
+    "aliases": [],
+    "status": "existing",
+    "notes": [],
+    "legacyIds": []
+  },
+  {
+    "id": "char-keket",
+    "name": "Seer Keket",
+    "kind": "person",
+    "aliases": [],
+    "status": "existing",
+    "notes": [],
+    "legacyIds": []
+  },
+  {
+    "id": "char-kieran-vesper",
+    "name": "Kieran Vesper",
+    "kind": "person",
+    "aliases": [
+      "Senior Archivist K. Vesper"
+    ],
+    "status": "existing",
+    "notes": [],
+    "legacyIds": [
+      "char-k-vesper"
+    ]
+  },
+  {
+    "id": "char-robert-mercer",
+    "name": "Dr. Robert Mercer",
+    "kind": "person",
+    "aliases": [],
+    "status": "existing",
+    "notes": [],
+    "legacyIds": []
+  },
+  {
+    "id": "char-christian-vance",
+    "name": "Ambassador Christian Vance",
+    "kind": "person",
+    "aliases": [
+      "Envoy Vance",
+      "Subject Raven-1"
+    ],
+    "status": "existing",
+    "notes": [],
+    "legacyIds": []
+  },
+  {
+    "id": "char-gregory-thorne",
+    "name": "Dr. Gregory Thorne",
+    "kind": "person",
+    "aliases": [
+      "Chief Toxicology",
+      "Dr. Thorne"
+    ],
+    "status": "existing",
+    "notes": [],
+    "legacyIds": []
+  },
+  {
+    "id": "char-viktor-krell",
+    "name": "Viktor Krell",
+    "kind": "person",
+    "aliases": [
+      "The Glassmaker",
+      "V. Krellov",
+      "Contractor K",
+      "Viktor Krell (\"The Glassmaker\")"
+    ],
+    "status": "existing",
+    "notes": [],
+    "legacyIds": []
+  },
+  {
+    "id": "char-marcus-vance",
+    "name": "Courier Marcus Vance (No Relation)",
+    "kind": "person",
+    "aliases": [
+      "Courier 9",
+      "Runner M"
+    ],
+    "status": "existing",
+    "notes": [],
+    "legacyIds": []
+  },
+  {
+    "id": "char-elena-rostova",
+    "name": "Elena Rostova",
+    "kind": "person",
+    "aliases": [
+      "Specter 4",
+      "E. Rostova"
+    ],
+    "status": "existing",
+    "notes": [],
+    "legacyIds": [
+      "char-elena-rostova-crash"
+    ]
+  },
+  {
+    "id": "char-evelyn-cross",
+    "name": "Director Evelyn Cross",
+    "kind": "person",
+    "aliases": [],
+    "status": "existing",
+    "notes": [],
+    "legacyIds": []
+  },
+  {
+    "id": "char-deputy-chief-miller",
+    "name": "Deputy Chief Miller",
+    "kind": "person",
+    "aliases": [],
+    "status": "existing",
+    "notes": [],
+    "legacyIds": []
+  },
+  {
+    "id": "char-marcus-chen",
+    "name": "Specialist Marcus Chen",
+    "kind": "person",
+    "aliases": [],
+    "status": "existing",
+    "notes": [],
+    "legacyIds": []
+  },
+  {
+    "id": "char-miracle-jerome",
+    "name": "Dr. Miracle Jerome",
+    "kind": "person",
+    "aliases": [
+      "Miracle Jerome"
+    ],
+    "status": "existing",
+    "notes": [],
+    "legacyIds": [
+      "char-miracle-jerome-agent"
+    ]
+  },
+  {
+    "id": "char-jeremie-belpois",
+    "name": "Jeremie Belpois",
+    "kind": "person",
+    "aliases": [
+      "Jeremie"
+    ],
+    "status": "existing",
+    "notes": [],
+    "legacyIds": []
+  },
+  {
+    "id": "char-aelita-hopper",
+    "name": "Aelita Hopper",
+    "kind": "person",
+    "aliases": [
+      "Aelita Schaeffer",
+      "Aelita"
+    ],
+    "status": "existing",
+    "notes": [],
+    "legacyIds": [
+      "char-aelita-schaeffer"
+    ]
+  },
+  {
+    "id": "char-sissi-delmas",
+    "name": "Sissi Delmas",
+    "kind": "person",
+    "aliases": [
+      "Elisabeth Delmas",
+      "Sissi"
+    ],
+    "status": "existing",
+    "notes": [],
+    "legacyIds": [
+      "char-elisabeth-delmas"
+    ]
+  },
+  {
+    "id": "char-odd-della-robia",
+    "name": "Odd Della Robia",
+    "kind": "person",
+    "aliases": [
+      "Odd Della Robbia"
+    ],
+    "status": "existing",
+    "notes": [],
+    "legacyIds": [
+      "char-odd-della-robbia"
+    ]
+  },
+  {
+    "id": "char-sharon-voss",
+    "name": "Dr. Sharon Voss",
+    "kind": "person",
+    "aliases": [],
+    "status": "existing",
+    "notes": [],
+    "legacyIds": []
+  },
+  {
+    "id": "char-riven-kalbera",
+    "name": "Riven Kalbera",
+    "kind": "person",
+    "aliases": [
+      "Riven Asterwind"
+    ],
+    "status": "existing",
+    "notes": [],
+    "legacyIds": [
+      "char-riven-asterwind"
+    ]
+  },
+  {
+    "id": "char-mara-thorne",
+    "name": "Mara Thorne",
+    "kind": "person",
+    "aliases": [],
+    "status": "existing",
+    "notes": [],
+    "legacyIds": []
+  },
+  {
+    "id": "char-rowan",
+    "name": "Archivist Rowan",
+    "kind": "person",
+    "aliases": [],
+    "status": "existing",
+    "notes": [],
+    "legacyIds": []
+  },
+  {
+    "id": "char-ronald-sterling",
+    "name": "Director Ronald Sterling",
+    "kind": "person",
+    "aliases": [],
+    "status": "existing",
+    "notes": [],
+    "legacyIds": []
+  },
+  {
+    "id": "char-vance-lowe",
+    "name": "Vance Lowe",
+    "kind": "person",
+    "aliases": [],
+    "status": "existing",
+    "notes": [],
+    "legacyIds": []
+  },
+  {
+    "id": "char-mireille-chen",
+    "name": "Mireille Chen",
+    "kind": "person",
+    "aliases": [],
+    "status": "existing",
+    "notes": [],
+    "legacyIds": []
+  },
+  {
+    "id": "char-derek-brody",
+    "name": "Sergeant Derek Brody",
+    "kind": "person",
+    "aliases": [],
+    "status": "existing",
+    "notes": [],
+    "legacyIds": []
+  },
+  {
+    "id": "char-aris-thorne",
+    "name": "Dr. Aris Thorne",
+    "kind": "person",
+    "aliases": [],
+    "status": "existing",
+    "notes": [],
+    "legacyIds": []
+  },
+  {
+    "id": "char-katherine-mercer",
+    "name": "Katherine Mercer",
+    "kind": "person",
+    "aliases": [],
+    "status": "existing",
+    "notes": [],
+    "legacyIds": []
+  },
+  {
+    "id": "char-soren-lind",
+    "name": "Soren Lind",
+    "kind": "person",
+    "aliases": [],
+    "status": "existing",
+    "notes": [],
+    "legacyIds": []
+  },
+  {
+    "id": "char-silas-oryn",
+    "name": "Silas Oryn",
+    "kind": "person",
+    "aliases": [],
+    "status": "existing",
+    "notes": [],
+    "legacyIds": []
+  },
+  {
+    "id": "char-elise-vance",
+    "name": "Elise Vance",
+    "kind": "person",
+    "aliases": [],
+    "status": "existing",
+    "notes": [],
+    "legacyIds": []
+  },
+  {
+    "id": "char-tobias-gale",
+    "name": "Tobias Gale",
+    "kind": "person",
+    "aliases": [],
+    "status": "existing",
+    "notes": [],
+    "legacyIds": []
+  },
+  {
+    "id": "char-julian-thorne",
+    "name": "Julian Thorne",
+    "kind": "person",
+    "aliases": [],
+    "status": "existing",
+    "notes": [],
+    "legacyIds": []
+  },
+  {
+    "id": "char-maren-holt",
+    "name": "Maren Holt",
+    "kind": "person",
+    "aliases": [],
+    "status": "existing",
+    "notes": [],
+    "legacyIds": []
+  },
+  {
+    "id": "char-kaelen-vance",
+    "name": "Kaelen Vance",
+    "kind": "person",
+    "aliases": [],
+    "status": "existing",
+    "notes": [],
+    "legacyIds": []
+  },
+  {
+    "id": "char-nadia-cruz",
+    "name": "Nadia Cruz",
+    "kind": "person",
+    "aliases": [],
+    "status": "existing",
+    "notes": [],
+    "legacyIds": []
+  },
+  {
+    "id": "char-thalia-vane",
+    "name": "Thalia Vane",
+    "kind": "person",
+    "aliases": [],
+    "status": "existing",
+    "notes": [],
+    "legacyIds": []
+  },
+  {
+    "id": "char-gregory-bell",
+    "name": "Gregory Bell",
+    "kind": "person",
+    "aliases": [],
+    "status": "existing",
+    "notes": [],
+    "legacyIds": []
+  },
+  {
+    "id": "char-corin-mercer",
+    "name": "Corin Mercer",
+    "kind": "person",
+    "aliases": [],
+    "status": "existing",
+    "notes": [],
+    "legacyIds": []
+  },
+  {
+    "id": "char-mara-finch",
+    "name": "Mara Finch",
+    "kind": "person",
+    "aliases": [],
+    "status": "existing",
+    "notes": [],
+    "legacyIds": []
+  },
+  {
+    "id": "char-vivienne-rose",
+    "name": "Vivienne Rose",
+    "kind": "person",
+    "aliases": [],
+    "status": "existing",
+    "notes": [],
+    "legacyIds": []
+  },
+  {
+    "id": "char-leo-sterling",
+    "name": "Leo Sterling",
+    "kind": "person",
+    "aliases": [],
+    "status": "existing",
+    "notes": [],
+    "legacyIds": []
+  },
+  {
+    "id": "char-talia-moss",
+    "name": "Talia Moss",
+    "kind": "person",
+    "aliases": [],
+    "status": "existing",
+    "notes": [],
+    "legacyIds": []
+  },
+  {
+    "id": "char-felix-ward",
+    "name": "Felix Ward",
+    "kind": "person",
+    "aliases": [],
+    "status": "existing",
+    "notes": [],
+    "legacyIds": []
+  },
+  {
+    "id": "char-cassian-rook",
+    "name": "Dean Cassian Rook",
+    "kind": "person",
+    "aliases": [],
+    "status": "existing",
+    "notes": [],
+    "legacyIds": []
+  },
+  {
+    "id": "char-elara-vale",
+    "name": "Elara Vale",
+    "kind": "person",
+    "aliases": [],
+    "status": "existing",
+    "notes": [],
+    "legacyIds": []
+  },
+  {
+    "id": "char-julian-paul-vance",
+    "name": "Dr. Julian Paul Vance",
+    "kind": "person",
+    "aliases": [],
+    "status": "existing",
+    "notes": [],
+    "legacyIds": []
+  },
+  {
+    "id": "char-sora-takahashi",
+    "name": "Sora Takahashi",
+    "kind": "person",
+    "aliases": [],
+    "status": "existing",
+    "notes": [],
+    "legacyIds": []
+  },
+  {
+    "id": "char-mai",
+    "name": "Mai",
+    "kind": "companion",
+    "aliases": [],
+    "status": "existing",
+    "notes": [],
+    "legacyIds": []
+  },
+  {
+    "id": "char-vaelen",
+    "name": "Vaelen",
+    "kind": "person",
+    "aliases": [],
+    "status": "existing",
+    "notes": [],
+    "legacyIds": []
+  },
+  {
+    "id": "char-kaelen",
+    "name": "Kaelen",
+    "kind": "person",
+    "aliases": [],
+    "status": "existing",
+    "notes": [],
+    "legacyIds": []
+  },
+  {
+    "id": "char-vael",
+    "name": "Headmistress Vael",
+    "kind": "person",
+    "aliases": [],
+    "status": "document-only",
+    "notes": [],
+    "legacyIds": []
+  },
+  {
+    "id": "char-idris",
+    "name": "Professor Idris",
+    "kind": "person",
+    "aliases": [],
+    "status": "document-only",
+    "notes": [],
+    "legacyIds": []
+  },
+  {
+    "id": "char-rhen",
+    "name": "Coach Rhen",
+    "kind": "person",
+    "aliases": [],
+    "status": "document-only",
+    "notes": [],
+    "legacyIds": []
+  },
+  {
+    "id": "char-lyse",
+    "name": "Instructor Lyse",
+    "kind": "person",
+    "aliases": [],
+    "status": "document-only",
+    "notes": [],
+    "legacyIds": []
+  },
+  {
+    "id": "char-oryn",
+    "name": "Professor Oryn",
+    "kind": "person",
+    "aliases": [],
+    "status": "document-only",
+    "notes": [],
+    "legacyIds": []
+  },
+  {
+    "id": "char-yumi-ishiyuma",
+    "name": "Yumi Ishiyuma",
+    "kind": "person",
+    "aliases": [],
+    "status": "existing",
+    "notes": [],
+    "legacyIds": []
+  },
+  {
+    "id": "char-ulrich-stern",
+    "name": "Ulrich Stern",
+    "kind": "person",
+    "aliases": [],
+    "status": "existing",
+    "notes": [],
+    "legacyIds": []
+  },
+  {
+    "id": "char-franz-hopper",
+    "name": "Franz Hopper",
+    "kind": "person",
+    "aliases": [],
+    "status": "document-only",
+    "notes": [],
+    "legacyIds": []
+  },
+  {
+    "id": "char-echo-neket",
+    "name": "Echo Neket",
+    "kind": "person",
+    "aliases": [],
+    "status": "document-only",
+    "notes": [],
+    "legacyIds": []
+  },
+  {
+    "id": "char-solis-agni",
+    "name": "Solis Agni",
+    "kind": "person",
+    "aliases": [],
+    "status": "document-only",
+    "notes": [],
+    "legacyIds": []
+  },
+  {
+    "id": "char-lyric-enya",
+    "name": "Lyric Enya",
+    "kind": "person",
+    "aliases": [],
+    "status": "document-only",
+    "notes": [],
+    "legacyIds": []
+  },
+  {
+    "id": "char-nerya",
+    "name": "Nerya",
+    "kind": "person",
+    "aliases": [],
+    "status": "existing",
+    "notes": [],
+    "legacyIds": []
+  },
+  {
+    "id": "char-null-cantor",
+    "name": "Null Cantor",
+    "kind": "person",
+    "aliases": [],
+    "status": "existing",
+    "notes": [],
+    "legacyIds": []
+  },
+  {
+    "id": "char-marcus-vance-technician",
+    "name": "Marcus Vance",
+    "kind": "person",
+    "aliases": [],
+    "status": "existing",
+    "notes": [],
+    "legacyIds": []
+  },
+  {
+    "id": "char-dominic-sterling",
+    "name": "Dominic Sterling",
+    "kind": "person",
+    "aliases": [],
+    "status": "existing",
+    "notes": [],
+    "legacyIds": []
+  },
+  {
+    "id": "char-unidentified-driver-p404",
+    "name": "Driver of Navy Fleet SUV (Unidentified)",
+    "kind": "person",
+    "aliases": [],
+    "status": "existing",
+    "notes": [],
+    "legacyIds": []
+  },
+  {
+    "id": "char-travis-miller",
+    "name": "Trooper Travis Miller",
+    "kind": "person",
+    "aliases": [],
+    "status": "existing",
+    "notes": [],
+    "legacyIds": []
+  },
+  {
+    "id": "char-tyler-ross",
+    "name": "Officer Tyler Ross",
+    "kind": "person",
+    "aliases": [],
+    "status": "existing",
+    "notes": [],
+    "legacyIds": []
+  },
+  {
+    "id": "char-unidentified-patient-pat95881",
+    "name": "Jane Doe (Unidentified Subject)",
+    "kind": "person",
+    "aliases": [],
+    "status": "existing",
+    "notes": [],
+    "legacyIds": []
+  },
+  {
+    "id": "char-kaelen-voss",
+    "name": "Kaelen Voss",
+    "kind": "person",
+    "aliases": [],
+    "status": "existing",
+    "notes": [],
+    "legacyIds": []
+  },
+  {
+    "id": "char-s-mercer",
+    "name": "Student S. Mercer (Vertex House)",
+    "kind": "person",
+    "aliases": [],
+    "status": "existing",
+    "notes": [],
+    "legacyIds": []
+  }
+]

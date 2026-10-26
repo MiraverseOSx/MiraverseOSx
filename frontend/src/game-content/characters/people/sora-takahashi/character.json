@@ -1,0 +1,19 @@
+{
+  "id": "char-sora-takahashi",
+  "name": "Sora Takahashi",
+  "kind": "person",
+  "aliases": [],
+  "status": "existing",
+  "notes": [],
+  "legacyIds": [],
+  "references": [
+    {
+      "collection": "defaultInputs",
+      "key": "MAID-OR-00481930",
+      "file": "people/sora-takahashi/registry.json"
+    }
+  ],
+  "maid": "MAID-OR-00481930",
+  "legacyMaids": [],
+  "folder": "sora-takahashi"
+}

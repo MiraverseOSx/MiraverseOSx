@@ -1,0 +1,126 @@
+[
+  {
+    "collection": "defaultInputs",
+    "key": "MAID-OR-00481928",
+    "origin": "frontend/src/services/maidIdentityService.ts:1338",
+    "context": "defaultInputs",
+    "data": {
+      "fixedMaid": "MAID-OR-00481928",
+      "fixedLegacy": "MRD-9901-214",
+      "name": "Dr. Julian Paul Vance",
+      "registrationRegion": "Orynvell",
+      "dob": "1984-07-22",
+      "place": "Aureline Citadel, Orynvell",
+      "home": "Aureline, Orynvell",
+      "address": "19 Citadel Terrace, DGA Command Sector, Orynvell",
+      "phone": "+1 (202) 555-0199",
+      "email": "j.vance@dga.gov",
+      "district": "Citadel Command Sector, Orynvell",
+      "passport": "AUR-109482",
+      "alias": "TRACE Lead Criminalist",
+      "height": "183 cm",
+      "eyes": "Deep Obsidian-Blue",
+      "hair": "Silver-Black",
+      "build": "Tall / Tactical",
+      "blood": "AB+ (Harmonic Universal)",
+      "mark": "Calibrated DGA neural-link micro-sigil behind left ear",
+      "species": "Humanoid · Celestial",
+      "ancestry": "Orynvell Crown Intelligence Lineage",
+      "abilities": "Spectral trace reconstruction, 10-print dermal analysis, chrono-ballistic forensics",
+      "powerSource": "Hardened Aether-Core & Tactical Cipher",
+      "affinity": "Obsidian-Violet · counter-intel / forensics",
+      "faction": "Department of Global Affairs (DGAOS)",
+      "lore": "Chief Forensic Scientist for TRACE Workstation and Senior EYES Division investigator.",
+      "category": "DGA / TRACE Operational",
+      "affiliation": "Department of Global Affairs (DGAOS // EYES & TRACE)",
+      "occupation": "Lead Forensic Criminalist & EYES Investigator",
+      "clearance": "DGA Senior Officer Clearance · TRACE Level V",
+      "aura": "Hardened Shielded Tier IV",
+      "medical": "Faith Medical Group · Tactical Clearance Verified by Dr. Miracle Jerome",
+      "residency": "Citadel Officer Housing, Unit 4A · Verified",
+      "history": "Architect of the hybrid forensic findings transmission protocol linking TRACE and DGAOS.",
+      "status": "ACTIVE / VERIFIED",
+      "links": "Authoritative forensic examiner for DGAOS cases; guest lecturer at Cyacademy.",
+      "relationships": "Colleague of Dr. Miracle Jerome (MAID-OR-00481927) · Mentor to Elara Vale (MAID-OR-00481926) · Investigating Subject Elena Rostova (MAID-OR-00481931)",
+      "relationshipIds": [
+        {
+          "id": "MAID-OR-00481927",
+          "type": "Forensic Medical Partner",
+          "notes": "DGAOS MEDSTAT Liaison"
+        },
+        {
+          "id": "MAID-OR-00481926",
+          "type": "Academic Mentee",
+          "notes": "Resonance Forensics Seminar"
+        },
+        {
+          "id": "MAID-OR-00481931",
+          "type": "Investigative Subject",
+          "notes": "TRACE Active Case Review"
+        }
+      ],
+      "household": "Citadel Officer Housing Unit 4A",
+      "timeline": "Origin: Orynvell Citadel; DGAOS Lead Examiner since Year 15",
+      "storyMode": "DGA / Investigative Subject"
+    },
+    "original": {
+      "fixedMaid": "MAID-OR-00481928",
+      "fixedLegacy": "MRD-9901-214",
+      "name": "Dr. Julian Paul Vance",
+      "registrationRegion": "Orynvell",
+      "dob": "1984-07-22",
+      "place": "Aureline Citadel, Orynvell",
+      "home": "Aureline, Orynvell",
+      "address": "19 Citadel Terrace, DGA Command Sector, Orynvell",
+      "phone": "+1 (202) 555-0199",
+      "email": "j.vance@dga.gov",
+      "district": "Citadel Command Sector, Orynvell",
+      "passport": "AUR-109482",
+      "alias": "TRACE Lead Criminalist",
+      "height": "183 cm",
+      "eyes": "Deep Obsidian-Blue",
+      "hair": "Silver-Black",
+      "build": "Tall / Tactical",
+      "blood": "AB+ (Harmonic Universal)",
+      "mark": "Calibrated DGA neural-link micro-sigil behind left ear",
+      "species": "Humanoid · Celestial",
+      "ancestry": "Orynvell Crown Intelligence Lineage",
+      "abilities": "Spectral trace reconstruction, 10-print dermal analysis, chrono-ballistic forensics",
+      "powerSource": "Hardened Aether-Core & Tactical Cipher",
+      "affinity": "Obsidian-Violet · counter-intel / forensics",
+      "faction": "Department of Global Affairs (DGAOS)",
+      "lore": "Chief Forensic Scientist for TRACE Workstation and Senior EYES Division investigator.",
+      "category": "DGA / TRACE Operational",
+      "affiliation": "Department of Global Affairs (DGAOS // EYES & TRACE)",
+      "occupation": "Lead Forensic Criminalist & EYES Investigator",
+      "clearance": "DGA Senior Officer Clearance · TRACE Level V",
+      "aura": "Hardened Shielded Tier IV",
+      "medical": "Faith Medical Group · Tactical Clearance Verified by Dr. Miracle Jerome",
+      "residency": "Citadel Officer Housing, Unit 4A · Verified",
+      "history": "Architect of the hybrid forensic findings transmission protocol linking TRACE and DGAOS.",
+      "status": "ACTIVE / VERIFIED",
+      "links": "Authoritative forensic examiner for DGAOS cases; guest lecturer at Cyacademy.",
+      "relationships": "Colleague of Dr. Miracle Jerome (MAID-OR-00481927) · Mentor to Elara Vale (MAID-OR-00481926) · Investigating Subject Elena Rostova (MAID-OR-00481931)",
+      "relationshipIds": [
+        {
+          "id": "MAID-OR-00481927",
+          "type": "Forensic Medical Partner",
+          "notes": "DGAOS MEDSTAT Liaison"
+        },
+        {
+          "id": "MAID-OR-00481926",
+          "type": "Academic Mentee",
+          "notes": "Resonance Forensics Seminar"
+        },
+        {
+          "id": "MAID-OR-00481931",
+          "type": "Investigative Subject",
+          "notes": "TRACE Active Case Review"
+        }
+      ],
+      "household": "Citadel Officer Housing Unit 4A",
+      "timeline": "Origin: Orynvell Citadel; DGAOS Lead Examiner since Year 15",
+      "storyMode": "DGA / Investigative Subject"
+    }
+  }
+]

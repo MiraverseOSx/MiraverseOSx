@@ -1,0 +1,39 @@
+[
+  {
+    "collection": "AUREMAIL_DIRECTORY",
+    "key": "dir-elara-vale",
+    "origin": "frontend/src/data/commsData.ts:373",
+    "context": "AUREMAIL_DIRECTORY",
+    "data": {
+      "id": "dir-elara-vale",
+      "name": "Elara Vale",
+      "address": "elara.vale@cyacademy.edu",
+      "category": "citizen",
+      "accountType": "academic",
+      "role": "Senior Resonance Archivist",
+      "institution": "Cyacademy Archive",
+      "faction": "Cyacademy Admin",
+      "maid": "MAID-OR-00481926",
+      "requiredClearance": 1,
+      "verified": true,
+      "description": "Canonical Citizen #1 · Senior Resonance Archivist in the Central Library.",
+      "legacyMaid": "MAID-OR-00000001",
+      "legacyNpcKey": "rowan"
+    },
+    "original": {
+      "id": "dir-elara-vale",
+      "name": "Elara Vale",
+      "address": "elara.vale@cyacademy.edu",
+      "category": "citizen",
+      "accountType": "academic",
+      "role": "Senior Resonance Archivist",
+      "institution": "Cyacademy Archive",
+      "faction": "Cyacademy Admin",
+      "maid": "MAID-OR-00000001",
+      "npcKey": "rowan",
+      "requiredClearance": 1,
+      "verified": true,
+      "description": "Canonical Citizen #1 · Senior Resonance Archivist in the Central Library."
+    }
+  }
+]

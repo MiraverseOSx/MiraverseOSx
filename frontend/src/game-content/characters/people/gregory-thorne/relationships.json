@@ -1,0 +1,26 @@
+[
+  {
+    "collection": "seedRelationships",
+    "key": "REL-003",
+    "origin": "frontend/src/dgaos/data/seed/relationships.ts:40",
+    "context": "seedRelationships",
+    "data": {
+      "id": "REL-003",
+      "sourceId": "P-102",
+      "sourceName": "Dr. Gregory Thorne",
+      "targetId": "ORG-02",
+      "targetName": "St. Jude Metropolitan Hospital",
+      "type": "employed_by",
+      "notes": "Chief of Critical Toxicology supervising emergency stabilization protocol."
+    },
+    "original": {
+      "id": "REL-003",
+      "sourceId": "P-102",
+      "sourceName": "Dr. Gregory Thorne",
+      "targetId": "ORG-02",
+      "targetName": "St. Jude Metropolitan Hospital",
+      "type": "employed_by",
+      "notes": "Chief of Critical Toxicology supervising emergency stabilization protocol."
+    }
+  }
+]

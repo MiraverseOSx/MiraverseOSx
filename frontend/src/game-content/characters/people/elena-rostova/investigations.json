@@ -1,0 +1,24 @@
+[
+  {
+    "collection": "INV_26_402_STARTING_PAYLOAD",
+    "key": "P-401",
+    "origin": "frontend/src/dgaos/data/seed/cases.ts:735",
+    "context": "INV_26_402_STARTING_PAYLOAD",
+    "data": {
+      "personId": "P-401",
+      "name": "Elena Rostova",
+      "role": "Victim / Lead Propulsion Software Architect",
+      "affiliation": "Apex Dynamics Autonomous Mobility",
+      "threatLevel": "None",
+      "status": "Deceased (Crash Victim)"
+    },
+    "original": {
+      "personId": "P-401",
+      "name": "Elena Rostova",
+      "role": "Victim / Lead Propulsion Software Architect",
+      "affiliation": "Apex Dynamics Autonomous Mobility",
+      "threatLevel": "None",
+      "status": "Deceased (Crash Victim)"
+    }
+  }
+]

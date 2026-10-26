@@ -1,0 +1,1134 @@
+{
+  "version": 2,
+  "characters": [
+    {
+      "id": "char-maeryn-seraphima",
+      "name": "Queen Maeryn Seraphima",
+      "folder": "maeryn-seraphima",
+      "files": [
+        "people/maeryn-seraphima/world.json",
+        "people/maeryn-seraphima/story.json"
+      ]
+    },
+    {
+      "id": "char-holly",
+      "name": "High Warden Holly",
+      "folder": "holly",
+      "files": [
+        "people/holly/world.json"
+      ]
+    },
+    {
+      "id": "char-lucia",
+      "name": "Chancellor Lucia",
+      "folder": "lucia",
+      "files": [
+        "people/lucia/world.json"
+      ]
+    },
+    {
+      "id": "char-neryx",
+      "name": "Lord Neryx",
+      "folder": "neryx",
+      "files": [
+        "people/neryx/world.json"
+      ]
+    },
+    {
+      "id": "char-yoko",
+      "name": "Grand Dispatcher Yoko",
+      "folder": "yoko",
+      "files": [
+        "people/yoko/world.json"
+      ]
+    },
+    {
+      "id": "char-ember",
+      "name": "High Forge-Master Ember",
+      "folder": "ember",
+      "files": [
+        "people/ember/world.json"
+      ]
+    },
+    {
+      "id": "char-keket",
+      "name": "Seer Keket",
+      "folder": "keket",
+      "files": [
+        "people/keket/world.json"
+      ]
+    },
+    {
+      "id": "char-kieran-vesper",
+      "name": "Kieran Vesper",
+      "folder": "kieran-vesper",
+      "files": [
+        "people/kieran-vesper/world.json",
+        "people/kieran-vesper/registry.json"
+      ]
+    },
+    {
+      "id": "char-robert-mercer",
+      "name": "Dr. Robert Mercer",
+      "folder": "robert-mercer",
+      "files": [
+        "people/robert-mercer/world.json"
+      ]
+    },
+    {
+      "id": "char-christian-vance",
+      "name": "Ambassador Christian Vance",
+      "folder": "christian-vance",
+      "files": [
+        "people/christian-vance/agency.json",
+        "people/christian-vance/investigations.json",
+        "people/christian-vance/relationships.json"
+      ]
+    },
+    {
+      "id": "char-gregory-thorne",
+      "name": "Dr. Gregory Thorne",
+      "folder": "gregory-thorne",
+      "files": [
+        "people/gregory-thorne/agency.json",
+        "people/gregory-thorne/investigations.json",
+        "people/gregory-thorne/relationships.json"
+      ]
+    },
+    {
+      "id": "char-viktor-krell",
+      "name": "Viktor Krell",
+      "folder": "viktor-krell",
+      "files": [
+        "people/viktor-krell/agency.json",
+        "people/viktor-krell/investigations.json",
+        "people/viktor-krell/relationships.json"
+      ]
+    },
+    {
+      "id": "char-marcus-vance",
+      "name": "Courier Marcus Vance (No Relation)",
+      "folder": "marcus-vance-courier",
+      "files": [
+        "people/marcus-vance-courier/agency.json",
+        "people/marcus-vance-courier/relationships.json"
+      ]
+    },
+    {
+      "id": "char-elena-rostova",
+      "name": "Elena Rostova",
+      "folder": "elena-rostova",
+      "files": [
+        "people/elena-rostova/agency.json",
+        "people/elena-rostova/registry.json",
+        "people/elena-rostova/investigations.json",
+        "people/elena-rostova/relationships.json"
+      ]
+    },
+    {
+      "id": "char-evelyn-cross",
+      "name": "Director Evelyn Cross",
+      "folder": "evelyn-cross",
+      "files": [
+        "people/evelyn-cross/agency.json"
+      ]
+    },
+    {
+      "id": "char-deputy-chief-miller",
+      "name": "Deputy Chief Miller",
+      "folder": "deputy-chief-miller",
+      "files": [
+        "people/deputy-chief-miller/agency.json"
+      ]
+    },
+    {
+      "id": "char-marcus-chen",
+      "name": "Specialist Marcus Chen",
+      "folder": "marcus-chen",
+      "files": [
+        "people/marcus-chen/agency.json"
+      ]
+    },
+    {
+      "id": "char-miracle-jerome",
+      "name": "Dr. Miracle Jerome",
+      "folder": "miracle-jerome",
+      "files": [
+        "people/miracle-jerome/agency.json",
+        "people/miracle-jerome/mail.json",
+        "people/miracle-jerome/registry.json",
+        "people/miracle-jerome/relationships.json"
+      ]
+    },
+    {
+      "id": "char-jeremie-belpois",
+      "name": "Jeremie Belpois",
+      "folder": "jeremie-belpois",
+      "files": [
+        "people/jeremie-belpois/social.json",
+        "people/jeremie-belpois/mail.json",
+        "people/jeremie-belpois/dialogue.json",
+        "people/jeremie-belpois/phone.json",
+        "people/jeremie-belpois/story.json"
+      ]
+    },
+    {
+      "id": "char-aelita-hopper",
+      "name": "Aelita Hopper",
+      "folder": "aelita-hopper",
+      "files": [
+        "people/aelita-hopper/social.json",
+        "people/aelita-hopper/mail.json",
+        "people/aelita-hopper/dialogue.json",
+        "people/aelita-hopper/phone.json",
+        "people/aelita-hopper/story.json"
+      ]
+    },
+    {
+      "id": "char-sissi-delmas",
+      "name": "Sissi Delmas",
+      "folder": "sissi-delmas",
+      "files": [
+        "people/sissi-delmas/social.json",
+        "people/sissi-delmas/dialogue.json",
+        "people/sissi-delmas/phone.json",
+        "people/sissi-delmas/story.json"
+      ]
+    },
+    {
+      "id": "char-odd-della-robia",
+      "name": "Odd Della Robia",
+      "folder": "odd-della-robia",
+      "files": [
+        "people/odd-della-robia/social.json",
+        "people/odd-della-robia/mail.json",
+        "people/odd-della-robia/phone.json",
+        "people/odd-della-robia/story.json"
+      ]
+    },
+    {
+      "id": "char-sharon-voss",
+      "name": "Dr. Sharon Voss",
+      "folder": "sharon-voss",
+      "files": [
+        "people/sharon-voss/social.json",
+        "people/sharon-voss/mail.json",
+        "people/sharon-voss/phone.json"
+      ]
+    },
+    {
+      "id": "char-riven-kalbera",
+      "name": "Riven Kalbera",
+      "folder": "riven-kalbera",
+      "files": [
+        "people/riven-kalbera/social.json",
+        "people/riven-kalbera/mail.json",
+        "people/riven-kalbera/story.json"
+      ]
+    },
+    {
+      "id": "char-mara-thorne",
+      "name": "Mara Thorne",
+      "folder": "mara-thorne",
+      "files": [
+        "people/mara-thorne/social.json"
+      ]
+    },
+    {
+      "id": "char-rowan",
+      "name": "Archivist Rowan",
+      "folder": "rowan",
+      "files": [
+        "people/rowan/social.json"
+      ]
+    },
+    {
+      "id": "char-ronald-sterling",
+      "name": "Director Ronald Sterling",
+      "folder": "ronald-sterling",
+      "files": [
+        "people/ronald-sterling/workplace.json"
+      ]
+    },
+    {
+      "id": "char-vance-lowe",
+      "name": "Vance Lowe",
+      "folder": "vance-lowe",
+      "files": [
+        "people/vance-lowe/workplace.json"
+      ]
+    },
+    {
+      "id": "char-mireille-chen",
+      "name": "Mireille Chen",
+      "folder": "mireille-chen",
+      "files": [
+        "people/mireille-chen/workplace.json"
+      ]
+    },
+    {
+      "id": "char-derek-brody",
+      "name": "Sergeant Derek Brody",
+      "folder": "derek-brody",
+      "files": [
+        "people/derek-brody/workplace.json"
+      ]
+    },
+    {
+      "id": "char-aris-thorne",
+      "name": "Dr. Aris Thorne",
+      "folder": "aris-thorne",
+      "files": [
+        "people/aris-thorne/workplace.json"
+      ]
+    },
+    {
+      "id": "char-katherine-mercer",
+      "name": "Katherine Mercer",
+      "folder": "katherine-mercer",
+      "files": [
+        "people/katherine-mercer/workplace.json"
+      ]
+    },
+    {
+      "id": "char-soren-lind",
+      "name": "Soren Lind",
+      "folder": "soren-lind",
+      "files": [
+        "people/soren-lind/workplace.json"
+      ]
+    },
+    {
+      "id": "char-silas-oryn",
+      "name": "Silas Oryn",
+      "folder": "silas-oryn",
+      "files": [
+        "people/silas-oryn/workplace.json"
+      ]
+    },
+    {
+      "id": "char-elise-vance",
+      "name": "Elise Vance",
+      "folder": "elise-vance",
+      "files": [
+        "people/elise-vance/workplace.json"
+      ]
+    },
+    {
+      "id": "char-tobias-gale",
+      "name": "Tobias Gale",
+      "folder": "tobias-gale",
+      "files": [
+        "people/tobias-gale/workplace.json"
+      ]
+    },
+    {
+      "id": "char-julian-thorne",
+      "name": "Julian Thorne",
+      "folder": "julian-thorne",
+      "files": [
+        "people/julian-thorne/workplace.json"
+      ]
+    },
+    {
+      "id": "char-maren-holt",
+      "name": "Maren Holt",
+      "folder": "maren-holt",
+      "files": [
+        "people/maren-holt/workplace.json"
+      ]
+    },
+    {
+      "id": "char-kaelen-vance",
+      "name": "Kaelen Vance",
+      "folder": "kaelen-vance",
+      "files": [
+        "people/kaelen-vance/workplace.json"
+      ]
+    },
+    {
+      "id": "char-nadia-cruz",
+      "name": "Nadia Cruz",
+      "folder": "nadia-cruz",
+      "files": [
+        "people/nadia-cruz/workplace.json"
+      ]
+    },
+    {
+      "id": "char-thalia-vane",
+      "name": "Thalia Vane",
+      "folder": "thalia-vane",
+      "files": [
+        "people/thalia-vane/workplace.json"
+      ]
+    },
+    {
+      "id": "char-gregory-bell",
+      "name": "Gregory Bell",
+      "folder": "gregory-bell",
+      "files": [
+        "people/gregory-bell/workplace.json"
+      ]
+    },
+    {
+      "id": "char-corin-mercer",
+      "name": "Corin Mercer",
+      "folder": "corin-mercer",
+      "files": [
+        "people/corin-mercer/workplace.json"
+      ]
+    },
+    {
+      "id": "char-mara-finch",
+      "name": "Mara Finch",
+      "folder": "mara-finch",
+      "files": [
+        "people/mara-finch/workplace.json"
+      ]
+    },
+    {
+      "id": "char-vivienne-rose",
+      "name": "Vivienne Rose",
+      "folder": "vivienne-rose",
+      "files": [
+        "people/vivienne-rose/workplace.json"
+      ]
+    },
+    {
+      "id": "char-leo-sterling",
+      "name": "Leo Sterling",
+      "folder": "leo-sterling",
+      "files": [
+        "people/leo-sterling/workplace.json"
+      ]
+    },
+    {
+      "id": "char-talia-moss",
+      "name": "Talia Moss",
+      "folder": "talia-moss",
+      "files": [
+        "people/talia-moss/workplace.json"
+      ]
+    },
+    {
+      "id": "char-felix-ward",
+      "name": "Felix Ward",
+      "folder": "felix-ward",
+      "files": [
+        "people/felix-ward/workplace.json"
+      ]
+    },
+    {
+      "id": "char-cassian-rook",
+      "name": "Dean Cassian Rook",
+      "folder": "cassian-rook",
+      "files": [
+        "people/cassian-rook/mail.json",
+        "people/cassian-rook/dialogue.json"
+      ]
+    },
+    {
+      "id": "char-elara-vale",
+      "name": "Elara Vale",
+      "folder": "elara-vale",
+      "files": [
+        "people/elara-vale/mail.json",
+        "people/elara-vale/registry.json",
+        "people/elara-vale/investigations.json"
+      ]
+    },
+    {
+      "id": "char-julian-paul-vance",
+      "name": "Dr. Julian Paul Vance",
+      "folder": "julian-paul-vance",
+      "files": [
+        "people/julian-paul-vance/mail.json",
+        "people/julian-paul-vance/registry.json"
+      ]
+    },
+    {
+      "id": "char-sora-takahashi",
+      "name": "Sora Takahashi",
+      "folder": "sora-takahashi",
+      "files": [
+        "people/sora-takahashi/registry.json"
+      ]
+    },
+    {
+      "id": "char-mai",
+      "name": "Mai",
+      "folder": "mai",
+      "files": [
+        "people/mai/dialogue.json"
+      ]
+    },
+    {
+      "id": "char-vaelen",
+      "name": "Vaelen",
+      "folder": "vaelen",
+      "files": [
+        "people/vaelen/dialogue.json"
+      ]
+    },
+    {
+      "id": "char-kaelen",
+      "name": "Kaelen",
+      "folder": "kaelen",
+      "files": [
+        "people/kaelen/dialogue.json"
+      ]
+    },
+    {
+      "id": "char-vael",
+      "name": "Headmistress Vael",
+      "folder": "vael",
+      "files": [
+        "people/vael/story.json"
+      ]
+    },
+    {
+      "id": "char-idris",
+      "name": "Professor Idris",
+      "folder": "idris",
+      "files": [
+        "people/idris/story.json"
+      ]
+    },
+    {
+      "id": "char-rhen",
+      "name": "Coach Rhen",
+      "folder": "rhen",
+      "files": [
+        "people/rhen/story.json"
+      ]
+    },
+    {
+      "id": "char-lyse",
+      "name": "Instructor Lyse",
+      "folder": "lyse",
+      "files": [
+        "people/lyse/story.json"
+      ]
+    },
+    {
+      "id": "char-oryn",
+      "name": "Professor Oryn",
+      "folder": "oryn",
+      "files": [
+        "people/oryn/story.json"
+      ]
+    },
+    {
+      "id": "char-yumi-ishiyuma",
+      "name": "Yumi Ishiyuma",
+      "folder": "yumi-ishiyuma",
+      "files": [
+        "people/yumi-ishiyuma/phone.json",
+        "people/yumi-ishiyuma/story.json"
+      ]
+    },
+    {
+      "id": "char-ulrich-stern",
+      "name": "Ulrich Stern",
+      "folder": "ulrich-stern",
+      "files": [
+        "people/ulrich-stern/phone.json",
+        "people/ulrich-stern/story.json"
+      ]
+    },
+    {
+      "id": "char-franz-hopper",
+      "name": "Franz Hopper",
+      "folder": "franz-hopper",
+      "files": [
+        "people/franz-hopper/story.json"
+      ]
+    },
+    {
+      "id": "char-echo-neket",
+      "name": "Echo Neket",
+      "folder": "echo-neket",
+      "files": [
+        "people/echo-neket/story.json"
+      ]
+    },
+    {
+      "id": "char-solis-agni",
+      "name": "Solis Agni",
+      "folder": "solis-agni",
+      "files": [
+        "people/solis-agni/story.json"
+      ]
+    },
+    {
+      "id": "char-lyric-enya",
+      "name": "Lyric Enya",
+      "folder": "lyric-enya",
+      "files": [
+        "people/lyric-enya/story.json"
+      ]
+    },
+    {
+      "id": "char-nerya",
+      "name": "Nerya",
+      "folder": "nerya",
+      "files": [
+        "people/nerya/phone.json"
+      ]
+    },
+    {
+      "id": "char-null-cantor",
+      "name": "Null Cantor",
+      "folder": "null-cantor",
+      "files": [
+        "people/null-cantor/phone.json"
+      ]
+    },
+    {
+      "id": "char-marcus-vance-technician",
+      "name": "Marcus Vance",
+      "folder": "marcus-vance-technician",
+      "files": [
+        "people/marcus-vance-technician/investigations.json"
+      ]
+    },
+    {
+      "id": "char-dominic-sterling",
+      "name": "Dominic Sterling",
+      "folder": "dominic-sterling",
+      "files": [
+        "people/dominic-sterling/investigations.json"
+      ]
+    },
+    {
+      "id": "char-unidentified-driver-p404",
+      "name": "Driver of Navy Fleet SUV (Unidentified)",
+      "folder": "unidentified-driver-p404",
+      "files": [
+        "people/unidentified-driver-p404/investigations.json"
+      ]
+    },
+    {
+      "id": "char-travis-miller",
+      "name": "Trooper Travis Miller",
+      "folder": "travis-miller",
+      "files": [
+        "people/travis-miller/investigations.json"
+      ]
+    },
+    {
+      "id": "char-tyler-ross",
+      "name": "Officer Tyler Ross",
+      "folder": "tyler-ross",
+      "files": [
+        "people/tyler-ross/investigations.json"
+      ]
+    },
+    {
+      "id": "char-unidentified-patient-pat95881",
+      "name": "Jane Doe (Unidentified Subject)",
+      "folder": "unidentified-patient-pat95881",
+      "files": [
+        "people/unidentified-patient-pat95881/investigations.json"
+      ]
+    },
+    {
+      "id": "char-kaelen-voss",
+      "name": "Kaelen Voss",
+      "folder": "kaelen-voss",
+      "files": [
+        "people/kaelen-voss/investigations.json"
+      ]
+    },
+    {
+      "id": "char-s-mercer",
+      "name": "Student S. Mercer (Vertex House)",
+      "folder": "s-mercer",
+      "files": [
+        "people/s-mercer/investigations.json"
+      ]
+    }
+  ],
+  "order": [
+    {
+      "collection": "NPCS",
+      "key": "npc-maeryn"
+    },
+    {
+      "collection": "NPCS",
+      "key": "npc-holly"
+    },
+    {
+      "collection": "NPCS",
+      "key": "npc-lucia"
+    },
+    {
+      "collection": "NPCS",
+      "key": "npc-neryx"
+    },
+    {
+      "collection": "NPCS",
+      "key": "npc-yoko"
+    },
+    {
+      "collection": "NPCS",
+      "key": "npc-ember"
+    },
+    {
+      "collection": "NPCS",
+      "key": "npc-keket"
+    },
+    {
+      "collection": "NPCS",
+      "key": "npc-vesper"
+    },
+    {
+      "collection": "NPCS",
+      "key": "npc-mercer"
+    },
+    {
+      "collection": "seedPeople",
+      "key": "P-101"
+    },
+    {
+      "collection": "seedPeople",
+      "key": "P-102"
+    },
+    {
+      "collection": "seedPeople",
+      "key": "P-103"
+    },
+    {
+      "collection": "seedPeople",
+      "key": "P-104"
+    },
+    {
+      "collection": "seedPeople",
+      "key": "P-105"
+    },
+    {
+      "collection": "seedNPCs",
+      "key": "NPC-THORNE"
+    },
+    {
+      "collection": "seedNPCs",
+      "key": "NPC-CROSS"
+    },
+    {
+      "collection": "seedNPCs",
+      "key": "NPC-MILLER"
+    },
+    {
+      "collection": "seedNPCs",
+      "key": "NPC-CHEN"
+    },
+    {
+      "collection": "seedNPCs",
+      "key": "NPC-KRELL"
+    },
+    {
+      "collection": "primarySeedAgent",
+      "key": "DGA-SA-8804"
+    },
+    {
+      "collection": "PEOPLE",
+      "key": "jeremie"
+    },
+    {
+      "collection": "PEOPLE",
+      "key": "aelita"
+    },
+    {
+      "collection": "PEOPLE",
+      "key": "sissi"
+    },
+    {
+      "collection": "PEOPLE",
+      "key": "odd"
+    },
+    {
+      "collection": "PEOPLE",
+      "key": "voss"
+    },
+    {
+      "collection": "PEOPLE",
+      "key": "riven"
+    },
+    {
+      "collection": "PEOPLE",
+      "key": "mara"
+    },
+    {
+      "collection": "PEOPLE",
+      "key": "rowan"
+    },
+    {
+      "collection": "INSTITUTIONAL_REGISTRY",
+      "key": "sup-dga"
+    },
+    {
+      "collection": "INSTITUTIONAL_REGISTRY",
+      "key": "cw-dga-1"
+    },
+    {
+      "collection": "INSTITUTIONAL_REGISTRY",
+      "key": "cw-dga-2"
+    },
+    {
+      "collection": "INSTITUTIONAL_REGISTRY",
+      "key": "cw-dga-3"
+    },
+    {
+      "collection": "INSTITUTIONAL_REGISTRY",
+      "key": "sup-faithmed"
+    },
+    {
+      "collection": "INSTITUTIONAL_REGISTRY",
+      "key": "cw-fm-1"
+    },
+    {
+      "collection": "INSTITUTIONAL_REGISTRY",
+      "key": "cw-fm-2"
+    },
+    {
+      "collection": "INSTITUTIONAL_REGISTRY",
+      "key": "sup-finance"
+    },
+    {
+      "collection": "INSTITUTIONAL_REGISTRY",
+      "key": "cw-fin-1"
+    },
+    {
+      "collection": "INSTITUTIONAL_REGISTRY",
+      "key": "cw-fin-2"
+    },
+    {
+      "collection": "INSTITUTIONAL_REGISTRY",
+      "key": "sup-archives"
+    },
+    {
+      "collection": "INSTITUTIONAL_REGISTRY",
+      "key": "cw-arc-1"
+    },
+    {
+      "collection": "INSTITUTIONAL_REGISTRY",
+      "key": "sup-engineer"
+    },
+    {
+      "collection": "INSTITUTIONAL_REGISTRY",
+      "key": "cw-eng-1"
+    },
+    {
+      "collection": "INSTITUTIONAL_REGISTRY",
+      "key": "sup-diplomat"
+    },
+    {
+      "collection": "INSTITUTIONAL_REGISTRY",
+      "key": "cw-dip-1"
+    },
+    {
+      "collection": "INSTITUTIONAL_REGISTRY",
+      "key": "sup-warden"
+    },
+    {
+      "collection": "INSTITUTIONAL_REGISTRY",
+      "key": "cw-war-1"
+    },
+    {
+      "collection": "INSTITUTIONAL_REGISTRY",
+      "key": "sup-artist"
+    },
+    {
+      "collection": "INSTITUTIONAL_REGISTRY",
+      "key": "cw-art-1"
+    },
+    {
+      "collection": "INSTITUTIONAL_REGISTRY",
+      "key": "sup-questnotice"
+    },
+    {
+      "collection": "INSTITUTIONAL_REGISTRY",
+      "key": "cw-qn-1"
+    },
+    {
+      "collection": "AUREMAIL_DIRECTORY",
+      "key": "dir-dean-rook"
+    },
+    {
+      "collection": "AUREMAIL_DIRECTORY",
+      "key": "dir-dr-voss"
+    },
+    {
+      "collection": "AUREMAIL_DIRECTORY",
+      "key": "dir-aelita"
+    },
+    {
+      "collection": "AUREMAIL_DIRECTORY",
+      "key": "dir-jeremie"
+    },
+    {
+      "collection": "AUREMAIL_DIRECTORY",
+      "key": "dir-odd"
+    },
+    {
+      "collection": "AUREMAIL_DIRECTORY",
+      "key": "dir-riven"
+    },
+    {
+      "collection": "AUREMAIL_DIRECTORY",
+      "key": "dir-elara-vale"
+    },
+    {
+      "collection": "AUREMAIL_DIRECTORY",
+      "key": "dir-miracle-jerome"
+    },
+    {
+      "collection": "AUREMAIL_DIRECTORY",
+      "key": "dir-julian-vance"
+    },
+    {
+      "collection": "defaultInputs",
+      "key": "MAID-OR-00481926"
+    },
+    {
+      "collection": "defaultInputs",
+      "key": "MAID-OR-00481927"
+    },
+    {
+      "collection": "defaultInputs",
+      "key": "MAID-OR-00481928"
+    },
+    {
+      "collection": "defaultInputs",
+      "key": "MAID-OR-00481929"
+    },
+    {
+      "collection": "defaultInputs",
+      "key": "MAID-OR-00481930"
+    },
+    {
+      "collection": "defaultInputs",
+      "key": "MAID-OR-00481931"
+    },
+    {
+      "collection": "personas",
+      "key": "Mai"
+    },
+    {
+      "collection": "personas",
+      "key": "Jeremie"
+    },
+    {
+      "collection": "personas",
+      "key": "Aelita"
+    },
+    {
+      "collection": "personas",
+      "key": "Sissi"
+    },
+    {
+      "collection": "personas",
+      "key": "Vaelen"
+    },
+    {
+      "collection": "personas",
+      "key": "Kaelen"
+    },
+    {
+      "collection": "personas",
+      "key": "Dean Cassian Rook"
+    },
+    {
+      "collection": "phone-contact",
+      "key": "Aelita"
+    },
+    {
+      "collection": "phone-contact",
+      "key": "Jeremie"
+    },
+    {
+      "collection": "phone-contact",
+      "key": "Dr. Voss"
+    },
+    {
+      "collection": "phone-contact",
+      "key": "Odd"
+    },
+    {
+      "collection": "phone-contact",
+      "key": "Yumi"
+    },
+    {
+      "collection": "phone-contact",
+      "key": "Ulrich"
+    },
+    {
+      "collection": "phone-contact",
+      "key": "Sissi"
+    },
+    {
+      "collection": "phone-contact",
+      "key": "Nerya"
+    },
+    {
+      "collection": "phone-contact",
+      "key": "Null Cantor"
+    },
+    {
+      "collection": "story-bible",
+      "key": "Queen Maeryn Seraphima"
+    },
+    {
+      "collection": "story-bible",
+      "key": "Headmistress Vael"
+    },
+    {
+      "collection": "story-bible",
+      "key": "Professor Idris"
+    },
+    {
+      "collection": "story-bible",
+      "key": "Coach Rhen"
+    },
+    {
+      "collection": "story-bible",
+      "key": "Instructor Lyse"
+    },
+    {
+      "collection": "story-bible",
+      "key": "Professor Oryn"
+    },
+    {
+      "collection": "story-bible",
+      "key": "Aelita Hopper"
+    },
+    {
+      "collection": "story-bible",
+      "key": "Jeremie Belpois"
+    },
+    {
+      "collection": "story-bible",
+      "key": "Odd Della Robia"
+    },
+    {
+      "collection": "story-bible",
+      "key": "Yumi Ishiyuma"
+    },
+    {
+      "collection": "story-bible",
+      "key": "Ulrich Stern"
+    },
+    {
+      "collection": "story-bible",
+      "key": "Sissi Delmas"
+    },
+    {
+      "collection": "story-bible",
+      "key": "Franz Hopper"
+    },
+    {
+      "collection": "story-bible",
+      "key": "Echo Neket"
+    },
+    {
+      "collection": "story-bible",
+      "key": "Solis Agni"
+    },
+    {
+      "collection": "story-bible",
+      "key": "Riven Kalbera"
+    },
+    {
+      "collection": "story-bible",
+      "key": "Lyric Enya"
+    },
+    {
+      "collection": "DGA_26_194_STARTING_PAYLOAD",
+      "key": "P-101"
+    },
+    {
+      "collection": "DGA_26_194_STARTING_PAYLOAD",
+      "key": "P-102"
+    },
+    {
+      "collection": "DGA_26_194_STARTING_PAYLOAD",
+      "key": "P-103"
+    },
+    {
+      "collection": "INV_26_402_STARTING_PAYLOAD",
+      "key": "P-401"
+    },
+    {
+      "collection": "INV_26_402_STARTING_PAYLOAD",
+      "key": "P-402"
+    },
+    {
+      "collection": "INV_26_402_STARTING_PAYLOAD",
+      "key": "P-403"
+    },
+    {
+      "collection": "INV_26_402_STARTING_PAYLOAD",
+      "key": "P-404"
+    },
+    {
+      "collection": "INV_26_402_STARTING_PAYLOAD",
+      "key": "P-405"
+    },
+    {
+      "collection": "INITIAL_MEDICAL_CHART",
+      "key": "PAT-88194"
+    },
+    {
+      "collection": "MOTORCYCLE_CRASH_MEDICAL_CHART",
+      "key": "PAT-94102"
+    },
+    {
+      "collection": "OVERDOSE_TOXICOLOGY_MEDICAL_CHART",
+      "key": "PAT-95881"
+    },
+    {
+      "collection": "FORMAL_INVESTIGATION_CASES",
+      "key": "CASE-FM-401"
+    },
+    {
+      "collection": "FORMAL_INVESTIGATION_CASES",
+      "key": "CASE-DGA-402"
+    },
+    {
+      "collection": "PATIENT_CARE_ASSIGNMENTS",
+      "key": "pc-mercer"
+    },
+    {
+      "collection": "PATIENT_CARE_ASSIGNMENTS",
+      "key": "pc-vale"
+    },
+    {
+      "collection": "seedRelationships",
+      "key": "REL-001"
+    },
+    {
+      "collection": "seedRelationships",
+      "key": "REL-002"
+    },
+    {
+      "collection": "seedRelationships",
+      "key": "REL-003"
+    },
+    {
+      "collection": "seedRelationships",
+      "key": "REL-004"
+    },
+    {
+      "collection": "seedRelationships",
+      "key": "REL-005"
+    },
+    {
+      "collection": "seedRelationships",
+      "key": "REL-006"
+    },
+    {
+      "collection": "seedRelationships",
+      "key": "REL-007"
+    }
+  ]
+}

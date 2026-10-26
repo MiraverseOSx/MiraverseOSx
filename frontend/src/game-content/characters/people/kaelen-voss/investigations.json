@@ -1,0 +1,120 @@
+[
+  {
+    "collection": "FORMAL_INVESTIGATION_CASES",
+    "key": "CASE-DGA-402",
+    "origin": "frontend/src/gameplay/WorldEventEngine.ts:109",
+    "context": "FORMAL_INVESTIGATION_CASES",
+    "data": {
+      "id": "CASE-DGA-402",
+      "title": "AETHERCORE Pre-Collapse Registry Tampering",
+      "subjectMaid": "MAID-KA-00194022",
+      "subjectName": "Kaelen Voss",
+      "institution": "DGAOS & WorkNet",
+      "symptomOrAnomaly": "Anomalous Year-0 kernel thread (PID 660) attempting to rewrite sealed Orynvell lineage records.",
+      "availableEvidence": [
+        {
+          "id": "ev-aethercore-sys",
+          "label": "AETHERCORE.sys Kernel Driver",
+          "sourceApp": "File Explorer (/system)",
+          "detail": "Contains pre-code reality translation hooks dating prior to municipal founding."
+        },
+        {
+          "id": "ev-purge-arch",
+          "label": "Purge_Record_01.arch Manuscript",
+          "sourceApp": "File Explorer (/documents)",
+          "detail": "Documents Lightborn genealogy erasure under Directive 14-B."
+        },
+        {
+          "id": "ev-shipping-manifest",
+          "label": "CargoTrack Manifest #CG-8821",
+          "sourceApp": "Shipping Portal",
+          "detail": "Routine unrefined mana crystal shipment to Sector 3 Warehouse."
+        }
+      ],
+      "requiredEvidenceIds": [
+        "ev-aethercore-sys",
+        "ev-purge-arch"
+      ],
+      "hypotheses": [
+        {
+          "id": "hyp-smuggling",
+          "title": "Commercial Mana Crystal Tariff Evasion",
+          "explanation": "Routine logistics discrepancy in Sector 3 warehouse.",
+          "isValidated": false
+        },
+        {
+          "id": "hyp-aethercore-echo",
+          "title": "Autonomous AETHERCORE Lineage Restoration Protocol",
+          "explanation": "Erased pre-Collapse AETHERCORE kernel is cross-referencing Purge archives to restore suppressed Lightborn citizen records.",
+          "isValidated": true
+        },
+        {
+          "id": "hyp-hardware-fault",
+          "title": "Random CMOS Clock Drift",
+          "explanation": "Benign hardware battery degradation in municipal servers.",
+          "isValidated": false
+        }
+      ],
+      "rewardCredits": 450,
+      "rewardBits": 8,
+      "rewardXP": 250,
+      "reputationTrack": "dga"
+    },
+    "original": {
+      "id": "CASE-DGA-402",
+      "title": "AETHERCORE Pre-Collapse Registry Tampering",
+      "subjectMaid": "MAID-KA-00194022",
+      "subjectName": "Kaelen Voss",
+      "institution": "DGAOS & WorkNet",
+      "symptomOrAnomaly": "Anomalous Year-0 kernel thread (PID 660) attempting to rewrite sealed Orynvell lineage records.",
+      "availableEvidence": [
+        {
+          "id": "ev-aethercore-sys",
+          "label": "AETHERCORE.sys Kernel Driver",
+          "sourceApp": "File Explorer (/system)",
+          "detail": "Contains pre-code reality translation hooks dating prior to municipal founding."
+        },
+        {
+          "id": "ev-purge-arch",
+          "label": "Purge_Record_01.arch Manuscript",
+          "sourceApp": "File Explorer (/documents)",
+          "detail": "Documents Lightborn genealogy erasure under Directive 14-B."
+        },
+        {
+          "id": "ev-shipping-manifest",
+          "label": "CargoTrack Manifest #CG-8821",
+          "sourceApp": "Shipping Portal",
+          "detail": "Routine unrefined mana crystal shipment to Sector 3 Warehouse."
+        }
+      ],
+      "requiredEvidenceIds": [
+        "ev-aethercore-sys",
+        "ev-purge-arch"
+      ],
+      "hypotheses": [
+        {
+          "id": "hyp-smuggling",
+          "title": "Commercial Mana Crystal Tariff Evasion",
+          "explanation": "Routine logistics discrepancy in Sector 3 warehouse.",
+          "isValidated": false
+        },
+        {
+          "id": "hyp-aethercore-echo",
+          "title": "Autonomous AETHERCORE Lineage Restoration Protocol",
+          "explanation": "Erased pre-Collapse AETHERCORE kernel is cross-referencing Purge archives to restore suppressed Lightborn citizen records.",
+          "isValidated": true
+        },
+        {
+          "id": "hyp-hardware-fault",
+          "title": "Random CMOS Clock Drift",
+          "explanation": "Benign hardware battery degradation in municipal servers.",
+          "isValidated": false
+        }
+      ],
+      "rewardCredits": 450,
+      "rewardBits": 8,
+      "rewardXP": 250,
+      "reputationTrack": "dga"
+    }
+  }
+]

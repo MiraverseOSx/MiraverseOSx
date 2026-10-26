@@ -1,0 +1,28 @@
+[
+  {
+    "collection": "INSTITUTIONAL_REGISTRY",
+    "key": "sup-diplomat",
+    "origin": "frontend/src/apps/worknet/worknetData.ts:446",
+    "context": "INSTITUTIONAL_REGISTRY",
+    "data": {
+      "id": "sup-diplomat",
+      "name": "Thalia Vane",
+      "title": "Senior Envoy of the Aureline Assembly",
+      "department": "Civic Administration // Diplomatic Chancery",
+      "avatar": "TV",
+      "personality": "Diplomatic, articulate, focused on enduring consensus and mutual concession.",
+      "expectations": "Both parties must leave the table feeling their core requirements were heard and respected.",
+      "approvalRate": 90
+    },
+    "original": {
+      "id": "sup-diplomat",
+      "name": "Thalia Vane",
+      "title": "Senior Envoy of the Aureline Assembly",
+      "department": "Civic Administration // Diplomatic Chancery",
+      "avatar": "TV",
+      "personality": "Diplomatic, articulate, focused on enduring consensus and mutual concession.",
+      "expectations": "Both parties must leave the table feeling their core requirements were heard and respected.",
+      "approvalRate": 90
+    }
+  }
+]

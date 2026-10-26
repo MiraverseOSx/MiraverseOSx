@@ -1,0 +1,19 @@
+{
+  "id": "char-null-cantor",
+  "name": "Null Cantor",
+  "kind": "person",
+  "aliases": [],
+  "status": "existing",
+  "notes": [],
+  "legacyIds": [],
+  "references": [
+    {
+      "collection": "phone-contact",
+      "key": "Null Cantor",
+      "file": "people/null-cantor/phone.json"
+    }
+  ],
+  "maid": null,
+  "legacyMaids": [],
+  "folder": "null-cantor"
+}

@@ -1,0 +1,39 @@
+[
+  {
+    "collection": "AUREMAIL_DIRECTORY",
+    "key": "dir-odd",
+    "origin": "frontend/src/data/commsData.ts:341",
+    "context": "AUREMAIL_DIRECTORY",
+    "data": {
+      "id": "dir-odd",
+      "name": "Odd Della Robia",
+      "address": "odd.dr@auremail.aure",
+      "category": "npc",
+      "accountType": "personal",
+      "role": "Student Tactician & Scout",
+      "institution": "Cyacademy University",
+      "faction": "Cyacademy Admin",
+      "maid": "MAID-OR-00010205",
+      "npcKey": "odd",
+      "requiredClearance": 1,
+      "verified": true,
+      "description": "Campus scout, social connector, and reconnaissance lead.",
+      "legacyName": "Odd Della Robbia"
+    },
+    "original": {
+      "id": "dir-odd",
+      "name": "Odd Della Robbia",
+      "address": "odd.dr@auremail.aure",
+      "category": "npc",
+      "accountType": "personal",
+      "role": "Student Tactician & Scout",
+      "institution": "Cyacademy University",
+      "faction": "Cyacademy Admin",
+      "maid": "MAID-OR-00010205",
+      "npcKey": "odd",
+      "requiredClearance": 1,
+      "verified": true,
+      "description": "Campus scout, social connector, and reconnaissance lead."
+    }
+  }
+]

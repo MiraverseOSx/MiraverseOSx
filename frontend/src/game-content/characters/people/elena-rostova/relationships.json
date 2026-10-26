@@ -1,0 +1,26 @@
+[
+  {
+    "collection": "seedRelationships",
+    "key": "REL-006",
+    "origin": "frontend/src/dgaos/data/seed/relationships.ts:67",
+    "context": "seedRelationships",
+    "data": {
+      "id": "REL-006",
+      "sourceId": "P-105",
+      "sourceName": "Elena Rostova",
+      "targetId": "ORG-03",
+      "targetName": "Cygnus Dynamics",
+      "type": "employed_by",
+      "notes": "Senior SCADA firmware engineer cooperating with DGA cyber forensics."
+    },
+    "original": {
+      "id": "REL-006",
+      "sourceId": "P-105",
+      "sourceName": "Elena Rostova",
+      "targetId": "ORG-03",
+      "targetName": "Cygnus Dynamics",
+      "type": "employed_by",
+      "notes": "Senior SCADA firmware engineer cooperating with DGA cyber forensics."
+    }
+  }
+]

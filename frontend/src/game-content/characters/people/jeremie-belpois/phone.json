@@ -1,0 +1,24 @@
+[
+  {
+    "collection": "phone-contact",
+    "key": "Jeremie",
+    "origin": "frontend/src/data/phoneData.ts:31",
+    "context": "phone-contact",
+    "data": [
+      {
+        "id": 2,
+        "sender": "Jeremie",
+        "text": "I updated the Process Monitor logs. Keep an eye on PRISM memory spikes.",
+        "time": "09:05"
+      }
+    ],
+    "original": [
+      {
+        "id": 2,
+        "sender": "Jeremie",
+        "text": "I updated the Process Monitor logs. Keep an eye on PRISM memory spikes.",
+        "time": "09:05"
+      }
+    ]
+  }
+]

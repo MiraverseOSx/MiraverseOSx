@@ -1,0 +1,38 @@
+[
+  {
+    "collection": "INSTITUTIONAL_REGISTRY",
+    "key": "cw-eng-1",
+    "origin": "frontend/src/apps/worknet/worknetData.ts:401",
+    "context": "INSTITUTIONAL_REGISTRY",
+    "data": {
+      "id": "cw-eng-1",
+      "name": "Nadia Cruz",
+      "title": "Lead Relay Diagnostics Specialist",
+      "division": "Glassline Telemetry Deck",
+      "avatar": "NC",
+      "status": "Desk",
+      "specialty": "Oscilloscope voltage drop calculations & capacitor replacements",
+      "quote": "If C4 drops by four volts, don’t look for ghosts in the software. Replace the 470 microfarad cap.",
+      "trust": 86,
+      "competence": 94,
+      "familiarity": 75,
+      "cooperation": 88,
+      "conflictHistory": 5
+    },
+    "original": {
+      "id": "cw-eng-1",
+      "name": "Nadia Cruz",
+      "title": "Lead Relay Diagnostics Specialist",
+      "division": "Glassline Telemetry Deck",
+      "avatar": "NC",
+      "status": "Desk",
+      "specialty": "Oscilloscope voltage drop calculations & capacitor replacements",
+      "quote": "If C4 drops by four volts, don’t look for ghosts in the software. Replace the 470 microfarad cap.",
+      "trust": 86,
+      "competence": 94,
+      "familiarity": 75,
+      "cooperation": 88,
+      "conflictHistory": 5
+    }
+  }
+]

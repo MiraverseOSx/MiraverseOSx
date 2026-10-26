@@ -1,0 +1,19 @@
+{
+  "id": "char-kaelen-vance",
+  "name": "Kaelen Vance",
+  "kind": "person",
+  "aliases": [],
+  "status": "existing",
+  "notes": [],
+  "legacyIds": [],
+  "references": [
+    {
+      "collection": "INSTITUTIONAL_REGISTRY",
+      "key": "sup-engineer",
+      "file": "people/kaelen-vance/workplace.json"
+    }
+  ],
+  "maid": null,
+  "legacyMaids": [],
+  "folder": "kaelen-vance"
+}

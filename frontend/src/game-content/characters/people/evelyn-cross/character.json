@@ -1,0 +1,19 @@
+{
+  "id": "char-evelyn-cross",
+  "name": "Director Evelyn Cross",
+  "kind": "person",
+  "aliases": [],
+  "status": "existing",
+  "notes": [],
+  "legacyIds": [],
+  "references": [
+    {
+      "collection": "seedNPCs",
+      "key": "NPC-CROSS",
+      "file": "people/evelyn-cross/agency.json"
+    }
+  ],
+  "maid": null,
+  "legacyMaids": [],
+  "folder": "evelyn-cross"
+}

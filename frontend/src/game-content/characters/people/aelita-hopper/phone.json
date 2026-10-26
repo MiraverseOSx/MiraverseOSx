@@ -1,0 +1,24 @@
+[
+  {
+    "collection": "phone-contact",
+    "key": "Aelita",
+    "origin": "frontend/src/data/phoneData.ts:28",
+    "context": "phone-contact",
+    "data": [
+      {
+        "id": 1,
+        "sender": "Aelita",
+        "text": "I felt a sudden shift in the Veil near the Supercomputer vault...",
+        "time": "09:15"
+      }
+    ],
+    "original": [
+      {
+        "id": 1,
+        "sender": "Aelita",
+        "text": "I felt a sudden shift in the Veil near the Supercomputer vault...",
+        "time": "09:15"
+      }
+    ]
+  }
+]

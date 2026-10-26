@@ -1,0 +1,38 @@
+[
+  {
+    "collection": "INSTITUTIONAL_REGISTRY",
+    "key": "cw-war-1",
+    "origin": "frontend/src/apps/worknet/worknetData.ts:514",
+    "context": "INSTITUTIONAL_REGISTRY",
+    "data": {
+      "id": "cw-war-1",
+      "name": "Mara Finch",
+      "title": "Field Ecologist",
+      "division": "Canopy Canopy Post",
+      "avatar": "MF",
+      "status": "In Field",
+      "specialty": "Perimeter C14 soil, water, and crystalline flora assays",
+      "quote": "18% ionization is high, but crystalline chelators can bring it right back into balance.",
+      "trust": 85,
+      "competence": 90,
+      "familiarity": 70,
+      "cooperation": 87,
+      "conflictHistory": 4
+    },
+    "original": {
+      "id": "cw-war-1",
+      "name": "Mara Finch",
+      "title": "Field Ecologist",
+      "division": "Canopy Canopy Post",
+      "avatar": "MF",
+      "status": "In Field",
+      "specialty": "Perimeter C14 soil, water, and crystalline flora assays",
+      "quote": "18% ionization is high, but crystalline chelators can bring it right back into balance.",
+      "trust": 85,
+      "competence": 90,
+      "familiarity": 70,
+      "cooperation": 87,
+      "conflictHistory": 4
+    }
+  }
+]

@@ -1,0 +1,19 @@
+{
+  "id": "char-solis-agni",
+  "name": "Solis Agni",
+  "kind": "person",
+  "aliases": [],
+  "status": "document-only",
+  "notes": [],
+  "legacyIds": [],
+  "references": [
+    {
+      "collection": "story-bible",
+      "key": "Solis Agni",
+      "file": "people/solis-agni/story.json"
+    }
+  ],
+  "maid": null,
+  "legacyMaids": [],
+  "folder": "solis-agni"
+}

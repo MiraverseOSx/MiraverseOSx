@@ -1,0 +1,26 @@
+[
+  {
+    "collection": "seedRelationships",
+    "key": "REL-002",
+    "origin": "frontend/src/dgaos/data/seed/relationships.ts:31",
+    "context": "seedRelationships",
+    "data": {
+      "id": "REL-002",
+      "sourceId": "P-101",
+      "sourceName": "Ambassador Christian Vance",
+      "targetId": "LOC-03",
+      "targetName": "St. Jude Isolation Ward 4-B",
+      "type": "treated_at",
+      "notes": "Admitted under emergency neuro-intensive care following collapse at Embassy Row."
+    },
+    "original": {
+      "id": "REL-002",
+      "sourceId": "P-101",
+      "sourceName": "Ambassador Christian Vance",
+      "targetId": "LOC-03",
+      "targetName": "St. Jude Isolation Ward 4-B",
+      "type": "treated_at",
+      "notes": "Admitted under emergency neuro-intensive care following collapse at Embassy Row."
+    }
+  }
+]

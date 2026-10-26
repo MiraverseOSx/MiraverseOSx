@@ -1,0 +1,19 @@
+{
+  "id": "char-unidentified-driver-p404",
+  "name": "Driver of Navy Fleet SUV (Unidentified)",
+  "kind": "person",
+  "aliases": [],
+  "status": "existing",
+  "notes": [],
+  "legacyIds": [],
+  "references": [
+    {
+      "collection": "INV_26_402_STARTING_PAYLOAD",
+      "key": "P-404",
+      "file": "people/unidentified-driver-p404/investigations.json"
+    }
+  ],
+  "maid": null,
+  "legacyMaids": [],
+  "folder": "unidentified-driver-p404"
+}

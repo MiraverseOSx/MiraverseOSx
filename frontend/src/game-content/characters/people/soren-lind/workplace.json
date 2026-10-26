@@ -1,0 +1,38 @@
+[
+  {
+    "collection": "INSTITUTIONAL_REGISTRY",
+    "key": "cw-fm-2",
+    "origin": "frontend/src/apps/worknet/worknetData.ts:213",
+    "context": "INSTITUTIONAL_REGISTRY",
+    "data": {
+      "id": "cw-fm-2",
+      "name": "Soren Lind",
+      "title": "Clinical Intake Specialist",
+      "division": "Clinical Intake & Urgent Care",
+      "avatar": "SL",
+      "status": "Desk",
+      "specialty": "Rapid triage intake & pharmaceutical counter-indications",
+      "quote": "Make sure their chart is signed before discharging. Oryn Treasury will not pay an unverified admission.",
+      "trust": 82,
+      "competence": 86,
+      "familiarity": 74,
+      "cooperation": 88,
+      "conflictHistory": 6
+    },
+    "original": {
+      "id": "cw-fm-2",
+      "name": "Soren Lind",
+      "title": "Clinical Intake Specialist",
+      "division": "Clinical Intake & Urgent Care",
+      "avatar": "SL",
+      "status": "Desk",
+      "specialty": "Rapid triage intake & pharmaceutical counter-indications",
+      "quote": "Make sure their chart is signed before discharging. Oryn Treasury will not pay an unverified admission.",
+      "trust": 82,
+      "competence": 86,
+      "familiarity": 74,
+      "cooperation": 88,
+      "conflictHistory": 6
+    }
+  }
+]

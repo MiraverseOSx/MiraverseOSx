@@ -80,8 +80,12 @@ npm install --prefix frontend
 
 ### 2. Run the Development Server
 ```bash
-npm run dev --prefix frontend
+npm start
 ```
+This builds the .NET 8 backend, then starts the save/API server on port 5000 and the frontend on port 3000. On Windows, you can also double-click `run.bat`. Keep the launcher open while playing; press Ctrl+C to stop the servers.
+
+For frontend-only development with browser-local saves, use `npm run dev --prefix frontend`.
+
 Open [http://localhost:3000](http://localhost:3000) in your browser.
 
 > **Local Persistence Note:** Gameplay progression, citizen registry records, DGAOS/TRACE investigations, autosaved forensic drafts, and desktop preferences persist automatically in the browser via `localStorage` (`miraverse-os-progress`, `dgaos-trace-storage-v2`) and `IndexedDB`.

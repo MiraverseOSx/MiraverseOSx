@@ -1,0 +1,19 @@
+{
+  "id": "char-talia-moss",
+  "name": "Talia Moss",
+  "kind": "person",
+  "aliases": [],
+  "status": "existing",
+  "notes": [],
+  "legacyIds": [],
+  "references": [
+    {
+      "collection": "INSTITUTIONAL_REGISTRY",
+      "key": "sup-questnotice",
+      "file": "people/talia-moss/workplace.json"
+    }
+  ],
+  "maid": null,
+  "legacyMaids": [],
+  "folder": "talia-moss"
+}

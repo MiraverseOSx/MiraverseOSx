@@ -1,0 +1,24 @@
+[
+  {
+    "collection": "INV_26_402_STARTING_PAYLOAD",
+    "key": "P-403",
+    "origin": "frontend/src/dgaos/data/seed/cases.ts:751",
+    "context": "INV_26_402_STARTING_PAYLOAD",
+    "data": {
+      "personId": "P-403",
+      "name": "Dominic Sterling",
+      "role": "VP of Proprietary Drive Architecture",
+      "affiliation": "Apex Dynamics",
+      "threatLevel": "High",
+      "status": "Person of Interest / Whistleblower Target"
+    },
+    "original": {
+      "personId": "P-403",
+      "name": "Dominic Sterling",
+      "role": "VP of Proprietary Drive Architecture",
+      "affiliation": "Apex Dynamics",
+      "threatLevel": "High",
+      "status": "Person of Interest / Whistleblower Target"
+    }
+  }
+]

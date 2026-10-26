@@ -1,0 +1,34 @@
+[
+  {
+    "collection": "seedPeople",
+    "key": "P-104",
+    "origin": "frontend/src/dgaos/data/seed/people.ts:45",
+    "context": "seedPeople",
+    "data": {
+      "id": "P-104",
+      "name": "Courier Marcus Vance (No Relation)",
+      "aliases": [
+        "Courier 9",
+        "Runner M"
+      ],
+      "role": "Diplomatic Pouch Custodian",
+      "affiliation": "State Department Diplomatic Security Service",
+      "status": "Surveillance",
+      "threatLevel": "Moderate",
+      "bio": "Missing for 48 hours following an unannounced stopover at a portside warehouse. Last known possessor of classified telemetry tapes."
+    },
+    "original": {
+      "id": "P-104",
+      "name": "Courier Marcus Vance (No Relation)",
+      "aliases": [
+        "Courier 9",
+        "Runner M"
+      ],
+      "role": "Diplomatic Pouch Custodian",
+      "affiliation": "State Department Diplomatic Security Service",
+      "status": "Surveillance",
+      "threatLevel": "Moderate",
+      "bio": "Missing for 48 hours following an unannounced stopover at a portside warehouse. Last known possessor of classified telemetry tapes."
+    }
+  }
+]

@@ -1,0 +1,38 @@
+[
+  {
+    "collection": "INSTITUTIONAL_REGISTRY",
+    "key": "cw-art-1",
+    "origin": "frontend/src/apps/worknet/worknetData.ts:570",
+    "context": "INSTITUTIONAL_REGISTRY",
+    "data": {
+      "id": "cw-art-1",
+      "name": "Leo Sterling",
+      "title": "Resident Sound Designer",
+      "division": "Civic Broadcast Bureau",
+      "avatar": "LS",
+      "status": "Desk",
+      "specialty": "Acoustic harmonic filters and ambient broadcast mastering",
+      "quote": "Music isn’t just background in Meridion—it stabilizes citizen mood and cognitive clarity.",
+      "trust": 82,
+      "competence": 91,
+      "familiarity": 73,
+      "cooperation": 85,
+      "conflictHistory": 6
+    },
+    "original": {
+      "id": "cw-art-1",
+      "name": "Leo Sterling",
+      "title": "Resident Sound Designer",
+      "division": "Civic Broadcast Bureau",
+      "avatar": "LS",
+      "status": "Desk",
+      "specialty": "Acoustic harmonic filters and ambient broadcast mastering",
+      "quote": "Music isn’t just background in Meridion—it stabilizes citizen mood and cognitive clarity.",
+      "trust": 82,
+      "competence": 91,
+      "familiarity": 73,
+      "cooperation": 85,
+      "conflictHistory": 6
+    }
+  }
+]

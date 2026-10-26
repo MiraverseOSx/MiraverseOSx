@@ -1,0 +1,40 @@
+[
+  {
+    "collection": "AUREMAIL_DIRECTORY",
+    "key": "dir-dr-voss",
+    "origin": "frontend/src/data/commsData.ts:293",
+    "context": "AUREMAIL_DIRECTORY",
+    "data": {
+      "id": "dir-dr-voss",
+      "name": "Dr. Sharon Voss",
+      "address": "s.voss@cyacademy.edu",
+      "category": "npc",
+      "accountType": "academic",
+      "role": "Senior Aura & Systems Researcher",
+      "institution": "Cyacademy Research Division",
+      "faction": "Cyacademy Faculty",
+      "maid": "MAID-OR-00010202",
+      "npcKey": "voss",
+      "requiredClearance": 1,
+      "requiredTrust": 40,
+      "verified": true,
+      "description": "Leads PRISM anomaly research and subterranean frequency analysis."
+    },
+    "original": {
+      "id": "dir-dr-voss",
+      "name": "Dr. Sharon Voss",
+      "address": "s.voss@cyacademy.edu",
+      "category": "npc",
+      "accountType": "academic",
+      "role": "Senior Aura & Systems Researcher",
+      "institution": "Cyacademy Research Division",
+      "faction": "Cyacademy Faculty",
+      "maid": "MAID-OR-00010202",
+      "npcKey": "voss",
+      "requiredClearance": 1,
+      "requiredTrust": 40,
+      "verified": true,
+      "description": "Leads PRISM anomaly research and subterranean frequency analysis."
+    }
+  }
+]

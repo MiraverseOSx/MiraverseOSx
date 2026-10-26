@@ -1,3 +1,5 @@
+import { getProfile as DGA_26_194_STARTING_PAYLOADProfile } from '../../../game-content/characters/collections/DGA_26_194_STARTING_PAYLOAD';
+import { getProfile as INV_26_402_STARTING_PAYLOADProfile } from '../../../game-content/characters/collections/INV_26_402_STARTING_PAYLOAD';
 export type DGASystem =
   | 'TRACE'
   | 'AEGIS'
@@ -518,30 +520,9 @@ export const DGA_26_194_STARTING_PAYLOAD = {
     }
   ],
   people: [
-    {
-      personId: 'P-101',
-      name: 'Ambassador Christian Vance',
-      role: 'Victim / Diplomatic Envoy',
-      affiliation: 'State Department',
-      threatLevel: 'None' as const,
-      status: 'Hospitalized (Comatose)'
-    },
-    {
-      personId: 'P-102',
-      name: 'Dr. Gregory Thorne',
-      role: 'Attending Toxicologist',
-      affiliation: 'St. Jude Metropolitan Hospital',
-      threatLevel: 'Low' as const,
-      status: 'Cooperating Medical Staff'
-    },
-    {
-      personId: 'P-103',
-      name: 'Viktor Krell',
-      role: 'Primary Suspect / Synthesis Broker',
-      affiliation: 'Red Dawn Syndicate / Phoenix Bio Shadow Contact',
-      threatLevel: 'Severe' as const,
-      status: 'Under Active Surveillance'
-    }
+    DGA_26_194_STARTING_PAYLOADProfile("P-101"),
+    DGA_26_194_STARTING_PAYLOADProfile("P-102"),
+    DGA_26_194_STARTING_PAYLOADProfile("P-103")
   ],
   organizations: [
     {
@@ -732,46 +713,11 @@ export const INV_26_402_STARTING_PAYLOAD = {
     }
   ],
   people: [
-    {
-      personId: 'P-401',
-      name: 'Elena Rostova',
-      role: 'Victim / Lead Propulsion Software Architect',
-      affiliation: 'Apex Dynamics Autonomous Mobility',
-      threatLevel: 'None' as const,
-      status: 'Deceased (Crash Victim)'
-    },
-    {
-      personId: 'P-402',
-      name: 'Marcus Vance',
-      role: 'Race Tuner & Motorcycle Master Technician',
-      affiliation: 'Vance Precision Performance',
-      threatLevel: 'Moderate' as const,
-      status: 'Person of Interest / Last Serviced Vehicle'
-    },
-    {
-      personId: 'P-403',
-      name: 'Dominic Sterling',
-      role: 'VP of Proprietary Drive Architecture',
-      affiliation: 'Apex Dynamics',
-      threatLevel: 'High' as const,
-      status: 'Person of Interest / Whistleblower Target'
-    },
-    {
-      personId: 'P-404',
-      name: 'Driver of Navy Fleet SUV (Unidentified)',
-      role: 'Suspected Pursuit Vehicle Operator',
-      affiliation: 'Private Security Contractor',
-      threatLevel: 'Severe' as const,
-      status: 'Fugitive / Active Search'
-    },
-    {
-      personId: 'P-405',
-      name: 'Trooper Travis Miller',
-      role: 'First Responding Crash Reconstructionist',
-      affiliation: 'State Highway Patrol (Troop B)',
-      threatLevel: 'Low' as const,
-      status: 'Cooperating Law Enforcement'
-    }
+    INV_26_402_STARTING_PAYLOADProfile("P-401"),
+    INV_26_402_STARTING_PAYLOADProfile("P-402"),
+    INV_26_402_STARTING_PAYLOADProfile("P-403"),
+    INV_26_402_STARTING_PAYLOADProfile("P-404"),
+    INV_26_402_STARTING_PAYLOADProfile("P-405")
   ],
   organizations: [
     {

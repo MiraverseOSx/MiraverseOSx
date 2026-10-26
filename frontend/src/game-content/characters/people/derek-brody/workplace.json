@@ -1,0 +1,38 @@
+[
+  {
+    "collection": "INSTITUTIONAL_REGISTRY",
+    "key": "cw-dga-3",
+    "origin": "frontend/src/apps/worknet/worknetData.ts:138",
+    "context": "INSTITUTIONAL_REGISTRY",
+    "data": {
+      "id": "cw-dga-3",
+      "name": "Sergeant Derek Brody",
+      "title": "Tactical Dispatch Coordinator",
+      "division": "Shield Defense Division",
+      "avatar": "DB",
+      "status": "In Field",
+      "specialty": "Perimeter SealLockCrypt protocols & field equipment supply",
+      "quote": "Lock the blast barrier first. Analyze the anomalous packets when everyone is breathing.",
+      "trust": 70,
+      "competence": 82,
+      "familiarity": 55,
+      "cooperation": 78,
+      "conflictHistory": 15
+    },
+    "original": {
+      "id": "cw-dga-3",
+      "name": "Sergeant Derek Brody",
+      "title": "Tactical Dispatch Coordinator",
+      "division": "Shield Defense Division",
+      "avatar": "DB",
+      "status": "In Field",
+      "specialty": "Perimeter SealLockCrypt protocols & field equipment supply",
+      "quote": "Lock the blast barrier first. Analyze the anomalous packets when everyone is breathing.",
+      "trust": 70,
+      "competence": 82,
+      "familiarity": 55,
+      "cooperation": 78,
+      "conflictHistory": 15
+    }
+  }
+]

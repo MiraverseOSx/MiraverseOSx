@@ -1,0 +1,24 @@
+{
+  "id": "char-yumi-ishiyuma",
+  "name": "Yumi Ishiyuma",
+  "kind": "person",
+  "aliases": [],
+  "status": "existing",
+  "notes": [],
+  "legacyIds": [],
+  "references": [
+    {
+      "collection": "phone-contact",
+      "key": "Yumi",
+      "file": "people/yumi-ishiyuma/phone.json"
+    },
+    {
+      "collection": "story-bible",
+      "key": "Yumi Ishiyuma",
+      "file": "people/yumi-ishiyuma/story.json"
+    }
+  ],
+  "maid": null,
+  "legacyMaids": [],
+  "folder": "yumi-ishiyuma"
+}

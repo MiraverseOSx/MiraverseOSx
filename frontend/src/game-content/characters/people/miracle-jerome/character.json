@@ -1,0 +1,47 @@
+{
+  "id": "char-miracle-jerome",
+  "name": "Dr. Miracle Jerome",
+  "kind": "person",
+  "aliases": [
+    "Miracle Jerome"
+  ],
+  "status": "existing",
+  "notes": [
+    "Medical and agency appointments are retained as separate professional profiles of the same character."
+  ],
+  "legacyIds": [
+    "char-miracle-jerome-agent"
+  ],
+  "references": [
+    {
+      "collection": "primarySeedAgent",
+      "key": "DGA-SA-8804",
+      "file": "people/miracle-jerome/agency.json"
+    },
+    {
+      "collection": "AUREMAIL_DIRECTORY",
+      "key": "dir-miracle-jerome",
+      "file": "people/miracle-jerome/mail.json"
+    },
+    {
+      "collection": "defaultInputs",
+      "key": "MAID-OR-00481927",
+      "file": "people/miracle-jerome/registry.json"
+    },
+    {
+      "collection": "seedRelationships",
+      "key": "REL-001",
+      "file": "people/miracle-jerome/relationships.json"
+    },
+    {
+      "collection": "seedRelationships",
+      "key": "REL-007",
+      "file": "people/miracle-jerome/relationships.json"
+    }
+  ],
+  "maid": "MAID-OR-00481927",
+  "legacyMaids": [
+    "MAID-OR-00000002"
+  ],
+  "folder": "miracle-jerome"
+}

@@ -1,0 +1,27 @@
+[
+  {
+    "collection": "NPCS",
+    "key": "npc-vesper",
+    "origin": "frontend/src/game-content/characters/worldNpcs.json:65",
+    "context": "NPCS",
+    "data": {
+      "id": "npc-vesper",
+      "name": "Kieran Vesper",
+      "title": "Crown Registrar & Royal Archivist",
+      "role": "Archivist",
+      "dialogueTone": "Precise, encyclopedic, and courteous",
+      "affiliation": "Royal Historic Society",
+      "realm": "Orynvell",
+      "legacyName": "Senior Archivist K. Vesper"
+    },
+    "original": {
+      "id": "npc-vesper",
+      "name": "Senior Archivist K. Vesper",
+      "title": "Crown Registrar & Royal Archivist",
+      "role": "Archivist",
+      "dialogueTone": "Precise, encyclopedic, and courteous",
+      "affiliation": "Royal Historic Society",
+      "realm": "Orynvell"
+    }
+  }
+]

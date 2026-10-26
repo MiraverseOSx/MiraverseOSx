@@ -1,0 +1,28 @@
+[
+  {
+    "collection": "INSTITUTIONAL_REGISTRY",
+    "key": "sup-questnotice",
+    "origin": "frontend/src/apps/worknet/worknetData.ts:615",
+    "context": "INSTITUTIONAL_REGISTRY",
+    "data": {
+      "id": "sup-questnotice",
+      "name": "Talia Moss",
+      "title": "Civic Dispatch Coordinator",
+      "department": "QUESTNOTICE // District Center",
+      "avatar": "TM",
+      "personality": "Friendly, brisk, community-centered. Loves getting everyday problems solved quickly.",
+      "expectations": "Be courteous to merchants and residents. Complete deliveries within stated timeframes.",
+      "approvalRate": 96
+    },
+    "original": {
+      "id": "sup-questnotice",
+      "name": "Talia Moss",
+      "title": "Civic Dispatch Coordinator",
+      "department": "QUESTNOTICE // District Center",
+      "avatar": "TM",
+      "personality": "Friendly, brisk, community-centered. Loves getting everyday problems solved quickly.",
+      "expectations": "Be courteous to merchants and residents. Complete deliveries within stated timeframes.",
+      "approvalRate": 96
+    }
+  }
+]

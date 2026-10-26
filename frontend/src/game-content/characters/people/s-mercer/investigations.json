@@ -1,0 +1,99 @@
+[
+  {
+    "collection": "PATIENT_CARE_ASSIGNMENTS",
+    "key": "pc-mercer",
+    "origin": "frontend/src/gameplay/WorldEventEngine.ts:323",
+    "context": "PATIENT_CARE_ASSIGNMENTS",
+    "data": {
+      "id": "pc-mercer",
+      "patientName": "Student S. Mercer (Vertex House)",
+      "patientMaid": "",
+      "ward": "Faith Medical Campus - Ward 04",
+      "presentingVitals": "Aura Greying, 39.1°C Thermal Flux, Memory Fragmentation following high-load spell matrix synthesis.",
+      "diagnoses": [
+        {
+          "id": "diag-veilwilt-desync",
+          "label": "Acute Veilwilt & Thermal Aura Desync",
+          "isCorrect": true
+        },
+        {
+          "id": "diag-frostlung",
+          "label": "Frostlung Cryo-Bronchial Crystallization",
+          "isCorrect": false
+        },
+        {
+          "id": "diag-benign-fatigue",
+          "label": "Uncomplicated Muscular Fatigue",
+          "isCorrect": false
+        }
+      ],
+      "treatments": [
+        {
+          "id": "tx-warm-compress-vitals",
+          "label": "Apply BioCompress-04 Warm-Essence & Calibrate VITALS-Sync",
+          "isCorrect": true
+        },
+        {
+          "id": "tx-cryo-immersion",
+          "label": "Sub-Zero Cryo-Tank Immersion",
+          "isCorrect": false
+        },
+        {
+          "id": "tx-no-intervention",
+          "label": "Discharge Without Telemetry Calibration",
+          "isCorrect": false
+        }
+      ],
+      "rewardCredits": 220,
+      "rewardCareerXP": 140,
+      "rewardXP": 140,
+      "linkedWorknetMissionId": "ms-shift-01",
+      "legacyPatientMaid": "MAID-OR-00481926"
+    },
+    "original": {
+      "id": "pc-mercer",
+      "patientName": "Student S. Mercer (Vertex House)",
+      "patientMaid": "MAID-OR-00481926",
+      "ward": "Faith Medical Campus - Ward 04",
+      "presentingVitals": "Aura Greying, 39.1°C Thermal Flux, Memory Fragmentation following high-load spell matrix synthesis.",
+      "diagnoses": [
+        {
+          "id": "diag-veilwilt-desync",
+          "label": "Acute Veilwilt & Thermal Aura Desync",
+          "isCorrect": true
+        },
+        {
+          "id": "diag-frostlung",
+          "label": "Frostlung Cryo-Bronchial Crystallization",
+          "isCorrect": false
+        },
+        {
+          "id": "diag-benign-fatigue",
+          "label": "Uncomplicated Muscular Fatigue",
+          "isCorrect": false
+        }
+      ],
+      "treatments": [
+        {
+          "id": "tx-warm-compress-vitals",
+          "label": "Apply BioCompress-04 Warm-Essence & Calibrate VITALS-Sync",
+          "isCorrect": true
+        },
+        {
+          "id": "tx-cryo-immersion",
+          "label": "Sub-Zero Cryo-Tank Immersion",
+          "isCorrect": false
+        },
+        {
+          "id": "tx-no-intervention",
+          "label": "Discharge Without Telemetry Calibration",
+          "isCorrect": false
+        }
+      ],
+      "rewardCredits": 220,
+      "rewardCareerXP": 140,
+      "rewardXP": 140,
+      "linkedWorknetMissionId": "ms-shift-01"
+    }
+  }
+]

@@ -1,0 +1,22 @@
+[
+  {
+    "collection": "story-bible",
+    "key": "Ulrich Stern",
+    "origin": "docs/data/story-bible-characters.json:77",
+    "context": "story-bible",
+    "data": {
+      "key": "Ulrich Stern",
+      "name": "Ulrich Stern",
+      "role": "Cyacademy social circle",
+      "line": 333,
+      "characterId": "char-ulrich-stern"
+    },
+    "original": {
+      "key": "Ulrich Stern",
+      "name": "Ulrich Stern",
+      "role": "Cyacademy social circle",
+      "line": 333,
+      "characterId": "char-ulrich-stern"
+    }
+  }
+]

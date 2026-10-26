@@ -1,0 +1,19 @@
+{
+  "id": "char-julian-thorne",
+  "name": "Julian Thorne",
+  "kind": "person",
+  "aliases": [],
+  "status": "existing",
+  "notes": [],
+  "legacyIds": [],
+  "references": [
+    {
+      "collection": "INSTITUTIONAL_REGISTRY",
+      "key": "sup-archives",
+      "file": "people/julian-thorne/workplace.json"
+    }
+  ],
+  "maid": null,
+  "legacyMaids": [],
+  "folder": "julian-thorne"
+}

@@ -1,0 +1,19 @@
+{
+  "id": "char-lyse",
+  "name": "Instructor Lyse",
+  "kind": "person",
+  "aliases": [],
+  "status": "document-only",
+  "notes": [],
+  "legacyIds": [],
+  "references": [
+    {
+      "collection": "story-bible",
+      "key": "Instructor Lyse",
+      "file": "people/lyse/story.json"
+    }
+  ],
+  "maid": null,
+  "legacyMaids": [],
+  "folder": "lyse"
+}

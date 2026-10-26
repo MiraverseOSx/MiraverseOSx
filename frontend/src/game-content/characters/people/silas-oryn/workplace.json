@@ -1,0 +1,28 @@
+[
+  {
+    "collection": "INSTITUTIONAL_REGISTRY",
+    "key": "sup-finance",
+    "origin": "frontend/src/apps/worknet/worknetData.ts:261",
+    "context": "INSTITUTIONAL_REGISTRY",
+    "data": {
+      "id": "sup-finance",
+      "name": "Silas Oryn",
+      "title": "Chief Auditor of the Treasury",
+      "department": "Oryn Department of Finance // Audit Directorate",
+      "avatar": "SO",
+      "personality": "Exact, meticulous, calm. Believes that an unbalanced ledger of even one credit erodes civic trust.",
+      "expectations": "Every debit must have a matching credited allocation. No unsigned adjustment slips.",
+      "approvalRate": 85
+    },
+    "original": {
+      "id": "sup-finance",
+      "name": "Silas Oryn",
+      "title": "Chief Auditor of the Treasury",
+      "department": "Oryn Department of Finance // Audit Directorate",
+      "avatar": "SO",
+      "personality": "Exact, meticulous, calm. Believes that an unbalanced ledger of even one credit erodes civic trust.",
+      "expectations": "Every debit must have a matching credited allocation. No unsigned adjustment slips.",
+      "approvalRate": 85
+    }
+  }
+]

@@ -1,0 +1,36 @@
+[
+  {
+    "collection": "seedPeople",
+    "key": "P-101",
+    "origin": "frontend/src/dgaos/data/seed/people.ts:14",
+    "context": "seedPeople",
+    "data": {
+      "id": "P-101",
+      "name": "Ambassador Christian Vance",
+      "aliases": [
+        "Envoy Vance",
+        "Subject Raven-1"
+      ],
+      "role": "Principal Diplomatic Envoy to Central Eurasia",
+      "affiliation": "State Department / Foreign Service",
+      "clearance": "State Secret",
+      "status": "Hospitalized",
+      "threatLevel": "None",
+      "bio": "Collapsed during closed-door bilateral trade summit. Immediate acute neurotoxic collapse requiring ICU ventilation."
+    },
+    "original": {
+      "id": "P-101",
+      "name": "Ambassador Christian Vance",
+      "aliases": [
+        "Envoy Vance",
+        "Subject Raven-1"
+      ],
+      "role": "Principal Diplomatic Envoy to Central Eurasia",
+      "affiliation": "State Department / Foreign Service",
+      "clearance": "State Secret",
+      "status": "Hospitalized",
+      "threatLevel": "None",
+      "bio": "Collapsed during closed-door bilateral trade summit. Immediate acute neurotoxic collapse requiring ICU ventilation."
+    }
+  }
+]

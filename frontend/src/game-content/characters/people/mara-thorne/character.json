@@ -1,0 +1,19 @@
+{
+  "id": "char-mara-thorne",
+  "name": "Mara Thorne",
+  "kind": "person",
+  "aliases": [],
+  "status": "existing",
+  "notes": [],
+  "legacyIds": [],
+  "references": [
+    {
+      "collection": "PEOPLE",
+      "key": "mara",
+      "file": "people/mara-thorne/social.json"
+    }
+  ],
+  "maid": null,
+  "legacyMaids": [],
+  "folder": "mara-thorne"
+}

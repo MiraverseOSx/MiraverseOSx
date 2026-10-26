@@ -1,0 +1,26 @@
+[
+  {
+    "collection": "NPCS",
+    "key": "npc-neryx",
+    "origin": "frontend/src/game-content/characters/worldNpcs.json:29",
+    "context": "NPCS",
+    "data": {
+      "id": "npc-neryx",
+      "name": "Lord Neryx",
+      "title": "Sovereign of the Vernal Estuaries",
+      "role": "Diplomat",
+      "dialogueTone": "Calm, soothing, and observant",
+      "affiliation": "House Neryx",
+      "realm": "Marlowe"
+    },
+    "original": {
+      "id": "npc-neryx",
+      "name": "Lord Neryx",
+      "title": "Sovereign of the Vernal Estuaries",
+      "role": "Diplomat",
+      "dialogueTone": "Calm, soothing, and observant",
+      "affiliation": "House Neryx",
+      "realm": "Marlowe"
+    }
+  }
+]

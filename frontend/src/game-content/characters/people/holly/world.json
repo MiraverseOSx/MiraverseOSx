@@ -1,0 +1,26 @@
+[
+  {
+    "collection": "NPCS",
+    "key": "npc-holly",
+    "origin": "frontend/src/game-content/characters/worldNpcs.json:11",
+    "context": "NPCS",
+    "data": {
+      "id": "npc-holly",
+      "name": "High Warden Holly",
+      "title": "Warden of the Northern Ice",
+      "role": "Warden",
+      "dialogueTone": "Direct, stoic, and watchful",
+      "affiliation": "House Holly",
+      "realm": "Fross"
+    },
+    "original": {
+      "id": "npc-holly",
+      "name": "High Warden Holly",
+      "title": "Warden of the Northern Ice",
+      "role": "Warden",
+      "dialogueTone": "Direct, stoic, and watchful",
+      "affiliation": "House Holly",
+      "realm": "Fross"
+    }
+  }
+]

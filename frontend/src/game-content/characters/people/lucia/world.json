@@ -1,0 +1,26 @@
+[
+  {
+    "collection": "NPCS",
+    "key": "npc-lucia",
+    "origin": "frontend/src/game-content/characters/worldNpcs.json:20",
+    "context": "NPCS",
+    "data": {
+      "id": "npc-lucia",
+      "name": "Chancellor Lucia",
+      "title": "High Speaker of the Sol-Forum",
+      "role": "Councilor",
+      "dialogueTone": "Eloquent, scholarly, and radiant",
+      "affiliation": "House Lucia",
+      "realm": "Lumia"
+    },
+    "original": {
+      "id": "npc-lucia",
+      "name": "Chancellor Lucia",
+      "title": "High Speaker of the Sol-Forum",
+      "role": "Councilor",
+      "dialogueTone": "Eloquent, scholarly, and radiant",
+      "affiliation": "House Lucia",
+      "realm": "Lumia"
+    }
+  }
+]

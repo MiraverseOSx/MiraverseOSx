@@ -1,0 +1,44 @@
+{
+  "id": "char-aelita-hopper",
+  "name": "Aelita Hopper",
+  "kind": "person",
+  "aliases": [
+    "Aelita Schaeffer",
+    "Aelita"
+  ],
+  "status": "existing",
+  "notes": [],
+  "legacyIds": [
+    "char-aelita-schaeffer"
+  ],
+  "references": [
+    {
+      "collection": "PEOPLE",
+      "key": "aelita",
+      "file": "people/aelita-hopper/social.json"
+    },
+    {
+      "collection": "AUREMAIL_DIRECTORY",
+      "key": "dir-aelita",
+      "file": "people/aelita-hopper/mail.json"
+    },
+    {
+      "collection": "personas",
+      "key": "Aelita",
+      "file": "people/aelita-hopper/dialogue.json"
+    },
+    {
+      "collection": "phone-contact",
+      "key": "Aelita",
+      "file": "people/aelita-hopper/phone.json"
+    },
+    {
+      "collection": "story-bible",
+      "key": "Aelita Hopper",
+      "file": "people/aelita-hopper/story.json"
+    }
+  ],
+  "maid": null,
+  "legacyMaids": [],
+  "folder": "aelita-hopper"
+}

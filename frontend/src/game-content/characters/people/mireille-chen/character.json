@@ -1,0 +1,19 @@
+{
+  "id": "char-mireille-chen",
+  "name": "Mireille Chen",
+  "kind": "person",
+  "aliases": [],
+  "status": "existing",
+  "notes": [],
+  "legacyIds": [],
+  "references": [
+    {
+      "collection": "INSTITUTIONAL_REGISTRY",
+      "key": "cw-dga-2",
+      "file": "people/mireille-chen/workplace.json"
+    }
+  ],
+  "maid": null,
+  "legacyMaids": [],
+  "folder": "mireille-chen"
+}

@@ -1,0 +1,1178 @@
+{
+  "oldIdentities": [
+    {
+      "id": "char-maeryn-seraphima",
+      "name": "Queen Maeryn Seraphima"
+    },
+    {
+      "id": "char-holly",
+      "name": "High Warden Holly"
+    },
+    {
+      "id": "char-lucia",
+      "name": "Chancellor Lucia"
+    },
+    {
+      "id": "char-neryx",
+      "name": "Lord Neryx"
+    },
+    {
+      "id": "char-yoko",
+      "name": "Grand Dispatcher Yoko"
+    },
+    {
+      "id": "char-ember",
+      "name": "High Forge-Master Ember"
+    },
+    {
+      "id": "char-keket",
+      "name": "Seer Keket"
+    },
+    {
+      "id": "char-k-vesper",
+      "name": "Senior Archivist K. Vesper"
+    },
+    {
+      "id": "char-robert-mercer",
+      "name": "Dr. Robert Mercer"
+    },
+    {
+      "id": "char-christian-vance",
+      "name": "Ambassador Christian Vance"
+    },
+    {
+      "id": "char-gregory-thorne",
+      "name": "Dr. Gregory Thorne"
+    },
+    {
+      "id": "char-viktor-krell",
+      "name": "Viktor Krell"
+    },
+    {
+      "id": "char-marcus-vance",
+      "name": "Courier Marcus Vance (No Relation)"
+    },
+    {
+      "id": "char-elena-rostova",
+      "name": "Elena Rostova"
+    },
+    {
+      "id": "char-evelyn-cross",
+      "name": "Director Evelyn Cross"
+    },
+    {
+      "id": "char-deputy-chief-miller",
+      "name": "Deputy Chief Miller"
+    },
+    {
+      "id": "char-marcus-chen",
+      "name": "Specialist Marcus Chen"
+    },
+    {
+      "id": "char-miracle-jerome-agent",
+      "name": "Miracle Jerome"
+    },
+    {
+      "id": "char-jeremie-belpois",
+      "name": "Jeremie Belpois"
+    },
+    {
+      "id": "char-aelita-schaeffer",
+      "name": "Aelita Schaeffer"
+    },
+    {
+      "id": "char-elisabeth-delmas",
+      "name": "Elisabeth Delmas"
+    },
+    {
+      "id": "char-odd-della-robbia",
+      "name": "Odd Della Robbia"
+    },
+    {
+      "id": "char-sharon-voss",
+      "name": "Dr. Sharon Voss"
+    },
+    {
+      "id": "char-riven-asterwind",
+      "name": "Riven Asterwind"
+    },
+    {
+      "id": "char-mara-thorne",
+      "name": "Mara Thorne"
+    },
+    {
+      "id": "char-rowan",
+      "name": "Archivist Rowan"
+    },
+    {
+      "id": "char-ronald-sterling",
+      "name": "Director Ronald Sterling"
+    },
+    {
+      "id": "char-vance-lowe",
+      "name": "Vance Lowe"
+    },
+    {
+      "id": "char-mireille-chen",
+      "name": "Mireille Chen"
+    },
+    {
+      "id": "char-derek-brody",
+      "name": "Sergeant Derek Brody"
+    },
+    {
+      "id": "char-aris-thorne",
+      "name": "Dr. Aris Thorne"
+    },
+    {
+      "id": "char-katherine-mercer",
+      "name": "Katherine Mercer"
+    },
+    {
+      "id": "char-soren-lind",
+      "name": "Soren Lind"
+    },
+    {
+      "id": "char-silas-oryn",
+      "name": "Silas Oryn"
+    },
+    {
+      "id": "char-elise-vance",
+      "name": "Elise Vance"
+    },
+    {
+      "id": "char-tobias-gale",
+      "name": "Tobias Gale"
+    },
+    {
+      "id": "char-julian-thorne",
+      "name": "Julian Thorne"
+    },
+    {
+      "id": "char-maren-holt",
+      "name": "Maren Holt"
+    },
+    {
+      "id": "char-kaelen-vance",
+      "name": "Kaelen Vance"
+    },
+    {
+      "id": "char-nadia-cruz",
+      "name": "Nadia Cruz"
+    },
+    {
+      "id": "char-thalia-vane",
+      "name": "Thalia Vane"
+    },
+    {
+      "id": "char-gregory-bell",
+      "name": "Gregory Bell"
+    },
+    {
+      "id": "char-corin-mercer",
+      "name": "Corin Mercer"
+    },
+    {
+      "id": "char-mara-finch",
+      "name": "Mara Finch"
+    },
+    {
+      "id": "char-vivienne-rose",
+      "name": "Vivienne Rose"
+    },
+    {
+      "id": "char-leo-sterling",
+      "name": "Leo Sterling"
+    },
+    {
+      "id": "char-talia-moss",
+      "name": "Talia Moss"
+    },
+    {
+      "id": "char-felix-ward",
+      "name": "Felix Ward"
+    },
+    {
+      "id": "char-cassian-rook",
+      "name": "Dean Cassian Rook"
+    },
+    {
+      "id": "char-elara-vale",
+      "name": "Elara Vale"
+    },
+    {
+      "id": "char-miracle-jerome",
+      "name": "Dr. Miracle Jerome"
+    },
+    {
+      "id": "char-julian-paul-vance",
+      "name": "Dr. Julian Paul Vance"
+    },
+    {
+      "id": "char-kieran-vesper",
+      "name": "Kieran Vesper"
+    },
+    {
+      "id": "char-sora-takahashi",
+      "name": "Sora Takahashi"
+    },
+    {
+      "id": "char-mai",
+      "name": "Mai"
+    },
+    {
+      "id": "char-vaelen",
+      "name": "Vaelen"
+    },
+    {
+      "id": "char-kaelen",
+      "name": "Kaelen"
+    },
+    {
+      "id": "char-vael",
+      "name": "Headmistress Vael"
+    },
+    {
+      "id": "char-idris",
+      "name": "Professor Idris"
+    },
+    {
+      "id": "char-rhen",
+      "name": "Coach Rhen"
+    },
+    {
+      "id": "char-lyse",
+      "name": "Instructor Lyse"
+    },
+    {
+      "id": "char-oryn",
+      "name": "Professor Oryn"
+    },
+    {
+      "id": "char-aelita-hopper",
+      "name": "Aelita Hopper"
+    },
+    {
+      "id": "char-odd-della-robia",
+      "name": "Odd Della Robia"
+    },
+    {
+      "id": "char-yumi-ishiyuma",
+      "name": "Yumi Ishiyuma"
+    },
+    {
+      "id": "char-ulrich-stern",
+      "name": "Ulrich Stern"
+    },
+    {
+      "id": "char-sissi-delmas",
+      "name": "Sissi Delmas"
+    },
+    {
+      "id": "char-franz-hopper",
+      "name": "Franz Hopper"
+    },
+    {
+      "id": "char-echo-neket",
+      "name": "Echo Neket"
+    },
+    {
+      "id": "char-solis-agni",
+      "name": "Solis Agni"
+    },
+    {
+      "id": "char-riven-kalbera",
+      "name": "Riven Kalbera"
+    },
+    {
+      "id": "char-lyric-enya",
+      "name": "Lyric Enya"
+    },
+    {
+      "id": "char-nerya",
+      "name": "Nerya"
+    },
+    {
+      "id": "char-null-cantor",
+      "name": "Null Cantor"
+    },
+    {
+      "id": "char-elena-rostova-crash",
+      "name": "Elena Rostova"
+    },
+    {
+      "id": "char-marcus-vance-technician",
+      "name": "Marcus Vance"
+    },
+    {
+      "id": "char-dominic-sterling",
+      "name": "Dominic Sterling"
+    },
+    {
+      "id": "char-unidentified-driver-p404",
+      "name": "Driver of Navy Fleet SUV (Unidentified)"
+    },
+    {
+      "id": "char-travis-miller",
+      "name": "Trooper Travis Miller"
+    },
+    {
+      "id": "char-tyler-ross",
+      "name": "Officer Tyler Ross"
+    },
+    {
+      "id": "char-unidentified-patient-pat95881",
+      "name": "Jane Doe (Unidentified Subject)"
+    },
+    {
+      "id": "char-kaelen-voss",
+      "name": "Kaelen Voss"
+    },
+    {
+      "id": "char-s-mercer",
+      "name": "Student S. Mercer (Vertex House)"
+    }
+  ],
+  "records": [
+    {
+      "collection": "NPCS",
+      "key": "npc-maeryn",
+      "characterId": "char-maeryn-seraphima",
+      "sha256": "84e0849a7c44cc1a23620856bfa12313f2d28664512466eb1f08ad081952b04a",
+      "originalSource": "frontend/src/game-content/characters/worldNpcs.json:2"
+    },
+    {
+      "collection": "NPCS",
+      "key": "npc-holly",
+      "characterId": "char-holly",
+      "sha256": "b5f924067629db3e8d47132e71e628fcae01faeb9f92b87515e53ac3792ba150",
+      "originalSource": "frontend/src/game-content/characters/worldNpcs.json:11"
+    },
+    {
+      "collection": "NPCS",
+      "key": "npc-lucia",
+      "characterId": "char-lucia",
+      "sha256": "a0b1d83824608c1c4e9387d65456b7842cb2c2178aa7309e8a804a4b132ba9ba",
+      "originalSource": "frontend/src/game-content/characters/worldNpcs.json:20"
+    },
+    {
+      "collection": "NPCS",
+      "key": "npc-neryx",
+      "characterId": "char-neryx",
+      "sha256": "059cce559837be24296a26c86165c3e2465a641fbad601058660c1822071660f",
+      "originalSource": "frontend/src/game-content/characters/worldNpcs.json:29"
+    },
+    {
+      "collection": "NPCS",
+      "key": "npc-yoko",
+      "characterId": "char-yoko",
+      "sha256": "07b9b45d8083f1e8588ede235b89ea62c1369f07a0d72412609cd1966845521b",
+      "originalSource": "frontend/src/game-content/characters/worldNpcs.json:38"
+    },
+    {
+      "collection": "NPCS",
+      "key": "npc-ember",
+      "characterId": "char-ember",
+      "sha256": "53709e51ec278d7e9e18e5cae732d3660b31d8cc0dc74ceae4d058b389d9a305",
+      "originalSource": "frontend/src/game-content/characters/worldNpcs.json:47"
+    },
+    {
+      "collection": "NPCS",
+      "key": "npc-keket",
+      "characterId": "char-keket",
+      "sha256": "d55fe040f697045487efb9defd26c3415455ba547e06849235618cf8c17e492f",
+      "originalSource": "frontend/src/game-content/characters/worldNpcs.json:56"
+    },
+    {
+      "collection": "NPCS",
+      "key": "npc-vesper",
+      "characterId": "char-k-vesper",
+      "sha256": "9738753e54a4a2da878a7b3f544a74c9a2151ef3550108f33aab2e5acc08d9a9",
+      "originalSource": "frontend/src/game-content/characters/worldNpcs.json:65"
+    },
+    {
+      "collection": "NPCS",
+      "key": "npc-mercer",
+      "characterId": "char-robert-mercer",
+      "sha256": "58114e7c510f5e9ef9afa7c9c90df3928637bf77f5debd947a4efeb17bebc9bb",
+      "originalSource": "frontend/src/game-content/characters/worldNpcs.json:74"
+    },
+    {
+      "collection": "seedPeople",
+      "key": "P-101",
+      "characterId": "char-christian-vance",
+      "sha256": "d904ef77319a7c092d1b59d04d00905f9f6032039298ca42a5a4bcde0281abda",
+      "originalSource": "frontend/src/dgaos/data/seed/people.ts:14"
+    },
+    {
+      "collection": "seedPeople",
+      "key": "P-102",
+      "characterId": "char-gregory-thorne",
+      "sha256": "d5ae37ff452f8ab7d5232caae36111fe1b7996a88befcb4d3b4603e69cb5dd1b",
+      "originalSource": "frontend/src/dgaos/data/seed/people.ts:25"
+    },
+    {
+      "collection": "seedPeople",
+      "key": "P-103",
+      "characterId": "char-viktor-krell",
+      "sha256": "178657e477bb30aef469690509610d6ab269f3761ba7ee67d8e257282f7cd4ed",
+      "originalSource": "frontend/src/dgaos/data/seed/people.ts:35"
+    },
+    {
+      "collection": "seedPeople",
+      "key": "P-104",
+      "characterId": "char-marcus-vance",
+      "sha256": "df9825e4c035e71629986d98a2e9ed0ca47b1c7f81ceacea07847e023e339d2a",
+      "originalSource": "frontend/src/dgaos/data/seed/people.ts:45"
+    },
+    {
+      "collection": "seedPeople",
+      "key": "P-105",
+      "characterId": "char-elena-rostova",
+      "sha256": "7944c37a3e86c99e3397ed8a4dc30e0d48b7fd7184f67698beba5b1dca56cb58",
+      "originalSource": "frontend/src/dgaos/data/seed/people.ts:55"
+    },
+    {
+      "collection": "seedNPCs",
+      "key": "NPC-THORNE",
+      "characterId": "char-gregory-thorne",
+      "sha256": "23027f5b9ce19009c86fd66575890ff29c79920f32985f460172811fa5a44edc",
+      "originalSource": "frontend/src/dgaos/data/seed/npcs.ts:4"
+    },
+    {
+      "collection": "seedNPCs",
+      "key": "NPC-CROSS",
+      "characterId": "char-evelyn-cross",
+      "sha256": "cf9372ced6da6141ab8c37f6bedf3d81c8c14c9689dd44535170678037396359",
+      "originalSource": "frontend/src/dgaos/data/seed/npcs.ts:30"
+    },
+    {
+      "collection": "seedNPCs",
+      "key": "NPC-MILLER",
+      "characterId": "char-deputy-chief-miller",
+      "sha256": "5722fd9379267439f3985ed3a71d14b1203e876b4c19112c2d1c0beb4e4b570f",
+      "originalSource": "frontend/src/dgaos/data/seed/npcs.ts:55"
+    },
+    {
+      "collection": "seedNPCs",
+      "key": "NPC-CHEN",
+      "characterId": "char-marcus-chen",
+      "sha256": "b033ccf86c37b9c540ff1929a006139f9b68c986e424a8ec19872ea8c3b79212",
+      "originalSource": "frontend/src/dgaos/data/seed/npcs.ts:79"
+    },
+    {
+      "collection": "seedNPCs",
+      "key": "NPC-KRELL",
+      "characterId": "char-viktor-krell",
+      "sha256": "cb79ddfa2c5ef7a8096ae34e02f4810ef45ab5118659efea020fc3cf7c55a62e",
+      "originalSource": "frontend/src/dgaos/data/seed/npcs.ts:103"
+    },
+    {
+      "collection": "primarySeedAgent",
+      "key": "DGA-SA-8804",
+      "characterId": "char-miracle-jerome-agent",
+      "sha256": "9a8ba4f3bb83c4ba4403d9be2c1e6638ef6c4d7e45b2ce54877197ec771b17c8",
+      "originalSource": "frontend/src/dgaos/data/seed/agent.ts:17"
+    },
+    {
+      "collection": "PEOPLE",
+      "key": "jeremie",
+      "characterId": "char-jeremie-belpois",
+      "sha256": "a6deef2fea2fc656e8317c8048ab4d7a8c9be5a2f89c7f736bc1d762c48bfde5",
+      "originalSource": "frontend/src/game-content/characters/socialProfiles.json:2"
+    },
+    {
+      "collection": "PEOPLE",
+      "key": "aelita",
+      "characterId": "char-aelita-schaeffer",
+      "sha256": "e475fd016e2450823cdfdfe9044015ca3e0db180996a8439b410dc5bc72e0e6b",
+      "originalSource": "frontend/src/game-content/characters/socialProfiles.json:15"
+    },
+    {
+      "collection": "PEOPLE",
+      "key": "sissi",
+      "characterId": "char-elisabeth-delmas",
+      "sha256": "88a894d00873f8fee00c2448431055abecc3e279339c5a2e8272e41802c781db",
+      "originalSource": "frontend/src/game-content/characters/socialProfiles.json:28"
+    },
+    {
+      "collection": "PEOPLE",
+      "key": "odd",
+      "characterId": "char-odd-della-robbia",
+      "sha256": "3a8eaccc2ef47e2aca5fa2d170538ca963db86adf9cd8d0af6a9a2a06987acbc",
+      "originalSource": "frontend/src/game-content/characters/socialProfiles.json:41"
+    },
+    {
+      "collection": "PEOPLE",
+      "key": "voss",
+      "characterId": "char-sharon-voss",
+      "sha256": "5b022cce0a284966b64a042bade0bb7618b30eb59e3e200990ac30b00d62fe8c",
+      "originalSource": "frontend/src/game-content/characters/socialProfiles.json:54"
+    },
+    {
+      "collection": "PEOPLE",
+      "key": "riven",
+      "characterId": "char-riven-asterwind",
+      "sha256": "bb9a3ffeedcfe639c28a8ae9764f7c7cf6eb88c46e40bf876f5f96b4f724ed07",
+      "originalSource": "frontend/src/game-content/characters/socialProfiles.json:67"
+    },
+    {
+      "collection": "PEOPLE",
+      "key": "mara",
+      "characterId": "char-mara-thorne",
+      "sha256": "7ba55649e84205184212af2c84285b33083fc0f3bda6de15744c08cf9a9e1957",
+      "originalSource": "frontend/src/game-content/characters/socialProfiles.json:80"
+    },
+    {
+      "collection": "PEOPLE",
+      "key": "rowan",
+      "characterId": "char-rowan",
+      "sha256": "c81f84f1fa8ad257530ebcd186d4b2b2606fa89ff85e4a8dc0850949b84de641",
+      "originalSource": "frontend/src/game-content/characters/socialProfiles.json:93"
+    },
+    {
+      "collection": "INSTITUTIONAL_REGISTRY",
+      "key": "sup-dga",
+      "characterId": "char-ronald-sterling",
+      "sha256": "4d66e9563d0dcae8713a220f7bb77414d07c0d554b23b4fdd3e5c7dc2d822d30",
+      "originalSource": "frontend/src/apps/worknet/worknetData.ts:97"
+    },
+    {
+      "collection": "INSTITUTIONAL_REGISTRY",
+      "key": "cw-dga-1",
+      "characterId": "char-vance-lowe",
+      "sha256": "6c24324e6c42ed97fb7993bc448543f7577ad4dd77dcb42ef2073ea7d7fa57ff",
+      "originalSource": "frontend/src/apps/worknet/worknetData.ts:108"
+    },
+    {
+      "collection": "INSTITUTIONAL_REGISTRY",
+      "key": "cw-dga-2",
+      "characterId": "char-mireille-chen",
+      "sha256": "dab8d1c682bab9bea26ce15683b06b37602667f5fd4c43dcd2322289788b537c",
+      "originalSource": "frontend/src/apps/worknet/worknetData.ts:123"
+    },
+    {
+      "collection": "INSTITUTIONAL_REGISTRY",
+      "key": "cw-dga-3",
+      "characterId": "char-derek-brody",
+      "sha256": "79996654a8d3123703b57e587a15039599ea660f3e35e58a6a3885c7dba1bab4",
+      "originalSource": "frontend/src/apps/worknet/worknetData.ts:138"
+    },
+    {
+      "collection": "INSTITUTIONAL_REGISTRY",
+      "key": "sup-faithmed",
+      "characterId": "char-aris-thorne",
+      "sha256": "a3ce525cb74d1564c4504df76a9c57d01ff0ae54b055718323e9ce7830ae5b11",
+      "originalSource": "frontend/src/apps/worknet/worknetData.ts:187"
+    },
+    {
+      "collection": "INSTITUTIONAL_REGISTRY",
+      "key": "cw-fm-1",
+      "characterId": "char-katherine-mercer",
+      "sha256": "e750e2021aad628760b1e80c5a4ebe15f6f1c0ec5d908e4c7bfa578ae1999e00",
+      "originalSource": "frontend/src/apps/worknet/worknetData.ts:198"
+    },
+    {
+      "collection": "INSTITUTIONAL_REGISTRY",
+      "key": "cw-fm-2",
+      "characterId": "char-soren-lind",
+      "sha256": "6e7a6c9e46052f5c616ffdc569c4b3cccae7a9b428ce6282ceb28ab785f76d3e",
+      "originalSource": "frontend/src/apps/worknet/worknetData.ts:213"
+    },
+    {
+      "collection": "INSTITUTIONAL_REGISTRY",
+      "key": "sup-finance",
+      "characterId": "char-silas-oryn",
+      "sha256": "1426a06ea6258e30f2c1db26c54d1d4300fada8a96901ebb0d62907b4cfa4191",
+      "originalSource": "frontend/src/apps/worknet/worknetData.ts:261"
+    },
+    {
+      "collection": "INSTITUTIONAL_REGISTRY",
+      "key": "cw-fin-1",
+      "characterId": "char-elise-vance",
+      "sha256": "82217794e7717062b902254ecb9d7dd7e9b9c5c2151b5dfa07f24f6e07dfb2a7",
+      "originalSource": "frontend/src/apps/worknet/worknetData.ts:272"
+    },
+    {
+      "collection": "INSTITUTIONAL_REGISTRY",
+      "key": "cw-fin-2",
+      "characterId": "char-tobias-gale",
+      "sha256": "c73369acbbbfa0ce3abdecb5b1bf7347e5439a2d0cc74837d4d3e5359fc8c524",
+      "originalSource": "frontend/src/apps/worknet/worknetData.ts:287"
+    },
+    {
+      "collection": "INSTITUTIONAL_REGISTRY",
+      "key": "sup-archives",
+      "characterId": "char-julian-thorne",
+      "sha256": "e70ec05bb66ace2d7ed5229dac6ce3c4fd803c0b424266964de8f58bd85e1b62",
+      "originalSource": "frontend/src/apps/worknet/worknetData.ts:334"
+    },
+    {
+      "collection": "INSTITUTIONAL_REGISTRY",
+      "key": "cw-arc-1",
+      "characterId": "char-maren-holt",
+      "sha256": "9f96ee5dc19f37a847b84f544bf2426421285141c98e28a56a31ee56c9c3071f",
+      "originalSource": "frontend/src/apps/worknet/worknetData.ts:345"
+    },
+    {
+      "collection": "INSTITUTIONAL_REGISTRY",
+      "key": "sup-engineer",
+      "characterId": "char-kaelen-vance",
+      "sha256": "b069f4b5eab4b7a35fb6053d3a371f4dd5b10cf66bc0a178a1fa53e5e387cbad",
+      "originalSource": "frontend/src/apps/worknet/worknetData.ts:390"
+    },
+    {
+      "collection": "INSTITUTIONAL_REGISTRY",
+      "key": "cw-eng-1",
+      "characterId": "char-nadia-cruz",
+      "sha256": "83e85ed7eafefffd8e8d06f237b1cf56cfddb889361fe3813cf9fe34511ae73a",
+      "originalSource": "frontend/src/apps/worknet/worknetData.ts:401"
+    },
+    {
+      "collection": "INSTITUTIONAL_REGISTRY",
+      "key": "sup-diplomat",
+      "characterId": "char-thalia-vane",
+      "sha256": "dbf5b36c29e5da1f7c05bc76a5fc4996484682f26c961ad5ec8f2fb8347dc9af",
+      "originalSource": "frontend/src/apps/worknet/worknetData.ts:446"
+    },
+    {
+      "collection": "INSTITUTIONAL_REGISTRY",
+      "key": "cw-dip-1",
+      "characterId": "char-gregory-bell",
+      "sha256": "9e512bc7d780506440c98b7114d3609f7fded64a0db97fa30d059a66b4f35eac",
+      "originalSource": "frontend/src/apps/worknet/worknetData.ts:457"
+    },
+    {
+      "collection": "INSTITUTIONAL_REGISTRY",
+      "key": "sup-warden",
+      "characterId": "char-corin-mercer",
+      "sha256": "58c1cd37e9eaa9005389f831061d9eaf6c9743a8db8e915f4084bdf0a5e73795",
+      "originalSource": "frontend/src/apps/worknet/worknetData.ts:503"
+    },
+    {
+      "collection": "INSTITUTIONAL_REGISTRY",
+      "key": "cw-war-1",
+      "characterId": "char-mara-finch",
+      "sha256": "05589c3074a8577067e637b63f5d581753b0b74864641235c1c277f812b461b1",
+      "originalSource": "frontend/src/apps/worknet/worknetData.ts:514"
+    },
+    {
+      "collection": "INSTITUTIONAL_REGISTRY",
+      "key": "sup-artist",
+      "characterId": "char-vivienne-rose",
+      "sha256": "6524a33c2cf899f8c40cd3d22a24c1ac34181d12864fe1d3f23ba89f4da6e20c",
+      "originalSource": "frontend/src/apps/worknet/worknetData.ts:559"
+    },
+    {
+      "collection": "INSTITUTIONAL_REGISTRY",
+      "key": "cw-art-1",
+      "characterId": "char-leo-sterling",
+      "sha256": "85a1f292d5d182c591dab61261810c8f999bcb4b513749c3da0b96a99fd3ecfa",
+      "originalSource": "frontend/src/apps/worknet/worknetData.ts:570"
+    },
+    {
+      "collection": "INSTITUTIONAL_REGISTRY",
+      "key": "sup-questnotice",
+      "characterId": "char-talia-moss",
+      "sha256": "45c1202a66899f8282edc4afcc36f467443d9c74a275dd0040367051e2ac3d1b",
+      "originalSource": "frontend/src/apps/worknet/worknetData.ts:615"
+    },
+    {
+      "collection": "INSTITUTIONAL_REGISTRY",
+      "key": "cw-qn-1",
+      "characterId": "char-felix-ward",
+      "sha256": "7e79057b24eae1b15b080087c5b27121c23628693553e20595d4b4ea7a5ff656",
+      "originalSource": "frontend/src/apps/worknet/worknetData.ts:626"
+    },
+    {
+      "collection": "AUREMAIL_DIRECTORY",
+      "key": "dir-dean-rook",
+      "characterId": "char-cassian-rook",
+      "sha256": "eb2e5a61e43ef9f161536d88585dba91075355095f7b9bd6c7afc9f0524a65b9",
+      "originalSource": "frontend/src/data/commsData.ts:278"
+    },
+    {
+      "collection": "AUREMAIL_DIRECTORY",
+      "key": "dir-dr-voss",
+      "characterId": "char-sharon-voss",
+      "sha256": "4506194988da9fbc68f7597f75768b0f826136e4849f7627e13f3090dd376da0",
+      "originalSource": "frontend/src/data/commsData.ts:293"
+    },
+    {
+      "collection": "AUREMAIL_DIRECTORY",
+      "key": "dir-aelita",
+      "characterId": "char-aelita-schaeffer",
+      "sha256": "c8a9f3ff930130f6357ceda7246aae846b8b2aa38af584fd889bd8d0010e92cd",
+      "originalSource": "frontend/src/data/commsData.ts:309"
+    },
+    {
+      "collection": "AUREMAIL_DIRECTORY",
+      "key": "dir-jeremie",
+      "characterId": "char-jeremie-belpois",
+      "sha256": "1edcb5f82ab76f87d53c3710d1ca14bf83d67e784043eed23b8dbcd55d163b0a",
+      "originalSource": "frontend/src/data/commsData.ts:325"
+    },
+    {
+      "collection": "AUREMAIL_DIRECTORY",
+      "key": "dir-odd",
+      "characterId": "char-odd-della-robbia",
+      "sha256": "f05230b0f4d0e3a6e5dd5e4387c505b68e5bd199c6a65e609c4b5340e036018e",
+      "originalSource": "frontend/src/data/commsData.ts:341"
+    },
+    {
+      "collection": "AUREMAIL_DIRECTORY",
+      "key": "dir-riven",
+      "characterId": "char-riven-asterwind",
+      "sha256": "7ce94a9e8548e4e8bfc3edad15cbe8f7c46ff8f654eb931a6998819e9e45cf28",
+      "originalSource": "frontend/src/data/commsData.ts:356"
+    },
+    {
+      "collection": "AUREMAIL_DIRECTORY",
+      "key": "dir-elara-vale",
+      "characterId": "char-elara-vale",
+      "sha256": "2dbc1dc7169b49cf0328349875c8af85b639f101e46d1939edc06928f10f4e5e",
+      "originalSource": "frontend/src/data/commsData.ts:373"
+    },
+    {
+      "collection": "AUREMAIL_DIRECTORY",
+      "key": "dir-miracle-jerome",
+      "characterId": "char-miracle-jerome",
+      "sha256": "16086be0d83d9aff56d4029cceaa545579529d536ef9cce423bcf39bed2391a6",
+      "originalSource": "frontend/src/data/commsData.ts:388"
+    },
+    {
+      "collection": "AUREMAIL_DIRECTORY",
+      "key": "dir-julian-vance",
+      "characterId": "char-julian-paul-vance",
+      "sha256": "e91794367b5e228d682eee905fe04a5368633e817ad784730930758a90f18bf3",
+      "originalSource": "frontend/src/data/commsData.ts:403"
+    },
+    {
+      "collection": "defaultInputs",
+      "key": "MAID-OR-00481926",
+      "characterId": "char-elara-vale",
+      "sha256": "0a64d16c40a08d1e124bcb5f14624ae778d38a8c930da88c9c1a841971156ba7",
+      "originalSource": "frontend/src/services/maidIdentityService.ts:1245"
+    },
+    {
+      "collection": "defaultInputs",
+      "key": "MAID-OR-00481927",
+      "characterId": "char-miracle-jerome",
+      "sha256": "116f537c337f6c2d5cba670d604feb6c86cf2062b55aad6c6f596b39429e0d3b",
+      "originalSource": "frontend/src/services/maidIdentityService.ts:1292"
+    },
+    {
+      "collection": "defaultInputs",
+      "key": "MAID-OR-00481928",
+      "characterId": "char-julian-paul-vance",
+      "sha256": "2120547025b8549415210f8d19dde6cc6c47eec35b45e7b93f44ba6a5c572b52",
+      "originalSource": "frontend/src/services/maidIdentityService.ts:1338"
+    },
+    {
+      "collection": "defaultInputs",
+      "key": "MAID-OR-00481929",
+      "characterId": "char-kieran-vesper",
+      "sha256": "225fb41150141d4068673552b88c118afc45295325b412d1ef1c909bef15e05f",
+      "originalSource": "frontend/src/services/maidIdentityService.ts:1385"
+    },
+    {
+      "collection": "defaultInputs",
+      "key": "MAID-OR-00481930",
+      "characterId": "char-sora-takahashi",
+      "sha256": "0eff5acf78031d7d78c6e351eac8741a9247ebf9354e445becb991f4e0e50ee4",
+      "originalSource": "frontend/src/services/maidIdentityService.ts:1431"
+    },
+    {
+      "collection": "defaultInputs",
+      "key": "MAID-OR-00481931",
+      "characterId": "char-elena-rostova",
+      "sha256": "ff84f0a0279a6826f7441f7e5b007b506fd41b0618e09f22459da6e115a6fd8f",
+      "originalSource": "frontend/src/services/maidIdentityService.ts:1477"
+    },
+    {
+      "collection": "personas",
+      "key": "Mai",
+      "characterId": "char-mai",
+      "sha256": "e345822d01ffefa37c6dfe3430dd5f95024eab12f1c72ea74766aab44b6067d6",
+      "originalSource": "frontend/src/gameplay/NPCEngine.ts:33"
+    },
+    {
+      "collection": "personas",
+      "key": "Jeremie",
+      "characterId": "char-jeremie-belpois",
+      "sha256": "92da14e0ca601777b0ead046b4eaf84e7ebb1178d993757592d658c705696eed",
+      "originalSource": "frontend/src/gameplay/NPCEngine.ts:44"
+    },
+    {
+      "collection": "personas",
+      "key": "Aelita",
+      "characterId": "char-aelita-schaeffer",
+      "sha256": "487841b6fbb1350e8455f06c85ca7f8446d60cfbd881ad014946c907984fa298",
+      "originalSource": "frontend/src/gameplay/NPCEngine.ts:55"
+    },
+    {
+      "collection": "personas",
+      "key": "Sissi",
+      "characterId": "char-elisabeth-delmas",
+      "sha256": "3777ac21cc2c0727507b53e61ae8261a929d6ba7d8b5042d431f59db0cfde6bd",
+      "originalSource": "frontend/src/gameplay/NPCEngine.ts:66"
+    },
+    {
+      "collection": "personas",
+      "key": "Vaelen",
+      "characterId": "char-vaelen",
+      "sha256": "59812ac8a9e274d8da8b38be3a47e33d285a25c5e3ae2583e40dc5b3cab9d397",
+      "originalSource": "frontend/src/gameplay/NPCEngine.ts:77"
+    },
+    {
+      "collection": "personas",
+      "key": "Kaelen",
+      "characterId": "char-kaelen",
+      "sha256": "57da0c00e28a8213c8f782d191d9cfd1430eaeaccc3c365c790fbecb747e2e7b",
+      "originalSource": "frontend/src/gameplay/NPCEngine.ts:88"
+    },
+    {
+      "collection": "personas",
+      "key": "Dean Cassian Rook",
+      "characterId": "char-cassian-rook",
+      "sha256": "814779630fe32997c8b2eaf8b2543696f8b5cce0d2b7fa2289547adc384b9e2b",
+      "originalSource": "frontend/src/gameplay/NPCEngine.ts:99"
+    },
+    {
+      "collection": "phone-contact",
+      "key": "Aelita",
+      "characterId": "char-aelita-schaeffer",
+      "sha256": "f40533b95db1bcd5e8fe162b3d6c199f5f78f62225db0020fd2e97da1933f8f0",
+      "originalSource": "frontend/src/data/phoneData.ts:28"
+    },
+    {
+      "collection": "phone-contact",
+      "key": "Jeremie",
+      "characterId": "char-jeremie-belpois",
+      "sha256": "d8d5a0e15753f0933161ce105d27bb0838b6a25bf36e515762501140a83241dd",
+      "originalSource": "frontend/src/data/phoneData.ts:31"
+    },
+    {
+      "collection": "phone-contact",
+      "key": "Dr. Voss",
+      "characterId": "char-sharon-voss",
+      "sha256": "94f3c368acbbb1fdf15eb5fa2aa298add9b9ef797de3f1424ad84596f971694d",
+      "originalSource": "frontend/src/data/phoneData.ts:34"
+    },
+    {
+      "collection": "phone-contact",
+      "key": "Odd",
+      "characterId": "char-odd-della-robbia",
+      "sha256": "eb24d1142544cf47fdf70b15b8d7ac207d23a1e3e536c3b2e88c8dc9241e443c",
+      "originalSource": "frontend/src/data/phoneData.ts:37"
+    },
+    {
+      "collection": "phone-contact",
+      "key": "Yumi",
+      "characterId": "char-yumi-ishiyuma",
+      "sha256": "f8f9c390524fbf51cbdfe4b99b5094091a015ce491841f1b6644fac7a57bcd9f",
+      "originalSource": "frontend/src/data/phoneData.ts:40"
+    },
+    {
+      "collection": "phone-contact",
+      "key": "Ulrich",
+      "characterId": "char-ulrich-stern",
+      "sha256": "c05491153f34c37952d803aaa0f89fd8069a179bb2b28f861b62d2289634e227",
+      "originalSource": "frontend/src/data/phoneData.ts:43"
+    },
+    {
+      "collection": "phone-contact",
+      "key": "Sissi",
+      "characterId": "char-elisabeth-delmas",
+      "sha256": "a0737621e6d093223b0eaec84fe621d07866ab78dab5b9d27efb63574812e433",
+      "originalSource": "frontend/src/data/phoneData.ts:46"
+    },
+    {
+      "collection": "phone-contact",
+      "key": "Nerya",
+      "characterId": "char-nerya",
+      "sha256": "3ed6073899d6cb27e5fa55ceeb72f5bb3befacc040bbb2dbcb1bef1c793dab49",
+      "originalSource": "frontend/src/data/phoneData.ts:49"
+    },
+    {
+      "collection": "phone-contact",
+      "key": "Null Cantor",
+      "characterId": "char-null-cantor",
+      "sha256": "688181fb20ef7641ad905e2188cd0343c257742441b857b718c349cf04ec4318",
+      "originalSource": "frontend/src/data/phoneData.ts:52"
+    },
+    {
+      "collection": "story-bible",
+      "key": "Queen Maeryn Seraphima",
+      "characterId": "char-maeryn-seraphima",
+      "sha256": "73b2400eed66ad218d97427319f26714e36e13638501cbffc228239c6fc90abd",
+      "originalSource": "docs/data/story-bible-characters.json:7"
+    },
+    {
+      "collection": "story-bible",
+      "key": "Headmistress Vael",
+      "characterId": "char-vael",
+      "sha256": "2f922222201b921d2d29637ce1ab4081e6cbb8d4f57e7a6967aaf3fdac6accc6",
+      "originalSource": "docs/data/story-bible-characters.json:14"
+    },
+    {
+      "collection": "story-bible",
+      "key": "Professor Idris",
+      "characterId": "char-idris",
+      "sha256": "7ef93a8f95354d8c00a89e26be8bd0b2bbfc0a11869ec2056c85a20d8577af0d",
+      "originalSource": "docs/data/story-bible-characters.json:21"
+    },
+    {
+      "collection": "story-bible",
+      "key": "Coach Rhen",
+      "characterId": "char-rhen",
+      "sha256": "2482e5f1e60b45f6308184d3386700afde3ddff6836a25d1bfc8d3646c544dd1",
+      "originalSource": "docs/data/story-bible-characters.json:28"
+    },
+    {
+      "collection": "story-bible",
+      "key": "Instructor Lyse",
+      "characterId": "char-lyse",
+      "sha256": "f0a1f16f35a11af0f25c08c362304e21e317211d355e0a850c212723d3a26dbb",
+      "originalSource": "docs/data/story-bible-characters.json:35"
+    },
+    {
+      "collection": "story-bible",
+      "key": "Professor Oryn",
+      "characterId": "char-oryn",
+      "sha256": "36f5a490c7ad2ba02a9811080d1f52bb9b3fc1b277bac854d59a0c08d7d03962",
+      "originalSource": "docs/data/story-bible-characters.json:42"
+    },
+    {
+      "collection": "story-bible",
+      "key": "Aelita Hopper",
+      "characterId": "char-aelita-hopper",
+      "sha256": "3e32b6a17187b527e9459ce41233aee60a545816b912ed2559949bf3f4908988",
+      "originalSource": "docs/data/story-bible-characters.json:49"
+    },
+    {
+      "collection": "story-bible",
+      "key": "Jeremie Belpois",
+      "characterId": "char-jeremie-belpois",
+      "sha256": "00c1f2758b91e8e14e57d770b939a1c582d580bdd10f14dfb1631cbda2556953",
+      "originalSource": "docs/data/story-bible-characters.json:56"
+    },
+    {
+      "collection": "story-bible",
+      "key": "Odd Della Robia",
+      "characterId": "char-odd-della-robia",
+      "sha256": "3a965142db9898c2e2cc34c4da70e93e7c417c4d38ee718d102a563cbe9a35c2",
+      "originalSource": "docs/data/story-bible-characters.json:63"
+    },
+    {
+      "collection": "story-bible",
+      "key": "Yumi Ishiyuma",
+      "characterId": "char-yumi-ishiyuma",
+      "sha256": "5e5c7eec110a3e29eb031cb74f3bdb74e1ebbd241c6463b68ce99c41067ef5b0",
+      "originalSource": "docs/data/story-bible-characters.json:70"
+    },
+    {
+      "collection": "story-bible",
+      "key": "Ulrich Stern",
+      "characterId": "char-ulrich-stern",
+      "sha256": "6915b980aa62f5dc2536987d9b7899dc99d2ae8c38f9fef2c979d0ea8ecda758",
+      "originalSource": "docs/data/story-bible-characters.json:77"
+    },
+    {
+      "collection": "story-bible",
+      "key": "Sissi Delmas",
+      "characterId": "char-sissi-delmas",
+      "sha256": "8c762811a00f78f06a2f161e7ccd9474105ffea517667d2ba2e702f9a40ed008",
+      "originalSource": "docs/data/story-bible-characters.json:84"
+    },
+    {
+      "collection": "story-bible",
+      "key": "Franz Hopper",
+      "characterId": "char-franz-hopper",
+      "sha256": "3f145f6a87b1c0697b6cf8456299b841ca04d7bc2182370681bf7105a7c01bae",
+      "originalSource": "docs/data/story-bible-characters.json:91"
+    },
+    {
+      "collection": "story-bible",
+      "key": "Echo Neket",
+      "characterId": "char-echo-neket",
+      "sha256": "e97f1b63ee51e5fd67b841fd5b74d073776e03b444050c68b7c8b63b940797fe",
+      "originalSource": "docs/data/story-bible-characters.json:98"
+    },
+    {
+      "collection": "story-bible",
+      "key": "Solis Agni",
+      "characterId": "char-solis-agni",
+      "sha256": "0d2a64c853ca7990f65aa409b562b091ed5e4f6bd8056a08f3620d679a6199d5",
+      "originalSource": "docs/data/story-bible-characters.json:105"
+    },
+    {
+      "collection": "story-bible",
+      "key": "Riven Kalbera",
+      "characterId": "char-riven-kalbera",
+      "sha256": "08a45526b6b8dcdd49ae4fb95cdc87a54f264faac7db9d794835e3619c40780a",
+      "originalSource": "docs/data/story-bible-characters.json:112"
+    },
+    {
+      "collection": "story-bible",
+      "key": "Lyric Enya",
+      "characterId": "char-lyric-enya",
+      "sha256": "7255cb3ab9d0d5d3cae6239bd80988aeec5ce395fa4b0bf6c49c58d9619c9db2",
+      "originalSource": "docs/data/story-bible-characters.json:119"
+    },
+    {
+      "collection": "DGA_26_194_STARTING_PAYLOAD",
+      "key": "P-101",
+      "characterId": "char-christian-vance",
+      "sha256": "119c213db1d27d4d3bbe644c31bc5c17346011e221acfa8140448a7190c357c9",
+      "originalSource": "frontend/src/dgaos/data/seed/cases.ts:521"
+    },
+    {
+      "collection": "DGA_26_194_STARTING_PAYLOAD",
+      "key": "P-102",
+      "characterId": "char-gregory-thorne",
+      "sha256": "a379f7edf62f483236e588c047dae34678669a58c5c2ab0ce54d4e85df371cd1",
+      "originalSource": "frontend/src/dgaos/data/seed/cases.ts:529"
+    },
+    {
+      "collection": "DGA_26_194_STARTING_PAYLOAD",
+      "key": "P-103",
+      "characterId": "char-viktor-krell",
+      "sha256": "8133ca105685df3c2dd6b33b80a6faba26c8ea16ec4a5ee07ad241668ad0d8d9",
+      "originalSource": "frontend/src/dgaos/data/seed/cases.ts:537"
+    },
+    {
+      "collection": "INV_26_402_STARTING_PAYLOAD",
+      "key": "P-401",
+      "characterId": "char-elena-rostova-crash",
+      "sha256": "17a8818e2d1982639bbabbe3d8085a9903c41d284e362ccaf36b02b3aa7b30c9",
+      "originalSource": "frontend/src/dgaos/data/seed/cases.ts:735"
+    },
+    {
+      "collection": "INV_26_402_STARTING_PAYLOAD",
+      "key": "P-402",
+      "characterId": "char-marcus-vance-technician",
+      "sha256": "1c9fb3c1b9131b595de0fcb3bdac761798662d8f95c408af9cb5cf347b304dc7",
+      "originalSource": "frontend/src/dgaos/data/seed/cases.ts:743"
+    },
+    {
+      "collection": "INV_26_402_STARTING_PAYLOAD",
+      "key": "P-403",
+      "characterId": "char-dominic-sterling",
+      "sha256": "f3a8fafaf6ce596339619083f40246acb44e6d4c6f5f9cbcc6e149b6a5454d99",
+      "originalSource": "frontend/src/dgaos/data/seed/cases.ts:751"
+    },
+    {
+      "collection": "INV_26_402_STARTING_PAYLOAD",
+      "key": "P-404",
+      "characterId": "char-unidentified-driver-p404",
+      "sha256": "3113721aafc7f121b6114a9e4bfaebc96316e672b3c7eed897dd01e8e2188ff0",
+      "originalSource": "frontend/src/dgaos/data/seed/cases.ts:759"
+    },
+    {
+      "collection": "INV_26_402_STARTING_PAYLOAD",
+      "key": "P-405",
+      "characterId": "char-travis-miller",
+      "sha256": "cab1841b205a787e85fcf40e7464423e2abbfb5e8809d0b4c86f9d98db21c936",
+      "originalSource": "frontend/src/dgaos/data/seed/cases.ts:767"
+    },
+    {
+      "collection": "INITIAL_MEDICAL_CHART",
+      "key": "PAT-88194",
+      "characterId": "char-christian-vance",
+      "sha256": "a343af14c6c54cca3830d2e7a69f342244d31141d6100d28357cf7591a417dec",
+      "originalSource": "frontend/src/dgaos/lib/medical-data.ts:135"
+    },
+    {
+      "collection": "MOTORCYCLE_CRASH_MEDICAL_CHART",
+      "key": "PAT-94102",
+      "characterId": "char-tyler-ross",
+      "sha256": "20152f2d09340c6a395fc20cf9d2f23559b45348eb54196e5a1965f91dee56db",
+      "originalSource": "frontend/src/dgaos/lib/medical-data.ts:443"
+    },
+    {
+      "collection": "OVERDOSE_TOXICOLOGY_MEDICAL_CHART",
+      "key": "PAT-95881",
+      "characterId": "char-unidentified-patient-pat95881",
+      "sha256": "1765c540db04ac5075c761d82534b37fb96d370227ab6eccd9b36f6594277f71",
+      "originalSource": "frontend/src/dgaos/lib/medical-data.ts:706"
+    },
+    {
+      "collection": "FORMAL_INVESTIGATION_CASES",
+      "key": "CASE-FM-401",
+      "characterId": "char-elara-vale",
+      "sha256": "3c30d4a4b2c0457bbf07c91e3e0286b51a3ca42c1e2d95ac40b158a35184c9e4",
+      "originalSource": "frontend/src/gameplay/WorldEventEngine.ts:71"
+    },
+    {
+      "collection": "FORMAL_INVESTIGATION_CASES",
+      "key": "CASE-DGA-402",
+      "characterId": "char-kaelen-voss",
+      "sha256": "77e189f921e7fb84a02ccda21806f24aae8a07781144f880b64f4e17c97968be",
+      "originalSource": "frontend/src/gameplay/WorldEventEngine.ts:109"
+    },
+    {
+      "collection": "PATIENT_CARE_ASSIGNMENTS",
+      "key": "pc-mercer",
+      "characterId": "char-s-mercer",
+      "sha256": "e0e96e068768855c710ae6d7ebe8c99fbdc04d423dd32ac7531893d4935ffc75",
+      "originalSource": "frontend/src/gameplay/WorldEventEngine.ts:323"
+    },
+    {
+      "collection": "PATIENT_CARE_ASSIGNMENTS",
+      "key": "pc-vale",
+      "characterId": "char-elara-vale",
+      "sha256": "41d2a5262628945fd962fcf8f7378f1e20042ff0207ea0ccafe1e5fc4fb36034",
+      "originalSource": "frontend/src/gameplay/WorldEventEngine.ts:344"
+    },
+    {
+      "collection": "seedRelationships",
+      "key": "REL-001",
+      "characterId": "char-miracle-jerome-agent",
+      "sha256": "a8614fa759b2be887f304c3d0bed759dde12264dfd8af86f6d0c49363cfed557",
+      "originalSource": "frontend/src/dgaos/data/seed/relationships.ts:22"
+    },
+    {
+      "collection": "seedRelationships",
+      "key": "REL-002",
+      "characterId": "char-christian-vance",
+      "sha256": "27c4660f501cb5e1622ca1411307f12bf57bcf2df2860c63b7c8c4d469b5d731",
+      "originalSource": "frontend/src/dgaos/data/seed/relationships.ts:31"
+    },
+    {
+      "collection": "seedRelationships",
+      "key": "REL-003",
+      "characterId": "char-gregory-thorne",
+      "sha256": "450a26f935ca72512fd5cc95b7adcf35acf8abf75cde612399ed1452b3ea32e4",
+      "originalSource": "frontend/src/dgaos/data/seed/relationships.ts:40"
+    },
+    {
+      "collection": "seedRelationships",
+      "key": "REL-004",
+      "characterId": "char-viktor-krell",
+      "sha256": "b9ad4a74fcc6e556b54bb61f08d0c77c6e457491e4d7fd71c7e513382bd173bd",
+      "originalSource": "frontend/src/dgaos/data/seed/relationships.ts:49"
+    },
+    {
+      "collection": "seedRelationships",
+      "key": "REL-005",
+      "characterId": "char-marcus-vance",
+      "sha256": "e93bd8b1ba76685a513b392cae6b85488264d382ea42c7787e51119cf64d62a6",
+      "originalSource": "frontend/src/dgaos/data/seed/relationships.ts:58"
+    },
+    {
+      "collection": "seedRelationships",
+      "key": "REL-006",
+      "characterId": "char-elena-rostova",
+      "sha256": "5afad34dab688a941322f6a490a4a1e941cfc8d523611927ec56030d2ef27f9a",
+      "originalSource": "frontend/src/dgaos/data/seed/relationships.ts:67"
+    },
+    {
+      "collection": "seedRelationships",
+      "key": "REL-007",
+      "characterId": "char-miracle-jerome-agent",
+      "sha256": "49796bced81da706ee42d686806e8e32f8881563433a5fbfeb014f5cd6d44d60",
+      "originalSource": "frontend/src/dgaos/data/seed/relationships.ts:76"
+    }
+  ]
+}

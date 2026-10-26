@@ -1,0 +1,24 @@
+[
+  {
+    "collection": "phone-contact",
+    "key": "Sissi",
+    "origin": "frontend/src/data/phoneData.ts:46",
+    "context": "phone-contact",
+    "data": [
+      {
+        "id": 7,
+        "sender": "Sissi",
+        "text": "House Vector dusk briefing at 20:00. Don’t be late.",
+        "time": "09:02"
+      }
+    ],
+    "original": [
+      {
+        "id": 7,
+        "sender": "Sissi",
+        "text": "House Vector dusk briefing at 20:00. Don’t be late.",
+        "time": "09:02"
+      }
+    ]
+  }
+]

@@ -1,0 +1,19 @@
+{
+  "id": "char-deputy-chief-miller",
+  "name": "Deputy Chief Miller",
+  "kind": "person",
+  "aliases": [],
+  "status": "existing",
+  "notes": [],
+  "legacyIds": [],
+  "references": [
+    {
+      "collection": "seedNPCs",
+      "key": "NPC-MILLER",
+      "file": "people/deputy-chief-miller/agency.json"
+    }
+  ],
+  "maid": null,
+  "legacyMaids": [],
+  "folder": "deputy-chief-miller"
+}

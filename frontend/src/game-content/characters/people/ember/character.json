@@ -1,0 +1,19 @@
+{
+  "id": "char-ember",
+  "name": "High Forge-Master Ember",
+  "kind": "person",
+  "aliases": [],
+  "status": "existing",
+  "notes": [],
+  "legacyIds": [],
+  "references": [
+    {
+      "collection": "NPCS",
+      "key": "npc-ember",
+      "file": "people/ember/world.json"
+    }
+  ],
+  "maid": null,
+  "legacyMaids": [],
+  "folder": "ember"
+}

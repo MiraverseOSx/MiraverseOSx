@@ -1,0 +1,816 @@
+[
+  {
+    "collection": "DGA_26_194_STARTING_PAYLOAD",
+    "key": "P-101",
+    "origin": "frontend/src/dgaos/data/seed/cases.ts:521",
+    "context": "DGA_26_194_STARTING_PAYLOAD",
+    "data": {
+      "personId": "P-101",
+      "name": "Ambassador Christian Vance",
+      "role": "Victim / Diplomatic Envoy",
+      "affiliation": "State Department",
+      "threatLevel": "None",
+      "status": "Hospitalized (Comatose)"
+    },
+    "original": {
+      "personId": "P-101",
+      "name": "Ambassador Christian Vance",
+      "role": "Victim / Diplomatic Envoy",
+      "affiliation": "State Department",
+      "threatLevel": "None",
+      "status": "Hospitalized (Comatose)"
+    }
+  },
+  {
+    "collection": "INITIAL_MEDICAL_CHART",
+    "key": "PAT-88194",
+    "origin": "frontend/src/dgaos/lib/medical-data.ts:135",
+    "context": "INITIAL_MEDICAL_CHART",
+    "data": {
+      "caseId": "MED-2026-0188",
+      "patientId": "PAT-88194",
+      "mrn": "MRN-90214-SJM",
+      "patientName": "Ambassador Christian Vance",
+      "age": 58,
+      "gender": "Male",
+      "bloodType": "A Positive",
+      "roomBay": "Trauma ICU - Isolation Bay 3",
+      "attendingPhysician": "Dr. Emily Mercer, MD, FACEP (Critical Care / Pathology)",
+      "admitTime": "2026-09-29T05:12:00Z",
+      "codeStatus": "Full Code",
+      "clinicalStatus": "Critical ICU",
+      "allergies": [
+        "Penicillin (Severe Anaphylaxis)",
+        "Sulfa Drugs (Rash)"
+      ],
+      "symptoms": [
+        "Acute sudden diaphoresis and profuse salivation",
+        "Severe bilateral miosis (pinpoint pupils, 1mm fixed)",
+        "Refractory bronchoconstriction with copious frothy pulmonary secretions",
+        "Fasciculations in facial and intercostal musculature",
+        "Profound bradycardia alternating with ventricular ectopy",
+        "Coma / Unresponsive (GCS 4: E1 V1 M2)"
+      ],
+      "historyOfPresentIllness": "Patient is a 58-year-old male ambassador who collapsed without warning at approximately 04:35 UTC during closed-door trade discussions at Embassy Row Suite 400. Fellow delegates reported acute nausea, sudden speech slurring, and rapid progression to respiratory arrest within 8 minutes of drinking from a personalized carafe. EMS arrived on scene at 04:47 UTC finding profound miosis, cyanosis, and severe bradycardia (HR 32). Field intubation was performed with difficult bag-mask compliance due to bronchorrhea. Transferred emergently to St. Jude Metro Hospital Trauma ICU.",
+      "vitalsHistory": [
+        {
+          "heartRate": 52,
+          "bloodPressureSystolic": 84,
+          "bloodPressureDiastolic": 48,
+          "oxygenSaturation": 89,
+          "respiratoryRate": 14,
+          "temperatureCelsius": 35.8,
+          "glasgowComaScale": 4,
+          "pupils": "1mm bilateral non-reactive (Pinpoint)",
+          "cardiacRhythm": "Sinus Bradycardia with frequent PVCs",
+          "timestamp": "05:15 UTC"
+        },
+        {
+          "heartRate": 46,
+          "bloodPressureSystolic": 78,
+          "bloodPressureDiastolic": 42,
+          "oxygenSaturation": 86,
+          "respiratoryRate": 16,
+          "temperatureCelsius": 35.6,
+          "glasgowComaScale": 3,
+          "pupils": "1mm fixed",
+          "cardiacRhythm": "Severe Bradycardia / J-point elevation",
+          "timestamp": "05:45 UTC"
+        },
+        {
+          "heartRate": 40,
+          "bloodPressureSystolic": 72,
+          "bloodPressureDiastolic": 38,
+          "oxygenSaturation": 82,
+          "respiratoryRate": 18,
+          "temperatureCelsius": 35.4,
+          "glasgowComaScale": 3,
+          "pupils": "1mm fixed",
+          "cardiacRhythm": "Idioventricular Rhythm",
+          "timestamp": "06:10 UTC"
+        }
+      ],
+      "labPanels": [
+        {
+          "id": "LAB-TOX-01",
+          "category": "Toxicology & Enzyme Kinetics",
+          "orderTime": "05:20 UTC",
+          "resultTime": "05:58 UTC",
+          "specimenType": "Whole Blood / Heparinized Plasma",
+          "technician": "K. Kowalski, MT(ASCP)",
+          "items": [
+            {
+              "id": "ITEM-ACHE",
+              "name": "RBC Acetylcholinesterase",
+              "value": "420",
+              "referenceRange": "5,900 - 12,200",
+              "unit": "U/L",
+              "status": "critical",
+              "notes": "93% depression from normal baseline. Extreme organophosphate or carbamate toxicity."
+            },
+            {
+              "id": "ITEM-BCHE",
+              "name": "Plasma Butyrylcholinesterase (Pseudocholinesterase)",
+              "value": "310",
+              "referenceRange": "4,000 - 11,000",
+              "unit": "U/L",
+              "status": "critical",
+              "notes": "Near total inhibition of plasma cholinesterase reserve."
+            },
+            {
+              "id": "ITEM-G-SERIES",
+              "name": "Commercial G-Series Screen (GB/GD/GA)",
+              "value": "NEGATIVE",
+              "referenceRange": "Negative",
+              "unit": "qualitative",
+              "status": "normal",
+              "notes": "Standard military G-agents absent. Indicates custom synthetic isomer."
+            },
+            {
+              "id": "ITEM-ORGANOPHOSPHATE",
+              "name": "Methylphosphonofluoridate Synthetic Derivative",
+              "value": "DETECTED (High Peak)",
+              "referenceRange": "Not Detected",
+              "unit": "ng/mL",
+              "status": "critical",
+              "notes": "Structural match to classified fluorophosphate precursor synthesized at industrial harbor lab."
+            }
+          ]
+        },
+        {
+          "id": "LAB-ABG-01",
+          "category": "Arterial Blood Gas (ABG)",
+          "orderTime": "05:25 UTC",
+          "resultTime": "05:35 UTC",
+          "specimenType": "Radial Arterial Blood",
+          "technician": "Respiratory Care Unit",
+          "items": [
+            {
+              "id": "ABG-PH",
+              "name": "Arterial pH",
+              "value": "7.12",
+              "referenceRange": "7.35 - 7.45",
+              "unit": "",
+              "status": "critical"
+            },
+            {
+              "id": "ABG-PCO2",
+              "name": "pCO2",
+              "value": "64.8",
+              "referenceRange": "35 - 45",
+              "unit": "mmHg",
+              "status": "critical"
+            },
+            {
+              "id": "ABG-PO2",
+              "name": "pO2",
+              "value": "54.0",
+              "referenceRange": "80 - 100",
+              "unit": "mmHg",
+              "status": "critical"
+            },
+            {
+              "id": "ABG-HCO3",
+              "name": "Bicarbonate (HCO3-)",
+              "value": "18.2",
+              "referenceRange": "22 - 26",
+              "unit": "mEq/L",
+              "status": "abnormal"
+            },
+            {
+              "id": "ABG-LACTATE",
+              "name": "Serum L-Lactate",
+              "value": "5.8",
+              "referenceRange": "0.5 - 2.0",
+              "unit": "mmol/L",
+              "status": "critical"
+            }
+          ]
+        },
+        {
+          "id": "LAB-CBC-01",
+          "category": "Complete Blood Count (CBC)",
+          "orderTime": "05:15 UTC",
+          "resultTime": "05:32 UTC",
+          "specimenType": "Whole Blood EDTA",
+          "technician": "Central Hematology",
+          "items": [
+            {
+              "id": "CBC-WBC",
+              "name": "White Blood Cell Count",
+              "value": "14.8",
+              "referenceRange": "4.5 - 11.0",
+              "unit": "10^3/uL",
+              "status": "abnormal"
+            },
+            {
+              "id": "CBC-HGB",
+              "name": "Hemoglobin",
+              "value": "13.9",
+              "referenceRange": "13.5 - 17.5",
+              "unit": "g/dL",
+              "status": "normal"
+            },
+            {
+              "id": "CBC-PLT",
+              "name": "Platelet Count",
+              "value": "242",
+              "referenceRange": "150 - 450",
+              "unit": "10^3/uL",
+              "status": "normal"
+            }
+          ]
+        }
+      ],
+      "imaging": [
+        {
+          "id": "IMG-CT-01",
+          "modality": "CT Trauma Pan-Scan",
+          "bodyRegion": "Head, Neck, Chest, Abdomen, Pelvis",
+          "timestamp": "05:38 UTC",
+          "radiologist": "Dr. Harold Sterling, MD (Neuroradiology)",
+          "impression": "1. Bilateral diffuse pulmonary alveolar infiltrates consistent with severe neurogenic / cardiogenic pulmonary edema and massive bronchorrhea. 2. No acute intracranial hemorrhage or territorial cerebral infarction. 3. Hypoperfusion complex with flattened inferior vena cava consistent with distributive / cardiogenic shock.",
+          "findings": [
+            "Chest: Ground-glass opacities throughout bilateral lung parenchyma, bronchial wall thickening, and dense bronchial secretions.",
+            "Abdomen: Intestinal hyperperistalsis patterns and prominent fluid accumulation in small bowel loops.",
+            "Brain: Gray-white matter differentiation preserved, ventricles symmetrical, no midline shift."
+          ],
+          "keyMarkers": [
+            {
+              "label": "Pulmonary Edema",
+              "x": 48,
+              "y": 38,
+              "description": "Dense bilateral alveolar infiltrates secondary to hypersecretion."
+            },
+            {
+              "label": "Secretions",
+              "x": 52,
+              "y": 44,
+              "description": "Copious mucous plug in right mainstem bronchus."
+            }
+          ],
+          "status": "Final Signed"
+        },
+        {
+          "id": "IMG-FAST-01",
+          "modality": "FAST Trauma Ultrasound",
+          "bodyRegion": "Subxiphoid, RUQ, LUQ, Suprapubic",
+          "timestamp": "05:18 UTC",
+          "radiologist": "Dr. Emily Mercer, MD",
+          "impression": "Negative for hemoperitoneum or pericardial tamponade. Severely depressed left ventricular ejection fraction estimated at <20%.",
+          "findings": [
+            "Pericardium: Trace pericardial fluid without diastolic collapse.",
+            "Morison Pouch: No free fluid visualized in hepatorenal space."
+          ],
+          "keyMarkers": [
+            {
+              "label": "Depressed LVEF",
+              "x": 50,
+              "y": 50,
+              "description": "Marked global ventricular hypokinesis."
+            }
+          ],
+          "status": "Final Signed"
+        }
+      ],
+      "medications": [
+        {
+          "id": "MED-01",
+          "drug": "Atropine Sulfate",
+          "dose": "4 mg IV push every 5 minutes",
+          "route": "Intravenous",
+          "frequency": "STAT Continuous Titration",
+          "indication": "Severe cholinergic crisis / Bronchorrhea & Bradycardia",
+          "startedAt": "05:15 UTC",
+          "status": "Active Infusion"
+        },
+        {
+          "id": "MED-02",
+          "drug": "Pralidoxime Chloride (2-PAM)",
+          "dose": "2 g IV loading dose over 30 mins",
+          "route": "Intravenous Infusion",
+          "frequency": "Continuous 500mg/hr",
+          "indication": "Cholinesterase reactivation (Ineffective due to rapid aging)",
+          "startedAt": "05:22 UTC",
+          "status": "Active Infusion"
+        },
+        {
+          "id": "MED-03",
+          "drug": "Norepinephrine (Levophed)",
+          "dose": "16 mcg/min",
+          "route": "Central Venous Catheter",
+          "frequency": "Titrated to MAP > 65",
+          "indication": "Distributive & cardiogenic shock",
+          "startedAt": "05:30 UTC",
+          "status": "Active Infusion"
+        }
+      ],
+      "progressNotes": [
+        {
+          "id": "NOTE-01",
+          "author": "Dr. Emily Mercer, MD, FACEP",
+          "role": "Attending Physician - Trauma ICU",
+          "timestamp": "06:05 UTC",
+          "title": "Attending ICU Critical Care Evaluation",
+          "soap": {
+            "subjective": "Emergency medical consultation requested for sudden diplomatic collapse at Embassy Row.",
+            "objective": "Intubated, mechanically ventilated. FiO2 100%, PEEP 12 cmH2O. Suctioning copious watery secretions continuously. HR 44 bpm despite 12mg total Atropine. BP 80/42 mmHg on Levophed. Acetylcholinesterase 420 U/L.",
+            "assessment": "Lethal organophosphorus nerve agent poisoning with rapid covalent catalytic aging. Minimal response to 2-PAM. Multiorgan failure imminent.",
+            "plan": "1. Continue aggressive atropinization to clear pulmonary secretions. 2. Preserve whole blood, serum, and gastric aspirate for legal chain of custody. 3. Notify Department of Global Affairs (DGA) and Federal Medical Examiner."
+          }
+        }
+      ],
+      "emsReport": {
+        "medicUnit": "Metro Medic-14 (Advanced Life Support)",
+        "dispatchTime": "04:38 UTC",
+        "onSceneTime": "04:47 UTC",
+        "hospitalArrivalTime": "05:12 UTC",
+        "initialGcs": 4,
+        "initialVitals": {
+          "hr": 32,
+          "bp": "70/40",
+          "spo2": 74
+        },
+        "fieldNarrative": "Dispatched to Embassy Row Suite 400 for unresponsive male with seizure-like activity. On arrival found Ambassador Christian Vance supine on floor, in severe respiratory distress, cyanotic, covered in profuse perspiration and foam around lips. Pupils 1mm pinpoints. Rapid sequence intubation performed with 7.5 ETT. Atropine 2mg IV administered in transit with minor pulse rise to 48. Transferred directly to Trauma Bay 3.",
+        "fieldInterventions": [
+          "Endotracheal Intubation (Grade 1 view)",
+          "Bag-Valve-Mask Ventilation with PEEP valve",
+          "Intravenous 18G Cannulation (Right Antecubital)",
+          "Atropine Sulfate 2mg IV push"
+        ],
+        "transportDestination": "St. Jude Metropolitan Hospital Trauma Center"
+      },
+      "differentialDiagnosis": [
+        {
+          "id": "DIFF-01",
+          "condition": "Synthetic Organophosphorus / Fluorophosphate Poisoning",
+          "probability": 92,
+          "supportingFindings": [
+            "Severe pinpoint miosis (1mm fixed)",
+            "RBC Acetylcholinesterase depressed by 93% (420 U/L)",
+            "Extreme bronchorrhea and bradycardia refractory to standard atropine",
+            "Sudden onset within minutes of ingesting embassy carafe liquid"
+          ],
+          "refutingFindings": [
+            "Standard military G-agent screen negative (indicates novel clandestine variant)"
+          ],
+          "status": "Leading Suspect"
+        },
+        {
+          "id": "DIFF-02",
+          "condition": "Synthetic Carbamate Neurotoxin",
+          "probability": 34,
+          "supportingFindings": [
+            "Cholinergic crisis symptom complex",
+            "Rapid neuromuscular collapse"
+          ],
+          "refutingFindings": [
+            "Carbamate inhibition typically self-reverses spontaneously; Vance shows severe irreversible aging"
+          ],
+          "status": "Under Consideration"
+        },
+        {
+          "id": "DIFF-03",
+          "condition": "Massive Pontine Hemorrhage (Brainstem Stroke)",
+          "probability": 4,
+          "supportingFindings": [
+            "Pinpoint pupils",
+            "Coma with decerebrate posturing"
+          ],
+          "refutingFindings": [
+            "CT Brain scan completely negative for hemorrhage or ischemia",
+            "Enzymatic cholinesterase collapse cannot be explained by stroke"
+          ],
+          "status": "Ruled Out"
+        }
+      ],
+      "treatmentLog": [
+        {
+          "id": "TR-01",
+          "time": "04:52 UTC",
+          "action": "Field Endotracheal Intubation",
+          "operator": "Paramedic Vance (Medic-14)",
+          "response": "Successful placement confirmed with colorimetric CO2."
+        },
+        {
+          "id": "TR-02",
+          "time": "05:15 UTC",
+          "action": "Initial Atropine Bolus 4mg IV",
+          "operator": "Dr. Mercer, MD",
+          "response": "Minimal heart rate improvement (38 -> 52 bpm), secretions continue."
+        },
+        {
+          "id": "TR-03",
+          "time": "05:22 UTC",
+          "action": "Pralidoxime (2-PAM) 2g IV Infusion Initiated",
+          "operator": "Trauma Team Nurse",
+          "response": "No significant reversal of neuromuscular blockade noted."
+        },
+        {
+          "id": "TR-04",
+          "time": "05:40 UTC",
+          "action": "Central Venous Catheter Placement (Right Internal Jugular)",
+          "operator": "Dr. Mercer, MD",
+          "response": "Levophed infusion titrated for hypotension."
+        }
+      ],
+      "isEscalatedToInvestigation": false,
+      "linkedInvestigationCaseId": {
+        "$characterUndefined": true
+      }
+    },
+    "original": {
+      "caseId": "MED-2026-0188",
+      "patientId": "PAT-88194",
+      "mrn": "MRN-90214-SJM",
+      "patientName": "Ambassador Christian Vance",
+      "age": 58,
+      "gender": "Male",
+      "bloodType": "A Positive",
+      "roomBay": "Trauma ICU - Isolation Bay 3",
+      "attendingPhysician": "Dr. Emily Mercer, MD, FACEP (Critical Care / Pathology)",
+      "admitTime": "2026-09-29T05:12:00Z",
+      "codeStatus": "Full Code",
+      "clinicalStatus": "Critical ICU",
+      "allergies": [
+        "Penicillin (Severe Anaphylaxis)",
+        "Sulfa Drugs (Rash)"
+      ],
+      "symptoms": [
+        "Acute sudden diaphoresis and profuse salivation",
+        "Severe bilateral miosis (pinpoint pupils, 1mm fixed)",
+        "Refractory bronchoconstriction with copious frothy pulmonary secretions",
+        "Fasciculations in facial and intercostal musculature",
+        "Profound bradycardia alternating with ventricular ectopy",
+        "Coma / Unresponsive (GCS 4: E1 V1 M2)"
+      ],
+      "historyOfPresentIllness": "Patient is a 58-year-old male ambassador who collapsed without warning at approximately 04:35 UTC during closed-door trade discussions at Embassy Row Suite 400. Fellow delegates reported acute nausea, sudden speech slurring, and rapid progression to respiratory arrest within 8 minutes of drinking from a personalized carafe. EMS arrived on scene at 04:47 UTC finding profound miosis, cyanosis, and severe bradycardia (HR 32). Field intubation was performed with difficult bag-mask compliance due to bronchorrhea. Transferred emergently to St. Jude Metro Hospital Trauma ICU.",
+      "vitalsHistory": [
+        {
+          "heartRate": 52,
+          "bloodPressureSystolic": 84,
+          "bloodPressureDiastolic": 48,
+          "oxygenSaturation": 89,
+          "respiratoryRate": 14,
+          "temperatureCelsius": 35.8,
+          "glasgowComaScale": 4,
+          "pupils": "1mm bilateral non-reactive (Pinpoint)",
+          "cardiacRhythm": "Sinus Bradycardia with frequent PVCs",
+          "timestamp": "05:15 UTC"
+        },
+        {
+          "heartRate": 46,
+          "bloodPressureSystolic": 78,
+          "bloodPressureDiastolic": 42,
+          "oxygenSaturation": 86,
+          "respiratoryRate": 16,
+          "temperatureCelsius": 35.6,
+          "glasgowComaScale": 3,
+          "pupils": "1mm fixed",
+          "cardiacRhythm": "Severe Bradycardia / J-point elevation",
+          "timestamp": "05:45 UTC"
+        },
+        {
+          "heartRate": 40,
+          "bloodPressureSystolic": 72,
+          "bloodPressureDiastolic": 38,
+          "oxygenSaturation": 82,
+          "respiratoryRate": 18,
+          "temperatureCelsius": 35.4,
+          "glasgowComaScale": 3,
+          "pupils": "1mm fixed",
+          "cardiacRhythm": "Idioventricular Rhythm",
+          "timestamp": "06:10 UTC"
+        }
+      ],
+      "labPanels": [
+        {
+          "id": "LAB-TOX-01",
+          "category": "Toxicology & Enzyme Kinetics",
+          "orderTime": "05:20 UTC",
+          "resultTime": "05:58 UTC",
+          "specimenType": "Whole Blood / Heparinized Plasma",
+          "technician": "K. Kowalski, MT(ASCP)",
+          "items": [
+            {
+              "id": "ITEM-ACHE",
+              "name": "RBC Acetylcholinesterase",
+              "value": "420",
+              "referenceRange": "5,900 - 12,200",
+              "unit": "U/L",
+              "status": "critical",
+              "notes": "93% depression from normal baseline. Extreme organophosphate or carbamate toxicity."
+            },
+            {
+              "id": "ITEM-BCHE",
+              "name": "Plasma Butyrylcholinesterase (Pseudocholinesterase)",
+              "value": "310",
+              "referenceRange": "4,000 - 11,000",
+              "unit": "U/L",
+              "status": "critical",
+              "notes": "Near total inhibition of plasma cholinesterase reserve."
+            },
+            {
+              "id": "ITEM-G-SERIES",
+              "name": "Commercial G-Series Screen (GB/GD/GA)",
+              "value": "NEGATIVE",
+              "referenceRange": "Negative",
+              "unit": "qualitative",
+              "status": "normal",
+              "notes": "Standard military G-agents absent. Indicates custom synthetic isomer."
+            },
+            {
+              "id": "ITEM-ORGANOPHOSPHATE",
+              "name": "Methylphosphonofluoridate Synthetic Derivative",
+              "value": "DETECTED (High Peak)",
+              "referenceRange": "Not Detected",
+              "unit": "ng/mL",
+              "status": "critical",
+              "notes": "Structural match to classified fluorophosphate precursor synthesized at industrial harbor lab."
+            }
+          ]
+        },
+        {
+          "id": "LAB-ABG-01",
+          "category": "Arterial Blood Gas (ABG)",
+          "orderTime": "05:25 UTC",
+          "resultTime": "05:35 UTC",
+          "specimenType": "Radial Arterial Blood",
+          "technician": "Respiratory Care Unit",
+          "items": [
+            {
+              "id": "ABG-PH",
+              "name": "Arterial pH",
+              "value": "7.12",
+              "referenceRange": "7.35 - 7.45",
+              "unit": "",
+              "status": "critical"
+            },
+            {
+              "id": "ABG-PCO2",
+              "name": "pCO2",
+              "value": "64.8",
+              "referenceRange": "35 - 45",
+              "unit": "mmHg",
+              "status": "critical"
+            },
+            {
+              "id": "ABG-PO2",
+              "name": "pO2",
+              "value": "54.0",
+              "referenceRange": "80 - 100",
+              "unit": "mmHg",
+              "status": "critical"
+            },
+            {
+              "id": "ABG-HCO3",
+              "name": "Bicarbonate (HCO3-)",
+              "value": "18.2",
+              "referenceRange": "22 - 26",
+              "unit": "mEq/L",
+              "status": "abnormal"
+            },
+            {
+              "id": "ABG-LACTATE",
+              "name": "Serum L-Lactate",
+              "value": "5.8",
+              "referenceRange": "0.5 - 2.0",
+              "unit": "mmol/L",
+              "status": "critical"
+            }
+          ]
+        },
+        {
+          "id": "LAB-CBC-01",
+          "category": "Complete Blood Count (CBC)",
+          "orderTime": "05:15 UTC",
+          "resultTime": "05:32 UTC",
+          "specimenType": "Whole Blood EDTA",
+          "technician": "Central Hematology",
+          "items": [
+            {
+              "id": "CBC-WBC",
+              "name": "White Blood Cell Count",
+              "value": "14.8",
+              "referenceRange": "4.5 - 11.0",
+              "unit": "10^3/uL",
+              "status": "abnormal"
+            },
+            {
+              "id": "CBC-HGB",
+              "name": "Hemoglobin",
+              "value": "13.9",
+              "referenceRange": "13.5 - 17.5",
+              "unit": "g/dL",
+              "status": "normal"
+            },
+            {
+              "id": "CBC-PLT",
+              "name": "Platelet Count",
+              "value": "242",
+              "referenceRange": "150 - 450",
+              "unit": "10^3/uL",
+              "status": "normal"
+            }
+          ]
+        }
+      ],
+      "imaging": [
+        {
+          "id": "IMG-CT-01",
+          "modality": "CT Trauma Pan-Scan",
+          "bodyRegion": "Head, Neck, Chest, Abdomen, Pelvis",
+          "timestamp": "05:38 UTC",
+          "radiologist": "Dr. Harold Sterling, MD (Neuroradiology)",
+          "impression": "1. Bilateral diffuse pulmonary alveolar infiltrates consistent with severe neurogenic / cardiogenic pulmonary edema and massive bronchorrhea. 2. No acute intracranial hemorrhage or territorial cerebral infarction. 3. Hypoperfusion complex with flattened inferior vena cava consistent with distributive / cardiogenic shock.",
+          "findings": [
+            "Chest: Ground-glass opacities throughout bilateral lung parenchyma, bronchial wall thickening, and dense bronchial secretions.",
+            "Abdomen: Intestinal hyperperistalsis patterns and prominent fluid accumulation in small bowel loops.",
+            "Brain: Gray-white matter differentiation preserved, ventricles symmetrical, no midline shift."
+          ],
+          "keyMarkers": [
+            {
+              "label": "Pulmonary Edema",
+              "x": 48,
+              "y": 38,
+              "description": "Dense bilateral alveolar infiltrates secondary to hypersecretion."
+            },
+            {
+              "label": "Secretions",
+              "x": 52,
+              "y": 44,
+              "description": "Copious mucous plug in right mainstem bronchus."
+            }
+          ],
+          "status": "Final Signed"
+        },
+        {
+          "id": "IMG-FAST-01",
+          "modality": "FAST Trauma Ultrasound",
+          "bodyRegion": "Subxiphoid, RUQ, LUQ, Suprapubic",
+          "timestamp": "05:18 UTC",
+          "radiologist": "Dr. Emily Mercer, MD",
+          "impression": "Negative for hemoperitoneum or pericardial tamponade. Severely depressed left ventricular ejection fraction estimated at <20%.",
+          "findings": [
+            "Pericardium: Trace pericardial fluid without diastolic collapse.",
+            "Morison Pouch: No free fluid visualized in hepatorenal space."
+          ],
+          "keyMarkers": [
+            {
+              "label": "Depressed LVEF",
+              "x": 50,
+              "y": 50,
+              "description": "Marked global ventricular hypokinesis."
+            }
+          ],
+          "status": "Final Signed"
+        }
+      ],
+      "medications": [
+        {
+          "id": "MED-01",
+          "drug": "Atropine Sulfate",
+          "dose": "4 mg IV push every 5 minutes",
+          "route": "Intravenous",
+          "frequency": "STAT Continuous Titration",
+          "indication": "Severe cholinergic crisis / Bronchorrhea & Bradycardia",
+          "startedAt": "05:15 UTC",
+          "status": "Active Infusion"
+        },
+        {
+          "id": "MED-02",
+          "drug": "Pralidoxime Chloride (2-PAM)",
+          "dose": "2 g IV loading dose over 30 mins",
+          "route": "Intravenous Infusion",
+          "frequency": "Continuous 500mg/hr",
+          "indication": "Cholinesterase reactivation (Ineffective due to rapid aging)",
+          "startedAt": "05:22 UTC",
+          "status": "Active Infusion"
+        },
+        {
+          "id": "MED-03",
+          "drug": "Norepinephrine (Levophed)",
+          "dose": "16 mcg/min",
+          "route": "Central Venous Catheter",
+          "frequency": "Titrated to MAP > 65",
+          "indication": "Distributive & cardiogenic shock",
+          "startedAt": "05:30 UTC",
+          "status": "Active Infusion"
+        }
+      ],
+      "progressNotes": [
+        {
+          "id": "NOTE-01",
+          "author": "Dr. Emily Mercer, MD, FACEP",
+          "role": "Attending Physician - Trauma ICU",
+          "timestamp": "06:05 UTC",
+          "title": "Attending ICU Critical Care Evaluation",
+          "soap": {
+            "subjective": "Emergency medical consultation requested for sudden diplomatic collapse at Embassy Row.",
+            "objective": "Intubated, mechanically ventilated. FiO2 100%, PEEP 12 cmH2O. Suctioning copious watery secretions continuously. HR 44 bpm despite 12mg total Atropine. BP 80/42 mmHg on Levophed. Acetylcholinesterase 420 U/L.",
+            "assessment": "Lethal organophosphorus nerve agent poisoning with rapid covalent catalytic aging. Minimal response to 2-PAM. Multiorgan failure imminent.",
+            "plan": "1. Continue aggressive atropinization to clear pulmonary secretions. 2. Preserve whole blood, serum, and gastric aspirate for legal chain of custody. 3. Notify Department of Global Affairs (DGA) and Federal Medical Examiner."
+          }
+        }
+      ],
+      "emsReport": {
+        "medicUnit": "Metro Medic-14 (Advanced Life Support)",
+        "dispatchTime": "04:38 UTC",
+        "onSceneTime": "04:47 UTC",
+        "hospitalArrivalTime": "05:12 UTC",
+        "initialGcs": 4,
+        "initialVitals": {
+          "hr": 32,
+          "bp": "70/40",
+          "spo2": 74
+        },
+        "fieldNarrative": "Dispatched to Embassy Row Suite 400 for unresponsive male with seizure-like activity. On arrival found Ambassador Christian Vance supine on floor, in severe respiratory distress, cyanotic, covered in profuse perspiration and foam around lips. Pupils 1mm pinpoints. Rapid sequence intubation performed with 7.5 ETT. Atropine 2mg IV administered in transit with minor pulse rise to 48. Transferred directly to Trauma Bay 3.",
+        "fieldInterventions": [
+          "Endotracheal Intubation (Grade 1 view)",
+          "Bag-Valve-Mask Ventilation with PEEP valve",
+          "Intravenous 18G Cannulation (Right Antecubital)",
+          "Atropine Sulfate 2mg IV push"
+        ],
+        "transportDestination": "St. Jude Metropolitan Hospital Trauma Center"
+      },
+      "differentialDiagnosis": [
+        {
+          "id": "DIFF-01",
+          "condition": "Synthetic Organophosphorus / Fluorophosphate Poisoning",
+          "probability": 92,
+          "supportingFindings": [
+            "Severe pinpoint miosis (1mm fixed)",
+            "RBC Acetylcholinesterase depressed by 93% (420 U/L)",
+            "Extreme bronchorrhea and bradycardia refractory to standard atropine",
+            "Sudden onset within minutes of ingesting embassy carafe liquid"
+          ],
+          "refutingFindings": [
+            "Standard military G-agent screen negative (indicates novel clandestine variant)"
+          ],
+          "status": "Leading Suspect"
+        },
+        {
+          "id": "DIFF-02",
+          "condition": "Synthetic Carbamate Neurotoxin",
+          "probability": 34,
+          "supportingFindings": [
+            "Cholinergic crisis symptom complex",
+            "Rapid neuromuscular collapse"
+          ],
+          "refutingFindings": [
+            "Carbamate inhibition typically self-reverses spontaneously; Vance shows severe irreversible aging"
+          ],
+          "status": "Under Consideration"
+        },
+        {
+          "id": "DIFF-03",
+          "condition": "Massive Pontine Hemorrhage (Brainstem Stroke)",
+          "probability": 4,
+          "supportingFindings": [
+            "Pinpoint pupils",
+            "Coma with decerebrate posturing"
+          ],
+          "refutingFindings": [
+            "CT Brain scan completely negative for hemorrhage or ischemia",
+            "Enzymatic cholinesterase collapse cannot be explained by stroke"
+          ],
+          "status": "Ruled Out"
+        }
+      ],
+      "treatmentLog": [
+        {
+          "id": "TR-01",
+          "time": "04:52 UTC",
+          "action": "Field Endotracheal Intubation",
+          "operator": "Paramedic Vance (Medic-14)",
+          "response": "Successful placement confirmed with colorimetric CO2."
+        },
+        {
+          "id": "TR-02",
+          "time": "05:15 UTC",
+          "action": "Initial Atropine Bolus 4mg IV",
+          "operator": "Dr. Mercer, MD",
+          "response": "Minimal heart rate improvement (38 -> 52 bpm), secretions continue."
+        },
+        {
+          "id": "TR-03",
+          "time": "05:22 UTC",
+          "action": "Pralidoxime (2-PAM) 2g IV Infusion Initiated",
+          "operator": "Trauma Team Nurse",
+          "response": "No significant reversal of neuromuscular blockade noted."
+        },
+        {
+          "id": "TR-04",
+          "time": "05:40 UTC",
+          "action": "Central Venous Catheter Placement (Right Internal Jugular)",
+          "operator": "Dr. Mercer, MD",
+          "response": "Levophed infusion titrated for hypotension."
+        }
+      ],
+      "isEscalatedToInvestigation": false,
+      "linkedInvestigationCaseId": {
+        "$characterUndefined": true
+      }
+    }
+  }
+]

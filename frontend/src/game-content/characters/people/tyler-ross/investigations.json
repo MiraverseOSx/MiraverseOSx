@@ -1,0 +1,770 @@
+[
+  {
+    "collection": "MOTORCYCLE_CRASH_MEDICAL_CHART",
+    "key": "PAT-94102",
+    "origin": "frontend/src/dgaos/lib/medical-data.ts:443",
+    "context": "MOTORCYCLE_CRASH_MEDICAL_CHART",
+    "data": {
+      "caseId": "MED-2026-0204",
+      "patientId": "PAT-94102",
+      "mrn": "MRN-77312-TRAUMA",
+      "patientName": "Officer Tyler Ross",
+      "age": 32,
+      "gender": "Male",
+      "bloodType": "O Negative",
+      "roomBay": "Trauma Resuscitation Suite 1",
+      "attendingPhysician": "Dr. Gregory Vance, MD, FACS (Trauma Surgery)",
+      "admitTime": "2026-10-04T02:15:00Z",
+      "codeStatus": "Full Code",
+      "clinicalStatus": "Critical ICU",
+      "allergies": [
+        "Morphine (Hypotension)",
+        "Iodinated Contrast (Mild urticaria)"
+      ],
+      "symptoms": [
+        "Blunt multisystem trauma secondary to high-speed motorcycle impact",
+        "Open right mid-femur fracture with active hemorrhage",
+        "Paradoxical chest wall movement / Flail chest left anterior ribs 4-7",
+        "Massive hemopneumothorax with tracheal deviation",
+        "Unresponsive, Glasgow Coma Scale 6 (E1 V2 M3)",
+        "Ecchymosis over left flank (Grey Turner sign) indicating retroperitoneal bleed"
+      ],
+      "historyOfPresentIllness": "Patient is a 32-year-old male motorcycle operator involved in a high-velocity T-bone collision with an SUV at intersection 4th & Harbor. Ejected approximately 35 feet onto asphalt. Helmet present on scene with significant structural fragmentation. EMS arrived within 6 minutes finding severe shock, cyanosis, and profound tachypnea. Immediate needle thoracostomy performed in left 2nd intercostal space with audible air rush and blood return. Patient packaged with pelvic binder, cervical collar, and right leg traction splint. Rushed code 3 to Level 1 Trauma Center.",
+      "vitalsHistory": [
+        {
+          "heartRate": 142,
+          "bloodPressureSystolic": 78,
+          "bloodPressureDiastolic": 44,
+          "oxygenSaturation": 84,
+          "respiratoryRate": 36,
+          "temperatureCelsius": 34.9,
+          "glasgowComaScale": 6,
+          "pupils": "3mm right, 5mm sluggish left (Anisocoria)",
+          "cardiacRhythm": "Sinus Tachycardia with ST depression",
+          "timestamp": "02:20 UTC"
+        },
+        {
+          "heartRate": 128,
+          "bloodPressureSystolic": 92,
+          "bloodPressureDiastolic": 56,
+          "oxygenSaturation": 94,
+          "respiratoryRate": 22,
+          "temperatureCelsius": 35.2,
+          "glasgowComaScale": 6,
+          "pupils": "3mm / 4mm sluggish",
+          "cardiacRhythm": "Sinus Tachycardia post-intubation",
+          "timestamp": "02:45 UTC"
+        },
+        {
+          "heartRate": 110,
+          "bloodPressureSystolic": 104,
+          "bloodPressureDiastolic": 68,
+          "oxygenSaturation": 98,
+          "respiratoryRate": 18,
+          "temperatureCelsius": 35.8,
+          "glasgowComaScale": 7,
+          "pupils": "3mm bilateral reactive",
+          "cardiacRhythm": "Normal Sinus Rhythm",
+          "timestamp": "03:30 UTC"
+        }
+      ],
+      "labPanels": [
+        {
+          "id": "LAB-TRAUMA-01",
+          "category": "Cardiac & Coagulation",
+          "orderTime": "02:22 UTC",
+          "resultTime": "02:38 UTC",
+          "specimenType": "Citrated Whole Blood (TEG)",
+          "technician": "Trauma STAT Lab",
+          "items": [
+            {
+              "id": "TEG-R",
+              "name": "TEG Reaction Time (R-Time)",
+              "value": "11.8",
+              "referenceRange": "4.0 - 8.0",
+              "unit": "min",
+              "status": "critical",
+              "notes": "Severe coagulopathy of trauma. Delayed clot initiation."
+            },
+            {
+              "id": "TEG-MA",
+              "name": "TEG Maximum Amplitude (MA)",
+              "value": "38",
+              "referenceRange": "52 - 70",
+              "unit": "mm",
+              "status": "critical",
+              "notes": "Platelet functional deficiency and fibrinogen depletion."
+            },
+            {
+              "id": "TEG-LY30",
+              "name": "TEG Clot Lysis at 30 min (LY30)",
+              "value": "18.4",
+              "referenceRange": "0.0 - 7.5",
+              "unit": "%",
+              "status": "critical",
+              "notes": "Hyperfibrinolysis. Immediate TXA indicated."
+            },
+            {
+              "id": "COAG-FIB",
+              "name": "Fibrinogen Level",
+              "value": "110",
+              "referenceRange": "200 - 400",
+              "unit": "mg/dL",
+              "status": "critical",
+              "notes": "Administer cryoprecipitate."
+            }
+          ]
+        },
+        {
+          "id": "LAB-ABG-02",
+          "category": "Arterial Blood Gas (ABG)",
+          "orderTime": "02:25 UTC",
+          "resultTime": "02:32 UTC",
+          "specimenType": "Left Femoral Arterial Blood",
+          "technician": "Respiratory STAT",
+          "items": [
+            {
+              "id": "ABG-PH-2",
+              "name": "Arterial pH",
+              "value": "7.18",
+              "referenceRange": "7.35 - 7.45",
+              "unit": "",
+              "status": "critical",
+              "notes": "Severe metabolic lactic acidosis."
+            },
+            {
+              "id": "ABG-LACTATE-2",
+              "name": "Serum L-Lactate",
+              "value": "8.4",
+              "referenceRange": "0.5 - 2.0",
+              "unit": "mmol/L",
+              "status": "critical",
+              "notes": "Profound hypoperfusion and anaerobic metabolism."
+            },
+            {
+              "id": "ABG-BE",
+              "name": "Base Deficit",
+              "value": "-12.6",
+              "referenceRange": "-2.0 - +2.0",
+              "unit": "mEq/L",
+              "status": "critical",
+              "notes": "Class IV hemorrhagic shock signature."
+            }
+          ]
+        },
+        {
+          "id": "LAB-CBC-02",
+          "category": "Complete Blood Count (CBC)",
+          "orderTime": "02:20 UTC",
+          "resultTime": "02:30 UTC",
+          "specimenType": "EDTA Whole Blood",
+          "technician": "Central Hematology",
+          "items": [
+            {
+              "id": "CBC-HGB-2",
+              "name": "Hemoglobin",
+              "value": "7.2",
+              "referenceRange": "13.5 - 17.5",
+              "unit": "g/dL",
+              "status": "critical",
+              "notes": "Acute rapid blood loss."
+            },
+            {
+              "id": "CBC-HCT",
+              "name": "Hematocrit",
+              "value": "22.1",
+              "referenceRange": "41 - 50",
+              "unit": "%",
+              "status": "critical",
+              "notes": "Massive transfusion protocol active."
+            },
+            {
+              "id": "CBC-PLT-2",
+              "name": "Platelet Count",
+              "value": "84",
+              "referenceRange": "150 - 450",
+              "unit": "10^3/uL",
+              "status": "critical",
+              "notes": "Platelet consumption from traumatic coagulopathy."
+            }
+          ]
+        }
+      ],
+      "imaging": [
+        {
+          "id": "IMG-FAST-02",
+          "modality": "FAST Trauma Ultrasound",
+          "bodyRegion": "Abdomen, Pelvis, Pleural Spaces",
+          "timestamp": "02:22 UTC",
+          "radiologist": "Dr. Gregory Vance, MD (Bedside FAST)",
+          "impression": "Positive FAST: Large free fluid stripe in splenorenal recess and pelvis. Left pneumothorax confirmed by absence of lung sliding.",
+          "findings": [
+            "Splenorenal space: 3.5cm anechoic fluid stripe (Grade IV splenic laceration suspected).",
+            "Left anterior pleura: Barcode sign on M-mode confirms pneumothorax.",
+            "Pelvis: Free fluid pooling in rectovesical pouch."
+          ],
+          "keyMarkers": [
+            {
+              "label": "Splenic Bleed",
+              "x": 42,
+              "y": 35,
+              "description": "Perisplenic hematoma and free intraperitoneal blood."
+            },
+            {
+              "label": "Left Hemothorax",
+              "x": 28,
+              "y": 50,
+              "description": "Hemothorax with collapsed left lung base."
+            }
+          ],
+          "status": "Final Signed"
+        },
+        {
+          "id": "IMG-CT-02",
+          "modality": "CT Trauma Pan-Scan",
+          "bodyRegion": "Head, Spine, Chest, Abdomen, Extremities",
+          "timestamp": "03:10 UTC",
+          "radiologist": "Dr. Sarah Lin, MD (Trauma Radiology)",
+          "impression": "1. Left Grade 4 Splenic rupture with active arterial extravasation (blush). 2. Left rib fractures 3-8 with underlying pulmonary contusion. 3. Subdural hematoma 4mm left temporal convexity without midline shift. 4. Commuted right femur fracture.",
+          "findings": [
+            "Spleen: Multiple parenchymal lacerations extending to splenic hilum with contrast blush.",
+            "Thorax: 32 Fr chest tube in good position on left, hemothorax significantly evacuated.",
+            "Brain: Small acute left temporal subdural hematoma, no herniation."
+          ],
+          "keyMarkers": [
+            {
+              "label": "Active Contrast Blush",
+              "x": 55,
+              "y": 48,
+              "description": "Active splenic arterial pseudoaneurysm / extravasation."
+            },
+            {
+              "label": "Flail Segment",
+              "x": 32,
+              "y": 36,
+              "description": "Displaced left rib fractures with flail segment."
+            }
+          ],
+          "status": "Critical Alert"
+        }
+      ],
+      "medications": [
+        {
+          "id": "MED-TRAUMA-01",
+          "drug": "Tranexamic Acid (TXA)",
+          "dose": "1 g IV bolus over 10 mins",
+          "route": "Intravenous",
+          "frequency": "STAT follow with 1g over 8 hrs",
+          "indication": "Trauma-induced hyperfibrinolysis and hemorrhage control",
+          "startedAt": "02:24 UTC",
+          "status": "Completed Bolus"
+        },
+        {
+          "id": "MED-TRAUMA-02",
+          "drug": "Packed Red Blood Cells (O-Negative)",
+          "dose": "4 Units Rapid Infusion",
+          "route": "Belmont Rapid Infuser 300mL/min",
+          "frequency": "Massive Transfusion Protocol Ratio 1:1:1",
+          "indication": "Hemorrhagic Shock Class IV",
+          "startedAt": "02:26 UTC",
+          "status": "Active Infusion"
+        },
+        {
+          "id": "MED-TRAUMA-03",
+          "drug": "Fresh Frozen Plasma (FFP)",
+          "dose": "4 Units",
+          "route": "Intravenous",
+          "frequency": "With RBC infusion",
+          "indication": "Correction of coagulopathy",
+          "startedAt": "02:35 UTC",
+          "status": "Active Infusion"
+        }
+      ],
+      "progressNotes": [
+        {
+          "id": "NOTE-TRAUMA-01",
+          "author": "Dr. Gregory Vance, MD, FACS",
+          "role": "Trauma Medical Director",
+          "timestamp": "03:20 UTC",
+          "title": "Emergency Trauma Operative Consultation",
+          "soap": {
+            "subjective": "High-speed motorcycle collision victim transported code 3 in refractory hemorrhagic shock.",
+            "objective": "Resuscitated with 4U PRBCs, 4U FFP, 1U Platelets, 1g TXA. Left 32Fr chest tube yielded 750mL dark blood. FAST positive in LUQ and pelvis. CT reveals Grade IV splenic rupture with active arterial contrast extravasation.",
+            "assessment": "Unstable hemorrhagic shock secondary to splenic rupture and multiple blunt trauma. Responding favorably to MTP.",
+            "plan": "1. Transfer immediately to Operating Room 3 for exploratory laparotomy and splenectomy. 2. Post-op ICU admission for ICP intracranial monitoring. 3. Orthopedic external fixation of right femur fracture."
+          }
+        }
+      ],
+      "emsReport": {
+        "medicUnit": "Metro Fire Rescue Medic-7",
+        "dispatchTime": "01:58 UTC",
+        "onSceneTime": "02:04 UTC",
+        "hospitalArrivalTime": "02:15 UTC",
+        "initialGcs": 6,
+        "initialVitals": {
+          "hr": 148,
+          "bp": "74/40",
+          "spo2": 82
+        },
+        "fieldNarrative": "Dispatched to high-speed motorcycle crash. Patient found prone 35 feet from collision site. Airway compromised by vomitus and facial trauma. Suctioned and intubated with video laryngoscopy 8.0 ETT. Left chest decompression performed with ARS needle. Pelvic binder placed.",
+        "fieldInterventions": [
+          "Rapid Sequence Intubation (RSI) with Etomidate/Rocuronium",
+          "Left Needle Chest Decompression (2nd ICS MCL)",
+          "Pelvic Circumferential Compression Device",
+          "Hare Traction Splint (Right Femur)"
+        ],
+        "transportDestination": "St. Jude Level 1 Trauma Center"
+      },
+      "differentialDiagnosis": [
+        {
+          "id": "DIFF-TR-01",
+          "condition": "Splenic Rupture with Hemoperitoneum",
+          "probability": 98,
+          "supportingFindings": [
+            "Positive FAST in splenorenal recess",
+            "CT contrast blush",
+            "Class IV hemorrhagic shock"
+          ],
+          "refutingFindings": [],
+          "status": "Leading Suspect"
+        },
+        {
+          "id": "DIFF-TR-02",
+          "condition": "Tension Hemopneumothorax",
+          "probability": 95,
+          "supportingFindings": [
+            "Flail chest",
+            "Tracheal deviation on arrival",
+            "750mL blood evacuated via chest tube"
+          ],
+          "refutingFindings": [
+            "Tension relieved by tube thoracostomy"
+          ],
+          "status": "Leading Suspect"
+        },
+        {
+          "id": "DIFF-TR-03",
+          "condition": "Acute Traumatic Brain Injury (Epidural / Subdural)",
+          "probability": 70,
+          "supportingFindings": [
+            "GCS 6 on scene",
+            "Anisocoria on presentation",
+            "4mm subdural on CT"
+          ],
+          "refutingFindings": [
+            "No midline shift or uncal herniation present on initial scan"
+          ],
+          "status": "Under Consideration"
+        }
+      ],
+      "treatmentLog": [
+        {
+          "id": "TR-M-01",
+          "time": "02:18 UTC",
+          "action": "Primary ATLS Trauma Survey Initiated",
+          "operator": "Dr. Vance, MD",
+          "response": "Airway secure via field ETT. Breathing compromised, left chest tube indicated."
+        },
+        {
+          "id": "TR-M-02",
+          "time": "02:21 UTC",
+          "action": "Tube Thoracostomy 32Fr Left 5th Intercostal Space",
+          "operator": "Trauma Resident Dr. Lin",
+          "response": "Immediate evacuation of 750mL dark non-clotted blood, chest wall compliance improved."
+        },
+        {
+          "id": "TR-M-03",
+          "time": "02:26 UTC",
+          "action": "Massive Transfusion Protocol (MTP) Cooler 1 Initiated",
+          "operator": "Blood Bank / Trauma Nurse",
+          "response": "MAP rose from 55 to 70 mmHg after 2nd unit PRBC."
+        }
+      ],
+      "isEscalatedToInvestigation": false,
+      "linkedInvestigationCaseId": {
+        "$characterUndefined": true
+      }
+    },
+    "original": {
+      "caseId": "MED-2026-0204",
+      "patientId": "PAT-94102",
+      "mrn": "MRN-77312-TRAUMA",
+      "patientName": "Officer Tyler Ross",
+      "age": 32,
+      "gender": "Male",
+      "bloodType": "O Negative",
+      "roomBay": "Trauma Resuscitation Suite 1",
+      "attendingPhysician": "Dr. Gregory Vance, MD, FACS (Trauma Surgery)",
+      "admitTime": "2026-10-04T02:15:00Z",
+      "codeStatus": "Full Code",
+      "clinicalStatus": "Critical ICU",
+      "allergies": [
+        "Morphine (Hypotension)",
+        "Iodinated Contrast (Mild urticaria)"
+      ],
+      "symptoms": [
+        "Blunt multisystem trauma secondary to high-speed motorcycle impact",
+        "Open right mid-femur fracture with active hemorrhage",
+        "Paradoxical chest wall movement / Flail chest left anterior ribs 4-7",
+        "Massive hemopneumothorax with tracheal deviation",
+        "Unresponsive, Glasgow Coma Scale 6 (E1 V2 M3)",
+        "Ecchymosis over left flank (Grey Turner sign) indicating retroperitoneal bleed"
+      ],
+      "historyOfPresentIllness": "Patient is a 32-year-old male motorcycle operator involved in a high-velocity T-bone collision with an SUV at intersection 4th & Harbor. Ejected approximately 35 feet onto asphalt. Helmet present on scene with significant structural fragmentation. EMS arrived within 6 minutes finding severe shock, cyanosis, and profound tachypnea. Immediate needle thoracostomy performed in left 2nd intercostal space with audible air rush and blood return. Patient packaged with pelvic binder, cervical collar, and right leg traction splint. Rushed code 3 to Level 1 Trauma Center.",
+      "vitalsHistory": [
+        {
+          "heartRate": 142,
+          "bloodPressureSystolic": 78,
+          "bloodPressureDiastolic": 44,
+          "oxygenSaturation": 84,
+          "respiratoryRate": 36,
+          "temperatureCelsius": 34.9,
+          "glasgowComaScale": 6,
+          "pupils": "3mm right, 5mm sluggish left (Anisocoria)",
+          "cardiacRhythm": "Sinus Tachycardia with ST depression",
+          "timestamp": "02:20 UTC"
+        },
+        {
+          "heartRate": 128,
+          "bloodPressureSystolic": 92,
+          "bloodPressureDiastolic": 56,
+          "oxygenSaturation": 94,
+          "respiratoryRate": 22,
+          "temperatureCelsius": 35.2,
+          "glasgowComaScale": 6,
+          "pupils": "3mm / 4mm sluggish",
+          "cardiacRhythm": "Sinus Tachycardia post-intubation",
+          "timestamp": "02:45 UTC"
+        },
+        {
+          "heartRate": 110,
+          "bloodPressureSystolic": 104,
+          "bloodPressureDiastolic": 68,
+          "oxygenSaturation": 98,
+          "respiratoryRate": 18,
+          "temperatureCelsius": 35.8,
+          "glasgowComaScale": 7,
+          "pupils": "3mm bilateral reactive",
+          "cardiacRhythm": "Normal Sinus Rhythm",
+          "timestamp": "03:30 UTC"
+        }
+      ],
+      "labPanels": [
+        {
+          "id": "LAB-TRAUMA-01",
+          "category": "Cardiac & Coagulation",
+          "orderTime": "02:22 UTC",
+          "resultTime": "02:38 UTC",
+          "specimenType": "Citrated Whole Blood (TEG)",
+          "technician": "Trauma STAT Lab",
+          "items": [
+            {
+              "id": "TEG-R",
+              "name": "TEG Reaction Time (R-Time)",
+              "value": "11.8",
+              "referenceRange": "4.0 - 8.0",
+              "unit": "min",
+              "status": "critical",
+              "notes": "Severe coagulopathy of trauma. Delayed clot initiation."
+            },
+            {
+              "id": "TEG-MA",
+              "name": "TEG Maximum Amplitude (MA)",
+              "value": "38",
+              "referenceRange": "52 - 70",
+              "unit": "mm",
+              "status": "critical",
+              "notes": "Platelet functional deficiency and fibrinogen depletion."
+            },
+            {
+              "id": "TEG-LY30",
+              "name": "TEG Clot Lysis at 30 min (LY30)",
+              "value": "18.4",
+              "referenceRange": "0.0 - 7.5",
+              "unit": "%",
+              "status": "critical",
+              "notes": "Hyperfibrinolysis. Immediate TXA indicated."
+            },
+            {
+              "id": "COAG-FIB",
+              "name": "Fibrinogen Level",
+              "value": "110",
+              "referenceRange": "200 - 400",
+              "unit": "mg/dL",
+              "status": "critical",
+              "notes": "Administer cryoprecipitate."
+            }
+          ]
+        },
+        {
+          "id": "LAB-ABG-02",
+          "category": "Arterial Blood Gas (ABG)",
+          "orderTime": "02:25 UTC",
+          "resultTime": "02:32 UTC",
+          "specimenType": "Left Femoral Arterial Blood",
+          "technician": "Respiratory STAT",
+          "items": [
+            {
+              "id": "ABG-PH-2",
+              "name": "Arterial pH",
+              "value": "7.18",
+              "referenceRange": "7.35 - 7.45",
+              "unit": "",
+              "status": "critical",
+              "notes": "Severe metabolic lactic acidosis."
+            },
+            {
+              "id": "ABG-LACTATE-2",
+              "name": "Serum L-Lactate",
+              "value": "8.4",
+              "referenceRange": "0.5 - 2.0",
+              "unit": "mmol/L",
+              "status": "critical",
+              "notes": "Profound hypoperfusion and anaerobic metabolism."
+            },
+            {
+              "id": "ABG-BE",
+              "name": "Base Deficit",
+              "value": "-12.6",
+              "referenceRange": "-2.0 - +2.0",
+              "unit": "mEq/L",
+              "status": "critical",
+              "notes": "Class IV hemorrhagic shock signature."
+            }
+          ]
+        },
+        {
+          "id": "LAB-CBC-02",
+          "category": "Complete Blood Count (CBC)",
+          "orderTime": "02:20 UTC",
+          "resultTime": "02:30 UTC",
+          "specimenType": "EDTA Whole Blood",
+          "technician": "Central Hematology",
+          "items": [
+            {
+              "id": "CBC-HGB-2",
+              "name": "Hemoglobin",
+              "value": "7.2",
+              "referenceRange": "13.5 - 17.5",
+              "unit": "g/dL",
+              "status": "critical",
+              "notes": "Acute rapid blood loss."
+            },
+            {
+              "id": "CBC-HCT",
+              "name": "Hematocrit",
+              "value": "22.1",
+              "referenceRange": "41 - 50",
+              "unit": "%",
+              "status": "critical",
+              "notes": "Massive transfusion protocol active."
+            },
+            {
+              "id": "CBC-PLT-2",
+              "name": "Platelet Count",
+              "value": "84",
+              "referenceRange": "150 - 450",
+              "unit": "10^3/uL",
+              "status": "critical",
+              "notes": "Platelet consumption from traumatic coagulopathy."
+            }
+          ]
+        }
+      ],
+      "imaging": [
+        {
+          "id": "IMG-FAST-02",
+          "modality": "FAST Trauma Ultrasound",
+          "bodyRegion": "Abdomen, Pelvis, Pleural Spaces",
+          "timestamp": "02:22 UTC",
+          "radiologist": "Dr. Gregory Vance, MD (Bedside FAST)",
+          "impression": "Positive FAST: Large free fluid stripe in splenorenal recess and pelvis. Left pneumothorax confirmed by absence of lung sliding.",
+          "findings": [
+            "Splenorenal space: 3.5cm anechoic fluid stripe (Grade IV splenic laceration suspected).",
+            "Left anterior pleura: Barcode sign on M-mode confirms pneumothorax.",
+            "Pelvis: Free fluid pooling in rectovesical pouch."
+          ],
+          "keyMarkers": [
+            {
+              "label": "Splenic Bleed",
+              "x": 42,
+              "y": 35,
+              "description": "Perisplenic hematoma and free intraperitoneal blood."
+            },
+            {
+              "label": "Left Hemothorax",
+              "x": 28,
+              "y": 50,
+              "description": "Hemothorax with collapsed left lung base."
+            }
+          ],
+          "status": "Final Signed"
+        },
+        {
+          "id": "IMG-CT-02",
+          "modality": "CT Trauma Pan-Scan",
+          "bodyRegion": "Head, Spine, Chest, Abdomen, Extremities",
+          "timestamp": "03:10 UTC",
+          "radiologist": "Dr. Sarah Lin, MD (Trauma Radiology)",
+          "impression": "1. Left Grade 4 Splenic rupture with active arterial extravasation (blush). 2. Left rib fractures 3-8 with underlying pulmonary contusion. 3. Subdural hematoma 4mm left temporal convexity without midline shift. 4. Commuted right femur fracture.",
+          "findings": [
+            "Spleen: Multiple parenchymal lacerations extending to splenic hilum with contrast blush.",
+            "Thorax: 32 Fr chest tube in good position on left, hemothorax significantly evacuated.",
+            "Brain: Small acute left temporal subdural hematoma, no herniation."
+          ],
+          "keyMarkers": [
+            {
+              "label": "Active Contrast Blush",
+              "x": 55,
+              "y": 48,
+              "description": "Active splenic arterial pseudoaneurysm / extravasation."
+            },
+            {
+              "label": "Flail Segment",
+              "x": 32,
+              "y": 36,
+              "description": "Displaced left rib fractures with flail segment."
+            }
+          ],
+          "status": "Critical Alert"
+        }
+      ],
+      "medications": [
+        {
+          "id": "MED-TRAUMA-01",
+          "drug": "Tranexamic Acid (TXA)",
+          "dose": "1 g IV bolus over 10 mins",
+          "route": "Intravenous",
+          "frequency": "STAT follow with 1g over 8 hrs",
+          "indication": "Trauma-induced hyperfibrinolysis and hemorrhage control",
+          "startedAt": "02:24 UTC",
+          "status": "Completed Bolus"
+        },
+        {
+          "id": "MED-TRAUMA-02",
+          "drug": "Packed Red Blood Cells (O-Negative)",
+          "dose": "4 Units Rapid Infusion",
+          "route": "Belmont Rapid Infuser 300mL/min",
+          "frequency": "Massive Transfusion Protocol Ratio 1:1:1",
+          "indication": "Hemorrhagic Shock Class IV",
+          "startedAt": "02:26 UTC",
+          "status": "Active Infusion"
+        },
+        {
+          "id": "MED-TRAUMA-03",
+          "drug": "Fresh Frozen Plasma (FFP)",
+          "dose": "4 Units",
+          "route": "Intravenous",
+          "frequency": "With RBC infusion",
+          "indication": "Correction of coagulopathy",
+          "startedAt": "02:35 UTC",
+          "status": "Active Infusion"
+        }
+      ],
+      "progressNotes": [
+        {
+          "id": "NOTE-TRAUMA-01",
+          "author": "Dr. Gregory Vance, MD, FACS",
+          "role": "Trauma Medical Director",
+          "timestamp": "03:20 UTC",
+          "title": "Emergency Trauma Operative Consultation",
+          "soap": {
+            "subjective": "High-speed motorcycle collision victim transported code 3 in refractory hemorrhagic shock.",
+            "objective": "Resuscitated with 4U PRBCs, 4U FFP, 1U Platelets, 1g TXA. Left 32Fr chest tube yielded 750mL dark blood. FAST positive in LUQ and pelvis. CT reveals Grade IV splenic rupture with active arterial contrast extravasation.",
+            "assessment": "Unstable hemorrhagic shock secondary to splenic rupture and multiple blunt trauma. Responding favorably to MTP.",
+            "plan": "1. Transfer immediately to Operating Room 3 for exploratory laparotomy and splenectomy. 2. Post-op ICU admission for ICP intracranial monitoring. 3. Orthopedic external fixation of right femur fracture."
+          }
+        }
+      ],
+      "emsReport": {
+        "medicUnit": "Metro Fire Rescue Medic-7",
+        "dispatchTime": "01:58 UTC",
+        "onSceneTime": "02:04 UTC",
+        "hospitalArrivalTime": "02:15 UTC",
+        "initialGcs": 6,
+        "initialVitals": {
+          "hr": 148,
+          "bp": "74/40",
+          "spo2": 82
+        },
+        "fieldNarrative": "Dispatched to high-speed motorcycle crash. Patient found prone 35 feet from collision site. Airway compromised by vomitus and facial trauma. Suctioned and intubated with video laryngoscopy 8.0 ETT. Left chest decompression performed with ARS needle. Pelvic binder placed.",
+        "fieldInterventions": [
+          "Rapid Sequence Intubation (RSI) with Etomidate/Rocuronium",
+          "Left Needle Chest Decompression (2nd ICS MCL)",
+          "Pelvic Circumferential Compression Device",
+          "Hare Traction Splint (Right Femur)"
+        ],
+        "transportDestination": "St. Jude Level 1 Trauma Center"
+      },
+      "differentialDiagnosis": [
+        {
+          "id": "DIFF-TR-01",
+          "condition": "Splenic Rupture with Hemoperitoneum",
+          "probability": 98,
+          "supportingFindings": [
+            "Positive FAST in splenorenal recess",
+            "CT contrast blush",
+            "Class IV hemorrhagic shock"
+          ],
+          "refutingFindings": [],
+          "status": "Leading Suspect"
+        },
+        {
+          "id": "DIFF-TR-02",
+          "condition": "Tension Hemopneumothorax",
+          "probability": 95,
+          "supportingFindings": [
+            "Flail chest",
+            "Tracheal deviation on arrival",
+            "750mL blood evacuated via chest tube"
+          ],
+          "refutingFindings": [
+            "Tension relieved by tube thoracostomy"
+          ],
+          "status": "Leading Suspect"
+        },
+        {
+          "id": "DIFF-TR-03",
+          "condition": "Acute Traumatic Brain Injury (Epidural / Subdural)",
+          "probability": 70,
+          "supportingFindings": [
+            "GCS 6 on scene",
+            "Anisocoria on presentation",
+            "4mm subdural on CT"
+          ],
+          "refutingFindings": [
+            "No midline shift or uncal herniation present on initial scan"
+          ],
+          "status": "Under Consideration"
+        }
+      ],
+      "treatmentLog": [
+        {
+          "id": "TR-M-01",
+          "time": "02:18 UTC",
+          "action": "Primary ATLS Trauma Survey Initiated",
+          "operator": "Dr. Vance, MD",
+          "response": "Airway secure via field ETT. Breathing compromised, left chest tube indicated."
+        },
+        {
+          "id": "TR-M-02",
+          "time": "02:21 UTC",
+          "action": "Tube Thoracostomy 32Fr Left 5th Intercostal Space",
+          "operator": "Trauma Resident Dr. Lin",
+          "response": "Immediate evacuation of 750mL dark non-clotted blood, chest wall compliance improved."
+        },
+        {
+          "id": "TR-M-03",
+          "time": "02:26 UTC",
+          "action": "Massive Transfusion Protocol (MTP) Cooler 1 Initiated",
+          "operator": "Blood Bank / Trauma Nurse",
+          "response": "MAP rose from 55 to 70 mmHg after 2nd unit PRBC."
+        }
+      ],
+      "isEscalatedToInvestigation": false,
+      "linkedInvestigationCaseId": {
+        "$characterUndefined": true
+      }
+    }
+  }
+]

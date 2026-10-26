@@ -1,0 +1,154 @@
+✔ older and malformed mail preferences gain safe independent defaults (1.9814ms)
+✔ contacts and group membership support edit, deletion and reload (97.1398ms)
+✔ labels, folders, spam and snooze persist without editing attachment rewards (35.5004ms)
+✔ rules process new incoming mail once and can be applied explicitly to existing mail (24.4759ms)
+✔ conversation list groups by explicit thread while preserving message order (0.304ms)
+✔ rich text retains formatting and strips executable markup and attributes (0.9482ms)
+✔ rich drafts and sent mail keep formatting and custom signatures after hydration (59.8352ms)
+✔ conversation actions expand selected threads, preserve unrelated mail and survive reload (21.3493ms)
+✔ label drops are idempotent while the toggle control removes a label deliberately (12.5554ms)
+✔ saved names resolve to their address and canonical directory metadata enforces clearance (13.5278ms)
+✔ saved attachments appear once in File Explorer with source links and no objective or reward fields (34.3278ms)
+✔ malformed mailbox entries and collections recover without crashing the reader (9.4343ms)
+✔ restoring imported folder states really restores mail and held attachments cannot become rewards (9.9459ms)
+✔ rapid drafts and transmissions receive distinct stable IDs (7.7252ms)
+✔ every old character ID survives and every complete source record is preserved (6.5247ms)
+✔ name variants merge under document names without merging distinct characters (0.51ms)
+✔ all app projections read person-owned profiles and keep stable app IDs (26.8455ms)
+✔ mail uses existing registry identities and wrong patient and NPC associations are removed (25.4611ms)
+✔ case contexts, clinical fields, dialogue keys and immutable identities survive consolidation (28.8425ms)
+✔ personal identity resolves stable IDs and legacy aliases, never names or the first citizen (1.2373ms)
+✔ personal issuance history excludes other citizens and agency records without rewriting issued facts (1.2856ms)
+✔ reading personal records never seeds, migrates, or changes registry and issuance data (0.4264ms)
+✔ linking is an existing-administrator action, persists one reference and leaves source records intact (1968.6252ms)
+✔ a player switch during an asynchronous link cannot attach the previous administrator selection (26.3724ms)
+✔ identity calibration preserves pre-existing IDs and cannot repeat payouts or change a linked identity (66.5305ms)
+✔ CIVINET claim history and old shortcuts survive the Citizen Hub consolidation (79.9194ms)
+✔ issuance reads support both stored identity keys and do not reissue documents (0.2811ms)
+✔ new saves start with one personal mailbox and initial mail stays addressed to it after reload (57.8103ms)
+✔ membership requires a real issued relationship or accepted contract, never rank, reputation, or affiliation text (0.3416ms)
+✔ membership administration checks the current signed-in administrator and does not create mailboxes or rewards (1895.9456ms)
+✔ accepted WORKNET employment grants workplace channel membership without issuing an email account (69.884ms)
+✔ institutional issuance validates membership and domain, preserves account identity, and can suspend without deleting history (42.674ms)
+✔ revoking membership blocks stale channel and sender actions immediately while keeping work and conversations (37.4488ms)
+✔ old accounts, drafts, claim IDs, and messages survive migration without silently authorizing institutional sends (29.6571ms)
+✔ personal Comms history migrates to phone once, preserves the source, and phone texts and drafts persist (12.8324ms)
+✔ malformed saved access data fails closed and a diagnostic cannot be awarded twice (9.8726ms)
+✔ local full access persists credentials without resetting the character or issuing rewards (45.8941ms)
+✔ the explicit local credential grant is unavailable on remote hosts and when signed out (0.4179ms)
+✔ MEDSTAT renders its chart while the asynchronous citizen registry is still loading (75.5001ms)
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+✔ unknown and reserved assignment IDs are rejected without changing progress (1990.6476ms)
+✔ malformed work-stage values return validation feedback instead of throwing (0.3546ms)
+✔ gameplay and wallpaper survive a fresh store while runtime windows are excluded (80.3013ms)
+✔ signing back in resumes earned credits, level, and onboarding (49.9976ms)
+✔ notice completion requires verified world objective and pays exactly once, including after reload (59.6393ms)
+✔ WORKNET-002: WorkNet missions require actual domain work (not generic buttons) and persist completion (64.1566ms)
+✔ HOMECRAFT-001 & SpellForge: Housing purchases grant +40 XP & +10 roomComfort permanently, and SpellForge prevents infinite farming (41.2383ms)
+✔ FAITH-003, MAI.SPACE-004, and Formal Case Reasoning enforce canonical progression rules (51.2061ms)
+✔ partial saves gain new defaults without restoring cleared conditions (37.0791ms)
+✔ corrupt or unavailable storage leaves a playable session (37.2436ms)
+✔ AureMail Decisions 006-011 enforce multi-account MAID links, persisted mailbox state, hybrid replies, clearance gates, and separated file vs. reward attachments (38.1761ms)
+✔ GAMEPLAY-012 & GAMEPLAY-013: Rest restores stamina/health conditionally without repeatable XP, and career promotions require profession qualifications beyond raw XP (20.0774ms)
+✔ opportunity availability reflects clearance, paid shifts, new cycles and permanent completions (0.5075ms)
+✔ assignment dispatches arrive once by email and phone, with persistent call history (61.037ms)
+✔ choosing a quest saves its briefing, requires review, and produces one accepted completion receipt (38.3429ms)
+✔ adventure unlocks require started activities and accepted work, persist, and do not repay shared tasks (47.8482ms)
+✔ GAMEPLAY-018: unrelated activity, legacy completion flags and procedure plans cannot verify any assignment (36.0924ms)
+✔ GAMEPLAY-018: engineering requires all six stages; drafts, outputs and pay survive reload (64.1664ms)
+✔ GAMEPLAY-019: minor errors are correctable; unsafe repair loses supplies and requires remediation (47.6378ms)
+✔ GAMEPLAY-018: the same diagnostic receipt feeds separate quest, journey and adventure requirements (39.8118ms)
+✔ work-order scope: copied receipts and wrong tracks cannot verify a different assignment (19.6592ms)
+✔ repeat shifts use new cycle identities and require fresh work without reopening one-time rewards (45.9656ms)
+✔ clinical receipt: correct patient care supplies one task, requires a chart, and pays only once across apps (20.2193ms)
+✔ clinical work completed before opening WorkNet links the same saved receipt (37.6132ms)
+✔ environmental work requires three separately labeled specimens, analysis and a report (21.1686ms)
+✔ accreditation requires its practical and thesis; civic quests remain available without employment (22.3218ms)
+▶ remaining profession workflows accept their own deliverables and clear exactly once
+  ✔ ms-shift-02 (23.4131ms)
+  ✔ ms-shift-03 (21.725ms)
+  ✔ ms-spec-02 (21.8243ms)
+  ✔ ms-spec-03 (22.5848ms)
+  ✔ ms-dev-02 (25.6132ms)
+  ✔ ms-field-02 (26.5468ms)
+  ✔ qn-01 (37.3554ms)
+  ✔ qn-03 (33.9687ms)
+✔ remaining profession workflows accept their own deliverables and clear exactly once (214.1542ms)
+✔ old paid patient charts can be reviewed for evidence without another clinical reward (27.0848ms)
+✔ WorkNet clinical stages share the Faith Medical receipt and cannot claim duplicate pay (90.0398ms)
+✔ professional clearance and stamina gates preserve saved work while ordinary quests stay open (28.9004ms)
+✔ delegation checks current pathway, contract, clearance, division, availability and competence (2.5304ms)
+✔ work advances across closing and hydration, not wall-clock waits or repeated clicks (1.4404ms)
+✔ returned dockets resume after another game segment and require reading the revision (10.4814ms)
+✔ budget allocations affect verification, training eligibility and leave coverage without minting money (1.6135ms)
+✔ subordinate leave is decided once, requires coverage, and changes availability for the approved segment (0.7087ms)
+✔ legacy completed dockets remain archived, old unrestricted budgets are bounded, schedules remain flexible (0.6135ms)
+✔ coworker routine follows world time; ordinary social clicks cannot repeatedly raise stats (0.3676ms)
+✔ store salary is 150 per current cycle, honors clearance, rejects unknown contracts, and does not backpay skipped cycles (3.0495ms)
+✔ runtime pathway validation and shared world-save hydration retain oversight and prevent repeat department payout (39.8622ms)
+✔ malformed optional saves recover and duplicate legacy duties share one department receipt (0.6911ms)
+✔ assignment links issue an explicit runtime entry request while saved journal history does not (33.3899ms)
+Miraverse progress could not be saved on this device.
+Miraverse progress could not be saved on this device.
+Miraverse progress could not be saved on this device.
+Miraverse progress could not be saved on this device.
+Miraverse progress could not be saved on this device.
+✔ WORKNET-001 & WORKNET-002: Institutional branding and modern visual identity registry (1.1567ms)
+✔ WORKNET-004 & WORKNET-005: Workplace Switcher and multi-employer affiliations (0.1297ms)
+✔ WORKNET-006 & WORKNET-011: Option C Full Workplace Life & 5 NPC relationship dimensions (0.1356ms)
+✔ WORKNET-007: Option C Hybrid Work (routine, dynamic, and authored) (0.1138ms)
+✔ WORKNET-009 & WORKNET-010: Career promotion requires verified qualifications and avoids duplicate rewards (0.3621ms)
+✔ WORKNET-011 & WORKNET-012: Dual-Track progression and active supervisory delegation (0.9634ms)
+✔ WORKNET-015: Hybrid Base Stipend dispatches per cycle and avoids duplicate disbursement (1.4898ms)
+✔ WORKNET-016 & WORKNET-017: Flexible open shifts and scaled institutional complexity tiers (0.1109ms)
+ℹ tests 96
+ℹ suites 0
+ℹ pass 96
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 3575.3541

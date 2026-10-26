@@ -1,0 +1,92 @@
+[
+  {
+    "collection": "seedPeople",
+    "key": "P-102",
+    "origin": "frontend/src/dgaos/data/seed/people.ts:25",
+    "context": "seedPeople",
+    "data": {
+      "id": "P-102",
+      "name": "Dr. Gregory Thorne",
+      "aliases": [
+        "Chief Toxicology",
+        "Dr. Thorne"
+      ],
+      "role": "Chief of Critical Toxicology & Emergency Medicine",
+      "affiliation": "St. Jude Metropolitan Hospital",
+      "status": "Active",
+      "threatLevel": "Low",
+      "bio": "Lead physician supervising the diplomat poisoning isolation ward. First medical responder to flag non-standard cholinesterase inhibition."
+    },
+    "original": {
+      "id": "P-102",
+      "name": "Dr. Gregory Thorne",
+      "aliases": [
+        "Chief Toxicology",
+        "Dr. Thorne"
+      ],
+      "role": "Chief of Critical Toxicology & Emergency Medicine",
+      "affiliation": "St. Jude Metropolitan Hospital",
+      "status": "Active",
+      "threatLevel": "Low",
+      "bio": "Lead physician supervising the diplomat poisoning isolation ward. First medical responder to flag non-standard cholinesterase inhibition."
+    }
+  },
+  {
+    "collection": "seedNPCs",
+    "key": "NPC-THORNE",
+    "origin": "frontend/src/dgaos/data/seed/npcs.ts:4",
+    "context": "seedNPCs",
+    "data": {
+      "id": "NPC-THORNE",
+      "name": "Dr. Gregory Thorne",
+      "occupation": "Chief of Critical Toxicology & Emergency Medicine",
+      "organization": "St. Jude Metropolitan Hospital",
+      "relationship": {
+        "trust": 78,
+        "familiarity": 65,
+        "respect": 85,
+        "tension": 20
+      },
+      "knowledge": [
+        "Ambassador Vance exhibits non-standard cholinesterase depression (<28%).",
+        "Standard pralidoxime failed to reverse neuromuscular block.",
+        "Suspects synthetic fluorophosphate analog with lipophilic carrier solvent."
+      ],
+      "secrets": [
+        "St. Jude board was pressured by private donor to suppress public pathogen reports."
+      ],
+      "currentConcerns": [
+        "Cellular degradation of Vance blood samples without high-res mass spec.",
+        "Potential contamination of ICU staff if compound is vapor-active."
+      ],
+      "communicationStyle": "clinical_scientific",
+      "lastInteraction": "2026-09-29T06:14:00Z"
+    },
+    "original": {
+      "id": "NPC-THORNE",
+      "name": "Dr. Gregory Thorne",
+      "occupation": "Chief of Critical Toxicology & Emergency Medicine",
+      "organization": "St. Jude Metropolitan Hospital",
+      "relationship": {
+        "trust": 78,
+        "familiarity": 65,
+        "respect": 85,
+        "tension": 20
+      },
+      "knowledge": [
+        "Ambassador Vance exhibits non-standard cholinesterase depression (<28%).",
+        "Standard pralidoxime failed to reverse neuromuscular block.",
+        "Suspects synthetic fluorophosphate analog with lipophilic carrier solvent."
+      ],
+      "secrets": [
+        "St. Jude board was pressured by private donor to suppress public pathogen reports."
+      ],
+      "currentConcerns": [
+        "Cellular degradation of Vance blood samples without high-res mass spec.",
+        "Potential contamination of ICU staff if compound is vapor-active."
+      ],
+      "communicationStyle": "clinical_scientific",
+      "lastInteraction": "2026-09-29T06:14:00Z"
+    }
+  }
+]

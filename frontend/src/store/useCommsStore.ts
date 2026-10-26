@@ -120,7 +120,7 @@ Sender Account: ${fromAccount.address}
 Your correspondence regarding "${cleanSubj}" has been received. This receipt does not issue an identity, grant organization membership, or activate additional email accounts.
 
 — Orynvell Civic Identity Bureau`;
-    } else if (contact.id === 'dir-faith-intake' || contact.address === 'intake@faithmed.aure' || contact.npcKey === 'ilyra') {
+    } else if (contact.id === 'dir-faith-intake' || contact.id === 'dir-miracle-jerome' || contact.address === 'intake@faithmed.aure') {
       replyBody = `Faith Medical Group — Clinical Triage & Telemetry Desk:
 
 Thank you for contacting Faith Medical Group regarding "${cleanSubj}".

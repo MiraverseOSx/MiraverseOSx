@@ -1,0 +1,19 @@
+{
+  "id": "char-lucia",
+  "name": "Chancellor Lucia",
+  "kind": "person",
+  "aliases": [],
+  "status": "existing",
+  "notes": [],
+  "legacyIds": [],
+  "references": [
+    {
+      "collection": "NPCS",
+      "key": "npc-lucia",
+      "file": "people/lucia/world.json"
+    }
+  ],
+  "maid": null,
+  "legacyMaids": [],
+  "folder": "lucia"
+}

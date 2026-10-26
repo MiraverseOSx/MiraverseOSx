@@ -1,0 +1,24 @@
+{
+  "id": "char-ulrich-stern",
+  "name": "Ulrich Stern",
+  "kind": "person",
+  "aliases": [],
+  "status": "existing",
+  "notes": [],
+  "legacyIds": [],
+  "references": [
+    {
+      "collection": "phone-contact",
+      "key": "Ulrich",
+      "file": "people/ulrich-stern/phone.json"
+    },
+    {
+      "collection": "story-bible",
+      "key": "Ulrich Stern",
+      "file": "people/ulrich-stern/story.json"
+    }
+  ],
+  "maid": null,
+  "legacyMaids": [],
+  "folder": "ulrich-stern"
+}

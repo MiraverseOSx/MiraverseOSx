@@ -1,3 +1,5 @@
+import { getProfile as FORMAL_INVESTIGATION_CASESProfile } from '../game-content/characters/collections/FORMAL_INVESTIGATION_CASES';
+import { getProfile as PATIENT_CARE_ASSIGNMENTSProfile } from '../game-content/characters/collections/PATIENT_CARE_ASSIGNMENTS';
 import { getWorkDefinition, evaluateWorkOrder, nextWorkStage } from './ActivityEngine';
 
 /**
@@ -68,82 +70,8 @@ export interface InvestigationCaseDefinition {
 }
 
 export const FORMAL_INVESTIGATION_CASES: InvestigationCaseDefinition[] = [
-  {
-    id: 'CASE-FM-401',
-    title: 'Sub-Conduit Veilwilt Cluster & Bio-Aura Desync',
-    subjectMaid: 'MAID-OR-00481926',
-    subjectName: 'Elara Vale',
-    institution: 'Faith Medical & TRACE',
-    symptomOrAnomaly: 'Patient exhibits acute Veilwilt resonance drop (62% Harmonic) following Old Factory Ward transit.',
-    availableEvidence: [
-      { id: 'ev-aura-scan', label: 'Faith Medical Bio-Aura Scan (#FM-88392)', sourceApp: 'Faith Medical / VITALS', detail: 'Confirms 88.2 MHz harmonic phase inversion in dermal nodes.' },
-      { id: 'ev-prism-pid512', label: 'Process Monitor PID 512 Telemetry', sourceApp: 'Process Monitor', detail: 'Shows unregistered PRISM memory bleed leaking into Sub-Conduit relay.' },
-      { id: 'ev-cafeteria-log', label: 'Cafeteria Synth-Juice Supply Manifest', sourceApp: 'Mai.space Bulletin', detail: 'Benign coolant swap prank; unrelated to neural aura phase inversion.' },
-    ],
-    requiredEvidenceIds: ['ev-aura-scan', 'ev-prism-pid512'],
-    hypotheses: [
-      {
-        id: 'hyp-coolant',
-        title: 'Dietary Cryo-Coolant Contamination',
-        explanation: 'Symptoms caused by contaminated cafeteria beverages in Cyacademy.',
-        isValidated: false,
-      },
-      {
-        id: 'hyp-prism-bleed',
-        title: 'Sub-Conduit PRISM Frequency Bleed (PID 512)',
-        explanation: 'Unshielded 88.2 MHz PRISM sub-conduit memory hook is inducing Veilwilt phase inversion in nearby citizens.',
-        isValidated: true,
-      },
-      {
-        id: 'hyp-dorm-fatigue',
-        title: 'Standard Academic Sleep Deprivation',
-        explanation: 'Routine exhaustion from Syntax coursework with no external vector.',
-        isValidated: false,
-      },
-    ],
-    rewardCredits: 350,
-    rewardBits: 5,
-    rewardXP: 200,
-    reputationTrack: 'faith',
-  },
-  {
-    id: 'CASE-DGA-402',
-    title: 'AETHERCORE Pre-Collapse Registry Tampering',
-    subjectMaid: 'MAID-KA-00194022',
-    subjectName: 'Kaelen Voss',
-    institution: 'DGAOS & WorkNet',
-    symptomOrAnomaly: 'Anomalous Year-0 kernel thread (PID 660) attempting to rewrite sealed Orynvell lineage records.',
-    availableEvidence: [
-      { id: 'ev-aethercore-sys', label: 'AETHERCORE.sys Kernel Driver', sourceApp: 'File Explorer (/system)', detail: 'Contains pre-code reality translation hooks dating prior to municipal founding.' },
-      { id: 'ev-purge-arch', label: 'Purge_Record_01.arch Manuscript', sourceApp: 'File Explorer (/documents)', detail: 'Documents Lightborn genealogy erasure under Directive 14-B.' },
-      { id: 'ev-shipping-manifest', label: 'CargoTrack Manifest #CG-8821', sourceApp: 'Shipping Portal', detail: 'Routine unrefined mana crystal shipment to Sector 3 Warehouse.' },
-    ],
-    requiredEvidenceIds: ['ev-aethercore-sys', 'ev-purge-arch'],
-    hypotheses: [
-      {
-        id: 'hyp-smuggling',
-        title: 'Commercial Mana Crystal Tariff Evasion',
-        explanation: 'Routine logistics discrepancy in Sector 3 warehouse.',
-        isValidated: false,
-      },
-      {
-        id: 'hyp-aethercore-echo',
-        title: 'Autonomous AETHERCORE Lineage Restoration Protocol',
-        explanation: 'Erased pre-Collapse AETHERCORE kernel is cross-referencing Purge archives to restore suppressed Lightborn citizen records.',
-        isValidated: true,
-      },
-      {
-        id: 'hyp-hardware-fault',
-        title: 'Random CMOS Clock Drift',
-        explanation: 'Benign hardware battery degradation in municipal servers.',
-        isValidated: false,
-      },
-    ],
-    rewardCredits: 450,
-    rewardBits: 8,
-    rewardXP: 250,
-    reputationTrack: 'dga',
-  },
+  FORMAL_INVESTIGATION_CASESProfile("CASE-FM-401"),
+  FORMAL_INVESTIGATION_CASESProfile("CASE-DGA-402"),
 ];
 
 export class WorldEventEngine {
@@ -320,47 +248,8 @@ export interface PatientCareAssignment {
 }
 
 export const PATIENT_CARE_ASSIGNMENTS: PatientCareAssignment[] = [
-  {
-    id: 'pc-mercer',
-    patientName: 'Student S. Mercer (Vertex House)',
-    patientMaid: 'MAID-OR-00481926',
-    ward: 'Faith Medical Campus - Ward 04',
-    presentingVitals: 'Aura Greying, 39.1°C Thermal Flux, Memory Fragmentation following high-load spell matrix synthesis.',
-    diagnoses: [
-      { id: 'diag-veilwilt-desync', label: 'Acute Veilwilt & Thermal Aura Desync', isCorrect: true },
-      { id: 'diag-frostlung', label: 'Frostlung Cryo-Bronchial Crystallization', isCorrect: false },
-      { id: 'diag-benign-fatigue', label: 'Uncomplicated Muscular Fatigue', isCorrect: false },
-    ],
-    treatments: [
-      { id: 'tx-warm-compress-vitals', label: 'Apply BioCompress-04 Warm-Essence & Calibrate VITALS-Sync', isCorrect: true },
-      { id: 'tx-cryo-immersion', label: 'Sub-Zero Cryo-Tank Immersion', isCorrect: false },
-      { id: 'tx-no-intervention', label: 'Discharge Without Telemetry Calibration', isCorrect: false },
-    ],
-    rewardCredits: 220,
-    rewardCareerXP: 140,
-    rewardXP: 140,
-    linkedWorknetMissionId: 'ms-shift-01',
-  },
-  {
-    id: 'pc-vale',
-    patientName: 'Elara Vale (Sub-Conduit Transit)',
-    patientMaid: 'MAID-OR-00481926',
-    ward: 'Faith Medical - Cryo-Recovery Unit',
-    presentingVitals: 'Core Temp 34.8°C, Crystalline Bronchial Rales, 88.2 MHz Sub-Conduit Exposure.',
-    diagnoses: [
-      { id: 'diag-frostlung-exposure', label: 'Frostlung Syndrome & Sub-Conduit Harmonic Exposure', isCorrect: true },
-      { id: 'diag-sunspire-burn', label: 'Sunspire Solar Flare Hyperthermia', isCorrect: false },
-      { id: 'diag-cafeteria-coolant', label: 'Dietary Synth-Juice Indigestion', isCorrect: false },
-    ],
-    treatments: [
-      { id: 'tx-thermal-thaw-seal', label: 'Administer Warm-Essence Thermal Thaw & Dermal Frequency Seal', isCorrect: true },
-      { id: 'tx-sedative-only', label: 'Mild Analgesic Without Thermal Thaw', isCorrect: false },
-      { id: 'tx-cooling-pack', label: 'Apply Endothermic Cooling Pack', isCorrect: false },
-    ],
-    rewardCredits: 180,
-    rewardCareerXP: 120,
-    rewardXP: 120,
-  },
+  PATIENT_CARE_ASSIGNMENTSProfile("pc-mercer"),
+  PATIENT_CARE_ASSIGNMENTSProfile("pc-vale"),
 ];
 
 export interface WorknetDomainTask {

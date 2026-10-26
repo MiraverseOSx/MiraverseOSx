@@ -1,0 +1,19 @@
+{
+  "id": "char-idris",
+  "name": "Professor Idris",
+  "kind": "person",
+  "aliases": [],
+  "status": "document-only",
+  "notes": [],
+  "legacyIds": [],
+  "references": [
+    {
+      "collection": "story-bible",
+      "key": "Professor Idris",
+      "file": "people/idris/story.json"
+    }
+  ],
+  "maid": null,
+  "legacyMaids": [],
+  "folder": "idris"
+}

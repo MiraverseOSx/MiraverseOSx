@@ -1,4 +1,5 @@
 import { sanitizeMailHtml, mailHtmlToText } from '../mail/richText';
+import { getProfiles } from '../../game-content/characters/collections/PEOPLE';
 import { processNpcReactivity, handleDirectGuestbookSign } from './npcReactivity';
 
 export type Audience = 'public' | 'friends' | 'private' | 'group';
@@ -30,16 +31,7 @@ export type SocialWorld = {
   memories: string[]; npcLayouts: Record<string, Layout>; assets: { id: string; name: string; type: string; size: number }[];
   viewCount: number; pinnedCommentIds: string[];
 };
-export const PEOPLE = [
-  { id: 'jeremie', name: 'Jeremie Belpois', handle: 'jeremie.builds', phone: 'Jeremie', icon: '⌘', theme: 'blue', bio: 'A notebook for small inventions, patient work, and things worth understanding.', interests: 'Technology · diagrams · ambient music', mood: 'Working on a little idea', reply: 'I like seeing how people organize their ideas. Tell me about something you made.', response: 'Thanks for sharing it. I enjoy hearing the thought behind a project, not just seeing the finished version.' },
-  { id: 'aelita', name: 'Aelita Schaeffer', handle: 'aelita.daydreams', phone: 'Aelita', icon: '✿', theme: 'rose', bio: 'Little melodies, soft colors, and a place to keep the moments I want to remember.', interests: 'Music · art · quiet places', mood: 'Listening', reply: 'Is there a small moment you would like to remember from today?', response: 'I’m glad you told me. Sometimes the smallest memories are the ones that stay with us.' },
-  { id: 'sissi', name: 'Elisabeth Delmas', handle: 'elisabeth.afterdark', phone: 'Sissi', icon: '♡', theme: 'glitter', bio: 'A page for favorite looks, good company, and making an ordinary evening feel special.', interests: 'Style · photographs · gatherings', mood: 'Making plans', reply: 'What would make a small gathering feel special to you?', response: 'That sounds thoughtful. It is nicer when someone notices the little details.' },
-  { id: 'odd', name: 'Odd Della Robbia', handle: 'odd.one.out', phone: 'Odd', icon: '★', theme: 'lavender', bio: 'Sketches, discoveries, and a few things that made me laugh.', interests: 'Art · music · friends', mood: 'Curious', reply: 'What made you smile today?', response: 'That was worth sharing. I needed a small bright spot today.' },
-  { id: 'voss', name: 'Dr. Sharon Voss', handle: 'sharon.notes', phone: 'Dr. Voss', icon: '❧', theme: 'pine', bio: 'Off-duty notes. Personal interests only; this page is not a clinical service.', interests: 'Reading · plants · quiet music', mood: 'Taking a break', reply: 'What do you do when you need a quiet break?', response: 'Making room for rest is worthwhile. Thank you for the conversation.' },
-  { id: 'riven', name: 'Riven Asterwind', handle: 'riven.outside', phone: 'Riven', icon: '◇', theme: 'blue', bio: 'A few observations from around the city.', interests: 'Walking · city views', mood: 'Away for a while', reply: 'What have you noticed around the city lately?', response: 'I will look more closely next time. Thanks for pointing it out.' },
-  { id: 'mara', name: 'Mara Thorne', handle: 'mara.offline', phone: 'Mara', icon: '✧', theme: 'lavender', bio: 'Personal notes, separate from the working day.', interests: 'Books · photography', mood: 'Reading', reply: 'Have you read or seen anything you would recommend?', response: 'I’ll keep that in mind. It is good to talk about something beyond the working day.' },
-  { id: 'rowan', name: 'Archivist Rowan', handle: 'rowan.margins', phone: 'Rowan', icon: '❦', theme: 'pine', bio: 'Notes in the margins, and the pleasures of keeping a personal journal.', interests: 'Journals · history · gardens', mood: 'Collecting thoughts', reply: 'What would you put on the first page of a new journal?', response: 'A good beginning. A personal journal does not need to explain everything at once.' },
-];
+export const PEOPLE = getProfiles();
 export const THEMES = {
   lavender: { name: 'Classic Lavender', background: '#e6dff3', surface: '#fffaff', color: '#302343', accent: '#73549a', font: 'Georgia, serif', texture: 'stars' },
   glitter: { name: 'Glitter After Dark', background: '#201325', surface: '#361c36', color: '#fff0fa', accent: '#ff8bc7', font: 'Trebuchet MS, sans-serif', texture: 'stars' },

@@ -1,3 +1,4 @@
+import { getProfile as phone_contactProfile } from '../game-content/characters/collections/phone-contact';
 // Initial phone data structures extracted from PhoneWidget.js
 
 export interface SmsMessage {
@@ -25,33 +26,15 @@ export interface EvidenceItem {
 }
 
 export const INITIAL_SMS_THREADS: Record<string, SmsMessage[]> = {
-  'Aelita': [
-    { id: 1, sender: 'Aelita', text: 'I felt a sudden shift in the Veil near the Supercomputer vault...', time: '09:15' },
-  ],
-  'Jeremie': [
-    { id: 2, sender: 'Jeremie', text: 'I updated the Process Monitor logs. Keep an eye on PRISM memory spikes.', time: '09:05' },
-  ],
-  'Dr. Voss': [
-    { id: 3, sender: 'Dr. Voss', text: 'Student, verify your Aethercore frequency before Lab 4.', time: '09:12' },
-  ],
-  'Odd': [
-    { id: 4, sender: 'Odd', text: 'Got the laser arrow rig reloaded for the twilight drill!', time: '09:10' },
-  ],
-  'Yumi': [
-    { id: 5, sender: 'Yumi', text: 'Sector 7 looks clear, but stay alert. The DGA is monitoring the perimeter.', time: '08:55' },
-  ],
-  'Ulrich': [
-    { id: 6, sender: 'Ulrich', text: 'Training grounds are open if you want to spar before class.', time: '08:40' },
-  ],
-  'Sissi': [
-    { id: 7, sender: 'Sissi', text: 'House Vector dusk briefing at 20:00. Don’t be late.', time: '09:02' },
-  ],
-  'Nerya': [
-    { id: 8, sender: 'Nerya', text: 'Your aura frequency bears a distinct celestial mark... we should speak.', time: '08:30' },
-  ],
-  'Null Cantor': [
-    { id: 9, sender: 'Null Cantor', text: '[CORRUPTED SIGNAL]: The Purge was not the end. The Veil is waiting.', time: '03:14' },
-  ],
+  'Aelita': phone_contactProfile("Aelita"),
+  'Jeremie': phone_contactProfile("Jeremie"),
+  'Dr. Voss': phone_contactProfile("Dr. Voss"),
+  'Odd': phone_contactProfile("Odd"),
+  'Yumi': phone_contactProfile("Yumi"),
+  'Ulrich': phone_contactProfile("Ulrich"),
+  'Sissi': phone_contactProfile("Sissi"),
+  'Nerya': phone_contactProfile("Nerya"),
+  'Null Cantor': phone_contactProfile("Null Cantor"),
 };
 
 export const INITIAL_VOICEMAILS: Voicemail[] = [

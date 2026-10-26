@@ -1,0 +1,22 @@
+[
+  {
+    "collection": "story-bible",
+    "key": "Instructor Lyse",
+    "origin": "docs/data/story-bible-characters.json:35",
+    "context": "story-bible",
+    "data": {
+      "key": "Instructor Lyse",
+      "name": "Instructor Lyse",
+      "role": "Social Dynamics and student council",
+      "line": 323,
+      "characterId": "char-lyse"
+    },
+    "original": {
+      "key": "Instructor Lyse",
+      "name": "Instructor Lyse",
+      "role": "Social Dynamics and student council",
+      "line": 323,
+      "characterId": "char-lyse"
+    }
+  }
+]

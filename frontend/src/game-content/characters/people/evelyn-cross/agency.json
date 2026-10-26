@@ -1,0 +1,58 @@
+[
+  {
+    "collection": "seedNPCs",
+    "key": "NPC-CROSS",
+    "origin": "frontend/src/dgaos/data/seed/npcs.ts:30",
+    "context": "seedNPCs",
+    "data": {
+      "id": "NPC-CROSS",
+      "name": "Director Evelyn Cross",
+      "occupation": "Executive Director",
+      "organization": "Department of Global Affairs",
+      "relationship": {
+        "trust": 90,
+        "familiarity": 70,
+        "respect": 92,
+        "tension": 15
+      },
+      "knowledge": [
+        "Cabinet briefed on potential foreign covert action.",
+        "Authorized multi-system taskforce mobilization under Directive 44."
+      ],
+      "secrets": [
+        "State Department attempted back-channel negotiations with Eurasia before the summit."
+      ],
+      "currentConcerns": [
+        "Diplomatic summit collapse causing international treaty breach.",
+        "Congressional oversight leakage."
+      ],
+      "communicationStyle": "bureaucratic",
+      "lastInteraction": "2026-09-28T22:00:00Z"
+    },
+    "original": {
+      "id": "NPC-CROSS",
+      "name": "Director Evelyn Cross",
+      "occupation": "Executive Director",
+      "organization": "Department of Global Affairs",
+      "relationship": {
+        "trust": 90,
+        "familiarity": 70,
+        "respect": 92,
+        "tension": 15
+      },
+      "knowledge": [
+        "Cabinet briefed on potential foreign covert action.",
+        "Authorized multi-system taskforce mobilization under Directive 44."
+      ],
+      "secrets": [
+        "State Department attempted back-channel negotiations with Eurasia before the summit."
+      ],
+      "currentConcerns": [
+        "Diplomatic summit collapse causing international treaty breach.",
+        "Congressional oversight leakage."
+      ],
+      "communicationStyle": "bureaucratic",
+      "lastInteraction": "2026-09-28T22:00:00Z"
+    }
+  }
+]

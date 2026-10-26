@@ -1,0 +1,37 @@
+{
+  "id": "char-christian-vance",
+  "name": "Ambassador Christian Vance",
+  "kind": "person",
+  "aliases": [
+    "Envoy Vance",
+    "Subject Raven-1"
+  ],
+  "status": "existing",
+  "notes": [],
+  "legacyIds": [],
+  "references": [
+    {
+      "collection": "seedPeople",
+      "key": "P-101",
+      "file": "people/christian-vance/agency.json"
+    },
+    {
+      "collection": "DGA_26_194_STARTING_PAYLOAD",
+      "key": "P-101",
+      "file": "people/christian-vance/investigations.json"
+    },
+    {
+      "collection": "INITIAL_MEDICAL_CHART",
+      "key": "PAT-88194",
+      "file": "people/christian-vance/investigations.json"
+    },
+    {
+      "collection": "seedRelationships",
+      "key": "REL-002",
+      "file": "people/christian-vance/relationships.json"
+    }
+  ],
+  "maid": null,
+  "legacyMaids": [],
+  "folder": "christian-vance"
+}

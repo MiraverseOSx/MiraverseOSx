@@ -1,0 +1,28 @@
+[
+  {
+    "collection": "INSTITUTIONAL_REGISTRY",
+    "key": "sup-artist",
+    "origin": "frontend/src/apps/worknet/worknetData.ts:559",
+    "context": "INSTITUTIONAL_REGISTRY",
+    "data": {
+      "id": "sup-artist",
+      "name": "Vivienne Rose",
+      "title": "Artistic Director",
+      "department": "Velvet Cultural Studio // Executive Board",
+      "avatar": "VR",
+      "personality": "Passionate, expressive, sharp eye for resonance harmony and aesthetic impact.",
+      "expectations": "Technique matters, but authentic emotional connection with the audience matters more.",
+      "approvalRate": 91
+    },
+    "original": {
+      "id": "sup-artist",
+      "name": "Vivienne Rose",
+      "title": "Artistic Director",
+      "department": "Velvet Cultural Studio // Executive Board",
+      "avatar": "VR",
+      "personality": "Passionate, expressive, sharp eye for resonance harmony and aesthetic impact.",
+      "expectations": "Technique matters, but authentic emotional connection with the audience matters more.",
+      "approvalRate": 91
+    }
+  }
+]

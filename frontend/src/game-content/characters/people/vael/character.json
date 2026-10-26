@@ -1,0 +1,19 @@
+{
+  "id": "char-vael",
+  "name": "Headmistress Vael",
+  "kind": "person",
+  "aliases": [],
+  "status": "document-only",
+  "notes": [],
+  "legacyIds": [],
+  "references": [
+    {
+      "collection": "story-bible",
+      "key": "Headmistress Vael",
+      "file": "people/vael/story.json"
+    }
+  ],
+  "maid": null,
+  "legacyMaids": [],
+  "folder": "vael"
+}

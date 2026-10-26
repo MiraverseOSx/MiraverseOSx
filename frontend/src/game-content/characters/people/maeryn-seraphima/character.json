@@ -1,0 +1,24 @@
+{
+  "id": "char-maeryn-seraphima",
+  "name": "Queen Maeryn Seraphima",
+  "kind": "person",
+  "aliases": [],
+  "status": "existing",
+  "notes": [],
+  "legacyIds": [],
+  "references": [
+    {
+      "collection": "NPCS",
+      "key": "npc-maeryn",
+      "file": "people/maeryn-seraphima/world.json"
+    },
+    {
+      "collection": "story-bible",
+      "key": "Queen Maeryn Seraphima",
+      "file": "people/maeryn-seraphima/story.json"
+    }
+  ],
+  "maid": null,
+  "legacyMaids": [],
+  "folder": "maeryn-seraphima"
+}

@@ -1,0 +1,19 @@
+{
+  "id": "char-lyric-enya",
+  "name": "Lyric Enya",
+  "kind": "person",
+  "aliases": [],
+  "status": "document-only",
+  "notes": [],
+  "legacyIds": [],
+  "references": [
+    {
+      "collection": "story-bible",
+      "key": "Lyric Enya",
+      "file": "people/lyric-enya/story.json"
+    }
+  ],
+  "maid": null,
+  "legacyMaids": [],
+  "folder": "lyric-enya"
+}
