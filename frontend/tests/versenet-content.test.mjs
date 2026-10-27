@@ -85,6 +85,31 @@ test('old saves gain empty content and malformed or assignment-like downloads ca
   assert.equal(content.savedFiles['web:dog:notebook'].assignmentId, undefined);
   assert.equal(content.savedFiles['web:dog:notebook'].mockKey, undefined);
 });
+
+test('new world topics and existing reading collections retain their saved editions and files', () => {
+  for (const query of ['aureline', 'lyria', 'prism', 'plants', 'dog']) {
+    const bundle = generateSearchBundle(query);
+    bundle.version = 0;
+    bundle.records[0].paragraphs = ['Saved notes from an earlier edition.'];
+    const saved = { catalog: { [bundle.key]: bundle }, savedFiles: {} };
+    saved.savedFiles = Object.fromEntries(webFilesFor(saved, `${bundle.key}:collection`).map(file => [file.id, file]));
+    const restored = restoreVersenetContent(saved);
+    assert.equal(restored.catalog[bundle.key].version, 0, query);
+    assert.deepEqual(restored.catalog[bundle.key].records[0].paragraphs, ['Saved notes from an earlier edition.']);
+    assert.equal(Object.keys(restored.savedFiles).length, 3, query);
+  }
+});
+
+test('legacy botanical photo metadata is repaired without losing saved notes', () => {
+  const bundle = generateSearchBundle('lyria');
+  const photo = bundle.records.find(record => record.photo);
+  photo.source = 'https://faithmed.aure/botany'; photo.credit = 'Miraverse Botanical Collection · Archival record';
+  bundle.records[0].paragraphs = ['My saved botanical notes.'];
+  const restored = restoreVersenetContent({ catalog: { [bundle.key]: bundle }, savedFiles: {} });
+  assert.deepEqual(restored.catalog[bundle.key].records[0].paragraphs, ['My saved botanical notes.']);
+  assert.match(restored.catalog[bundle.key].records.find(record => record.photo).source, /^https:\/\/commons.wikimedia.org\/wiki\//);
+  assert.equal(photo.source, 'https://faithmed.aure/botany', 'restoration does not mutate its input');
+});
 test('public search gates sealed records, private audits and undiscovered investigation details', () => {
   assert.equal(canSearchArchive('ARC-004', {}), true);
   for (const id of ['ARC-001','ARC-002','ARC-003','ARC-005','ARC-006']) assert.equal(canSearchArchive(id, { isAdmin: true }), false);

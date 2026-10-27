@@ -28,7 +28,7 @@ export function useWorknetState() {
   const act = (action: any) => { const result = workplaceAction(action); if (result.message) showFeedback(result.message); return result; };
   return { activeStation, setActiveStation, activeTab, setActiveTab, selectedMissionId, setSelectedMissionId, actionFeedback, setActionFeedback, showFeedback, ...workplace,
     interactWithCoworker: (person: string, kind: string) => act({ type: 'interact', person, kind }),
-    cycleCoworkerStatus: () => showFeedback('Availability follows game time. Advance time to refresh the work segment.'),
+    cycleCoworkerStatus: () => showFeedback('Availability follows the daily schedule. Check again during the next work segment.'),
     delegateTaskToCoworker: (taskId: string, person: string) => act({ type: 'delegate', taskId, person }),
     openDelegatedDocket: (id: string) => act({ type: 'open-docket', id }),
     reviewDelegatedDocket: (id: string, approved: boolean) => act({ type: 'review-docket', id, approved }),

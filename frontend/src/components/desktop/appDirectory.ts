@@ -165,12 +165,12 @@ export const PROTOCOLS: ProtocolItem[] = [
   {
     id: 'pulse',
     code: 'PULSE',
-    name: 'PULSE // Meridion News',
+    name: 'PULSE // News Portal',
     sector: 'Aureline Broadcast Array',
     clearance: 'Observer Clearance',
     aetherTrace: 'AT-0x0732',
     flux: '22.0 MHz',
-    desc: 'Meridion’s news network: public reporting, world advisories, civic affairs, economy, health, and culture.',
+    desc: 'Your news portal: open the Meridion Dispatch in VerseNet, follow headlines, and return to saved stories.',
     color: 'text-purple-800',
     bg: 'bg-purple-50',
     border: 'border-purple-300'

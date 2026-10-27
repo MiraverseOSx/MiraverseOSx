@@ -657,7 +657,7 @@ function MailWorkspace() {
       <AppToolbar
         icon={Mail}
         title="AureMail"
-        subtitle="Personal, academic & work mail · Fictional local relay"
+        subtitle="Personal, academic & work mail · AureMail local relay"
         actions={
           <div className="flex items-center gap-2">
             <select

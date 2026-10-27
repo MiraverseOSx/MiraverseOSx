@@ -20,6 +20,7 @@ export interface SampleArchive {
 }
 
 export const PORTALS: Record<string, PortalInfo> = {
+    'dispatch.mer': { title: 'The Meridion Dispatch', category: 'News Headlines Civic Health Economy Culture', icon: Newspaper, accent: 'purple', domain: 'dispatch.mer' },
     'companion.aure': { title: 'Aureline Companion', category: 'Dogs Cats Companions Community Profiles Enquiries', icon: Globe, accent: 'purple', domain: 'companion.aure' },
     'gardenreview.aure': { title: 'Glassline Garden Review', category: 'Plants Garden Visitors Community Profiles', icon: Building, accent: 'purple', domain: 'gardenreview.aure' },
     'readingroom.aure': { title: 'Aureline Open Reading Room', category: 'Library Education Research Profiles Records', icon: BookOpen, accent: 'purple', domain: 'readingroom.aure' },

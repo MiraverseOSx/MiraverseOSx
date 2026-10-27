@@ -62,7 +62,8 @@ export function generateSearchBundle(input: string): SearchBundle | null {
   const document = add('notebook', 'document', `${pack.label} — notebook.txt`, 'A printable observation and planning sheet.', ['Collection: ' + pack.label, 'Purpose: ' + pack.introduction, ...pack.steps.map(step => `□ ${step}`), 'Notes: Keep your observations and source references here.']);
   const sourceSheet = add('sources', 'document', `${pack.label} — sources.txt`, 'A source card for comparing public references.', ['Research heading: ' + pack.label, 'Source title: ____________________', 'Author or organization: ____________________', 'Public address: ____________________', 'What the source says: ____________________', 'What remains uncertain: ____________________']);
   add('collection', 'folder', `${pack.label} — reading folder`, 'Two documents, their source pages, and a place to keep notes.', ['This collection contains a working notebook and a source-comparison sheet. Save the folder to keep both documents in File Explorer.'], { children: [document, sourceSheet] });
-  if (pack.id === 'lyria' || pack.id === 'plants') add('sunflower', 'image', 'Botanical Flora — reference study', 'A crystalline flora study from the Lyrian botanical library.', [], { photo: '/images/versenet/sunflower.jpg', art: 'lyria', credit: 'Miraverse Botanical Collection · Archival record', source: 'https://faithmed.aure/botany' });
+  if (pack.id === 'dog') add('labrador', 'image', 'Chocolate Labrador — reference photograph', 'A public-domain reference photograph accompanying the dog collection.', [], { photo: '/images/versenet/labrador.jpg', art: 'dog', credit: 'Dsw4 · Public domain', source: 'https://commons.wikimedia.org/wiki/File:Chocolate_Labrador_Retriever_01.jpg' });
+  if (pack.id === 'lyria' || pack.id === 'plants') add('sunflower', 'image', 'Sunflower — reference photograph', 'A public-domain reference photograph from the botanical collection.', [], { photo: '/images/versenet/sunflower.jpg', art: 'plants', credit: 'Don McCulley · Public domain (CC0)', source: 'https://commons.wikimedia.org/wiki/File:Sunflower_Public_Domain.jpg' });
   add('study', 'image', topic ? `${pack.label} — illustrated study` : `${query} — abstract study`, topic ? 'An original illustration from the collection.' : 'Abstract artwork accompanying this research heading, not a literal depiction.', [], { art: pack.id, seed, credit: 'Miraverse visual collection · Original SVG illustration' });
   add('diagram', 'image', topic ? `${pack.label} — visual notebook` : `${query} — visual connections`, 'A second illustration from the visual notebook.', [], { art: pack.id, seed: seed + 1, credit: 'Miraverse visual collection · Original SVG illustration' });
   const places = pack.places.map((name, index) => {
@@ -127,9 +128,14 @@ export function restoreVersenetContent(saved: unknown): VersenetContent {
   const result = emptyVersenetContent(); if (!saved || typeof saved !== 'object') return result;
   const data = saved as Partial<VersenetContent>;
   for (const [key, bundle] of Object.entries(data.catalog || {})) {
-    if (!/^(dog|cat|animals|plants|food|housing|travel|technology|education|health|work|history|query-[a-z0-9]+-[a-z0-9]+)$/.test(key) || !bundle || bundle.key !== key || !Array.isArray(bundle.records) || !bundle.records.length) continue;
+    if (!(TOPIC_PACKS.some(pack => pack.id === key) || /^query-[a-z0-9]+-[a-z0-9]+$/.test(key)) || !bundle || bundle.key !== key || !Array.isArray(bundle.records) || !bundle.records.length) continue;
     if (typeof bundle.label !== 'string' || typeof bundle.query !== 'string' || typeof bundle.topic !== 'string' || !Number.isFinite(bundle.version)) continue;
-    if (validCollection(bundle)) result.catalog[key] = bundle;
+    // A previous release mislabelled this known local photo as a fictional
+    // botany source. Repair that metadata instead of discarding saved text/files.
+    const recovered = { ...bundle, records: bundle.records.map(record => record?.photo === '/images/versenet/sunflower.jpg' && record.source === 'https://faithmed.aure/botany'
+      ? { ...record, credit: 'Don McCulley · Public domain (CC0)', source: 'https://commons.wikimedia.org/wiki/File:Sunflower_Public_Domain.jpg' }
+      : record) };
+    if (validCollection(recovered)) result.catalog[key] = recovered;
   }
   // Rebuild saved files from their source records rather than accepting executable or assignment-like fields.
   for (const value of Object.values(data.savedFiles || {})) {

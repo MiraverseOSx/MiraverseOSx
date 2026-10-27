@@ -74,3 +74,15 @@ test('old and partially malformed saves recover to usable navigation', () => {
   assert.equal(recovered.nextTabId, 8); assert.equal(recovered.historyMap[7].index, 0);
   assert.equal(recovered.bookmarks.length, 1); assert.equal(recovered.visits.length, 0);
 });
+
+test('opening an inter-app page and reopening the browser preserve its destination and empty bookmarks', async () => {
+  storage(); const store = await fresh();
+  store.getState().setBrowserUrl('https://firstfederal.aure/maintenance');
+  store.getState().openAppWorkspace('browser');
+  assert.equal(store.getState().browserUrl, 'https://firstfederal.aure/maintenance');
+  store.getState().openAppWorkspace('browser');
+  const reloaded = (await fresh()).getState();
+  assert.equal(reloaded.browserUrl, 'https://firstfederal.aure/maintenance');
+  assert.equal(reloaded.browserState.tabs.find(tab => tab.id === reloaded.browserState.activeTabId).url, reloaded.browserUrl);
+  assert.deepEqual(reloaded.browserState.bookmarks, []);
+});

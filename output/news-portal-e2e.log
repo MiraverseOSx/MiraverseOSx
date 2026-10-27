@@ -1,0 +1,60 @@
+npm notice run miraverse-frontend@0.1.0 test:e2e
+npm notice run playwright test
+[WebServer] npm notice run miraverse-frontend@0.1.0 dev
+[WebServer] npm notice run vite --host 127.0.0.1 --port 4174 --strictPort
+[WebServer] (node:43784) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] npm notice run miraverse-frontend@0.1.0 storybook
+[WebServer] npm notice run storybook dev -p 6006 --no-open --host 127.0.0.1 --port 6006 --ci --no-open
+[WebServer] (node:19408) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 6 tests using 1 worker
+
+(node:16496) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 1 e2e\desktop.spec.ts:19:1 › desktop apps open, maximize and retain appearance after reload (8.7s)
+  x  2 e2e\desktop.spec.ts:40:1 › browser restores its page and bookmark after reload and reopening the window (1.0m)
+(node:3468) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 3 e2e\desktop.spec.ts:56:1 › PULSE opens the Dispatch website and preserves reading across reload (9.9s)
+  ok 4 e2e\desktop.spec.ts:93:1 › MAI.SPACE layer sorting is keyboard accessible and draft order survives reopening (5.6s)
+  ok 5 e2e\desktop.spec.ts:112:1 › evidence board connects sources, reopens originals and removes player hypotheses (3.5s)
+  ok 6 e2e\desktop.spec.ts:124:1 › Broad Street board uses acquired sources and restores player connections after reload (11.6s)
+
+
+  1) e2e\desktop.spec.ts:40:1 › browser restores its page and bookmark after reload and reopening the window 
+
+    Test timeout of 60000ms exceeded.
+
+    Error: locator.fill: Test timeout of 60000ms exceeded.
+    Call log:
+      - waiting for locator('.os-window[data-app=browser]').getByRole('textbox', { name: 'Search VerseNet or enter a web address', exact: true })
+
+
+      42 |   const browser = page.locator('.os-window[data-app=browser]');
+      43 |   const address = browser.getByRole('textbox', { name: 'Search VerseNet or enter a web address', exact: true });
+    > 44 |   await address.fill('https://firstfederal.aure/maintenance');
+         |                 ^
+      45 |   await address.press('Enter');
+      46 |   await expect(address).toHaveValue('https://firstfederal.aure/maintenance');
+      47 |   await browser.getByRole('button', { name: 'Bookmark this page', exact: true }).click();
+        at C:\Users\mirav\OneDrive\Desktop\MiraverseOSx\frontend\e2e\desktop.spec.ts:44:17
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results\desktop-browser-restores-i-bfd79-ad-and-reopening-the-window\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results\desktop-browser-restores-i-bfd79-ad-and-reopening-the-window\error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results\desktop-browser-restores-i-bfd79-ad-and-reopening-the-window\trace.zip
+    Usage:
+
+        npx playwright show-trace test-results\desktop-browser-restores-i-bfd79-ad-and-reopening-the-window\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  1 failed
+    e2e\desktop.spec.ts:40:1 › browser restores its page and bookmark after reload and reopening the window 
+  5 passed (1.9m)

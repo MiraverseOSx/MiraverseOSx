@@ -17,7 +17,7 @@ function Workspace() {
   useEffect(() => { try { localStorage.setItem(SESSION_KEY, JSON.stringify(tabs)); } catch { setError('Session could not be saved. Check browser storage.'); } }, [tabs]);
   const open = (input: string) => {
     const url = externalWebUrl(/^https?:\/\//i.test(input.trim()) ? input : `https://${input.trim()}`);
-    if (!url) { setError('Enter a real HTTP(S) web address. Open fictional sites from Miraverse.'); return; }
+    if (!url) { setError('Enter an HTTP(S) web address. Open VerseNet destinations through the network browser.'); return; }
     if (!tabs.includes(url) && tabs.length >= 8) { setError('Close a tab before opening another.'); return; }
     setTabs(current => current.includes(url) ? current : [...current, url]); setActive(url); setAddress(url); setError('');
   };

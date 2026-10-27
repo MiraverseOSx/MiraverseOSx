@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
+import { newsSearchRecords } from './news/newsSite';
 import { Search, ArrowUpRight, Folder, FileText, MapPin, Globe, User } from 'lucide-react';
 import { useOSStore } from '../../store/useOSStore';
 import { PORTALS, SAMPLE_ARCHIVES } from './constants';
@@ -16,6 +17,8 @@ export default function UniversalSearch({ query, navigateTab, view = 'All' }: { 
   const remember = useOSStore(s => s.rememberVersenetSearch);
   const player = useOSStore(s => s.gameplay.player);
   const eventLog = useOSStore(s => s.gameplay.worldEventLog);
+  const newsCycle = useOSStore(s => s.gameplay.timeCycleCount);
+  const newsExposure = useOSStore(s => s.gameplay.prismCorruptionLevel);
   const [input, setInput] = useState(query);
   const normalized = normalizeSearch(query);
   const bundle = useMemo(() => getSearchBundle(content, normalized), [content, normalized]);
@@ -36,8 +39,9 @@ export default function UniversalSearch({ query, navigateTab, view = 'All' }: { 
         summary: `${evt.institution} · ${evt.summary}`,
         publisher: evt.institution || 'Aureline Public Dispatches',
       }));
-    return [...casePublic, ...createPublicSearch<Hit>([...sites, ...archives, ...people, ...worldEvents])(normalized)];
-  }, [normalized, player, eventLog]);
+    const news: Hit[] = newsSearchRecords({ cycle: newsCycle, corruption: newsExposure });
+    return [...casePublic, ...createPublicSearch<Hit>([...sites, ...news, ...archives, ...people, ...worldEvents])(normalized)];
+  }, [normalized, player, eventLog, newsCycle, newsExposure]);
   const generated: Hit[] = (bundle?.records || []).map(record => ({ ...record, record }));
   // Keep public institutions ahead of generated pages. Location entries remain reachable through Maps.
   const ordered = [...indexed, ...generated.filter(hit => !hit.id.includes(':place-'))];

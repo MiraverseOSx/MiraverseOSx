@@ -365,9 +365,6 @@ export const useOSStore = create<OSStoreState>()(persist((set, get) => ({
   openAppWorkspace: (id, section) => {
     const destination = resolveAppDestination(id);
     const target = section || destination.section;
-    if (destination.appId === 'browser' && !target) {
-      get().navigateBrowserTab('https://versenet.aure', 'Versenet');
-    }
     if (target) set(s => ({
       workspaceRequestSequence: s.workspaceRequestSequence + 1,
       workspaceRequests: {
@@ -2253,12 +2250,14 @@ export const useOSStore = create<OSStoreState>()(persist((set, get) => ({
   partialize: ({ gameplay, wallpaper, isLoggedIn, browserState, desktopPreferences, versenetContent, versenetSites }) => ({ gameplay, wallpaper, isLoggedIn, browserState, desktopPreferences, versenetContent, versenetSites }),
   merge: (persisted, current) => {
     const saved = persisted as Partial<OSStoreState> | null;
+    const browserState = restoreBrowserState(saved?.browserState);
     return {
       ...current,
       desktopPreferences: restoreDesktopPreferences(saved?.desktopPreferences),
       versenetContent: restoreVersenetContent(saved?.versenetContent),
       versenetSites: restoreVersenetSites(saved?.versenetSites),
-      browserState: restoreBrowserState(saved?.browserState),
+      browserState,
+      browserUrl: browserState.tabs.find(tab => tab.id === browserState.activeTabId)!.url,
       gameplay: mergeSavedProgress(current.gameplay, saved?.gameplay),
       wallpaper: typeof saved?.wallpaper === 'string' ? saved.wallpaper : current.wallpaper,
       isLoggedIn: typeof saved?.isLoggedIn === 'boolean' ? saved.isLoggedIn : current.isLoggedIn,

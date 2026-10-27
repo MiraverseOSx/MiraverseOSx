@@ -1,5 +1,6 @@
 import { sanitizeMailHtml, mailHtmlToText } from '../mail/richText';
 import { getProfiles } from '../../game-content/characters/collections/PEOPLE';
+import { getCharacterById } from '../../game-content/characters/registry';
 import { processNpcReactivity, handleDirectGuestbookSign } from './npcReactivity';
 
 export type Audience = 'public' | 'friends' | 'private' | 'group';
@@ -109,12 +110,22 @@ export function templateLayout(raw: any): Layout {
   layout.modules = layout.modules.map(m => ({ ...m, text: '' }));
   return layout;
 }
+function legacyBulletinAuthor(author: unknown): string | undefined {
+  if (typeof author !== 'string') return undefined;
+  const name = author.replace(/\s*\([^)]*\)\s*$/, '').trim().toLowerCase();
+  const matches = PEOPLE.filter(person => {
+    const identity = getCharacterById(person.characterId);
+    return [person.id, person.name, person.phone, ...(identity?.aliases || [])].some(alias => alias.toLowerCase() === name);
+  });
+  return matches.length === 1 ? matches[0].id : undefined;
+}
+const legacyBulletinHtml = (content: string) => sanitizeMailHtml(`<p>${content.replace(/&/g, '&amp;').replace(/</g, '&lt;')}</p>`);
 export function initialSocial(legacy: any = {}): SocialWorld {
   const friends = ids(legacy.acceptedFriends);
   return { version: 1, designVersion: 2, layout: makeLayout(), draft: makeLayout(), history: [], templates: [], bio: '', interests: '', mood: 'Making a little space of my own', location: '', discloseLocation: false, avatar: '', banner: '', track: 'builtin:stillwater', playlist: ['builtin:stillwater', 'builtin:starlight'], top8: [], friends, requests: { jeremie: friends.includes('jeremie') ? 'accepted' : 'incoming' }, requestCycles: {}, blocked: [], muted: [], reports: [],
     posts: [
       ...PEOPLE.slice(0, 3).map((p, i) => ({ id: `hello:${p.id}`, author: p.id, kind: 'blog' as const, title: ['A place for unfinished ideas', 'Keeping a little color', 'A page that feels like me'][i], html: `<p>${p.bio}</p>`, audience: 'public' as const, cycle: 0, draft: false, likes: [] })),
-      ...(Array.isArray(legacy.bulletinPosts) ? legacy.bulletinPosts : []).filter(p => p && typeof p.content === 'string').map(p => ({ id: `legacy:${p.id}`, author: PEOPLE.find(n => p.author?.startsWith(n.name.split(' ')[0]))?.id || 'you', kind: 'bulletin' as const, title: 'Earlier bulletin', html: sanitizeMailHtml(`<p>${p.content.replace(/&/g, '&amp;').replace(/</g, '&lt;')}</p>`), audience: 'public' as const, cycle: 0, draft: false, likes: [] })),
+      ...(Array.isArray(legacy.bulletinPosts) ? legacy.bulletinPosts : []).filter(p => p && typeof p.content === 'string').map(p => ({ id: `legacy:${p.id}`, author: legacyBulletinAuthor(p.author) || 'you', kind: 'bulletin' as const, title: 'Earlier bulletin', html: legacyBulletinHtml(p.content), audience: 'public' as const, cycle: 0, draft: false, likes: [] })),
     ], albums: PEOPLE.slice(0, 3).map(p => ({ id: `album:${p.id}`, author: p.id, name: p.id === 'jeremie' ? 'Lines and structures' : p.id === 'aelita' ? 'Colors I keep' : 'After dark', audience: 'public', photos: [{ id: `photo:${p.id}`, asset: `builtin:${p.id}`, caption: 'An illustrated mood board for this personal page.', tags: [] }] })), comments: [],
     groups: [{ id: 'photo-club', name: 'Aureline Photo Circle', description: 'A local space for photographs and small observations. Recreational membership grants no institutional access.', private: false, owner: 'aelita', members: ['aelita', 'sissi'], pending: [] }, { id: 'quiet-pages', name: 'Quiet Pages', description: 'An invitation-only journal circle. Get acquainted with Rowan through a thoughtful conversation before requesting entry.', private: true, owner: 'rowan', members: ['rowan'], pending: [] }],
     events: [], notifications: [{ id: 'welcome', text: 'Your personal corner is ready. Make it yours in Profile Studio.', destination: 'Customize', read: false }], memories: [], npcLayouts: Object.fromEntries(PEOPLE.map(p => [p.id, makeLayout(p.theme)])), assets: [],
@@ -127,6 +138,15 @@ export function restoreSocial(raw: any, legacy: any = {}): SocialWorld {
   const s = { ...base, ...raw, version: 1, layout: normalizeLayout(raw.layout), draft: normalizeLayout(raw.draft), friends: ids(raw.friends), blocked: ids(raw.blocked), muted: ids(raw.muted), top8: ids(raw.top8).filter(id => ids(raw.friends).includes(id) && !ids(raw.blocked).includes(id)).slice(0, 8), bio: limit(raw.bio), interests: limit(raw.interests), mood: limit(raw.mood, 120), location: limit(raw.location, 100), discloseLocation: raw.discloseLocation === true } as SocialWorld;
   for (const key of ['posts', 'albums', 'comments', 'groups', 'events', 'notifications', 'memories', 'assets', 'templates', 'history', 'reports'] as const) if (!Array.isArray(s[key])) (s as any)[key] = base[key];
   s.posts = s.posts.filter(p => p && typeof p.id === 'string' && (p.author === 'you' || PEOPLE.some(n => n.id === p.author))).map(p => ({ ...p, title: limit(p.title, 180), html: sanitizeMailHtml(p.html), audience: audience(p.audience), likes: Array.isArray(p.likes) ? p.likes : [] }));
+  // Repair only unchanged imported posts whose recorded NPC author was lost
+  // during the name migration. Player-authored and edited posts stay intact.
+  const earlierPosts = Array.isArray(legacy.bulletinPosts) ? legacy.bulletinPosts : [];
+  s.posts = s.posts.map(post => {
+    if (post.author !== 'you' || post.kind !== 'bulletin' || !post.id.startsWith('legacy:')) return post;
+    const original = earlierPosts.find(item => item && post.id === `legacy:${item.id}` && typeof item.content === 'string' && post.html === legacyBulletinHtml(item.content));
+    const author = legacyBulletinAuthor(original?.author);
+    return author ? { ...post, author } : post;
+  });
   s.history = s.history.filter(h => h && typeof h.id === 'string').slice(-20).map(h => ({ id: limit(h.id, 100), cycle: +h.cycle || 0, layout: normalizeLayout(h.layout) }));
   s.templates = s.templates.filter(t => t && typeof t.id === 'string').slice(-20).map(t => ({ id: limit(t.id, 100), name: limit(t.name, 80), layout: templateLayout(t.layout) }));
   const known = (id: unknown) => id === 'you' || PEOPLE.some(p => p.id === id);

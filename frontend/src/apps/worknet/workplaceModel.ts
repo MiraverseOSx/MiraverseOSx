@@ -59,17 +59,17 @@ export function changeWorkplace(raw: any, action: any, player: any, tick: number
       if (!task) return fail('Unknown departmental task.');
       const cw = REGISTRY[station].coworkers.find(c => c.id === action.person), stats = s.coworkerStats[action.person], b = s.divisionBudgets[station];
       if (!cw || !stats) return fail('Choose a colleague in this division.');
-      if (stats.status !== 'Desk') return fail('Choose a colleague at their desk; workplace availability changes when game time advances.');
+      if (stats.status !== 'Desk') return fail('Choose a colleague at their desk; workplace availability changes throughout the day.');
       if (s.delegatedTasks.some(d => (d.taskId === task.id && d.cycle === cycle) || (d.assigneeId === cw.id && d.status !== 'Approved'))) return fail('That duty is already assigned this cycle, or this colleague has an open docket.');
       const competence = finite(stats.competence) + Math.floor(b.training / 1000);
       if (competence < task.minCompetence) return fail(`This duty requires ${task.minCompetence}% competence. Training allocations can add one point per 1,000 credits.`);
       s.delegatedTasks.unshift({ id: `delegation:${task.id}:${cycle}`, taskId: task.id, stationId: station, title: task.title, assigneeId: cw.id, assigneeName: cw.name, status: 'In Progress', cycle, assignedAt: `Cycle ${cycle}, segment ${tick % 4 + 1}`, dueTick: tick + task.estUnits, competence, revisions: 0, opened: false, paid: false, issues: [], output: '' });
-      message = `Delegated ${task.title} to ${cw.name}. Return after ${task.estUnits} game-time segment(s).`; break;
+      message = `Delegated ${task.title} to ${cw.name}. Return after ${task.estUnits} work segment(s).`; break;
     }
     case 'open-docket': if (!docket || docket.status !== 'Review Ready') return fail('This docket is not ready for review.'); docket.opened = true; message = docket.output; break;
     case 'review-docket': {
       if (!docket || docket.status !== 'Review Ready' || !docket.opened || docket.paid) return fail('Open a review-ready docket before deciding. Archived dockets cannot be paid again.');
-      if (!action.approved) { docket.status = 'In Progress'; docket.revisions++; docket.opened = false; docket.dueTick = tick + 1; message = 'Revision requested. The revised docket returns after one game-time segment.'; break; }
+      if (!action.approved) { docket.status = 'In Progress'; docket.revisions++; docket.opened = false; docket.dueTick = tick + 1; message = 'Revision requested. The revised docket returns after one work segment.'; break; }
       if (s.delegatedTasks.some(d => d.id !== docket.id && d.taskId === docket.taskId && d.cycle === docket.cycle && (d.paid || d.status === 'Approved'))) return fail('This duty already has a compensation receipt for this cycle.');
       if (docket.issues.length) return fail('Resolve the recorded exception and request a revised docket before signing off.');
       const task = TASKS.find(t => t.id === docket.taskId)!, funds = Number(task.rewardDesc.match(/\+(\d+) ₢/)?.[1] || 0), merit = Number(task.rewardDesc.match(/\+(\d+) Department Merit/)?.[1] || 0);

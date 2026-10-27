@@ -1,5 +1,6 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, lazy, Suspense } from 'react';
 import SearchHome from './SearchHome';
+import { NEWS_SITE } from './news/newsSite';
 import { BROWSER_HOME, MAX_BROWSER_TABS, resolveBrowserInput, IN_GAME_PORTALS } from './browserModel';
 import { externalWebUrl, SERVICE_DIRECTORY } from './externalWeb';
 import ExternalWebPage from './ExternalWebPage';
@@ -22,6 +23,8 @@ import {
     X, Plus, ChevronLeft, ChevronRight, RotateCw, Globe, Home, Star, History, Bookmark, Search, Grid2X2,
     ShieldCheck, Lock, Sparkles, Terminal, Shield, ArrowUpRight, Briefcase, Folder
 } from 'lucide-react';
+
+const DispatchNewsSite = lazy(() => import('./news/DispatchNewsSite'));
 
 export const QUICK_NAVIGATION_TARGETS = IN_GAME_PORTALS.map(p => ({
     domain: p.domain,
@@ -64,6 +67,7 @@ function WorkNetAppNotice({ navigateTab }: { navigateTab: (url: string) => void 
 
 function ContentFrame({ url, openTab, navigateTab, openService }: any) {
     if (!url) return <SearchHome navigateTab={navigateTab} openTab={openTab} />;
+    if (new URL(url).hostname === NEWS_SITE.domain) return <Suspense fallback={<p role="status">Connecting to the Dispatch…</p>}><DispatchNewsSite url={url} navigateTab={navigateTab}/></Suspense>;
     if (new URL(url).hostname === 'firstfederal.aure' && new URL(url).pathname === '/maintenance') return <BroadStreetPublicPage />;
     if (new URL(url).hostname === 'services.aure') return <ServiceDirectory navigateTab={openService}/>;
     if (externalWebUrl(url)) return <ExternalWebPage url={url}/>;
@@ -137,10 +141,13 @@ export default function BrowserApp() {
     const removeBookmark = useOSStore(s => s.removeBrowserBookmark);
     const clearHistory = useOSStore(s => s.clearBrowserHistory);
 
-    // Ensure Versenet ALWAYS opens on the home page when launched
+    // Only explicit workspace requests change the current page. Consuming a
+    // request must not erase an inter-app destination or the restored session.
     useEffect(() => {
-        if (!workspaceRequest || !workspaceRequest.section || workspaceRequest.section === 'home') {
+        if (!workspaceRequest) return;
+        if (workspaceRequest.section === 'home') {
             navigateTab(BROWSER_HOME, 'Versenet');
+            useOSStore.getState().consumeWorkspaceRequest('browser', workspaceRequest.revision);
         } else if (workspaceRequest.section === 'services') {
             openService(SERVICE_DIRECTORY);
             useOSStore.getState().consumeWorkspaceRequest('browser', workspaceRequest.revision);
@@ -347,7 +354,7 @@ export default function BrowserApp() {
                             <div className="p-3 bg-purple-50/70 border border-purple-200 rounded-xl mb-3">
                                 <div className="flex items-center gap-1.5 font-bold text-xs text-purple-950 mb-2">
                                     <Folder size={14} className="text-purple-700" />
-                                    <span>In-Game Portals Folder</span>
+                                    <span>VerseNet Directory</span>
                                 </div>
                                 <div className="space-y-1">
                                     {IN_GAME_PORTALS.map(portal => (
@@ -392,7 +399,7 @@ export default function BrowserApp() {
             </div>
             <footer className="vn-status">
                 <span>VERSENET</span>
-                <span>{externalWebUrl(activeTab.url) || activeTab.url.startsWith(SERVICE_DIRECTORY) ? 'External Internet gateway' : 'Fictional network'} · {tabs.length} / {MAX_BROWSER_TABS} tabs</span>
+                <span>{externalWebUrl(activeTab.url) || activeTab.url.startsWith(SERVICE_DIRECTORY) ? 'External Internet gateway' : 'VerseNet network'} · {tabs.length} / {MAX_BROWSER_TABS} tabs</span>
             </footer>
         </div>
     );

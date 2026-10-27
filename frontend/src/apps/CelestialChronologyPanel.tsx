@@ -98,7 +98,7 @@ export default function CelestialChronologyPanel() {
               Civil Date: <strong className="text-purple-100">{celestial.weekday}, {celestial.monthName} {celestial.dayOfMonth}</strong>
             </span>
             <span className="text-purple-400">·</span>
-            <span>Game Cycle: <strong className="text-amber-300">Cycle {celestial.cycle}</strong></span>
+            <span>Current Cycle: <strong className="text-amber-300">Cycle {celestial.cycle}</strong></span>
           </div>
 
           <div className="flex items-center gap-2">

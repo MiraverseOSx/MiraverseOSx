@@ -37,26 +37,59 @@ test('desktop apps open, maximize and retain appearance after reload', async ({ 
   await expect(page.getByText('This app could not display its workspace.')).toHaveCount(0);
   expect(failures).toEqual([]);
 });
-test('PULSE reads, filters and saves public news across reload without awarding progress', async ({ page }) => {
+test('browser restores its page and bookmark after reload and reopening the window', async ({ page }) => {
+  await login(page); await openApp(page, 'VERSENET');
+  const browser = page.locator('.os-window[data-app=browser]');
+  const address = browser.getByRole('textbox', { name: 'Search VerseNet or enter a web address', exact: true });
+  await address.fill('https://firstfederal.aure/maintenance');
+  await address.press('Enter');
+  await expect(address).toHaveValue('https://firstfederal.aure/maintenance');
+  await browser.getByRole('button', { name: 'Bookmark this page', exact: true }).click();
+  await browser.getByRole('button', { name: 'Close', exact: true }).click();
+  await openApp(page, 'VERSENET');
+  await expect(address).toHaveValue('https://firstfederal.aure/maintenance');
+  await page.reload(); await openApp(page, 'VERSENET');
+  await expect(address).toHaveValue('https://firstfederal.aure/maintenance');
+  await expect(browser.getByRole('button', { name: 'Remove current bookmark', exact: true })).toBeVisible();
+});
+
+test('PULSE opens the Dispatch website and preserves reading across reload', async ({ page }) => {
   await login(page); await openApp(page, 'PULSE');
-  const news = page.getByRole('region', { name: 'PULSE news', exact: true });
+  const portal = page.getByRole('region', { name: 'PULSE news portal', exact: true });
+  await expect(portal.getByRole('heading', { name: 'PULSE', exact: true })).toBeVisible();
+  await expect(portal.getByRole('searchbox')).toHaveCount(0);
+  await portal.screenshot({ path: '../output/previews/pulse-portal.png' });
+  await portal.getByRole('button', { name: 'Open Meridion Dispatch', exact: true }).click();
+  const browser = page.locator('.os-window[data-app=browser]');
+  const address = browser.getByRole('textbox', { name: 'Search VerseNet or enter a web address', exact: true });
+  await expect(address).toHaveValue('https://dispatch.mer');
+  const news = browser.getByRole('region', { name: 'The Meridion Dispatch', exact: true });
   await expect(news.getByRole('heading', { name: 'The front page', exact: true })).toBeVisible();
+  await news.screenshot({ path: '../output/previews/meridion-dispatch.png' });
   await news.getByRole('button', { name: 'Economy', exact: true }).click();
   await news.getByRole('searchbox', { name: 'Search news', exact: true }).fill('contract compensation');
+  await news.getByRole('searchbox', { name: 'Search news', exact: true }).press('Enter');
   await expect(news.getByRole('status')).toHaveText('1 story in this edition');
   await news.getByRole('button', { name: 'Before your next shift, read the terms', exact: true }).click();
   await expect(news.getByRole('article', { name: 'Before your next shift, read the terms', exact: true })).toBeVisible();
   await news.getByRole('button', { name: 'Save story', exact: true }).click();
+  await expect(address).toHaveValue(/dispatch\.mer\/article\/employment-guide/);
+  await page.reload(); await openApp(page, 'VERSENET');
+  await expect(news.getByRole('article', { name: 'Before your next shift, read the terms', exact: true })).toBeVisible();
   await news.getByRole('button', { name: 'Back to edition', exact: true }).click();
   await expect(news.getByText('Read', { exact: true })).toBeVisible();
   await page.reload(); await openApp(page, 'PULSE');
-  await news.getByRole('button', { name: 'Saved stories', exact: true }).click();
+  await expect(portal.getByText('1 story saved from the Dispatch.', { exact: true })).toBeVisible();
+  await portal.getByRole('button', { name: 'Open saved stories', exact: true }).click();
+  await expect(address).toHaveValue('https://dispatch.mer/saved');
   await expect(news.getByRole('button', { name: 'Before your next shift, read the terms', exact: true })).toBeVisible();
   await news.getByRole('button', { name: 'Unsave Before your next shift, read the terms', exact: true }).click();
   await expect(news.getByRole('heading', { name: 'Your shelf is quiet.', exact: true })).toBeVisible();
   await news.getByRole('button', { name: 'Show all news', exact: true }).click();
   await news.getByRole('searchbox', { name: 'Search news', exact: true }).fill('unfindable');
+  await news.getByRole('searchbox', { name: 'Search news', exact: true }).press('Enter');
   await expect(news.getByRole('heading', { name: 'No stories found.', exact: true })).toBeVisible();
+  await page.screenshot({ path: '../output/previews/dispatch-search.png', fullPage: false });
 });
 
 test('MAI.SPACE layer sorting is keyboard accessible and draft order survives reopening', async ({ page }) => {

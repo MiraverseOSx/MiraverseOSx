@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { SERVICE_DIRECTORY } from './externalWeb';
 import { 
   ArrowUpRight, Search, Folder, FolderOpen, ChevronDown, ChevronUp, Globe, 
-  Sparkles, Landmark, Shield, Activity, Truck, Terminal, Building, FileText, BookOpen, UserCheck
+  Sparkles, Landmark, Shield, Activity, Truck, Terminal, Building, FileText, BookOpen, UserCheck, Newspaper
 } from 'lucide-react';
 import { resolveBrowserInput, IN_GAME_PORTALS, type InGamePortal } from './browserModel';
 
@@ -12,6 +12,7 @@ export interface SearchHomeProps {
 }
 
 const PORTAL_ICONS: Record<string, React.ElementType> = {
+  dispatch: Newspaper,
   auresuite: Sparkles,
   bank: Landmark,
   dga: Shield,
@@ -51,7 +52,7 @@ export default function SearchHome({ navigateTab, openTab }: SearchHomeProps) {
           >
             <Search size={16} className="text-slate-400 shrink-0" />
             <input 
-              aria-label="Search the fictional network" 
+              aria-label="Search VerseNet"
               placeholder="Search lore, civil registries, or enter an address..." 
               value={query} 
               onChange={event => setQuery(event.target.value)} 
@@ -79,13 +80,13 @@ export default function SearchHome({ navigateTab, openTab }: SearchHomeProps) {
               </div>
               <div>
                 <div className="text-xs font-bold text-slate-900 flex items-center gap-2">
-                  <span>In-Game Web Portals</span>
+                  <span>VerseNet Directory</span>
                   <span className="px-2 py-0.2 rounded-full bg-purple-100 text-[#39234f] text-[10px] font-mono font-bold">
                     {IN_GAME_PORTALS.length} Sites Folder
                   </span>
                 </div>
                 <div className="text-[10px] text-slate-500 font-mono">
-                  Canonical web applications and portals in the Miraverse network
+                  Services and destinations across the Miraverse network
                 </div>
               </div>
             </div>
@@ -162,7 +163,7 @@ export default function SearchHome({ navigateTab, openTab }: SearchHomeProps) {
 
         {/* Directory Shortcut Footer */}
         <div className="flex items-center justify-between text-xs text-slate-500 font-mono pt-4 border-t border-slate-200">
-          <span>Versenet Fictional Intranet Protocol v3.8</span>
+          <span>VerseNet Intranet Protocol v3.8</span>
           <button 
             onClick={() => navigateTab(SERVICE_DIRECTORY)}
             className="text-purple-800 hover:underline flex items-center gap-1 cursor-pointer"

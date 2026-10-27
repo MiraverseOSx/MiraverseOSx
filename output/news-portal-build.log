@@ -1,0 +1,81 @@
+npm notice run miraverse-frontend@0.1.0 build
+npm notice run vite build --outDir ../output/news-portal-build
+vite v6.4.5 building for production...
+transforming...
+✓ 2969 modules transformed.
+rendering chunks...
+computing gzip size...
+../output/news-portal-build/index.html                                                                                      1.07 kB │ gzip:   0.55 kB
+../output/news-portal-build/sw.js                                                                                           3.95 kB
+../output/news-portal-build/assets/logo_icon-CUPqIqiP.png                                                                  39.98 kB
+../output/news-portal-build/assets/meridion_world-Bx744lBB.jpg                                                          1,013.06 kB
+../output/news-portal-build/assets/everything_is_great_but_do_not-ibzqC-2F.mp4                                          2,096.88 kB
+../output/news-portal-build/assets/mixkit-black-ink-splashing-505-hd-ready-5xOo6vN8.mp4                                 3,455.44 kB
+../output/news-portal-build/assets/mixkit-glitter-stars-and-snowflakes-19007-hd-ready-jJGDjwg1.mp4                      3,693.95 kB
+../output/news-portal-build/assets/mixkit-a-woman-monitoring-close-circuit-surveillance-23673-hd-ready-DO32EXpQ.mp4     5,627.94 kB
+../output/news-portal-build/assets/mixkit-flying-over-a-relaxing-creek-full-of-rock-on-the-51585-hd-ready-BCqJ8giU.mp4  8,320.32 kB
+../output/news-portal-build/assets/FileExplorerApp-BLQR67_R.css                                                             0.62 kB │ gzip:   0.35 kB
+../output/news-portal-build/assets/RichTextEditor-DZHZoGHi.css                                                              1.46 kB │ gzip:   0.62 kB
+../output/news-portal-build/assets/case-workspace-CJUr1qgd.css                                                              2.56 kB │ gzip:   0.93 kB
+../output/news-portal-build/assets/FieldOperationsApp-DxWZrlgh.css                                                          2.71 kB │ gzip:   0.99 kB
+../output/news-portal-build/assets/RegistryWorkspaceApp-Dt2SnHHz.css                                                        3.72 kB │ gzip:   1.28 kB
+../output/news-portal-build/assets/PulseApp-CWotrLX_.css                                                                    3.98 kB │ gzip:   1.20 kB
+../output/news-portal-build/assets/attachmentDocument-BtUdRknX.css                                                          4.24 kB │ gzip:   1.49 kB
+../output/news-portal-build/assets/MailApp-JMX_z9Xy.css                                                                     6.42 kB │ gzip:   1.93 kB
+../output/news-portal-build/assets/DocumentStudioApp-BTys34W0.css                                                           6.64 kB │ gzip:   1.87 kB
+../output/news-portal-build/assets/VitalsApp-CjunPQJt.css                                                                   8.57 kB │ gzip:   2.41 kB
+../output/news-portal-build/assets/DispatchNewsSite-I89AItJJ.css                                                           11.31 kB │ gzip:   2.69 kB
+../output/news-portal-build/assets/versenet-browser-BE-fPvFy.css                                                           11.57 kB │ gzip:   2.71 kB
+../output/news-portal-build/assets/BrowserApp-BCMvgYNp.css                                                                 13.69 kB │ gzip:   3.49 kB
+../output/news-portal-build/assets/EvidenceBoard-V3rltzWT.css                                                              17.02 kB │ gzip:   2.99 kB
+../output/news-portal-build/assets/mai-space-Drcbb3-d.css                                                                  27.99 kB │ gzip:   6.61 kB
+../output/news-portal-build/assets/JobWorkstationApp-SYHCKhcG.css                                                          39.86 kB │ gzip:   7.72 kB
+../output/news-portal-build/assets/App-BjDC7XPS.css                                                                        89.43 kB │ gzip:  17.53 kB
+../output/news-portal-build/assets/DgaosApp-CJoWwCyL.css                                                                  287.72 kB │ gzip:  36.33 kB
+../output/news-portal-build/assets/index-BCbo7KCd.css                                                                     580.25 kB │ gzip:  88.02 kB
+../output/news-portal-build/assets/MaiSpaceApp-CfnD8qyi.js                                                                  0.27 kB │ gzip:   0.21 kB
+../output/news-portal-build/assets/RichMailEditor-MAq__i1e.js                                                               0.42 kB │ gzip:   0.29 kB
+../output/news-portal-build/assets/citizenEvents-Ch6-1qqe.js                                                                1.16 kB │ gzip:   0.56 kB
+../output/news-portal-build/assets/CampusApp-BWUhyq-G.js                                                                    1.60 kB │ gzip:   0.78 kB
+../output/news-portal-build/assets/citizenBridge-_6su9Z-E.js                                                                2.75 kB │ gzip:   1.14 kB
+../output/news-portal-build/assets/PulseApp-Nkmn2UDF.js                                                                     2.97 kB │ gzip:   1.15 kB
+../output/news-portal-build/assets/CommunicationsAccessPanel-DX0Wt7wA.js                                                    5.04 kB │ gzip:   1.86 kB
+../output/news-portal-build/assets/CommsApp-CQywVyXt.js                                                                     5.16 kB │ gzip:   2.02 kB
+../output/news-portal-build/assets/FinanceTerminal-Chj1ukq4.js                                                              5.31 kB │ gzip:   2.09 kB
+../output/news-portal-build/assets/Form-yyTfbMzo.js                                                                         7.00 kB │ gzip:   2.84 kB
+../output/news-portal-build/assets/FieldOperationsApp-DpOjTCtl.js                                                           7.50 kB │ gzip:   3.04 kB
+../output/news-portal-build/assets/VitalsApp-g92UNVMl.js                                                                    7.81 kB │ gzip:   2.59 kB
+../output/news-portal-build/assets/DispatchNewsSite-DFYaPKFL.js                                                            10.34 kB │ gzip:   3.33 kB
+../output/news-portal-build/assets/DocumentStudioApp-Ehihk0df.js                                                           10.38 kB │ gzip:   4.12 kB
+../output/news-portal-build/assets/BroadStreetCasePanel-2fC2C89X.js                                                        10.78 kB │ gzip:   3.96 kB
+../output/news-portal-build/assets/ProcessMonitorApp-WfRmlbUz.js                                                           10.96 kB │ gzip:   3.51 kB
+../output/news-portal-build/assets/SpellForgeApp-VIC5Sqbx.js                                                               11.29 kB │ gzip:   3.57 kB
+../output/news-portal-build/assets/versenet-browser-DNuIvt8S.js                                                            11.44 kB │ gzip:   4.13 kB
+../output/news-portal-build/assets/HousingApp-D35_cZFV.js                                                                  15.87 kB │ gzip:   5.05 kB
+../output/news-portal-build/assets/FileExplorerApp-DKmuNWOK.js                                                             18.85 kB │ gzip:   6.44 kB
+../output/news-portal-build/assets/SocialApp-UisPJkNC.js                                                                   20.29 kB │ gzip:   6.70 kB
+../output/news-portal-build/assets/attachmentDocument-BdbrKfcB.js                                                          21.23 kB │ gzip:   8.40 kB
+../output/news-portal-build/assets/LoreExplorer-CyI_tOdC.js                                                                29.16 kB │ gzip:   6.88 kB
+../output/news-portal-build/assets/CivicProfileApp-DAA_xkqJ.js                                                             36.44 kB │ gzip:  10.36 kB
+../output/news-portal-build/assets/Portals-C369vQFn.js                                                                     43.51 kB │ gzip:  11.61 kB
+../output/news-portal-build/assets/MailApp-v5XHaylX.js                                                                     55.19 kB │ gzip:  15.06 kB
+../output/news-portal-build/assets/PortraitStudioModal-BFh2q2kZ.js                                                         55.60 kB │ gzip:  12.79 kB
+../output/news-portal-build/assets/maidIdentityService-3QuytszN.js                                                         74.32 kB │ gzip:  20.42 kB
+../output/news-portal-build/assets/RegistryWorkspaceApp-CGz7QHt0.js                                                        78.13 kB │ gzip:  15.84 kB
+../output/news-portal-build/assets/lucide-icons-CdswSE7t.js                                                                89.71 kB │ gzip:  17.73 kB
+../output/news-portal-build/assets/JobWorkstationApp-SQkziKJq.js                                                           98.12 kB │ gzip:  24.10 kB
+../output/news-portal-build/assets/mai-space-DP_U2OUX.js                                                                   99.42 kB │ gzip:  32.13 kB
+../output/news-portal-build/assets/BrowserApp-B3CQTtAO.js                                                                 108.53 kB │ gzip:  33.84 kB
+../output/news-portal-build/assets/framer-motion-B0GbNFm6.js                                                              138.88 kB │ gzip:  45.96 kB
+../output/news-portal-build/assets/EvidenceBoard-D_XT_gn-.js                                                              186.21 kB │ gzip:  60.63 kB
+../output/news-portal-build/assets/index-CWpPC-0h.js                                                                      311.68 kB │ gzip:  97.24 kB
+../output/news-portal-build/assets/RichTextEditor-CbmBdFOA.js                                                             410.55 kB │ gzip: 130.64 kB
+../output/news-portal-build/assets/App-Cl5Woq_N.js                                                                        641.22 kB │ gzip: 198.92 kB
+../output/news-portal-build/assets/DgaosApp-D9HCBtbW.js                                                                 1,472.00 kB │ gzip: 370.99 kB
+../output/news-portal-build/assets/TunnelScene-DelW7pUu.js                                                              1,688.37 kB │ gzip: 383.01 kB
+
+(!) Some chunks are larger than 1200 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+✓ built in 11.70s

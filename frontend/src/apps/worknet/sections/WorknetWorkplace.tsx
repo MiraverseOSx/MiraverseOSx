@@ -212,7 +212,7 @@ export default function WorknetWorkplace({
                         {stats.status}
                       </span>
                       <button
-                        title="Availability updates when game time advances" aria-label={`Check availability for ${cw.name}`}
+                        title="Availability updates throughout the day" aria-label={`Check availability for ${cw.name}`}
                         onClick={() => onCycleCoworkerStatus(cw.id)}
                         className="text-slate-400 hover:text-slate-700 p-1"
                       >
@@ -301,7 +301,7 @@ export default function WorknetWorkplace({
               <span className="worknet-badge">Supervisory Oversight</span>
             </div>
             <p className="text-xs text-slate-500 mb-3">
-              Delegate to qualified colleagues at their desks. Work and revisions advance with game time, including while WORKNET is closed. Read each returned docket before signing off.
+              Delegate to qualified colleagues at their desks. Work and revisions continue through the daily schedule, including while WORKNET is closed. Read each returned docket before signing off.
             </p>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-4">
@@ -398,7 +398,7 @@ export default function WorknetWorkplace({
                             ✓ Docket Archived
                           </span>
                         ) : (
-                          <span className="text-[10px] text-slate-400 italic">Work in progress · advance game time</span>
+                          <span className="text-[10px] text-slate-400 italic">Work in progress · awaiting the next work segment</span>
                         )}
                       </div>
                     </div>

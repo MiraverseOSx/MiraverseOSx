@@ -1,3 +1,4 @@
+import { NEWS_SITE } from './news/newsSite';
 export const BROWSER_HOME = 'https://versenet.aure';
 export const MAX_BROWSER_TABS = 8;
 
@@ -8,7 +9,7 @@ export interface InGamePortal {
   url: string;
   category: string;
   description: string;
-  badge: 'SUITE' | 'SECURE' | 'GOV' | 'HEALTH' | 'CARGO' | 'ONION' | 'ACADEMIC' | 'DEEDS' | 'ARCHIVE' | 'SOCIAL' | 'CIVIC';
+  badge: 'SUITE' | 'SECURE' | 'GOV' | 'HEALTH' | 'CARGO' | 'ONION' | 'ACADEMIC' | 'DEEDS' | 'ARCHIVE' | 'SOCIAL' | 'CIVIC' | 'NEWS';
 }
 
 export const IN_GAME_PORTALS: InGamePortal[] = [
@@ -111,6 +112,8 @@ export const IN_GAME_PORTALS: InGamePortal[] = [
     description: 'Personal civic identity, services desk, and residence records.', 
     badge: 'CIVIC' 
   },
+  { id: 'dispatch', name: NEWS_SITE.name, domain: NEWS_SITE.domain, url: NEWS_SITE.url,
+    category: 'News & Public Affairs', description: 'Reporting from Aureline and the Seven Realms, public advisories, and a personal reading shelf.', badge: 'NEWS' },
 ];
 
 export const STARTER_SITES = IN_GAME_PORTALS.slice(0, 5);
@@ -144,6 +147,7 @@ export function resolveBrowserInput(input: string): string {
 export function browserTitle(url: string): string {
   try {
     const parsed = new URL(url);
+    if (parsed.hostname === NEWS_SITE.domain) return parsed.pathname === '/saved' ? `Saved stories · ${NEWS_SITE.name}` : parsed.pathname.startsWith('/article/') ? `Article · ${NEWS_SITE.name}` : NEWS_SITE.name;
     const siteNames: Record<string, string> = { 
       'companion.aure': 'Aureline Companion', 
       'gardenreview.aure': 'Glassline Garden Review', 
@@ -153,6 +157,7 @@ export function browserTitle(url: string): string {
       'dga.gov.aure': 'Directorate of Global Affairs',
       'dga.gov': 'Directorate of Global Affairs',
       'faithmed.aure': 'Faith Medical Group',
+      'worknet.aure': 'WorkNet',
       'shipping.aure': 'CargoTrack Logistics',
       'vectornet.aure': 'VectorNet Underground',
       'cyacademy.edu': 'Cycademy of Sciences',
@@ -166,7 +171,8 @@ export function browserTitle(url: string): string {
       const section = parsed.pathname.startsWith('/records/') 
         ? parsed.pathname.split('/')[2] 
         : ({ '/profile': 'My profile', '/request': 'Request', '/records': 'My records' }[parsed.pathname] || '');
-      return section ? `${section} · ${siteNames[parsed.hostname]}` : siteNames[parsed.hostname];
+      const name = parsed.hostname === 'faithmed.aure' ? 'Faith Medical' : siteNames[parsed.hostname];
+      return section ? `${section} · ${name}` : name;
     }
     if (parsed.hostname === 'fieldnotes.aure') return parsed.searchParams.get('title')?.slice(0, 200) || 'Fieldnotes · Public reading';
     if (parsed.hostname === 'services.aure') return 'Service Directory';
@@ -177,18 +183,13 @@ export function browserTitle(url: string): string {
 }
 
 export function initialBrowserState(): BrowserState {
-  const defaultBookmarks: BrowserBookmark[] = IN_GAME_PORTALS.map(p => ({
-    title: p.name,
-    url: p.url
-  }));
-
   return { 
     tabs: [{ id: 1, url: BROWSER_HOME, title: 'Versenet' }], 
     activeTabId: 1, 
     nextTabId: 2, 
     historyMap: { 1: { stack: [BROWSER_HOME], index: 0 } }, 
     visits: [], 
-    bookmarks: defaultBookmarks 
+    bookmarks: []
   };
 }
 
@@ -206,16 +207,26 @@ export function restoreBrowserState(saved: unknown): BrowserState {
         .filter((item, index, all) => all.findIndex(other => other.url === item.url) === index) 
     : [];
 
-  const bookmarks = cleanItems(data.bookmarks).length > 0 ? cleanItems(data.bookmarks).slice(0, 100) : defaults.bookmarks;
+  const bookmarks = cleanItems(data.bookmarks).slice(0, 100);
   const visits = cleanItems(data.visits).filter(item => Number.isFinite(item.visitedAt)).slice(0, 150);
-
-  // Versenet always opens on the home page: active tab is always BROWSER_HOME
-  return { 
-    tabs: [{ id: 1, url: BROWSER_HOME, title: 'Versenet' }], 
-    historyMap: { 1: { stack: [BROWSER_HOME], index: 0 } }, 
-    activeTabId: 1, 
-    nextTabId: 2, 
-    bookmarks, 
-    visits 
+  const tabs: BrowserTab[] = [];
+  for (const tab of Array.isArray(data.tabs) ? data.tabs : []) {
+    if (!tab || !Number.isSafeInteger(tab.id) || tab.id <= 0 || tab.id >= Number.MAX_SAFE_INTEGER - 1 || typeof tab.url !== 'string' || tabs.some(other => other.id === tab.id)) continue;
+    const url = resolveBrowserInput(tab.url);
+    tabs.push({ id: tab.id, url, title: typeof tab.title === 'string' && tab.title.trim() ? tab.title.slice(0, 200) : browserTitle(url) });
+    if (tabs.length === MAX_BROWSER_TABS) break;
+  }
+  if (!tabs.length) tabs.push(...defaults.tabs);
+  const historyMap: Record<number, TabHistory> = {};
+  for (const tab of tabs) {
+    const raw = data.historyMap && Object.hasOwn(data.historyMap, tab.id) ? data.historyMap[tab.id] : undefined;
+    const stack = Array.isArray(raw?.stack) ? raw.stack.filter(value => typeof value === 'string').slice(-100).map(resolveBrowserInput) : [];
+    const index = Number.isInteger(raw?.index) ? Math.max(0, Math.min(stack.length - 1, raw.index)) : stack.length - 1;
+    historyMap[tab.id] = stack.length && stack[index] === tab.url ? { stack, index } : { stack: [tab.url], index: 0 };
+  }
+  const minimumNext = Math.max(...tabs.map(tab => tab.id)) + 1;
+  return { tabs, historyMap, bookmarks, visits,
+    activeTabId: tabs.some(tab => tab.id === data.activeTabId) ? data.activeTabId! : tabs[0].id,
+    nextTabId: Number.isSafeInteger(data.nextTabId) && data.nextTabId! >= minimumNext ? data.nextTabId! : minimumNext,
   };
 }

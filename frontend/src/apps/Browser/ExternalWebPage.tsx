@@ -15,7 +15,7 @@ export default function ExternalWebPage({ url }: { url: string }) {
     </> : <div className="vn-gateway-intro">
       <Globe size={40}/><h1>Continue to the external web</h1>
       <p className="vn-destination">{safeUrl}</p>
-      <p>This is a real website outside Miraverse. Open it in your browser, or try viewing it here. Your fictional character records and game progress are not sent with this address.</p>
+      <p>This website is outside the VerseNet network. Open it in your browser, or try viewing it here. Your civic records and workspace data are not included with this address.</p>
       <div className="vn-gateway-actions"><ExternalLink url={safeUrl}/><button onClick={() => setEmbedded(true)}>Try inside VerseNet</button></div>
       <p className="vn-fine-print">Some websites block embedding. An embedded page has its own navigation; VerseNet saves the starting address. External pages load only when you choose an option.</p>
     </div>}

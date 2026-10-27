@@ -85,14 +85,14 @@ export const APPS: AppMetadata[] = [
   },
   { 
     id: 'pulse',      
-    title: 'PULSE // Faction Spectrum', 
-    formName: 'Faction Spectrum Telemetry',
+    title: 'PULSE // News Portal',
+    formName: 'News Access Portal',
     accessType: 'Subsystem Feed',
     category: 'Social',          
     dev: 'FAC_NEO_CITIZENS', 
     version: '1.5.0', 
-    primary: 'Social broadcast and faction matrix tracker feeding system alerts & regional announcements', 
-    lore: 'Social broadcast and faction matrix tracker feeds system alerts, regional announcements, and direct territorial influence alerts.' 
+    primary: 'News publication access, headlines and saved reading through VerseNet',
+    lore: 'A personal news portal connecting residents to the Meridion Dispatch and their saved reading.'
   },
   { 
     id: 'browser',    

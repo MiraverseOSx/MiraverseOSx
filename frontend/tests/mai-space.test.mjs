@@ -5,6 +5,23 @@ registerHooks({ resolve(specifier, context, next) { try { return next(specifier,
 const { initialSocial, changeSocial, restoreSocial, normalizeLayout, templateLayout, canSee, canSeeRecord, canComment, makeLayout } = await import('../src/apps/social/socialModel.ts');
 let sequence = 0;
 const change = (s, a, cycle = 28) => changeSocial(s, a, cycle, `test-${++sequence}`);
+
+test('renamed NPC aliases retain authorship and repair only unchanged imported posts', () => {
+  const legacy = { bulletinPosts: [
+    { id: 1, author: 'Elisabeth Delmas (Sissi)', content: 'Earlier gathering plans.' },
+    { id: 2, author: 'Aelita Schaeffer', content: 'A memory of music.' },
+  ] };
+  const social = initialSocial(legacy);
+  assert.equal(social.posts.find(post => post.id === 'legacy:1').author, 'sissi');
+  assert.equal(social.posts.find(post => post.id === 'legacy:2').author, 'aelita');
+  social.posts.find(post => post.id === 'legacy:1').author = 'you';
+  const edited = social.posts.find(post => post.id === 'legacy:2'); edited.author = 'you'; edited.html = '<p>My own revised text.</p>';
+  social.posts.push({ id: 'player-post', author: 'you', kind: 'bulletin', title: 'My words', html: '<p>Earlier gathering plans.</p>', audience: 'public', cycle: 28, draft: false, likes: [] });
+  const restored = restoreSocial(social, legacy);
+  assert.equal(restored.posts.find(post => post.id === 'legacy:1').author, 'sissi');
+  assert.equal(restored.posts.find(post => post.id === 'legacy:2').author, 'you');
+  assert.equal(restored.posts.find(post => post.id === 'player-post').author, 'you');
+});
 function accept(s, person = 'jeremie') { if (person !== 'jeremie') { s = change(s, { type: 'friend', person }).state; s = change(s, { type: 'tick' }, 29).state; } return change(s, { type: 'friend', person }).state; }
 
 test('legacy profiles migrate without inventing featured friends, losing posts, or importing world logs', () => {

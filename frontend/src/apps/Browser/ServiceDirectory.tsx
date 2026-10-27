@@ -74,7 +74,7 @@ export default function ServiceDirectory({ navigateTab, showSidebar = true }: { 
     {editing && <form className="vn-service-form" aria-label="Edit service" onSubmit={event => {
       event.preventDefault();
       const url = form.url.trim() ? serviceLaunchUrl(form.url) : '';
-      if (url === null) { setError('Enter a full HTTP(S) address or a file:/// address ending in .html or .htm. Fictional VerseNet addresses belong in the in-world browser.'); return; }
+      if (url === null) { setError('Enter a full HTTP(S) address or a file:/// address ending in .html or .htm. VerseNet addresses belong in the network browser.'); return; }
       const item = { ...form, id: editing === 'new' ? crypto.randomUUID() : editing, name: form.name.trim(), category: form.category.trim() || 'General', url };
       if (!item.name) return;
       if (editing === 'new' && services.length >= 100) { setError('The directory supports up to 100 services.'); return; }

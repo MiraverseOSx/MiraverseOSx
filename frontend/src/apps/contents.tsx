@@ -23,7 +23,7 @@ export const APPS = [
   { id: 'mail', title: 'AureMail Mailbox', icon: Mail, category: 'Communication' },
   { id: 'comms', title: 'COMMS // Institutional Network', icon: MessageSquare, category: 'Workplace Portals' },
   { id: 'passport', title: 'Citizen Hub', icon: UserCheck, category: 'Personal Apps' },
-  { id: 'pulse', title: 'PULSE // Meridion News', icon: Radio, category: 'Communication' },
+  { id: 'pulse', title: 'PULSE // News Portal', icon: Radio, category: 'Communication' },
   { id: 'maispace', title: 'mai.space // Social Network', icon: MessageSquare, category: 'Communication' },
   { id: 'files', title: 'File Explorer', icon: Folder, category: 'Storage' },
   { id: 'lore', title: 'Lore Explorer', icon: BookOpen, category: 'Database' },

@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { buildNewsEdition, filterNews, restoreNewsReading } from '../src/apps/Pulse/newsModel.ts';
+import { NEWS_SITE, newsUrl, parseNewsLocation, newsSearchRecords } from '../src/apps/Browser/news/newsSite.ts';
 
 test('public news follows world exposure without copying private records or modifying progress', () => {
   const world = { cycle: 28, corruption: 21.4, worldEventLog: [{ title: 'Secret suspect', summary: 'sealed evidence' }], player: { credits: 500 } };
@@ -28,4 +29,33 @@ test('reading preferences restore safely from old and malformed saves', () => {
   assert.deepEqual(restoreNewsReading({ saved: ['civic-network', null, 'civic-network'], read: 6 }), { saved: ['civic-network'], read: [] });
   const value = restoreNewsReading({ saved: ['faith-recovery'], read: ['employment-guide'] });
   assert.deepEqual(restoreNewsReading(JSON.parse(JSON.stringify(value))), value);
+});
+
+test('publication addresses preserve sections, searches and saved article context', () => {
+  assert.equal(newsUrl(), NEWS_SITE.url);
+  for (const input of [
+    { section: 'Economy', query: 'contract compensation' },
+    { savedOnly: true, section: 'Health' },
+    { articleId: 'story/with spaces', section: 'Economy', query: 'terms & pay', savedOnly: true },
+  ]) {
+    assert.deepEqual(parseNewsLocation(newsUrl(input)), {
+      section: 'All news', query: '', savedOnly: false, articleId: null, ...input, valid: true,
+    });
+  }
+  for (const address of ['https://other.mer', 'https://dispatch.mer/unknown',
+    'https://dispatch.mer/section/unknown', 'https://dispatch.mer/article/%XX',
+    'https://dispatch.mer/?section=unknown', 'https://user@dispatch.mer', 'not an address']) {
+    assert.equal(parseNewsLocation(address).valid, false, address);
+  }
+});
+
+test('publication search points to article URLs and excludes private world data', () => {
+  const records = newsSearchRecords({ cycle: 28, worldEventLog: [{ title: 'Sealed secret' }] });
+  assert.equal(records.length, 8);
+  assert.doesNotMatch(JSON.stringify(records), /Sealed secret/);
+  for (const record of records) {
+    assert.equal(record.publisher, NEWS_SITE.name);
+    assert.equal(parseNewsLocation(record.url).valid, true);
+    assert.ok(parseNewsLocation(record.url).articleId);
+  }
 });

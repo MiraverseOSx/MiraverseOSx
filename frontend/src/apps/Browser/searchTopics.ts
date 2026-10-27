@@ -1,3 +1,4 @@
+import { READING_TOPICS } from './readingTopics';
 export interface TopicPack {
   id: string;
   label: string;
@@ -13,6 +14,7 @@ export interface TopicPack {
 }
 
 export const TOPIC_PACKS: TopicPack[] = [
+  ...READING_TOPICS,
   {
     id: 'aureline',
     label: 'Aureline — Capital Realm',

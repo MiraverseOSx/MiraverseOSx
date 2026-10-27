@@ -37,7 +37,7 @@ const DEFAULT_CITIZEN: CitizenRecord = {
   legacyAliases: ['MRD-8492-319'],
   passport: 'AUR-782194',
   alias: 'Frostweaver / Silverglass',
-  address: '142 Moonwell Way, Glassline District, Aureline Central (fictional)',
+  address: '142 Moonwell Way, Glassline District, Aureline Central',
   phone: '+1 (202) 555-0142',
   email: 'elara.vale@example.com',
   district: 'Glassline District, Aureline Central',
