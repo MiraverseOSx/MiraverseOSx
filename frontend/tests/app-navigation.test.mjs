@@ -108,7 +108,9 @@ test('repeated section requests survive stale consumption and refocus a minimize
 
 test('old shortcuts migrate in order, merge duplicate owners and preserve appearance', () => {
   const preferences = restoreDesktopPreferences({ themeId: 'pine', shortcutIds: ['traceForensics', 'dgaos', 'board', 'spellforge', 'serviceDirectory', 'questnotice', 'maispace'] });
-  assert.deepEqual(preferences, { themeId: 'pine', shortcutIds: ['dgaos', 'jobs', 'campus', 'browser', 'maispace'] });
+  assert.equal(preferences.themeId, 'pine');
+  assert.deepEqual(preferences.shortcutIds, ['dgaos', 'jobs', 'campus', 'browser', 'maispace']);
+  assert.equal(preferences.layoutVersion, 1);
   for (const [id] of destinations) assert.equal(DESKTOP_APP_IDS.includes(id), false);
   assert.ok(DESKTOP_APP_IDS.includes('maispace'));
   assert.ok(DESKTOP_APP_IDS.includes('pulse'));
@@ -140,7 +142,9 @@ test('consolidated navigation preserves saved progress and external records, wit
   const reloaded = await fresh();
   assert.deepEqual(reloaded.getState().gameplay, saved.state.gameplay);
   assert.equal(reloaded.getState().wallpaper, '/saved-wallpaper.png');
-  assert.deepEqual(reloaded.getState().desktopPreferences, { themeId: 'autumn', shortcutIds: ['jobs', 'dgaos', 'campus'] });
+  assert.equal(reloaded.getState().desktopPreferences.themeId, 'autumn');
+  assert.deepEqual(reloaded.getState().desktopPreferences.shortcutIds, ['jobs', 'dgaos', 'campus']);
+  assert.deepEqual(Object.keys(reloaded.getState().desktopPreferences.layouts), ['everyday', 'personal', 'work']);
   assert.deepEqual(reloaded.getState().windows, []);
   assert.deepEqual(reloaded.getState().workspaceRequests, {});
   const afterReload = structuredClone(reloaded.getState().gameplay.player);

@@ -273,8 +273,8 @@ export default function TraceApp() {
       </div>
     ) : <div className="dga-workstation-root flex-1 flex flex-col h-full w-full overflow-hidden bg-[#ebe9f3] text-[#0f0d1a] font-sans select-none relative">
       {/* ─── 1. TOP COMMAND STRIP (Tactical Agency Toolbar) ─── */}
-      <header className="h-[42px] min-h-[42px] max-h-[42px] bg-[#1e1f2b] border-b border-[#2e3042] px-3 flex items-center justify-between gap-3 sticky top-0 z-40 shadow-sm text-white select-none">
-        <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-[#a855f7]/50 to-transparent" />
+      <header className="h-[36px] min-h-[36px] max-h-[36px] bg-[#1a1b26] border-b border-[#2d2f40] px-3 flex items-center justify-between gap-3 sticky top-0 z-40 shadow-xs text-white select-none">
+        <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-[#a855f7]/40 to-transparent" />
 
         {/* Left: Station Dropdown + Home Action */}
         <div className="flex items-center gap-2">
@@ -282,10 +282,10 @@ export default function TraceApp() {
           <button
             type="button"
             onClick={handleReturnHome}
-            className="h-[28px] flex items-center gap-1.5 px-2.5 bg-[#2a2c3d] hover:bg-[#34374c] border border-[#383a50] rounded text-white transition cursor-pointer text-[11px] font-bold"
+            className="h-[25px] flex items-center gap-1.5 px-2 bg-[#252737] hover:bg-[#313448] border border-[#393c52] rounded-[4px] text-[#e0deef] hover:text-white transition cursor-pointer text-[10.5px] font-mono font-bold"
             title="Return to Laboratory Home"
           >
-            <Home size={13} className="text-[#c1b4d9]" />
+            <Home size={12} className="text-[#c1b4d9]" />
             <span className="hidden sm:inline">HOME</span>
           </button>
 
@@ -294,12 +294,12 @@ export default function TraceApp() {
             <button
               type="button"
               onClick={() => setStationMenuOpen(!stationMenuOpen)}
-              className="h-[28px] flex items-center gap-1.5 px-2.5 bg-[#2a2c3d] hover:bg-[#34374c] border border-[#383a50] rounded text-white transition cursor-pointer text-[11px] font-bold"
+              className="h-[25px] flex items-center gap-1.5 px-2.5 bg-[#252737] hover:bg-[#313448] border border-[#393c52] rounded-[4px] text-[#e0deef] hover:text-white transition cursor-pointer text-[10.5px] font-mono font-bold"
               title="Select Forensic Station"
             >
-              <FlaskConical size={13} className="text-[#c1b4d9]" />
+              <FlaskConical size={12} className="text-[#c1b4d9]" />
               <span className="font-semibold tracking-wide uppercase">LAB STATIONS</span>
-              <ChevronDown size={12} className="text-[#a4a2c4]" />
+              <ChevronDown size={11} className="text-[#a4a2c4]" />
             </button>
 
             {stationMenuOpen && (

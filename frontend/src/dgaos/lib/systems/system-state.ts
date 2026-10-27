@@ -595,6 +595,8 @@ export function completeDueSystemRequest(state: DGAState, event: ScheduledEvent)
 
   const profile = getSystemProfile(request.targetSystem);
   const c = findCase(state, request.caseId);
+  // A real linked laboratory examination must be finalized and released by TRACE.
+  if (request.targetSystem === 'TRACE' && c?.linkedTraceCaseId && request.legacyForensicRequestId) return { result: null, events: [] };
   const described = profile.describeFinding(request, c);
   const summary = described.charAt(0).toUpperCase() + described.slice(1);
 

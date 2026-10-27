@@ -1,0 +1,331 @@
+npm notice run miraverse-frontend@0.1.0 test
+npm notice run node --test tests/*.test.mjs
+✔ a driver reference and unrelated archive career XP do not reveal the protected lineage story (8197.1278ms)
+✔ legacy destinations resolve without treating inherited object keys as aliases (1.4979ms)
+✔ every old launcher route opens only its owning workspace and delivers the section (827.5486ms)
+✔ string aliases and custom window IDs cannot recreate retired app content (39.5801ms)
+✔ repeated section requests survive stale consumption and refocus a minimized owner (66.458ms)
+✔ old shortcuts migrate in order, merge duplicate owners and preserve appearance (0.194ms)
+✔ consolidated navigation preserves saved progress and external records, with no runtime requests persisted (113.368ms)
+✔ older and malformed mail preferences gain safe independent defaults (3.2765ms)
+✔ contacts and group membership support edit, deletion and reload (191.602ms)
+✔ labels, folders, spam and snooze persist without editing attachment rewards (82.4617ms)
+✔ rules process new incoming mail once and can be applied explicitly to existing mail (53.9694ms)
+✔ conversation list groups by explicit thread while preserving message order (0.3479ms)
+✔ rich text retains formatting and strips executable markup and attributes (1.2605ms)
+✔ rich drafts and sent mail keep formatting and custom signatures after hydration (102.0331ms)
+✔ conversation actions expand selected threads, preserve unrelated mail and survive reload (74.8416ms)
+✔ label drops are idempotent while the toggle control removes a label deliberately (23.5397ms)
+✔ saved names resolve to their address and canonical directory metadata enforces clearance (45.0331ms)
+✔ saved attachments appear once in File Explorer with source links and no objective or reward fields (71.3763ms)
+✔ malformed mailbox entries and collections recover without crashing the reader (27.6245ms)
+✔ restoring imported folder states really restores mail and held attachments cannot become rewards (23.756ms)
+✔ rapid drafts and transmissions receive distinct stable IDs (28.1067ms)
+✔ case evidence boards require current authorization, persist with case progress and never pay rewards (7881.3493ms)
+✔ editing then undoing an accepted report restores its receipt without duplicate reviews or rewards (171.0516ms)
+✔ malformed legacy docket collections do not interrupt dispatch and valid closed records stay closed (97.97ms)
+✔ report outlines and headings do not replace a player explanation, including cached old acceptances (138.7982ms)
+✔ source actions require current credentials and briefing, and do not issue credentials (66.6338ms)
+✔ five-app workflow supports different source orders, reload, revisions, immutable reports and one-time rewards (375.598ms)
+✔ review rejects missing, foreign, unacquired and unrelated evidence without judging prose keywords (0.5541ms)
+✔ public index exposes only the fixed publication; older completed cases cannot become new paid work (44.3695ms)
+✔ addresses normalize and unsupported schemes become inert network searches (4.1283ms)
+✔ tabs are independent, have one shared limit, and clean up when closed (8130.3437ms)
+✔ back/forward restore titles and a new route drops only the forward branch (75.0867ms)
+✔ bookmarks, tabs and history survive hydration without resetting gameplay (182.0548ms)
+✔ clearing history removes visit records and tab stacks while preserving bookmarks (196.2354ms)
+✔ old and partially malformed saves recover to usable navigation (0.3665ms)
+✔ opening an inter-app page and reopening the browser preserve its destination and empty bookmarks (112.091ms)
+✔ every old character ID survives and every complete source record is preserved (10.5278ms)
+✔ name variants merge under document names without merging distinct characters (0.6726ms)
+✔ all app projections read person-owned profiles and keep stable app IDs (60.0237ms)
+✔ mail uses existing registry identities and wrong patient and NPC associations are removed (55.4824ms)
+✔ case contexts, clinical fields, dialogue keys and immutable identities survive consolidation (7972.5211ms)
+✔ personal identity resolves stable IDs and legacy aliases, never names or the first citizen (1.6485ms)
+✔ personal issuance history excludes other citizens and agency records without rewriting issued facts (1.4784ms)
+✔ reading personal records never seeds, migrates, or changes registry and issuance data (0.525ms)
+✔ linking is an existing-administrator action, persists one reference and leaves source records intact (8170.6686ms)
+✔ a player switch during an asynchronous link cannot attach the previous administrator selection (84.0668ms)
+✔ identity calibration preserves pre-existing IDs and cannot repeat payouts or change a linked identity (159.3214ms)
+✔ CIVINET claim history and old shortcuts survive the Citizen Hub consolidation (175.4388ms)
+✔ issuance reads support both stored identity keys and do not reissue documents (0.5813ms)
+✔ new saves start with one personal mailbox and initial mail stays addressed to it after reload (128.6796ms)
+✔ membership requires a real issued relationship or accepted contract, never rank, reputation, or affiliation text (0.4927ms)
+✔ membership administration checks the current signed-in administrator and does not create mailboxes or rewards (7949.8106ms)
+✔ accepted WORKNET employment grants workplace channel membership without issuing an email account (86.2234ms)
+✔ institutional issuance validates membership and domain, preserves account identity, and can suspend without deleting history (98.6716ms)
+✔ revoking membership blocks stale channel and sender actions immediately while keeping work and conversations (111.4274ms)
+✔ old accounts, drafts, claim IDs, and messages survive migration without silently authorizing institutional sends (135.9882ms)
+✔ personal Comms history migrates to phone once, preserves the source, and phone texts and drafts persist (31.2748ms)
+✔ malformed saved access data fails closed and a diagnostic cannot be awarded twice (14.6588ms)
+✔ old saves receive independent defaults while empty shortcut choices remain empty (4.3502ms)
+✔ saved shortcut IDs discard invalid values and duplicates, retain order and cap at eight (0.4775ms)
+✔ adding, removing, ordering and clearing shortcuts survive a reload (8480.2426ms)
+✔ older progress preserves gameplay, browser bookmarks and custom wallpaper when gaining desktop defaults (125.5028ms)
+✔ appearance themes persist independently from shortcuts and gameplay (162.59ms)
+✔ custom cases do not receive embassy story events, even after many ticks or matching task titles (31.5311ms)
+✔ legacy scheduled events cannot inject unrelated findings into custom or missing cases (1.9921ms)
+✔ registry links retain citizen IDs across cases and distinguish different people with the same name (3.9846ms)
+✔ rapid task and evidence creation does not reuse IDs when the clock is unchanged (10.6821ms)
+✔ TRACE case switching preserves edits and rejects unknown or incomplete imports (6.7885ms)
+✔ TRACE findings cannot attach through a missing or mismatched request (1.4873ms)
+✔ TRACE retains both the active case and library after a failed storage write (2.5732ms)
+✔ TRACE respects restored empty records and reloads unfinished drafts (24.189ms)
+✔ all built-in VAULT files resolve to authored content with distinct reader types (6.8646ms)
+✔ legacy section documents retain their text, form fields, map data and archive lock (0.4125ms)
+✔ mail and saved assignment formats retain metadata and plain text without mutating records (1.2494ms)
+✔ unrelated mail attachments keep their own content and remain identical in VAULT (0.6648ms)
+✔ encrypted records require decryption or their stated skill level before inspection (0.2673ms)
+✔ reader sessions isolate form drafts and decryption across files and changed revisions (0.3511ms)
+✔ legacy document actions route to their owner without issuing credits or agency credentials (0.207ms)
+✔ board migration preserves acquired nodes while rejecting hidden, malformed and duplicate links (7.3571ms)
+✔ board input is bounded and connections disappear when access to an acquired source is removed (1.0581ms)
+✔ external destinations preserve fictional aliases and reject executable schemes or credentials (1.9927ms)
+✔ local destinations are restricted to explicit local HTML files (0.5015ms)
+✔ service editor accepts pasted domains and preserves destination validation (0.8397ms)
+✔ directory has the supplied 11 applications and safely restores edited links (1.3344ms)
+✔ local HTML is escaped into a restricted child frame rather than the app origin (0.3169ms)
+✔ native launcher removes its capability from the URL and handles acknowledged failures (18.9275ms)
+✔ field sessions recover bounded positions and known evidence from older or malformed saves (2.0893ms)
+✔ field actions require an active briefed order; close/reload preserves findings and pays an operation once (8245.6111ms)
+✔ all three sites require their own profile and validate registration (8010.5612ms)
+✔ profiles update through a whitelist and keep their original join date (107.2533ms)
+✔ each site accepts its own form, rejects malformed values, and deduplicates repeat submissions (101.5499ms)
+✔ partial drafts survive reload and are cleared only for the submitted form (149.9008ms)
+✔ revisions keep references, original submission dates, and accurate revision counts (59.5966ms)
+✔ withdrawal preserves records, blocks editing, and can be reversed (66.9932ms)
+✔ another character cannot change site records or reuse a registered site handle (60.5747ms)
+✔ site profiles and received records persist without granting rewards or editing world state (178.9937ms)
+✔ civic verification does not detach the same character from local site profiles (0.2068ms)
+✔ unknown IDs and malformed saves stay playable with old-save defaults (43.5765ms)
+✔ interface defaults are compact and system; invalid or older records are safely normalized (2.117ms)
+✔ appearance and density survive storage reload without touching gameplay records (0.6863ms)
+✔ explicit appearance overrides the device while system follows it (0.1798ms)
+✔ open tabs synchronize appearance only, handle resets and unsubscribe cleanly (0.5337ms)
+✔ universal light colors keep labels, metadata and primary actions readable (1.0432ms)
+✔ universal dark colors keep labels, metadata and primary actions readable (0.2064ms)
+✔ local full access persists credentials without resetting the character or issuing rewards (111.0434ms)
+✔ the explicit local credential grant is unavailable on remote hosts and when signed out (1.1514ms)
+✔ MAI-SPACE-001: Custom widgets schema & layout normalization (2.6896ms)
+✔ MAI-SPACE-002: View count increment and comment pinning (4.1764ms)
+✔ MAI-SPACE-003: NPC Reactivity topic matching & dialogue generation (0.5567ms)
+✔ MAI-SPACE-004: Cycle tick reactivity dispatches NPC comments & notifications (0.7083ms)
+✔ MAI-SPACE-005: Direct guestbook signing generates immediate NPC response (0.4749ms)
+✔ renamed NPC aliases retain authorship and repair only unchanged imported posts (5.8235ms)
+✔ legacy profiles migrate without inventing featured friends, losing posts, or importing world logs (1.8356ms)
+✔ layout normalization clamps freeform geometry and excludes executable styles and template content (0.515ms)
+✔ publishing and restoring layout versions never rolls back profile content or privacy (2.8308ms)
+✔ friend requests require a later world cycle and Top 8 accepts only connected citizens (1.9751ms)
+✔ blocking removes featured connections and rejects stale comments and private access (5.4485ms)
+✔ rich posts sanitize content, preserve drafts, and cannot comment on another target reply (1.6803ms)
+✔ albums preserve captions and order while audience changes revoke direct source access (2.317ms)
+✔ groups enforce membership for discussions and require approval for private circles (5.879ms)
+✔ events separate invitations RSVP and actual attendance with once-only private memories (2.9774ms)
+✔ meaningful conversation is scoped once and does not generate arbitrary repeated reactions (1.511ms)
+✔ malformed saved collections and unknown layouts restore to usable records (0.7883ms)
+✔ playlist order and consented tags persist without creating attendance or relationship points (2.5857ms)
+✔ original profile music is a real PCM WAV asset (53.8408ms)
+✔ MAI.SPACE and phone share drafts read state and block enforcement (256.974ms)
+✔ social progress survives OS hydration and welcome money cannot repeat after unfriend (7435.9455ms)
+✔ shared albums and calendars recheck membership and exclude nonmember invitations (2.6579ms)
+✔ blog attachments preserve only known image references across save hydration (1.3654ms)
+✔ offline worker precaches the shell and removes only its own obsolete caches (82.1829ms)
+✔ offline module and CSS requests match public precache entries despite Vary: Origin (2.9675ms)
+✔ offline navigation falls back to the shell while APIs and foreign requests are untouched (2.2696ms)
+✔ MEDSTAT renders its chart while the asynchronous citizen registry is still loading (387.9113ms)
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+✔ unknown and reserved assignment IDs are rejected without changing progress (7818.0104ms)
+✔ malformed work-stage values return validation feedback instead of throwing (0.8996ms)
+✔ gameplay and wallpaper survive a fresh store while runtime windows are excluded (193.5837ms)
+✔ signing back in resumes earned credits, level, and onboarding (142.8425ms)
+✔ notice completion requires verified world objective and pays exactly once, including after reload (180.8076ms)
+✔ WORKNET-002: WorkNet missions require actual domain work (not generic buttons) and persist completion (102.6383ms)
+✔ HOMECRAFT-001 & SpellForge: Housing purchases grant +40 XP & +10 roomComfort permanently, and SpellForge prevents infinite farming (106.1342ms)
+✔ FAITH-003, MAI.SPACE-004, and Formal Case Reasoning enforce canonical progression rules (136.1458ms)
+✔ partial saves gain new defaults without restoring cleared conditions (37.8793ms)
+✔ corrupt or unavailable storage leaves a playable session (70.1715ms)
+✔ AureMail Decisions 006-011 enforce multi-account MAID links, persisted mailbox state, hybrid replies, clearance gates, and separated file vs. reward attachments (71.4638ms)
+✔ GAMEPLAY-012 & GAMEPLAY-013: Rest restores stamina/health conditionally without repeatable XP, and career promotions require profession qualifications beyond raw XP (63.1049ms)
+✔ opportunity availability reflects clearance, paid shifts, new cycles and permanent completions (0.8476ms)
+✔ assignment dispatches arrive once by email and phone, with persistent call history (73.6993ms)
+✔ choosing a quest saves its briefing, requires review, and produces one accepted completion receipt (69.9887ms)
+✔ adventure unlocks require started activities and accepted work, persist, and do not repay shared tasks (137.0838ms)
+✔ GAMEPLAY-018: unrelated activity, legacy completion flags and procedure plans cannot verify any assignment (35.8511ms)
+✔ GAMEPLAY-018: engineering requires all six stages; drafts, outputs and pay survive reload (114.8274ms)
+✔ GAMEPLAY-019: minor errors are correctable; unsafe repair loses supplies and requires remediation (108.1713ms)
+✔ GAMEPLAY-018: the same diagnostic receipt feeds separate quest, journey and adventure requirements (32.6615ms)
+✔ work-order scope: copied receipts and wrong tracks cannot verify a different assignment (37.4595ms)
+✔ repeat shifts use new cycle identities and require fresh work without reopening one-time rewards (81.5745ms)
+✔ clinical receipt: correct patient care supplies one task, requires a chart, and pays only once across apps (36.904ms)
+✔ clinical work completed before opening WorkNet links the same saved receipt (33.8631ms)
+✔ environmental work requires three separately labeled specimens, analysis and a report (41.2082ms)
+✔ accreditation requires its practical and thesis; civic quests remain available without employment (29.2733ms)
+▶ remaining profession workflows accept their own deliverables and clear exactly once
+  ✔ ms-shift-02 (45.9132ms)
+  ✔ ms-shift-03 (28.2651ms)
+  ✔ ms-spec-02 (75.9782ms)
+  ✔ ms-spec-03 (23.5548ms)
+  ✔ ms-dev-02 (22.1961ms)
+  ✔ ms-field-02 (29.5165ms)
+  ✔ qn-01 (28.9501ms)
+  ✔ qn-03 (25.8014ms)
+✔ remaining profession workflows accept their own deliverables and clear exactly once (281.234ms)
+✔ old paid patient charts can be reviewed for evidence without another clinical reward (25.7188ms)
+✔ WorkNet clinical stages share the Faith Medical receipt and cannot claim duplicate pay (60.9234ms)
+✔ professional clearance and stamina gates preserve saved work while ordinary quests stay open (41.8851ms)
+✔ AureMail enforces one active starter personal account and supports revoking institutional accounts without losing history (7601.5837ms)
+✔ Comms supports organization invitations, acceptance, declining, leaving, and removal across all 9 organizations without auto-issuing email or rewards (147.2566ms)
+✔ AURA Registry enforces role-based access, record permissions, and document issuance authorization (88.6108ms)
+✔ DGAOS enforces agency permissions, role-specific workspaces, case clearance filtering, and authorized TRACE access (1.9507ms)
+✔ Creator Studio state foundations support world pause/resume, draft staging, controlled publishing, and checkpoint restoration with historical preservation (80.8291ms)
+✔ twilight: phone text and action labels meet WCAG AA contrast (2.3602ms)
+✔ aureline: phone text and action labels meet WCAG AA contrast (0.4512ms)
+✔ agency: phone text and action labels meet WCAG AA contrast (0.2198ms)
+✔ offline manifest contains final emitted assets after CSS-only JavaScript chunks are removed (437.4711ms)
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+✔ hierarchy expresses scope and Tasks exist only as assigned objectives (7620.0509ms)
+✔ mysteries and hidden places cannot be listed or opened before contextual knowledge (99.3326ms)
+✔ hybrid discovery uses clues, journal entries, optional Quests, Adventure invitations and exploration rewards (181.3486ms)
+✔ an established relationship can reveal directions without assigning a Task (62.7216ms)
+✔ daily routines remain manual, adapt to familiarity, and do not generate formal progress or XP (133.9413ms)
+✔ everyday time advances the simulation without creating reward loops (60.3006ms)
+✔ Journey chapters complete independently while the Journey remains ongoing (158.3152ms)
+✔ incidents plus exploration can develop an emergent Adventure with a persistent branch consequence (96.6716ms)
+✔ Quest approaches produce different interactions and one shared completion reward (36.0523ms)
+✔ high skill and Career XP still require actual relevant professional experience (72.6222ms)
+✔ old saves retain earned unlocks and receive empty new systems without canonizing proposed concepts (36.8898ms)
+✔ cinematic scenes are optional story records with no repeatable rewards (35.8173ms)
+✔ public search handles prefixes, swapped query order and minor typos offline (8.3209ms)
+✔ case public index exposes its fixed publication without private evidence or solution material (3.7768ms)
+✔ public news follows world exposure without copying private records or modifying progress (1.5759ms)
+✔ sections, article-body search, saved filtering and empty results combine (1.1522ms)
+✔ briefing and article use the same bounded world exposure from old saves (5.4993ms)
+✔ reading preferences restore safely from old and malformed saves (8.1468ms)
+✔ publication addresses preserve sections, searches and saved article context (1.3221ms)
+✔ publication search points to article URLs and excludes private world data (0.6467ms)
+✔ report formatting is sanitized, survives reload, and preserves plain-text validation and accepted receipts (7809.5046ms)
+✔ all topic packs and unfamiliar searches provide sites, images, files, folders and maps (14.8237ms)
+✔ dog aliases share stable addresses and authored content with both photography and illustration (6.3295ms)
+✔ unknown queries create repeatable and varied research records rather than invented literal photographs (1.6534ms)
+✔ folder children and all map listings resolve to real records (0.9911ms)
+✔ searching and saving do not modify gameplay or assignment receipts and duplicate downloads are prevented (7514.917ms)
+✔ download a document then the entire folder without duplicated files or missing siblings (203.1447ms)
+✔ saved content, versions, bookmarks and downloads survive reload without regenerated text (143.5426ms)
+✔ old saves gain empty content and malformed or assignment-like downloads cannot enter the web library (0.8216ms)
+✔ new world topics and existing reading collections retain their saved editions and files (1.9779ms)
+✔ legacy botanical photo metadata is repaired without losing saved notes (0.9063ms)
+✔ public search gates sealed records, private audits and undiscovered investigation details (0.2691ms)
+✔ external registry starts empty and only explicit matching http(s) links are eligible (0.3544ms)
+✔ long queries retain distinct readable download filenames with document extensions (0.8214ms)
+✔ malformed saved map and image metadata are rejected before rendering (0.6301ms)
+✔ incomplete saved collections cannot crash download recovery or leave broken links (1.2725ms)
+✔ normal windows keep 16:9 and fit between the menu and dock (2.022ms)
+✔ fullscreen fills the entire desktop and restore returns the original normal geometry (1.3279ms)
+✔ dragged or previously saved offsets cannot hide window controls off screen (0.3519ms)
+✔ WORKNET light appearance maintains readable body, metadata, actions and focus colors (1.7599ms)
+✔ WORKNET dark appearance maintains readable body, metadata, actions and focus colors (0.5129ms)
+✔ delegation checks current pathway, contract, clearance, division, availability and competence (6.0861ms)
+✔ work advances across closing and hydration, not wall-clock waits or repeated clicks (2.2488ms)
+✔ returned dockets resume after another game segment and require reading the revision (14.5126ms)
+✔ budget allocations affect verification, training eligibility and leave coverage without minting money (13.8729ms)
+✔ subordinate leave is decided once, requires coverage, and changes availability for the approved segment (2.9864ms)
+✔ legacy completed dockets remain archived, old unrestricted budgets are bounded, schedules remain flexible (0.9421ms)
+✔ coworker routine follows world time; ordinary social clicks cannot repeatedly raise stats (1.0312ms)
+✔ store salary is 150 per current cycle, honors clearance, rejects unknown contracts, and does not backpay skipped cycles (4.313ms)
+✔ runtime pathway validation and shared world-save hydration retain oversight and prevent repeat department payout (69.0492ms)
+✔ malformed optional saves recover and duplicate legacy duties share one department receipt (0.7715ms)
+✔ assignment links issue an explicit runtime entry request while saved journal history does not (75.164ms)
+Miraverse progress could not be saved on this device.
+Miraverse progress could not be saved on this device.
+Miraverse progress could not be saved on this device.
+Miraverse progress could not be saved on this device.
+Miraverse progress could not be saved on this device.
+✔ WORKNET-001 & WORKNET-002: Institutional branding and modern visual identity registry (1.6923ms)
+✔ WORKNET-004 & WORKNET-005: Workplace Switcher and multi-employer affiliations (0.3513ms)
+✔ WORKNET-006 & WORKNET-011: Option C Full Workplace Life & 5 NPC relationship dimensions (0.3759ms)
+✔ WORKNET-007: Option C Hybrid Work (routine, dynamic, and authored) (0.3507ms)
+✔ WORKNET-009 & WORKNET-010: Career promotion requires verified qualifications and avoids duplicate rewards (0.8167ms)
+✔ WORKNET-011 & WORKNET-012: Dual-Track progression and active supervisory delegation (3.0336ms)
+✔ WORKNET-015: Hybrid Base Stipend dispatches per cycle and avoids duplicate disbursement (3.9547ms)
+✔ WORKNET-016 & WORKNET-017: Flexible open shifts and scaled institutional complexity tiers (0.2954ms)
+✔ citizen refresh ignores unrelated saves and preserves explicit focus changes (2.5539ms)
+✔ citizen messages require the current window and origin (0.6569ms)
+✔ Treasury accepts numeric strings and safely formats network readings (21.3152ms)
+✔ Treasury rejects error envelopes and invalid values instead of rendering them (0.329ms)
+✔ portable backups round-trip agency, TRACE, draft, issued-document and per-case records (8.5933ms)
+✔ unknown keys and invalid record shapes are rejected before any restore writes (1.6858ms)
+✔ restore preserves the displaced device world and rolls back a failed write (4.5689ms)
+✔ first connection imports existing progress and mail together without resetting local state (50.4751ms)
+✔ a fresh browser restores the database world before stores initialize (3.8342ms)
+✔ offline changes remain local and upload safely after reconnection (5.7774ms)
+✔ unchanged local progress adopts a newer database revision on next boot (6.7962ms)
+✔ independent changed copies cannot silently overwrite one another (10.4593ms)
+✔ a stale write receives conflict instead of clobbering a concurrent commit (3.2294ms)
+✔ explicitly keeping the device copy preserves the displaced database snapshot (2.8516ms)
+✔ explicitly loading the database restores the whole snapshot and requests a fresh app hydration (1.447ms)
+✔ changes made during an in-flight save are committed on the following sync (6.3118ms)
+✔ unsupported endpoints and malformed snapshots keep device progress usable (1.5022ms)
+✔ unrelated local storage and credentials never enter the world snapshot (0.4283ms)
+✔ unavailable save servers back off, cap retries, and permit explicit reconnection (5.5095ms)
+✔ WorkNet acceptance, mail, briefing files, completion receipts and career progress restore as one world (7242.7192ms)
+ℹ tests 260
+ℹ suites 0
+ℹ pass 260
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 10820.1893

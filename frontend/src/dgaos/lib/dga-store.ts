@@ -100,6 +100,9 @@ import { eventCommsEngine } from './engine/event-comms-engine';
 export { eventCommsEngine } from './engine/event-comms-engine';
 import { allocateIncidentCaseId, buildManualIncidentCase, type ManualIncidentInput } from './dga-incident';
 import { findReusableForensicRequest } from './dga-trace-match';
+import { createRecordId } from './record-id';
+import { applyOperationsCommand, createOperations, type OperationsCommand } from './operations';
+import { hasRequiredClearance, resolveDGAAuthority, type DGAAuthorityContext } from './dga-permissions';
 
 const STORAGE_KEY = 'DGAOS_WORKSTATION_STATE_V3';
 
@@ -112,6 +115,7 @@ export function createDefaultDGAState(): DGAState {
   const now = new Date().toISOString();
 
   return {
+    operations: createOperations(),
     profile: { ...primarySeedAgent },
     cases: JSON.parse(JSON.stringify(seedCases)),
     people: JSON.parse(JSON.stringify(seedPeople)),
@@ -134,7 +138,7 @@ export function createDefaultDGAState(): DGAState {
       offlineEventsSummary: null
     },
     session: {
-      sessionId: `SESS-${Date.now()}`,
+      sessionId: createRecordId('SESS'),
       startTime: now,
       lastActiveTime: now,
       casesWorked: 0,
@@ -248,12 +252,19 @@ export class LocalStorageDGAAdapter implements DGAStorageAdapter {
 
 // Global store instance
 const currentAdapter: DGAStorageAdapter = new LocalStorageDGAAdapter();
-let cachedState: DGAState = createDefaultDGAState();
-let isInitialized = false;
-
-const stateListeners = new Set<(state: DGAState) => void>();
+// Vite can load a new module URL during a live update. All copies must share the
+// same workstation and subscribers instead of creating a second empty docket.
+interface DGARuntime { state: DGAState; initialized: boolean; listeners: Set<(state:DGAState)=>void> }
+const runtimeKey=Symbol.for('miraverse.dga.workstation.runtime');
+const runtime:DGARuntime=(globalThis as any)[runtimeKey] ||= {state:createDefaultDGAState(),initialized:false,listeners:new Set()};
+let cachedState: DGAState = runtime.state;
+let isInitialized = runtime.initialized;
+const stateListeners = runtime.listeners;
+stateListeners.add(state=>{cachedState=state;isInitialized=runtime.initialized;});
 
 function notifyListeners() {
+  runtime.state=cachedState;
+  runtime.initialized=isInitialized;
   // Mutations edit cachedState in place; hand out a fresh top-level object so React state setters re-render.
   const snapshot: DGAState = { ...cachedState };
   stateListeners.forEach((l) => {
@@ -275,7 +286,7 @@ export async function initDGAStore(): Promise<DGAState> {
   cachedState = await currentAdapter.loadState();
 
   // Process offline progression upon startup
-  const { updatedState, events } = processOfflineProgression(cachedState);
+  const { updatedState, events } = isWorldPaused() ? { updatedState: cachedState, events: [] } : processOfflineProgression(cachedState);
   cachedState = updatedState;
   await currentAdapter.saveState(cachedState);
 
@@ -287,6 +298,45 @@ export async function initDGAStore(): Promise<DGAState> {
 
 export function getDGAState(): DGAState {
   return cachedState;
+}
+
+/** Persist the entire connected change before publishing it to any subscriber. */
+export async function runOperationsCommand(command: OperationsCommand, authority?: DGAAuthorityContext): Promise<string> {
+  const auth = authority || resolveDGAAuthority({ profile: cachedState.profile });
+  if (!auth.allowedWorkspaces.includes('operations')) throw new Error('Operations access requires agency credentials.');
+  const operationState = cachedState.operations;
+  const referencedCaseIds: string[] = [];
+  if ('caseId' in command && command.caseId) referencedCaseIds.push(command.caseId);
+  if ('id' in command && command.id && operationState) {
+    for (const records of [operationState.warrants, operationState.proceedings, operationState.inmates, operationState.records, operationState.incidents]) {
+      const record = records.find(r => r.id === command.id); if (record?.caseId) referencedCaseIds.push(record.caseId);
+    }
+    const call = operationState.calls.find(c => c.id === command.id);
+    const incident = operationState.incidents.find(i => i.id === call?.incidentId);
+    if (incident?.caseId) referencedCaseIds.push(incident.caseId);
+  }
+  if ('proceedingId' in command) { const p = operationState?.proceedings.find(p => p.id === command.proceedingId); if (p) referencedCaseIds.push(p.caseId); }
+  if ('incidentId' in command) { const i = operationState?.incidents.find(i => i.id === command.incidentId); if (i?.caseId) referencedCaseIds.push(i.caseId); }
+  if ('callId' in command) { const call = operationState?.calls.find(c => c.id === command.callId); const i = operationState?.incidents.find(i => i.id === call?.incidentId); if (i?.caseId) referencedCaseIds.push(i.caseId); }
+  const response = operationState?.response;
+  if ('assignmentId' in command) { const a=response?.assignments.find(a=>a.id===command.assignmentId); const i=operationState?.incidents.find(i=>i.id===a?.incidentId); if(i?.caseId) referencedCaseIds.push(i.caseId); }
+  if ('unitId' in command) { const a=response?.assignments.find(a=>a.unitId===command.unitId&&a.status!=='cleared'); const i=operationState?.incidents.find(i=>i.id===a?.incidentId); if(i?.caseId) referencedCaseIds.push(i.caseId); }
+  if ('scenarioId' in command) { const s=response?.scenarios.find(s=>s.id===command.scenarioId); if(s?.caseId) referencedCaseIds.push(s.caseId); }
+  if (command.type==='response-tick') { for(const a of response?.assignments.filter(a=>a.status!=='cleared'&&(!command.incidentIds||command.incidentIds.includes(a.incidentId)))||[]) { const i=operationState?.incidents.find(i=>i.id===a.incidentId); if(i?.caseId) referencedCaseIds.push(i.caseId); } }
+  if (referencedCaseIds.some(id => { const c = cachedState.cases.find(c => c.id === id); return c && !hasRequiredClearance({ clearanceLevel: auth.clearanceLevel }, c.classification); })) throw new Error('Your clearance does not permit access to this case.');
+  const { state, id } = applyOperationsCommand(cachedState, command, { name: cachedState.profile.name, canApproveLegal: auth.role === 'command_director' });
+  commitOperationsSnapshot(state);
+  return id;
+}
+
+function commitOperationsSnapshot(state:DGAState) {
+  if (typeof window !== 'undefined') {
+    const serialized = JSON.stringify(state);
+    localStorage.setItem(STORAGE_KEY, serialized);
+    if (localStorage.getItem(STORAGE_KEY) !== serialized) throw new Error('The workstation could not save this change. Please retry.');
+  }
+  cachedState = state;
+  notifyListeners();
 }
 
 export function subscribeDGAState(listener: (state: DGAState) => void): () => void {
@@ -345,6 +395,13 @@ export async function runSimulationTick(): Promise<void> {
   if (isWorldPaused()) return;
   const { updatedState, hasChanges, events } = processSimulationTick(cachedState);
   cachedState = updatedState;
+  const response=cachedState.operations?.response;
+  if(cachedState.simulation.status==='live' && response?.automatic && response.assignments.some(a=>a.status!=='cleared'&&a.dueAt<=new Date().toISOString()&&!response.units.find(u=>u.id===a.unitId)?.panic)) {
+    const result=applyOperationsCommand(cachedState,{type:'response-tick'},{name:'NPC Dispatch',canApproveLegal:false});
+    commitOperationsSnapshot(result.state);
+    events.forEach(evt=>emitDgaEvent(evt));
+    return;
+  }
   if (hasChanges) {
     await persistAndNotify();
   } else {
@@ -452,7 +509,7 @@ export async function endCurrentShift(notes?: string): Promise<DGAState['session
 
   // Start fresh session
   cachedState.session = {
-    sessionId: `SESS-${Date.now()}`,
+    sessionId: createRecordId('SESS'),
     startTime: new Date().toISOString(),
     lastActiveTime: new Date().toISOString(),
     casesWorked: 0,
@@ -484,7 +541,7 @@ export async function toggleDGATask(caseId: string, taskId: string): Promise<boo
 
   // Timeline
   c.timeline.unshift({
-    id: `TL-${Date.now()}`,
+    id: createRecordId('TL'),
     timestamp: new Date().toISOString(),
     type: 'TASK_COMPLETED',
     actor: cachedState.profile.name,
@@ -549,7 +606,7 @@ export async function createDGATask(
   if (!c) return null;
 
   const newTask: Task = {
-    id: `TSK-${Date.now().toString().slice(-4)}`,
+    id: createRecordId('TSK'),
     completed: false,
     ...taskInput
   };
@@ -559,7 +616,7 @@ export async function createDGATask(
   cachedState.session.actionsTaken += 1;
 
   c.timeline.unshift({
-    id: `TL-${Date.now()}`,
+    id: createRecordId('TL'),
     timestamp: new Date().toISOString(),
     type: 'TASK_COMPLETED',
     actor: cachedState.profile.name,
@@ -610,7 +667,7 @@ export async function updateDGATask(
   // Audit history
   task.activityHistory = task.activityHistory || [];
   task.activityHistory.unshift({
-    id: `ACT-${Date.now()}`,
+    id: createRecordId('ACT'),
     timestamp: now,
     actor: cachedState.profile.name,
     action: 'TASK_UPDATED',
@@ -669,7 +726,7 @@ export async function createDGASubtask(
   if (!parent) return null;
 
   const newSubtask: Task = {
-    id: `SUB-${Date.now().toString().slice(-4)}`,
+    id: createRecordId('SUB'),
     caseId,
     parentTaskId,
     title: subtaskInput.title || 'Operational Sub-Objective',
@@ -686,7 +743,7 @@ export async function createDGASubtask(
 
   parent.activityHistory = parent.activityHistory || [];
   parent.activityHistory.unshift({
-    id: `ACT-${Date.now()}`,
+    id: createRecordId('ACT'),
     timestamp: new Date().toISOString(),
     actor: cachedState.profile.name,
     action: 'SUBTASK_CREATED',
@@ -710,7 +767,7 @@ export async function addTaskComment(
   if (!task) return null;
 
   const newComment: TaskComment = {
-    id: `CMT-${Date.now()}`,
+    id: createRecordId('CMT'),
     author: cachedState.profile.name,
     authorRole: cachedState.profile.title,
     timestamp: new Date().toISOString(),
@@ -722,7 +779,7 @@ export async function addTaskComment(
 
   task.activityHistory = task.activityHistory || [];
   task.activityHistory.unshift({
-    id: `ACT-${Date.now()}`,
+    id: createRecordId('ACT'),
     timestamp: new Date().toISOString(),
     actor: cachedState.profile.name,
     action: 'COMMENT_ADDED',
@@ -811,7 +868,7 @@ export async function convertCommunicationToTask(
 
   const title = taskTitle || `Investigate Cable ${comm.id}: ${comm.subject}`;
   const newTask: Task = {
-    id: `TSK-${Date.now().toString().slice(-4)}`,
+    id: createRecordId('TSK'),
     caseId,
     title,
     description: `Originated from intelligence cable by ${comm.sender} at ${comm.timestamp}.\n\nContent:\n${comm.body}`,
@@ -909,7 +966,7 @@ export async function convertCommunicationToCase(
     forensicRequests: [],
     timeline: [
       {
-        id: `TL-${Date.now()}`,
+        id: createRecordId('TL'),
         timestamp: now,
         type: 'CASE_OPENED',
         actor: cachedState.profile.name,
@@ -993,7 +1050,7 @@ export async function applyCaseTemplate(templateId: string, customTitle?: string
     forensicRequests: [],
     timeline: [
       {
-        id: `TL-${Date.now()}`,
+        id: createRecordId('TL'),
         timestamp: now,
         type: 'CASE_OPENED',
         actor: cachedState.profile.name,
@@ -1048,7 +1105,7 @@ export async function addDGACaseNote(caseId: string, content: string): Promise<A
   if (!c || !content.trim()) return null;
 
   const newNote: AgentNote = {
-    id: `NOTE-${Date.now()}`,
+    id: createRecordId('NOTE'),
     agentId: cachedState.profile.id,
     agentName: cachedState.profile.name,
     timestamp: new Date().toISOString(),
@@ -1060,7 +1117,7 @@ export async function addDGACaseNote(caseId: string, content: string): Promise<A
   cachedState.session.actionsTaken += 1;
 
   c.timeline.unshift({
-    id: `TL-${Date.now()}`,
+    id: createRecordId('TL'),
     timestamp: new Date().toISOString(),
     type: 'NOTE_ADDED',
     actor: cachedState.profile.name,
@@ -1090,7 +1147,7 @@ export async function updateDGACaseStatus(
   c.updatedAt = new Date().toISOString();
 
   c.timeline.unshift({
-    id: `TL-${Date.now()}`,
+    id: createRecordId('TL'),
     timestamp: new Date().toISOString(),
     type: 'STATUS_CHANGED',
     actor: cachedState.profile.name,
@@ -1159,7 +1216,7 @@ export async function acceptAndSignDGACase(
 
     // High-priority case alert
     cachedState.alerts.unshift({
-      id: `ALT-DISPATCH-${Date.now()}`,
+      id: createRecordId('ALT-DISPATCH'),
       level: 'CRITICAL',
       title: 'DISPATCH: Biological Specimens Awaiting Forensic Intake',
       message: 'Dr. Gregory Thorne at St. Jude Metro transmitted Ambassador Vance toxicology panel. Requisition LC-MS in TRACE.',
@@ -1193,7 +1250,7 @@ export async function acceptAndSignDGACase(
     ];
 
     cachedState.alerts.unshift({
-      id: `ALT-CRASH-${Date.now()}`,
+      id: createRecordId('ALT-CRASH'),
       level: 'CRITICAL',
       title: 'DISPATCH: Motorcycle Fatal Crash Telemetry & Debris Impounded',
       message: 'State Highway Patrol impounded Vortex R-1000 motorcycle ECU, severed brake lines, and roadway chemical slick swabs for Docket INV-26-402.',
@@ -1206,7 +1263,7 @@ export async function acceptAndSignDGACase(
 
   // Initial timeline entry
   c.timeline.unshift({
-    id: `TL-SIGN-${Date.now()}`,
+    id: createRecordId('TL-SIGN'),
     timestamp: now,
     type: 'CASE_OPENED',
     actor: investigatorName,
@@ -1215,7 +1272,7 @@ export async function acceptAndSignDGACase(
 
   // Initial case activity entry
   const acceptActivity: AgencyActivityItem = {
-    id: `ACT-ACCEPT-${Date.now()}`,
+    id: createRecordId('ACT-ACCEPT'),
     timestamp: now,
     system: c.leadSystem,
     headline: `Jurisdiction Accepted: ${c.id}`,
@@ -1323,7 +1380,7 @@ export async function addEvidenceFromAttachment(
   if (!c) return null;
 
   const attObj: RichMailAttachment = typeof attachment === 'string' ? { name: attachment } : attachment;
-  const evidenceId = `EV-${caseId.replace(/[^a-zA-Z0-9]/g, '').slice(-3)}-ATT-${Date.now().toString().slice(-4)}`;
+  const evidenceId = createRecordId('EV', caseId);
   const category = attObj.type === 'lab_result'
     ? 'Toxicological Specimen'
     : attObj.type === 'telemetry'
@@ -1344,7 +1401,7 @@ export async function addEvidenceFromAttachment(
   c.evidence.unshift(newEvidence);
   c.updatedAt = new Date().toISOString();
   c.timeline.unshift({
-    id: `TL-EV-${Date.now()}`,
+    id: createRecordId('TL-EV'),
     timestamp: new Date().toISOString(),
     type: 'EVIDENCE_LOGGED',
     actor: cachedState.profile.name,
@@ -1388,7 +1445,7 @@ export async function createDGAForensicRequest(
   if (!c) return null;
 
   const freq: ForensicRequest = {
-    id: `FREQ-${Date.now().toString().slice(-4)}`,
+    id: createRecordId('FREQ'),
     dateRequested: new Date().toISOString(),
     status: 'Pending',
     ...request
@@ -1402,7 +1459,7 @@ export async function createDGAForensicRequest(
   eventCommsEngine.handleRequestSubmitted(cachedState, c.id, freq.id);
 
   c.timeline.unshift({
-    id: `TL-${Date.now()}`,
+    id: createRecordId('TL'),
     timestamp: new Date().toISOString(),
     type: 'FORENSIC_REQUESTED',
     actor: cachedState.profile.name,
@@ -1424,38 +1481,48 @@ export async function attachTraceResultToDgaCase(
   caseId: string,
   forensicRequestId: string,
   resultSummary: string,
-  traceCaseId: string
+  traceCaseId: string,
+  receipt?: { reportId: string; examId: string }
 ): Promise<boolean> {
+  const before = structuredClone(cachedState);
   const c = cachedState.cases.find((item) => item.id === caseId);
   if (!c) return false;
 
-  c.linkedTraceCaseId = traceCaseId;
   const freq = c.forensicRequests.find((r) => r.id === forensicRequestId);
+  if (!freq || !resultSummary.trim() || !traceCaseId.trim()) return false;
+  if (freq.linkedTraceCaseId && freq.linkedTraceCaseId !== traceCaseId) return false;
+  if (!freq.linkedTraceCaseId && c.linkedTraceCaseId && c.linkedTraceCaseId !== traceCaseId) return false;
+  const mirror = findSystemRequestByLegacyId(cachedState, forensicRequestId);
+  if (mirror && mirror.caseId !== caseId) return false;
+  if (receipt && (!receipt.reportId.trim() || !freq.traceExamIds?.includes(receipt.examId))) return false;
+  if (receipt && freq.traceReportReceipts?.some(r => r.reportId === receipt.reportId && r.examId === receipt.examId && r.summary === resultSummary)) return true;
+  c.linkedTraceCaseId = traceCaseId;
   if (freq && freq.status === 'Completed' && freq.resultSummary === resultSummary && freq.linkedTraceCaseId === traceCaseId) {
     return true;
   }
   if (freq) {
-    freq.status = 'Completed';
-    freq.resultSummary = resultSummary;
-    freq.completedAt = new Date().toISOString();
+    if (receipt) freq.traceReportReceipts = [...(freq.traceReportReceipts || []).filter(r => r.reportId !== receipt.reportId), { ...receipt, summary: resultSummary }];
+    const complete = !receipt || freq.traceExamIds!.every(id => freq.traceReportReceipts?.some(r => r.examId === id));
+    freq.status = complete ? 'Completed' : 'Under Analysis';
+    freq.resultSummary = receipt ? freq.traceReportReceipts!.map(r => `${r.reportId}: ${r.summary}`).join('\n\n') : resultSummary;
+    freq.completedAt = complete ? new Date().toISOString() : undefined;
     freq.linkedTraceCaseId = traceCaseId;
   }
 
   c.evidence.forEach((ev) => {
     if (freq?.evidenceIds.includes(ev.id)) {
       ev.custodyStatus = 'Transferred to TRACE';
-      ev.linkedTraceEvidenceId = `${traceCaseId}-EV`;
+      // Keep the laboratory's actual evidence ID assigned at intake.
     }
   });
 
   const linked = linkCaseToSystem(cachedState, { caseId, system: 'TRACE', from: 'DGA_CORE', externalRef: traceCaseId });
-  const mirror = findSystemRequestByLegacyId(cachedState, forensicRequestId);
   const finding = recordSystemFinding(cachedState, {
     system: 'TRACE',
-    requestId: mirror && !isTerminalRequestStatus(mirror.status) ? mirror.id : undefined,
+    requestId: freq.status === 'Completed' && mirror && !isTerminalRequestStatus(mirror.status) ? mirror.id : undefined,
     caseId,
     summary: resultSummary,
-    confidence: 'CONFIRMED',
+    confidence: 'MODERATE',
     priority: 'Critical',
     documents: [
       {
@@ -1465,7 +1532,8 @@ export async function attachTraceResultToDgaCase(
     ]
   });
 
-  await persistAndNotify();
+  try { await persistVerified(caseId); }
+  catch (error) { cachedState = before; notifyListeners(); throw error; }
 
   emitDgaEvent({
     type: 'TRACE_EXAM_COMPLETE',
@@ -1481,10 +1549,10 @@ export async function sendDGACommunication(
   commInput: Omit<typeof seedCommunications[0], 'id' | 'timestamp' | 'read' | 'threadId'>
 ): Promise<typeof seedCommunications[0]> {
   const newComm = {
-    id: `CABLE-${Date.now().toString().slice(-4)}`,
+    id: createRecordId('CABLE'),
     timestamp: new Date().toISOString(),
     read: true,
-    threadId: `TH-${Date.now().toString().slice(-4)}`,
+    threadId: createRecordId('TH'),
     ...commInput
   };
 
@@ -1668,7 +1736,7 @@ export async function addOrUpdateDGASuspectProfile(
   cachedState.session.actionsTaken += 1;
 
   c.timeline.unshift({
-    id: `TL-${Date.now()}`,
+    id: createRecordId('TL'),
     timestamp: new Date().toISOString(),
     type: 'NOTE_ADDED',
     actor: cachedState.profile.name,
@@ -1686,9 +1754,9 @@ export async function addDGACaseEvidence(
   const c = cachedState.cases.find((item) => item.id === caseId);
   if (!c) return null;
 
-  let evidenceId = item.id || `EV-${c.id}-${Date.now().toString().slice(-4)}`;
+  let evidenceId = item.id || createRecordId('EV', c.id);
   while (c.evidence.some((existing) => existing.id === evidenceId)) {
-    evidenceId = `EV-${c.id}-${Date.now().toString().slice(-4)}-${c.evidence.length + 1}`;
+    evidenceId = createRecordId('EV', c.id);
   }
   const collectedAt = item.dateRecovered?.trim() || 'Unknown';
   const now = new Date().toISOString();
@@ -1725,7 +1793,7 @@ export async function addDGACaseEvidence(
   cachedState.session.actionsTaken += 1;
 
   c.timeline.unshift({
-    id: `TL-${Date.now()}`,
+    id: createRecordId('TL'),
     timestamp: new Date().toISOString(),
     type: 'EVIDENCE_LOGGED',
     actor: cachedState.profile.name,
@@ -1746,10 +1814,10 @@ export async function addDGACasePerson(
 
   const name = person.name.trim();
   if (!name) return null;
-  const existing = c.people.find(
-    (item) => item.personId === person.personId || item.name.toLowerCase() === name.toLowerCase()
-  );
-  if (existing && !options?.allowDuplicateName) {
+  const existing = person.personId
+    ? c.people.find(item => item.personId === person.personId)
+    : !options?.allowDuplicateName ? c.people.find(item => item.name.toLowerCase() === name.toLowerCase()) : undefined;
+  if (existing) {
     const previousRole = existing.role;
     existing.role = person.role?.trim() || existing.role;
     if (person.notes?.trim()) existing.notes = person.notes.trim();
@@ -1758,7 +1826,7 @@ export async function addDGACasePerson(
     if (person.status?.trim()) existing.status = person.status.trim();
     c.updatedAt = new Date().toISOString();
     c.timeline.unshift({
-      id: `TL-PERSON-${Date.now()}`,
+      id: createRecordId('TL-PERSON'),
       timestamp: c.updatedAt,
       type: 'PERSON_LINKED',
       actor: cachedState.profile.name,
@@ -1769,11 +1837,8 @@ export async function addDGACasePerson(
     return existing;
   }
 
-  let personId = person.personId || `PERS-${Date.now().toString().slice(-4)}`;
-  const taken = new Set(cachedState.cases.flatMap((item) => item.people.map((entry) => entry.personId)));
-  while (taken.has(personId)) {
-    personId = `PERS-${Date.now().toString().slice(-4)}-${taken.size}`;
-  }
+  // One registry person keeps the same ID in every case; roles remain case-local.
+  const personId = person.personId || createRecordId('PERS');
 
   const newPerson: PersonReference = {
     personId,
@@ -1790,7 +1855,7 @@ export async function addDGACasePerson(
   cachedState.session.actionsTaken += 1;
 
   c.timeline.unshift({
-    id: `TL-PERSON-${Date.now()}`,
+    id: createRecordId('TL-PERSON'),
     timestamp: c.updatedAt,
     type: 'PERSON_LINKED',
     actor: cachedState.profile.name,
@@ -1828,7 +1893,7 @@ export async function addDGACaseTimelineEvent(
   if (!c) return null;
 
   const newEvent: TimelineEvent = {
-    id: event.id || `TL-${Date.now()}`,
+    id: event.id || createRecordId('TL'),
     timestamp: event.timestamp || new Date().toISOString(),
     type: event.type || 'NOTE_ADDED',
     actor: event.actor || cachedState.profile.name,
@@ -1853,20 +1918,19 @@ export async function submitDGACaseIndictment(
   const submitted: CaseCauseHypothesis = {
     ...(c.causeHypothesis || {}),
     ...hypothesis,
-    indictmentStatus: 'Indicted',
+    indictmentStatus: 'Submitted',
     submittedAt: new Date().toISOString()
   };
 
   c.causeHypothesis = submitted;
-  c.status = 'Closed';
   c.updatedAt = new Date().toISOString();
   cachedState.session.decisionsMade += 1;
   cachedState.session.actionsTaken += 1;
 
-  const desc = `FORMAL INDICTMENT SUBMITTED: Cause established as "${submitted.primaryCause || 'Conclusive Execution'}" with Prime Suspect ${submitted.primeSuspectName || 'Subject Identified'}. Warrant served. Case closed.`;
+  const desc = `Indictment package submitted for review: ${submitted.primaryCause || 'Cause not established'}. Subject: ${submitted.primeSuspectName || 'Not recorded'}. Legal decisions and warrant service must be recorded separately in Operations.`;
 
   c.timeline.unshift({
-    id: `TL-${Date.now()}`,
+    id: createRecordId('TL'),
     timestamp: new Date().toISOString(),
     type: 'STATUS_CHANGED',
     actor: cachedState.profile.name,
@@ -1874,17 +1938,17 @@ export async function submitDGACaseIndictment(
   });
 
   cachedState.activityFeed.unshift({
-    id: `ACT-${Date.now()}`,
+    id: createRecordId('ACT'),
     timestamp: new Date().toISOString(),
     system: c.leadSystem || 'TRACE',
-    headline: `DGA Docket ${c.id} Indicted and Closed`,
+    headline: `DGA Docket ${c.id} submitted for legal review`,
     details: desc,
     caseId: c.id,
     priority: 'Critical'
   });
 
   await persistAndNotify();
-  return { success: true, message: `Indictment package submitted for Docket ${c.id}. Docket concluded and sealed.` };
+  return { success: true, message: `Indictment package submitted for Docket ${c.id}. Record charges and court decisions in Operations. The case remains open.` };
 }
 
 export async function updateDGACaseEvidenceItem(
@@ -2001,7 +2065,7 @@ export async function requestCaseMedicalRecords(
   }
 
   const now = new Date().toISOString();
-  const requestId = `REQ-MED-${Date.now().toString().slice(-6)}`;
+  const requestId = createRecordId('REQ-MED', caseId);
   const facilityName = facility?.trim() || undefined;
   const recordsRequested = options?.recordsRequested?.trim() || notes?.trim() || 'Records described by the investigator';
   const medicalRequest: MedicalRecordsRequest = {
@@ -2102,7 +2166,7 @@ export async function updateCaseMedicalRequest(
   }
   c.updatedAt = now;
   c.timeline.unshift({
-    id: `TL-MED-STATUS-${Date.now()}`,
+    id: createRecordId('TL-MED-STATUS'),
     timestamp: now,
     type: 'SYSTEM_UPDATE',
     actor: cachedState.profile.name,
@@ -2215,7 +2279,7 @@ export async function amendIncidentNarrative(
   const now = new Date().toISOString();
   c.incidentRevisions = [
     {
-      id: `REV-${Date.now()}`,
+      id: createRecordId('REV'),
       timestamp: now,
       actor: cachedState.profile.name,
       previousValue: c.summary,
@@ -2227,7 +2291,7 @@ export async function amendIncidentNarrative(
   c.summary = updated;
   c.updatedAt = now;
   c.timeline.unshift({
-    id: `TL-AMEND-${Date.now()}`,
+    id: createRecordId('TL-AMEND'),
     timestamp: now,
     type: 'INCIDENT_AMENDED',
     actor: cachedState.profile.name,
@@ -2246,7 +2310,7 @@ export async function recordInvestigativeFinding(
   if (!c || !statement) return null;
   const now = new Date().toISOString();
   const finding: InvestigativeFinding = {
-    id: `FND-${Date.now().toString().slice(-6)}`,
+    id: createRecordId('FND'),
     kind: input.kind,
     statement,
     supportingRecordIds: input.supportingRecordIds || [],
@@ -2295,7 +2359,7 @@ export async function recordEvidenceCustodyTransfer(
   const evidence = c?.evidence.find((item) => item.id === evidenceId);
   if (!c || !evidence) return false;
   const entry: CustodyEvent = {
-    id: `COC-${evidenceId}-${Date.now()}`,
+    id: createRecordId('COC', evidenceId),
     timestamp: event.timestamp || new Date().toISOString(),
     releasingCustodian: event.releasingCustodian,
     receivingCustodian: event.receivingCustodian,
@@ -2331,6 +2395,7 @@ export async function ensureDGAForensicRequest(
   if (existing) {
     if (patch.linkedTraceCaseId) existing.linkedTraceCaseId = patch.linkedTraceCaseId;
     if (patch.traceExamIds) existing.traceExamIds = patch.traceExamIds;
+    if (patch.traceExamModules) existing.traceExamModules = patch.traceExamModules;
     if (patch.investigativeQuestion) existing.investigativeQuestion = patch.investigativeQuestion;
     if (patch.resultSummary) existing.resultSummary = patch.resultSummary;
     c.updatedAt = new Date().toISOString();
@@ -2348,6 +2413,7 @@ export async function ensureDGAForensicRequest(
   if (!created) return null;
   created.linkedTraceCaseId = patch.linkedTraceCaseId;
   created.traceExamIds = patch.traceExamIds;
+  created.traceExamModules = patch.traceExamModules;
   created.investigativeQuestion = patch.investigativeQuestion;
   if (!c.supportingSystems.includes('TRACE')) c.supportingSystems.push('TRACE');
   await persistAndNotify();

@@ -1,23 +1,24 @@
-export const WORLD_KEYS = [
-  'miraverse-os-progress', 'miraverse-comms', 'miraverse-phone-preferences',
-  'miraverse-canonical-identities-v1', 'miraverse-identity-registry-v3', 'miraverse-maid-counter-OR',
-  'DGAOS_WORKSTATION_STATE_V3', 'trace_active_case_data_v2', 'miraverse-creator-studio-state-v1',
-] as const;
-export type WorldEntries = Partial<Record<typeof WORLD_KEYS[number], string>>;
+import { worldStorageKeys, validWorldEntries, validWorldRecord, type StorageLike, type WorldEntries } from './worldRecords.ts';
+export { WORLD_KEYS, type WorldEntries } from './worldRecords.ts';
 export interface WorldSnapshot { serverId: string; revision: number; updatedAt: string | null; entries: WorldEntries }
 export interface SaveStatus { state: 'loading' | 'saved' | 'saving' | 'offline' | 'conflict'; message: string; updatedAt?: string | null }
-interface StorageLike { getItem: (key: string) => string | null; setItem: (key: string, value: string) => void; removeItem: (key: string) => void }
 interface SyncMeta { serverId: string; revision: number; hash: string }
 const META_KEY = 'miraverse-world-sync-v1';
-export function serializeEntries(entries: WorldEntries) { return JSON.stringify(Object.fromEntries(WORLD_KEYS.filter(key => entries[key] !== undefined).map(key => [key, entries[key]]))); }
+export function serializeEntries(entries: WorldEntries) { return JSON.stringify(Object.fromEntries(Object.keys(entries).sort().map(key => [key, entries[key]]))); }
 export function readWorldEntries(storage: StorageLike): WorldEntries {
   const entries: WorldEntries = {};
-  for (const key of WORLD_KEYS) { const raw = storage.getItem(key); if (raw !== null) { JSON.parse(raw); entries[key] = raw; } }
+  for (const key of worldStorageKeys(storage)) {
+    const raw = storage.getItem(key);
+    if (raw !== null) {
+      if (!validWorldRecord(key, raw)) throw new Error(`Cannot save malformed world record: ${key}`);
+      entries[key] = raw;
+    }
+  }
   return entries;
 }
 export function validSnapshot(value: any): value is WorldSnapshot {
   if (!value || typeof value.serverId !== 'string' || !Number.isSafeInteger(value.revision) || value.revision < 0 || !value.entries || typeof value.entries !== 'object' || Array.isArray(value.entries)) return false;
-  try { return Object.entries(value.entries).every(([key, raw]) => { if (!(WORLD_KEYS as readonly string[]).includes(key) || typeof raw !== 'string') return false; JSON.parse(raw); return true; }); } catch { return false; }
+  return validWorldEntries(value.entries);
 }
 async function fingerprint(entries: WorldEntries) {
   const bytes = new TextEncoder().encode(serializeEntries(entries));

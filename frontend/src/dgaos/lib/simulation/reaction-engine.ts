@@ -8,6 +8,7 @@ import {
   AgencyActivityItem
 } from '@/lib/dga-types';
 import { createScheduledEvent } from './scheduler';
+import { canRunScheduledEvent, hasEmbassyScenario } from './scenario-scope';
 
 export interface ReactionOutput {
   newScheduledEvents: ScheduledEvent[];
@@ -44,6 +45,7 @@ export function evaluateTaskCompletionReaction(
   });
 
   // Reaction 1: If player submitted Vance blood or evidence to TRACE
+  if (!hasEmbassyScenario(dgaCase)) return output;
   if (
     completedTask.id === 'TSK-194-02' ||
     completedTask.title.toLowerCase().includes('trace') ||
@@ -115,6 +117,7 @@ export function evaluateScheduledEventExecution(
   const alerts: DgaAlert[] = [];
   const communications: DGACommunication[] = [];
   const activityItems: AgencyActivityItem[] = [];
+  if (!canRunScheduledEvent(event, _dgaCase)) return { alerts, communications, activityItems };
 
   switch (event.type) {
     case 'LAB_RESULT_READY': {

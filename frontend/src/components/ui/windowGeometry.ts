@@ -1,10 +1,11 @@
 export const WINDOW_RATIO = 16 / 9;
+export function desktopInsets(width:number,height:number){return {menu:width<800?104:64,dock:height<500?64:84};}
 
 export function fitWindow(screenW: number, screenH: number, index = 0, maximized = false) {
-  if (maximized) return { width: screenW, height: screenH, left: 0, top: 0, menu: 0, dock: 0, margin: 0 };
+  const insets=desktopInsets(screenW,screenH);
+  if (maximized) return { width: screenW, height: Math.max(0,screenH-insets.menu-insets.dock), left: 0, top: insets.menu, menu: insets.menu, dock: insets.dock, margin: 0 };
   const margin = screenW < 768 ? 8 : 24;
-  const menu = screenH < 500 ? 60 : 72;
-  const dock = screenH < 500 ? 76 : 96;
+  const {menu,dock}=insets;
   const availableWidth = Math.max(0, screenW - margin * 2);
   const availableHeight = Math.max(0, screenH - menu - dock);
   const width = Math.min(1120, availableWidth, availableHeight * WINDOW_RATIO);

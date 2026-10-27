@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   FolderLock,
   Video,
@@ -29,7 +29,8 @@ import {
   EvidenceVaultItem,
   CctvCameraFeed
 } from '@/lib/investigation-data';
-import { getDGAState, inspectEvidence } from '@/lib/dga-store';
+import { getDGAState, inspectEvidence, subscribeDGAState } from '@/lib/dga-store';
+import { hasEmbassyScenario } from '@/lib/simulation/scenario-scope';
 
 interface DgaInvestigationHubProps {
   onOpenCase?: (caseId: string) => void;
@@ -42,8 +43,11 @@ export function DgaInvestigationHub({ onOpenCase, onLaunchTrace }: DgaInvestigat
   const [cctvScrubTime, setCctvScrubTime] = useState<number>(45); // percent
   const [plateEnhanced, setPlateEnhanced] = useState(false);
 
-  const dgaState = getDGAState();
-  const activeCase = dgaState.cases.find((c) => c.status === 'Active' || (c.status as string) === 'ACTIVE');
+  const [dgaState, setDgaState] = useState(getDGAState);
+  useEffect(() => subscribeDGAState(setDgaState), []);
+  const activeCase = dgaState.cases.find(c => c.id === dgaState.activeCaseId)
+    || dgaState.cases.find((c) => c.status === 'Active' || (c.status as string) === 'ACTIVE');
+  const hasScenarioForensics = hasEmbassyScenario(activeCase);
 
   const evidenceList: EvidenceVaultItem[] = useMemo(() => {
     if (!activeCase || !activeCase.evidence || activeCase.evidence.length === 0) {
@@ -56,18 +60,16 @@ export function DgaInvestigationHub({ onOpenCase, onLaunchTrace }: DgaInvestigat
       category: (ev.category === 'Toxicological Specimen' ? 'Biological / Toxin' :
                  ev.category === 'Digital Media' ? 'Digital Media' :
                  ev.category === 'Ballistics' ? 'Ballistics' : 'Physical Item') as any,
-      dateSecured: ev.dateRecovered || '2026-10-06',
+      dateSecured: ev.dateRecovered || 'Not recorded',
       securedBy: activeCase.primaryInvestigator || 'Lead Investigator',
-      storageLocation: `Vault B - Locker 0${idx + 1}`,
-      sealStatus: 'Seals Intact' as const,
-      custodyHistory: [
-        {
-          timestamp: ev.dateRecovered || '2026-10-06 09:30',
-          action: 'Initial Intake & Custody Logging',
-          handledBy: activeCase.primaryInvestigator || 'Evidence Custodian',
-          verifiedSignature: '/s/ Custody Intake Verified'
-        }
-      ],
+      storageLocation: ev.storageLocation || 'Not recorded',
+      sealStatus: /intact/i.test(ev.seal || '') ? 'Seals Intact' : 'Not recorded',
+      custodyHistory: (ev.custodyLog || []).map(entry => ({
+        timestamp: entry.timestamp,
+        action: entry.reason,
+        handledBy: entry.receivingCustodian,
+        verifiedSignature: 'Signature not recorded',
+      })),
       analysisResults: ev.description,
       caseId: activeCase.id
     }));
@@ -205,10 +207,10 @@ export function DgaInvestigationHub({ onOpenCase, onLaunchTrace }: DgaInvestigat
 
                 <div className="space-y-1">
                   <div className="text-[11px] font-bold uppercase tracking-wider text-[#4b4372]">
-                    FORENSIC BENCH ANALYSIS SUMMARY
+                    RECORDED EXHIBIT DESCRIPTION
                   </div>
                   <div className="text-xs text-[#2c2a3e] bg-[#f8f7fc] p-2.5 rounded border border-[#cfcddb] leading-relaxed">
-                    {selectedEvidence.analysisResults || 'Analysis pending formal laboratory bench intake.'}
+                    {selectedEvidence.analysisResults || 'No exhibit description recorded.'}
                   </div>
                 </div>
 
@@ -239,11 +241,11 @@ export function DgaInvestigationHub({ onOpenCase, onLaunchTrace }: DgaInvestigat
 
         {/* SECTION: CCTV VIDEO FEEDS */}
         {activeSection === 'cctv' && (
-          !activeCase ? (
+          !hasScenarioForensics ? (
             <div className="flex flex-col items-center justify-center p-12 bg-white border border-[#cfcddb] rounded text-center text-[#7e7c99]">
               <Video className="w-10 h-10 text-[#b3b0cb] mb-3 opacity-60" />
               <span className="text-sm font-bold text-[#35334e]">CCTV Video Feeds</span>
-              <span className="text-xs text-[#787693] mt-1">No active feeds. Surveillance buffers will link when a case is accepted.</span>
+              <span className="text-xs text-[#787693] mt-1">No surveillance feeds have been linked to this case.</span>
             </div>
           ) : (
             <div className="space-y-4">
@@ -349,7 +351,7 @@ export function DgaInvestigationHub({ onOpenCase, onLaunchTrace }: DgaInvestigat
 
         {/* SECTION: AFIS FINGERPRINTS */}
         {activeSection === 'afis' && (
-          !activeCase ? (
+          !hasScenarioForensics ? (
             <div className="flex flex-col items-center justify-center p-12 bg-white border border-[#cfcddb] rounded text-center text-[#7e7c99]">
               <Fingerprint className="w-10 h-10 text-[#b3b0cb] mb-3 opacity-60" />
               <span className="text-sm font-bold text-[#35334e]">AFIS Fingerprint Registry</span>
@@ -419,7 +421,7 @@ export function DgaInvestigationHub({ onOpenCase, onLaunchTrace }: DgaInvestigat
 
         {/* SECTION: DNA / SEROLOGY */}
         {activeSection === 'dna' && (
-          !activeCase ? (
+          !hasScenarioForensics ? (
             <div className="flex flex-col items-center justify-center p-12 bg-white border border-[#cfcddb] rounded text-center text-[#7e7c99]">
               <Dna className="w-10 h-10 text-[#b3b0cb] mb-3 opacity-60" />
               <span className="text-sm font-bold text-[#35334e]">CODIS Serology Database</span>
@@ -456,7 +458,7 @@ export function DgaInvestigationHub({ onOpenCase, onLaunchTrace }: DgaInvestigat
 
         {/* SECTION: SEARCH WARRANTS */}
         {activeSection === 'warrants' && (
-          !activeCase ? (
+          !hasScenarioForensics ? (
             <div className="flex flex-col items-center justify-center p-12 bg-white border border-[#cfcddb] rounded text-center text-[#7e7c99]">
               <Scale className="w-10 h-10 text-[#b3b0cb] mb-3 opacity-60" />
               <span className="text-sm font-bold text-[#35334e]">Search Warrants</span>

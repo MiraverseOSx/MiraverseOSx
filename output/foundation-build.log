@@ -1,0 +1,81 @@
+npm notice run miraverse-frontend@0.1.0 build
+npm notice run vite build --outDir ../output/foundation-build
+vite v6.4.5 building for production...
+transforming...
+✓ 2975 modules transformed.
+rendering chunks...
+computing gzip size...
+../output/foundation-build/index.html                                                                                      1.07 kB │ gzip:   0.55 kB
+../output/foundation-build/sw.js                                                                                           3.95 kB
+../output/foundation-build/assets/logo_icon-CUPqIqiP.png                                                                  39.98 kB
+../output/foundation-build/assets/meridion_world-Bx744lBB.jpg                                                          1,013.06 kB
+../output/foundation-build/assets/everything_is_great_but_do_not-ibzqC-2F.mp4                                          2,096.88 kB
+../output/foundation-build/assets/mixkit-black-ink-splashing-505-hd-ready-5xOo6vN8.mp4                                 3,455.44 kB
+../output/foundation-build/assets/mixkit-glitter-stars-and-snowflakes-19007-hd-ready-jJGDjwg1.mp4                      3,693.95 kB
+../output/foundation-build/assets/mixkit-a-woman-monitoring-close-circuit-surveillance-23673-hd-ready-DO32EXpQ.mp4     5,627.94 kB
+../output/foundation-build/assets/mixkit-flying-over-a-relaxing-creek-full-of-rock-on-the-51585-hd-ready-BCqJ8giU.mp4  8,320.32 kB
+../output/foundation-build/assets/FileExplorerApp-BLQR67_R.css                                                             0.62 kB │ gzip:   0.35 kB
+../output/foundation-build/assets/RichTextEditor-DZHZoGHi.css                                                              1.46 kB │ gzip:   0.62 kB
+../output/foundation-build/assets/case-workspace-CJUr1qgd.css                                                              2.56 kB │ gzip:   0.93 kB
+../output/foundation-build/assets/FieldOperationsApp-DxWZrlgh.css                                                          2.71 kB │ gzip:   0.99 kB
+../output/foundation-build/assets/RegistryWorkspaceApp-Dt2SnHHz.css                                                        3.72 kB │ gzip:   1.28 kB
+../output/foundation-build/assets/attachmentDocument-BtUdRknX.css                                                          4.24 kB │ gzip:   1.49 kB
+../output/foundation-build/assets/MailApp-JMX_z9Xy.css                                                                     6.42 kB │ gzip:   1.93 kB
+../output/foundation-build/assets/DocumentStudioApp-BTys34W0.css                                                           6.64 kB │ gzip:   1.87 kB
+../output/foundation-build/assets/VitalsApp-CjunPQJt.css                                                                   8.57 kB │ gzip:   2.41 kB
+../output/foundation-build/assets/PulseApp-CEHPhihk.css                                                                    8.96 kB │ gzip:   2.22 kB
+../output/foundation-build/assets/DispatchNewsSite-BObmZ79a.css                                                           11.55 kB │ gzip:   2.83 kB
+../output/foundation-build/assets/BrowserApp-BCMvgYNp.css                                                                 13.69 kB │ gzip:   3.49 kB
+../output/foundation-build/assets/versenet-browser-CB31ceec.css                                                           14.53 kB │ gzip:   3.40 kB
+../output/foundation-build/assets/EvidenceBoard-V3rltzWT.css                                                              17.02 kB │ gzip:   2.99 kB
+../output/foundation-build/assets/mai-space-Drcbb3-d.css                                                                  27.99 kB │ gzip:   6.61 kB
+../output/foundation-build/assets/JobWorkstationApp-SYHCKhcG.css                                                          39.86 kB │ gzip:   7.72 kB
+../output/foundation-build/assets/App-BjDC7XPS.css                                                                        89.43 kB │ gzip:  17.53 kB
+../output/foundation-build/assets/DgaosApp-CJoWwCyL.css                                                                  287.72 kB │ gzip:  36.33 kB
+../output/foundation-build/assets/index-BCbo7KCd.css                                                                     580.25 kB │ gzip:  88.02 kB
+../output/foundation-build/assets/MaiSpaceApp-DO7-f-hy.js                                                                  0.27 kB │ gzip:   0.20 kB
+../output/foundation-build/assets/RichMailEditor-DO_OYz2D.js                                                               0.42 kB │ gzip:   0.29 kB
+../output/foundation-build/assets/citizenEvents-Ch6-1qqe.js                                                                1.16 kB │ gzip:   0.56 kB
+../output/foundation-build/assets/CampusApp-CpQIS6N3.js                                                                    1.60 kB │ gzip:   0.78 kB
+../output/foundation-build/assets/citizenBridge-BeFYZPuk.js                                                                2.75 kB │ gzip:   1.14 kB
+../output/foundation-build/assets/PulseApp-DMy19r3U.js                                                                     4.61 kB │ gzip:   1.52 kB
+../output/foundation-build/assets/CommunicationsAccessPanel-BuhJrbYg.js                                                    5.04 kB │ gzip:   1.86 kB
+../output/foundation-build/assets/CommsApp-tYgoZ5yv.js                                                                     5.16 kB │ gzip:   2.02 kB
+../output/foundation-build/assets/FinanceTerminal-CqrBV60a.js                                                              5.31 kB │ gzip:   2.09 kB
+../output/foundation-build/assets/Form-yyTfbMzo.js                                                                         7.00 kB │ gzip:   2.84 kB
+../output/foundation-build/assets/FieldOperationsApp-DQJHk21s.js                                                           7.50 kB │ gzip:   3.04 kB
+../output/foundation-build/assets/VitalsApp-BCPgDyD1.js                                                                    7.81 kB │ gzip:   2.59 kB
+../output/foundation-build/assets/DispatchNewsSite-CkrswcFX.js                                                            10.25 kB │ gzip:   3.27 kB
+../output/foundation-build/assets/DocumentStudioApp-DuxaVTlT.js                                                           10.38 kB │ gzip:   4.12 kB
+../output/foundation-build/assets/BroadStreetCasePanel-uqNATluu.js                                                        10.78 kB │ gzip:   3.96 kB
+../output/foundation-build/assets/ProcessMonitorApp-b2NuJBUT.js                                                           10.96 kB │ gzip:   3.51 kB
+../output/foundation-build/assets/SpellForgeApp-CUTYCh4E.js                                                               11.29 kB │ gzip:   3.57 kB
+../output/foundation-build/assets/versenet-browser-BKkU3wuv.js                                                            12.79 kB │ gzip:   4.62 kB
+../output/foundation-build/assets/HousingApp-Cegmxkq9.js                                                                  15.87 kB │ gzip:   5.04 kB
+../output/foundation-build/assets/FileExplorerApp-CElZJV3s.js                                                             18.85 kB │ gzip:   6.45 kB
+../output/foundation-build/assets/SocialApp-B0Mfk7vl.js                                                                   20.30 kB │ gzip:   6.71 kB
+../output/foundation-build/assets/attachmentDocument-BBWYNl--.js                                                          21.23 kB │ gzip:   8.40 kB
+../output/foundation-build/assets/LoreExplorer-DvCaTBl-.js                                                                29.16 kB │ gzip:   6.88 kB
+../output/foundation-build/assets/CivicProfileApp-COkNknAu.js                                                             36.44 kB │ gzip:  10.36 kB
+../output/foundation-build/assets/Portals-DSyj7XA_.js                                                                     43.51 kB │ gzip:  11.61 kB
+../output/foundation-build/assets/MailApp-DnG34IqU.js                                                                     55.19 kB │ gzip:  15.06 kB
+../output/foundation-build/assets/PortraitStudioModal-B__FcX-E.js                                                         55.60 kB │ gzip:  12.79 kB
+../output/foundation-build/assets/maidIdentityService-CwAmMly5.js                                                         74.32 kB │ gzip:  20.42 kB
+../output/foundation-build/assets/RegistryWorkspaceApp-Ti2X_Wc-.js                                                        78.13 kB │ gzip:  15.84 kB
+../output/foundation-build/assets/lucide-icons-CdswSE7t.js                                                                89.71 kB │ gzip:  17.73 kB
+../output/foundation-build/assets/JobWorkstationApp-DnsB8Jjb.js                                                           98.12 kB │ gzip:  24.11 kB
+../output/foundation-build/assets/mai-space-P31sqnO-.js                                                                   99.42 kB │ gzip:  32.13 kB
+../output/foundation-build/assets/BrowserApp-DGMBgEQ2.js                                                                 108.53 kB │ gzip:  33.83 kB
+../output/foundation-build/assets/framer-motion-B0GbNFm6.js                                                              138.88 kB │ gzip:  45.96 kB
+../output/foundation-build/assets/EvidenceBoard-BOE9FMKC.js                                                              186.21 kB │ gzip:  60.63 kB
+../output/foundation-build/assets/index-ChVSwolM.js                                                                      313.31 kB │ gzip:  97.80 kB
+../output/foundation-build/assets/RichTextEditor-CGCKh_WW.js                                                             410.55 kB │ gzip: 130.64 kB
+../output/foundation-build/assets/App-DGXdxnEf.js                                                                        643.61 kB │ gzip: 199.88 kB
+../output/foundation-build/assets/DgaosApp-BFfbEngA.js                                                                 1,474.77 kB │ gzip: 372.27 kB
+../output/foundation-build/assets/TunnelScene-Bw2f0IcR.js                                                              1,688.37 kB │ gzip: 383.01 kB
+
+(!) Some chunks are larger than 1200 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+✓ built in 24.97s

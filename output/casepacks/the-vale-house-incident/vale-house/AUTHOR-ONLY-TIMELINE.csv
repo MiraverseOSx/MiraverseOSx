@@ -1,0 +1,26 @@
+Time,Event,Source,Knowledge status
+07:34,Julian leaves work,E07,Recorded workplace departure
+07:46,Lily asks Julian to visit and compare dates,E04,Message record
+07:49,Julian agrees to visit,E04,Message record
+07:53,Lily tells Santiago about Julian and her editor meeting,E04,Message record
+07:58,Mara is assigned vehicle NF-17,E08,Vehicle release record
+08:12,Julian arrives at Lily's house,Author solution,Proposed truth; later corroborated by Julian
+08:15,Mara arrives for the records appointment,E08 and author solution,Appointment documented; arrival reconstructed later
+08:17,Dena hears a raised adult voice,E01,Witness observation; speaker unidentified by Dena
+08:18,Mara assaults Lily during the records dispute,Author solution,Proposed truth; later supported by survivor accounts
+08:24,NF-17 leaves the residential street,E08,Vehicle recorded; faces not reliably identified
+08:28,Julian sends the Northgate message under pressure,E04 and author solution,Message recorded; coercion established after recovery
+08:33,NF-17 passes Cedar service-road checkpoint,E08,Vehicle passage record
+08:34,Dena calls Lily without an answer,E01 and E04,Witness account and supplied call record
+08:36,NF-17 enters R-4 under Mara's liaison booking,E08,Gate arrival record
+08:39,Dena enters the house and finds Lily,E01,Witness account
+08:41,Dena calls emergency services,E01 and E04,Call record
+08:53,Santiago leaves his workplace,E05,Workplace exit record
+09:03,Mara returns to the administrative office,E08,Identified entrance-camera image
+09:05,Scene examiner documents property,E03,Scene record
+09:12,Mara submits the reconciliation bundle,E08,Electronic receipt
+10:10,Dena's statement is recorded,E01,Interview time
+10:40,Santiago's statement is recorded,E05,Interview time
+11:20,Lily gives a limited available account,E06,Clinical liaison note
+11:50,Mara gives her initial account,E10,Interview time
+Variable,Authority follows the R-4 lead and locates Julian and Stella,Author solution,Recovery time depends on investigator progress

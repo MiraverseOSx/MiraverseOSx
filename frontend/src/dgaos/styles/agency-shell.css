@@ -13,52 +13,89 @@
   .dga-dashboard > div:last-child { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); width: 100%; min-width: 0; max-width: none; height: auto; overflow: visible; }
 }
 .dga-shell > header {
-  height: auto;
-  min-height: 56px;
-  max-height: none;
-  padding: 10px 16px;
-  gap: 8px 16px;
-  flex-wrap: wrap;
-  background: #29222f;
-  border-bottom: 1px solid #4a3f4b;
-  scrollbar-width: thin;
+  height: 36px;
+  min-height: 36px;
+  max-height: 36px;
+  padding: 0 10px;
+  gap: 8px;
+  flex-wrap: nowrap;
+  background: #1f1d2c;
+  border-bottom: 1px solid #353249;
+  overflow-x: auto;
+  scrollbar-width: none;
+  align-items: center;
+}
+.dga-shell > header::-webkit-scrollbar {
+  display: none;
 }
 .dga-shell > header > div { flex-shrink: 0; }
-.dga-shell > header .dga-operator-tools { flex-wrap: wrap; max-width: 100%; }
-.dga-shell > header .dga-directory-launch { display: inline-flex; align-items: center; gap: 8px; padding: 6px 10px; color: #fff; white-space: nowrap; }
+.dga-shell > header .dga-operator-tools {
+  flex-wrap: nowrap;
+  max-width: none;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.dga-shell > header .dga-directory-launch {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 24px;
+  padding: 0 8px;
+  background: #272538;
+  color: #c7c5dd;
+  border: 1px solid #3d3a54;
+  border-radius: 4px;
+  font-size: 10.5px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-weight: 600;
+  white-space: nowrap;
+  cursor: pointer;
+}
+.dga-shell > header .dga-directory-launch:hover {
+  background: #36334e;
+  color: #ffffff;
+  border-color: #514d72;
+}
+.dga-shell > header .dga-directory-launch[aria-pressed='true'] {
+  background: #534f78;
+  color: #ffffff;
+  border-color: #6a6599;
+}
 .dga-shell > header button,
 .dga-app-rail button,
 .dga-case-navigation button {
   appearance: none;
   font-family: inherit;
   cursor: pointer;
-  border: 0;
-  line-height: 1.4;
+  line-height: 1.2;
 }
 .dga-shell > header button {
-  min-height: 30px;
-  border-radius: 7px;
-  background: transparent;
-  color: #ded2df;
-  font-size: 12px;
-  font-weight: 750;
-  letter-spacing: .025em;
+  border-radius: 4px;
+  letter-spacing: .02em;
 }
 .dga-shell > header button span { font-weight: inherit; }
-.dga-shell > header button[title*='Phone'],
-.dga-shell > header button[title*='Feed'] { color: #fff; font-size: 13px; padding-inline: 10px; }
-.dga-shell > header button[title*='Phone'] svg,
-.dga-shell > header button[title*='Feed'] svg { width: 16px; height: 16px; }
-.dga-shell > header button:hover { background: #4a3f4b; color: #fff; }
-.dga-shell > header button[aria-pressed='true'] { background: #685069; color: #fff; }
 .dga-shell > header .dga-notebook-launch {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  padding: 7px 12px;
-  background: #f0d9e4;
-  color: #443449;
+  gap: 6px;
+  height: 24px;
+  padding: 0 9px;
+  background: #392846;
+  color: #f1dded;
+  border: 1px solid #5d406f;
+  border-radius: 4px;
+  font-size: 10.5px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-weight: 600;
   white-space: nowrap;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+.dga-shell > header .dga-notebook-launch:hover {
+  background: #4a345c;
+  color: #ffffff;
+  border-color: #7b5693;
 }
 .dga-shell > header svg { flex-shrink: 0; }
 .dga-app-rail { background: #f6eff4; border-color: #e2d6e0; }
@@ -82,5 +119,5 @@
 .dga-case-navigation button:focus-visible { outline: 2px solid #b58dac; outline-offset: 3px; }
 @media (max-width: 1100px) {
   .dga-shell { --dga-sidebar-w: 208px; }
-  .dga-shell > header { gap: 8px 12px; padding: 10px; }
+  .dga-shell > header { gap: 6px; padding: 0 8px; }
 }

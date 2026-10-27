@@ -11,6 +11,7 @@ import { evaluateScheduledEventExecution } from './reaction-engine';
 import { generateContextualMessage } from './message-generator';
 import type { DGAEventInput } from '@/lib/dga-events';
 import { completeDueSystemRequest, completeLegacyForensicMirror } from '@/lib/systems/system-state';
+import { canRunScheduledEvent, hasEmbassyScenario } from './scenario-scope';
 
 export interface SimulationTickResult {
   updatedState: DGAState;
@@ -62,6 +63,7 @@ export function processSimulationTick(state: DGAState): SimulationTickResult {
     hasChanges = true;
     for (const dueEvt of due) {
       const targetCase = updatedCases.find((c) => c.id === dueEvt.caseId);
+      if (!canRunScheduledEvent(dueEvt, targetCase)) continue;
       const execution = evaluateScheduledEventExecution(dueEvt, targetCase);
 
       if (execution.alerts.length > 0) updatedAlerts = [...execution.alerts, ...updatedAlerts];
@@ -148,7 +150,7 @@ export function processSimulationTick(state: DGAState): SimulationTickResult {
 
   // 3. Dynamic Case State Progression (Living World Simulation for Active Cases)
   let newUnacknowledgedEvents = 0;
-  const activeCase = updatedCases.find((c) => c.status === 'Active' || c.status === 'ACTIVE');
+  const activeCase = updatedCases.find((c) => hasEmbassyScenario(c) && (c.status === 'Active' || c.status === 'ACTIVE'));
 
   if (activeCase) {
     activeCase.customFields = activeCase.customFields || {};
@@ -467,7 +469,7 @@ export function processOfflineProgression(state: DGAState): {
   const now = new Date();
   const gap = calculateOfflineGap(state.session.lastActiveTime || state.simulation.lastProcessedAt);
 
-  if (!gap.isOfflineGap) {
+  if (!gap.isOfflineGap || state.simulation.status === 'paused') {
     return { updatedState: state, offlineSummary: null, events: [] };
   }
 
@@ -482,8 +484,10 @@ export function processOfflineProgression(state: DGAState): {
   updatedEvents = remaining;
 
   for (const dueEvt of due) {
+    const targetCase = state.cases.find(c => c.id === dueEvt.caseId);
+    if (!canRunScheduledEvent(dueEvt, targetCase)) continue;
     highlights.push(`Scheduled event executed: ${dueEvt.type.replace('_', ' ')}`);
-    const execution = evaluateScheduledEventExecution(dueEvt);
+    const execution = evaluateScheduledEventExecution(dueEvt, targetCase);
     updatedAlerts = [...execution.alerts, ...updatedAlerts];
     updatedComms = [...execution.communications, ...updatedComms];
     updatedActivity = [...execution.activityItems, ...updatedActivity];

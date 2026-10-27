@@ -479,7 +479,7 @@ test('Creator Studio state foundations support world pause/resume, draft staging
   });
   assert.equal(newCitizenRes.success, true);
 
-  const restoreRes = restoreWorldCheckpoint(checkpointId);
+  const restoreRes = await restoreWorldCheckpoint(checkpointId);
   assert.equal(restoreRes.ok, true);
 
   // Verify the newly issued MAID and published event history were preserved across checkpoint restore

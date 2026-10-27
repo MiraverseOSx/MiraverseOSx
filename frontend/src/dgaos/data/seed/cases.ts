@@ -269,6 +269,8 @@ export interface ForensicRequest {
   resultSummary?: string;
   completedAt?: string;
   traceExamIds?: string[];
+  traceExamModules?: Record<string, string>;
+  traceReportReceipts?: Array<{ reportId: string; examId: string; summary: string }>;
   investigativeQuestion?: string;
 }
 

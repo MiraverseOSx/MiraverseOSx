@@ -1,6 +1,7 @@
+param([string]$AssemblyPath = '')
 $ErrorActionPreference = 'Stop'
 $workspaceRoot = Split-Path -Parent $PSScriptRoot
-$assembly = Join-Path $workspaceRoot 'bin/Debug/net8.0/MiraverseOSx.dll'
+$assembly = if ($AssemblyPath) { [IO.Path]::GetFullPath($AssemblyPath) } else { Join-Path $workspaceRoot 'bin/Debug/net8.0/MiraverseOSx.dll' }
 if (-not (Test-Path -LiteralPath $assembly)) {
     $assembly = Join-Path $workspaceRoot 'bin/Release/net8.0/MiraverseOSx.dll'
 }
@@ -129,6 +130,18 @@ try {
     $finalTelemetry = Get-Json 'api/ai/telemetry'
     Check ($finalTelemetry.cacheHitsToday -ge 1) 'Telemetry recorded cache hit'
 
+    Post-Json 'api/ai/memory' @{ npc = 'OpsWitness'; content = 'Unrelated old scenario secret'; type = 'episodic'; importance = 5.0 } | Out-Null
+    $scoped = @{ npc = 'OpsWitness'; prompt = 'What do you know?'; activeApp = 'dga-operations'; contextScope = 'CASE-A:person-one'; context = '{"facts":[{"id":"one","text":"Saw a badge"}]}' }
+    $firstScoped = Post-Json 'api/ai/chat' $scoped
+    Check ($firstScoped.memoriesUsed.Count -eq 0) 'Case dialogue must not load global persona memories'
+    $sameScoped = Post-Json 'api/ai/chat' $scoped
+    Check ($sameScoped.cached -eq $true) 'Unchanged scoped facts may use the response cache'
+    $scoped.contextScope = 'CASE-B:person-one'
+    $otherScoped = Post-Json 'api/ai/chat' $scoped
+    Check ($otherScoped.cached -eq $false) 'Another case cannot reuse the first case response'
+    $scoped.context = '{"facts":[{"id":"two","text":"Saw a vehicle"}]}'
+    $changedScoped = Post-Json 'api/ai/chat' $scoped
+    Check ($changedScoped.cached -eq $false) 'Changed knowledge cannot reuse stale response cache'
     Write-Host "AI Subsystem integration checks passed: $script:checks"
 }
 finally {
@@ -136,6 +149,8 @@ finally {
         Stop-Process -Id $script:server.Id -Force
     }
     if (Test-Path -LiteralPath $testDirectory) {
-        Remove-Item -LiteralPath $testDirectory -Recurse -Force -ErrorAction SilentlyContinue
+        $resolvedTestTarget = (Resolve-Path -LiteralPath $testDirectory).Path
+        if ([IO.Path]::GetDirectoryName($resolvedTestTarget).TrimEnd('\') -ne $temporaryRoot.TrimEnd('\') -or -not [IO.Path]::GetFileName($resolvedTestTarget).StartsWith('miraverse-ai-tests-')) { throw 'Refusing to remove an unexpected test directory.' }
+        Remove-Item -LiteralPath $resolvedTestTarget -Recurse -Force -ErrorAction SilentlyContinue
     }
 }

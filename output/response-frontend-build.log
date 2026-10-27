@@ -1,0 +1,84 @@
+npm notice run miraverse-frontend@0.1.0 build
+npm notice run vite build --outDir ../output/response-frontend-build
+vite v6.4.5 building for production...
+transforming...
+✓ 2980 modules transformed.
+rendering chunks...
+[plugin vite:reporter] 
+(!) C:/Users/mirav/OneDrive/Desktop/MiraverseOSx/frontend/src/dgaos/lib/dga-store.ts is dynamically imported by C:/Users/mirav/OneDrive/Desktop/MiraverseOSx/frontend/src/dgaos/components/dga/dga-operations-workspace.tsx, C:/Users/mirav/OneDrive/Desktop/MiraverseOSx/frontend/src/dgaos/services/traceDurableStore.ts but also statically imported by C:/Users/mirav/OneDrive/Desktop/MiraverseOSx/frontend/src/dgaos/apps/DgaosApp.tsx, C:/Users/mirav/OneDrive/Desktop/MiraverseOSx/frontend/src/dgaos/components/dga/dga-case-builder.tsx, C:/Users/mirav/OneDrive/Desktop/MiraverseOSx/frontend/src/dgaos/components/dga/dga-case-creation-wizard.tsx, C:/Users/mirav/OneDrive/Desktop/MiraverseOSx/frontend/src/dgaos/components/dga/dga-case-registry.tsx, C:/Users/mirav/OneDrive/Desktop/MiraverseOSx/frontend/src/dgaos/components/dga/dga-dashboard.tsx, C:/Users/mirav/OneDrive/Desktop/MiraverseOSx/frontend/src/dgaos/components/dga/dga-decision-modal.tsx, C:/Users/mirav/OneDrive/Desktop/MiraverseOSx/frontend/src/dgaos/components/dga/dga-offline-modal.tsx, C:/Users/mirav/OneDrive/Desktop/MiraverseOSx/frontend/src/dgaos/components/dga/dga-operations-workspace.tsx, C:/Users/mirav/OneDrive/Desktop/MiraverseOSx/frontend/src/dgaos/components/dga/dga-response-workspace.tsx, C:/Users/mirav/OneDrive/Desktop/MiraverseOSx/frontend/src/dgaos/components/dga/dga-shell.tsx, C:/Users/mirav/OneDrive/Desktop/MiraverseOSx/frontend/src/dgaos/components/dga/dga-shift-summary-modal.tsx, C:/Users/mirav/OneDrive/Desktop/MiraverseOSx/frontend/src/dgaos/components/dga/dga-simulation-case-dialog.tsx, C:/Users/mirav/OneDrive/Desktop/MiraverseOSx/frontend/src/dgaos/components/dga/dga-simulation-controls.tsx, C:/Users/mirav/OneDrive/Desktop/MiraverseOSx/frontend/src/dgaos/components/dga/government/dga-government-hub.tsx, C:/Users/mirav/OneDrive/Desktop/MiraverseOSx/frontend/src/dgaos/components/dga/investigation/dga-investigation-hub.tsx, C:/Users/mirav/OneDrive/Desktop/MiraverseOSx/frontend/src/dgaos/components/dga/medstat/dga-medical-request-queue.tsx, C:/Users/mirav/OneDrive/Desktop/MiraverseOSx/frontend/src/dgaos/components/dga/phone/dga-phone-console.tsx, C:/Users/mirav/OneDrive/Desktop/MiraverseOSx/frontend/src/dgaos/components/dga/work-management/dga-task-detail-modal.tsx, C:/Users/mirav/OneDrive/Desktop/MiraverseOSx/frontend/src/dgaos/components/dga/work-management/dga-work-board-view.tsx, C:/Users/mirav/OneDrive/Desktop/MiraverseOSx/frontend/src/dgaos/components/dga/work-management/dga-work-list-view.tsx, C:/Users/mirav/OneDrive/Desktop/MiraverseOSx/frontend/src/dgaos/components/dga/work-management/dga-work-table-view.tsx, C:/Users/mirav/OneDrive/Desktop/MiraverseOSx/frontend/src/dgaos/components/dga/work-management/dga-work-timeline-view.tsx, C:/Users/mirav/OneDrive/Desktop/MiraverseOSx/frontend/src/dgaos/components/dga/work-management/dga-work-workspace.tsx, C:/Users/mirav/OneDrive/Desktop/MiraverseOSx/frontend/src/dgaos/components/ui/legal-desk.tsx, C:/Users/mirav/OneDrive/Desktop/MiraverseOSx/frontend/src/dgaos/lib/dga-crosslink-engine.ts, C:/Users/mirav/OneDrive/Desktop/MiraverseOSx/frontend/src/dgaos/lib/dga-trace-bridge.ts, C:/Users/mirav/OneDrive/Desktop/MiraverseOSx/frontend/src/dgaos/lib/operations-dialogue.ts, C:/Users/mirav/OneDrive/Desktop/MiraverseOSx/frontend/src/dgaos/lib/simulation/npc-agency-engine.ts, C:/Users/mirav/OneDrive/Desktop/MiraverseOSx/frontend/src/dgaos/lib/systems/system-adapter.ts, C:/Users/mirav/OneDrive/Desktop/MiraverseOSx/frontend/src/dgaos/lib/systems/system-exchange.ts, dynamic import will not move module into another chunk.
+
+computing gzip size...
+../output/response-frontend-build/index.html                                                                                      1.07 kB │ gzip:   0.55 kB
+../output/response-frontend-build/sw.js                                                                                           3.95 kB
+../output/response-frontend-build/assets/logo_icon-CUPqIqiP.png                                                                  39.98 kB
+../output/response-frontend-build/assets/meridion_world-Bx744lBB.jpg                                                          1,013.06 kB
+../output/response-frontend-build/assets/everything_is_great_but_do_not-ibzqC-2F.mp4                                          2,096.88 kB
+../output/response-frontend-build/assets/mixkit-black-ink-splashing-505-hd-ready-5xOo6vN8.mp4                                 3,455.44 kB
+../output/response-frontend-build/assets/mixkit-glitter-stars-and-snowflakes-19007-hd-ready-jJGDjwg1.mp4                      3,693.95 kB
+../output/response-frontend-build/assets/mixkit-a-woman-monitoring-close-circuit-surveillance-23673-hd-ready-DO32EXpQ.mp4     5,627.94 kB
+../output/response-frontend-build/assets/mixkit-flying-over-a-relaxing-creek-full-of-rock-on-the-51585-hd-ready-BCqJ8giU.mp4  8,320.32 kB
+../output/response-frontend-build/assets/FileExplorerApp-BLQR67_R.css                                                             0.62 kB │ gzip:   0.35 kB
+../output/response-frontend-build/assets/RichTextEditor-DZHZoGHi.css                                                              1.46 kB │ gzip:   0.62 kB
+../output/response-frontend-build/assets/case-workspace-CJUr1qgd.css                                                              2.56 kB │ gzip:   0.93 kB
+../output/response-frontend-build/assets/FieldOperationsApp-DxWZrlgh.css                                                          2.71 kB │ gzip:   0.99 kB
+../output/response-frontend-build/assets/RegistryWorkspaceApp-Dt2SnHHz.css                                                        3.72 kB │ gzip:   1.28 kB
+../output/response-frontend-build/assets/attachmentDocument-BtUdRknX.css                                                          4.24 kB │ gzip:   1.49 kB
+../output/response-frontend-build/assets/MailApp-JMX_z9Xy.css                                                                     6.42 kB │ gzip:   1.93 kB
+../output/response-frontend-build/assets/DocumentStudioApp-BTys34W0.css                                                           6.64 kB │ gzip:   1.87 kB
+../output/response-frontend-build/assets/VitalsApp-CjunPQJt.css                                                                   8.57 kB │ gzip:   2.41 kB
+../output/response-frontend-build/assets/PulseApp-CEHPhihk.css                                                                    8.96 kB │ gzip:   2.22 kB
+../output/response-frontend-build/assets/DispatchNewsSite-BObmZ79a.css                                                           11.55 kB │ gzip:   2.83 kB
+../output/response-frontend-build/assets/BrowserApp-BCMvgYNp.css                                                                 13.69 kB │ gzip:   3.49 kB
+../output/response-frontend-build/assets/versenet-browser-CB31ceec.css                                                           14.53 kB │ gzip:   3.40 kB
+../output/response-frontend-build/assets/EvidenceBoard-V3rltzWT.css                                                              17.02 kB │ gzip:   2.99 kB
+../output/response-frontend-build/assets/mai-space-Drcbb3-d.css                                                                  27.99 kB │ gzip:   6.61 kB
+../output/response-frontend-build/assets/JobWorkstationApp-SYHCKhcG.css                                                          39.86 kB │ gzip:   7.72 kB
+../output/response-frontend-build/assets/App-BjDC7XPS.css                                                                        89.43 kB │ gzip:  17.53 kB
+../output/response-frontend-build/assets/DgaosApp-C1_bm3Wk.css                                                                  288.07 kB │ gzip:  36.42 kB
+../output/response-frontend-build/assets/index-DtVXDPJA.css                                                                     582.15 kB │ gzip:  88.25 kB
+../output/response-frontend-build/assets/MaiSpaceApp-BpYEfyoq.js                                                                  0.27 kB │ gzip:   0.20 kB
+../output/response-frontend-build/assets/RichMailEditor-BvGYlBdC.js                                                               0.42 kB │ gzip:   0.29 kB
+../output/response-frontend-build/assets/citizenEvents-Ch6-1qqe.js                                                                1.16 kB │ gzip:   0.56 kB
+../output/response-frontend-build/assets/CampusApp-BjtOD9m3.js                                                                    1.60 kB │ gzip:   0.78 kB
+../output/response-frontend-build/assets/PulseApp-CIu4F0HM.js                                                                     4.61 kB │ gzip:   1.52 kB
+../output/response-frontend-build/assets/CommunicationsAccessPanel-iyfgfNeo.js                                                    5.04 kB │ gzip:   1.86 kB
+../output/response-frontend-build/assets/CommsApp-NcHK9_4l.js                                                                     5.16 kB │ gzip:   2.02 kB
+../output/response-frontend-build/assets/citizenBridge-CHaxqCLV.js                                                                5.22 kB │ gzip:   1.75 kB
+../output/response-frontend-build/assets/FinanceTerminal-CCvYBGj8.js                                                              5.31 kB │ gzip:   2.09 kB
+../output/response-frontend-build/assets/Form-yyTfbMzo.js                                                                         7.00 kB │ gzip:   2.84 kB
+../output/response-frontend-build/assets/FieldOperationsApp-oU7UhC7b.js                                                           7.50 kB │ gzip:   3.04 kB
+../output/response-frontend-build/assets/VitalsApp-BH6Yuebl.js                                                                    7.81 kB │ gzip:   2.59 kB
+../output/response-frontend-build/assets/DispatchNewsSite-Z63fdP0N.js                                                            10.25 kB │ gzip:   3.27 kB
+../output/response-frontend-build/assets/DocumentStudioApp-cbclnc-m.js                                                           10.42 kB │ gzip:   4.15 kB
+../output/response-frontend-build/assets/BroadStreetCasePanel-A-pe5Xw1.js                                                        10.78 kB │ gzip:   3.96 kB
+../output/response-frontend-build/assets/ProcessMonitorApp-BcDNFvhj.js                                                           10.96 kB │ gzip:   3.51 kB
+../output/response-frontend-build/assets/SpellForgeApp-DRlUlmx1.js                                                               11.29 kB │ gzip:   3.57 kB
+../output/response-frontend-build/assets/versenet-browser-DFXxmr8s.js                                                            12.79 kB │ gzip:   4.62 kB
+../output/response-frontend-build/assets/HousingApp-BTfJYA-I.js                                                                  15.87 kB │ gzip:   5.05 kB
+../output/response-frontend-build/assets/FileExplorerApp-D8E39UR9.js                                                             18.85 kB │ gzip:   6.45 kB
+../output/response-frontend-build/assets/SocialApp-C01jpW_p.js                                                                   20.30 kB │ gzip:   6.71 kB
+../output/response-frontend-build/assets/attachmentDocument-B77yOF6G.js                                                          21.23 kB │ gzip:   8.40 kB
+../output/response-frontend-build/assets/LoreExplorer-DY9Jppj6.js                                                                29.16 kB │ gzip:   6.88 kB
+../output/response-frontend-build/assets/CivicProfileApp-Br2Uwb5B.js                                                             36.44 kB │ gzip:  10.36 kB
+../output/response-frontend-build/assets/Portals-BSCEl9Mt.js                                                                     43.56 kB │ gzip:  11.63 kB
+../output/response-frontend-build/assets/MailApp-CAxjj-iZ.js                                                                     55.19 kB │ gzip:  15.06 kB
+../output/response-frontend-build/assets/PortraitStudioModal-Cvaawq2w.js                                                         55.60 kB │ gzip:  12.79 kB
+../output/response-frontend-build/assets/maidIdentityService-DOr63lPi.js                                                         74.32 kB │ gzip:  20.42 kB
+../output/response-frontend-build/assets/RegistryWorkspaceApp-CfpPcmWi.js                                                        78.19 kB │ gzip:  15.86 kB
+../output/response-frontend-build/assets/lucide-icons-BDwsTWmo.js                                                                89.42 kB │ gzip:  17.68 kB
+../output/response-frontend-build/assets/JobWorkstationApp-gggMSkMB.js                                                           98.13 kB │ gzip:  24.12 kB
+../output/response-frontend-build/assets/mai-space-CCUx83W6.js                                                                   99.42 kB │ gzip:  32.13 kB
+../output/response-frontend-build/assets/BrowserApp-DzznCMkI.js                                                                 108.53 kB │ gzip:  33.83 kB
+../output/response-frontend-build/assets/framer-motion-B0GbNFm6.js                                                              138.88 kB │ gzip:  45.96 kB
+../output/response-frontend-build/assets/EvidenceBoard-DgccC7X1.js                                                              186.21 kB │ gzip:  60.63 kB
+../output/response-frontend-build/assets/index-CvZvDqDE.js                                                                      313.31 kB │ gzip:  97.81 kB
+../output/response-frontend-build/assets/RichTextEditor-DDhK8pDm.js                                                             410.55 kB │ gzip: 130.64 kB
+../output/response-frontend-build/assets/App-CaU0X37l.js                                                                        643.90 kB │ gzip: 199.99 kB
+../output/response-frontend-build/assets/DgaosApp-D6FyZMpV.js                                                                 1,513.72 kB │ gzip: 385.67 kB
+../output/response-frontend-build/assets/TunnelScene-YBxCS89o.js                                                              1,688.37 kB │ gzip: 383.02 kB
+
+(!) Some chunks are larger than 1200 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+✓ built in 20.49s

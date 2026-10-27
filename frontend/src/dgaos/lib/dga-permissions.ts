@@ -10,6 +10,7 @@ export type DGARole =
   | 'civic_observer';
 
 export type DgaWorkspaceId =
+  | 'operations'
   | 'dashboard'
   | 'cases'
   | 'assignments'
@@ -60,6 +61,7 @@ export function hasRequiredClearance(
 }
 
 const ALL_DGA_WORKSPACES: DgaWorkspaceId[] = [
+  'operations',
   'dashboard',
   'cases',
   'assignments',
@@ -123,7 +125,7 @@ const ROLE_SPECIFICATIONS: Record<
     label: 'DGA Field Investigator',
     department: 'Major Investigations & Tactical Ops',
     defaultWorkspace: 'investigation',
-    workspaces: ['dashboard', 'cases', 'assignments', 'comms', 'phone', 'investigation', 'extranet', 'services', 'world'],
+    workspaces: ['dashboard', 'cases', 'assignments', 'comms', 'phone', 'investigation', 'extranet', 'services', 'world', 'operations'],
     canAccessTrace: true,
     canTransmitTraceFindings: false,
     traceViews: [

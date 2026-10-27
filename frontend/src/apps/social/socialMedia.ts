@@ -17,7 +17,7 @@ export function saveDownload(name: string, blob: Blob) {
   const url = URL.createObjectURL(blob), a = document.createElement('a');
   a.href = url; a.download = name; a.click(); setTimeout(() => URL.revokeObjectURL(url), 1000);
 }
-export async function exportMedia(assets: { id: string }[]) {
+export async function exportMedia(assets: { id: string }[], filename = 'mai-space-media-backup.json') {
   const records = [];
   for (const asset of assets) {
     const blob = await getMedia(asset.id);
@@ -25,7 +25,7 @@ export async function exportMedia(assets: { id: string }[]) {
     const data = await new Promise<string>((resolve, reject) => { const reader = new FileReader(); reader.onload = () => resolve(String(reader.result)); reader.onerror = reject; reader.readAsDataURL(blob); });
     records.push({ id: asset.id, data });
   }
-  saveDownload('mai-space-media-backup.json', new Blob([JSON.stringify({ version: 1, assets: records })], { type: 'application/json' }));
+  saveDownload(filename, new Blob([JSON.stringify({ version: 1, assets: records })], { type: 'application/json' }));
   return records.length;
 }
 export async function importMedia(file: File, allowed: { id: string; type: string; size: number }[]) {

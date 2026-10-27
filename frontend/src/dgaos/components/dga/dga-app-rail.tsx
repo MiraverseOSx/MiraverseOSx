@@ -134,6 +134,9 @@ export function DgaAppRail({
           </button>
 
           {/* Cases */}
+          <button onClick={() => onNavigateTab('operations')} title="Operations workspace" className={`w-full h-[38px] px-[10px] rounded-[4px] flex items-center gap-2.5 text-left border-l-2 ${currentMode === 'DGA_CORE' && currentTab === 'operations' ? 'bg-white text-[#181628] font-bold border-[#5d5a86]' : 'hover:bg-[#e4e2ee] text-[#4b4866] border-transparent'}`}>
+            <FolderLock className="w-4 h-4 text-[#5d5a86] shrink-0" />{!isCollapsed && <span className="text-[13px] truncate">Operations</span>}
+          </button>
           <button
             onClick={() => onNavigateTab('cases')}
             title={`Cases (${activeCasesCount})`}

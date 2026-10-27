@@ -2,8 +2,8 @@
 
 import React, { useState } from 'react';
 import { FileText, X } from 'lucide-react';
-import { createDGACase } from '@/lib/dga-store';
-import { DGACase, Priority } from '@/lib/dga-types';
+import { createManualIncidentCase } from '@/lib/dga-store';
+import { Priority } from '@/lib/dga-types';
 
 interface DgaCaseCreationWizardProps {
   isOpen: boolean;
@@ -52,90 +52,10 @@ export function DgaCaseCreationWizard({
     setError(null);
 
     try {
-      const randomSuffix = Math.floor(100 + Math.random() * 900);
-      const caseId = `INC-26-${randomSuffix}`;
-      const now = new Date().toISOString();
-
-      const workingTitle =
-        title.trim() ||
-        (narrative.trim().length > 60
-          ? `${narrative.trim().slice(0, 60)}...`
-          : narrative.trim());
-
-      const newCase: DGACase = {
-        id: caseId,
-        title: workingTitle,
-        classification: 'UNCLASSIFIED // FOUO',
-        status: 'Active',
-        priority,
-        department: 'Investigation',
-        leadSystem: 'CIVITAS',
-        supportingSystems: ['TRACE'],
-        assignedAgents: ['Special Agent Miracle Jerome'],
-        primaryInvestigator: 'Special Agent Miracle Jerome',
-        summary: narrative.trim(),
-        objectives: [],
-        tasks: [],
-        evidence: [],
-        people: reportingParty.trim()
-          ? [
-              {
-                personId: `PERS-${Date.now().toString().slice(-4)}`,
-                name: reportingParty.trim(),
-                role: 'Reporting Party / First Responder',
-                affiliation: location.trim() || 'Independent / Unverified',
-                threatLevel: 'None',
-                status: 'Contacted',
-                notes: 'Recorded during initial incident intake.'
-              }
-            ]
-          : [],
-        organizations: [],
-        locations: location.trim()
-          ? [
-              {
-                locationId: `LOC-${Date.now().toString().slice(-4)}`,
-                name: location.trim(),
-                significance: 'Reported Incident Scene'
-              }
-            ]
-          : [],
-        communications: [],
-        documents: [],
-        forensicRequests: [],
-        timeline: [
-          {
-            id: `TL-INTAKE-${Date.now()}`,
-            timestamp: incidentDate && incidentTime ? new Date(`${incidentDate}T${incidentTime}`).toISOString() : now,
-            type: 'CASE_OPENED',
-            actor: 'Special Agent Miracle Jerome [HQ-04]',
-            description: `Manual incident intake filed. Docket ${caseId} activated. Initial report: "${workingTitle}".`
-          }
-        ],
-        notes: initialNotes.trim()
-          ? [
-              {
-                id: `NOTE-${Date.now()}`,
-                agentId: 'AGT-HQ-04',
-                agentName: 'Special Agent Miracle Jerome',
-                timestamp: now,
-                content: initialNotes.trim()
-              }
-            ]
-          : [],
-        causeHypothesis: {
-          primaryCause: '',
-          causeConfidence: 10,
-          incidentLocation: location.trim(),
-          incidentTimeWindow: `${incidentDate} ${incidentTime}`.trim(),
-          indictmentStatus: 'Drafting'
-        },
-        suspectProfiles: [],
-        createdAt: now,
-        updatedAt: now
-      };
-
-      const created = await createDGACase(newCase);
+      const created = await createManualIncidentCase({
+        narrative, title, incidentDate, incidentTime, location, reportingParty,
+        priority, initialNotes, attachments,
+      });
       onCaseCreated(created.id);
       onClose();
     } catch (err) {

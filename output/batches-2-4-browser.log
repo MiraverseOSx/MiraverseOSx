@@ -1,0 +1,56 @@
+npm notice run miraverse-frontend@0.1.0 npx
+npm notice run playwright test e2e/operations.spec.ts --reporter=list
+[WebServer] npm notice run miraverse-frontend@0.1.0 dev
+[WebServer] npm notice run vite --host 127.0.0.1 --port 4174 --strictPort
+[WebServer] (node:6240) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] npm notice run miraverse-frontend@0.1.0 storybook
+[WebServer] npm notice run storybook dev -p 6006 --no-open --host 127.0.0.1 --port 6006 --ci --no-open
+[WebServer] (node:47088) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 2 tests using 1 worker
+
+(node:17588) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  1 e2e\operations.spec.ts:22:1 › NPC call becomes a case with persistent linked interviews and distinct court stages (1.0m)
+(node:55084) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 2 e2e\operations.spec.ts:76:1 › TRACE returns a finalized report only to the originating request and preserves exhibit IDs (43.2s)
+
+
+  1) e2e\operations.spec.ts:22:1 › NPC call becomes a case with persistent linked interviews and distinct court stages 
+
+    Test timeout of 60000ms exceeded.
+
+    Error: locator.selectOption: Test timeout of 60000ms exceeded.
+    Call log:
+      - waiting for locator('.os-window[data-app=dgaos]').getByTestId('operations-workspace').getByRole('form', { name: 'Link citizen to case', exact: true }).getByLabel('Citizen', { exact: true })
+
+
+      37 |   const link = ui.getByRole('form', { name: 'Link citizen to case', exact: true });
+      38 |   const personId = await link.locator('option').filter({ hasText: 'Dena Banks' }).getAttribute('value');
+    > 39 |   await link.getByLabel('Citizen', { exact: true }).selectOption(personId!);
+         |                                                     ^
+      40 |   await link.getByLabel('Case role', { exact: true }).selectOption('Witness'); await click('Link citizen');
+      41 |   const interview = ui.getByRole('form', { name: 'Record interview', exact: true });
+      42 |   await interview.getByLabel('Case subject', { exact: true }).selectOption(personId!);
+        at C:\Users\mirav\OneDrive\Desktop\MiraverseOSx\frontend\e2e\operations.spec.ts:39:53
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results\operations-NPC-call-become-13fcf-s-and-distinct-court-stages\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results\operations-NPC-call-become-13fcf-s-and-distinct-court-stages\error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results\operations-NPC-call-become-13fcf-s-and-distinct-court-stages\trace.zip
+    Usage:
+
+        npx playwright show-trace test-results\operations-NPC-call-become-13fcf-s-and-distinct-court-stages\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  1 failed
+    e2e\operations.spec.ts:22:1 › NPC call becomes a case with persistent linked interviews and distinct court stages 
+  1 passed (1.9m)

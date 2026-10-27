@@ -77,7 +77,10 @@ import {
   type DgaWorkspaceId,
 } from '@/lib/dga-permissions';
 
+import { DgaOperationsWorkspace } from './dga-operations-workspace';
+
 export type DgaTab =
+  | 'operations'
   | 'dashboard'
   | 'cases'
   | 'assignments'
@@ -121,9 +124,7 @@ export function DgaShell({ traceWorkbenchNode, onOpenCaseNotebook }: DgaShellPro
     headlineMessage: string;
     contactId: string;
   } | null>(null);
-  const [demoResultSummary, setDemoResultSummary] = useState(
-    'Confirmation of synthetic fluorophosphate derivative. Structural profile indicates synthesis batch synthesized at Phoenix Biotech harbor facilities.'
-  );
+  const [demoResultSummary, setDemoResultSummary] = useState('');
 
   useEffect(() => {
     initDGAStore().then((st) => setDgaState(st));
@@ -146,7 +147,7 @@ export function DgaShell({ traceWorkbenchNode, onOpenCaseNotebook }: DgaShellPro
 
     // Real-time operational simulation tick (runs every 4 seconds)
     const simInterval = setInterval(() => {
-      runSimulationTick();
+      void runSimulationTick().catch(() => setAccessNotice("Agency updates could not be saved. Check available storage and retry."));
     }, 4000);
 
     return () => {
@@ -242,14 +243,20 @@ export function DgaShell({ traceWorkbenchNode, onOpenCaseNotebook }: DgaShellPro
       return;
     }
     const activeCase = dgaState.cases.find((c) => c.id === dgaState.activeCaseId) || dgaState.cases[0];
-    const freqId = activeCase.forensicRequests[0]?.id || 'FREQ-194-01';
+    const request = activeCase?.forensicRequests.find(item => item.linkedTraceCaseId || activeCase.linkedTraceCaseId);
+    const traceCaseId = request?.linkedTraceCaseId || activeCase?.linkedTraceCaseId;
+    if (!activeCase || !request || !traceCaseId || !demoResultSummary.trim()) {
+      setAccessNotice('Select a case with a linked TRACE request and enter its report summary before transmitting.');
+      return;
+    }
 
-    await returnTraceResultToDga(
+    const received = await returnTraceResultToDga(
       activeCase.id,
-      freqId,
+      request.id,
       demoResultSummary,
-      activeCase.linkedTraceCaseId || 'FS-2026-00422'
+      traceCaseId
     );
+    if (!received) { setAccessNotice('The result does not match the originating case request. Nothing was attached.'); return; }
 
     setBridgeResultModalOpen(false);
     alert(`Laboratory result transmitted to DGA Case ${activeCase.id}. Case timeline and flash alerts updated.`);
@@ -262,18 +269,18 @@ export function DgaShell({ traceWorkbenchNode, onOpenCaseNotebook }: DgaShellPro
 
   return (
     <div data-phone-active={activeMode === 'DGA_CORE' && activeTab === 'phone'} className="dga-shell h-full w-full flex flex-col bg-[#e8e7f0] text-[#1e1d2c] font-sans antialiased overflow-hidden select-none">
-      {/* 1. COMPACT GLOBAL STATUS BAR (Responsive, zero cutoff on laptop resolutions) */}
-      <header className="h-[32px] min-h-[32px] max-h-[32px] bg-[#21202e] text-[#d4d2e5] border-b border-[#343247] px-2 flex items-center justify-between gap-1.5 text-[11px] shrink-0 select-none z-30 whitespace-nowrap overflow-x-auto scrollbar-none">
-        <div className="flex items-center gap-1.5 min-w-0 shrink">
-          <div className="flex items-center gap-1 font-bold font-mono tracking-tight text-white shrink-0">
+      {/* 1. COMPACT GLOBAL STATUS BAR */}
+      <header className="h-[36px] min-h-[36px] max-h-[36px] bg-[#1d1b28] text-[#d4d2e5] border-b border-[#353249] px-2.5 flex items-center justify-between gap-2 text-[11px] shrink-0 select-none z-30 whitespace-nowrap overflow-x-auto scrollbar-none">
+        <div className="flex items-center gap-2 min-w-0 shrink-0">
+          <div className="flex items-center gap-1.5 font-bold font-mono tracking-tight text-white shrink-0">
             <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse shrink-0" />
-            <span className="text-[11px]">DGAOS v4.2</span>
-            <span className="hidden xl:inline text-[10px] text-[#8e8cae] font-normal">|</span>
-            <span className="hidden xl:inline text-[#a4a2c4] text-[10.5px]">HQ-04</span>
+            <span className="text-[11px] tracking-wide">DGAOS v4.2</span>
+            <span className="hidden xl:inline text-[10px] text-[#6e6b8a] font-normal">|</span>
+            <span className="hidden xl:inline text-[#9491b4] text-[10.5px]">HQ-04</span>
           </div>
 
           {/* SIMULATION CONTROLS */}
-          <div className="pl-1.5 border-l border-[#37354c] min-w-0 shrink">
+          <div className="pl-2 border-l border-[#353249] min-w-0 shrink-0">
             <DgaSimulationControls
               simulation={dgaState.simulation}
               session={dgaState.session}
@@ -284,32 +291,34 @@ export function DgaShell({ traceWorkbenchNode, onOpenCaseNotebook }: DgaShellPro
         </div>
 
         {/* Center Mode Switcher Tabs */}
-        <div className="flex items-center bg-[#15141e] p-0.5 rounded-[3px] border border-[#353349] shrink-0">
+        <div className="flex items-center bg-[#141320] p-0.5 rounded-[4px] border border-[#34314c] shrink-0">
           <button
+            type="button"
             onClick={() => setActiveMode('DGA_CORE')}
             aria-pressed={activeMode === 'DGA_CORE'}
-            className={`h-[22px] px-[6px] rounded-[2px] text-[10.5px] font-bold flex items-center gap-1 transition-all cursor-pointer ${
+            className={`h-[24px] px-2.5 rounded-[3px] text-[10.5px] font-bold font-mono flex items-center gap-1.5 transition-all cursor-pointer ${
               activeMode === 'DGA_CORE'
                 ? 'bg-[#524f77] text-white shadow-xs'
-                : 'text-[#8482a4] hover:text-white'
+                : 'text-[#8785a8] hover:text-white hover:bg-[#201e2e]'
             }`}
           >
-            <Shield className="w-3 h-3" />
+            <Shield className="w-3 h-3 shrink-0" />
             <span>DGA COMMAND CORE</span>
           </button>
 
           <button
+            type="button"
             onClick={() => handleLaunchTrace()}
             aria-pressed={activeMode === 'TRACE'}
-            className={`h-[22px] px-[6px] rounded-[2px] text-[10.5px] font-bold flex items-center gap-1 transition-all cursor-pointer ${
+            className={`h-[24px] px-2.5 rounded-[3px] text-[10.5px] font-bold font-mono flex items-center gap-1.5 transition-all cursor-pointer ${
               activeMode === 'TRACE'
                 ? 'bg-[#524f77] text-white shadow-xs'
-                : 'text-[#8482a4] hover:text-white'
+                : 'text-[#8785a8] hover:text-white hover:bg-[#201e2e]'
             }`}
           >
-            <Beaker className="w-3 h-3" />
+            <Beaker className="w-3 h-3 shrink-0" />
             <span>TRACE FORENSIC LAB</span>
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse ml-0.5" />
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse ml-0.5 shrink-0" />
           </button>
         </div>
 
@@ -320,12 +329,13 @@ export function DgaShell({ traceWorkbenchNode, onOpenCaseNotebook }: DgaShellPro
               LINKED: <strong className="text-white">{dgaState.activeCaseId || 'DGA-26-194'}</strong>
             </span>
             <button
+              type="button"
               onClick={() => setBridgeResultModalOpen(true)}
-              className="h-[22px] px-[6px] bg-emerald-700 hover:bg-emerald-600 text-white rounded-[3px] text-[10px] font-bold flex items-center gap-1 transition-colors shadow-xs cursor-pointer"
+              className="h-[24px] px-2 bg-emerald-700 hover:bg-emerald-600 text-white rounded-[4px] border border-emerald-600 text-[10px] font-bold font-mono flex items-center gap-1 transition-colors shadow-xs cursor-pointer"
               title="Transmit laboratory examination result directly to the originating DGA Case file"
               aria-label="Transmit result"
             >
-              <Send className="w-3 h-3" />
+              <Send className="w-3 h-3 shrink-0" />
               <span className="hidden xl:inline">TRANSMIT RESULT</span>
             </button>
           </div>
@@ -333,37 +343,58 @@ export function DgaShell({ traceWorkbenchNode, onOpenCaseNotebook }: DgaShellPro
 
         {/* Right Operator Clearance & Lock Tools */}
         <div className="dga-operator-tools flex items-center gap-1.5 shrink-0">
-          {isLocalWorld(location.hostname) && !osPlayer.isAdmin && <button className="dga-notebook-launch" onClick={() => setAccessNotice(useOSStore.getState().grantLocalFullAccess().message)}>Enable full access</button>}
-          {onOpenCaseNotebook && <button className="dga-notebook-launch" onClick={onOpenCaseNotebook} title="Open Broad Street evidence notebook"><FolderLock size={15} /><span>Case notebook</span></button>}
+          {isLocalWorld(location.hostname) && !osPlayer.isAdmin && (
+            <button
+              type="button"
+              className="dga-notebook-launch"
+              onClick={() => setAccessNotice(useOSStore.getState().grantLocalFullAccess().message)}
+            >
+              Enable full access
+            </button>
+          )}
+          {onOpenCaseNotebook && (
+            <button
+              type="button"
+              className="dga-notebook-launch"
+              onClick={onOpenCaseNotebook}
+              title="Open Broad Street evidence notebook"
+            >
+              <FolderLock size={13} className="shrink-0" />
+              <span>Case notebook</span>
+            </button>
+          )}
           {/* Quick Telephone Console & Incoming Call Simulation */}
           <button
+            type="button"
             onClick={() => {
               setActiveTab('phone');
               setActiveMode('DGA_CORE');
             }}
-            className={`h-[22px] px-[6px] rounded-[3px] flex items-center gap-1 text-[10.5px] font-mono border transition-colors cursor-pointer ${
+            className={`h-[24px] px-2 rounded-[4px] flex items-center gap-1 text-[10px] font-mono border transition-colors cursor-pointer ${
               activeTab === 'phone'
                 ? 'bg-emerald-700 text-white border-emerald-500 font-bold'
-                : 'bg-[#2b2a3d] hover:bg-[#38374e] text-emerald-300 hover:text-white border-[#3d3b54]'
+                : 'bg-[#272538] hover:bg-[#36334e] text-emerald-400 hover:text-white border-[#3d3a54]'
             }`}
             title="Open Agency Phone & Voicemail Console"
           >
-            <Phone className="w-3 h-3 text-emerald-400" />
-            <span className="text-[9.5px] uppercase font-bold tracking-wider">PHONE</span>
+            <Phone className="w-3 h-3 text-emerald-400 shrink-0" />
+            <span className="uppercase font-bold tracking-wider">PHONE</span>
           </button>
 
           <button
+            type="button"
             className="dga-directory-launch"
             title="Open Service Directory"
             aria-pressed={activeMode === 'DGA_CORE' && effectiveTab === 'services'}
             onClick={() => handleNavigateTab('services')}
           >
-            <Grid2X2 size={16} aria-hidden="true" />
+            <Grid2X2 size={13} aria-hidden="true" className="shrink-0" />
             <span>Directory</span>
           </button>
 
           {/* Test Incoming Call from Agent Yumi (Shown on wide displays) */}
           <button
+            type="button"
             onClick={() => {
               setIncomingCall({
                 callerName: 'Special Agent Yumi Tanaka',
@@ -374,60 +405,65 @@ export function DgaShell({ traceWorkbenchNode, onOpenCaseNotebook }: DgaShellPro
                 contactId: 'CONT-YUMI'
               });
             }}
-            className="hidden 2xl:flex h-[22px] px-[6px] rounded-[3px] bg-[#392e54] hover:bg-[#483a69] text-purple-200 hover:text-white items-center gap-1 text-[10px] font-mono border border-[#57467e] transition-colors cursor-pointer animate-pulse"
+            className="hidden 2xl:flex h-[24px] px-2 rounded-[4px] bg-[#332448] hover:bg-[#443060] text-purple-200 hover:text-white items-center gap-1 text-[10px] font-mono border border-purple-500/40 transition-colors cursor-pointer"
             title="Simulate priority incoming phone call from Agent Yumi"
           >
-            <PhoneCall className="w-3 h-3 text-purple-300" />
+            <PhoneCall className="w-3 h-3 text-purple-300 shrink-0" />
             <span className="font-bold">CALL (YUMI)</span>
           </button>
 
           {(dgaState.unacknowledgedSimulationEventCount ?? 0) > 0 && (
             <button
+              type="button"
               onClick={() => setIsFeedDrawerOpen(true)}
-              className="h-[22px] px-1.5 rounded-[3px] bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 border border-amber-500/50 flex items-center gap-1 text-[9.5px] font-mono font-bold transition-all shadow-xs animate-pulse cursor-pointer"
+              className="h-[24px] px-1.5 rounded-[4px] bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 border border-amber-500/50 flex items-center gap-1 text-[9.5px] font-mono font-bold transition-all shadow-xs animate-pulse cursor-pointer"
               title={`${dgaState.unacknowledgedSimulationEventCount} new simulation events occurred in background`}
             >
-              <Zap className="w-3 h-3 text-amber-400" />
+              <Zap className="w-3 h-3 text-amber-400 shrink-0" />
               <span>{dgaState.unacknowledgedSimulationEventCount} EVENTS</span>
             </button>
           )}
 
           <button
+            type="button"
             onClick={() => setIsFeedDrawerOpen(true)}
-            className="h-[22px] px-[6px] rounded-[3px] bg-[#2b2a3d] hover:bg-[#38374e] text-[#c7c5dd] hover:text-white flex items-center gap-1 text-[10px] font-mono border border-[#3d3b54] transition-colors cursor-pointer"
+            className="h-[24px] px-2 rounded-[4px] bg-[#272538] hover:bg-[#36334e] text-[#c7c5de] hover:text-white flex items-center gap-1 text-[10px] font-mono border border-[#3d3a54] transition-colors cursor-pointer"
             title="Open Global Agency Activity Feed"
           >
-            <Activity className="w-3 h-3 text-[#b2b5df]" />
-            <span className="text-[9.5px] uppercase font-bold tracking-wider">FEED</span>
-            <span className="bg-[#58537d] text-white text-[8.5px] px-1 py-0.2 rounded font-bold">
+            <Activity className="w-3 h-3 text-[#b2b5df] shrink-0" />
+            <span className="uppercase font-bold tracking-wider">FEED</span>
+            <span className="bg-[#524d77] text-white text-[8.5px] px-1 py-0.2 rounded font-bold">
               {dgaState.activityFeed.length}
             </span>
           </button>
 
           <button
+            type="button"
             onClick={() => setIsProfileModalOpen(true)}
-            className="text-[10.5px] text-[#9a98b9] flex items-center gap-1 hover:text-white transition-colors cursor-pointer"
+            className="h-[24px] px-1.5 rounded-[4px] bg-[#1a1926] border border-[#35334a] text-[10.5px] text-[#a5a3c6] flex items-center gap-1.5 hover:text-white hover:border-[#4d4a6a] transition-colors cursor-pointer"
             title="View Agent Profile & Credentials"
           >
             <span className="hidden xl:inline text-white font-medium truncate max-w-[110px]">
               {dgaState.profile.name}
             </span>
-            <span className="text-[9.5px] bg-amber-950/60 text-amber-300 border border-amber-800/80 px-1 rounded font-mono font-bold shrink-0">
+            <span className="text-[9px] bg-amber-950/70 text-amber-300 border border-amber-800/80 px-1 rounded font-mono font-bold shrink-0">
               {dgaAuthority.roleLabel} · LVL {dgaAuthority.clearanceLevel}
             </span>
           </button>
 
-          <div className="flex items-center gap-1 border-l border-[#37354c] pl-1 shrink-0">
+          <div className="flex items-center gap-1 border-l border-[#37354c] pl-1.5 shrink-0">
             <button
+              type="button"
               onClick={() => setWorkstationLocked(true)}
-              className="w-[22px] h-[22px] flex items-center justify-center rounded-[3px] hover:bg-[#323045] text-[#a9a7c6] hover:text-white transition-colors cursor-pointer"
+              className="w-[24px] h-[24px] flex items-center justify-center rounded-[4px] bg-[#242335] hover:bg-[#35334a] border border-[#39374e] text-[#a8a5c6] hover:text-white transition-colors cursor-pointer"
               title="Lock Workstation Enclave"
             >
               <Lock className="w-3 h-3" />
             </button>
             <button
+              type="button"
               onClick={() => setIsResetConfirmOpen(true)}
-              className="w-[22px] h-[22px] flex items-center justify-center rounded-[3px] hover:bg-rose-950/70 text-[#a9a7c6] hover:text-rose-300 transition-colors cursor-pointer"
+              className="w-[24px] h-[24px] flex items-center justify-center rounded-[4px] bg-[#242335] hover:bg-rose-950/70 border border-[#39374e] text-[#a8a5c6] hover:text-rose-300 hover:border-rose-800/60 transition-colors cursor-pointer"
               title="Reset Universe to Seed"
             >
               <RotateCcw className="w-3 h-3" />
@@ -495,6 +531,8 @@ export function DgaShell({ traceWorkbenchNode, onOpenCaseNotebook }: DgaShellPro
                 }}
               />
             )}
+
+            {effectiveTab === 'operations' && <DgaOperationsWorkspace state={{ ...dgaState, cases: authorizedCases }} authority={dgaAuthority} onOpenCase={handleSelectCase} onOpenTrace={handleOpenTraceWithCase} />}
 
             {effectiveTab === 'assignments' && (
               <DgaWorkWorkspace
@@ -625,7 +663,7 @@ export function DgaShell({ traceWorkbenchNode, onOpenCaseNotebook }: DgaShellPro
               <input
                 type="text"
                 disabled
-                value={dgaState.activeCaseId || 'DGA-26-194'}
+                value={dgaState.activeCaseId || 'No case selected'}
                 className="w-full bg-[#f4f3f8] border border-[#cfcddb] rounded px-3 py-1.5 text-xs font-mono text-[#252438]"
               />
             </div>

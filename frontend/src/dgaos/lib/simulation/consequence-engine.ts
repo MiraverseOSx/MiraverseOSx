@@ -40,7 +40,7 @@ export function evaluateDecisionConsequences(
   });
 
   // If critical option, generate alert and schedule downstream reaction
-  if (chosenOptionId.toLowerCase().includes('evacuate') || chosenOptionId.toLowerCase().includes('intervene')) {
+  if (decision.caseId === 'DGA-26-194' && (chosenOptionId.toLowerCase().includes('evacuate') || chosenOptionId.toLowerCase().includes('intervene'))) {
     alerts.push({
       id: `ALT-DEC-${Date.now()}`,
       level: 'FLASH',

@@ -1569,18 +1569,18 @@ export function DgaCaseRegistry({
                         <button
                           onClick={async () => {
                             const summary = prompt(
-                              'SUBMIT FINAL INDICTMENT DETERMINATION & CLOSE DOCKET:',
-                              `Investigation of Docket ${activeCase.id} concluded. All physical and spectral evidence corroborates formal indictment.`
+                              'SUBMIT INVESTIGATION REPORT FOR LEGAL REVIEW:',
+                              ''
                             );
                             if (summary) {
-                              await submitCaseFinalReport(activeCase.id, summary, 'CLOSED');
-                              alert(`Docket ${activeCase.id} concluded and sealed.`);
+                              await submitCaseFinalReport(activeCase.id, summary, 'REFERRED');
+                              alert(`Docket ${activeCase.id} referred for review. Court decisions are recorded in Operations.`);
                             }
                           }}
                           className="px-4 py-2 bg-emerald-800 hover:bg-emerald-700 text-white rounded text-xs font-bold flex items-center gap-2 shadow cursor-pointer transition-colors"
                         >
                           <FileCheck2 className="w-4 h-4" />
-                          <span>Submit Final Indictment & Close Docket</span>
+                          <span>Submit Investigation Report</span>
                         </button>
                       )}
                     </div>

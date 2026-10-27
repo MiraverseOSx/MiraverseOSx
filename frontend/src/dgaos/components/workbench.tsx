@@ -27,7 +27,7 @@ import {CyberTerminal} from '@/components/ui/cyber-terminal';
 import {LegalDesk} from '@/components/ui/legal-desk';
 import {CitizenRegistry} from '@/components/ui/citizen-registry';
 import {CommsCenter} from '@/components/ui/comms-center';
-import CourtroomTrial from '@/components/ui/courtroom-trial';
+
 import {modules} from '@/lib/modules';
 import type {LabRecord,Kind} from '@/lib/records';
 import {acceptAndSignTraceCase} from '@/lib/case-store';
@@ -190,7 +190,7 @@ export default function Workbench({
          )}
        </div>
        <h1>{title}</h1>
-        <p>{current?'Document observations. Preserve context. Communicate limitations.':view==='Dashboard'?'A clear view of your cases, evidence, and scientific work.':({Cases:'Organize the questions your laboratory is working to answer.',Evidence:'Every item accounted for, from receipt to examination.',Laboratory:'Specialist disciplines. One connected laboratory.',Examinations:'Turn observations into documented scientific findings.',Reports:'A considered conclusion, with a traceable review history.',Quality:'Review completeness and maintain good laboratory practice.',Training:'Practice the process without levels, scores, or time pressure.','Case Builder':'Start with a scientific question and build a scenario around it.',Library:'Practical guidance for this forensic laboratory station.',Administration:'Your laboratory configuration.',Profile:'Your place in the laboratory.','Detective Desk':'Connect clues, validate alibis, and correlate physical and digital evidence.','Crime Scene (CSI)':'Tactical spatial floorplan, evidence discovery points, and point-of-entry diagrams.','Interrogation Room':'Custodial suspect interrogation, biometric stress analysis, and evidence confrontation.','Forensic Morgue':'Chief Medical Examiner post-mortem trauma documentation and toxicological screening.','Courtroom Trial':'Adversarial federal prosecution, witness cross-examination, and evidentiary contradiction injection.'} as Record<string,string>)[view] || 'Specialist forensic intelligence operations.'}</p>
+        <p>{current?'Document observations. Preserve context. Communicate limitations.':view==='Dashboard'?'A clear view of your cases, evidence, and scientific work.':({Cases:'Organize the questions your laboratory is working to answer.',Evidence:'Every item accounted for, from receipt to examination.',Laboratory:'Specialist disciplines. One connected laboratory.',Examinations:'Turn observations into documented scientific findings.',Reports:'A considered conclusion, with a traceable review history.',Quality:'Review completeness and maintain good laboratory practice.',Training:'Practice the process without levels, scores, or time pressure.','Case Builder':'Start with a scientific question and build a scenario around it.',Library:'Practical guidance for this forensic laboratory station.',Administration:'Your laboratory configuration.',Profile:'Your place in the laboratory.','Detective Desk':'Connect clues, validate alibis, and correlate physical and digital evidence.','Crime Scene (CSI)':'Tactical spatial floorplan, evidence discovery points, and point-of-entry diagrams.','Interrogation Room':'Custodial suspect interrogation, biometric stress analysis, and evidence confrontation.','Forensic Morgue':'Chief Medical Examiner post-mortem trauma documentation and toxicological screening.','Courtroom Trial':'Record hearings, court decisions, sentences and custody in the connected case file.'} as Record<string,string>)[view] || 'Specialist forensic intelligence operations.'}</p>
      </div>
      {!current&&view==='Dashboard'?(
        <div className="flex items-center gap-2">
@@ -806,14 +806,12 @@ export default function Workbench({
       onLogFindingToBench={()=>{
         setNotice('Cyber finding logged to contemporaneous notes.');
       }}
-    />:view==='Legal & Warrants'?<LegalDesk
+    />:(view==='Legal & Warrants'||view==='Courtroom Trial')?<LegalDesk
       cases={cases}
       evidence={evidence}
       exams={exams}
       reports={reports}
       onOpenRecord={show}
-      navigate={navigate}
-    />:view==='Courtroom Trial'?<CourtroomTrial
       navigate={navigate}
     />:view==='Citizen Registry'?<CitizenRegistry
       cases={cases}

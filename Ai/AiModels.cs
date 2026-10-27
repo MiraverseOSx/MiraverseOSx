@@ -16,6 +16,9 @@ namespace MiraverseOSx.Ai
         [JsonPropertyName("context")]
         public string Context { get; set; } = string.Empty;
 
+        [JsonPropertyName("contextScope")]
+        public string ContextScope { get; set; } = string.Empty;
+
         [JsonPropertyName("preferredProvider")]
         public string? PreferredProvider { get; set; }
 

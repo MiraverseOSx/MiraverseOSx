@@ -106,32 +106,25 @@ class TraceDurableStore {
 
     try {
       // 1. Load records from IndexedDB or fallback to localStorage / seed
-      const storedRecords = (await idbGet<LabRecord[]>(STORAGE_KEYS.RECORDS)) || this.loadLocal<LabRecord[]>(STORAGE_KEYS.RECORDS);
-      if (storedRecords && Array.isArray(storedRecords) && storedRecords.length > 0) {
-        // Preserve user drafts and modifications, but merge in any authoritative seed records not yet present
-        const existingIds = new Set(storedRecords.map((r) => r.id));
-        const missingFromSeed = seed.filter((s) => !existingIds.has(s.id));
-        if (missingFromSeed.length > 0) {
-          this.recordsCache = [...storedRecords, ...missingFromSeed];
-          await this.persistRecords();
-        } else {
-          this.recordsCache = storedRecords;
-        }
+      const storedRecords = this.loadLocal<LabRecord[]>(STORAGE_KEYS.RECORDS) ?? (await idbGet<LabRecord[]>(STORAGE_KEYS.RECORDS));
+      if (Array.isArray(storedRecords)) {
+        // A restored empty docket is intentional; do not reinsert deleted seed work.
+        this.recordsCache = storedRecords;
       } else {
         this.recordsCache = [...seed];
         await this.persistRecords();
       }
 
       // 2. Load drafts
-      const storedDrafts = (await idbGet<Record<string, TraceDraft>>(STORAGE_KEYS.DRAFTS)) || this.loadLocal<Record<string, TraceDraft>>(STORAGE_KEYS.DRAFTS);
+      const storedDrafts = this.loadLocal<Record<string, TraceDraft>>(STORAGE_KEYS.DRAFTS) ?? (await idbGet<Record<string, TraceDraft>>(STORAGE_KEYS.DRAFTS));
       if (storedDrafts) this.draftsCache = storedDrafts;
 
       // 3. Load transmissions
-      const storedTransmissions = (await idbGet<Record<string, TransmissionRecord>>(STORAGE_KEYS.TRANSMISSIONS)) || this.loadLocal<Record<string, TransmissionRecord>>(STORAGE_KEYS.TRANSMISSIONS);
+      const storedTransmissions = this.loadLocal<Record<string, TransmissionRecord>>(STORAGE_KEYS.TRANSMISSIONS) ?? (await idbGet<Record<string, TransmissionRecord>>(STORAGE_KEYS.TRANSMISSIONS));
       if (storedTransmissions) this.transmissionsCache = storedTransmissions;
 
       // 4. Load session
-      const storedSession = (await idbGet<TraceSession>(STORAGE_KEYS.SESSION)) || this.loadLocal<TraceSession>(STORAGE_KEYS.SESSION);
+      const storedSession = this.loadLocal<TraceSession>(STORAGE_KEYS.SESSION) ?? (await idbGet<TraceSession>(STORAGE_KEYS.SESSION));
       if (storedSession) this.sessionCache = { ...this.sessionCache, ...storedSession };
 
       this.isInitialized = true;
@@ -152,22 +145,26 @@ class TraceDurableStore {
   }
 
   public async saveRecord(record: LabRecord): Promise<LabRecord> {
+    const before = this.recordsCache.slice();
     const existingIndex = this.recordsCache.findIndex((r) => r.id === record.id);
     if (existingIndex >= 0) {
       this.recordsCache[existingIndex] = record;
     } else {
       this.recordsCache.unshift(record);
     }
-    await this.persistRecords();
+    try { await this.persistRecords(); }
+    catch (error) { this.recordsCache = before; throw error; }
     this.broadcastRecordsChanged();
     return record;
   }
 
   public async deleteRecord(id: string): Promise<boolean> {
+    const before = this.recordsCache;
     const prevLen = this.recordsCache.length;
     this.recordsCache = this.recordsCache.filter((r) => r.id !== id);
     if (this.recordsCache.length !== prevLen) {
-      await this.persistRecords();
+      try { await this.persistRecords(); }
+      catch (error) { this.recordsCache = before; throw error; }
       this.broadcastRecordsChanged();
       return true;
     }
@@ -177,12 +174,12 @@ class TraceDurableStore {
   private async persistRecords(): Promise<void> {
     this.notifySaveState('saving');
     try {
+      this.saveLocal(STORAGE_KEYS.RECORDS, this.recordsCache);
       await idbSet(STORAGE_KEYS.RECORDS, this.recordsCache);
-      this.saveLocal(STORAGE_KEYS.RECORDS, this.recordsCache);
       this.notifySaveState('saved');
-    } catch {
-      this.saveLocal(STORAGE_KEYS.RECORDS, this.recordsCache);
-      this.notifySaveState('saved');
+    } catch (error) {
+      this.notifySaveState('error');
+      throw error;
     }
   }
 
@@ -259,6 +256,7 @@ class TraceDurableStore {
     if (!exam || exam.kind !== 'examination') {
       throw new Error(`Examination ${examId} not found.`);
     }
+    if (!findings.trim()) throw new Error('Record examination findings before finalizing.');
 
     // Explicit finalization creates an immutable snapshot
     const finalizedExam: LabRecord = {
@@ -380,7 +378,23 @@ class TraceDurableStore {
       };
     }
 
-    const dgaCaseId = targetDgaCaseId || tx.dgaCaseId || report.caseId;
+    // Resolve from the submitted examination, never from a selected or guessed docket.
+    const { initDGAStore, getDGAState, attachTraceResultToDgaCase } = await import('../lib/dga-store');
+    const { resolveDGAAuthority } = await import('../lib/dga-permissions');
+    await initDGAStore();
+    if (!resolveDGAAuthority({ profile: getDGAState().profile }).canTransmitTraceFindings) throw new Error('TRACE release authority is required.');
+    const matches = getDGAState().cases.flatMap(c => c.forensicRequests
+      .filter(r => r.linkedTraceCaseId === report.caseId && r.traceExamIds?.includes(report.data.examinationId))
+      .map(request => ({ docket: c, request })));
+    if (matches.length !== 1) throw new Error('This report does not match one originating DGA examination request. Link the examination before transmitting.');
+    const { docket, request } = matches[0];
+    if (targetDgaCaseId && targetDgaCaseId !== docket.id) throw new Error('The requested recipient is not the originating case.');
+    if (!report.data.summary?.trim()) throw new Error('This report has no findings to transmit.');
+    const summary = `${report.data.summary}${report.data.limitations ? `\n\nLimitations: ${report.data.limitations}` : ''}`;
+    const received = await attachTraceResultToDgaCase(docket.id, request.id, summary, report.caseId!, { reportId: report.id, examId: report.data.examinationId });
+    if (!received) throw new Error('DGA did not accept the report. The transmission remains pending.');
+    const dgaCaseId = docket.id;
+    tx.dgaCaseId = dgaCaseId;
     tx.status = 'Transmitted';
     tx.transmittedAt = new Date().toISOString();
     tx.auditTrail.push({
@@ -485,7 +499,7 @@ class TraceDurableStore {
     if (typeof window === 'undefined') return null;
     try {
       localStorage.setItem(key, JSON.stringify(value));
-    } catch {}
+    } catch (error) { this.notifySaveState('error'); throw error; }
   }
 }
 

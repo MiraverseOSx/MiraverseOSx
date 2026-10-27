@@ -315,7 +315,7 @@ export function DgaCaseBuilder({ caseData, onOpenTraceWithCase }: DgaCaseBuilder
     }
 
     const confirmed = confirm(
-      `CONFIRM FORMAL INDICTMENT SUBMISSION:\n\nDocket: ${caseData.id}\nPrime Suspect: ${primeSuspectName}\nPrimary Cause: ${primaryCause}\nWeapon / Vector: ${weaponOrVector || 'N/A'}\nCharge: ${formalCharge || 'Federal Criminal Indictment'}\n\nSubmit indictment package to Executive Directorate and seal docket?`
+      `CONFIRM FORMAL INDICTMENT SUBMISSION:\n\nDocket: ${caseData.id}\nPrime Suspect: ${primeSuspectName}\nPrimary Cause: ${primaryCause}\nWeapon / Vector: ${weaponOrVector || 'N/A'}\nCharge: ${formalCharge || 'Not specified'}\n\nSubmit package for review? Record court decisions separately in Operations.`
     );
 
     if (confirmed) {
@@ -329,7 +329,7 @@ export function DgaCaseBuilder({ caseData, onOpenTraceWithCase }: DgaCaseBuilder
         incidentLocation,
         incidentTimeWindow,
         modusOperandi,
-        formalCharge: formalCharge || 'Aggravated Criminal Enterprise & Homicide',
+        formalCharge: formalCharge || undefined,
         investigatorNotes
       });
       showToast(res.message);

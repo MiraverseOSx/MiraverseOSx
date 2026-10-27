@@ -1,0 +1,31 @@
+✔ citizen IDs, roles and same-name profiles remain distinct across cases (11.509ms)
+✔ interviews, findings and tasks cite case-local sources and reject unrelated records without mutation (4.8094ms)
+✔ warrants require explicit approval before service and preserve decisions (2.8443ms)
+✔ charges, hearing, verdict, sentence and custody remain separate; offense snapshots stay intact (4.6879ms)
+✔ acquittal prevents sentencing; arrests never imply conviction (2.2566ms)
+✔ vehicle references cannot duplicate active registrations and citizens retain license/report history (2.8202ms)
+✔ emergency calls enforce connection, hold, resume, transfer, callback and one connected line (6.0601ms)
+✔ unknown callers cannot be called back without a number (2.1803ms)
+✔ call-to-incident and incident-to-case are idempotent; callbacks update the originating case transcript (5.6931ms)
+✔ operations changes survive reload and storage failures leave the prior state intact (3.7817ms)
+✔ submitting an indictment no longer invents warrant service or closes the case (1.6387ms)
+✔ TRACE requests remain in analysis until all linked examinations return and receipts are idempotent (4.6578ms)
+✔ disconnected unanswered calls cannot create incidents; callbacks before intake share one incident (4.3755ms)
+✔ off-duty and busy units cannot be assigned; incidents cannot close with responding units (3.6398ms)
+✔ multi-agency responses progress independently, panic blocks clearing and raises priority (4.9522ms)
+✔ response reports and radio records follow late investigation referrals without duplicated documents (5.3966ms)
+✔ radio requires joined channels, scopes acknowledgments to duty and agency, and protects command (5.148ms)
+✔ scenario hidden facts remain outside conversations, discoveries and exported investigator packs (4ms)
+✔ character conversation rejects another person’s facts, stale knowledge and unpresented case records (2.7671ms)
+✔ connected AI selects only known IDs and malformed or unavailable providers fall back to grounded facts (22.4763ms)
+✔ TRACE storage errors reject new records and retain the previously saved record cache (31.0109ms)
+✔ NPC response updates continue from the agency clock outside the response screen and respect pause (5.3432ms)
+✔ conversation memory can repeat a prior grounded answer after saving (0.3247ms)
+ℹ tests 23
+ℹ suites 0
+ℹ pass 23
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 614.5389

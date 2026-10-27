@@ -188,7 +188,7 @@ export async function sendDgaCaseToTrace(
             description: evidence.description,
             location: evidence.storageLocation || 'TRACE intake — location not further specified',
             custodian: 'TRACE Evidence Officer',
-            seal: evidence.seal || `SEAL-${evidence.id}`,
+            seal: evidence.seal || 'Not recorded',
             from: investigator
           }
         })
@@ -217,9 +217,11 @@ export async function sendDgaCaseToTrace(
   }
 
   const traceExamIds = [...(request.traceExamIds || [])];
+  const traceExamModules = { ...(request.traceExamModules || {}) };
   const failedExams: string[] = [];
-  if (traceEvidenceIds.length > 0 && traceExamIds.length < resolved.modules.length) {
+  if (failedEvidence.length === 0 && traceEvidenceIds.length > 0 && traceExamIds.length < resolved.modules.length) {
     for (const mod of resolved.modules) {
+      if (traceExamModules[mod.id]) continue;
       try {
         const examResponse = await fetch('/api/records', {
           method: 'POST',
@@ -231,6 +233,9 @@ export async function sendDgaCaseToTrace(
             data: {
               title: `DGA ${mod.id.toUpperCase()} examination`,
               evidenceId: traceEvidenceIds[0],
+              evidenceIds: traceEvidenceIds,
+              originatingDgaCaseId: live.id,
+              originatingRequestId: request.id,
               module: mod.id,
               method: mod.method,
               analyst: 'TRACE Forensic Specialist',
@@ -244,11 +249,13 @@ export async function sendDgaCaseToTrace(
           continue;
         }
         traceExamIds.push(examJson.id);
+        traceExamModules[mod.id] = examJson.id;
         await ensureDGAForensicRequest(live.id, evidenceIds, requestedModules, {
           requestedBy: investigator,
           notes: request.notes,
           linkedTraceCaseId: traceCaseId,
-          traceExamIds: [...traceExamIds]
+          traceExamIds: [...traceExamIds],
+          traceExamModules: { ...traceExamModules }
         });
       } catch {
         failedExams.push(mod.id);

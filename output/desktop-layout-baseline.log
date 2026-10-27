@@ -1,0 +1,1176 @@
+npm notice run miraverse-frontend@0.1.0 test
+npm notice run node --test tests/*.test.mjs
+✔ a driver reference and unrelated archive career XP do not reveal the protected lineage story (7918.9709ms)
+✔ legacy destinations resolve without treating inherited object keys as aliases (2.1216ms)
+✔ every old launcher route opens only its owning workspace and delivers the section (752.9434ms)
+✔ string aliases and custom window IDs cannot recreate retired app content (91.0287ms)
+✔ repeated section requests survive stale consumption and refocus a minimized owner (41.1237ms)
+✖ old shortcuts migrate in order, merge duplicate owners and preserve appearance (3.7443ms)
+✖ consolidated navigation preserves saved progress and external records, with no runtime requests persisted (99.8824ms)
+✔ older and malformed mail preferences gain safe independent defaults (2.6097ms)
+✔ contacts and group membership support edit, deletion and reload (222.7239ms)
+✔ labels, folders, spam and snooze persist without editing attachment rewards (75.3368ms)
+✔ rules process new incoming mail once and can be applied explicitly to existing mail (75.5267ms)
+✔ conversation list groups by explicit thread while preserving message order (0.6342ms)
+✔ rich text retains formatting and strips executable markup and attributes (2.0627ms)
+✔ rich drafts and sent mail keep formatting and custom signatures after hydration (171.1545ms)
+✔ conversation actions expand selected threads, preserve unrelated mail and survive reload (67.555ms)
+✔ label drops are idempotent while the toggle control removes a label deliberately (30.8139ms)
+✔ saved names resolve to their address and canonical directory metadata enforces clearance (26.754ms)
+✔ saved attachments appear once in File Explorer with source links and no objective or reward fields (91.0458ms)
+✔ malformed mailbox entries and collections recover without crashing the reader (25.0668ms)
+✔ restoring imported folder states really restores mail and held attachments cannot become rewards (29.2364ms)
+✔ rapid drafts and transmissions receive distinct stable IDs (28.284ms)
+✔ case evidence boards require current authorization, persist with case progress and never pay rewards (7622.4197ms)
+✔ editing then undoing an accepted report restores its receipt without duplicate reviews or rewards (192.4262ms)
+✔ malformed legacy docket collections do not interrupt dispatch and valid closed records stay closed (78.6686ms)
+✔ report outlines and headings do not replace a player explanation, including cached old acceptances (103.8562ms)
+✔ source actions require current credentials and briefing, and do not issue credentials (57.3854ms)
+✔ five-app workflow supports different source orders, reload, revisions, immutable reports and one-time rewards (370.7525ms)
+✔ review rejects missing, foreign, unacquired and unrelated evidence without judging prose keywords (0.5309ms)
+✔ public index exposes only the fixed publication; older completed cases cannot become new paid work (40.667ms)
+✔ addresses normalize and unsupported schemes become inert network searches (4.1539ms)
+✔ tabs are independent, have one shared limit, and clean up when closed (7860.8077ms)
+✔ back/forward restore titles and a new route drops only the forward branch (76.1295ms)
+✔ bookmarks, tabs and history survive hydration without resetting gameplay (161.0814ms)
+✔ clearing history removes visit records and tab stacks while preserving bookmarks (178.1788ms)
+✔ old and partially malformed saves recover to usable navigation (0.3557ms)
+✔ opening an inter-app page and reopening the browser preserve its destination and empty bookmarks (96.5339ms)
+✔ every old character ID survives and every complete source record is preserved (12.2111ms)
+✔ name variants merge under document names without merging distinct characters (0.9156ms)
+✔ all app projections read person-owned profiles and keep stable app IDs (48.1683ms)
+✔ mail uses existing registry identities and wrong patient and NPC associations are removed (92.88ms)
+✔ case contexts, clinical fields, dialogue keys and immutable identities survive consolidation (7674.6868ms)
+✔ personal identity resolves stable IDs and legacy aliases, never names or the first citizen (6.8284ms)
+✔ personal issuance history excludes other citizens and agency records without rewriting issued facts (2.0636ms)
+✔ reading personal records never seeds, migrates, or changes registry and issuance data (0.5647ms)
+✔ linking is an existing-administrator action, persists one reference and leaves source records intact (7798.9492ms)
+✔ a player switch during an asynchronous link cannot attach the previous administrator selection (88.3292ms)
+✔ identity calibration preserves pre-existing IDs and cannot repeat payouts or change a linked identity (134.2808ms)
+✔ CIVINET claim history and old shortcuts survive the Citizen Hub consolidation (178.535ms)
+✔ issuance reads support both stored identity keys and do not reissue documents (0.6285ms)
+✔ new saves start with one personal mailbox and initial mail stays addressed to it after reload (142.3813ms)
+✔ membership requires a real issued relationship or accepted contract, never rank, reputation, or affiliation text (0.5007ms)
+✔ membership administration checks the current signed-in administrator and does not create mailboxes or rewards (7632.991ms)
+✔ accepted WORKNET employment grants workplace channel membership without issuing an email account (91.8019ms)
+✔ institutional issuance validates membership and domain, preserves account identity, and can suspend without deleting history (98.0634ms)
+✔ revoking membership blocks stale channel and sender actions immediately while keeping work and conversations (73.8947ms)
+✔ old accounts, drafts, claim IDs, and messages survive migration without silently authorizing institutional sends (134.8075ms)
+✔ personal Comms history migrates to phone once, preserves the source, and phone texts and drafts persist (29.5708ms)
+✔ malformed saved access data fails closed and a diagnostic cannot be awarded twice (12.2777ms)
+✔ old saves receive independent defaults while empty shortcut choices remain empty (5.1655ms)
+✔ saved shortcut IDs discard invalid values and duplicates, retain order and cap at eight (6.9154ms)
+✔ adding, removing, ordering and clearing shortcuts survive a reload (8098.8694ms)
+✔ older progress preserves gameplay, browser bookmarks and custom wallpaper when gaining desktop defaults (160.8346ms)
+✔ appearance themes persist independently from shortcuts and gameplay (112.2993ms)
+✔ custom cases do not receive embassy story events, even after many ticks or matching task titles (31.6944ms)
+✔ legacy scheduled events cannot inject unrelated findings into custom or missing cases (2.6696ms)
+✔ registry links retain citizen IDs across cases and distinguish different people with the same name (5.2353ms)
+✔ rapid task and evidence creation does not reuse IDs when the clock is unchanged (11.3685ms)
+✔ TRACE case switching preserves edits and rejects unknown or incomplete imports (7.8981ms)
+✔ TRACE findings cannot attach through a missing or mismatched request (2.836ms)
+✔ TRACE retains both the active case and library after a failed storage write (3.5028ms)
+✔ TRACE respects restored empty records and reloads unfinished drafts (20.5884ms)
+✔ all built-in VAULT files resolve to authored content with distinct reader types (4.2349ms)
+✔ legacy section documents retain their text, form fields, map data and archive lock (0.7616ms)
+✔ mail and saved assignment formats retain metadata and plain text without mutating records (1.8083ms)
+✔ unrelated mail attachments keep their own content and remain identical in VAULT (0.7122ms)
+✔ encrypted records require decryption or their stated skill level before inspection (0.5683ms)
+✔ reader sessions isolate form drafts and decryption across files and changed revisions (0.3892ms)
+✔ legacy document actions route to their owner without issuing credits or agency credentials (0.2456ms)
+✔ board migration preserves acquired nodes while rejecting hidden, malformed and duplicate links (2.099ms)
+✔ board input is bounded and connections disappear when access to an acquired source is removed (0.3946ms)
+✔ external destinations preserve fictional aliases and reject executable schemes or credentials (2.1898ms)
+✔ local destinations are restricted to explicit local HTML files (0.8366ms)
+✔ service editor accepts pasted domains and preserves destination validation (1.3864ms)
+✔ directory has the supplied 11 applications and safely restores edited links (2.5658ms)
+✔ local HTML is escaped into a restricted child frame rather than the app origin (0.3344ms)
+✔ native launcher removes its capability from the URL and handles acknowledged failures (22.5038ms)
+✔ field sessions recover bounded positions and known evidence from older or malformed saves (2.9688ms)
+✔ field actions require an active briefed order; close/reload preserves findings and pays an operation once (7827.5661ms)
+✔ all three sites require their own profile and validate registration (7656.1807ms)
+✔ profiles update through a whitelist and keep their original join date (82.0219ms)
+✔ each site accepts its own form, rejects malformed values, and deduplicates repeat submissions (82.9635ms)
+✔ partial drafts survive reload and are cleared only for the submitted form (128.4584ms)
+✔ revisions keep references, original submission dates, and accurate revision counts (119.3889ms)
+✔ withdrawal preserves records, blocks editing, and can be reversed (54.9185ms)
+✔ another character cannot change site records or reuse a registered site handle (45.1007ms)
+✔ site profiles and received records persist without granting rewards or editing world state (85.6947ms)
+✔ civic verification does not detach the same character from local site profiles (0.2533ms)
+✔ unknown IDs and malformed saves stay playable with old-save defaults (48.0988ms)
+✔ interface defaults are compact and system; invalid or older records are safely normalized (2.292ms)
+✔ appearance and density survive storage reload without touching gameplay records (0.7835ms)
+✔ explicit appearance overrides the device while system follows it (0.1984ms)
+✔ open tabs synchronize appearance only, handle resets and unsubscribe cleanly (0.6414ms)
+✔ universal light colors keep labels, metadata and primary actions readable (1.2988ms)
+✔ universal dark colors keep labels, metadata and primary actions readable (0.2605ms)
+✔ local full access persists credentials without resetting the character or issuing rewards (122.0438ms)
+✔ the explicit local credential grant is unavailable on remote hosts and when signed out (2.3037ms)
+✔ MAI-SPACE-001: Custom widgets schema & layout normalization (2.9837ms)
+✔ MAI-SPACE-002: View count increment and comment pinning (6.1374ms)
+✔ MAI-SPACE-003: NPC Reactivity topic matching & dialogue generation (0.6813ms)
+✔ MAI-SPACE-004: Cycle tick reactivity dispatches NPC comments & notifications (1.2176ms)
+✔ MAI-SPACE-005: Direct guestbook signing generates immediate NPC response (0.5908ms)
+✔ renamed NPC aliases retain authorship and repair only unchanged imported posts (16.6971ms)
+✔ legacy profiles migrate without inventing featured friends, losing posts, or importing world logs (1.706ms)
+✔ layout normalization clamps freeform geometry and excludes executable styles and template content (0.4933ms)
+✔ publishing and restoring layout versions never rolls back profile content or privacy (2.8065ms)
+✔ friend requests require a later world cycle and Top 8 accepts only connected citizens (2.811ms)
+✔ blocking removes featured connections and rejects stale comments and private access (5.0961ms)
+✔ rich posts sanitize content, preserve drafts, and cannot comment on another target reply (1.4166ms)
+✔ albums preserve captions and order while audience changes revoke direct source access (5.8996ms)
+✔ groups enforce membership for discussions and require approval for private circles (1.392ms)
+✔ events separate invitations RSVP and actual attendance with once-only private memories (2.7297ms)
+✔ meaningful conversation is scoped once and does not generate arbitrary repeated reactions (0.9402ms)
+✔ malformed saved collections and unknown layouts restore to usable records (0.8505ms)
+✔ playlist order and consented tags persist without creating attendance or relationship points (8.8134ms)
+✔ original profile music is a real PCM WAV asset (33.3254ms)
+✔ MAI.SPACE and phone share drafts read state and block enforcement (218.3916ms)
+✔ social progress survives OS hydration and welcome money cannot repeat after unfriend (7195.5423ms)
+✔ shared albums and calendars recheck membership and exclude nonmember invitations (2.4942ms)
+✔ blog attachments preserve only known image references across save hydration (1.0769ms)
+✔ offline worker precaches the shell and removes only its own obsolete caches (73.2573ms)
+✔ offline module and CSS requests match public precache entries despite Vary: Origin (3.6863ms)
+✔ offline navigation falls back to the shell while APIs and foreign requests are untouched (2.3291ms)
+✔ MEDSTAT renders its chart while the asynchronous citizen registry is still loading (308.1948ms)
+✔ citizen IDs, roles and same-name profiles remain distinct across cases (24.2238ms)
+✔ interviews, findings and tasks cite case-local sources and reject unrelated records without mutation (6.8365ms)
+✔ warrants require explicit approval before service and preserve decisions (3.0278ms)
+✔ charges, hearing, verdict, sentence and custody remain separate; offense snapshots stay intact (6.1631ms)
+✔ acquittal prevents sentencing; arrests never imply conviction (4.2106ms)
+✔ vehicle references cannot duplicate active registrations and citizens retain license/report history (3.7685ms)
+✔ emergency calls enforce connection, hold, resume, transfer, callback and one connected line (6.9489ms)
+✔ unknown callers cannot be called back without a number (4.2062ms)
+✔ call-to-incident and incident-to-case are idempotent; callbacks update the originating case transcript (6.4088ms)
+✔ operations changes survive reload and storage failures leave the prior state intact (4.7545ms)
+✔ submitting an indictment no longer invents warrant service or closes the case (2.2202ms)
+✔ TRACE requests remain in analysis until all linked examinations return and receipts are idempotent (7.7786ms)
+✔ disconnected unanswered calls cannot create incidents; callbacks before intake share one incident (4.1306ms)
+✔ off-duty and busy units cannot be assigned; incidents cannot close with responding units (6.3038ms)
+✔ multi-agency responses progress independently, panic blocks clearing and raises priority (7.6734ms)
+✔ response reports and radio records follow late investigation referrals without duplicated documents (5.9444ms)
+✔ radio requires joined channels, scopes acknowledgments to duty and agency, and protects command (5.3116ms)
+✔ scenario hidden facts remain outside conversations, discoveries and exported investigator packs (4.2656ms)
+✔ character conversation rejects another person’s facts, stale knowledge and unpresented case records (3.7052ms)
+✔ connected AI selects only known IDs and malformed or unavailable providers fall back to grounded facts (30.3503ms)
+✔ TRACE storage errors reject new records and retain the previously saved record cache (37.8232ms)
+✔ NPC response updates continue from the agency clock outside the response screen and respect pause (8.9894ms)
+✔ conversation memory can repeat a prior grounded answer after saving (0.352ms)
+✔ duplicate development module URLs share saved calls and live subscribers (38.3244ms)
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+✔ unknown and reserved assignment IDs are rejected without changing progress (7472.9431ms)
+✔ malformed work-stage values return validation feedback instead of throwing (1.4272ms)
+✔ gameplay and wallpaper survive a fresh store while runtime windows are excluded (182.5832ms)
+✔ signing back in resumes earned credits, level, and onboarding (132.9491ms)
+✔ notice completion requires verified world objective and pays exactly once, including after reload (170.1311ms)
+✔ WORKNET-002: WorkNet missions require actual domain work (not generic buttons) and persist completion (106.9741ms)
+✔ HOMECRAFT-001 & SpellForge: Housing purchases grant +40 XP & +10 roomComfort permanently, and SpellForge prevents infinite farming (97.6333ms)
+✔ FAITH-003, MAI.SPACE-004, and Formal Case Reasoning enforce canonical progression rules (140.908ms)
+✔ partial saves gain new defaults without restoring cleared conditions (37.1393ms)
+✔ corrupt or unavailable storage leaves a playable session (70.3937ms)
+✔ AureMail Decisions 006-011 enforce multi-account MAID links, persisted mailbox state, hybrid replies, clearance gates, and separated file vs. reward attachments (126.2949ms)
+✔ GAMEPLAY-012 & GAMEPLAY-013: Rest restores stamina/health conditionally without repeatable XP, and career promotions require profession qualifications beyond raw XP (43.2025ms)
+✔ opportunity availability reflects clearance, paid shifts, new cycles and permanent completions (0.8926ms)
+✔ assignment dispatches arrive once by email and phone, with persistent call history (80.1847ms)
+✔ choosing a quest saves its briefing, requires review, and produces one accepted completion receipt (71.3449ms)
+✔ adventure unlocks require started activities and accepted work, persist, and do not repay shared tasks (98.7341ms)
+✔ GAMEPLAY-018: unrelated activity, legacy completion flags and procedure plans cannot verify any assignment (31.5755ms)
+✔ GAMEPLAY-018: engineering requires all six stages; drafts, outputs and pay survive reload (153.9991ms)
+✔ GAMEPLAY-019: minor errors are correctable; unsafe repair loses supplies and requires remediation (81.7963ms)
+✔ GAMEPLAY-018: the same diagnostic receipt feeds separate quest, journey and adventure requirements (36.166ms)
+✔ work-order scope: copied receipts and wrong tracks cannot verify a different assignment (40.9141ms)
+✔ repeat shifts use new cycle identities and require fresh work without reopening one-time rewards (76.1146ms)
+✔ clinical receipt: correct patient care supplies one task, requires a chart, and pays only once across apps (26.5918ms)
+✔ clinical work completed before opening WorkNet links the same saved receipt (18.4014ms)
+✔ environmental work requires three separately labeled specimens, analysis and a report (24.2427ms)
+✔ accreditation requires its practical and thesis; civic quests remain available without employment (28.941ms)
+▶ remaining profession workflows accept their own deliverables and clear exactly once
+  ✔ ms-shift-02 (40.8467ms)
+  ✔ ms-shift-03 (18.3774ms)
+  ✔ ms-spec-02 (22.2984ms)
+  ✔ ms-spec-03 (19.0834ms)
+  ✔ ms-dev-02 (20.5305ms)
+  ✔ ms-field-02 (20.2095ms)
+  ✔ qn-01 (22.8371ms)
+  ✔ qn-03 (25.1498ms)
+✔ remaining profession workflows accept their own deliverables and clear exactly once (190.7216ms)
+✔ old paid patient charts can be reviewed for evidence without another clinical reward (29.0636ms)
+✔ WorkNet clinical stages share the Faith Medical receipt and cannot claim duplicate pay (59.6588ms)
+✔ professional clearance and stamina gates preserve saved work while ordinary quests stay open (64.6829ms)
+✔ AureMail enforces one active starter personal account and supports revoking institutional accounts without losing history (7253.854ms)
+✔ Comms supports organization invitations, acceptance, declining, leaving, and removal across all 9 organizations without auto-issuing email or rewards (120.5481ms)
+✔ AURA Registry enforces role-based access, record permissions, and document issuance authorization (79.7799ms)
+✔ DGAOS enforces agency permissions, role-specific workspaces, case clearance filtering, and authorized TRACE access (1.5362ms)
+✔ Creator Studio state foundations support world pause/resume, draft staging, controlled publishing, and checkpoint restoration with historical preservation (75.0862ms)
+✔ twilight: phone text and action labels meet WCAG AA contrast (6.5467ms)
+✔ aureline: phone text and action labels meet WCAG AA contrast (1.9051ms)
+✔ agency: phone text and action labels meet WCAG AA contrast (0.41ms)
+✔ offline manifest contains final emitted assets after CSS-only JavaScript chunks are removed (361.4905ms)
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+[zustand persist middleware] Unable to update item 'miraverse-comms', the given storage is currently unavailable.
+✔ hierarchy expresses scope and Tasks exist only as assigned objectives (7274.4467ms)
+✔ mysteries and hidden places cannot be listed or opened before contextual knowledge (97.0096ms)
+✔ hybrid discovery uses clues, journal entries, optional Quests, Adventure invitations and exploration rewards (172.3123ms)
+✔ an established relationship can reveal directions without assigning a Task (55.0641ms)
+✔ daily routines remain manual, adapt to familiarity, and do not generate formal progress or XP (135.9873ms)
+✔ everyday time advances the simulation without creating reward loops (104.2994ms)
+✔ Journey chapters complete independently while the Journey remains ongoing (93.7828ms)
+✔ incidents plus exploration can develop an emergent Adventure with a persistent branch consequence (78.9953ms)
+✔ Quest approaches produce different interactions and one shared completion reward (79.1573ms)
+✔ high skill and Career XP still require actual relevant professional experience (43.3969ms)
+✔ old saves retain earned unlocks and receive empty new systems without canonizing proposed concepts (32.6881ms)
+✔ cinematic scenes are optional story records with no repeatable rewards (44.7147ms)
+✔ public search handles prefixes, swapped query order and minor typos offline (5.6364ms)
+✔ case public index exposes its fixed publication without private evidence or solution material (1.9266ms)
+✔ public news follows world exposure without copying private records or modifying progress (2.2808ms)
+✔ sections, article-body search, saved filtering and empty results combine (1.6536ms)
+✔ briefing and article use the same bounded world exposure from old saves (0.445ms)
+✔ reading preferences restore safely from old and malformed saves (2.1856ms)
+✔ publication addresses preserve sections, searches and saved article context (2.2562ms)
+✔ publication search points to article URLs and excludes private world data (0.8967ms)
+✔ report formatting is sanitized, survives reload, and preserves plain-text validation and accepted receipts (7515.919ms)
+✔ all topic packs and unfamiliar searches provide sites, images, files, folders and maps (13.2224ms)
+✔ dog aliases share stable addresses and authored content with both photography and illustration (4.9124ms)
+✔ unknown queries create repeatable and varied research records rather than invented literal photographs (2.6375ms)
+✔ folder children and all map listings resolve to real records (1.5038ms)
+✔ searching and saving do not modify gameplay or assignment receipts and duplicate downloads are prevented (7149.2829ms)
+✔ download a document then the entire folder without duplicated files or missing siblings (169.0832ms)
+✔ saved content, versions, bookmarks and downloads survive reload without regenerated text (122.4132ms)
+✔ old saves gain empty content and malformed or assignment-like downloads cannot enter the web library (0.8559ms)
+✔ new world topics and existing reading collections retain their saved editions and files (1.5304ms)
+✔ legacy botanical photo metadata is repaired without losing saved notes (0.9121ms)
+✔ public search gates sealed records, private audits and undiscovered investigation details (0.3061ms)
+✔ external registry starts empty and only explicit matching http(s) links are eligible (0.4593ms)
+✔ long queries retain distinct readable download filenames with document extensions (1.2102ms)
+✔ malformed saved map and image metadata are rejected before rendering (0.6396ms)
+✔ incomplete saved collections cannot crash download recovery or leave broken links (0.9743ms)
+✔ normal windows keep 16:9 and fit between the menu and dock (1.6901ms)
+✖ fullscreen fills the entire desktop and restore returns the original normal geometry (2.6277ms)
+✔ dragged or previously saved offsets cannot hide window controls off screen (0.415ms)
+✔ WORKNET light appearance maintains readable body, metadata, actions and focus colors (1.9392ms)
+✔ WORKNET dark appearance maintains readable body, metadata, actions and focus colors (1.1239ms)
+✔ delegation checks current pathway, contract, clearance, division, availability and competence (4.3583ms)
+✔ work advances across closing and hydration, not wall-clock waits or repeated clicks (1.9026ms)
+✔ returned dockets resume after another game segment and require reading the revision (16.4662ms)
+✔ budget allocations affect verification, training eligibility and leave coverage without minting money (2.6708ms)
+✔ subordinate leave is decided once, requires coverage, and changes availability for the approved segment (1.4086ms)
+✔ legacy completed dockets remain archived, old unrestricted budgets are bounded, schedules remain flexible (1.1899ms)
+✔ coworker routine follows world time; ordinary social clicks cannot repeatedly raise stats (0.7179ms)
+✔ store salary is 150 per current cycle, honors clearance, rejects unknown contracts, and does not backpay skipped cycles (4.7659ms)
+✔ runtime pathway validation and shared world-save hydration retain oversight and prevent repeat department payout (63.887ms)
+✔ malformed optional saves recover and duplicate legacy duties share one department receipt (0.763ms)
+✔ assignment links issue an explicit runtime entry request while saved journal history does not (85.0602ms)
+Miraverse progress could not be saved on this device.
+Miraverse progress could not be saved on this device.
+Miraverse progress could not be saved on this device.
+Miraverse progress could not be saved on this device.
+Miraverse progress could not be saved on this device.
+✔ WORKNET-001 & WORKNET-002: Institutional branding and modern visual identity registry (1.4272ms)
+✔ WORKNET-004 & WORKNET-005: Workplace Switcher and multi-employer affiliations (0.3214ms)
+✔ WORKNET-006 & WORKNET-011: Option C Full Workplace Life & 5 NPC relationship dimensions (0.3185ms)
+✔ WORKNET-007: Option C Hybrid Work (routine, dynamic, and authored) (0.2708ms)
+✔ WORKNET-009 & WORKNET-010: Career promotion requires verified qualifications and avoids duplicate rewards (0.738ms)
+✔ WORKNET-011 & WORKNET-012: Dual-Track progression and active supervisory delegation (2.3857ms)
+✔ WORKNET-015: Hybrid Base Stipend dispatches per cycle and avoids duplicate disbursement (3.0875ms)
+✔ WORKNET-016 & WORKNET-017: Flexible open shifts and scaled institutional complexity tiers (0.2727ms)
+✔ citizen refresh ignores unrelated saves and preserves explicit focus changes (3.1501ms)
+✔ citizen messages require the current window and origin (0.8906ms)
+✔ Treasury accepts numeric strings and safely formats network readings (19.3488ms)
+✔ Treasury rejects error envelopes and invalid values instead of rendering them (0.3255ms)
+✔ portable backups round-trip agency, TRACE, draft, issued-document and per-case records (3.8536ms)
+✔ unknown keys and invalid record shapes are rejected before any restore writes (0.8491ms)
+✔ restore preserves the displaced device world and rolls back a failed write (4.5046ms)
+✔ first connection imports existing progress and mail together without resetting local state (65.7938ms)
+✔ a fresh browser restores the database world before stores initialize (3.7499ms)
+✔ offline changes remain local and upload safely after reconnection (7.6292ms)
+✔ unchanged local progress adopts a newer database revision on next boot (8.4363ms)
+✔ independent changed copies cannot silently overwrite one another (5.7586ms)
+✔ a stale write receives conflict instead of clobbering a concurrent commit (5.7039ms)
+✔ explicitly keeping the device copy preserves the displaced database snapshot (3.5149ms)
+✔ explicitly loading the database restores the whole snapshot and requests a fresh app hydration (1.9904ms)
+✔ changes made during an in-flight save are committed on the following sync (2.4158ms)
+✔ unsupported endpoints and malformed snapshots keep device progress usable (1.849ms)
+✔ unrelated local storage and credentials never enter the world snapshot (0.4711ms)
+✔ unavailable save servers back off, cap retries, and permit explicit reconnection (7.9299ms)
+✔ WorkNet acceptance, mail, briefing files, completion receipts and career progress restore as one world (6990.8834ms)
+ℹ tests 284
+ℹ suites 0
+ℹ pass 281
+ℹ fail 3
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 10315.2526
+
+✖ failing tests:
+
+test at tests\app-navigation.test.mjs:109:1
+✖ old shortcuts migrate in order, merge duplicate owners and preserve appearance (3.7443ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  ... Skipped lines
+  
+    {
+  +   activeLayout: 'everyday',
+  +   checklist: [],
+  +   dockPins: [
+  +     'browser',
+  +     'files',
+  +     'mail'
+  +   ],
+  +   layoutVersion: 1,
+  +   layouts: {
+  +     everyday: {
+  +       groups: [
+  +         {
+  +           collapsed: false,
+  +           hidden: false,
+  +           id: 'clock',
+  +           lane: 'left',
+  +           title: 'Clock & calendar',
+  +           widget: 'clock'
+  +         },
+  +         {
+  +           collapsed: false,
+  +           hidden: false,
+  +           id: 'notes',
+  +           lane: 'left',
+  +           title: 'Sticky note',
+  +           widget: 'notes'
+  +         },
+  +         {
+  +           collapsed: false,
+  +           hidden: false,
+  +           id: 'checklist',
+  +           lane: 'left',
+  +           title: 'My checklist',
+  +           widget: 'checklist'
+  +         },
+  +         {
+  +           collapsed: false,
+  +           hidden: true,
+  +           id: 'weather',
+  +           lane: 'left',
+  +           title: 'Aureline weather',
+  +           widget: 'weather'
+  +         },
+  +         {
+  +           collapsed: false,
+  +           hidden: true,
+  +           id: 'music',
+  +           lane: 'right',
+  +           title: 'Music',
+  +           widget: 'music'
+  +         },
+  +         {
+  +           collapsed: false,
+  +           hidden: true,
+  +           id: 'assignments',
+  +           lane: 'left',
+  +           title: 'Active assignments',
+  +           widget: 'assignments'
+  +         },
+  +         {
+  +           collapsed: false,
+  +           hidden: true,
+  +           id: 'inbox',
+  +           lane: 'left',
+  +           title: 'Unread inbox',
+  +           widget: 'inbox'
+  +         },
+  +         {
+  +           collapsed: false,
+  +           hidden: true,
+  +           id: 'recents',
+  +           lane: 'right',
+  +           title: 'Recent files',
+  +           widget: 'recents'
+  +         },
+  +         {
+  +           collapsed: false,
+  +           hidden: false,
+  +           id: 'apps',
+  +           lane: 'right',
+  +           shortcuts: [
+  +             {
+  +               id: 'app:dgaos',
+  +               kind: 'app',
+  +               target: 'dgaos'
+  +             },
+  +             {
+  +               id: 'app:jobs',
+  +               kind: 'app',
+  +               target: 'jobs'
+  +             },
+  +             {
+  +               id: 'app:campus',
+  +               kind: 'app',
+  +               target: 'campus'
+  +             },
+  +             {
+  +               id: 'app:browser',
+  +               kind: 'app',
+  +               target: 'browser'
+  +             },
+  +             {
+  +               id: 'app:maispace',
+  +               kind: 'app',
+  +               target: 'maispace'
+  +             }
+  +           ],
+  +           title: 'My apps'
+  +         }
+  +       ]
+  +     },
+  +     personal: {
+  +       groups: [
+  +         {
+  +           collapsed: false,
+  +           hidden: false,
+  +           id: 'clock',
+  +           lane: 'left',
+  +           title: 'Clock & calendar',
+  +           widget: 'clock'
+  +         },
+  +         {
+  +           collapsed: false,
+  +           hidden: false,
+  +           id: 'notes',
+  +           lane: 'left',
+  +           title: 'Sticky note',
+  +           widget: 'notes'
+  +         },
+  +         {
+  +           collapsed: false,
+  +           hidden: true,
+  +           id: 'checklist',
+  +           lane: 'left',
+  +           title: 'My checklist',
+  +           widget: 'checklist'
+  +         },
+  +         {
+  +           collapsed: false,
+  +           hidden: false,
+  +           id: 'weather',
+  +           lane: 'left',
+  +           title: 'Aureline weather',
+  +           widget: 'weather'
+  +         },
+  +         {
+  +           collapsed: false,
+  +           hidden: false,
+  +           id: 'music',
+  +           lane: 'right',
+  +           title: 'Music',
+  +           widget: 'music'
+  +         },
+  +         {
+  +           collapsed: false,
+  +           hidden: true,
+  +           id: 'assignments',
+  +           lane: 'left',
+  +           title: 'Active assignments',
+  +           widget: 'assignments'
+  +         },
+  +         {
+  +           collapsed: false,
+  +           hidden: true,
+  +           id: 'inbox',
+  +           lane: 'left',
+  +           title: 'Unread inbox',
+  +           widget: 'inbox'
+  +         },
+  +         {
+  +           collapsed: false,
+  +           hidden: true,
+  +           id: 'recents',
+  +           lane: 'right',
+  +           title: 'Recent files',
+  +           widget: 'recents'
+  +         },
+  +         {
+  +           collapsed: false,
+  +           hidden: false,
+  +           id: 'apps',
+  +           lane: 'right',
+  +           shortcuts: [
+  +             {
+  +               id: 'app:maispace',
+  +               kind: 'app',
+  +               target: 'maispace'
+  +             },
+  +             {
+  +               id: 'app:passport',
+  +               kind: 'app',
+  +               target: 'passport'
+  +             },
+  +             {
+  +               id: 'app:housing',
+  +               kind: 'app',
+  +               target: 'housing'
+  +             },
+  +             {
+  +               id: 'app:lore',
+  +               kind: 'app',
+  +               target: 'lore'
+  +             },
+  +             {
+  +               id: 'app:campus',
+  +               kind: 'app',
+  +               target: 'campus'
+  +             },
+  +             {
+  +               id: 'app:browser',
+  +               kind: 'app',
+  +               target: 'browser'
+  +             }
+  +           ],
+  +           title: 'Personal apps'
+  +         },
+  +         {
+  +           collapsed: false,
+  +           hidden: false,
+  +           id: 'folders',
+  +           lane: 'right',
+  +           shortcuts: [
+  +             {
+  +               id: 'folder:documents',
+  +               kind: 'folder',
+  +               label: 'Documents',
+  +               target: '/documents'
+  +             },
+  +             {
+  +               id: 'folder:assignments',
+  +               kind: 'folder',
+  +               label: 'Assignments',
+  +               target: '/assignments'
+  +             }
+  +           ],
+  +           title: 'Folders'
+  +         }
+  +       ]
+  +     },
+  +     work: {
+  +       groups: [
+  +         {
+  +           collapsed: false,
+  +           hidden: false,
+  +           id: 'clock',
+  +           lane: 'left',
+  +           title: 'Clock & calendar',
+  +           widget: 'clock'
+  +         },
+  +         {
+  +           collapsed: false,
+  +           hidden: true,
+  +           id: 'notes',
+  +           lane: 'left',
+  +           title: 'Sticky note',
+  +           widget: 'notes'
+  +         },
+  +         {
+  +           collapsed: false,
+  +           hidden: true,
+  +           id: 'checklist',
+  +           lane: 'left',
+  +           title: 'My checklist',
+  +           widget: 'checklist'
+  +         },
+  +         {
+  +           collapsed: false,
+  +           hidden: true,
+  +           id: 'weather',
+  +           lane: 'left',
+  +           title: 'Aureline weather',
+  +           widget: 'weather'
+  +         },
+  +         {
+  +           collapsed: false,
+  +           hidden: true,
+  +           id: 'music',
+  +           lane: 'right',
+  +           title: 'Music',
+  +           widget: 'music'
+  +         },
+  +         {
+  +           collapsed: false,
+  +           hidden: false,
+  +           id: 'assignments',
+  +           lane: 'left',
+  +           title: 'Active assignments',
+  +           widget: 'assignments'
+  +         },
+  +         {
+  +           collapsed: false,
+  +           hidden: false,
+  +           id: 'inbox',
+  +           lane: 'left',
+  +           title: 'Unread inbox',
+  +           widget: 'inbox'
+  +         },
+  +         {
+  +           collapsed: false,
+  +           hidden: false,
+  +           id: 'recents',
+  +           lane: 'right',
+  +           title: 'Recent files',
+  +           widget: 'recents'
+  +         },
+  +         {
+  +           collapsed: false,
+  +           hidden: false,
+  +           id: 'apps',
+  +           lane: 'right',
+  +           shortcuts: [
+  +             {
+  +               id: 'app:dgaos',
+  +               kind: 'app',
+  +               target: 'dgaos'
+  +             },
+  +             {
+  +               id: 'app:jobs',
+  +               kind: 'app',
+  +               target: 'jobs'
+  +             },
+  +             {
+  +               id: 'app:files',
+  +               kind: 'app',
+  +               target: 'files'
+  +             },
+  +             {
+  +               id: 'app:mail',
+  +               kind: 'app',
+  +               target: 'mail'
+  +             },
+  +             {
+  +               id: 'app:documentStudio',
+  +               kind: 'app',
+  +               target: 'documentStudio'
+  +             },
+  +             {
+  +               id: 'app:fieldOperations',
+  +               kind: 'app',
+  +               target: 'fieldOperations'
+  +             }
+  +           ],
+  +           title: 'Work apps'
+  +         },
+  +         {
+  +           collapsed: false,
+  +           hidden: false,
+  +           id: 'folders',
+  +           lane: 'right',
+  +           shortcuts: [
+  +             {
+  +               id: 'folder:documents',
+  +               kind: 'folder',
+  +               label: 'Documents',
+  +               target: '/documents'
+  +             },
+  +             {
+  +               id: 'folder:assignments',
+  +               kind: 'folder',
+  +               label: 'Assignments',
+  +               target: '/assignments'
+  +             }
+  +           ],
+  +           title: 'Folders'
+  +         }
+  +       ]
+  +     }
+  +   },
+  +   music: [],
+  +   note: '',
+  +   recentFiles: [],
+      shortcutIds: [
+        'dgaos',
+        'jobs',
+        'campus',
+        'browser',
+  ...
+      themeId: 'pine',
+  +   volume: 0.65
+    }
+  
+      at TestContext.<anonymous> (file:///C:/Users/mirav/OneDrive/Desktop/MiraverseOSx/frontend/tests/app-navigation.test.mjs:111:10)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1402:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:974:18)
+      at Test.postRun (node:internal/test_runner/test:1542:19)
+      at Test.run (node:internal/test_runner/test:1467:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: { shortcutIds: [ 'dgaos', 'jobs', 'campus', 'browser', 'maispace' ], themeId: 'pine', layoutVersion: 1, activeLayout: 'everyday', layouts: { everyday: [Object], personal: [Object], work: [Object] }, dockPins: [ 'browser', 'files', 'mail' ], note: '', checklist: [], music: [], volume: 0.65, recentFiles: [] },
+    expected: { themeId: 'pine', shortcutIds: [ 'dgaos', 'jobs', 'campus', 'browser', 'maispace' ] },
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at tests\app-navigation.test.mjs:117:1
+✖ consolidated navigation preserves saved progress and external records, with no runtime requests persisted (99.8824ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    {
+  +   activeLayout: 'everyday',
+  +   checklist: [],
+  +   dockPins: [
+  +     'browser',
+  +     'files',
+  +     'mail'
+  +   ],
+  +   layoutVersion: 1,
+  +   layouts: {
+  +     everyday: {
+  +       groups: [
+  +         {
+  +           collapsed: false,
+  +           hidden: false,
+  +           id: 'clock',
+  +           lane: 'left',
+  +           title: 'Clock & calendar',
+  +           widget: 'clock'
+  +         },
+  +         {
+  +           collapsed: false,
+  +           hidden: false,
+  +           id: 'notes',
+  +           lane: 'left',
+  +           title: 'Sticky note',
+  +           widget: 'notes'
+  +         },
+  +         {
+  +           collapsed: false,
+  +           hidden: false,
+  +           id: 'checklist',
+  +           lane: 'left',
+  +           title: 'My checklist',
+  +           widget: 'checklist'
+  +         },
+  +         {
+  +           collapsed: false,
+  +           hidden: true,
+  +           id: 'weather',
+  +           lane: 'left',
+  +           title: 'Aureline weather',
+  +           widget: 'weather'
+  +         },
+  +         {
+  +           collapsed: false,
+  +           hidden: true,
+  +           id: 'music',
+  +           lane: 'right',
+  +           title: 'Music',
+  +           widget: 'music'
+  +         },
+  +         {
+  +           collapsed: false,
+  +           hidden: true,
+  +           id: 'assignments',
+  +           lane: 'left',
+  +           title: 'Active assignments',
+  +           widget: 'assignments'
+  +         },
+  +         {
+  +           collapsed: false,
+  +           hidden: true,
+  +           id: 'inbox',
+  +           lane: 'left',
+  +           title: 'Unread inbox',
+  +           widget: 'inbox'
+  +         },
+  +         {
+  +           collapsed: false,
+  +           hidden: true,
+  +           id: 'recents',
+  +           lane: 'right',
+  +           title: 'Recent files',
+  +           widget: 'recents'
+  +         },
+  +         {
+  +           collapsed: false,
+  +           hidden: false,
+  +           id: 'apps',
+  +           lane: 'right',
+  +           shortcuts: [
+  +             {
+  +               id: 'app:jobs',
+  +               kind: 'app',
+  +               target: 'jobs'
+  +             },
+  +             {
+  +               id: 'app:dgaos',
+  +               kind: 'app',
+  +               target: 'dgaos'
+  +             },
+  +             {
+  +               id: 'app:campus',
+  +               kind: 'app',
+  +               target: 'campus'
+  +             }
+  +           ],
+  +           title: 'My apps'
+  +         }
+  +       ]
+  +     },
+  +     personal: {
+  +       groups: [
+  +         {
+  +           collapsed: false,
+  +           hidden: false,
+  +           id: 'clock',
+  +           lane: 'left',
+  +           title: 'Clock & calendar',
+  +           widget: 'clock'
+  +         },
+  +         {
+  +           collapsed: false,
+  +           hidden: false,
+  +           id: 'notes',
+  +           lane: 'left',
+  +           title: 'Sticky note',
+  +           widget: 'notes'
+  +         },
+  +         {
+  +           collapsed: false,
+  +           hidden: true,
+  +           id: 'checklist',
+  +           lane: 'left',
+  +           title: 'My checklist',
+  +           widget: 'checklist'
+  +         },
+  +         {
+  +           collapsed: false,
+  +           hidden: false,
+  +           id: 'weather',
+  +           lane: 'left',
+  +           title: 'Aureline weather',
+  +           widget: 'weather'
+  +         },
+  +         {
+  +           collapsed: false,
+  +           hidden: false,
+  +           id: 'music',
+  +           lane: 'right',
+  +           title: 'Music',
+  +           widget: 'music'
+  +         },
+  +         {
+  +           collapsed: false,
+  +           hidden: true,
+  +           id: 'assignments',
+  +           lane: 'left',
+  +           title: 'Active assignments',
+  +           widget: 'assignments'
+  +         },
+  +         {
+  +           collapsed: false,
+  +           hidden: true,
+  +           id: 'inbox',
+  +           lane: 'left',
+  +           title: 'Unread inbox',
+  +           widget: 'inbox'
+  +         },
+  +         {
+  +           collapsed: false,
+  +           hidden: true,
+  +           id: 'recents',
+  +           lane: 'right',
+  +           title: 'Recent files',
+  +           widget: 'recents'
+  +         },
+  +         {
+  +           collapsed: false,
+  +           hidden: false,
+  +           id: 'apps',
+  +           lane: 'right',
+  +           shortcuts: [
+  +             {
+  +               id: 'app:maispace',
+  +               kind: 'app',
+  +               target: 'maispace'
+  +             },
+  +             {
+  +               id: 'app:passport',
+  +               kind: 'app',
+  +               target: 'passport'
+  +             },
+  +             {
+  +               id: 'app:housing',
+  +               kind: 'app',
+  +               target: 'housing'
+  +             },
+  +             {
+  +               id: 'app:lore',
+  +               kind: 'app',
+  +               target: 'lore'
+  +             },
+  +             {
+  +               id: 'app:campus',
+  +               kind: 'app',
+  +               target: 'campus'
+  +             },
+  +             {
+  +               id: 'app:browser',
+  +               kind: 'app',
+  +               target: 'browser'
+  +             }
+  +           ],
+  +           title: 'Personal apps'
+  +         },
+  +         {
+  +           collapsed: false,
+  +           hidden: false,
+  +           id: 'folders',
+  +           lane: 'right',
+  +           shortcuts: [
+  +             {
+  +               id: 'folder:documents',
+  +               kind: 'folder',
+  +               label: 'Documents',
+  +               target: '/documents'
+  +             },
+  +             {
+  +               id: 'folder:assignments',
+  +               kind: 'folder',
+  +               label: 'Assignments',
+  +               target: '/assignments'
+  +             }
+  +           ],
+  +           title: 'Folders'
+  +         }
+  +       ]
+  +     },
+  +     work: {
+  +       groups: [
+  +         {
+  +           collapsed: false,
+  +           hidden: false,
+  +           id: 'clock',
+  +           lane: 'left',
+  +           title: 'Clock & calendar',
+  +           widget: 'clock'
+  +         },
+  +         {
+  +           collapsed: false,
+  +           hidden: true,
+  +           id: 'notes',
+  +           lane: 'left',
+  +           title: 'Sticky note',
+  +           widget: 'notes'
+  +         },
+  +         {
+  +           collapsed: false,
+  +           hidden: true,
+  +           id: 'checklist',
+  +           lane: 'left',
+  +           title: 'My checklist',
+  +           widget: 'checklist'
+  +         },
+  +         {
+  +           collapsed: false,
+  +           hidden: true,
+  +           id: 'weather',
+  +           lane: 'left',
+  +           title: 'Aureline weather',
+  +           widget: 'weather'
+  +         },
+  +         {
+  +           collapsed: false,
+  +           hidden: true,
+  +           id: 'music',
+  +           lane: 'right',
+  +           title: 'Music',
+  +           widget: 'music'
+  +         },
+  +         {
+  +           collapsed: false,
+  +           hidden: false,
+  +           id: 'assignments',
+  +           lane: 'left',
+  +           title: 'Active assignments',
+  +           widget: 'assignments'
+  +         },
+  +         {
+  +           collapsed: false,
+  +           hidden: false,
+  +           id: 'inbox',
+  +           lane: 'left',
+  +           title: 'Unread inbox',
+  +           widget: 'inbox'
+  +         },
+  +         {
+  +           collapsed: false,
+  +           hidden: false,
+  +           id: 'recents',
+  +           lane: 'right',
+  +           title: 'Recent files',
+  +           widget: 'recents'
+  +         },
+  +         {
+  +           collapsed: false,
+  +           hidden: false,
+  +           id: 'apps',
+  +           lane: 'right',
+  +           shortcuts: [
+  +             {
+  +               id: 'app:dgaos',
+  +               kind: 'app',
+  +               target: 'dgaos'
+  +             },
+  +             {
+  +               id: 'app:jobs',
+  +               kind: 'app',
+  +               target: 'jobs'
+  +             },
+  +             {
+  +               id: 'app:files',
+  +               kind: 'app',
+  +               target: 'files'
+  +             },
+  +             {
+  +               id: 'app:mail',
+  +               kind: 'app',
+  +               target: 'mail'
+  +             },
+  +             {
+  +               id: 'app:documentStudio',
+  +               kind: 'app',
+  +               target: 'documentStudio'
+  +             },
+  +             {
+  +               id: 'app:fieldOperations',
+  +               kind: 'app',
+  +               target: 'fieldOperations'
+  +             }
+  +           ],
+  +           title: 'Work apps'
+  +         },
+  +         {
+  +           collapsed: false,
+  +           hidden: false,
+  +           id: 'folders',
+  +           lane: 'right',
+  +           shortcuts: [
+  +             {
+  +               id: 'folder:documents',
+  +               kind: 'folder',
+  +               label: 'Documents',
+  +               target: '/documents'
+  +             },
+  +             {
+  +               id: 'folder:assignments',
+  +               kind: 'folder',
+  +               label: 'Assignments',
+  +               target: '/assignments'
+  +             }
+  +           ],
+  +           title: 'Folders'
+  +         }
+  +       ]
+  +     }
+  +   },
+  +   music: [],
+  +   note: '',
+  +   recentFiles: [],
+      shortcutIds: [
+        'jobs',
+        'dgaos',
+        'campus'
+      ],
+      themeId: 'autumn',
+  +   volume: 0.65
+    }
+  
+      at TestContext.<anonymous> (file:///C:/Users/mirav/OneDrive/Desktop/MiraverseOSx/frontend/tests/app-navigation.test.mjs:143:10)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: { shortcutIds: [ 'jobs', 'dgaos', 'campus' ], themeId: 'autumn', layoutVersion: 1, activeLayout: 'everyday', layouts: { everyday: [Object], personal: [Object], work: [Object] }, dockPins: [ 'browser', 'files', 'mail' ], note: '', checklist: [], music: [], volume: 0.65, recentFiles: [] },
+    expected: { themeId: 'autumn', shortcutIds: [ 'jobs', 'dgaos', 'campus' ] },
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at tests\window-geometry.test.mjs:17:1
+✖ fullscreen fills the entire desktop and restore returns the original normal geometry (2.6277ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    [
+      0,
+  +   64,
+  -   0,
+      1920,
+  +   932
+  -   1080
+    ]
+  
+      at TestContext.<anonymous> (file:///C:/Users/mirav/OneDrive/Desktop/MiraverseOSx/frontend/tests/window-geometry.test.mjs:21:12)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1402:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:974:18)
+      at Test.postRun (node:internal/test_runner/test:1542:19)
+      at Test.run (node:internal/test_runner/test:1467:12)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [ 0, 64, 1920, 932 ],
+    expected: [ 0, 0, 1920, 1080 ],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }

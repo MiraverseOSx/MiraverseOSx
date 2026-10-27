@@ -1,4 +1,6 @@
 import { WORLD_KEYS, readWorldEntries, type WorldEntries } from '../backend/worldSync';
+import { applyWorldEntries, validWorldEntries } from '../backend/worldRecords';
+import { mirrorWorldEntries } from '../backend/worldMirrors';
 import { communicationsAuthority } from './communicationsAccess';
 
 export const CREATOR_STUDIO_STORAGE_KEY = 'miraverse-creator-studio-state-v1';
@@ -104,13 +106,14 @@ export function loadCreatorStudioState(): CreatorStudioState {
   }
 }
 
-function saveCreatorStudioState(state: CreatorStudioState): void {
+function saveCreatorStudioState(state: CreatorStudioState): boolean {
   const storage = getStorage();
-  if (!storage) return;
+  if (!storage) return false;
   try {
     storage.setItem(CREATOR_STUDIO_STORAGE_KEY, JSON.stringify(state));
+    return true;
   } catch {
-    // Keep session usable if quota is reached
+    return false;
   }
 }
 
@@ -205,6 +208,8 @@ function captureWorldCheckpointInternal(
 ): WorldCheckpoint {
   const storage = getStorage();
   const entries: WorldEntries = storage ? readWorldEntries(storage) : {};
+  // Do not recursively embed every prior checkpoint inside each new checkpoint.
+  entries[CREATOR_STUDIO_STORAGE_KEY] = JSON.stringify({ ...state, checkpoints: [] });
   const issuedSnapshotsRaw = storage ? storage.getItem(ISSUED_SNAPSHOTS_KEY) : null;
   const checkpoint: WorldCheckpoint = {
     id: `CHK-${crypto.randomUUID()}`,
@@ -247,10 +252,10 @@ export function listWorldCheckpoints(): WorldCheckpoint[] {
  * - Canonical MAIDs and the monotonic MAID counter are preserved so permanent identities are never lost or reused.
  * - Historical worldEventLog entries are merged additively so historical lore/published records remain intact.
  */
-export function restoreWorldCheckpoint(
+export async function restoreWorldCheckpoint(
   checkpointId: string,
   actorOverride?: { isLoggedIn?: boolean; isAdmin?: boolean; name?: string }
-): { ok: boolean; restoredCheckpoint?: WorldCheckpoint; backupCheckpoint?: WorldCheckpoint; message: string } {
+): Promise<{ ok: boolean; restoredCheckpoint?: WorldCheckpoint; backupCheckpoint?: WorldCheckpoint; message: string }> {
   const auth = requireCreatorAuthorization(actorOverride);
   if (!auth.authorized) {
     return { ok: false, message: auth.reason! };
@@ -264,6 +269,7 @@ export function restoreWorldCheckpoint(
   if (!target) {
     return { ok: false, message: `Checkpoint '${checkpointId}' not found.` };
   }
+  if (!validWorldEntries(target.entries)) return { ok: false, message: 'The checkpoint contains invalid world records. Your current world was retained.' };
 
   // 1. Capture pre-restore safety backup
   const backupCheckpoint = captureWorldCheckpointInternal(
@@ -272,6 +278,8 @@ export function restoreWorldCheckpoint(
     'pre_restore',
     auth.actorName
   );
+  if (!saveCreatorStudioState(state)) return { ok: false, message: 'The safety backup could not be saved. Your current world was retained.' };
+  const previous = readWorldEntries(storage);
 
   // 2. Preserve current historical records before applying checkpoint entries
   const currentSnapshotsRaw = storage.getItem(ISSUED_SNAPSHOTS_KEY);
@@ -280,12 +288,8 @@ export function restoreWorldCheckpoint(
   const currentOsProgressRaw = storage.getItem(OS_PROGRESS_KEY);
 
   // 3. Restore all WORLD_KEYS from target checkpoint
-  for (const key of WORLD_KEYS) {
-    const val = target.entries[key];
-    if (typeof val === 'string') {
-      storage.setItem(key, val);
-    }
-  }
+  try {
+  applyWorldEntries(storage, target.entries);
 
   // 4. Preserve monotonic MAID counter (never roll back counter below highest allocated sequence)
   const prevCounter = parseInt(currentCounterRaw || '0', 10);
@@ -363,13 +367,19 @@ export function restoreWorldCheckpoint(
     // Keep restored OS progress if parsing fails
   }
 
-  saveCreatorStudioState(state);
+  await mirrorWorldEntries(readWorldEntries(storage));
+  if (!saveCreatorStudioState(state)) throw new Error('Restored checkpoint metadata could not be saved.');
   return {
     ok: true,
     restoredCheckpoint: target,
     backupCheckpoint,
     message: `Restored checkpoint [${target.id}] while preserving canonical MAIDs, issued document snapshots, and historical logs.`,
   };
+  } catch (error) {
+    applyWorldEntries(storage, previous);
+    await mirrorWorldEntries(previous);
+    return { ok: false, backupCheckpoint, message: error instanceof Error ? error.message : 'Checkpoint restoration failed. The previous world was restored.' };
+  }
 }
 
 export function saveCreatorDraft(

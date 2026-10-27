@@ -1,0 +1,63 @@
+npm notice run miraverse-frontend@0.1.0 npx
+npm notice run playwright test --reporter=list
+[WebServer] npm notice run miraverse-frontend@0.1.0 dev
+[WebServer] npm notice run vite --host 127.0.0.1 --port 4174 --strictPort
+[WebServer] (node:46736) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] npm notice run miraverse-frontend@0.1.0 storybook
+[WebServer] npm notice run storybook dev -p 6006 --no-open --host 127.0.0.1 --port 6006 --ci --no-open
+[WebServer] (node:16000) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 14 tests using 1 worker
+
+(node:9052) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok  1 e2e\desktop.spec.ts:19:1 › desktop apps open, maximize and retain appearance after reload (7.3s)
+  ok  2 e2e\desktop.spec.ts:40:1 › browser restores its page and bookmark after reload and reopening the window (6.1s)
+  ok  3 e2e\desktop.spec.ts:56:1 › PULSE opens the Dispatch website and preserves reading across reload (8.3s)
+  ok  4 e2e\desktop.spec.ts:95:1 › Dispatch keeps search context through saved views and supports keyboard navigation (6.1s)
+  ok  5 e2e\desktop.spec.ts:127:1 › news layouts remain readable in light and dark appearance and narrow windows (7.7s)
+  x   6 e2e\desktop.spec.ts:187:1 › directory edits open at the selected card and changes survive reload (7.1s)
+(node:25740) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok  7 e2e\desktop.spec.ts:234:1 › MAI.SPACE layer sorting is keyboard accessible and draft order survives reopening (5.9s)
+  ok  8 e2e\desktop.spec.ts:253:1 › evidence board connects sources, reopens originals and removes player hypotheses (3.2s)
+  ok  9 e2e\desktop.spec.ts:265:1 › Broad Street board uses acquired sources and restores player connections after reload (12.1s)
+  ok 10 e2e\foundation.spec.ts:20:1 › manual case intake stays isolated and survives reload (7.1s)
+  ok 11 e2e\foundation.spec.ts:49:1 › world backup download and restore retains TRACE drafts and removes newer case drafts (5.3s)
+  ok 12 e2e\operations.spec.ts:34:1 › NPC call becomes a case with persistent linked interviews and distinct court stages (9.1s)
+  ok 13 e2e\operations.spec.ts:189:1 › TRACE returns a finalized report only to the originating request and preserves exhibit IDs (7.0s)
+  ok 14 e2e\response.spec.ts:34:1 › complete scenario response, radio, grounded interview, TRACE, acquittal and backup recovery (9.8s)
+
+
+  1) e2e\desktop.spec.ts:187:1 › directory edits open at the selected card and changes survive reload 
+
+    Error: locator.screenshot: UNKNOWN: unknown error, open 'C:\Users\mirav\OneDrive\Desktop\MiraverseOSx\output\previews\service-editor-dark.png'
+
+      224 |   await add.getByRole('textbox', { name: 'Category', exact: true }).fill('My tools');
+      225 |   await add.getByRole('textbox', { name: 'Destination', exact: true }).fill('file:///C:/Tools/notes.html');
+    > 226 |   await add.screenshot({ path: '../output/previews/service-editor-dark.png' });
+          |             ^
+      227 |   await add.getByRole('button', { name: 'Save service', exact: true }).click();
+      228 |   await directory.getByRole('combobox', { name: 'Filter service category', exact: true }).selectOption('My tools');
+      229 |   await directory.getByRole('button', { name: 'Remove Local notes', exact: true }).click();
+        at C:\Users\mirav\OneDrive\Desktop\MiraverseOSx\frontend\e2e\desktop.spec.ts:226:13
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results\desktop-directory-edits-op-2f852--and-changes-survive-reload\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results\desktop-directory-edits-op-2f852--and-changes-survive-reload\error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results\desktop-directory-edits-op-2f852--and-changes-survive-reload\trace.zip
+    Usage:
+
+        npx playwright show-trace test-results\desktop-directory-edits-op-2f852--and-changes-survive-reload\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  1 failed
+    e2e\desktop.spec.ts:187:1 › directory edits open at the selected card and changes survive reload 
+  13 passed (1.9m)

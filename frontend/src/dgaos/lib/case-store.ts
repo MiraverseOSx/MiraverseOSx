@@ -9,8 +9,32 @@ import caseData001 from '@/data/cases/case-001-conservatory-homicide.json';
 import caseData002 from '@/data/cases/case-002-broad-street-vault.json';
 import caseData003 from '@/data/cases/case-003-harbor-staged-overdose.json';
 import caseCatalog from '@/data/banks/case-catalog.json';
+import { createRecordId } from './record-id';
 
 const CASE_STORAGE_KEY = 'trace_active_case_data_v2';
+const CASE_LIBRARY_KEY = 'trace_case_library_v1';
+function validCase(value: any): value is FullCaseData {
+  const uniqueIds = (items: any[], field: string) => Array.isArray(items)
+    && items.every(item => typeof item?.[field] === 'string' && item[field].trim())
+    && new Set(items.map(item => item[field])).size === items.length;
+  return !!value && typeof value.meta?.id === 'string' && !!value.meta.id.trim()
+    && uniqueIds(value.medical?.subjects, 'subjectId') && Array.isArray(value.timeline)
+    && uniqueIds(value.evidence, 'id') && uniqueIds(value.citizens, 'id')
+    && Array.isArray(value.interrogations) && Array.isArray(value.crimeScene?.placards)
+    && !!value.courtroom && typeof value.courtroom === 'object';
+}
+function caseLibrary(): Record<string, FullCaseData> {
+  const raw = localStorage.getItem(CASE_LIBRARY_KEY);
+  if (!raw) return Object.create(null);
+  const value = JSON.parse(raw);
+  if (!value || typeof value !== 'object' || Array.isArray(value)) throw new Error('The TRACE case library is unreadable. Restore a backup before changing cases.');
+  const library: Record<string, FullCaseData> = Object.create(null);
+  for (const [id, item] of Object.entries(value)) {
+    if (!validCase(item) || item.meta.id !== id) throw new Error('A saved TRACE case is invalid. Your library was retained.');
+    library[id] = item;
+  }
+  return library;
+}
 
 export const CASE_PRESETS: Record<string, FullCaseData> = {
   'CASE-2026-001': caseData001 as unknown as FullCaseData,
@@ -24,41 +48,59 @@ export function getCaseCatalog() {
 
 export function getActiveCaseData(): FullCaseData {
   if (typeof window === 'undefined') {
-    return caseData001 as unknown as FullCaseData;
+    return structuredClone(caseData001) as unknown as FullCaseData;
   }
   try {
     const stored = localStorage.getItem(CASE_STORAGE_KEY);
     if (stored) {
-      return JSON.parse(stored) as FullCaseData;
+      const parsed = JSON.parse(stored);
+      if (validCase(parsed)) return parsed;
     }
   } catch (err) {
     console.error('Failed to parse stored case data, falling back to default:', err);
   }
-  return caseData001 as unknown as FullCaseData;
+  return structuredClone(caseData001) as unknown as FullCaseData;
 }
 
 export function saveActiveCaseData(caseData: FullCaseData): void {
   if (typeof window === 'undefined') return;
+  if (!validCase(caseData)) throw new Error('The TRACE case is incomplete and was not saved.');
+  const previousLibrary = localStorage.getItem(CASE_LIBRARY_KEY);
+  const previousActive = localStorage.getItem(CASE_STORAGE_KEY);
+  const library = caseLibrary();
+  if (previousActive) {
+    const previous = JSON.parse(previousActive);
+    if (validCase(previous)) library[previous.meta.id] = previous;
+  }
+  library[caseData.meta.id] = caseData;
   try {
+    localStorage.setItem(CASE_LIBRARY_KEY, JSON.stringify(library));
     localStorage.setItem(CASE_STORAGE_KEY, JSON.stringify(caseData));
-  } catch (err) {
-    console.error('Failed to persist case data:', err);
+  } catch (error) {
+    if (previousLibrary === null) localStorage.removeItem(CASE_LIBRARY_KEY);
+    else localStorage.setItem(CASE_LIBRARY_KEY, previousLibrary);
+    if (previousActive === null) localStorage.removeItem(CASE_STORAGE_KEY);
+    else localStorage.setItem(CASE_STORAGE_KEY, previousActive);
+    throw error;
   }
 }
 
 export function loadCaseById(caseId: string): FullCaseData {
-  const targetCase = CASE_PRESETS[caseId] || CASE_PRESETS['CASE-2026-001'];
-  saveActiveCaseData(targetCase);
-  return targetCase;
+  const stored = typeof window === 'undefined' ? undefined : caseLibrary()[caseId];
+  const activeRaw = typeof window === 'undefined' ? null : localStorage.getItem(CASE_STORAGE_KEY);
+  const active = activeRaw ? JSON.parse(activeRaw) : null;
+  const targetCase = (validCase(active) && active.meta.id === caseId ? active : undefined)
+    || stored || (Object.hasOwn(CASE_PRESETS, caseId) ? CASE_PRESETS[caseId] : undefined);
+  if (!targetCase) throw new Error(`TRACE case ${caseId} was not found. The active case was retained.`);
+  const copy = structuredClone(targetCase);
+  saveActiveCaseData(copy);
+  return copy;
 }
 
 export function resetToDefaultCase(): FullCaseData {
-  if (typeof window !== 'undefined') {
-    try {
-      localStorage.removeItem(CASE_STORAGE_KEY);
-    } catch {}
-  }
-  return caseData001 as unknown as FullCaseData;
+  const fresh = structuredClone(caseData001) as unknown as FullCaseData;
+  saveActiveCaseData(fresh);
+  return fresh;
 }
 
 export function exportCaseAsJson(caseData: FullCaseData): void {
@@ -78,8 +120,8 @@ export function exportCaseAsJson(caseData: FullCaseData): void {
 
 export function importCaseFromJson(jsonString: string): FullCaseData {
   const parsed = JSON.parse(jsonString) as FullCaseData;
-  if (!parsed.meta || !parsed.medical) {
-    throw new Error('Invalid TRACE Case JSON: missing meta or medical docket.');
+  if (!validCase(parsed)) {
+    throw new Error('Invalid TRACE case: provide metadata, medical subjects, timeline, scene, evidence, citizens, interviews, and courtroom records.');
   }
   saveActiveCaseData(parsed);
   return parsed;
@@ -92,7 +134,7 @@ export function addVaccineToSubject(
 ): FullCaseData {
   const updatedSubjects = caseData.medical.subjects.map((subj) => {
     if (subj.subjectId !== subjectId) return subj;
-    const vaccineId = `VAC-${Date.now().toString().slice(-4)}`;
+    const vaccineId = createRecordId('VAC', caseData.meta.id);
     return {
       ...subj,
       vaccines: [...subj.vaccines, { ...newVaccine, id: vaccineId }],
@@ -117,7 +159,7 @@ export function addDiagnosticTestToSubject(
 ): FullCaseData {
   const updatedSubjects = caseData.medical.subjects.map((subj) => {
     if (subj.subjectId !== subjectId) return subj;
-    const testId = `TEST-${Date.now().toString().slice(-4)}`;
+    const testId = createRecordId('TEST', caseData.meta.id);
     return {
       ...subj,
       diagnosticTests: [...subj.diagnosticTests, { ...newTest, id: testId }],

@@ -15,8 +15,18 @@ internal sealed class WorldSaveApi
     {
         "miraverse-os-progress", "miraverse-comms", "miraverse-phone-preferences",
         "miraverse-canonical-identities-v1", "miraverse-identity-registry-v3", "miraverse-maid-counter-OR",
-        "DGAOS_WORKSTATION_STATE_V3", "trace_active_case_data_v2", "miraverse-creator-studio-state-v1"
+        "DGAOS_WORKSTATION_STATE_V3", "trace_active_case_data_v2", "trace_case_library_v1",
+        "trace_records_v2", "trace_templates_v2", "trace_drafts_v2", "trace_session_v2", "trace_transmissions_v2",
+        "trace_open_lab_notes", "trace_open_lab_logs", "miraverse-creator-studio-state-v1",
+        "miraverse-issued-document-snapshots-v1", "miraverse-external-services-v1", "miraverse-active-citizen-context-v1"
     };
+    private static readonly HashSet<string> ArrayKeys = new(StringComparer.Ordinal)
+    {
+        "miraverse-canonical-identities-v1", "miraverse-identity-registry-v3", "trace_records_v2",
+        "trace_templates_v2", "trace_open_lab_logs", "miraverse-issued-document-snapshots-v1", "miraverse-external-services-v1"
+    };
+    private static bool IsWorldKey(string key) => Keys.Contains(key) ||
+        System.Text.RegularExpressions.Regex.IsMatch(key, @"^(?:trace_exam_draft_|DGAOS_SUGGESTION_STATE_)[\w-]{1,200}$", System.Text.RegularExpressions.RegexOptions.ECMAScript);
     private static readonly JsonSerializerOptions JsonOptions = new() { PropertyNamingPolicy = JsonNamingPolicy.CamelCase };
     public WorldSaveApi(string directory)
     {
@@ -70,11 +80,17 @@ internal sealed class WorldSaveApi
             var entries = new Dictionary<string, string>();
             foreach (var item in input.EnumerateObject())
             {
-                if (!Keys.Contains(item.Name) || item.Value.ValueKind != JsonValueKind.String) throw new JsonException("Unknown world record.");
+                if (!IsWorldKey(item.Name) || item.Value.ValueKind != JsonValueKind.String) throw new JsonException("Unknown world record.");
                 var raw = item.Value.GetString()!;
-                using var parsed = JsonDocument.Parse(raw, new JsonDocumentOptions { MaxDepth = 128 });
-                var kind = parsed.RootElement.ValueKind;
-                if (item.Name == "miraverse-maid-counter-OR" ? kind != JsonValueKind.Number : item.Name.Contains("identit") ? kind != JsonValueKind.Array : kind != JsonValueKind.Object) throw new JsonException("Invalid world record shape.");
+                if (item.Name != "trace_open_lab_notes")
+                {
+                    using var parsed = JsonDocument.Parse(raw, new JsonDocumentOptions { MaxDepth = 128 });
+                    var kind = parsed.RootElement.ValueKind;
+                    if (item.Name == "miraverse-maid-counter-OR"
+                        ? kind != JsonValueKind.Number || !parsed.RootElement.TryGetInt64(out var sequence) || sequence < 0 || sequence > 9007199254740991L
+                        : ArrayKeys.Contains(item.Name) ? kind != JsonValueKind.Array : kind != JsonValueKind.Object)
+                        throw new JsonException("Invalid world record shape.");
+                }
                 if (!entries.TryAdd(item.Name, raw)) throw new JsonException("Duplicate world record.");
             }
             using var connection = Open();

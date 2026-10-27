@@ -1,0 +1,95 @@
+/* Desktop arrangement; shared theme tokens retain the established visual style. */
+.mira-desktop { --desktop-menu-height:64px; --desktop-dock-height:84px; }
+.mira-desktop .desktop-menubar { height:var(--desktop-menu-height); min-height:var(--desktop-menu-height); padding:0 20px; display:grid; grid-template-columns:auto 1fr auto; gap:18px; position:relative; z-index:20002; }
+.desktop-layout-controls { display:flex; align-items:center; justify-content:center; gap:8px; min-width:0; }
+.desktop-layout-controls select,.desktop-layout-controls button { color:var(--studio-ink); background:var(--studio-paper); border:1px solid var(--studio-line); border-radius:9px; padding:7px 10px; font:11px var(--font-ui); min-height:32px; }
+.desktop-layout-controls button { display:flex; align-items:center; gap:6px; }
+.mira-desktop .desktop-menubar-right { gap:12px; }
+.desktop-system-controls { display:flex; align-items:center; gap:3px; position:relative; }
+.desktop-system-controls>.shell-icon-button,.desktop-system-controls .mai-toggle { width:32px; height:32px; min-width:32px; padding:0; display:inline-flex; justify-content:center; align-items:center; border:1px solid #ffffff28; border-radius:8px; background:#ffffff12; color:#faf6f9; position:relative; box-shadow:none; }
+.desktop-system-controls .mai-toggle { width:auto; padding:0 8px; gap:4px; font:10px var(--font-ui); }
+.desktop-system-controls .mai-dock { position:static; }
+.desktop-system-controls .mai-panel { position:absolute; top:calc(100% + 16px); bottom:auto; right:0; width:min(384px,calc(100vw - 24px)); max-height:calc(100dvh - 150px); overflow:auto; color:var(--studio-ink); }
+.desktop-call-count { position:absolute; top:-5px; right:-4px; border-radius:8px; font:9px var(--font-ui); padding:2px 4px; color:var(--studio-ink); background:var(--studio-soft); }
+.mira-desktop .desktop-phone { top:calc(var(--desktop-menu-height) + 10px); bottom:auto; right:18px; height:min(720px,calc(100dvh - var(--desktop-menu-height) - var(--desktop-dock-height) - 16px)); z-index:20003; }
+.mira-desktop .desktop-workspace { max-width:none; padding:0; height:calc(100% - var(--desktop-menu-height)); overflow:hidden; }
+.desktop-surface { position:absolute; inset:0 0 var(--desktop-dock-height); padding:24px; display:grid; grid-template-columns:280px minmax(80px,1fr) 248px; gap:24px; pointer-events:none; }
+.desktop-edge { min-width:0; min-height:0; overflow-y:auto; overflow-x:hidden; scrollbar-width:thin; padding:0 2px 12px; pointer-events:auto; display:flex; flex-direction:column; gap:14px; align-self:stretch; }
+.desktop-center { pointer-events:none; }
+.desktop-widget-group { flex:none; min-width:0; border:1px solid var(--studio-line); border-radius:14px; background:color-mix(in srgb,var(--studio-paper) 95%,transparent); color:var(--studio-ink); box-shadow:0 5px 22px #00000012,inset 0 1px #ffffff80; overflow:hidden; }
+.desktop-widget-group>header { display:flex; align-items:center; gap:5px; padding:10px 12px 7px; min-height:36px; }
+.desktop-widget-group h2 { font:600 11px var(--font-ui); margin:0; flex:1; min-width:0; overflow-wrap:anywhere; }
+.desktop-widget-group>header input { width:100%; min-width:0; }
+.desktop-widget-group button,.desktop-customizer button { color:var(--studio-ink); cursor:pointer; font-family:var(--font-ui); border-radius:6px; }
+.desktop-widget-group>header button,.desktop-group-tools button { display:inline-flex; align-items:center; justify-content:center; border:0; padding:3px; background:transparent; min-width:22px; min-height:22px; }
+.desktop-widget-group button:disabled,.desktop-customizer button:disabled { opacity:.45; cursor:default; }
+.desktop-widget-group button:hover:not(:disabled),.desktop-customizer button:hover:not(:disabled) { background:var(--studio-soft); }
+.desktop-widget-body { padding:0 12px 12px; font-size:12px; line-height:1.4; }
+.desktop-widget-body p { margin:6px 0; }
+.desktop-widget-body input:not([type=checkbox]):not([type=range]):not([type=file]),.desktop-widget-body textarea,.desktop-widget-body select,.desktop-customizer input:not([type=checkbox]),.desktop-customizer select,.desktop-widget-group>header input { border:1px solid var(--studio-line); background:#ffffffb8; color:var(--studio-ink); border-radius:6px; padding:6px 7px; font:12px var(--font-ui); max-width:100%; }
+.desktop-widget-group :focus-visible,.desktop-customizer :focus-visible,.desktop-layout-controls :focus-visible { outline:2px solid var(--studio-accent); outline-offset:2px; }
+.desktop-widget-group input[type=checkbox],.desktop-customizer input[type=checkbox] { accent-color:var(--studio-accent); width:13px; height:13px; flex:none; }
+.desktop-clock>time { font:500 45px/1.1 var(--font-ui); display:block; letter-spacing:-2px; }
+.desktop-clock>p { font:11px var(--font-ui); color:var(--studio-muted); margin:6px 0 12px; }
+.desktop-calendar-title { display:flex; justify-content:space-between; gap:5px; align-items:center; }
+.desktop-calendar-title button { background:transparent; border:0; padding:5px; font-size:10px; }
+.desktop-calendar { display:grid; grid-template-columns:repeat(7,1fr); text-align:center; gap:2px; margin-top:5px; font:10px/1.6 var(--font-ui); }
+.desktop-calendar small { color:var(--studio-muted); }
+.desktop-calendar span { padding:2px; border-radius:5px; }
+.desktop-calendar [aria-current=date] { background:var(--studio-accent); color:#fff; font-weight:600; }
+.desktop-widget-body .desktop-note { display:block; width:100%; min-height:116px; resize:vertical; font:13px/1.6 var(--font-body); background:transparent; border:0; }
+.desktop-checklist>div,.desktop-checklist form { display:flex; gap:5px; align-items:center; margin-bottom:6px; }
+.desktop-checklist label { display:flex; align-items:flex-start; gap:7px; flex:1; overflow-wrap:anywhere; }
+.desktop-checklist form input { min-width:0; flex:1; }
+.desktop-checklist button { border:0; background:transparent; padding:4px; display:flex; }
+.is-done { text-decoration:line-through; color:var(--studio-muted); }
+.desktop-empty,.desktop-tiny { color:var(--studio-muted); font-size:11px; }
+.desktop-weather strong { display:block; font-size:17px; font-weight:500; }
+.desktop-weather small { display:block; font-size:10px; }
+.desktop-weather button { background:transparent; border:0; font-size:10px; margin-top:8px; padding:3px 0; }
+.desktop-item-list { display:flex; flex-direction:column; gap:5px; }
+.desktop-item-list>button { text-align:left; padding:7px 0; border:0; border-bottom:1px solid var(--studio-line); background:transparent; min-width:0; }
+.desktop-item-list strong { display:block; font-size:11px; font-weight:500; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.desktop-item-list small { display:block; font-size:10px; color:var(--studio-muted); margin-top:3px; }
+.desktop-group-shortcuts { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:8px 6px; }
+.desktop-shortcut-cell { min-width:0; }
+.mira-desktop .desktop-group-shortcuts .personal-shortcut { width:100%; height:auto; min-height:84px; padding:5px 2px; color:var(--studio-ink); text-shadow:none; font-size:10px; gap:6px; }
+.mira-desktop .desktop-group-shortcuts .personal-shortcut-icon { width:43px; height:43px; border-radius:12px; color:var(--studio-accent); background:var(--studio-soft); border:1px solid var(--studio-line); box-shadow:inset 0 1px #ffffff60; }
+.desktop-shortcut-edit { display:flex; gap:3px; justify-content:center; flex-wrap:wrap; }
+.desktop-shortcut-edit button { font-size:9px; padding:2px 4px; background:transparent; border:1px solid var(--studio-line); }
+.desktop-group-tools { display:flex; padding:2px 10px 8px; flex-wrap:wrap; gap:5px; font-size:10px; }
+.desktop-drag-handle { touch-action:none; cursor:grab!important; }
+.desktop-edge.is-drop-target { outline:2px dashed var(--studio-soft); outline-offset:-2px; border-radius:12px; }
+.desktop-drop-hint { color:#fff; font:12px var(--font-ui); text-align:center; padding:25px; }
+.desktop-customizer { position:absolute; top:16px; left:50%; transform:translateX(-50%); width:min(340px,calc(100% - 32px)); max-height:calc(100% - 110px); overflow:auto; z-index:3; background:var(--studio-paper); color:var(--studio-ink); padding:16px; border:1px solid var(--studio-line); border-radius:14px; box-shadow:0 8px 30px #0002; font:11px/1.5 var(--font-ui); }
+.desktop-customizer h2 { font-size:14px; margin:0; }
+.desktop-customizer p { margin:8px 0; color:var(--studio-muted); }
+.desktop-widget-picker { display:grid; grid-template-columns:1fr 1fr; gap:7px; padding:8px 0 12px; }
+.desktop-widget-picker label { display:flex; gap:5px; align-items:center; }
+.desktop-customizer form { display:flex; gap:5px; margin:10px 0; }
+.desktop-customizer form input { min-width:0; flex:1; }
+.desktop-customizer button { border:1px solid var(--studio-line); background:#fff8; padding:4px 7px; }
+.desktop-pin-row { display:flex; gap:5px; align-items:center; padding:5px 0; }
+.desktop-pin-row span { flex:1; min-width:0; overflow:hidden; text-overflow:ellipsis; }
+.desktop-reset { margin-top:14px; }
+.desktop-music { font:11px/1.5 var(--font-ui); }
+.desktop-track { display:flex; align-items:center; gap:12px; margin-bottom:8px; }
+.desktop-track>div { min-width:0; }
+.desktop-track strong { font-size:11px; display:block; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.desktop-track small { color:var(--studio-muted); }
+.desktop-media-buttons { display:flex; justify-content:center; gap:10px; }
+.desktop-media-buttons button { padding:6px; display:flex; background:transparent; border:0; }
+.desktop-music input[type=range] { display:block; width:100%; accent-color:var(--studio-accent); height:18px; }
+.desktop-volume { display:flex; align-items:center; gap:10px; margin:7px 0; }
+.desktop-action-file { display:inline-flex; align-items:center; gap:5px; cursor:pointer; position:relative; border:1px solid var(--studio-line); padding:4px 7px; border-radius:6px; margin:5px 0; }
+.desktop-action-file input { position:absolute; inset:0; opacity:0; width:100%; cursor:pointer; }
+.desktop-music details { margin-top:8px; }
+.desktop-playlist-row { display:flex; gap:5px; margin:5px 0; }
+.desktop-playlist-row button { background:transparent; border:1px solid var(--studio-line); padding:4px; font-size:10px; min-width:0; }
+.desktop-playlist-row button:first-child { flex:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; text-align:left; }
+.mira-desktop .desktop-taskbar { z-index:20000; bottom:14px; left:20px; right:20px; display:flex; justify-content:center; }
+.mira-desktop .desktop-dock { width:max-content; max-width:min(800px,100%); }
+@media(max-width:1100px) { .desktop-surface { grid-template-columns:260px minmax(0,1fr) 232px; gap:16px; padding:16px; } .mira-desktop .desktop-menubar { padding:0 12px; gap:10px; } .desktop-wordmark strong { font-size:10px; letter-spacing:.04em; } .desktop-location,.desktop-menu-divider { display:none; } .mira-desktop .desktop-menubar-right { gap:7px; } .desktop-menubar time { font-size:0; } .desktop-menubar time span { font-size:11px; margin:0; } }
+@media(max-width:799px) { .mira-desktop { --desktop-menu-height:104px; } .mira-desktop .desktop-menubar { grid-template-columns:auto 1fr; grid-template-rows:52px 44px; padding:0 12px 8px; gap:0 8px; } .desktop-wordmark strong { display:none; } .desktop-wordmark img { width:24px; height:24px; } .desktop-layout-controls { grid-column:1/-1; grid-row:2; } .mira-desktop .desktop-menubar-right { justify-content:flex-end; gap:6px; } .desktop-system-controls .mai-label { display:none; } .desktop-system-controls .mai-toggle { width:30px; padding:0; } .desktop-system-controls>.shell-icon-button { width:29px; min-width:29px; } .desktop-celestial-badge { padding:3px 5px; font-size:10px; gap:3px; } .desktop-surface { display:flex; flex-direction:column; overflow:auto; gap:16px; padding:16px; pointer-events:auto; } .desktop-edge { overflow:visible; min-height:auto; flex:none; padding:0; } .desktop-center { display:none; } .desktop-group-shortcuts { grid-template-columns:repeat(3,minmax(0,1fr)); } .desktop-customizer { position:fixed; top:112px; z-index:20004; max-height:calc(100dvh - 210px); } .desktop-system-controls .mai-panel { right:-30px; } }
+@media(max-height:499px) { .mira-desktop { --desktop-dock-height:64px; } .mira-desktop .desktop-taskbar { bottom:6px; } .mira-desktop .desktop-dock { padding:4px; } }
+@media(prefers-reduced-motion:reduce) { .desktop-widget-group { transition:none!important; } }

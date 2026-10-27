@@ -10,17 +10,26 @@ import AppLauncherModal from './AppLauncherModal';
 import SanctuaryOverlay from './SanctuaryOverlay';
 import ToastViewport from '../widgets/ToastViewport';
 import PurpleWallpaper from './PurpleWallpaper';
-import DesktopShortcuts from './DesktopShortcuts';
+import DesktopSurface from './DesktopSurface';
+import { DesktopMusicProvider } from './DesktopMusic';
+import MAIDock from '../widgets/MAIDock';
+import { Smartphone, Volume2, VolumeX, Power, SlidersHorizontal, Check } from 'lucide-react';
+import { useSystemStore } from '../../store/useSystemStore';
+
 import logoIcon from '../../assets/images/logo_icon.png';
 import '../../styles/apps/Desktop.css';
 import '../../styles/apps/PersonalDesktop.css';
 import '../../styles/studio-design.css';
+import '../../styles/apps/DesktopLayout.css';
 import { desktopThemeStyle } from '../../store/desktopThemes';
 import { useCommsStore } from '../../store/useCommsStore';
 import { getCelestialState } from '../../data/meridionWorld';
 
 export default function Desktop() {
-  const { isLoggedIn, windows, isSanctuary, gameplay, wallpaper } = useOSStore();
+  const { isLoggedIn, windows, isSanctuary, gameplay, wallpaper, desktopPreferences, desktopAction, logoutUser } = useOSStore();
+  const [editing,setEditing]=useState(false);
+  const {soundEnabled,toggleSound}=useSystemStore();
+  const incomingCalls=useOSStore(state=>Object.values(state.gameplay.player.assignmentJournal?.dispatches||{}).filter((d:any)=>d.channel==='phone'&&!d.heardAt).length);
   const celestial = getCelestialState(gameplay?.timeCycleCount ?? 28);
   const themeId = useOSStore(state => state.desktopPreferences.themeId);
   const appWorkspaceRef = useRef(null);
@@ -63,10 +72,11 @@ export default function Desktop() {
   }
 
   return (
-    <main className="mira-desktop" data-theme={themeId} style={desktopThemeStyle(themeId) as React.CSSProperties}>
+    <DesktopMusicProvider><main className="mira-desktop" data-theme={themeId} style={desktopThemeStyle(themeId) as React.CSSProperties}>
       {wallpaper ? <div className="personal-wallpaper-image" aria-hidden="true" style={{ backgroundImage: `linear-gradient(#20132d44, #20132d66), url(${JSON.stringify(wallpaper)})` }}/> : <PurpleWallpaper animated={!reducedMotion && pageVisible}/>}
       <header className="desktop-menubar">
         <div className="desktop-wordmark"><img src={logoIcon} alt="" /><strong>MIRAVERSE<span>OS x</span></strong><span className="desktop-menu-divider" /><span className="desktop-location">Aureline</span></div>
+        <div className="desktop-layout-controls"><select aria-label="Desktop layout" value={desktopPreferences.activeLayout} onChange={e=>desktopAction({type:'layout',id:e.target.value as any})}><option value="everyday">Everyday</option><option value="personal">Personal</option><option value="work">Work</option></select><button aria-label={editing?'Finish customizing desktop':'Customize Desktop'} aria-pressed={editing} onClick={()=>setEditing(v=>!v)}>{editing?<Check size={15}/>:<SlidersHorizontal size={15}/>}<span>{editing?'Done':'Customize'}</span></button></div>
         <div className="desktop-menubar-right">
           <button
             type="button"
@@ -79,11 +89,12 @@ export default function Desktop() {
             <span className="moon-icon opacity-80" title={`Echo: ${celestial.echo.phaseName}`}>{celestial.echo.phaseIcon}</span>
             <span className="celestial-cycle font-mono text-[11px] font-semibold opacity-90">C{celestial.cycle}</span>
           </button>
+          <div className="desktop-system-controls" role="group" aria-label="System tray"><MAIDock/><button className="shell-icon-button" aria-label="Toggle phone" title={incomingCalls?`${incomingCalls} incoming work call`:'Phone'} onClick={()=>setIsPhoneOpen(v=>!v)}><Smartphone size={17}/>{incomingCalls>0&&<span className="desktop-call-count">{incomingCalls}</span>}</button><button className="shell-icon-button" aria-label={soundEnabled?'Mute audio':'Unmute audio'} aria-pressed={soundEnabled} onClick={toggleSound}>{soundEnabled?<Volume2 size={17}/>:<VolumeX size={17}/>}</button><button className="shell-icon-button" aria-label="Log out" onClick={logoutUser}><Power size={17}/></button></div>
           <time dateTime={now.toISOString()}>{now.toLocaleDateString(undefined, { month: 'short', day: 'numeric' })}<span>{now.toLocaleTimeString(undefined, { hour: 'numeric', minute: '2-digit' })}</span></time>
         </div>
       </header>
       <div ref={appWorkspaceRef} className="desktop-workspace">
-        <DesktopShortcuts />
+        <DesktopSurface editing={editing}/>
         {isSanctuary && <SanctuaryOverlay />}
       </div>
       <AnimatePresence>{windows.filter((win) => !win.isMinimized).map((win) => <Window key={win.id} win={win} windowIndex={windows.findIndex((candidate) => candidate.id === win.id)} isFocusMode={true} workspaceRef={appWorkspaceRef} />)}</AnimatePresence>
@@ -91,6 +102,6 @@ export default function Desktop() {
       <AppLauncherModal isOpen={isLauncherOpen} onClose={() => setIsLauncherOpen(false)} />
       <DesktopTaskbar onTogglePhone={() => setIsPhoneOpen((open) => !open)} onOpenLauncher={() => setIsLauncherOpen(true)} isLauncherOpen={isLauncherOpen} />
       <ToastViewport />
-    </main>
+    </main></DesktopMusicProvider>
   );
 }

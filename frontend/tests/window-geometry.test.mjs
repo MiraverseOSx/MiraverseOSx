@@ -14,11 +14,14 @@ test('normal windows keep 16:9 and fit between the menu and dock', () => {
   }
 });
 
-test('fullscreen fills the entire desktop and restore returns the original normal geometry', () => {
+test('maximized windows reserve system controls and restore returns the original normal geometry', () => {
   for (const [w, h] of [[1920, 1080], [1864, 884], [1280, 720], [390, 844]]) {
     const original = fitWindow(w, h, 2);
     const fullscreen = fitWindow(w, h, 2, true);
-    assert.deepEqual([fullscreen.left, fullscreen.top, fullscreen.width, fullscreen.height], [0, 0, w, h]);
+    assert.equal(fullscreen.left, 0);
+    assert.equal(fullscreen.top, fullscreen.menu);
+    assert.equal(fullscreen.width, w);
+    assert.equal(fullscreen.height, h - fullscreen.menu - fullscreen.dock);
     assert.deepEqual(fitWindow(w, h, 2, false), original);
   }
 });

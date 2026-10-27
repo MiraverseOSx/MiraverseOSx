@@ -1,6 +1,7 @@
+param([string]$AssemblyPath = '')
 $ErrorActionPreference = 'Stop'
 $workspaceRoot = Split-Path -Parent $PSScriptRoot
-$assembly = Join-Path $workspaceRoot 'bin/Release/net8.0/MiraverseOSx.dll'
+$assembly = if ($AssemblyPath) { [IO.Path]::GetFullPath($AssemblyPath) } else { Join-Path $workspaceRoot 'bin/Release/net8.0/MiraverseOSx.dll' }
 if (-not (Test-Path -LiteralPath $assembly)) {
     $assembly = Join-Path $workspaceRoot 'bin/Debug/net8.0/MiraverseOSx.dll'
 }
@@ -54,6 +55,13 @@ try {
     $empty = Invoke-RestMethod -Uri "$baseUrl/api/world"
     Check ($empty.revision -eq 0) 'A new database must start empty.'
     $entries = @{ 'miraverse-os-progress' = '{"state":{"gameplay":{"player":{"name":"Backend tester","credits":100}}},"version":1}'; 'miraverse-comms' = '{"state":{"emails":[{"id":"dispatch"}],"savedAttachmentIds":["one"]}}'; 'miraverse-creator-studio-state-v1' = '{"worldState":{"cases":[]},"publishedEntries":[]}' }
+    $entries['trace_records_v2'] = '[{"id":"EV-test","caseId":"custom-case"}]'
+    $entries['DGAOS_WORKSTATION_STATE_V3'] = '{"cases":[],"operations":{"response":{"units":[{"id":"UNIT-1","callsign":"PATROL-1","onDuty":true}],"assignments":[{"id":"ASSIGN-1","incidentId":"INCIDENT-1","status":"on scene"}],"transmissions":[{"id":"RADIO-1","text":"Acknowledged"}],"conversations":[{"id":"CHAT-1","turns":[{"reply":"Saw a badge"}]}],"scenarios":[{"id":"SCENE-1","hiddenFacts":["Keep separate"]}]}}}'
+    $entries['trace_drafts_v2'] = '{"EX-test":{"caseId":"custom-case","data":{"notes":"unfinished"}}}'
+    $entries['trace_transmissions_v2'] = '{"report":{"dgaCaseId":"custom-case","status":"Transmitted"}}'
+    $entries['trace_open_lab_notes'] = 'Plain text notes that must survive restore.'
+    $entries['trace_exam_draft_EX-test'] = '{"draft":{"notes":"unsubmitted"}}'
+    $entries['miraverse-issued-document-snapshots-v1'] = '[{"id":"issued-1"}]'
     $saved = Send-World @{ serverId = $empty.serverId; expectedRevision = 0; entries = $entries }
     Check ($saved.StatusCode -eq 200) 'Initial world import failed.'
     $world = $saved.Content | ConvertFrom-Json
@@ -64,6 +72,10 @@ try {
     Check ($bad.StatusCode -eq 400) 'Unknown records must be rejected.'
     $badShape = Send-World @{ serverId = $empty.serverId; expectedRevision = 1; entries = @{ 'miraverse-comms' = '[]' } }
     Check ($badShape.StatusCode -eq 400) 'Invalid record shapes must be rejected.'
+    $badTraceShape = Send-World @{ serverId = $empty.serverId; expectedRevision = 1; entries = @{ 'trace_records_v2' = '{}' } }
+    Check ($badTraceShape.StatusCode -eq 400) 'TRACE records must be arrays.'
+    $badPrefix = Send-World @{ serverId = $empty.serverId; expectedRevision = 1; entries = @{ 'trace_exam_draft_' = '{}' } }
+    Check ($badPrefix.StatusCode -eq 400) 'Unscoped dynamic draft keys must be rejected.'
     $badRevision = Send-World @{ serverId = $empty.serverId; expectedRevision = 'not-a-number'; entries = @{} }
     Check ($badRevision.StatusCode -eq 400) 'Malformed envelopes must return JSON validation errors.'
     $foreign = Send-World @{ serverId = $empty.serverId; expectedRevision = 1; entries = $entries } 'https://unrelated.example'
@@ -90,6 +102,9 @@ try {
     Check ($restored.serverId -eq $empty.serverId -and $restored.revision -eq 1) 'Database identity and revision did not survive restart.'
     Check ($restored.entries.'miraverse-comms' -eq $entries.'miraverse-comms') 'Mail did not survive restart.'
     Check ($restored.entries.'miraverse-creator-studio-state-v1' -eq $entries.'miraverse-creator-studio-state-v1') 'Creator journal did not survive restart.'
+    foreach ($key in @('DGAOS_WORKSTATION_STATE_V3','trace_records_v2','trace_drafts_v2','trace_transmissions_v2','trace_open_lab_notes','trace_exam_draft_EX-test','miraverse-issued-document-snapshots-v1')) {
+        Check ($restored.entries.$key -eq $entries[$key]) "Saved investigation store did not survive restart: $key"
+    }
     Write-Output "Backend integration checks passed: $checks"
 }
 finally {

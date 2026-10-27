@@ -1,19 +1,18 @@
-import { set as idbSet, del as idbDelete } from 'idb-keyval';
-import { WORLD_KEYS, WorldSyncClient, readWorldEntries, type WorldEntries } from './worldSync';
+import { WorldSyncClient, readWorldEntries, type WorldEntries } from './worldSync';
+import { applyWorldEntries } from './worldRecords';
+import { mirrorWorldEntries } from './worldMirrors';
 
-async function restore(entries: WorldEntries) {
+export async function restoreWorldEntries(entries: WorldEntries) {
   const previous = readWorldEntries(localStorage);
   // Never replace existing progress without first making a restorable device backup.
   if (Object.keys(previous).length) localStorage.setItem(`miraverse-world-backup-${crypto.randomUUID()}`, JSON.stringify({ source: 'device', savedAt: new Date().toISOString(), entries: previous }));
-  const apply = (records: WorldEntries) => { for (const key of WORLD_KEYS) { if (records[key] === undefined) localStorage.removeItem(key); else localStorage.setItem(key, records[key]!); } };
+  const apply = (records: WorldEntries) => applyWorldEntries(localStorage, records);
   try {
     apply(entries);
-    const identities = entries['miraverse-canonical-identities-v1'];
-    if (identities === undefined) await idbDelete('miraverse-canonical-identities-v1');
-    else await idbSet('miraverse-canonical-identities-v1', JSON.parse(identities));
-  } catch (error) { apply(previous); throw error; }
+    await mirrorWorldEntries(entries);
+  } catch (error) { apply(previous); await mirrorWorldEntries(previous); throw error; }
 }
-export const worldConnection = new WorldSyncClient({ getItem: key => localStorage.getItem(key), setItem: (key, value) => localStorage.setItem(key, value), removeItem: key => localStorage.removeItem(key) }, (...args) => fetch(...args), restore, () => location.reload());
+export const worldConnection = new WorldSyncClient({ getItem: key => localStorage.getItem(key), setItem: (key, value) => localStorage.setItem(key, value), removeItem: key => localStorage.removeItem(key), get length() { return localStorage.length; }, key: index => localStorage.key(index) }, (...args) => fetch(...args), restoreWorldEntries, () => location.reload());
 export async function connectWorld() {
   await worldConnection.start();
   // App stores keep their existing offline persistence. Capture their records together

@@ -9,7 +9,7 @@ export interface EvidenceVaultItem {
   dateSecured: string;
   securedBy: string;
   storageLocation: string;
-  sealStatus: 'Seals Intact' | 'Opened for Bench Examination' | 'Transferred';
+  sealStatus: 'Seals Intact' | 'Opened for Bench Examination' | 'Transferred' | 'Not recorded';
   custodyHistory: Array<{
     timestamp: string;
     action: string;

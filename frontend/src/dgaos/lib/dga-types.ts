@@ -506,6 +506,7 @@ export interface SharedCasePatch {
    ========================================================================= */
 
 export interface DGAState {
+  operations?: import('./operations').OperationsState;
   profile: SeedAgentProfile;
   cases: SeedCase[];
   people: SeedPerson[];

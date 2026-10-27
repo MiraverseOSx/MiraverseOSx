@@ -1,0 +1,28 @@
+npm notice run miraverse-frontend@0.1.0 test:e2e
+npm notice run playwright test
+[WebServer] npm notice run miraverse-frontend@0.1.0 dev
+[WebServer] npm notice run vite --host 127.0.0.1 --port 4174 --strictPort
+[WebServer] (node:46316) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] npm notice run miraverse-frontend@0.1.0 storybook
+[WebServer] npm notice run storybook dev -p 6006 --no-open --host 127.0.0.1 --port 6006 --ci --no-open
+[WebServer] (node:23524) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 11 tests using 1 worker
+
+(node:38568) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok  1 e2e\desktop.spec.ts:19:1 › desktop apps open, maximize and retain appearance after reload (9.5s)
+  ok  2 e2e\desktop.spec.ts:40:1 › browser restores its page and bookmark after reload and reopening the window (6.6s)
+  ok  3 e2e\desktop.spec.ts:56:1 › PULSE opens the Dispatch website and preserves reading across reload (8.6s)
+  ok  4 e2e\desktop.spec.ts:95:1 › Dispatch keeps search context through saved views and supports keyboard navigation (5.7s)
+  ok  5 e2e\desktop.spec.ts:127:1 › news layouts remain readable in light and dark appearance and narrow windows (7.3s)
+  ok  6 e2e\desktop.spec.ts:187:1 › directory edits open at the selected card and changes survive reload (7.5s)
+  ok  7 e2e\desktop.spec.ts:234:1 › MAI.SPACE layer sorting is keyboard accessible and draft order survives reopening (5.6s)
+  ok  8 e2e\desktop.spec.ts:253:1 › evidence board connects sources, reopens originals and removes player hypotheses (3.2s)
+  ok  9 e2e\desktop.spec.ts:265:1 › Broad Street board uses acquired sources and restores player connections after reload (12.3s)
+  ok 10 e2e\foundation.spec.ts:20:1 › manual case intake stays isolated and survives reload (7.8s)
+  ok 11 e2e\foundation.spec.ts:49:1 › world backup download and restore retains TRACE drafts and removes newer case drafts (5.6s)
+
+  11 passed (1.6m)

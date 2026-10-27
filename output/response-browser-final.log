@@ -1,0 +1,154 @@
+npm notice run miraverse-frontend@0.1.0 npx
+npm notice run playwright test --reporter=list
+[WebServer] npm notice run miraverse-frontend@0.1.0 dev
+[WebServer] npm notice run vite --host 127.0.0.1 --port 4174 --strictPort
+[WebServer] (node:16152) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] npm notice run miraverse-frontend@0.1.0 storybook
+[WebServer] npm notice run storybook dev -p 6006 --no-open --host 127.0.0.1 --port 6006 --ci --no-open
+[WebServer] (node:26240) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 14 tests using 1 worker
+
+(node:43672) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok  1 e2e\desktop.spec.ts:19:1 › desktop apps open, maximize and retain appearance after reload (9.1s)
+  ok  2 e2e\desktop.spec.ts:40:1 › browser restores its page and bookmark after reload and reopening the window (6.3s)
+  ok  3 e2e\desktop.spec.ts:56:1 › PULSE opens the Dispatch website and preserves reading across reload (8.8s)
+  ok  4 e2e\desktop.spec.ts:95:1 › Dispatch keeps search context through saved views and supports keyboard navigation (5.9s)
+  ok  5 e2e\desktop.spec.ts:127:1 › news layouts remain readable in light and dark appearance and narrow windows (8.9s)
+  ok  6 e2e\desktop.spec.ts:187:1 › directory edits open at the selected card and changes survive reload (8.7s)
+  ok  7 e2e\desktop.spec.ts:234:1 › MAI.SPACE layer sorting is keyboard accessible and draft order survives reopening (5.5s)
+  ok  8 e2e\desktop.spec.ts:253:1 › evidence board connects sources, reopens originals and removes player hypotheses (3.4s)
+  ok  9 e2e\desktop.spec.ts:265:1 › Broad Street board uses acquired sources and restores player connections after reload (11.1s)
+  ok 10 e2e\foundation.spec.ts:20:1 › manual case intake stays isolated and survives reload (7.9s)
+  ok 11 e2e\foundation.spec.ts:49:1 › world backup download and restore retains TRACE drafts and removes newer case drafts (5.5s)
+  x  12 e2e\operations.spec.ts:34:1 › NPC call becomes a case with persistent linked interviews and distinct court stages (1.0m)
+(node:19980) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  13 e2e\operations.spec.ts:189:1 › TRACE returns a finalized report only to the originating request and preserves exhibit IDs (1.0m)
+(node:12124) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  14 e2e\response.spec.ts:34:1 › complete scenario response, radio, grounded interview, TRACE, acquittal and backup recovery (8.5s)
+
+
+  1) e2e\operations.spec.ts:34:1 › NPC call becomes a case with persistent linked interviews and distinct court stages 
+
+    Test timeout of 60000ms exceeded.
+
+    Error: locator.fill: Test timeout of 60000ms exceeded.
+    Call log:
+      - waiting for locator('.os-window[data-app=dgaos]').getByTestId('operations-workspace').getByRole('textbox', { name: 'Message to caller', exact: true })
+
+
+      43 |   await ui
+      44 |     .getByRole("textbox", { name: "Message to caller", exact: true })
+    > 45 |     .fill("What is the location?");
+         |      ^
+      46 |   await click("Send message");
+      47 |   await expect(ui.getByRole("log")).toContainText(
+      48 |     "The location is 66 Pickman Street.",
+        at C:\Users\mirav\OneDrive\Desktop\MiraverseOSx\frontend\e2e\operations.spec.ts:45:6
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results\operations-NPC-call-become-13fcf-s-and-distinct-court-stages\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results\operations-NPC-call-become-13fcf-s-and-distinct-court-stages\error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results\operations-NPC-call-become-13fcf-s-and-distinct-court-stages\trace.zip
+    Usage:
+
+        npx playwright show-trace test-results\operations-NPC-call-become-13fcf-s-and-distinct-court-stages\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  2) e2e\operations.spec.ts:189:1 › TRACE returns a finalized report only to the originating request and preserves exhibit IDs 
+
+    Test timeout of 60000ms exceeded.
+
+    Error: locator.selectOption: Test timeout of 60000ms exceeded.
+    Browser logs:
+
+    <launching> C:\Users\mirav\AppData\Local\ms-playwright\chromium_headless_shell-1248\chrome-headless-shell-win64\chrome-headless-shell.exe --disable-field-trial-config --disable-background-networking --disable-background-timer-throttling --disable-backgrounding-occluded-windows --disable-back-forward-cache --disable-breakpad --disable-client-side-phishing-detection --disable-component-extensions-with-background-pages --disable-component-update --no-default-browser-check --disable-default-apps --disable-dev-shm-usage --disable-edgeupdater --disable-extensions --disable-features=AvoidUnnecessaryBeforeUnloadCheckSync,DestroyProfileOnBrowserClose,DialMediaRouteProvider,GlobalMediaControls,HttpsUpgrades,LensOverlay,MediaRouter,PaintHolding,ThirdPartyStoragePartitioning,BlockOriginHeaderModificationOnRedirect,AvoidCorsURLLoaderRestartOnRedirect,Translate,AutoDeElevate,OptimizationHints,NetworkTimeServiceQuerying,AimEnabled,msForceBrowserSignIn,msEdgeUpdateLaunchServicesPreferredVersion --enable-features=CDPScreenshotNewSurface --allow-pre-commit-input --disable-hang-monitor --disable-ipc-flooding-protection --disable-popup-blocking --disable-prompt-on-repost --disable-renderer-backgrounding --disable-updater-scheduler --force-color-profile=srgb --metrics-recording-only --no-first-run --password-store=basic --use-mock-keychain --no-service-autorun --export-tagged-pdf --disable-search-engine-choice-screen --unsafely-disable-devtools-self-xss-warnings --edge-skip-compat-layer-relaunch --disable-infobars --disable-search-engine-choice-screen --disable-sync --enable-unsafe-swiftshader --headless --hide-scrollbars --mute-audio --blink-settings=primaryHoverType=2,availableHoverTypes=2,primaryPointerType=4,availablePointerTypes=4 --no-sandbox --user-data-dir=C:\Users\mirav\AppData\Local\Temp\playwright_chromiumdev_profile-XHYonp --remote-debugging-pipe --no-startup-window
+    <launched> pid=14432
+    [pid=14432][err] [1027/143654.951:INFO:CONSOLE:789] "[vite] connecting...", source: http://127.0.0.1:4174/@vite/client (789)
+    [pid=14432][err] [1027/143654.955:INFO:CONSOLE:912] "[vite] connected.", source: http://127.0.0.1:4174/@vite/client (912)
+    [pid=14432][err] [1027/143655.022:INFO:CONSOLE:22165] "%cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold", source: http://127.0.0.1:4174/node_modules/.vite/deps/react-dom_client.js?v=52fa37e9 (22165)
+    [pid=14432][err] [1027/143657.955:INFO:CONSOLE:183] "You have Reduced Motion enabled on your device. Animations may not appear as expected.. For more information and steps for solving, visit https://motion.dev/troubleshooting/reduced-motion-disabled", source: http://127.0.0.1:4174/node_modules/.vite/deps/framer-motion.js?v=52fa37e9 (183)
+    [pid=14432] <gracefully close start>
+    Call log:
+      - waiting for locator('.os-window[data-app=dgaos]').getByTestId('operations-workspace').getByRole('combobox', { name: 'Operations case', exact: true })
+        - locator resolved to <select aria-label="Operations case" class="w-full rounded-[4px] border border-[#cfcddb] bg-white px-2 py-1.5 text-[12px] text-[#262337] focus:outline-none focus:ring-1 focus:ring-[#6f6c96]">…</select>
+      - attempting select option action
+        2 × waiting for element to be visible and enabled
+          - did not find some options
+        - retrying select option action
+        - waiting 20ms
+        2 × waiting for element to be visible and enabled
+          - did not find some options
+        - retrying select option action
+          - waiting 100ms
+        105 × waiting for element to be visible and enabled
+            - did not find some options
+          - retrying select option action
+            - waiting 500ms
+        - waiting for element to be visible and enabled
+
+
+      213 |   await ui
+      214 |     .getByRole("combobox", { name: "Operations case", exact: true })
+    > 215 |     .selectOption(setup.caseId);
+          |      ^
+      216 |   await ui
+      217 |     .getByRole("checkbox", { name: "Evidence · Parcel label", exact: true })
+      218 |     .check();
+        at C:\Users\mirav\OneDrive\Desktop\MiraverseOSx\frontend\e2e\operations.spec.ts:215:6
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results\operations-TRACE-returns-a-4d98e-t-and-preserves-exhibit-IDs\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results\operations-TRACE-returns-a-4d98e-t-and-preserves-exhibit-IDs\error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results\operations-TRACE-returns-a-4d98e-t-and-preserves-exhibit-IDs\trace.zip
+    Usage:
+
+        npx playwright show-trace test-results\operations-TRACE-returns-a-4d98e-t-and-preserves-exhibit-IDs\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  3) e2e\response.spec.ts:34:1 › complete scenario response, radio, grounded interview, TRACE, acquittal and backup recovery 
+
+    Error: page.evaluate: TypeError: Cannot read properties of undefined (reading 'caseId')
+        at eval (eval at evaluate (:370:30), <anonymous>:5:55)
+        at Array.find (<anonymous>)
+        at eval (eval at evaluate (:370:30), <anonymous>:5:27)
+        at async <anonymous>:396:30
+        at eval (eval at evaluate (:370:30), <anonymous>:5:55)
+        at eval (eval at evaluate (:370:30), <anonymous>:5:27)
+        at async <anonymous>:396:30
+        at C:\Users\mirav\OneDrive\Desktop\MiraverseOSx\frontend\e2e\response.spec.ts:142:28
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results\response-complete-scenario-15ad3-quittal-and-backup-recovery\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results\response-complete-scenario-15ad3-quittal-and-backup-recovery\error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results\response-complete-scenario-15ad3-quittal-and-backup-recovery\trace.zip
+    Usage:
+
+        npx playwright show-trace test-results\response-complete-scenario-15ad3-quittal-and-backup-recovery\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  3 failed
+    e2e\operations.spec.ts:34:1 › NPC call becomes a case with persistent linked interviews and distinct court stages 
+    e2e\operations.spec.ts:189:1 › TRACE returns a finalized report only to the originating request and preserves exhibit IDs 
+    e2e\response.spec.ts:34:1 › complete scenario response, radio, grounded interview, TRACE, acquittal and backup recovery 
+  11 passed (3.7m)

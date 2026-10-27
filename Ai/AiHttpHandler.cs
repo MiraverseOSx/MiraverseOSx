@@ -105,6 +105,11 @@ namespace MiraverseOSx.Ai
                 await SendJsonResponse(response, 404, new { error = "Unknown AI route." });
                 return true;
             }
+            catch (ArgumentException ex)
+            {
+                await SendJsonResponse(response, 400, new { error = ex.Message });
+                return true;
+            }
             catch (Exception ex)
             {
                 await SendJsonResponse(response, 500, new { error = ex.Message });

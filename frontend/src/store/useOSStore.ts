@@ -5,7 +5,7 @@ import { createSiteActions, type SiteActions } from './siteActions';
 import { emptyVersenetSites, restoreVersenetSites, type VersenetSites } from '../apps/Browser/interactiveSites';
 import { createVersenetActions, type VersenetActions } from './versenetActions';
 import { emptyVersenetContent, restoreVersenetContent, type VersenetContent } from '../apps/Browser/searchCatalog';
-import { restoreDesktopPreferences, type DesktopPreferences } from './desktopPreferences';
+import { restoreDesktopPreferences, changeDesktop, type DesktopAction, type DesktopPreferences } from './desktopPreferences';
 import { resolveAppDestination, retiredWindowDestination, type WorkspaceRequest } from './appNavigation';
 import { canAcceptInvitation, invitationForOrganization, membershipSource, organization, registerCommunicationsAuthority } from '../integration/communicationsAccess';
 import { isWorldPaused } from '../integration/worldStateManager';
@@ -67,6 +67,9 @@ export interface OSStoreState extends AssignmentFlowActions, ProgressionActions,
   activeWindowId: string | null;
   wallpaper: string;
   desktopPreferences: DesktopPreferences;
+  desktopAction: (action: DesktopAction) => void;
+  hiddenDesktopWindows: string[];
+  toggleShowDesktop: () => void;
   workspaceRequests: Record<string, WorkspaceRequest>;
   workspaceRequestSequence: number;
   openAppWorkspace: (id: string, section?: string) => void;
@@ -206,6 +209,13 @@ export const useOSStore = create<OSStoreState>()(persist((set, get) => ({
   activeWindowId: null,
   wallpaper: '',
   desktopPreferences: restoreDesktopPreferences(undefined),
+  desktopAction: (action) => set(s => ({desktopPreferences:changeDesktop(s.desktopPreferences,action)})),
+  hiddenDesktopWindows: [],
+  toggleShowDesktop: () => set(s => {
+    if(s.hiddenDesktopWindows.length) return {windows:s.windows.map(w=>s.hiddenDesktopWindows.includes(w.id)?{...w,isMinimized:false}:w),hiddenDesktopWindows:[],activeWindowId:s.hiddenDesktopWindows.filter(id=>s.windows.some(w=>w.id===id)).at(-1)||s.activeWindowId};
+    const visible=s.windows.filter(w=>!w.isMinimized).map(w=>w.id);
+    return {hiddenDesktopWindows:visible,windows:s.windows.map(w=>visible.includes(w.id)?{...w,isMinimized:true}:w)};
+  }),
   workspaceRequests: {},
   workspaceRequestSequence: 0,
   setOrganizationMembership: (id, status) => {
@@ -381,8 +391,8 @@ export const useOSStore = create<OSStoreState>()(persist((set, get) => ({
     delete workspaceRequests[id];
     return { workspaceRequests };
   }),
-  setDesktopShortcuts: (ids) => set(s => ({ desktopPreferences: restoreDesktopPreferences({ ...s.desktopPreferences, shortcutIds: ids }) })),
-  resetDesktopShortcuts: () => set(s => ({ desktopPreferences: restoreDesktopPreferences({ ...s.desktopPreferences, shortcutIds: undefined }) })),
+  setDesktopShortcuts: (ids) => set(s => { const p=restoreDesktopPreferences({ ...s.desktopPreferences, shortcutIds: ids }); const g=p.layouts.everyday.groups.find(g=>g.id==='apps'); if(g)g.shortcuts=p.shortcutIds.map(target=>({id:`app:${target}`,kind:'app',target})); return {desktopPreferences:p}; }),
+  resetDesktopShortcuts: () => get().setDesktopShortcuts(restoreDesktopPreferences(undefined).shortcutIds),
   setDesktopTheme: (themeId) => set(s => ({ desktopPreferences: restoreDesktopPreferences({ ...s.desktopPreferences, themeId }) })),
   browserUrl: null,
   browserState: initialBrowserState(),

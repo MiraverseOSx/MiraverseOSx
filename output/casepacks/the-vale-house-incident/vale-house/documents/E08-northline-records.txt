@@ -1,0 +1,34 @@
+NORTHLINE RELOCATION SERVICES
+APPOINTMENT AND VEHICLE RECORD RESPONSE
+Reference: VH-01 / E08
+Date covered: [INCIDENT DATE]
+Supplied by: [NORTHLINE RECORDS CUSTODIAN]
+
+APPOINTMENT ENTRY
+08:15 - Private records discussion with L. Moss at [VALE HOUSE ADDRESS].
+Assigned contact: Mara Vey, records liaison and scheduling coordinator.
+Purpose entered: occupancy reconciliation.
+No household transfer or resident collection appears on the appointment entry.
+
+POOL VEHICLE RELEASE
+Vehicle reference: NF-17, gray estate car.
+Release time: 07:58.
+Assigned employee: Mara Vey.
+Authorized use entered: site records visit.
+Expected return: 10:00.
+
+MOVEMENT ENTRIES
+08:24 - A residential-street camera records NF-17 departing the vicinity of [VALE HOUSE ADDRESS]. An adult is visible in the driver's position, another adult in the front passenger position, and a small rear-seat occupant. The supplied view does not reliably identify faces or establish whether anyone was free to leave.
+
+08:33 - Fleet passage record: NF-17 passed the Cedar service-road checkpoint, traveling toward the contractor annexes. This record places the vehicle, not a verified list of its occupants.
+
+08:36 - R-4 service gate arrival: vehicle NF-17 admitted under the liaison visitor booking assigned to Mara Vey.
+
+09:03 - Northline office entrance camera records Mara Vey returning to the administrative office on foot from the adjoining vehicle park. The records custodian identifies her from the image.
+
+09:12 - Occupancy reconciliation bundle submitted under Mara Vey's account. Its electronic receipt records submission at 09:12; the date printed inside the bundle does not establish an earlier submission time.
+
+RECORDS NOTE
+The custodian supplied the original exports and confirms that the displayed times are local Kaji time. R-4 is a premises code, not a room number at Northline's main administrative office. Request the current premises register to identify the corresponding site.
+
+The response establishes an assigned vehicle, an appointment, recorded movements, and an office return. It does not alone establish an assault, the voluntariness of any journey, or an exact occupant identity.

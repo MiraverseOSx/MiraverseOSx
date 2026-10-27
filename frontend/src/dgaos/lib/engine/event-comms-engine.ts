@@ -173,7 +173,7 @@ export class EventCommsEngine {
       timestamp: now,
       type: 'FORENSIC_REQUESTED',
       actor: state.profile.name,
-      description: `Requisition ${req.id} queued for TRACE forensic spectrometry run.`
+      description: `Requisition ${req.id} queued for TRACE: ${req.targetModules.join(', ')}.`
     });
 
     return true;
