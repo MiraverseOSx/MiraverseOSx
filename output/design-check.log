@@ -1,0 +1,41 @@
+npm notice run miraverse-frontend@0.1.0 test:e2e
+npm notice run playwright test --grep news layouts|PULSE opens|Dispatch keeps
+[WebServer] npm notice run miraverse-frontend@0.1.0 dev
+[WebServer] npm notice run vite --host 127.0.0.1 --port 4174 --strictPort
+[WebServer] (node:48600) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] npm notice run miraverse-frontend@0.1.0 storybook
+[WebServer] npm notice run storybook dev -p 6006 --no-open --host 127.0.0.1 --port 6006 --ci --no-open
+[WebServer] (node:55640) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 3 tests using 1 worker
+
+(node:55516) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 1 e2e\desktop.spec.ts:56:1 › PULSE opens the Dispatch website and preserves reading across reload (9.2s)
+  ok 2 e2e\desktop.spec.ts:95:1 › Dispatch keeps search context through saved views and supports keyboard navigation (4.9s)
+  x  3 e2e\desktop.spec.ts:127:1 › news layouts remain readable in light and dark appearance and narrow windows (1.0m)
+
+
+  1) e2e\desktop.spec.ts:127:1 › news layouts remain readable in light and dark appearance and narrow windows 
+
+    Test timeout of 60000ms exceeded.
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results\desktop-news-layouts-remai-06108-pearance-and-narrow-windows\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results\desktop-news-layouts-remai-06108-pearance-and-narrow-windows\error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results\desktop-news-layouts-remai-06108-pearance-and-narrow-windows\trace.zip
+    Usage:
+
+        npx playwright show-trace test-results\desktop-news-layouts-remai-06108-pearance-and-narrow-windows\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  1 failed
+    e2e\desktop.spec.ts:127:1 › news layouts remain readable in light and dark appearance and narrow windows 
+  2 passed (1.4m)

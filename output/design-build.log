@@ -1,0 +1,81 @@
+npm notice run miraverse-frontend@0.1.0 build
+npm notice run vite build --outDir ../output/news-redesign-build
+vite v6.4.5 building for production...
+transforming...
+✓ 2969 modules transformed.
+rendering chunks...
+computing gzip size...
+../output/news-redesign-build/index.html                                                                                      1.07 kB │ gzip:   0.55 kB
+../output/news-redesign-build/sw.js                                                                                           3.95 kB
+../output/news-redesign-build/assets/logo_icon-CUPqIqiP.png                                                                  39.98 kB
+../output/news-redesign-build/assets/meridion_world-Bx744lBB.jpg                                                          1,013.06 kB
+../output/news-redesign-build/assets/everything_is_great_but_do_not-ibzqC-2F.mp4                                          2,096.88 kB
+../output/news-redesign-build/assets/mixkit-black-ink-splashing-505-hd-ready-5xOo6vN8.mp4                                 3,455.44 kB
+../output/news-redesign-build/assets/mixkit-glitter-stars-and-snowflakes-19007-hd-ready-jJGDjwg1.mp4                      3,693.95 kB
+../output/news-redesign-build/assets/mixkit-a-woman-monitoring-close-circuit-surveillance-23673-hd-ready-DO32EXpQ.mp4     5,627.94 kB
+../output/news-redesign-build/assets/mixkit-flying-over-a-relaxing-creek-full-of-rock-on-the-51585-hd-ready-BCqJ8giU.mp4  8,320.32 kB
+../output/news-redesign-build/assets/FileExplorerApp-BLQR67_R.css                                                             0.62 kB │ gzip:   0.35 kB
+../output/news-redesign-build/assets/RichTextEditor-DZHZoGHi.css                                                              1.46 kB │ gzip:   0.62 kB
+../output/news-redesign-build/assets/case-workspace-CJUr1qgd.css                                                              2.56 kB │ gzip:   0.93 kB
+../output/news-redesign-build/assets/FieldOperationsApp-DxWZrlgh.css                                                          2.71 kB │ gzip:   0.99 kB
+../output/news-redesign-build/assets/RegistryWorkspaceApp-Dt2SnHHz.css                                                        3.72 kB │ gzip:   1.28 kB
+../output/news-redesign-build/assets/attachmentDocument-BtUdRknX.css                                                          4.24 kB │ gzip:   1.49 kB
+../output/news-redesign-build/assets/MailApp-JMX_z9Xy.css                                                                     6.42 kB │ gzip:   1.93 kB
+../output/news-redesign-build/assets/DocumentStudioApp-BTys34W0.css                                                           6.64 kB │ gzip:   1.87 kB
+../output/news-redesign-build/assets/VitalsApp-CjunPQJt.css                                                                   8.57 kB │ gzip:   2.41 kB
+../output/news-redesign-build/assets/PulseApp-CEHPhihk.css                                                                    8.96 kB │ gzip:   2.22 kB
+../output/news-redesign-build/assets/DispatchNewsSite-BObmZ79a.css                                                           11.55 kB │ gzip:   2.83 kB
+../output/news-redesign-build/assets/versenet-browser-BE-fPvFy.css                                                           11.57 kB │ gzip:   2.71 kB
+../output/news-redesign-build/assets/BrowserApp-BCMvgYNp.css                                                                 13.69 kB │ gzip:   3.49 kB
+../output/news-redesign-build/assets/EvidenceBoard-V3rltzWT.css                                                              17.02 kB │ gzip:   2.99 kB
+../output/news-redesign-build/assets/mai-space-Drcbb3-d.css                                                                  27.99 kB │ gzip:   6.61 kB
+../output/news-redesign-build/assets/JobWorkstationApp-SYHCKhcG.css                                                          39.86 kB │ gzip:   7.72 kB
+../output/news-redesign-build/assets/App-BjDC7XPS.css                                                                        89.43 kB │ gzip:  17.53 kB
+../output/news-redesign-build/assets/DgaosApp-CJoWwCyL.css                                                                  287.72 kB │ gzip:  36.33 kB
+../output/news-redesign-build/assets/index-BCbo7KCd.css                                                                     580.25 kB │ gzip:  88.02 kB
+../output/news-redesign-build/assets/MaiSpaceApp-dDsueZ9L.js                                                                  0.27 kB │ gzip:   0.21 kB
+../output/news-redesign-build/assets/RichMailEditor-5ijpE9cv.js                                                               0.42 kB │ gzip:   0.29 kB
+../output/news-redesign-build/assets/citizenEvents-Ch6-1qqe.js                                                                1.16 kB │ gzip:   0.56 kB
+../output/news-redesign-build/assets/CampusApp-75QsJQMz.js                                                                    1.60 kB │ gzip:   0.78 kB
+../output/news-redesign-build/assets/citizenBridge-BxVhfABK.js                                                                2.75 kB │ gzip:   1.14 kB
+../output/news-redesign-build/assets/PulseApp-CfHxzT2Z.js                                                                     4.61 kB │ gzip:   1.52 kB
+../output/news-redesign-build/assets/CommunicationsAccessPanel-CLy6Pprq.js                                                    5.04 kB │ gzip:   1.86 kB
+../output/news-redesign-build/assets/CommsApp-CAwJBdQv.js                                                                     5.16 kB │ gzip:   2.02 kB
+../output/news-redesign-build/assets/FinanceTerminal-BCu3A39L.js                                                              5.31 kB │ gzip:   2.09 kB
+../output/news-redesign-build/assets/Form-yyTfbMzo.js                                                                         7.00 kB │ gzip:   2.84 kB
+../output/news-redesign-build/assets/FieldOperationsApp-Ch8jn8m9.js                                                           7.50 kB │ gzip:   3.04 kB
+../output/news-redesign-build/assets/VitalsApp-D_aMjeaa.js                                                                    7.81 kB │ gzip:   2.59 kB
+../output/news-redesign-build/assets/DispatchNewsSite-ClowIxBZ.js                                                            10.25 kB │ gzip:   3.27 kB
+../output/news-redesign-build/assets/DocumentStudioApp-vHROplFT.js                                                           10.38 kB │ gzip:   4.12 kB
+../output/news-redesign-build/assets/BroadStreetCasePanel-0vOOckhJ.js                                                        10.78 kB │ gzip:   3.96 kB
+../output/news-redesign-build/assets/ProcessMonitorApp-OZ3pUBVO.js                                                           10.96 kB │ gzip:   3.51 kB
+../output/news-redesign-build/assets/SpellForgeApp-pVXF1N52.js                                                               11.29 kB │ gzip:   3.57 kB
+../output/news-redesign-build/assets/versenet-browser-C95bLWwk.js                                                            11.44 kB │ gzip:   4.14 kB
+../output/news-redesign-build/assets/HousingApp-CDnI7exm.js                                                                  15.87 kB │ gzip:   5.05 kB
+../output/news-redesign-build/assets/FileExplorerApp-kvw2Pw34.js                                                             18.85 kB │ gzip:   6.45 kB
+../output/news-redesign-build/assets/SocialApp-BX4jRYtk.js                                                                   20.30 kB │ gzip:   6.71 kB
+../output/news-redesign-build/assets/attachmentDocument-kvhYg2Vf.js                                                          21.23 kB │ gzip:   8.40 kB
+../output/news-redesign-build/assets/LoreExplorer-BawGGvtt.js                                                                29.16 kB │ gzip:   6.88 kB
+../output/news-redesign-build/assets/CivicProfileApp-DNeBfP-d.js                                                             36.44 kB │ gzip:  10.36 kB
+../output/news-redesign-build/assets/Portals-LawOb95N.js                                                                     43.51 kB │ gzip:  11.62 kB
+../output/news-redesign-build/assets/MailApp-DHRjVr-7.js                                                                     55.19 kB │ gzip:  15.06 kB
+../output/news-redesign-build/assets/PortraitStudioModal-ax26O7nn.js                                                         55.60 kB │ gzip:  12.79 kB
+../output/news-redesign-build/assets/maidIdentityService-DJCLer99.js                                                         74.32 kB │ gzip:  20.42 kB
+../output/news-redesign-build/assets/RegistryWorkspaceApp-DuGotRH2.js                                                        78.13 kB │ gzip:  15.84 kB
+../output/news-redesign-build/assets/lucide-icons-CdswSE7t.js                                                                89.71 kB │ gzip:  17.73 kB
+../output/news-redesign-build/assets/JobWorkstationApp-C9YWBvTD.js                                                           98.12 kB │ gzip:  24.11 kB
+../output/news-redesign-build/assets/mai-space-BdIy8fvu.js                                                                   99.42 kB │ gzip:  32.13 kB
+../output/news-redesign-build/assets/BrowserApp-D99dkkff.js                                                                 108.53 kB │ gzip:  33.83 kB
+../output/news-redesign-build/assets/framer-motion-B0GbNFm6.js                                                              138.88 kB │ gzip:  45.96 kB
+../output/news-redesign-build/assets/EvidenceBoard-BjRBfJTS.js                                                              186.21 kB │ gzip:  60.63 kB
+../output/news-redesign-build/assets/index-CHH8hrYk.js                                                                      311.68 kB │ gzip:  97.24 kB
+../output/news-redesign-build/assets/RichTextEditor-CMZoWGUM.js                                                             410.55 kB │ gzip: 130.64 kB
+../output/news-redesign-build/assets/App-QsZ-QQXh.js                                                                        641.26 kB │ gzip: 198.95 kB
+../output/news-redesign-build/assets/DgaosApp-CXNvPMx2.js                                                                 1,472.00 kB │ gzip: 370.99 kB
+../output/news-redesign-build/assets/TunnelScene-rhwWj7Lh.js                                                              1,688.37 kB │ gzip: 383.02 kB
+
+(!) Some chunks are larger than 1200 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+✓ built in 13.04s

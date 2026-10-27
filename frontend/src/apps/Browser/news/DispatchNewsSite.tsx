@@ -1,7 +1,7 @@
 import React, { useRef, useEffect, useState } from 'react';
 import { useOSStore } from '../../../store/useOSStore';
-import { Radio, ArrowUpRight, ArrowLeft, Bookmark, Search, Check, Activity, Landmark, HeartPulse, Globe, GraduationCap } from 'lucide-react';
-import { buildNewsEdition, filterNews, NEWS_SECTIONS, restoreNewsReading, type NewsArticle, type NewsSection } from './newsModel';
+import { Newspaper, Radio, ArrowUpRight, ArrowLeft, Bookmark, Search, Check, Activity, Landmark, HeartPulse, Globe, GraduationCap } from 'lucide-react';
+import { buildNewsEdition, filterNews, newsExposure, NEWS_SECTIONS, restoreNewsReading, type NewsArticle, type NewsSection } from './newsModel';
 import meridionWorld from '../../../assets/images/meridion_world.jpg';
 import './dispatch.css';
 import { NEWS_SITE, newsUrl, parseNewsLocation } from './newsSite';
@@ -32,7 +32,6 @@ export default function DispatchNewsSite({ url, navigateTab }: { url: string; na
   const [searchText, setSearchText] = useState(query);
   const setQuery = (value: string) => navigateTab(newsUrl({ section, savedOnly, query: value }));
   const heading = useRef<HTMLHeadingElement>(null);
-  const content = useRef<HTMLDivElement>(null);
   const reading = restoreNewsReading(gameplay.pulseNews);
   const edition = buildNewsEdition({ cycle: gameplay.timeCycleCount, corruption: gameplay.prismCorruptionLevel });
   const articles = filterNews(edition, section, query, savedOnly, reading.saved);
@@ -47,12 +46,10 @@ export default function DispatchNewsSite({ url, navigateTab }: { url: string; na
       : { ...current, read: [...new Set([...current.read, id])] };
     return { gameplay: { ...state.gameplay, pulseNews: restoreNewsReading(next) } };
   });
-  const focusHeading = () => requestAnimationFrame(() => {
-    heading.current?.focus({ preventScroll: true });
-    content.current?.scrollIntoView({ block: 'start' });
-  });
-  const openArticle = (item: NewsArticle) => { navigateTab(newsUrl({ section, query, savedOnly, articleId: item.id }), `${item.headline} · ${NEWS_SITE.name}`); focusHeading(); };
-  const chooseSection = (value: NewsSection) => { navigateTab(newsUrl({ section: value })); focusHeading(); };
+  // Browser navigation remounts this page. Focus the new heading after it exists.
+  useEffect(() => { heading.current?.focus({ preventScroll: true }); }, [url]);
+  const openArticle = (item: NewsArticle) => navigateTab(newsUrl({ section, query, savedOnly, articleId: item.id }), `${item.headline} · ${NEWS_SITE.name}`);
+  const chooseSection = (value: NewsSection) => navigateTab(newsUrl({ section: value }));
   useEffect(() => { if (article && !reading.read.includes(article.id)) updateReading(article.id); }, [article?.id]);
   const reset = () => chooseSection('All news');
   const saveButton = (item: NewsArticle) => <button
@@ -67,22 +64,22 @@ export default function DispatchNewsSite({ url, navigateTab }: { url: string; na
     <p>{item.summary}</p>{storyMeta(item)}
   </article>;
 
-  if (!location.valid || (selected && !article)) return <section className="pulse-news pulse-empty" aria-label="The Meridion Dispatch"><h1>Story unavailable</h1><p>This address does not have a published page.</p><button className="pulse-related" onClick={reset}>Return to the front page</button></section>;
+  if (!location.valid || (selected && !article)) return <section className="pulse-news pulse-empty" aria-label="The Meridion Dispatch"><h1 tabIndex={-1} ref={heading}>Story unavailable</h1><p>This address does not have a published page.</p><button className="pulse-related" onClick={reset}>Return to the front page</button></section>;
   return <section className="pulse-news" aria-label="The Meridion Dispatch">
     <header className="pulse-network-header">
-      <button className="pulse-home" aria-label="The Meridion Dispatch home" onClick={reset}><Radio size={25}/><span>MERIDION<span>DISPATCH</span></span></button>
+      <button className="pulse-home" aria-label="The Meridion Dispatch home" onClick={reset}><Newspaper size={27}/><span>Meridion<span>Dispatch</span></span></button>
       <span className="pulse-network-tagline">NEWS FROM ACROSS THE SEVEN REALMS</span>
       <span className="pulse-network-edition">YEAR 1000 <span>/</span> CYCLE {gameplay.timeCycleCount}</span>
     </header>
     <nav className="pulse-nav" aria-label="News sections">
       {NEWS_SECTIONS.map(value => <button key={value} aria-pressed={section === value && !savedOnly} onClick={() => chooseSection(value)}>{value}</button>)}
-      <button className="pulse-saved-filter" aria-pressed={savedOnly} onClick={() => navigateTab(newsUrl({ savedOnly: !savedOnly }))}><Bookmark size={13}/> Saved stories</button>
+      <button className="pulse-saved-filter" aria-pressed={savedOnly} onClick={() => navigateTab(newsUrl({ section, query, savedOnly: !savedOnly }))}><Bookmark size={13}/> Saved stories</button>
     </nav>
     <div className="pulse-following" aria-label="Following now"><strong>IN FOCUS</strong>
       <button onClick={() => openArticle(edition[0])}>PRISM grid watch</button><button onClick={() => chooseSection('Economy')}>Working in Aureline</button><button onClick={() => chooseSection('Health')}>Aura & recovery</button><button onClick={() => chooseSection('Culture')}>The Seven Realms</button>
     </div>
-    <div className="pulse-content" ref={content}>{article ? <article className="pulse-reader" aria-label={article.headline}>
-      <button className="pulse-text-button" onClick={() => { navigateTab(newsUrl({ section, query, savedOnly })); focusHeading(); }}><ArrowLeft size={14}/> Back to edition</button>
+    <div className="pulse-content">{article ? <article className="pulse-reader" aria-label={article.headline}>
+      <button className="pulse-text-button" onClick={() => navigateTab(newsUrl({ section, query, savedOnly }))}><ArrowLeft size={14}/> Back to edition</button>
       <div className="pulse-story-meta">{article.section} / {article.kind} / Cycle {article.cycle}</div>
       <h1 tabIndex={-1} ref={heading}>{article.headline}</h1><p className="pulse-reader-deck">{article.summary}</p>
       <div className="pulse-byline"><span>{article.source}<small>{article.kind === 'World advisory' ? `Current coverage · Cycle ${article.cycle}` : `Published cycle ${article.cycle}`}</small></span><button className="pulse-text-button" aria-pressed={reading.saved.includes(article.id)} onClick={() => updateReading(article.id, true)}><Bookmark size={14}/>{reading.saved.includes(article.id) ? 'Remove saved story' : 'Save story'}</button></div>
@@ -94,11 +91,11 @@ export default function DispatchNewsSite({ url, navigateTab }: { url: string; na
       {lead ? <>
         {isFrontPage ? <>
           <div className="pulse-top-grid">
-            <article className="pulse-lead"><button className="pulse-image-link" aria-label={`Read ${lead.headline}`} onClick={() => openArticle(lead)}><NewsArtwork article={lead}/></button><div className="pulse-story-meta"><span className="pulse-coverage-label">WORLD WATCH</span> {lead.section}</div><h2><button onClick={() => openArticle(lead)}>{lead.headline}</button></h2><p>{lead.summary}</p>{storyMeta(lead)}
+            <article className="pulse-lead"><div className="pulse-story-meta"><span className="pulse-coverage-label">WORLD WATCH</span> {lead.section}</div><h2><button onClick={() => openArticle(lead)}>{lead.headline}</button></h2><button className="pulse-image-link" aria-label={`Read ${lead.headline}`} onClick={() => openArticle(lead)}><NewsArtwork article={lead}/></button><p>{lead.summary}</p>{storyMeta(lead)}
               <button className="pulse-related-headline" onClick={() => openArticle(edition.find(item => item.id === 'faith-recovery') || lead)}>What the world reading means for your personal aura <ArrowUpRight size={13}/></button>
             </article>
             <aside className="pulse-headline-rail" aria-label="Latest news"><h2 className="pulse-section-heading">Latest news</h2>{articles.slice(1, 5).map(item => <article key={item.id}><span className="pulse-story-meta">{item.section} · Cycle {item.cycle}</span><h3><button onClick={() => openArticle(item)}>{item.headline}</button></h3><span className="pulse-rail-source">{item.source}</span></article>)}</aside>
-            <aside className="pulse-sidebar" aria-label="World briefing"><div className="pulse-briefing"><Radio size={26}/><span>DISPATCH / WORLD DESK</span><h2>The world<br/>right now.</h2><p>PRISM exposure</p><strong>{Number.isFinite(gameplay.prismCorruptionLevel) ? gameplay.prismCorruptionLevel.toFixed(1) : '0.0'}<small>%</small></strong><p>Current world reading · Cycle {gameplay.timeCycleCount}</p><button onClick={() => openArticle(lead)}>Read the briefing <ArrowUpRight size={14}/></button></div><div className="pulse-editors"><h2 className="pulse-section-heading">Editor’s picks</h2>{articles.filter(item => ['seven-realms', 'campus-practice'].includes(item.id)).map(item => <button key={item.id} onClick={() => openArticle(item)}><span>{item.section}</span>{item.headline}<ArrowUpRight size={13}/></button>)}</div></aside>
+            <aside className="pulse-sidebar" aria-label="World briefing"><div className="pulse-briefing"><Radio size={26}/><span>DISPATCH / WORLD DESK</span><h2>The world<br/>right now.</h2><p>PRISM exposure</p><strong>{newsExposure(gameplay.prismCorruptionLevel).toFixed(1)}<small>%</small></strong><p>Current world reading · Cycle {gameplay.timeCycleCount}</p><button onClick={() => openArticle(lead)}>Read the briefing <ArrowUpRight size={14}/></button></div><div className="pulse-editors"><h2 className="pulse-section-heading">Editor’s picks</h2>{articles.filter(item => ['seven-realms', 'campus-practice'].includes(item.id)).map(item => <button key={item.id} onClick={() => openArticle(item)}><span>{item.section}</span>{item.headline}<ArrowUpRight size={13}/></button>)}</div></aside>
           </div>
           <section className="pulse-more" aria-label="More top stories"><div className="pulse-section-header"><h2 className="pulse-section-heading">More top stories</h2><span>REPORTING FROM ACROSS MERIDION</span></div><div className="pulse-card-grid">{articles.slice(1, 4).map(card)}</div></section>
           <section className="pulse-more" aria-label="Culture and the Seven Realms"><div className="pulse-section-header"><h2 className="pulse-section-heading">Culture & the Seven Realms</h2><button className="pulse-text-button" onClick={() => chooseSection('Culture')}>More culture <ArrowUpRight size={14}/></button></div><div className="pulse-card-grid">{articles.filter(item => item.section === 'Culture').map(card)}</div></section>

@@ -29,6 +29,17 @@ export function serviceLaunchUrl(input: string): string | null {
   } catch { return null; }
 }
 
+// Accept pasted domains in the editor without weakening stored launch validation.
+export function serviceInputUrl(input: string): string | null {
+  const value = input.trim();
+  if (!value) return '';
+  const explicit = serviceLaunchUrl(value);
+  if (explicit) return explicit;
+  if (/\s/.test(value)) return null;
+  if (!/^(?:localhost|[\w-]+(?:\.[\w-]+)+)(?::\d+)?(?:[/?#]|$)/i.test(value)) return null;
+  return externalWebUrl(`https://${value}`);
+}
+
 export interface ExternalService { id: string; name: string; category: string; description: string; url: string }
 export const SERVICE_STORAGE_KEY = 'miraverse-external-services-v1';
 export const SERVICE_DIRECTORY = 'https://services.aure';

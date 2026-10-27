@@ -1,0 +1,18 @@
+npm notice run miraverse-frontend@0.1.0 test:e2e
+npm notice run playwright test --grep directory edits
+[WebServer] npm notice run miraverse-frontend@0.1.0 dev
+[WebServer] npm notice run vite --host 127.0.0.1 --port 4174 --strictPort
+[WebServer] (node:20036) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] npm notice run miraverse-frontend@0.1.0 storybook
+[WebServer] npm notice run storybook dev -p 6006 --no-open --host 127.0.0.1 --port 6006 --ci --no-open
+[WebServer] (node:37964) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 1 test using 1 worker
+
+(node:54684) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 1 e2e\desktop.spec.ts:187:1 › directory edits open at the selected card and changes survive reload (8.4s)
+
+  1 passed (16.0s)

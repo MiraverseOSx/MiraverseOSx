@@ -16,9 +16,12 @@ const STORIES: Omit<NewsArticle, 'cycle'>[] = [
 ];
 // Only public authored copy and aggregate world conditions enter this edition.
 // Never publish arbitrary event logs, private messages, or investigation drafts.
+export function newsExposure(value: unknown): number {
+  return typeof value === 'number' && Number.isFinite(value) ? Math.min(100, Math.max(0, value)) : 0;
+}
 export function buildNewsEdition(input: { cycle?: number; corruption?: number }): NewsArticle[] {
   const cycle = Number.isSafeInteger(input.cycle) && input.cycle! >= 0 ? input.cycle! : 28;
-  const exposure = Number.isFinite(input.corruption) ? Math.min(100, Math.max(0, input.corruption!)) : 0;
+  const exposure = newsExposure(input.corruption);
   const elevated = exposure >= 15;
   const advisory: NewsArticle = { id: 'prism-watch', section: 'Security', cycle,
     headline: elevated ? 'PRISM exposure elevated across the world grid' : 'World grid watch: keeping PRISM exposure in view',

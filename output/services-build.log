@@ -1,0 +1,81 @@
+npm notice run miraverse-frontend@0.1.0 build
+npm notice run vite build --outDir ../output/services-build
+vite v6.4.5 building for production...
+transforming...
+✓ 2970 modules transformed.
+rendering chunks...
+computing gzip size...
+../output/services-build/index.html                                                                                      1.07 kB │ gzip:   0.55 kB
+../output/services-build/sw.js                                                                                           3.95 kB
+../output/services-build/assets/logo_icon-CUPqIqiP.png                                                                  39.98 kB
+../output/services-build/assets/meridion_world-Bx744lBB.jpg                                                          1,013.06 kB
+../output/services-build/assets/everything_is_great_but_do_not-ibzqC-2F.mp4                                          2,096.88 kB
+../output/services-build/assets/mixkit-black-ink-splashing-505-hd-ready-5xOo6vN8.mp4                                 3,455.44 kB
+../output/services-build/assets/mixkit-glitter-stars-and-snowflakes-19007-hd-ready-jJGDjwg1.mp4                      3,693.95 kB
+../output/services-build/assets/mixkit-a-woman-monitoring-close-circuit-surveillance-23673-hd-ready-DO32EXpQ.mp4     5,627.94 kB
+../output/services-build/assets/mixkit-flying-over-a-relaxing-creek-full-of-rock-on-the-51585-hd-ready-BCqJ8giU.mp4  8,320.32 kB
+../output/services-build/assets/FileExplorerApp-BLQR67_R.css                                                             0.62 kB │ gzip:   0.35 kB
+../output/services-build/assets/RichTextEditor-DZHZoGHi.css                                                              1.46 kB │ gzip:   0.62 kB
+../output/services-build/assets/case-workspace-CJUr1qgd.css                                                              2.56 kB │ gzip:   0.93 kB
+../output/services-build/assets/FieldOperationsApp-DxWZrlgh.css                                                          2.71 kB │ gzip:   0.99 kB
+../output/services-build/assets/RegistryWorkspaceApp-Dt2SnHHz.css                                                        3.72 kB │ gzip:   1.28 kB
+../output/services-build/assets/attachmentDocument-BtUdRknX.css                                                          4.24 kB │ gzip:   1.49 kB
+../output/services-build/assets/MailApp-JMX_z9Xy.css                                                                     6.42 kB │ gzip:   1.93 kB
+../output/services-build/assets/DocumentStudioApp-BTys34W0.css                                                           6.64 kB │ gzip:   1.87 kB
+../output/services-build/assets/VitalsApp-CjunPQJt.css                                                                   8.57 kB │ gzip:   2.41 kB
+../output/services-build/assets/PulseApp-CEHPhihk.css                                                                    8.96 kB │ gzip:   2.22 kB
+../output/services-build/assets/DispatchNewsSite-BObmZ79a.css                                                           11.55 kB │ gzip:   2.83 kB
+../output/services-build/assets/BrowserApp-BCMvgYNp.css                                                                 13.69 kB │ gzip:   3.49 kB
+../output/services-build/assets/versenet-browser-CB31ceec.css                                                           14.53 kB │ gzip:   3.40 kB
+../output/services-build/assets/EvidenceBoard-V3rltzWT.css                                                              17.02 kB │ gzip:   2.99 kB
+../output/services-build/assets/mai-space-Drcbb3-d.css                                                                  27.99 kB │ gzip:   6.61 kB
+../output/services-build/assets/JobWorkstationApp-SYHCKhcG.css                                                          39.86 kB │ gzip:   7.72 kB
+../output/services-build/assets/App-BjDC7XPS.css                                                                        89.43 kB │ gzip:  17.53 kB
+../output/services-build/assets/DgaosApp-CJoWwCyL.css                                                                  287.72 kB │ gzip:  36.33 kB
+../output/services-build/assets/index-BCbo7KCd.css                                                                     580.25 kB │ gzip:  88.02 kB
+../output/services-build/assets/MaiSpaceApp-BCMqZBee.js                                                                  0.27 kB │ gzip:   0.20 kB
+../output/services-build/assets/RichMailEditor-CdPVc6-s.js                                                               0.42 kB │ gzip:   0.29 kB
+../output/services-build/assets/citizenEvents-Ch6-1qqe.js                                                                1.16 kB │ gzip:   0.56 kB
+../output/services-build/assets/CampusApp-DtqMMV9x.js                                                                    1.60 kB │ gzip:   0.78 kB
+../output/services-build/assets/citizenBridge-Cul8bwgU.js                                                                2.75 kB │ gzip:   1.14 kB
+../output/services-build/assets/PulseApp-CtrnX06V.js                                                                     4.61 kB │ gzip:   1.52 kB
+../output/services-build/assets/CommunicationsAccessPanel-DK2WOML4.js                                                    5.04 kB │ gzip:   1.86 kB
+../output/services-build/assets/CommsApp-C9r1c91D.js                                                                     5.16 kB │ gzip:   2.02 kB
+../output/services-build/assets/FinanceTerminal-BI7RW_uA.js                                                              5.31 kB │ gzip:   2.09 kB
+../output/services-build/assets/Form-yyTfbMzo.js                                                                         7.00 kB │ gzip:   2.84 kB
+../output/services-build/assets/FieldOperationsApp-mayRwY2o.js                                                           7.50 kB │ gzip:   3.04 kB
+../output/services-build/assets/VitalsApp-C7G0_cPt.js                                                                    7.81 kB │ gzip:   2.58 kB
+../output/services-build/assets/DispatchNewsSite-D9LW92wx.js                                                            10.25 kB │ gzip:   3.27 kB
+../output/services-build/assets/DocumentStudioApp-CEQTS5NV.js                                                           10.38 kB │ gzip:   4.12 kB
+../output/services-build/assets/BroadStreetCasePanel-DXfdo69h.js                                                        10.78 kB │ gzip:   3.95 kB
+../output/services-build/assets/ProcessMonitorApp-CRrU02lD.js                                                           10.96 kB │ gzip:   3.51 kB
+../output/services-build/assets/SpellForgeApp-VVA8IMKV.js                                                               11.29 kB │ gzip:   3.57 kB
+../output/services-build/assets/versenet-browser-BR4cR0rK.js                                                            12.79 kB │ gzip:   4.62 kB
+../output/services-build/assets/HousingApp-RtuNP_q2.js                                                                  15.87 kB │ gzip:   5.04 kB
+../output/services-build/assets/FileExplorerApp-KaK19-AJ.js                                                             18.85 kB │ gzip:   6.44 kB
+../output/services-build/assets/SocialApp-BfiPtwPS.js                                                                   20.30 kB │ gzip:   6.71 kB
+../output/services-build/assets/attachmentDocument-B4Ra9AVL.js                                                          21.23 kB │ gzip:   8.40 kB
+../output/services-build/assets/LoreExplorer-Dt5gdB_v.js                                                                29.16 kB │ gzip:   6.88 kB
+../output/services-build/assets/CivicProfileApp-yelkAuY6.js                                                             36.44 kB │ gzip:  10.36 kB
+../output/services-build/assets/Portals-DQplaoiK.js                                                                     43.51 kB │ gzip:  11.61 kB
+../output/services-build/assets/MailApp-BAfJEZ2b.js                                                                     55.19 kB │ gzip:  15.06 kB
+../output/services-build/assets/PortraitStudioModal-zTeZIV02.js                                                         55.60 kB │ gzip:  12.79 kB
+../output/services-build/assets/maidIdentityService-Dj2_66bx.js                                                         74.32 kB │ gzip:  20.41 kB
+../output/services-build/assets/RegistryWorkspaceApp-DdmRADBO.js                                                        78.13 kB │ gzip:  15.84 kB
+../output/services-build/assets/lucide-icons-CdswSE7t.js                                                                89.71 kB │ gzip:  17.73 kB
+../output/services-build/assets/JobWorkstationApp-BG8ljMMz.js                                                           98.12 kB │ gzip:  24.10 kB
+../output/services-build/assets/mai-space-DnFA8j-K.js                                                                   99.42 kB │ gzip:  32.12 kB
+../output/services-build/assets/BrowserApp-B0jedPH6.js                                                                 108.53 kB │ gzip:  33.83 kB
+../output/services-build/assets/framer-motion-B0GbNFm6.js                                                              138.88 kB │ gzip:  45.96 kB
+../output/services-build/assets/EvidenceBoard-DQvdfrLL.js                                                              186.21 kB │ gzip:  60.62 kB
+../output/services-build/assets/index-BCAIhefh.js                                                                      311.87 kB │ gzip:  97.34 kB
+../output/services-build/assets/RichTextEditor-d6fv1JGX.js                                                             410.55 kB │ gzip: 130.64 kB
+../output/services-build/assets/App-OtzSWr9t.js                                                                        641.26 kB │ gzip: 198.94 kB
+../output/services-build/assets/DgaosApp-BuQJYdQU.js                                                                 1,472.00 kB │ gzip: 370.99 kB
+../output/services-build/assets/TunnelScene-CAmJsCzz.js                                                              1,688.37 kB │ gzip: 383.01 kB
+
+(!) Some chunks are larger than 1200 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+✓ built in 11.88s

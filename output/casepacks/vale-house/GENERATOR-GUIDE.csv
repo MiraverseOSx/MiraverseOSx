@@ -1,0 +1,15 @@
+Exhibit,Input file,Recommended template,Presentation,Release
+Opening,documents/00-opening-case-file.txt,Case File,Cover and summary sheet with people and exhibit index,Opening packet
+E01,documents/E01-dena-banks-statement.txt,Transcript or Official Form,Witness statement with signature field,Opening packet
+E02,evidence/E02-marriage-certificate.pdf,Use existing PDF unchanged,Supplied family record; do not regenerate or correct,Family records inquiry
+E03,documents/E03-scene-and-property-record.txt,Evidence Report,Scene observations and numbered property list,Scene inquiry
+E04,documents/E04-communications.txt,Message or Transcript,Keep sender labels and local timestamps visible,Communications inquiry
+E05,documents/E05-santiago-whitmore.txt,Transcript,Interview followed by workplace verification,Partner interview
+E06,documents/E06-lily-moss-liaison.txt,Admission Record or Official Form,Case liaison note; not a full clinical chart,Clinical liaison
+E07,documents/E07-julian-employment.txt,Official Form,Employer response and attachment list,Employment inquiry
+E08,documents/E08-northline-records.txt,Register or Official Form,Appointment and transport entries with source limitations,Contractor records inquiry
+E09,documents/E09-premises-register.txt,Register,Two clearly separated site-code entries,Location-code inquiry
+E10,documents/E10-mara-vey-interview.txt,Transcript,Questions and answers; keep interview note separate,Records liaison interview
+E11,documents/E11-lily-reporting-material.txt,Message or Official Form,Unpublished notes with comparison sheet and open questions,Reporting-material inquiry
+R01,author-only-documents/R01-recovery-report.txt,Official Form,Recovery and welfare response with follow-up items,After recovery only
+R02,author-only-documents/R02-julian-post-recovery.txt,Transcript,Full account recorded after the missing people are found,After recovery only

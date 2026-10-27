@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import test from 'node:test';
 import { registerHooks } from 'node:module';
 registerHooks({ resolve(specifier, context, next) { try { return next(specifier, context); } catch (error) { if (error.code !== 'ERR_MODULE_NOT_FOUND' || !specifier.startsWith('.')) throw error; return next(`${specifier}.ts`, context); } } });
-const { DEFAULT_SERVICES, externalWebUrl, serviceLaunchUrl, isInternalAddress, restoreServices, localHtmlWrapper } = await import('../src/apps/Browser/externalWeb.ts');
+const { DEFAULT_SERVICES, externalWebUrl, serviceLaunchUrl, serviceInputUrl, isInternalAddress, restoreServices, localHtmlWrapper } = await import('../src/apps/Browser/externalWeb.ts');
 
 test('external destinations preserve fictional aliases and reject executable schemes or credentials', () => {
   for (const host of ['versenet.aure', 'dga.gov', 'cyacademy.edu', 'records.orynvell.gov', 'mai.space', 'civinet', 'faithmed.aure', 'shipping.aure', 'vectornet.onion', 'services.aure', 'new.mer']) {
@@ -18,6 +18,18 @@ test('local destinations are restricted to explicit local HTML files', () => {
   assert.equal(serviceLaunchUrl('file:///C:/Tools/My%20App/index.html'), 'file:///C:/Tools/My%20App/index.html');
   assert.equal(serviceLaunchUrl('file:///C:/Tools/index.HTM'), 'file:///C:/Tools/index.HTM');
   for (const value of ['file://server/share/app.html', 'file:///C:/app.exe', 'file:///C:/app.html?run=1', 'file:///C:/app.html#code', 'file:///C:/app.html.exe', 'javascript:alert(1)']) assert.equal(serviceLaunchUrl(value), null, value);
+});
+
+test('service editor accepts pasted domains and preserves destination validation', () => {
+  assert.equal(serviceInputUrl('  example.com/library?q=tools  '), 'https://example.com/library?q=tools');
+  assert.equal(serviceInputUrl('localhost:8080/tool.html'), 'https://localhost:8080/tool.html');
+  assert.equal(serviceInputUrl('https://example.com'), 'https://example.com/');
+  assert.equal(serviceInputUrl('file:///C:/Tools/app.html'), 'file:///C:/Tools/app.html');
+  assert.equal(serviceInputUrl('  '), '');
+  for (const value of ['javascript:alert(1)', 'data:text/html,test', 'https://user:pass@example.com',
+    'file:///C:/tool.exe', 'file://server/share/tool.html', 'versenet.aure', 'cyacademy.edu', 'not a url']) {
+    assert.equal(serviceInputUrl(value), null, value);
+  }
 });
 
 test('directory has the supplied 11 applications and safely restores edited links', () => {

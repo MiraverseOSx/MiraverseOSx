@@ -1,0 +1,28 @@
+PREMISES-CODE REGISTER EXTRACT
+Reference: VH-01 / E09
+Issuer: [MUNICIPAL PROPERTY RECORDS OFFICE]
+Effective date: register current on [INCIDENT DATE]
+
+OPERATOR
+Northline Relocation Services
+
+SITE CODE R-4
+Site name: Cedar Annex, Unit 4
+Location: [CEDAR ANNEX ADDRESS], Cedar service road, Kaji
+Previous use: temporary accommodation administration
+Current approved use: records and furniture storage
+Residential occupancy: closed; no resident placement currently scheduled
+Gate booking system: liaison visitor access
+Registered operator contact: Northline scheduling office
+
+SITE CODE N-2
+Site name: Northgate Reception
+Location: [NORTHGATE ADDRESS], Northgate road, Kaji
+Current use: resident reception and scheduled transfers
+
+CLARIFICATION
+Cedar Annex R-4 and Northgate Reception N-2 are separate properties reached by different roads. The phrase "Northgate" does not identify Cedar Annex in the current register.
+
+This register identifies premises and approved uses. It does not certify who is physically inside a building at a particular time. Compare it with incident-date movement records and direct welfare inquiries.
+
+Certified extract prepared by: [RECORDS OFFICER]

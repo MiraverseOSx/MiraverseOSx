@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { buildNewsEdition, filterNews, restoreNewsReading } from '../src/apps/Pulse/newsModel.ts';
+import { buildNewsEdition, filterNews, newsExposure, restoreNewsReading } from '../src/apps/Pulse/newsModel.ts';
 import { NEWS_SITE, newsUrl, parseNewsLocation, newsSearchRecords } from '../src/apps/Browser/news/newsSite.ts';
 
 test('public news follows world exposure without copying private records or modifying progress', () => {
@@ -23,6 +23,13 @@ test('sections, article-body search, saved filtering and empty results combine',
   assert.equal(filterNews(edition, 'Health', '', true, ['faith-recovery'])[0].id, 'faith-recovery');
   assert.deepEqual(filterNews(edition, 'Security', '', true, ['faith-recovery']), []);
   assert.deepEqual(filterNews(edition, 'All news', 'unfindable', false, []), []);
+});
+
+test('briefing and article use the same bounded world exposure from old saves', () => {
+  for (const [input, expected] of [[-10, 0], [150, 100], [14.8, 14.8], [NaN, 0], [Infinity, 0], ['14.8', 0], [undefined, 0]]) {
+    assert.equal(newsExposure(input), expected);
+    assert.ok(buildNewsEdition({ corruption: input })[0].summary.includes(`${expected.toFixed(1)}%`));
+  }
 });
 test('reading preferences restore safely from old and malformed saves', () => {
   assert.deepEqual(restoreNewsReading(undefined), { saved: [], read: [] });
